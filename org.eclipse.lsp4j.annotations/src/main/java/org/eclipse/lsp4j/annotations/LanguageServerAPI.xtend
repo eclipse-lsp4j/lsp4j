@@ -17,3 +17,9 @@ import java.lang.annotation.Retention
 @Retention(SOURCE)
 annotation LanguageServerAPI {
 }
+
+/**
+ * For accessors annotated with this, the name should be treated as the property name. 
+ */
+@Retention(SOURCE)
+annotation NoPrefix {}

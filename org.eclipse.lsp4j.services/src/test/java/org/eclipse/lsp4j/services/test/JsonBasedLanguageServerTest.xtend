@@ -7,6 +7,12 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.services.test
 
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
 import org.eclipse.lsp4j.impl.DidOpenTextDocumentParamsImpl
 import org.eclipse.lsp4j.impl.InitializeParamsImpl
 import org.eclipse.lsp4j.impl.PositionImpl
@@ -16,12 +22,6 @@ import org.eclipse.lsp4j.impl.TextDocumentPositionParamsImpl
 import org.eclipse.lsp4j.services.json.JsonBasedLanguageServer
 import org.eclipse.lsp4j.services.json.LanguageServerProtocol
 import org.eclipse.lsp4j.services.json.MessageJsonHandler
-import java.io.ByteArrayOutputStream
-import java.io.OutputStream
-import java.io.PipedInputStream
-import java.io.PipedOutputStream
-import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.TimeUnit
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -191,7 +191,7 @@ class JsonBasedLanguageServerTest {
 		''')
 		future.get(TIMEOUT, TimeUnit.MILLISECONDS).assertResult('''
 			CompletionListImpl [
-			  incomplete = false
+			  isIncomplete = false
 			  items = ArrayList (
 			    CompletionItemImpl [
 			      label = "bar"
@@ -268,7 +268,7 @@ class JsonBasedLanguageServerTest {
 		''')
 		future1.get(TIMEOUT, TimeUnit.MILLISECONDS).assertResult('''
 			CompletionListImpl [
-			  incomplete = false
+			  isIncomplete = false
 			  items = ArrayList (
 			    CompletionItemImpl [
 			      label = "foo"
@@ -286,7 +286,7 @@ class JsonBasedLanguageServerTest {
 		''')
 		future2.get(TIMEOUT, TimeUnit.MILLISECONDS).assertResult('''
 			CompletionListImpl [
-			  incomplete = false
+			  isIncomplete = false
 			  items = ArrayList (
 			    CompletionItemImpl [
 			      label = "bar"

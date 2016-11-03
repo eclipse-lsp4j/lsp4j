@@ -49,7 +49,7 @@ class BuilderTest {
 			]
 		].assertBuilds('''
 			CompletionListImpl [
-			  incomplete = false
+			  isIncomplete = false
 			  items = ArrayList (
 			    CompletionItemImpl [
 			      label = "foo"
@@ -95,7 +95,7 @@ class BuilderTest {
         new CompletionListBuilder[
         ].assertBuilds('''
             CompletionListImpl [
-              incomplete = false
+              isIncomplete = false
               items = ArrayList ()
             ]
         ''')

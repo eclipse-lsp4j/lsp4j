@@ -14,7 +14,6 @@ import java.util.List
 import java.util.Map
 import java.util.Set
 import javax.annotation.Nullable
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import org.eclipse.lsp4j.annotations.util.Wrapper
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor
@@ -227,12 +226,14 @@ class LanguageServerProcessor extends AbstractInterfaceProcessor {
 	
 	private def getFieldName(MethodDeclaration method) {
 		val name = method.simpleName
-		if (name.startsWith('get') && name.length > 3)
-			name.substring(3).toFirstLower
+	    if (method.annotations.exists[annotationTypeDeclaration.simpleName == NoPrefix.simpleName])
+	        return name
+		else if (name.startsWith('get') && name.length > 3)
+			return name.substring(3).toFirstLower
 		else if (name.startsWith('is') && name.length > 2)
-			name.substring(2).toFirstLower
+			return name.substring(2).toFirstLower
 		else
-			name
+			return name
 	}
 	
 	private def generateToString(MutableClassDeclaration impl, InterfaceDeclaration source, extension TransformationContext context) {

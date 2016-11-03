@@ -63,7 +63,7 @@ interface TextDocumentService {
     def CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position)
     
     /**
-     * The goto definition request is sent from the client to the server to to resolve the defintion location of a symbol
+     * The goto definition request is sent from the client to the server to resolve the definition location of a symbol
      * at a given text document position.
      */
     def CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position)

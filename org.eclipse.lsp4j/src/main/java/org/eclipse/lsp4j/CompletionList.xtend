@@ -7,8 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.annotations.NoPrefix
 
 /**
  * Represents a collection of completion items to be presented in the editor.
@@ -19,6 +20,7 @@ interface CompletionList {
 	/**
      * This list it not complete. Further typing should result in recomputing this list.
      */
+    @NoPrefix
     def boolean isIncomplete()
     
     /**

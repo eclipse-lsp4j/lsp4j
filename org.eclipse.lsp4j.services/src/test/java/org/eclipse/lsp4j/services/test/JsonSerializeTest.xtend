@@ -335,7 +335,7 @@ class JsonSerializeTest {
 			jsonrpc("2.0")
 			id("12")
 			result(new CompletionListBuilder[
-				incomplete(true)
+				isIncomplete(true)
 				item[
 					label('foo')
 				]
@@ -345,7 +345,7 @@ class JsonSerializeTest {
 			{
 			  "id": "12",
 			  "result": {
-			    "incomplete": true,
+			    "isIncomplete": true,
 			    "items": [
 			      {
 			        "label": "foo"
