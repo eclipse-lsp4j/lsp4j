@@ -12,6 +12,11 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import java.io.Reader
+import java.io.StringReader
+import java.io.StringWriter
+import java.io.Writer
+import java.util.List
 import org.eclipse.lsp4j.Message
 import org.eclipse.lsp4j.RequestMessage
 import org.eclipse.lsp4j.impl.CancelParamsImpl
@@ -55,72 +60,68 @@ import org.eclipse.lsp4j.impl.WorkspaceSymbolParamsImpl
 import org.eclipse.lsp4j.services.json.adapters.CollectionTypeAdapterFactory
 import org.eclipse.lsp4j.services.json.adapters.EnumTypeAdapterFactory
 import org.eclipse.lsp4j.services.json.adapters.MarkedStringTypeAdapterFactory
+import org.eclipse.lsp4j.services.transport.MessageMethods
 import org.eclipse.lsp4j.services.transport.client.MethodResolver
 import org.eclipse.lsp4j.services.validation.IMessageValidator
 import org.eclipse.lsp4j.services.validation.MessageIssue
 import org.eclipse.lsp4j.services.validation.ReflectiveMessageValidator
-import java.io.Reader
-import java.io.StringReader
-import java.io.StringWriter
-import java.io.Writer
-import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 
 class MessageJsonHandler {
 	
 	static val REQUEST_PARAM_TYPES = #{
-		org.eclipse.lsp4j.services.transport.MessageMethods.INITIALIZE -> InitializeParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_COMPLETION -> TextDocumentPositionParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.RESOLVE_COMPLETION -> CompletionItemImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_HOVER -> TextDocumentPositionParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_SIGNATURE_HELP -> TextDocumentPositionParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_DEFINITION -> TextDocumentPositionParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_HIGHLIGHT -> TextDocumentPositionParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_REFERENCES -> ReferenceParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_SYMBOL -> DocumentSymbolParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.WORKSPACE_SYMBOL -> WorkspaceSymbolParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_CODE_ACTION -> CodeActionParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_CODE_LENS -> CodeLensParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.RESOLVE_CODE_LENS -> CodeLensImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_FORMATTING -> DocumentFormattingParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_RANGE_FORMATTING -> DocumentRangeFormattingParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_TYPE_FORMATTING -> DocumentOnTypeFormattingParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_RENAME -> RenameParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.SHOW_MESSAGE_REQUEST -> ShowMessageRequestParamsImpl
+		MessageMethods.INITIALIZE -> InitializeParamsImpl,
+		MessageMethods.DOC_COMPLETION -> TextDocumentPositionParamsImpl,
+		MessageMethods.RESOLVE_COMPLETION -> CompletionItemImpl,
+		MessageMethods.DOC_HOVER -> TextDocumentPositionParamsImpl,
+		MessageMethods.DOC_SIGNATURE_HELP -> TextDocumentPositionParamsImpl,
+		MessageMethods.DOC_DEFINITION -> TextDocumentPositionParamsImpl,
+		MessageMethods.DOC_HIGHLIGHT -> TextDocumentPositionParamsImpl,
+		MessageMethods.DOC_REFERENCES -> ReferenceParamsImpl,
+		MessageMethods.DOC_SYMBOL -> DocumentSymbolParamsImpl,
+		MessageMethods.WORKSPACE_SYMBOL -> WorkspaceSymbolParamsImpl,
+		MessageMethods.DOC_CODE_ACTION -> CodeActionParamsImpl,
+		MessageMethods.DOC_CODE_LENS -> CodeLensParamsImpl,
+		MessageMethods.RESOLVE_CODE_LENS -> CodeLensImpl,
+		MessageMethods.DOC_FORMATTING -> DocumentFormattingParamsImpl,
+		MessageMethods.DOC_RANGE_FORMATTING -> DocumentRangeFormattingParamsImpl,
+		MessageMethods.DOC_TYPE_FORMATTING -> DocumentOnTypeFormattingParamsImpl,
+		MessageMethods.DOC_RENAME -> RenameParamsImpl,
+		MessageMethods.SHOW_MESSAGE_REQUEST -> ShowMessageRequestParamsImpl
 	}
 	
 	static val RESPONSE_RESULT_TYPES = #{
-		org.eclipse.lsp4j.services.transport.MessageMethods.INITIALIZE -> InitializeResultImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_COMPLETION -> CompletionListImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.RESOLVE_COMPLETION -> CompletionItemImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_HOVER -> HoverImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_SIGNATURE_HELP -> SignatureHelpImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_DEFINITION -> LocationImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_HIGHLIGHT -> DocumentHighlightImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_REFERENCES -> LocationImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_SYMBOL -> SymbolInformationImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.WORKSPACE_SYMBOL -> SymbolInformationImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_CODE_ACTION -> CommandImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_CODE_LENS -> CodeLensImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.RESOLVE_CODE_LENS -> CodeLensImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_FORMATTING -> TextEditImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_RANGE_FORMATTING -> TextEditImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_TYPE_FORMATTING -> TextEditImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DOC_RENAME -> WorkspaceEditImpl
+		MessageMethods.INITIALIZE -> InitializeResultImpl,
+		MessageMethods.DOC_COMPLETION -> CompletionListImpl,
+		MessageMethods.RESOLVE_COMPLETION -> CompletionItemImpl,
+		MessageMethods.DOC_HOVER -> HoverImpl,
+		MessageMethods.DOC_SIGNATURE_HELP -> SignatureHelpImpl,
+		MessageMethods.DOC_DEFINITION -> LocationImpl,
+		MessageMethods.DOC_HIGHLIGHT -> DocumentHighlightImpl,
+		MessageMethods.DOC_REFERENCES -> LocationImpl,
+		MessageMethods.DOC_SYMBOL -> SymbolInformationImpl,
+		MessageMethods.WORKSPACE_SYMBOL -> SymbolInformationImpl,
+		MessageMethods.DOC_CODE_ACTION -> CommandImpl,
+		MessageMethods.DOC_CODE_LENS -> CodeLensImpl,
+		MessageMethods.RESOLVE_CODE_LENS -> CodeLensImpl,
+		MessageMethods.DOC_FORMATTING -> TextEditImpl,
+		MessageMethods.DOC_RANGE_FORMATTING -> TextEditImpl,
+		MessageMethods.DOC_TYPE_FORMATTING -> TextEditImpl,
+		MessageMethods.DOC_RENAME -> WorkspaceEditImpl
 	}
 	
 	static val NOTIFICATION_PARAM_TYPES = #{
-		org.eclipse.lsp4j.services.transport.MessageMethods.SHOW_DIAGNOSTICS -> PublishDiagnosticsParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DID_CHANGE_CONF -> DidChangeConfigurationParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DID_OPEN_DOC -> DidOpenTextDocumentParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DID_CHANGE_DOC -> DidChangeTextDocumentParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DID_CLOSE_DOC -> DidCloseTextDocumentParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DID_CHANGE_FILES -> DidChangeWatchedFilesParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.DID_SAVE_DOC -> DidSaveTextDocumentParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.SHOW_MESSAGE -> MessageParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.LOG_MESSAGE -> MessageParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.SHOW_MESSAGE_REQUEST -> ShowMessageRequestParamsImpl,
-		org.eclipse.lsp4j.services.transport.MessageMethods.CANCEL -> CancelParamsImpl
+		MessageMethods.SHOW_DIAGNOSTICS -> PublishDiagnosticsParamsImpl,
+		MessageMethods.DID_CHANGE_CONF -> DidChangeConfigurationParamsImpl,
+		MessageMethods.DID_OPEN_DOC -> DidOpenTextDocumentParamsImpl,
+		MessageMethods.DID_CHANGE_DOC -> DidChangeTextDocumentParamsImpl,
+		MessageMethods.DID_CLOSE_DOC -> DidCloseTextDocumentParamsImpl,
+		MessageMethods.DID_CHANGE_FILES -> DidChangeWatchedFilesParamsImpl,
+		MessageMethods.DID_SAVE_DOC -> DidSaveTextDocumentParamsImpl,
+		MessageMethods.SHOW_MESSAGE -> MessageParamsImpl,
+		MessageMethods.LOG_MESSAGE -> MessageParamsImpl,
+		MessageMethods.SHOW_MESSAGE_REQUEST -> ShowMessageRequestParamsImpl,
+		MessageMethods.CANCEL -> CancelParamsImpl
 	}
 	
 	val jsonParser = new JsonParser
@@ -146,11 +147,6 @@ class MessageJsonHandler {
 	    	.registerTypeAdapterFactory(new CollectionTypeAdapterFactory)
             .registerTypeAdapterFactory(new EnumTypeAdapterFactory)
             .registerTypeAdapterFactory(new MarkedStringTypeAdapterFactory)
-	}
-	
-	@Deprecated
-	def void setResponseMethodResolver((String)=>String responseMethodResolver) {
-	    methodResolver = if (responseMethodResolver === null) null else [responseMethodResolver.apply(it)]
 	}
 	
 	def Message parseMessage(CharSequence input) {

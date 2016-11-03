@@ -9,6 +9,15 @@ package org.eclipse.lsp4j.services.transport.client
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import java.util.List
+import java.util.Map
+import java.util.concurrent.CancellationException
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.function.Consumer
+import java.util.function.Supplier
 import org.eclipse.lsp4j.CodeActionParams
 import org.eclipse.lsp4j.CodeLens
 import org.eclipse.lsp4j.CodeLensParams
@@ -52,16 +61,6 @@ import org.eclipse.lsp4j.services.WindowService
 import org.eclipse.lsp4j.services.WorkspaceService
 import org.eclipse.lsp4j.services.transport.AbstractLanguageEndpoint
 import org.eclipse.lsp4j.services.transport.InvalidMessageException
-import org.eclipse.lsp4j.services.transport.trace.DelegatingMessageTracer
-import java.util.List
-import java.util.Map
-import java.util.concurrent.CancellationException
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.atomic.AtomicInteger
-import java.util.function.Consumer
-import java.util.function.Supplier
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
@@ -193,18 +192,6 @@ class LanguageClientEndpoint extends AbstractLanguageEndpoint implements Languag
     
     override onTelemetryEvent(Consumer<Object> callback) {
         addCallback(TELEMETRY_EVENT, callback, Object)
-    }
-    
-    @Deprecated
-    def onError((String, Throwable)=>void callback) {
-        messageTracer = new DelegatingMessageTracer(messageTracer) {
-            
-            override onError(String message, Throwable throwable) {
-                callback.apply(message, throwable)
-                delegate?.onError(message, throwable)
-            }
-            
-        }
     }
     
     @FinalFieldsConstructor
