@@ -27,7 +27,7 @@ public enum MessageType {
 	/**
 	 * A log message.
 	 */
-	Log(1);
+	Log(4);
 	
 	private final int value;
 	
