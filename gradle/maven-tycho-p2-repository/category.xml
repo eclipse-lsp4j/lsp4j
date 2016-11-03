@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <bundle id="org.eclipse.lsp4j" version="0.4.0.qualifier">
+   <bundle id="org.eclipse.lsp4j" version="0.1.0.qualifier">
       <category name="lsapi"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.source" version="0.4.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.source" version="0.1.0.qualifier">
       <category name="lsapi"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.annotations" version="0.4.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.annotations" version="0.1.0.qualifier">
       <category name="lsapi"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.annotations.source" version="0.4.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.annotations.source" version="0.1.0.qualifier">
       <category name="lsapi"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.services" version="0.4.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.services" version="0.1.0.qualifier">
       <category name="lsapi"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.services.source" version="0.4.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.services.source" version="0.1.0.qualifier">
       <category name="lsapi"/>
    </bundle>
    <category-def name="lsapi" label="lsapi"/>

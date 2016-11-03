@@ -47,3 +47,7 @@ task createLocalP2Repo(type: JavaExec) {
 	]
 	args '-U', 'install'
 }
+
+task clean(type: Delete) {
+	delete 'gradle/maven-tycho-p2-repository/target'
+}

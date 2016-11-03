@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
-		<lsp4jVersion>0.4.0-SNAPSHOT</lsp4jVersion>
+		<lsp4jVersion>0.1.0-SNAPSHOT</lsp4jVersion>
 		<mavenVersion>3.2.5</mavenVersion>
 		<tycho-version>0.25.0</tycho-version>
 	</properties>
