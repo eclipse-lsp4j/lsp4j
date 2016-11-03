@@ -203,7 +203,7 @@ class LanguageServerEndpoint extends AbstractLanguageEndpoint {
                 case DID_SAVE_DOC:
                     delegate.textDocumentService.didSave(message.params as DidSaveTextDocumentParams)
                 case DID_CHANGE_CONF:
-                    delegate.workspaceService.didChangeConfiguraton(message.params as DidChangeConfigurationParams)
+                    delegate.workspaceService.didChangeConfiguration(message.params as DidChangeConfigurationParams)
                 case DID_CHANGE_FILES:
                     delegate.workspaceService.didChangeWatchedFiles(message.params as DidChangeWatchedFilesParams)
                 case CANCEL:

@@ -322,7 +322,7 @@ class LanguageClientEndpoint extends AbstractLanguageEndpoint implements Languag
             connection.getListPromise(WORKSPACE_SYMBOL, params, SymbolInformation)
         }
         
-        override didChangeConfiguraton(DidChangeConfigurationParams params) {
+        override didChangeConfiguration(DidChangeConfigurationParams params) {
             connection.sendNotification(DID_CHANGE_CONF, params)
         }
         

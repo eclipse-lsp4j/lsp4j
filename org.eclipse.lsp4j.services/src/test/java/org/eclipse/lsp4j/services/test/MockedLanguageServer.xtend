@@ -282,7 +282,7 @@ class MockedLanguageServer implements LanguageServer {
 			return server.promise
 		}
 		
-		override didChangeConfiguraton(DidChangeConfigurationParams params) {
+		override didChangeConfiguration(DidChangeConfigurationParams params) {
 			server.methodCalls.put('didChangeConfiguraton', params)
 		}
 		

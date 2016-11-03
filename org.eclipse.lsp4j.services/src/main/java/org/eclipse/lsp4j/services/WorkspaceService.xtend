@@ -25,7 +25,7 @@ interface WorkspaceService {
     /**
      * A notification sent from the client to the server to signal the change of configuration settings.
      */
-    def void didChangeConfiguraton(DidChangeConfigurationParams params)
+    def void didChangeConfiguration(DidChangeConfigurationParams params)
     
     /**
      * The watched files notification is sent from the client to the server when the client detects changes to
