@@ -7,23 +7,27 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import java.util.ArrayList
 import java.util.List
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Diagnostics notification are sent from the server to the client to signal results of validation runs.
  */
 @LanguageServerAPI
-interface PublishDiagnosticsParams {
+class PublishDiagnosticsParams {
 	
 	/**
 	 * The URI for which diagnostic information is reported.
 	 */
-	def String getUri()
+	@NonNull
+	String uri
 	
 	/**
 	 * An array of diagnostic information items.
 	 */
-	def List<? extends Diagnostic> getDiagnostics()
+	@NonNull
+	List<Diagnostic> diagnostics = new ArrayList
 	
 }

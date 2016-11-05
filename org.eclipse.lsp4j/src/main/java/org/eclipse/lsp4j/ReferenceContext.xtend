@@ -14,11 +14,11 @@ import org.eclipse.lsp4j.annotations.LanguageServerAPI
  * denoted by the given text document position.
  */
 @LanguageServerAPI
-interface ReferenceContext {
+class ReferenceContext {
 	
 	/**
 	 * Include the declaration of the current symbol.
 	 */
-	def boolean isIncludeDeclaration()
+	boolean includeDeclaration
 	
 }

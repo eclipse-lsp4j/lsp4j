@@ -8,7 +8,7 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * A code lens represents a command that should be shown along with source text, like the number of references,
@@ -18,23 +18,22 @@ import javax.annotation.Nullable
  * code lens and resolving should be done to two stages.
  */
 @LanguageServerAPI
-interface CodeLens {
+class CodeLens {
 	
 	/**
 	 * The range in which this code lens is valid. Should only span a single line.
 	 */
-	def Range getRange()
+	@NonNull
+	Range range
 	
 	/**
 	 * The command this code lens represents.
 	 */
-	@Nullable
-	def Command getCommand()
+	Command command
 	
 	/**
 	 * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
 	 */
-	@Nullable
-	def Object getData()
+	Object data
 	
 }

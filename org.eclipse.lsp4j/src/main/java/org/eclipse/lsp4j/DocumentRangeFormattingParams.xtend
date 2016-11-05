@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The document range formatting request is sent from the client to the server to format a given range in a document.
  */
 @LanguageServerAPI
-interface DocumentRangeFormattingParams extends DocumentFormattingParams {
+class DocumentRangeFormattingParams extends DocumentFormattingParams {
 	
 	/**
 	 * The range to format
 	 */
-	def Range getRange()
+	@NonNull
+	Range range
 	
 }

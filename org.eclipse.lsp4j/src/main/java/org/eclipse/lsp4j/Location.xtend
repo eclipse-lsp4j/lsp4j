@@ -8,15 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Represents a location inside a resource, such as a line inside a text file.
  */
 @LanguageServerAPI
-interface Location {
+class Location {
 	
-	def String getUri()
+	@NonNull
+	String uri
 	
-	def Range getRange()
+	@NonNull
+	Range range
 	
 }

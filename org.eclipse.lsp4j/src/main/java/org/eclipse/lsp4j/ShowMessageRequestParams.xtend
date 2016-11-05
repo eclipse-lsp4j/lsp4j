@@ -7,22 +7,20 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
 
 /**
  * The show message request is sent from a server to a client to ask the client to display a particular message in the
- * user interface. In addition to the show message notification the request allows to pass actions and to wait for an
+ * user class. In addition to the show message notification the request allows to pass actions and to wait for an
  * answer from the client.
  */
 @LanguageServerAPI
-interface ShowMessageRequestParams extends MessageParams {
+class ShowMessageRequestParams extends MessageParams {
 	
 	/**
 	 * The message action items to present.
 	 */
-	@Nullable
-	def List<? extends MessageActionItem> getActions()
+	List<MessageActionItem> actions
 	
 }

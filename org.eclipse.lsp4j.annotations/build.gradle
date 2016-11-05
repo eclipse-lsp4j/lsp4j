@@ -9,6 +9,7 @@
 description 'Xtend active annotations that generate Java code from Language Server interfaces'
 
 dependencies {
+	compile project(":org.eclipse.lsp4j.jsonrpc")
 	compile "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtext"
 	compile "com.google.code.findbugs:jsr305:$versions.jsr305"
 }

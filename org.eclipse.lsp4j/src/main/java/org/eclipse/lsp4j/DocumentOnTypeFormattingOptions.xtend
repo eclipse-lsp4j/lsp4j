@@ -7,25 +7,25 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Format document on type options
  */
 @LanguageServerAPI
-interface DocumentOnTypeFormattingOptions {
+class DocumentOnTypeFormattingOptions {
 	
 	/**
 	 * A character on which formatting should be triggered, like `}`.
 	 */
-	def String getFirstTriggerCharacter()
+	@NonNull
+	String firstTriggerCharacter
 	
 	/**
 	 * More trigger characters.
 	 */
-	@Nullable
-	def List<String> getMoreTriggerCharacter()
+	List<String> moreTriggerCharacter
 	
 }

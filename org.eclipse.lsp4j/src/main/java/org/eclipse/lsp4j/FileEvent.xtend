@@ -8,21 +8,24 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * An event describing a file change.
  */
 @LanguageServerAPI
-interface FileEvent {
+class FileEvent {
 	
 	/**
 	 * The file's uri.
 	 */
-	def String getUri()
+	@NonNull
+	String uri
 	
 	/**
 	 * The change type.
 	 */
-	def FileChangeType getType()
+	@NonNull
+	FileChangeType type
 	
 }

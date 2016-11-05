@@ -7,25 +7,25 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The result of a hover request.
  */
 @LanguageServerAPI
-interface Hover {
+class Hover {
 	
 	/**
-	 * The hover's content
+	 * The hover's content as markdown
 	 */
-	def List<? extends MarkedString> getContents()
+	@NonNull
+	List<String> contents = newArrayList()
 	
 	/**
 	 * An optional range
 	 */
-	@Nullable
-	def Range getRange()
+	Range range
 	
 }

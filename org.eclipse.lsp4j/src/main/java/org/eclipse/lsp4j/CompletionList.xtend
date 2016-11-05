@@ -9,23 +9,23 @@ package org.eclipse.lsp4j
 
 import java.util.List
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import org.eclipse.lsp4j.annotations.NoPrefix
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Represents a collection of completion items to be presented in the editor.
  */
 @LanguageServerAPI
-interface CompletionList {
+class CompletionList {
 	
 	/**
      * This list it not complete. Further typing should result in recomputing this list.
      */
-    @NoPrefix
-    def boolean isIncomplete()
+    boolean isIncomplete
     
     /**
      * The completion items.
      */
-    def List<? extends CompletionItem> getItems()
+    @NonNull
+    List<CompletionItem> items = newArrayList
     
 }

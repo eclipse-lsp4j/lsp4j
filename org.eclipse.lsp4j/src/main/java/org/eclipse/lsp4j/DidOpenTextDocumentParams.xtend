@@ -8,7 +8,7 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The document open notification is sent from the client to the server to signal newly opened text documents.
@@ -16,18 +16,18 @@ import javax.annotation.Nullable
  * the document's uri.
  */
 @LanguageServerAPI
-interface DidOpenTextDocumentParams extends TextDocumentIdentifier {
+class DidOpenTextDocumentParams extends TextDocumentIdentifier {
 	
 	/**
 	 * The document that was opened.
 	 */
-	def TextDocumentItem getTextDocument()
+	@NonNull
+	TextDocumentItem textDocument
 	
 	/**
 	 * Legacy property to support protocol version 1.0 requests.
 	 */
 	@Deprecated
-	@Nullable
-	def String getText()
+	String text
 	
 }

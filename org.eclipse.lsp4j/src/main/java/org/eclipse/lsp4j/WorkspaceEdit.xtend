@@ -10,16 +10,19 @@ package org.eclipse.lsp4j
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
 import java.util.Map
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import java.util.LinkedHashMap
 
 /**
  * A workspace edit represents changes to many resources managed in the workspace.
  */
 @LanguageServerAPI
-interface WorkspaceEdit {
+class WorkspaceEdit {
 	
 	/**
 	 * Holds changes to existing resources.
 	 */
-	def Map<String, ? extends List<? extends TextEdit>> getChanges()
+	@NonNull
+	Map<String, List<TextEdit>> changes = new LinkedHashMap
 	
 }

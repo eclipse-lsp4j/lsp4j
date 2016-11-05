@@ -7,19 +7,22 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import java.util.ArrayList
 import java.util.List
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The watched files notification is sent from the client to the server when the client detects changes
  * to file watched by the language client.
  */
 @LanguageServerAPI
-interface DidChangeWatchedFilesParams {
+class DidChangeWatchedFilesParams {
 	
 	/**
 	 * The actual file events.
 	 */
-	def List<? extends FileEvent> getChanges()
+	@NonNull
+	List<FileEvent> changes = new ArrayList
 	
 }

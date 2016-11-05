@@ -8,27 +8,31 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
 @LanguageServerAPI
-interface RenameParams {
+class RenameParams {
 	
 	/**
 	 * The document in which to find the symbol.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 	/**
 	 * The position at which this request was send.
 	 */
-	def Position getPosition()
+	@NonNull
+	Position position
 	
 	/**
 	 * The new name of the symbol. If the given name is not valid the request must return a
 	 * ResponseError with an appropriate message set.
 	 */
-	def String getNewName()
+	@NonNull
+	String newName
 	
 }

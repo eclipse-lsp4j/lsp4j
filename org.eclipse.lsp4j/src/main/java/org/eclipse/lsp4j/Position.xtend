@@ -13,16 +13,16 @@ import org.eclipse.lsp4j.annotations.LanguageServerAPI
  * Position in a text document expressed as zero-based line and character offset.
  */
 @LanguageServerAPI
-interface Position {
+class Position {
 	
 	/**
 	 * Line position in a document (zero-based).
 	 */
-	def int getLine()
+	int line
 	
 	/**
 	 * Character offset on a line in a document (zero-based).
 	 */
-	def int getCharacter()
+	int character
 	
 }

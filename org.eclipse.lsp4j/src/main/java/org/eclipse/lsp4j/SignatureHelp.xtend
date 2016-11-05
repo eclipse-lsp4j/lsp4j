@@ -7,32 +7,32 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import java.util.ArrayList
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Signature help represents the signature of something callable. There can be multiple signature but only one
  * active and only one active parameter.
  */
 @LanguageServerAPI
-interface SignatureHelp {
+class SignatureHelp {
 	
 	/**
 	 * One or more signatures.
 	 */
-	def List<? extends SignatureInformation> getSignatures()
+	@NonNull
+	List<SignatureInformation> signatures = new ArrayList
 	
 	/**
 	 * The active signature.
 	 */
-	@Nullable
-	def Integer getActiveSignature()
+	Integer activeSignature
 	
 	/**
 	 * The active parameter of the active signature.
 	 */
-	@Nullable
-	def Integer getActiveParameter()
+	Integer activeParameter
 	
 }

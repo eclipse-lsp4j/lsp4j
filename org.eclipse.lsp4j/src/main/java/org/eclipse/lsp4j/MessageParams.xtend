@@ -8,24 +8,27 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The show message notification is sent from a server to a client to ask the client to display a particular message
- * in the user interface.
+ * in the user class.
  * 
  * The log message notification is send from the server to the client to ask the client to log a particular message.
  */
 @LanguageServerAPI
-interface MessageParams {
+class MessageParams {
 	
 	/**
 	 * The message type.
 	 */
-	def MessageType getType()
+	@NonNull
+	MessageType type
 	
 	/**
 	 * The actual message.
 	 */
-	def String getMessage()
+	@NonNull
+	String message
 	
 }

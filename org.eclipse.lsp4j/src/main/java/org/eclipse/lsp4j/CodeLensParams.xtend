@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The code lens request is sent from the client to the server to compute code lenses for a given text document.
  */
 @LanguageServerAPI
-interface CodeLensParams {
+class CodeLensParams {
 	
 	/**
 	 * The document to request code lens for.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 }

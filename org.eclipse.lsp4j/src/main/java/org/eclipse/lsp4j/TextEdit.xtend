@@ -8,21 +8,24 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * A textual edit applicable to a text document.
  */
 @LanguageServerAPI
-interface TextEdit {
+class TextEdit {
 	
 	/**
 	 * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
 	 */
-	def Range getRange()
+	@NonNull
+	Range range
 	
 	/**
 	 * The string to be inserted. For delete operations use an empty string.
 	 */
-	def String getNewText()
+	@NonNull
+	String newText
 	
 }

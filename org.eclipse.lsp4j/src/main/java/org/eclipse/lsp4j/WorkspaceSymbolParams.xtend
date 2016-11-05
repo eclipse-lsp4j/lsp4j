@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The parameters of a Workspace Symbol Request.
  */
 @LanguageServerAPI
-interface WorkspaceSymbolParams {
+class WorkspaceSymbolParams {
 	
 	/**
 	 * A non-empty query string
 	 */
-	def String getQuery()
+	@NonNull
+	String query
 	
 }

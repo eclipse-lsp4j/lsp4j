@@ -7,30 +7,28 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.Map
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
 
 /**
  * Value-object describing what options formatting should use.
  */
 @LanguageServerAPI
-interface FormattingOptions {
+class FormattingOptions {
 	
 	/**
 	 * Size of a tab in spaces.
 	 */
-	def int getTabSize()
+	int tabSize
 	
 	/**
 	 * Prefer spaces over tabs.
 	 */
-	def boolean isInsertSpaces()
+	boolean insertSpaces
 	
 	/**
 	 * Signature for further properties.
 	 */
-	@Nullable
-	def Map<String, String> getProperties()
+	Map<String, String> properties
 	
 }

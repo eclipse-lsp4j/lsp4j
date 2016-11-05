@@ -7,32 +7,31 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Represents the signature of something callable. A signature can have a label, like a function-name, a doc-comment, and
  * a set of parameters.
  */
 @LanguageServerAPI
-interface SignatureInformation {
+class SignatureInformation {
 	
 	/**
 	 * The label of this signature. Will be shown in the UI.
 	 */
-	def String getLabel()
+	@NonNull
+	String label
 	
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
-	@Nullable
-	def String getDocumentation()
+	String documentation
 	
 	/**
 	 * The parameters of this signature.
 	 */
-	@Nullable
-	def List<? extends ParameterInformation> getParameters()
+	List<ParameterInformation> parameters
 	
 }

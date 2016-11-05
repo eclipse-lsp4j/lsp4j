@@ -8,31 +8,35 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * An item to transfer a text document from the client to the server.
  */
 @LanguageServerAPI
-interface TextDocumentItem {
+class TextDocumentItem {
 	
 	/**
 	 * The text document's uri.
 	 */
-	def String getUri()
+	@NonNull
+	String uri
 	
 	/**
 	 * The text document's language identifier
 	 */
-	def String getLanguageId()
+	@NonNull
+	String languageId
 	
 	/**
 	 * The version number of this document (it will strictly increase after each change, including undo/redo).
 	 */
-	def int getVersion()
+	int version
 	
 	/**
 	 * The content of the opened  text document.
 	 */
-	def String getText()
+	@NonNull
+	String text
 	
 }

@@ -8,33 +8,35 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
- * Represents information about programming constructs like variables, classes, interfaces etc.
+ * Represents information about programming constructs like variables, classes, classs etc.
  */
 @LanguageServerAPI
-interface SymbolInformation {
+class SymbolInformation {
 	
 	/**
 	 * The name of this symbol.
 	 */
-	def String getName()
+	@NonNull
+	String name
 	
 	/**
 	 * The kind of this symbol.
 	 */
-	def SymbolKind getKind()
+	@NonNull
+	SymbolKind kind
 	
 	/**
 	 * The location of this symbol.
 	 */
-	def Location getLocation()
+	@NonNull
+	Location location
 	
 	/**
 	 * The name of the symbol containing this symbol.
 	 */
-	@Nullable
-	def String getContainerName()
+	String containerName
 	
 }

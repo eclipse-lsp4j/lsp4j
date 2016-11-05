@@ -8,41 +8,40 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Represents a diagnostic, such as a compiler error or warning. Diagnostic objects are only valid in the scope of a resource.
  */
 @LanguageServerAPI
-interface Diagnostic {
+class Diagnostic {
 	
 	/**
 	 * The range at which the message applies
 	 */
-	def Range getRange()
+	@NonNull
+	Range range
 	
 	/**
 	 * The diagnostic's severity. Can be omitted. If omitted it is up to the client to interpret diagnostics as error,
 	 * warning, info or hint.
 	 */
-	@Nullable
-	def DiagnosticSeverity getSeverity()
+	DiagnosticSeverity severity
 	
 	/**
 	 * The diagnostic's code. Can be omitted.
 	 */
-	@Nullable
-	def String getCode()
+	String code
 	
 	/**
 	 * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
 	 */
-	@Nullable
-	def String getSource()
+	String source
 	
 	/**
 	 * The diagnostic's message.
 	 */
-	def String getMessage()
+	@NonNull
+	String message
 	
 }

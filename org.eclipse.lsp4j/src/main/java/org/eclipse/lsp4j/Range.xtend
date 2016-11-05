@@ -8,21 +8,24 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * A range in a text document expressed as (zero-based) start and end positions.
  */
 @LanguageServerAPI
-interface Range {
+class Range {
 	
 	/**
 	 * The range's start position
 	 */
-	def Position getStart()
+	@NonNull
+	Position start
 	
 	/**
 	 * The range's end position
 	 */
-	def Position getEnd()
+	@NonNull
+	Position end
 	
 }

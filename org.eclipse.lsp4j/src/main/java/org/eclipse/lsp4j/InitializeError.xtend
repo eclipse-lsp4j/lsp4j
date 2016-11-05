@@ -10,12 +10,12 @@ package org.eclipse.lsp4j
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
 
 @LanguageServerAPI
-interface InitializeError {
+class InitializeError {
 	
 	/**
 	 * Indicates whether the client should retry to send the initialize request after showing the message provided
      * in the ResponseError.
 	 */
-	def boolean isRetry()
+	boolean retry
 	
 }

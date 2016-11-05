@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Text documents are identified using an URI. On the protocol level URI's are passed as strings.
  */
 @LanguageServerAPI
-interface TextDocumentIdentifier {
+class TextDocumentIdentifier {
 	
 	/**
 	 * The text document's uri.
 	 */
-	def String getUri()
+	@NonNull
+	String uri
 	
 }

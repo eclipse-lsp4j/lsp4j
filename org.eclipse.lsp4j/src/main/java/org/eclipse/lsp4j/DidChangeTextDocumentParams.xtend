@@ -7,32 +7,34 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import java.util.ArrayList
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The document change notification is sent from the client to the server to signal changes to a text document.
  */
 @LanguageServerAPI
-interface DidChangeTextDocumentParams {
+class DidChangeTextDocumentParams {
 	
 	/**
 	 * The document that did change. The version number points to the version after all provided content changes have
 	 * been applied.
 	 */
-	def VersionedTextDocumentIdentifier getTextDocument()
+	@NonNull
+	VersionedTextDocumentIdentifier textDocument
 	
 	/**
 	 * Legacy property to support protocol version 1.0 requests.
 	 */
 	@Deprecated
-	@Nullable
-	def String getUri()
+	String uri
 	
 	/**
 	 * The actual content changes.
 	 */
-	def List<? extends TextDocumentContentChangeEvent> getContentChanges()
+	@NonNull
+	List<TextDocumentContentChangeEvent> contentChanges = new ArrayList
 	
 }

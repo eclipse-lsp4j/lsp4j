@@ -7,26 +7,23 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
 
 /**
  * Completion options.
  */
 @LanguageServerAPI
-interface CompletionOptions {
+class CompletionOptions {
 	
 	/**
 	 * The server provides support to resolve additional information for a completion item.
 	 */
-	@Nullable
-	def Boolean getResolveProvider()
+	Boolean resolveProvider
 	
 	/**
 	 * The characters that trigger completion automatically.
 	 */
-	@Nullable
-	def List<String> getTriggerCharacters()
+	List<String> triggerCharacters
 	
 }

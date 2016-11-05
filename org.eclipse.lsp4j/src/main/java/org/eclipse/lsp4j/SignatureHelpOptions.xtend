@@ -7,20 +7,18 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
 
 /**
  * Signature help options.
  */
 @LanguageServerAPI
-interface SignatureHelpOptions {
+class SignatureHelpOptions {
 	
 	/**
 	 * The characters that trigger signature help automatically.
 	 */
-	@Nullable
-	def List<String> getTriggerCharacters()
+	List<String> triggerCharacters
 	
 }

@@ -8,43 +8,37 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
 
 /**
  * The initialize request is sent as the first request from the client to the server.
  */
 @LanguageServerAPI
-interface InitializeParams {
+class InitializeParams {
 	
 	/**
 	 * The process Id of the parent process that started the server.
 	 */
-	@Nullable
-	def Integer getProcessId()
+	Integer processId
 	
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
 	 */
-	@Nullable
-	def String getRootPath()
+	String rootPath
 	
 	/**
 	 * User provided initialization options.
 	 */
-	@Nullable
-	def Object getInitializationOptions()
+	Object initializationOptions
 	
 	/**
 	 * The capabilities provided by the client (editor)
 	 */
-	@Nullable
-	def ClientCapabilities getCapabilities()
+	ClientCapabilities capabilities
 	
 	/**
 	 * An optional extension to the protocol.
 	 * To tell the server what client (editor) is talking to it.
 	 */
-	@Nullable
-	def String getClientName()
+	String clientName
 
 }

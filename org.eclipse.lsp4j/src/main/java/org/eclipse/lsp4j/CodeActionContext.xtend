@@ -9,16 +9,18 @@ package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Contains additional diagnostic information about the context in which a code action is run.
  */
 @LanguageServerAPI
-interface CodeActionContext {
+class CodeActionContext {
 	
 	/**
 	 * An array of diagnostics.
 	 */
-	def List<? extends Diagnostic> getDiagnostics()
+	@NonNull
+	List<Diagnostic> diagnostics = newArrayList
 	
 }

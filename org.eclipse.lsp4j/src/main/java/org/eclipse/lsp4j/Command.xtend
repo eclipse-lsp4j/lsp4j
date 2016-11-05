@@ -7,31 +7,32 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
-import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import java.util.List
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Represents a reference to a command. Provides a title which will be used to represent a command in the UI and,
  * optionally, an array of arguments which will be passed to the command handler function when invoked.
  */
 @LanguageServerAPI
-interface Command {
+class Command {
 	
 	/**
 	 * Title of the command, like `save`.
 	 */
-	def String getTitle()
+	@NonNull
+	String title
 	
 	/**
 	 * The identifier of the actual command handler.
 	 */
-	def String getCommand()
+	@NonNull
+	String command
 	
 	/**
 	 * Arguments that the command handler should be invoked with.
 	 */
-	@Nullable
-	def List<Object> getArguments()
+	List<Object> arguments
 	
 }

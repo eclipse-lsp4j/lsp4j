@@ -8,13 +8,15 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 @LanguageServerAPI
-interface InitializeResult {
+class InitializeResult {
 	
 	/**
 	 * The capabilities the language server provides.
 	 */
-	def ServerCapabilities getCapabilities()
+	@NonNull
+	ServerCapabilities capabilities
 		
 }

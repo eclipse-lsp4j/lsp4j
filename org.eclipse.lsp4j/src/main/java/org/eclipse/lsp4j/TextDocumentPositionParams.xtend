@@ -8,29 +8,30 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * A parameter literal used in requests to pass a text document and a position inside that document.
  */
 @LanguageServerAPI
-interface TextDocumentPositionParams {
+class TextDocumentPositionParams {
 	
 	/**
 	 * The text document.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 	/**
 	 * Legacy property to support protocol version 1.0 requests.
 	 */
 	@Deprecated
-	@Nullable
-	def String getUri()
+	String uri
 	
 	/**
 	 * The position inside the text document.
 	 */
-	def Position getPosition()
+	@NonNull
+	Position position
 	
 }

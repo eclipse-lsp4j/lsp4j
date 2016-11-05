@@ -10,5 +10,5 @@ package org.eclipse.lsp4j
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
 
 @LanguageServerAPI
-interface ClientCapabilities {
+class ClientCapabilities {
 }

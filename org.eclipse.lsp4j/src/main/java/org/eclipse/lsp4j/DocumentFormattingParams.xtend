@@ -8,21 +8,24 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The document formatting request is sent from the server to the client to format a whole document.
  */
 @LanguageServerAPI
-interface DocumentFormattingParams {
+class DocumentFormattingParams {
 	
 	/**
 	 * The document to format.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 	/**
 	 * The format options
 	 */
-	def FormattingOptions getOptions()
+	@NonNull
+	FormattingOptions options
 	
 }

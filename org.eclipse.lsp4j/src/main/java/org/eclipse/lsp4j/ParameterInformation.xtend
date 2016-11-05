@@ -8,23 +8,23 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Represents a parameter of a callable-signature. A parameter can have a label and a doc-comment.
  */
 @LanguageServerAPI
-interface ParameterInformation {
+class ParameterInformation {
 	
 	/**
 	 * The label of this signature. Will be shown in the UI.
 	 */
-	def String getLabel()
+	@NonNull
+	String label
 	
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
-	@Nullable
-	def String getDocumentation()
+	String documentation
 	
 }

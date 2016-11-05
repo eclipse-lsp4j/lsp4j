@@ -8,30 +8,29 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * An event describing a change to a text document. If range and rangeLength are omitted the new text is considered
  * to be the full content of the document.
  */
 @LanguageServerAPI
-interface TextDocumentContentChangeEvent {
+class TextDocumentContentChangeEvent {
 	
 	/**
 	 * The range of the document that changed.
 	 */
-	@Nullable
-	def Range getRange()
+	Range range
 	
 	/**
 	 * The length of the range that got replaced.
 	 */
-	@Nullable
-	def Integer getRangeLength()
+	Integer rangeLength
 	
 	/**
 	 * The new text of the document.
 	 */
-	def String getText()
+	@NonNull
+	String text
 	
 }

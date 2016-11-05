@@ -8,13 +8,15 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * A notification sent from the client to the server to signal the change of configuration settings.
  */
 @LanguageServerAPI
-interface DidChangeConfigurationParams {
+class DidChangeConfigurationParams {
 	
-	def Object getSettings()
+	@NonNull
+	Object settings
 	
 }

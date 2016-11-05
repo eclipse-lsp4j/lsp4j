@@ -8,18 +8,20 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The show message request is sent from a server to a client to ask the client to display a particular message in the
- * user interface. In addition to the show message notification the request allows to pass actions and to wait for an
+ * user class. In addition to the show message notification the request allows to pass actions and to wait for an
  * answer from the client.
  */
 @LanguageServerAPI
-interface MessageActionItem {
+class MessageActionItem {
 	
 	/**
 	 * A short title like 'Retry', 'Open Log' etc.
 	 */
-	def String getTitle()
+	@NonNull
+	String title
 	
 }

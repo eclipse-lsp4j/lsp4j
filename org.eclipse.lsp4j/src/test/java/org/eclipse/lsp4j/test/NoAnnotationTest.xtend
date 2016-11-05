@@ -7,7 +7,7 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.test
 
-import org.eclipse.lsp4j.Message
+import org.eclipse.lsp4j.CodeLens
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
 import org.junit.Assert
 import org.junit.Test
@@ -15,7 +15,7 @@ import org.junit.Test
 class NoAnnotationTest {
     
     @Test def void testNoAnnotation() {
-        Assert.assertFalse(Message.annotations.exists[annotationType == LanguageServerAPI])
+        Assert.assertFalse(CodeLens.annotations.exists[annotationType == LanguageServerAPI])
     }
     
 }

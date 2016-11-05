@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The document symbol request is sent from the client to the server to list all symbols found in a given text document.
  */
 @LanguageServerAPI
-interface DocumentSymbolParams {
+class DocumentSymbolParams {
 	
 	/**
 	 * The text document.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 }

@@ -13,11 +13,11 @@ import org.eclipse.lsp4j.annotations.LanguageServerAPI
  * An identifier to denote a specific version of a text document.
  */
 @LanguageServerAPI
-interface VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
+class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 	
 	/**
 	 * The version number of this document.
 	 */
-	def int getVersion()
+	int version
 	
 }

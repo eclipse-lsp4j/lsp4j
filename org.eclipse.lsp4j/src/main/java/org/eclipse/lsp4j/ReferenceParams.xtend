@@ -8,14 +8,16 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The references request is sent from the client to the server to resolve project-wide references for the symbol
  * denoted by the given text document position.
  */
 @LanguageServerAPI
-interface ReferenceParams extends TextDocumentPositionParams {
+class ReferenceParams extends TextDocumentPositionParams {
 	
-	def ReferenceContext getContext()
+	@NonNull
+	ReferenceContext context
 	
 }

@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The document save notification is sent from the client to the server when the document for saved in the clinet.
  */
 @LanguageServerAPI
-interface DidSaveTextDocumentParams {
+class DidSaveTextDocumentParams {
 	
 	/**
 	 * The document that was closed.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 }

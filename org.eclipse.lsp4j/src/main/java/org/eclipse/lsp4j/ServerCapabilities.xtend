@@ -8,99 +8,83 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
 
 @LanguageServerAPI
-interface ServerCapabilities {
+class ServerCapabilities {
 	
 	/**
 	 * Defines how text documents are synced.
 	 */
-	@Nullable
-	def TextDocumentSyncKind getTextDocumentSync()
+	TextDocumentSyncKind textDocumentSync
 	
 	/**
 	 * The server provides hover support.
 	 */
-	@Nullable
-	def Boolean isHoverProvider()
+	Boolean hoverProvider
 	
 	/**
 	 * The server provides completion support.
 	 */
-	@Nullable
-	def CompletionOptions getCompletionProvider()
+	CompletionOptions completionProvider
 	
 	/**
 	 * The server provides signature help support.
 	 */
-	@Nullable
-	def SignatureHelpOptions getSignatureHelpProvider()
+	SignatureHelpOptions signatureHelpProvider
 	
 	/**
 	 * The server provides goto definition support.
 	 */
-	@Nullable
-	def Boolean isDefinitionProvider()
+	Boolean definitionProvider
 	
 	/**
 	 * The server provides find references support.
 	 */
-	@Nullable
-	def Boolean isReferencesProvider()
+	Boolean referencesProvider
 	
 	/**
 	 * The server provides document highlight support.
 	 */
-	@Nullable
-	def Boolean isDocumentHighlightProvider()
+	Boolean documentHighlightProvider
 	
 	/**
 	 * The server provides document symbol support.
 	 */
-	@Nullable
-	def Boolean isDocumentSymbolProvider()
+	Boolean documentSymbolProvider
 	
 	/**
 	 * The server provides workspace symbol support.
 	 */
-	@Nullable
-	def Boolean isWorkspaceSymbolProvider()
+	Boolean workspaceSymbolProvider
 	
 	/**
 	 * The server provides code actions.
 	 */
-	@Nullable
-	def Boolean isCodeActionProvider()
+	Boolean codeActionProvider
 	
 	/**
 	 * The server provides code lens.
 	 */
-	@Nullable
-	def CodeLensOptions getCodeLensProvider()
+	CodeLensOptions codeLensProvider
 	
 	/**
 	 * The server provides document formatting.
 	 */
-	@Nullable
-	def Boolean isDocumentFormattingProvider()
+	Boolean documentFormattingProvider
 	
 	/**
 	 * The server provides document range formatting.
 	 */
-	@Nullable
-	def Boolean isDocumentRangeFormattingProvider()
+	Boolean documentRangeFormattingProvider
 	
 	/**
 	 * The server provides document formatting on typing.
 	 */
-	@Nullable
-	def DocumentOnTypeFormattingOptions getDocumentOnTypeFormattingProvider()
+	DocumentOnTypeFormattingOptions documentOnTypeFormattingProvider
 	
 	/**
 	 * The server provides rename support.
 	 */
-	@Nullable
-	def Boolean isRenameProvider()
+	Boolean renameProvider
 	
 }

@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * The code action request is sent from the client to the server to compute commands for a given text document and range.
@@ -15,21 +16,24 @@ import org.eclipse.lsp4j.annotations.LanguageServerAPI
  * associated with a marker.
  */
 @LanguageServerAPI
-interface CodeActionParams {
+class CodeActionParams {
 	
 	/**
 	 * The document in which the command was invoked.
 	 */
-	def TextDocumentIdentifier getTextDocument()
+	@NonNull
+	TextDocumentIdentifier textDocument
 	
 	/**
 	 * The range for which the command was invoked.
 	 */
-	def Range getRange()
+	@NonNull
+	Range range
 	
 	/**
 	 * Context carrying additional information.
 	 */
-	def CodeActionContext getContext()
+	@NonNull
+	CodeActionContext context
 	
 }

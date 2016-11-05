@@ -8,24 +8,24 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * A document highlight is a range inside a text document which deserves special attention. Usually a document highlight
  * is visualized by changing the background color of its range.
  */
 @LanguageServerAPI
-interface DocumentHighlight {
+class DocumentHighlight {
 	
 	/**
 	 * The range this highlight applies to.
 	 */
-	def Range getRange()
+	@NonNull
+	Range range
 	
 	/**
 	 * The highlight kind, default is {@link DocumentHighlightKind#Text}.
 	 */
-	@Nullable
-	def DocumentHighlightKind getKind()
+	DocumentHighlightKind kind
 	
 }

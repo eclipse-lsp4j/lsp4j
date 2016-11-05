@@ -8,18 +8,16 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
-import javax.annotation.Nullable
 
 /**
  * Code Lens options.
  */
 @LanguageServerAPI
-interface CodeLensOptions {
+class CodeLensOptions {
 	
 	/**
 	 * Code lens has a resolve provider as well.
 	 */
-	@Nullable
-	def boolean getResolveProvider()
+	boolean ResolveProvider
 	
 }

@@ -8,16 +8,18 @@
 package org.eclipse.lsp4j
 
 import org.eclipse.lsp4j.annotations.LanguageServerAPI
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * To cancel a request a notification message with the following properties is sent:
  */
 @LanguageServerAPI
-interface CancelParams {
+class CancelParams {
 	
 	/**
 	 * The request id to cancel.
 	 */
-	def String getId()
+	@NonNull
+	String id
 	
 }
