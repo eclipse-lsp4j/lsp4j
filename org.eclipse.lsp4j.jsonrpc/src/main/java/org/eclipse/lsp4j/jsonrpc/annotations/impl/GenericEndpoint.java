@@ -2,6 +2,7 @@ package org.eclipse.lsp4j.jsonrpc.annotations.impl;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -14,16 +15,17 @@ public class GenericEndpoint implements Endpoint {
 
 	public GenericEndpoint(Object delegate) {
 		this.delegate = delegate;
-		recursiveFindRpcMethods(delegate);
+		recursiveFindRpcMethods(delegate, new HashSet<>(), new HashSet<>());
 	}
 	
-	protected void recursiveFindRpcMethods(Object current) {
-		AnnotationUtil.findRpcMethods(current.getClass(), new HashSet<Class<?>>(), (methodInfo) -> {
+	protected void recursiveFindRpcMethods(Object current, Set<Class<?>> visited, Set<Class<?>> visitedForDelegate) {
+		AnnotationUtil.findRpcMethods(current.getClass(), visited, (methodInfo) -> {
 			try {
 				@SuppressWarnings("unchecked")
 				Function<Object, CompletableFuture<Object>> handler = (arg) -> {
 					try {
-						return (CompletableFuture<Object>) methodInfo.method.invoke(current, arg);
+						Object[] argument = arg == null ? new Object[0] : new Object[] { arg };
+						return (CompletableFuture<Object>) methodInfo.method.invoke(current, argument);
 					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
@@ -35,9 +37,9 @@ public class GenericEndpoint implements Endpoint {
 				throw new RuntimeException(e1);
 			}
 		});
-		AnnotationUtil.findDelegateSegments(current.getClass(), new HashSet<Class<?>>(), (method) -> {
+		AnnotationUtil.findDelegateSegments(current.getClass(), visitedForDelegate, (method) -> {
 			try {
-				recursiveFindRpcMethods(method.invoke(current));
+				recursiveFindRpcMethods(method.invoke(current), visited, visitedForDelegate);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

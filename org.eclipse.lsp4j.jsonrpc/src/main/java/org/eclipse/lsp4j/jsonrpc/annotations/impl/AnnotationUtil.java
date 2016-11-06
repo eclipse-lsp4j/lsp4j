@@ -2,7 +2,6 @@ package org.eclipse.lsp4j.jsonrpc.annotations.impl;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -15,7 +14,7 @@ import com.google.common.base.Strings;
 
 public class AnnotationUtil {
 	
-	public static void findDelegateSegments(Class<?> clazz, HashSet<Class<?>> visited, Consumer<Method> acceptor) {
+	public static void findDelegateSegments(Class<?> clazz, Set<Class<?>> visited, Consumer<Method> acceptor) {
 		if (clazz == null || !visited.add(clazz))
 			return;
 		findDelegateSegments(clazz.getSuperclass(), visited, acceptor);
