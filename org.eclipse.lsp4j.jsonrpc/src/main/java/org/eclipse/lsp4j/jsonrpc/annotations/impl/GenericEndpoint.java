@@ -7,9 +7,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
+import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
 
+/**
+ * An endpoint that reflectively delegates to {@link JsonNotification} and
+ * {@link JsonRequest} methods of a given delegate object.
+ */
 public class GenericEndpoint implements Endpoint {
-	
+
 	private LinkedHashMap<String, Function<Object, CompletableFuture<Object>>> methodHandlers = new LinkedHashMap<>();
 	private Object delegate;
 
@@ -17,7 +23,7 @@ public class GenericEndpoint implements Endpoint {
 		this.delegate = delegate;
 		recursiveFindRpcMethods(delegate, new HashSet<>(), new HashSet<>());
 	}
-	
+
 	protected void recursiveFindRpcMethods(Object current, Set<Class<?>> visited, Set<Class<?>> visitedForDelegate) {
 		AnnotationUtil.findRpcMethods(current.getClass(), visited, (methodInfo) -> {
 			try {
@@ -55,7 +61,7 @@ public class GenericEndpoint implements Endpoint {
 		if (delegate instanceof Endpoint) {
 			return ((Endpoint) delegate).request(method, parameter);
 		}
-		throw new UnsupportedOperationException("request : "+method);
+		throw new UnsupportedOperationException("request : " + method);
 	}
 
 	@Override
@@ -69,7 +75,7 @@ public class GenericEndpoint implements Endpoint {
 			((Endpoint) delegate).notify(method, parameter);
 			return;
 		}
-		throw new UnsupportedOperationException("notification : "+method);
+		throw new UnsupportedOperationException("notification : " + method);
 	}
-	
+
 }

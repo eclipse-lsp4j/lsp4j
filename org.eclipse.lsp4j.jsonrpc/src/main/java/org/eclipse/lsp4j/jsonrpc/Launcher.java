@@ -94,8 +94,14 @@ public interface Launcher<T> {
 	
 	public static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		Map<String, RpcMethod> supportedMethods = new LinkedHashMap<String, RpcMethod>();
-		supportedMethods.putAll(Endpoints.getSupportedMethods(localService.getClass()));
 		supportedMethods.putAll(Endpoints.getSupportedMethods(remoteInterface));
+		
+		if (localService instanceof RpcMethodProvider) {
+			RpcMethodProvider rpcMethodProvider = (RpcMethodProvider) localService;
+			supportedMethods.putAll(rpcMethodProvider.supportedMethods());
+		} else {
+			supportedMethods.putAll(Endpoints.getSupportedMethods(localService.getClass()));
+		}
 		
 		MessageJsonHandler jsonHandler = new MessageJsonHandler(supportedMethods);
 		MessageConsumer outGoingMessageStream = new StreamMessageConsumer(out, jsonHandler);

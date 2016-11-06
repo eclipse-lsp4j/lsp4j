@@ -2,6 +2,9 @@ package org.eclipse.lsp4j.jsonrpc;
 
 import java.lang.reflect.Type;
 
+/**
+ * A description of an jsonrpc method 
+ */
 public class RpcMethod {
 	private final String methodName;
 	private final Type parameterType;

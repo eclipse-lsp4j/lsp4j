@@ -7,9 +7,16 @@ import java.util.LinkedHashMap;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints;
+import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.annotations.impl.AnnotationUtil.DelegateInfo;
 import org.eclipse.lsp4j.jsonrpc.annotations.impl.AnnotationUtil.MethodInfo;
 
+/**
+ * A Proxy that wraps an {@link Endpoint} in a service interface, i.e. an
+ * interface containing {@link JsonNotification} and {@link JsonRequest}
+ * methods.
+ */
 public class EndpointProxy implements InvocationHandler {
 
 	private Endpoint delegate;
@@ -17,8 +24,10 @@ public class EndpointProxy implements InvocationHandler {
 	private LinkedHashMap<String, DelegateInfo> delegatedSegments;
 
 	public EndpointProxy(Endpoint delegate, Class<?> interf) {
-		if (delegate == null) throw new NullPointerException("deleagte");
-		if (interf == null) throw new NullPointerException("interf");
+		if (delegate == null)
+			throw new NullPointerException("deleagte");
+		if (interf == null)
+			throw new NullPointerException("interf");
 		this.delegate = delegate;
 		methodInfos = new LinkedHashMap<>();
 		AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
@@ -34,7 +43,8 @@ public class EndpointProxy implements InvocationHandler {
 			info.method = method;
 			if (delegatedSegments.put(method.getName(), info) != null) {
 				throw new IllegalStateException("method overload not allowed : " + method);
-			};
+			}
+			;
 		});
 	}
 
