@@ -20,7 +20,7 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
-import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints;
+import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.launch.LSPLauncher;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageServer;
@@ -133,11 +133,11 @@ public class LauncherTest {
 		inClient.connect(outServer);
 		outClient.connect(inServer);
 		server = new AssertingEndpoint();
-		serverLauncher = LSPLauncher.createServerLauncher(Endpoints.toServiceObject(server, LanguageServer.class), inServer, outServer);
+		serverLauncher = LSPLauncher.createServerLauncher(ServiceEndpoints.toServiceObject(server, LanguageServer.class), inServer, outServer);
 		serverListening = serverLauncher.startListening();
 		
 		client = new AssertingEndpoint();
-		clientLauncher = LSPLauncher.createClientLauncher(Endpoints.toServiceObject(client, LanguageClient.class), inClient, outClient);
+		clientLauncher = LSPLauncher.createClientLauncher(ServiceEndpoints.toServiceObject(client, LanguageClient.class), inClient, outClient);
 		clientListening = clientLauncher.startListening();
 	}
 	

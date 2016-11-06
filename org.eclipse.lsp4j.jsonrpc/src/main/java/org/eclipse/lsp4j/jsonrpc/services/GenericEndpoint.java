@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.jsonrpc.annotations.impl;
+package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -7,8 +7,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
 
 /**
  * An endpoint that reflectively delegates to {@link JsonNotification} and

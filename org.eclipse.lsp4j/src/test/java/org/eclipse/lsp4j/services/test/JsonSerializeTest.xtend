@@ -26,7 +26,6 @@ import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
 import org.eclipse.lsp4j.WorkspaceEdit
-import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
@@ -34,6 +33,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage
+import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints
 import org.eclipse.lsp4j.services.LanguageServer
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +48,7 @@ class JsonSerializeTest {
 	
 	@Before
 	def void setup() {
-		val methods = Endpoints.getSupportedMethods(LanguageServer)
+		val methods = ServiceEndpoints.getSupportedMethods(LanguageServer)
 		val gsonBuilder = MessageJsonHandler.defaultGsonBuilder.setPrettyPrinting
 		jsonHandler = new MessageJsonHandler(gsonBuilder.create(), methods)
 	}

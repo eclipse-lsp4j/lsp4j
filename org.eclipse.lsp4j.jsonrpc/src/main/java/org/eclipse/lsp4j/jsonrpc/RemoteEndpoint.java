@@ -18,7 +18,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 /**
  * An {@link Endpoint} that can be connected to a {@link MessageConsumer} and {@link MessageProducer}.
- * It handles the translation from {@link Message} objects to calls on {@link Endpoint}
+ * It handles the translation from {@link Message} objects to calls on {@link Endpoint}.
  */
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
 

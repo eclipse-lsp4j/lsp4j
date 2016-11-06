@@ -5,8 +5,8 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 public interface LanguageClient {
 	/**

@@ -34,9 +34,9 @@ import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WorkspaceEdit;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonSegment;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
+import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
 @JsonSegment("textDocument")
 public interface TextDocumentService {

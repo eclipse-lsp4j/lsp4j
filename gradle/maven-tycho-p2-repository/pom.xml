@@ -57,12 +57,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
-			<artifactId>org.eclipse.lsp4j.services</artifactId>
+			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
 			<version>${lsp4jVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
-			<artifactId>org.eclipse.lsp4j.services</artifactId>
+			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
 			<version>${lsp4jVersion}</version>
 			<classifier>sources</classifier>
 		</dependency>

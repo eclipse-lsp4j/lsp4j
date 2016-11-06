@@ -1,14 +1,9 @@
-package org.eclipse.lsp4j.jsonrpc.annotations.impl;
+package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.function.Consumer;
-
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonDelegate;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonSegment;
 
 import com.google.common.base.Strings;
 

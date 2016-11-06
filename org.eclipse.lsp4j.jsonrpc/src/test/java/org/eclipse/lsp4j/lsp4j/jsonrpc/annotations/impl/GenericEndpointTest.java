@@ -1,9 +1,9 @@
 package org.eclipse.lsp4j.lsp4j.jsonrpc.annotations.impl;
 
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonDelegate;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonSegment;
-import org.eclipse.lsp4j.jsonrpc.annotations.impl.GenericEndpoint;
+import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
+import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 import org.junit.Assert;
 import org.junit.Test;
 

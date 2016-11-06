@@ -29,7 +29,7 @@ oomphIde {
 	addProjectFolder('../')
 	addProjectFolder('../org.eclipse.lsp4j')
 	addProjectFolder('../org.eclipse.lsp4j.annotations')
-	addProjectFolder('../org.eclipse.lsp4j.services')
+	addProjectFolder('../org.eclipse.lsp4j.jsonrpc')
 
 	// setup theming
 	style {

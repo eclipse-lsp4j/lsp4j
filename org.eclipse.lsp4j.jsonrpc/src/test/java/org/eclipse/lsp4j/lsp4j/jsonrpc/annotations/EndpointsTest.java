@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
-import org.eclipse.lsp4j.jsonrpc.RpcMethod;
-import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonSegment;
+import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
+import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
+import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 import org.junit.Test;
 
 public class EndpointsTest {
@@ -42,7 +42,7 @@ public class EndpointsTest {
 				assertEquals("notificationParam", parameter.toString());
 			}
 		};
-		Foo foo = Endpoints.toServiceObject(endpoint, Foo.class);
+		Foo foo = ServiceEndpoints.toServiceObject(endpoint, Foo.class);
 		foo.myNotification("notificationParam");
 		assertEquals("result", foo.doStuff("param").get());
 	}
@@ -63,15 +63,15 @@ public class EndpointsTest {
 				assertEquals("notificationParam", parameter.toString());
 			}
 		};
-		Foo intermediateFoo = Endpoints.toServiceObject(endpoint, Foo.class);
-		Endpoint secondEndpoint = Endpoints.toEndpoint(intermediateFoo); 
-		Foo foo = Endpoints.toServiceObject(secondEndpoint, Foo.class);
+		Foo intermediateFoo = ServiceEndpoints.toServiceObject(endpoint, Foo.class);
+		Endpoint secondEndpoint = ServiceEndpoints.toEndpoint(intermediateFoo); 
+		Foo foo = ServiceEndpoints.toServiceObject(secondEndpoint, Foo.class);
 		foo.myNotification("notificationParam");
 		assertEquals("result", foo.doStuff("param").get());
 	}
 	
 	@Test public void testRpcMethods() {
-		Map<String, RpcMethod> methods = Endpoints.getSupportedMethods(Foo.class);
+		Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(Foo.class);
 		
 		assertEquals("foo/doStuff", methods.get("foo/doStuff").getMethodName());
 		assertEquals(String.class, methods.get("foo/doStuff").getParameterType());

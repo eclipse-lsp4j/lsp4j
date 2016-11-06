@@ -15,11 +15,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints;
 import org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
+import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethodProvider;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
+import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator;
 
 public interface Launcher<T> {
@@ -93,26 +95,26 @@ public interface Launcher<T> {
 	}
 	
 	public static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
-		Map<String, RpcMethod> supportedMethods = new LinkedHashMap<String, RpcMethod>();
-		supportedMethods.putAll(Endpoints.getSupportedMethods(remoteInterface));
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<String, JsonRpcMethod>();
+		supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(remoteInterface));
 		
-		if (localService instanceof RpcMethodProvider) {
-			RpcMethodProvider rpcMethodProvider = (RpcMethodProvider) localService;
+		if (localService instanceof JsonRpcMethodProvider) {
+			JsonRpcMethodProvider rpcMethodProvider = (JsonRpcMethodProvider) localService;
 			supportedMethods.putAll(rpcMethodProvider.supportedMethods());
 		} else {
-			supportedMethods.putAll(Endpoints.getSupportedMethods(localService.getClass()));
+			supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(localService.getClass()));
 		}
 		
 		MessageJsonHandler jsonHandler = new MessageJsonHandler(supportedMethods);
 		MessageConsumer outGoingMessageStream = new StreamMessageConsumer(out, jsonHandler);
 		outGoingMessageStream = wrapper.apply(outGoingMessageStream);
-		RemoteEndpoint serverEndpoint = new RemoteEndpoint(outGoingMessageStream, Endpoints.toEndpoint(localService));
+		RemoteEndpoint serverEndpoint = new RemoteEndpoint(outGoingMessageStream, ServiceEndpoints.toEndpoint(localService));
 		jsonHandler.setMethodProvider(serverEndpoint);
 		// wrap incoming message stream
 		MessageConsumer messageConsumer = wrapper.apply(serverEndpoint);
 		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler);
 		
-		T remoteProxy = Endpoints.toServiceObject(serverEndpoint, remoteInterface);
+		T remoteProxy = ServiceEndpoints.toServiceObject(serverEndpoint, remoteInterface);
 		
 		return new Launcher<T> () {
 

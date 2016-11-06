@@ -22,7 +22,6 @@ import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
 import org.eclipse.lsp4j.WorkspaceEdit
-import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
@@ -30,6 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage
+import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.services.LanguageServer
 import org.junit.Before
@@ -43,8 +43,8 @@ class JsonParseTest {
 	
 	@Before
 	def void setup() {
-		val methods = Endpoints.getSupportedMethods(LanguageServer)
-		val clientMethods = Endpoints.getSupportedMethods(LanguageClient)
+		val methods = ServiceEndpoints.getSupportedMethods(LanguageServer)
+		val clientMethods = ServiceEndpoints.getSupportedMethods(LanguageClient)
 		val all = new HashMap
 		all.putAll(methods)
 		all.putAll(clientMethods)

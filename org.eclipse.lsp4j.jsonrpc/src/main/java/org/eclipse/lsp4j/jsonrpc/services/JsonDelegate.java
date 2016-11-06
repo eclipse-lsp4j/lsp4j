@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.jsonrpc.annotations;
+package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

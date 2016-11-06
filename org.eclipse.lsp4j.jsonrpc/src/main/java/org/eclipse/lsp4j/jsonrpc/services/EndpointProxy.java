@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.jsonrpc.annotations.impl;
+package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -6,11 +6,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
-import org.eclipse.lsp4j.jsonrpc.annotations.Endpoints;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonNotification;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
-import org.eclipse.lsp4j.jsonrpc.annotations.impl.AnnotationUtil.DelegateInfo;
-import org.eclipse.lsp4j.jsonrpc.annotations.impl.AnnotationUtil.MethodInfo;
+import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.DelegateInfo;
+import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.MethodInfo;
 
 /**
  * A Proxy that wraps an {@link Endpoint} in a service interface, i.e. an
@@ -37,7 +34,7 @@ public class EndpointProxy implements InvocationHandler {
 		});
 		delegatedSegments = new LinkedHashMap<>();
 		AnnotationUtil.findDelegateSegments(interf, new HashSet<Class<?>>(), (method) -> {
-			Object delegateProxy = Endpoints.toServiceObject(delegate, method.getReturnType());
+			Object delegateProxy = ServiceEndpoints.toServiceObject(delegate, method.getReturnType());
 			DelegateInfo info = new DelegateInfo();
 			info.delegate = delegateProxy;
 			info.method = method;

@@ -17,7 +17,6 @@ import java.io.StringReader
 import java.io.StringWriter
 import java.io.Writer
 import java.util.Map
-import org.eclipse.lsp4j.jsonrpc.RpcMethod
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapterFactory
 import org.eclipse.lsp4j.jsonrpc.messages.Message
@@ -35,13 +34,13 @@ class MessageJsonHandler {
 	@Accessors(PUBLIC_SETTER)
     MethodProvider methodProvider
 	
-	Map<String, RpcMethod> supportedMethods
+	Map<String, JsonRpcMethod> supportedMethods
 	
-	new(Map<String, RpcMethod> supportedMethods) {
+	new(Map<String, JsonRpcMethod> supportedMethods) {
 		this(defaultGsonBuilder.create, supportedMethods)
 	}
 	
-	new(Gson gson, Map<String, RpcMethod> supportedMethods) {
+	new(Gson gson, Map<String, JsonRpcMethod> supportedMethods) {
 		this.gson = gson
 		this.supportedMethods = supportedMethods
 	}
@@ -80,7 +79,7 @@ class MessageJsonHandler {
 			result.method = method
 			val params = json.get('params')?.asJsonObject
 			if (params !== null) {
-				val paramType = supportedMethods.get(method)?.parameterType
+				val paramType = supportedMethods.get(method)?.getParameterType
 				result.params = gson.fromJson(params, paramType ?: Object)
 			}
 			return result
@@ -99,7 +98,7 @@ class MessageJsonHandler {
 			if (resultElem !== null) {
 				val method = methodProvider.resolveMethod(responseId)
 				if (method !== null) {
-					val resultType = supportedMethods.get(method)?.returnType
+					val resultType = supportedMethods.get(method)?.getReturnType
 					if (resultType !== null) {
 						if (resultElem.isJsonArray) {
 							val arrayElem = resultElem.asJsonArray
@@ -132,7 +131,7 @@ class MessageJsonHandler {
 			result.method = method
 			val params = json.get('params')?.asJsonObject
 			if (params !== null) {
-				val paramType = supportedMethods.get(method)?.parameterType
+				val paramType = supportedMethods.get(method)?.getParameterType
 				result.params = gson.fromJson(params, paramType ?: Object)
 			}
 			return result

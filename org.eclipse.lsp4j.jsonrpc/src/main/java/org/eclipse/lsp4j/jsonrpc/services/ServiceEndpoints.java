@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.jsonrpc.annotations;
+package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
@@ -8,13 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
-import org.eclipse.lsp4j.jsonrpc.RpcMethod;
-import org.eclipse.lsp4j.jsonrpc.annotations.impl.AnnotationUtil;
-import org.eclipse.lsp4j.jsonrpc.annotations.impl.EndpointProxy;
-import org.eclipse.lsp4j.jsonrpc.annotations.impl.GenericEndpoint;
+import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 
-public final class Endpoints {
-	private Endpoints() {}
+public final class ServiceEndpoints {
+	private ServiceEndpoints() {}
 	
 	/**
 	 * Wraps a given {@link Endpoint} in the given service interface.
@@ -44,17 +41,17 @@ public final class Endpoints {
 	 * @param type
 	 * @return
 	 */
-	public static Map<String, RpcMethod> getSupportedMethods(Class<?> type) {
-		Map<String, RpcMethod> result = new LinkedHashMap<String, RpcMethod>();
+	public static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type) {
+		Map<String, JsonRpcMethod> result = new LinkedHashMap<String, JsonRpcMethod>();
 		AnnotationUtil.findRpcMethods(type, new HashSet<>(), (methodInfo) -> {
-			RpcMethod meth;
+			JsonRpcMethod meth;
 			if (methodInfo.isNotification) {
-				meth = RpcMethod.notification(methodInfo.name, methodInfo.parameterType);
+				meth = JsonRpcMethod.notification(methodInfo.name, methodInfo.parameterType);
 			} else {
 				Type returnType = methodInfo.method.getGenericReturnType();
 				if (returnType instanceof ParameterizedType) {
 					ParameterizedType rType = (ParameterizedType) returnType;
-					meth = RpcMethod.request(methodInfo.name, methodInfo.parameterType, rType.getActualTypeArguments()[0]);
+					meth = JsonRpcMethod.request(methodInfo.name, methodInfo.parameterType, rType.getActualTypeArguments()[0]);
 				} else {
 					throw new IllegalStateException("Expecting return type of CompletableFuture but was : "+returnType);
 				}
@@ -65,8 +62,8 @@ public final class Endpoints {
 		});
 		
 		AnnotationUtil.findDelegateSegments(type, new HashSet<>(), (method)-> {
-			Map<String, RpcMethod> supportedDelegateMethods = getSupportedMethods(method.getReturnType());
-			for (RpcMethod meth : supportedDelegateMethods.values()) {
+			Map<String, JsonRpcMethod> supportedDelegateMethods = getSupportedMethods(method.getReturnType());
+			for (JsonRpcMethod meth : supportedDelegateMethods.values()) {
 				if (result.put(meth.getMethodName(), meth) != null) {
 					throw new IllegalStateException("Duplicate RPC method "+meth.getMethodName()+".");
 				};

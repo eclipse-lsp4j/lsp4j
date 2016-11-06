@@ -5,7 +5,7 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.jsonrpc.Launcher;
-import org.eclipse.lsp4j.jsonrpc.annotations.JsonRequest;
+import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 public class IntegrationTest {
 	

@@ -12,10 +12,10 @@
    <bundle id="org.eclipse.lsp4j.annotations.source" version="0.1.0.qualifier">
       <category name="lsp4j"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.services" version="0.1.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.jsonrpc" version="0.1.0.qualifier">
       <category name="lsp4j"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.services.source" version="0.1.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.jsonrpc.source" version="0.1.0.qualifier">
       <category name="lsp4j"/>
    </bundle>
    <category-def name="lsp4j" label="lsp4j"/>
