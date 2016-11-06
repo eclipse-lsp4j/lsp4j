@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
+import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
@@ -23,6 +24,15 @@ public class EndpointsTest {
 		public CompletableFuture<String> doStuff(String arg);
 		
 		@JsonNotification
+		public void myNotification(String someArg);
+		
+		@JsonDelegate
+		public Delegated getDelegate();
+	}
+	
+	public static interface Delegated {
+		
+		@JsonNotification("hubba")
 		public void myNotification(String someArg);
 	}
 
@@ -80,5 +90,9 @@ public class EndpointsTest {
 		assertEquals("foo/myNotification", methods.get("foo/myNotification").getMethodName());
 		assertEquals(String.class, methods.get("foo/myNotification").getParameterType());
 		assertTrue(methods.get("foo/myNotification").isNotification());
+		
+		assertEquals("hubba", methods.get("hubba").getMethodName());
+		assertEquals(String.class, methods.get("hubba").getParameterType());
+		assertTrue(methods.get("hubba").isNotification());
 	}
 }

@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
@@ -42,8 +43,18 @@ public final class ServiceEndpoints {
 	 * @return
 	 */
 	public static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type) {
+		Set<Class<?>> visitedTypes = new HashSet<>();
+		return getSupportedMethods(type, visitedTypes);
+	}
+	/**
+	 * Finds all Json RPC methods on a given type
+	 * 
+	 * @param type
+	 * @return
+	 */
+	private static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type, Set<Class<?>> visitedTypes) {
 		Map<String, JsonRpcMethod> result = new LinkedHashMap<String, JsonRpcMethod>();
-		AnnotationUtil.findRpcMethods(type, new HashSet<>(), (methodInfo) -> {
+		AnnotationUtil.findRpcMethods(type, visitedTypes, (methodInfo) -> {
 			JsonRpcMethod meth;
 			if (methodInfo.isNotification) {
 				meth = JsonRpcMethod.notification(methodInfo.name, methodInfo.parameterType);
@@ -62,7 +73,7 @@ public final class ServiceEndpoints {
 		});
 		
 		AnnotationUtil.findDelegateSegments(type, new HashSet<>(), (method)-> {
-			Map<String, JsonRpcMethod> supportedDelegateMethods = getSupportedMethods(method.getReturnType());
+			Map<String, JsonRpcMethod> supportedDelegateMethods = getSupportedMethods(method.getReturnType(), visitedTypes);
 			for (JsonRpcMethod meth : supportedDelegateMethods.values()) {
 				if (result.put(meth.getMethodName(), meth) != null) {
 					throw new IllegalStateException("Duplicate RPC method "+meth.getMethodName()+".");
