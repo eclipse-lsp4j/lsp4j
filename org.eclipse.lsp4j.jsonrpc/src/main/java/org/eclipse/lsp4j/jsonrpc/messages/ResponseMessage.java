@@ -8,7 +8,6 @@
 package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 public class ResponseMessage extends Message {
 
@@ -18,13 +17,11 @@ public class ResponseMessage extends Message {
 	@NonNull
 	private String id;
 
-	@Pure
-	@NonNull
 	public String getId() {
 		return this.id;
 	}
 
-	public void setId(@NonNull final String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -33,12 +30,11 @@ public class ResponseMessage extends Message {
 	 */
 	private Object result;
 
-	@Pure
 	public Object getResult() {
 		return this.result;
 	}
 
-	public void setResult(final Object result) {
+	public void setResult(Object result) {
 		this.result = result;
 	}
 
@@ -47,12 +43,12 @@ public class ResponseMessage extends Message {
 	 */
 	private ResponseError error;
 
-	@Pure
 	public ResponseError getError() {
 		return this.error;
 	}
 
-	public void setError(final ResponseError error) {
+	public void setError(ResponseError error) {
 		this.error = error;
 	}
+	
 }

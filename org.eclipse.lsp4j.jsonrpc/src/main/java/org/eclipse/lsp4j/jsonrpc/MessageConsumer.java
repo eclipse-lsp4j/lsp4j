@@ -11,6 +11,6 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
 public interface MessageConsumer {
 
-	public void consume(Message message);
+	void consume(Message message);
 	
 }

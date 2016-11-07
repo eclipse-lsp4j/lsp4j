@@ -53,11 +53,9 @@ public final class ServiceEndpoints {
 		Set<Class<?>> visitedTypes = new HashSet<>();
 		return getSupportedMethods(type, visitedTypes);
 	}
+	
 	/**
 	 * Finds all Json RPC methods on a given type
-	 * 
-	 * @param type
-	 * @return
 	 */
 	private static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type, Set<Class<?>> visitedTypes) {
 		Map<String, JsonRpcMethod> result = new LinkedHashMap<String, JsonRpcMethod>();
@@ -89,4 +87,5 @@ public final class ServiceEndpoints {
 		});
 		return result;
 	}
+	
 }

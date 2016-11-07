@@ -7,8 +7,15 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
-public interface CancelIndicator {
+/**
+ * Used for processing requests with cancellation support.
+ */
+public interface CancelChecker {
 	
-	public void checkCanceled();
+	/**
+	 * Throw a {@link java.util.concurrent.CancellationException} if the currently processed
+	 * request has been canceled.
+	 */
+	void checkCanceled();
 	
 }

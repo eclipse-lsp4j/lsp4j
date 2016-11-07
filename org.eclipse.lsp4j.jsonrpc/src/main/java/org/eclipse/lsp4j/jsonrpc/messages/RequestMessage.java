@@ -8,28 +8,20 @@
 package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 public class RequestMessage extends Message {
 
 	/**
 	 * The request id.
 	 */
-	@NonNull private String id;
-
-	/**
-	 * The request id.
-	 */
-	@Pure
 	@NonNull
+	private String id;
+
 	public String getId() {
 		return this.id;
 	}
 
-	/**
-	 * The request id.
-	 */
-	public void setId(@NonNull final String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -39,19 +31,11 @@ public class RequestMessage extends Message {
 	@NonNull
 	private String method;
 
-	/**
-	 * The method to be invoked.
-	 */
-	@Pure
-	@NonNull
 	public String getMethod() {
 		return this.method;
 	}
 
-	/**
-	 * The method to be invoked.
-	 */
-	public void setMethod(@NonNull final String method) {
+	public void setMethod(String method) {
 		this.method = method;
 	}
 
@@ -60,18 +44,12 @@ public class RequestMessage extends Message {
 	 */
 	private Object params;
 
-	/**
-	 * The method's params.
-	 */
-	@Pure
 	public Object getParams() {
 		return this.params;
 	}
 
-	/**
-	 * The method's params.
-	 */
-	public void setParams(final Object params) {
+	public void setParams(Object params) {
 		this.params = params;
 	}
+	
 }

@@ -14,7 +14,8 @@ import java.util.function.Consumer;
 
 import com.google.common.base.Strings;
 
-public class AnnotationUtil {
+public final class AnnotationUtil {
+	private AnnotationUtil() {}
 	
 	public static void findDelegateSegments(Class<?> clazz, Set<Class<?>> visited, Consumer<Method> acceptor) {
 		if (clazz == null || !visited.add(clazz))
@@ -44,11 +45,7 @@ public class AnnotationUtil {
 	
 
 	/**
-	 * depth first search for annotated methods in hierarchy
-	 * 
-	 * @param clazz
-	 * @param visited
-	 * @param acceptor
+	 * Depth first search for annotated methods in hierarchy.
 	 */
 	public static void findRpcMethods(Class<?> clazz, Set<Class<?>> visited, Consumer<MethodInfo> acceptor) {
 		if (clazz == null || !visited.add(clazz))
@@ -61,12 +58,12 @@ public class AnnotationUtil {
 		String prefix = jsonSegment == null ? "" : jsonSegment.value() + "/";
 		for (Method method : clazz.getDeclaredMethods()) {
 			if (method.getParameterCount() <= 1) {
-				JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
 				MethodInfo methodInfo = new MethodInfo();
 				methodInfo.method = method;
 				if (method.getParameterCount() > 0) {
 					methodInfo.parameterType = method.getParameters()[0].getParameterizedType();
 				}
+				JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
 				if (jsonRequest != null) {
 					String name = Strings.isNullOrEmpty(jsonRequest.value()) ? method.getName() : jsonRequest.value();
 					methodInfo.name = prefix + name;
@@ -86,14 +83,14 @@ public class AnnotationUtil {
 		}
 	}
 	
-	public static class MethodInfo {
+	static class MethodInfo {
 		public String name;
 		public Method method;
 		public Type parameterType = Void.class;
 		public boolean isNotification = false;
 	}
 
-	public static class DelegateInfo {
+	static class DelegateInfo {
 		public Method method;
 		public Object delegate;
 	}

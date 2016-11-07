@@ -7,9 +7,8 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 public class ResponseError {
 	
@@ -19,13 +18,11 @@ public class ResponseError {
 	@NonNull
 	private ResponseErrorCode code;
 
-	@Pure
-	@NonNull
 	public ResponseErrorCode getCode() {
 		return this.code;
 	}
 
-	public void setCode(@NonNull final ResponseErrorCode code) {
+	public void setCode(ResponseErrorCode code) {
 		this.code = code;
 	}
 
@@ -35,13 +32,11 @@ public class ResponseError {
 	@NonNull
 	private String message;
 
-	@Pure
-	@NonNull
 	public String getMessage() {
 		return this.message;
 	}
 
-	public void setMessage(@NonNull final String message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
@@ -51,12 +46,11 @@ public class ResponseError {
 	 */
 	private Object data;
 
-	@Pure
 	public Object getData() {
 		return this.data;
 	}
 
-	public void setData(final Object data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 
@@ -71,6 +65,10 @@ public class ResponseError {
 	
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).addAllFields().toString();
+		return MessageJsonHandler.getDefaultGsonBuilder()
+				.setPrettyPrinting()
+				.create()
+				.toJson(this);
 	}
+	
 }

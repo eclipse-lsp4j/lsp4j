@@ -12,18 +12,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 
-public class CompletableFutures {
+public final class CompletableFutures {
+	private CompletableFutures() {}
 	
 	/**
 	 * A utility method to create a {@link CompletableFuture} with cancellation support.
 	 * 
-	 * @param code a function that accepts a {@link CancelIndicator} and returns the to be computed value
+	 * @param code a function that accepts a {@link CancelChecker} and returns the to be computed value
 	 * @return a future
 	 */
-	public static <R> CompletableFuture<R> computeAsync(Function<CancelIndicator, R> code) {
-		CompletableFuture<CancelIndicator> start = new CompletableFuture<>();
+	public static <R> CompletableFuture<R> computeAsync(Function<CancelChecker, R> code) {
+		CompletableFuture<CancelChecker> start = new CompletableFuture<>();
 		CompletableFuture<R> result = start.thenApplyAsync(code);
-		CancelIndicator cancelIndicator = () -> {
+		CancelChecker cancelIndicator = () -> {
 			if (result.isCancelled()) 
 				throw new CancellationException();
 		};
@@ -37,10 +38,10 @@ public class CompletableFutures {
 	 * @param code a function that accepts a {@link CancelIndicator} and returns the to be computed value
 	 * @return a future
 	 */
-	public static <R> CompletableFuture<R> computeAsync(Executor executor, Function<CancelIndicator, R> code) {
-		CompletableFuture<CancelIndicator> start = new CompletableFuture<>();
+	public static <R> CompletableFuture<R> computeAsync(Executor executor, Function<CancelChecker, R> code) {
+		CompletableFuture<CancelChecker> start = new CompletableFuture<>();
 		CompletableFuture<R> result = start.thenApplyAsync(code, executor);
-		CancelIndicator cancelIndicator = () -> {
+		CancelChecker cancelIndicator = () -> {
 			if (result.isCancelled()) 
 				throw new CancellationException();
 		};

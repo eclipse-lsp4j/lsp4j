@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
@@ -21,8 +22,8 @@ import org.eclipse.lsp4j.jsonrpc.Endpoint;
  */
 public class GenericEndpoint implements Endpoint {
 
-	private LinkedHashMap<String, Function<Object, CompletableFuture<Object>>> methodHandlers = new LinkedHashMap<>();
-	private Object delegate;
+	private final LinkedHashMap<String, Function<Object, CompletableFuture<Object>>> methodHandlers = new LinkedHashMap<>();
+	private final Object delegate;
 
 	public GenericEndpoint(Object delegate) {
 		this.delegate = delegate;
@@ -31,27 +32,23 @@ public class GenericEndpoint implements Endpoint {
 
 	protected void recursiveFindRpcMethods(Object current, Set<Class<?>> visited, Set<Class<?>> visitedForDelegate) {
 		AnnotationUtil.findRpcMethods(current.getClass(), visited, (methodInfo) -> {
-			try {
-				@SuppressWarnings("unchecked")
-				Function<Object, CompletableFuture<Object>> handler = (arg) -> {
-					try {
-						Object[] argument = arg == null ? new Object[0] : new Object[] { arg };
-						return (CompletableFuture<Object>) methodInfo.method.invoke(current, argument);
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				};
-				if (methodHandlers.put(methodInfo.name, handler) != null) {
-					throw new IllegalStateException("Multiple methods for name " + methodInfo.name);
+			@SuppressWarnings("unchecked")
+			Function<Object, CompletableFuture<Object>> handler = (arg) -> {
+				try {
+					Object[] argument = arg == null ? new Object[0] : new Object[] { arg };
+					return (CompletableFuture<Object>) methodInfo.method.invoke(current, argument);
+				} catch (InvocationTargetException | IllegalAccessException e) {
+					throw new RuntimeException(e);
 				}
-			} catch (Exception e1) {
-				throw new RuntimeException(e1);
+			};
+			if (methodHandlers.put(methodInfo.name, handler) != null) {
+				throw new IllegalStateException("Multiple methods for name " + methodInfo.name);
 			}
 		});
 		AnnotationUtil.findDelegateSegments(current.getClass(), visitedForDelegate, (method) -> {
 			try {
 				recursiveFindRpcMethods(method.invoke(current), visited, visitedForDelegate);
-			} catch (Exception e) {
+			} catch (InvocationTargetException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
 		});

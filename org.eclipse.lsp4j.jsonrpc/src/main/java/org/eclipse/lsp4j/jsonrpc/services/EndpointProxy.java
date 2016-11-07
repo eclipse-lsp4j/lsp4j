@@ -23,20 +23,20 @@ import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.MethodInfo;
  */
 public class EndpointProxy implements InvocationHandler {
 
-	private Endpoint delegate;
-	private LinkedHashMap<String, MethodInfo> methodInfos;
-	private LinkedHashMap<String, DelegateInfo> delegatedSegments;
+	private final Endpoint delegate;
+	private final LinkedHashMap<String, MethodInfo> methodInfos;
+	private final LinkedHashMap<String, DelegateInfo> delegatedSegments;
 
 	public EndpointProxy(Endpoint delegate, Class<?> interf) {
 		if (delegate == null)
-			throw new NullPointerException("deleagte");
+			throw new NullPointerException("delegate");
 		if (interf == null)
 			throw new NullPointerException("interf");
 		this.delegate = delegate;
 		methodInfos = new LinkedHashMap<>();
 		AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
 			if (methodInfos.put(methodInfo.method.getName(), methodInfo) != null) {
-				throw new IllegalStateException("method overload not allowed : " + methodInfo.method);
+				throw new IllegalStateException("Method overload not allowed : " + methodInfo.method);
 			}
 		});
 		delegatedSegments = new LinkedHashMap<>();
@@ -46,9 +46,8 @@ public class EndpointProxy implements InvocationHandler {
 			info.delegate = delegateProxy;
 			info.method = method;
 			if (delegatedSegments.put(method.getName(), info) != null) {
-				throw new IllegalStateException("method overload not allowed : " + method);
+				throw new IllegalStateException("Method overload not allowed : " + method);
 			}
-			;
 		});
 	}
 

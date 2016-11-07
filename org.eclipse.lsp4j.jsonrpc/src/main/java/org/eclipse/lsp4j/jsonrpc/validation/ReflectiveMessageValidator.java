@@ -34,18 +34,14 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 			validate(message, result, new LinkedList<>());
 		} catch (Exception e) {
 			result.add("Error during message validation: " + e.getMessage());
-		} catch (NoClassDefFoundError e) {
-			// Skip validation if Nullable annotations are not available
-			if (!e.getMessage().endsWith("Nullable"))
-				throw e;
 		}
-		if (result.isEmpty()) {
+		if (!result.isEmpty()) {
+			ResponseError error = new ResponseError(ResponseErrorCode.InvalidParams,
+					result.stream().collect(Collectors.joining(", ")), message);
+			throw new InvalidMessageException(error.getMessage(), error, null);
+		} else if (delegate != null) {
 			delegate.consume(message);
-			return;
 		}
-		ResponseError error = new ResponseError(ResponseErrorCode.InvalidParams,
-				result.stream().collect(Collectors.joining(", ")), message);
-		throw new InvalidMessageException(error.getMessage(), error, null);
 	}
 
 	protected void validate(Object object, List<String> issues, LinkedList<Object> objectStack) throws Exception {

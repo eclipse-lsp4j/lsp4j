@@ -17,5 +17,6 @@ import org.eclipse.lsp4j.jsonrpc.Endpoint;
  */
 public interface JsonRpcMethodProvider {
 
-	public Map<String, JsonRpcMethod> supportedMethods();
+	Map<String, JsonRpcMethod> supportedMethods();
+	
 }

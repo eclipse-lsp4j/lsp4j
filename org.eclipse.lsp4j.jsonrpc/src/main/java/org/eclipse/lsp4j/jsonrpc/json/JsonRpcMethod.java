@@ -9,12 +9,11 @@ package org.eclipse.lsp4j.jsonrpc.json;
 
 import java.lang.reflect.Type;
 
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
-
 /**
- * A description of an jsonrpc method 
+ * A description of a JSON-RPC method. 
  */
 public class JsonRpcMethod {
+	
 	private final String methodName;
 	private final Type parameterType;
 	private final Type returnType;
@@ -44,16 +43,31 @@ public class JsonRpcMethod {
 	}
 
 	public static JsonRpcMethod notification(String name, Type parameterType) {
+		if (name == null)
+			throw new NullPointerException("name");
 		return new JsonRpcMethod(name, parameterType, Void.class, true);
 	}
 	
 	public static JsonRpcMethod request(String name, Type parameterType, Type returnType) {
+		if (name == null)
+			throw new NullPointerException("name");
 		return new JsonRpcMethod(name, parameterType, returnType, false);
 	}
 	
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).addAllFields().toString();
+		StringBuilder builder = new StringBuilder();
+		if (isNotification)
+			builder.append("JsonRpcMethod (notification) {\n");
+		else
+			builder.append("JsonRpcMethod (request) {\n");
+		builder.append("\tmethodName: ").append(methodName).append('\n');
+		if (parameterType != null)
+			builder.append("\tparameterType: ").append(parameterType).append('\n');
+		if (returnType != null)
+			builder.append("\treturnType: ").append(returnType).append('\n');
+		builder.append("}");
+		return builder.toString();
 	}
 
 	@Override

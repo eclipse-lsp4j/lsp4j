@@ -41,7 +41,7 @@ public interface Launcher<T> {
 	 * @param out
 	 * @return
 	 */
-	public static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out) {
+	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out) {
 		return createLauncher(localService, remoteInterface, in, out, false, null);
 	}
 	
@@ -55,7 +55,7 @@ public interface Launcher<T> {
 	 * @param trace
 	 * @return
 	 */
-	public static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, boolean validate, PrintWriter trace) {
+	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, boolean validate, PrintWriter trace) {
 		Function<MessageConsumer, MessageConsumer> wrapper = consumer -> {
 			MessageConsumer result = consumer;
 			if (trace != null) {
@@ -80,7 +80,7 @@ public interface Launcher<T> {
 	 * @param in - inputstream to listen for incoming messages
 	 * @param out - outputstream to send outgoing messages
 	 */
-	public static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
+	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper);
 	}
 	
@@ -93,7 +93,7 @@ public interface Launcher<T> {
 	 * @return
 	 * @throws IOException 
 	 */
-	public static <T> Launcher<T> createSocketLauncher(Object localService, Class<T> remoteInterface, SocketAddress socketAddress, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) throws IOException {
+	static <T> Launcher<T> createSocketLauncher(Object localService, Class<T> remoteInterface, SocketAddress socketAddress, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) throws IOException {
 		ServerSocketChannel serverSocket = ServerSocketChannel.open();
 		serverSocket.bind(socketAddress);
 		SocketChannel socketChannel = serverSocket.accept();
@@ -101,7 +101,7 @@ public interface Launcher<T> {
 		return createIoLauncher(localService, remoteInterface, Channels.newInputStream(socketChannel), Channels.newOutputStream(socketChannel), executorService, wrapper);
 	}
 	
-	public static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
+	static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<String, JsonRpcMethod>();
 		supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(remoteInterface));
 		
@@ -138,8 +138,8 @@ public interface Launcher<T> {
 		};
 	}
 	
-	public Future<?> startListening();
+	Future<?> startListening();
 	
-	public abstract T getRemoteProxy();
+	T getRemoteProxy();
 	
 }
