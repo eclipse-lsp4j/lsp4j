@@ -5,7 +5,7 @@ Java binding for the [Language Server Protocol](https://github.com/Microsoft/lan
 ### How To Use
 
 A brief overview of how to use LSP4J to implement a server or a client can be found here:
-https://github.com/TypeFox/ls-api/wiki/How-to-Build-a-Language-Server-with-LSP4J
+https://github.com/TypeFox/ls-api/blob/lsp4j/HowTo.md
 
 ### Snapshots
 
