@@ -14,9 +14,13 @@ import org.eclipse.lsp4j.jsonrpc.MessageProducer
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import java.util.concurrent.Future
+import java.util.logging.Logger
+import java.util.logging.Level
 
 @FinalFieldsConstructor
 class ConcurrentMessageProcessor implements Runnable {
+	
+	public static final Logger LOG = Logger.getLogger(ConcurrentMessageProcessor.name);
 
     @Accessors(PUBLIC_GETTER)
     boolean isRunning
@@ -38,7 +42,7 @@ class ConcurrentMessageProcessor implements Runnable {
         } catch (ClosedChannelException e) {
             // The channel whose stream has been listened was closed
         } catch (Exception e) {
-            throw new RuntimeException(e)
+            LOG.log(Level.SEVERE, e.message, e)
         } finally {
             isRunning = false
         }

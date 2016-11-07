@@ -1,5 +1,6 @@
 package org.eclipse.lsp4j.jsonrpc;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -7,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
@@ -22,6 +24,9 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
  */
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
 
+	private final static String CANCEL_METHOD = "$/cancel";
+	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
+	
 	private final MessageConsumer out;
 	private final Endpoint localEndPoint;
 	private final Function<Throwable, ResponseError> exceptionHandler;
@@ -91,9 +96,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 
 	protected void sendCancelNotification(String id) {
-		CancelParams cancelParams = new CancelParams();
-		cancelParams.setId(id);
-		notify(CancelParams.METHOD_TYPE.getMethodName(), cancelParams);
+		Map<String, String> cancelParams = new HashMap<String, String>();
+		cancelParams.put("id", id);
+		notify(CANCEL_METHOD, cancelParams);
 	}
 
 	@Override
@@ -121,12 +126,19 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		pendingRequestInfo.responseHandler.accept(responseMessage);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void handleNotification(NotificationMessage notificationMessage) {
-		if (notificationMessage.getMethod() == CancelParams.METHOD_TYPE.getMethodName()) {
-			CancelParams cancelParams = (CancelParams) notificationMessage.getParams();
-			synchronized (receivedRequestMap) {
-				CompletableFuture<?> future = receivedRequestMap.get(cancelParams.getId());
-				future.cancel(true);
+		if (notificationMessage.getMethod().equals(CANCEL_METHOD)) {
+			Object cancelParams = notificationMessage.getParams();
+			if (cancelParams instanceof Map<?,?>) {
+				synchronized (receivedRequestMap) {
+					String id = ((Map<String, String>) cancelParams).get("id");
+					CompletableFuture<?> future = receivedRequestMap.get(id);
+					future.cancel(true);
+				}
+				return;
+			} else {
+				LOG.warning("Cancellation support disabled, since the '$/cancel' method has explicitly been registered.");
 			}
 		}
 		localEndPoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());
