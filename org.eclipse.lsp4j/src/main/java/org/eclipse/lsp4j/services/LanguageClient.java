@@ -14,21 +14,21 @@ public interface LanguageClient {
 	 * the client to log a telemetry event.
 	 */
 	@JsonNotification("telemetry/event")
-	public abstract void telemetryEvent(final Object object);
+	void telemetryEvent(Object object);
 
 	/**
 	 * Diagnostics notifications are sent from the server to the client to
 	 * signal results of validation runs.
 	 */
 	@JsonNotification("textDocument/publishDiagnostics")
-	public abstract void publishDiagnostics(final PublishDiagnosticsParams diagnostics);
+	void publishDiagnostics(PublishDiagnosticsParams diagnostics);
 
 	/**
 	 * The show message notification is sent from a server to a client to ask
 	 * the client to display a particular message in the user interface.
 	 */
 	@JsonNotification("window/showMessage")
-	public abstract void showMessage(final MessageParams messageParams);
+	void showMessage(MessageParams messageParams);
 
 	/**
 	 * The show message request is sent from a server to a client to ask the
@@ -37,12 +37,12 @@ public interface LanguageClient {
 	 * to wait for an answer from the client.
 	 */
 	@JsonRequest("window/showMessageRequest")
-	public abstract CompletableFuture<Void> showMessageRequest(final ShowMessageRequestParams requestParams);
+	CompletableFuture<Void> showMessageRequest(ShowMessageRequestParams requestParams);
 
 	/**
 	 * The log message notification is send from the server to the client to ask
 	 * the client to log a particular message.
 	 */
 	@JsonNotification("window/logMessage")
-	public abstract void logMessage(final MessageParams message);
+	void logMessage(MessageParams message);
 }

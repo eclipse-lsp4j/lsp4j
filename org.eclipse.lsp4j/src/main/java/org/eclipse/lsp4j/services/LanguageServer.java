@@ -25,7 +25,7 @@ public interface LanguageServer {
 	 * the server.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<InitializeResult> initialize(final InitializeParams params);
+	CompletableFuture<InitializeResult> initialize(InitializeParams params);
 
 	/**
 	 * The shutdown request is sent from the client to the server. It asks the
@@ -34,24 +34,24 @@ public interface LanguageServer {
 	 * that asks the server to exit.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<Void> shutdown();
+	CompletableFuture<Void> shutdown();
 
 	/**
 	 * A notification to ask the server to exit its process.
 	 */
 	@JsonNotification
-	public abstract void exit();
+	void exit();
 
 	/**
 	 * Provides access to the textDocument services.
 	 */
 	@JsonDelegate
-	public abstract TextDocumentService getTextDocumentService();
+	TextDocumentService getTextDocumentService();
 
 	/**
 	 * Provides access to the workspace services.
 	 */
 	@JsonDelegate
-	public abstract WorkspaceService getWorkspaceService();
+	WorkspaceService getWorkspaceService();
 	
 }

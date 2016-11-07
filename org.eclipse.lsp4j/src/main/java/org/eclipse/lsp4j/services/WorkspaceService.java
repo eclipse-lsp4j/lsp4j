@@ -24,19 +24,19 @@ public interface WorkspaceService {
 	 * list project-wide symbols matching the query string.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends SymbolInformation>> symbol(final WorkspaceSymbolParams params);
+	CompletableFuture<List<? extends SymbolInformation>> symbol(WorkspaceSymbolParams params);
 
 	/**
 	 * A notification sent from the client to the server to signal the change of
 	 * configuration settings.
 	 */
 	@JsonNotification
-	public abstract void didChangeConfiguration(final DidChangeConfigurationParams params);
+	void didChangeConfiguration(DidChangeConfigurationParams params);
 
 	/**
 	 * The watched files notification is sent from the client to the server when
 	 * the client detects changes to file watched by the language client.
 	 */
 	@JsonNotification
-	public abstract void didChangeWatchedFiles(final DidChangeWatchedFilesParams params);
+	void didChangeWatchedFiles(DidChangeWatchedFilesParams params);
 }

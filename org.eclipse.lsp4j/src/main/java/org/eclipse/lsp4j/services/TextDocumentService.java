@@ -49,28 +49,28 @@ public interface TextDocumentService {
 	 * completion item is selected in the user interface.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<CompletionList> completion(final TextDocumentPositionParams position);
+	CompletableFuture<CompletionList> completion(TextDocumentPositionParams position);
 
 	/**
 	 * The request is sent from the client to the server to resolve additional
 	 * information for a given completion item.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<CompletionItem> resolveCompletionItem(final CompletionItem unresolved);
+	CompletableFuture<CompletionItem> resolveCompletionItem(CompletionItem unresolved);
 
 	/**
 	 * The hover request is sent from the client to the server to request hover
 	 * information at a given text document position.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<Hover> hover(final TextDocumentPositionParams position);
+	CompletableFuture<Hover> hover(TextDocumentPositionParams position);
 
 	/**
 	 * The signature help request is sent from the client to the server to
 	 * request signature information at a given cursor position.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<SignatureHelp> signatureHelp(final TextDocumentPositionParams position);
+	CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position);
 
 	/**
 	 * The goto definition request is sent from the client to the server to
@@ -78,7 +78,7 @@ public interface TextDocumentService {
 	 * position.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends Location>> definition(final TextDocumentPositionParams position);
+	CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position);
 
 	/**
 	 * The references request is sent from the client to the server to resolve
@@ -86,23 +86,21 @@ public interface TextDocumentService {
 	 * position.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends Location>> references(final ReferenceParams params);
+	CompletableFuture<List<? extends Location>> references(ReferenceParams params);
 
 	/**
 	 * The document highlight request is sent from the client to the server to
 	 * to resolve a document highlights for a given text document position.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends DocumentHighlight>> documentHighlight(
-			final TextDocumentPositionParams position);
+	CompletableFuture<List<? extends DocumentHighlight>> documentHighlight(TextDocumentPositionParams position);
 
 	/**
 	 * The document symbol request is sent from the client to the server to list
 	 * all symbols found in a given text document.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends SymbolInformation>> documentSymbol(
-			final DocumentSymbolParams params);
+	CompletableFuture<List<? extends SymbolInformation>> documentSymbol(DocumentSymbolParams params);
 
 	/**
 	 * The code action request is sent from the client to the server to compute
@@ -111,51 +109,49 @@ public interface TextDocumentService {
 	 * the lightbulb associated with a marker.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends Command>> codeAction(final CodeActionParams params);
+	CompletableFuture<List<? extends Command>> codeAction(CodeActionParams params);
 
 	/**
 	 * The code lens request is sent from the client to the server to compute
 	 * code lenses for a given text document.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends CodeLens>> codeLens(final CodeLensParams params);
+	CompletableFuture<List<? extends CodeLens>> codeLens(CodeLensParams params);
 
 	/**
 	 * The code lens resolve request is sent from the clien to the server to
 	 * resolve the command for a given code lens item.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<CodeLens> resolveCodeLens(final CodeLens unresolved);
+	CompletableFuture<CodeLens> resolveCodeLens(CodeLens unresolved);
 
 	/**
 	 * The document formatting request is sent from the client to the server to
 	 * format a whole document.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends TextEdit>> formatting(final DocumentFormattingParams params);
+	CompletableFuture<List<? extends TextEdit>> formatting(DocumentFormattingParams params);
 
 	/**
 	 * The document range formatting request is sent from the client to the
 	 * server to format a given range in a document.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends TextEdit>> rangeFormatting(
-			final DocumentRangeFormattingParams params);
+	CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params);
 
 	/**
 	 * The document on type formatting request is sent from the client to the
 	 * server to format parts of the document during typing.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<List<? extends TextEdit>> onTypeFormatting(
-			final DocumentOnTypeFormattingParams params);
+	CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params);
 
 	/**
 	 * The rename request is sent from the client to the server to do a
 	 * workspace wide rename of a symbol.
 	 */
 	@JsonRequest
-	public abstract CompletableFuture<WorkspaceEdit> rename(final RenameParams params);
+	CompletableFuture<WorkspaceEdit> rename(RenameParams params);
 
 	/**
 	 * The document open notification is sent from the client to the server to
@@ -164,14 +160,14 @@ public interface TextDocumentService {
 	 * using the document's uri.
 	 */
 	@JsonNotification
-	public abstract void didOpen(final DidOpenTextDocumentParams params);
+	void didOpen(DidOpenTextDocumentParams params);
 
 	/**
 	 * The document change notification is sent from the client to the server to
 	 * signal changes to a text document.
 	 */
 	@JsonNotification
-	public abstract void didChange(final DidChangeTextDocumentParams params);
+	void didChange(DidChangeTextDocumentParams params);
 
 	/**
 	 * The document close notification is sent from the client to the server
@@ -180,12 +176,12 @@ public interface TextDocumentService {
 	 * a file uri the truth now exists on disk).
 	 */
 	@JsonNotification
-	public abstract void didClose(final DidCloseTextDocumentParams params);
+	void didClose(DidCloseTextDocumentParams params);
 
 	/**
 	 * The document save notification is sent from the client to the server when
 	 * the document for saved in the client.
 	 */
 	@JsonNotification
-	public abstract void didSave(final DidSaveTextDocumentParams params);
+	void didSave(DidSaveTextDocumentParams params);
 }
