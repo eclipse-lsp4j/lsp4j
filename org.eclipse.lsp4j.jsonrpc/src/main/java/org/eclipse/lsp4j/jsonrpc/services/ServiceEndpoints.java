@@ -29,7 +29,7 @@ public final class ServiceEndpoints {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T toServiceObject(Endpoint endpoint, Class<T> interface_) {
-		Object newProxyInstance = Proxy.newProxyInstance(EndpointProxy.class.getClassLoader(), new Class[]{interface_}, new EndpointProxy(endpoint, interface_));
+		Object newProxyInstance = Proxy.newProxyInstance(EndpointProxy.class.getClassLoader(), new Class[]{interface_, Endpoint.class}, new EndpointProxy(endpoint, interface_));
 		return (T) newProxyInstance;
 	}
 	
