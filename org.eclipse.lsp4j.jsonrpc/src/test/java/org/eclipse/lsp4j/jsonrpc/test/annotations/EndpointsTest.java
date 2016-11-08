@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.test.jsonrpc.annotations;
+package org.eclipse.lsp4j.jsonrpc.test.annotations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

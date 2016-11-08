@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.test.jsonrpc.validation;
+package org.eclipse.lsp4j.jsonrpc.test.validation;
 
 import org.eclipse.lsp4j.jsonrpc.json.InvalidMessageException;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;

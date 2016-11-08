@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.test.jsonrpc;
+package org.eclipse.lsp4j.jsonrpc.test;
 
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.test.jsonrpc.annotations.impl;
+package org.eclipse.lsp4j.jsonrpc.test.annotations.impl;
 
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
