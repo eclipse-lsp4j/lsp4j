@@ -6,7 +6,7 @@ To start working on it simply clone and run `./gradlew build`.
 
 # CLA
 
-In order to cointribute code, you need to sign an Eclipse Contributor Agreement, using the e-mail used at Github.
+In order to contribute code, you need to sign an Eclipse Contributor Agreement, using the e-mail used at Github.
 See https://eclipse.org/legal/ECA.php for details
 
 # Eclipse
