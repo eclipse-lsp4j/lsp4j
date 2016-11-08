@@ -6,16 +6,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-description 'JSONRPC implementation'
+description 'JSON-RPC implementation'
 
 dependencies {
-	compile "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtext"
+	compile "com.google.guava:guava:$versions.guava"
 	compile "com.google.code.gson:gson:$versions.gson"
 	testCompile "junit:junit:$versions.junit"
 }
 
 jar.manifest {
-	name = 'JSONRPC implementation'
+	name = 'JSON-RPC Implementation'
 	vendor = 'Eclipse LSP4J'
 	instruction 'Import-Package', "javax.annotation;version=!;resolution:=optional"
 	instruction 'Import-Package', "com.google.common.*;version=\"$versions.guava\""

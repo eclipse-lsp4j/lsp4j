@@ -11,7 +11,6 @@ version = '0.1.0-SNAPSHOT'
 ext.versions = [
 	'xtext': '2.10.0',
 	'guava': '[14.0,19)',
-	'jsr305': '3.0.1',
 	'gson': '2.5',
 	'junit': '4.12'
 ]

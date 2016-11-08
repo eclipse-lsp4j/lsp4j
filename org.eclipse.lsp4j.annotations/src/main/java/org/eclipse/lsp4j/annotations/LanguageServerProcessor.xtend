@@ -7,7 +7,6 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.annotations
 
-import javax.annotation.Nullable
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
@@ -65,15 +64,12 @@ class LanguageServerProcessor extends AbstractClassProcessor {
 			!static
 		].forEach [ field |
 			val accessorsUtil = new AccessorsProcessor.Util(context)
-			val nullable = field.findAnnotation(Nullable.findTypeGlobally)
 			val deprecated = field.findAnnotation(Deprecated.findTypeGlobally)
 			accessorsUtil.addGetter(field, Visibility.PUBLIC)
 			impl.findDeclaredMethod(accessorsUtil.getGetterName(field)) => [
 				docComment = field.docComment
 				if (deprecated !== null)
 					addAnnotation(newAnnotationReference(Deprecated))
-				if (nullable !== null)
-					addAnnotation(newAnnotationReference(Nullable))
 			]
 
 			if (!field.type.inferred) {
@@ -82,8 +78,6 @@ class LanguageServerProcessor extends AbstractClassProcessor {
 					docComment = field.docComment
 					if (deprecated !== null)
 						addAnnotation(newAnnotationReference(Deprecated))
-					if (nullable !== null)
-						parameters.head?.addAnnotation(newAnnotationReference(Nullable))
 				]
 			}
 		]

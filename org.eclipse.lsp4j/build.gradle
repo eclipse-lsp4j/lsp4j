@@ -14,7 +14,6 @@ targetCompatibility = '1.8'
 dependencies {
 	compile project(":org.eclipse.lsp4j.annotations")
 	compile project(":org.eclipse.lsp4j.jsonrpc")
-	compile "com.google.code.findbugs:jsr305:$versions.jsr305"
 	testCompile "junit:junit:$versions.junit"
 }
 

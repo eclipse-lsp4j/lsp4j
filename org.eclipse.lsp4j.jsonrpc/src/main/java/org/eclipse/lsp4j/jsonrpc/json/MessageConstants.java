@@ -5,12 +5,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.jsonrpc.json
+package org.eclipse.lsp4j.jsonrpc.json;
 
-interface MessageConstants {
-    static val JSONRPC_VERSION = '2.0'
-    static val CONTENT_LENGTH_HEADER = 'Content-Length'
-    static val CONTENT_TYPE_HEADER = 'Content-Type'
-    static val JSON_MIME_TYPE = 'application/json'
-    static val CRLF = '\r\n'
+public interface MessageConstants {
+	
+    public static String JSONRPC_VERSION = "2.0";
+    public static String CONTENT_LENGTH_HEADER = "Content-Length";
+    public static String CONTENT_TYPE_HEADER = "Content-Type";
+    public static String JSON_MIME_TYPE = "application/json";
+    public static String CRLF = "\r\n";
+    
 }

@@ -8,7 +8,11 @@
 package org.eclipse.lsp4j.jsonrpc;
 
 public interface MessageProducer {
-
+	
+	/**
+	 * Listen to a message source and forward all messages to the given consumer. Typically this method
+	 * blocks until the message source is unable to deliver more messages.
+	 */
 	void listen(MessageConsumer messageConsumer);
 	
 }
