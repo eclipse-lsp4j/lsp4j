@@ -88,13 +88,12 @@ public class MessageJsonHandler {
 			result.setId(requestId);
 			result.setMethod(method);
 			JsonElement paramsElement = json.get("params");
-			if (paramsElement != null && paramsElement.isJsonObject()) {
-				JsonObject params = paramsElement.getAsJsonObject();
+			if (paramsElement != null) {
 				Type paramType = null;
 				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
 				if (jsonRpcMethod != null)
 					paramType = jsonRpcMethod.getParameterType();
-				result.setParams(gson.fromJson(params, paramType != null ? paramType : Object.class));
+				result.setParams(gson.fromJson(paramsElement, paramType != null ? paramType : Object.class));
 			}
 			return result;
 		} catch (Exception e) {
@@ -127,9 +126,8 @@ public class MessageJsonHandler {
 				result.setResult(gson.fromJson(resultElem, resultType != null ? resultType : Object.class));
 			} else {
 				JsonElement errorElement = json.get("error");
-				if (errorElement != null && errorElement.isJsonObject()) {
-					JsonObject error = errorElement.getAsJsonObject();
-					result.setError(gson.fromJson(error, ResponseError.class));
+				if (errorElement != null) {
+					result.setError(gson.fromJson(errorElement, ResponseError.class));
 				}
 			}
 			return result;
@@ -143,13 +141,13 @@ public class MessageJsonHandler {
 			NotificationMessage result = new NotificationMessage();
 			result.setMethod(method);
 			JsonElement paramsElement = json.get("params");
-			if (paramsElement != null && paramsElement.isJsonObject()) {
-				JsonObject params = paramsElement.getAsJsonObject();
+			if (paramsElement != null) {
+				Type paramType = null;
 				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
 				if (jsonRpcMethod != null) {
-					Type paramType = jsonRpcMethod.getParameterType();
-					result.setParams(gson.fromJson(params, paramType != null ? paramType : Object.class));
+					paramType = jsonRpcMethod.getParameterType();
 				}
+				result.setParams(gson.fromJson(paramsElement, paramType != null ? paramType : Object.class));
 			}
 			return result;
 		} catch (Exception e) {

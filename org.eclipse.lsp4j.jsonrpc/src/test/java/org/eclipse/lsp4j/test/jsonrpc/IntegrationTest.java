@@ -9,7 +9,6 @@ package org.eclipse.lsp4j.test.jsonrpc;
 
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 
@@ -46,10 +45,10 @@ public class IntegrationTest {
 		PipedOutputStream out = new PipedOutputStream();
 		PipedInputStream in2 = new PipedInputStream();
 		PipedOutputStream out2 = new PipedOutputStream();
-
+		
 		in.connect(out2);
 		out.connect(in2);
-
+		
 		MyClient client = new MyClient() {
 
 			@Override
@@ -59,9 +58,8 @@ public class IntegrationTest {
 
 		};
 		Launcher<MyServer> clientSideLauncher = Launcher.createLauncher(client, MyServer.class, in, out);
-
+		
 		// create server side
-
 		MyServer server = new MyServer() {
 
 			@Override
@@ -71,13 +69,13 @@ public class IntegrationTest {
 
 		};
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in2, out2);
-
+		
 		clientSideLauncher.startListening();
 		serverSideLauncher.startListening();
 		
 		CompletableFuture<MyParam> fooFuture = clientSideLauncher.getRemoteProxy().askServer(new MyParam("FOO"));
 		CompletableFuture<MyParam> barFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("BAR"));
-
+		
 		Assert.assertEquals("FOO", fooFuture.get().value);
 		Assert.assertEquals("BAR", barFuture.get().value);
 	}
@@ -89,25 +87,26 @@ public class IntegrationTest {
 		PipedOutputStream out = new PipedOutputStream();
 		PipedInputStream in2 = new PipedInputStream();
 		PipedOutputStream out2 = new PipedOutputStream();
-
+		
 		in.connect(out2);
 		out.connect(in2);
 		
-		ArrayBlockingQueue<Boolean> cancellationHappend = new ArrayBlockingQueue<Boolean>(1);
-
+		boolean[] cancellationHappened = new boolean[1];
+		
 		MyClient client = new MyClient() {
 
 			@Override
 			public CompletableFuture<MyParam> askClient(MyParam param) {
 				return CompletableFutures.computeAsync(cancelToken -> {
 					try {
-						Thread.sleep(500);
-					} catch (Exception e) {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						Assert.fail("Thread was interrupted unexpectedly.");
 					}
 					try {
 						cancelToken.checkCanceled();
 					} catch (CancellationException e) {
-						cancellationHappend.add(true);
+						cancellationHappened[0] = true;
 					}
 					return param;
 				});
@@ -115,9 +114,8 @@ public class IntegrationTest {
 
 		};
 		Launcher<MyServer> clientSideLauncher = Launcher.createLauncher(client, MyServer.class, in, out);
-
+		
 		// create server side
-
 		MyServer server = new MyServer() {
 
 			@Override
@@ -127,17 +125,23 @@ public class IntegrationTest {
 
 		};
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in2, out2);
-
+		
 		clientSideLauncher.startListening();
 		serverSideLauncher.startListening();
 		
 		CompletableFuture<MyParam> future = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
 		future.cancel(true);
-		cancellationHappend.take();
+		long startTime = System.currentTimeMillis();
+		while (!cancellationHappened[0]) {
+			Thread.sleep(50);
+			if (System.currentTimeMillis() - startTime > 2000)
+				Assert.fail("Timeout waiting for confirmation of cancellation.");
+		}
 		try {
 			future.get();
-			Assert.fail("expected cancellation");
+			Assert.fail("Expected cancellation.");
 		} catch (CancellationException e) {
 		}
 	}
+	
 }
