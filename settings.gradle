@@ -8,5 +8,5 @@
 
 rootProject.name = 'lsp4j'
 include 'org.eclipse.lsp4j'
-include 'org.eclipse.lsp4j.annotations'
+include 'org.eclipse.lsp4j.generator'
 include 'org.eclipse.lsp4j.jsonrpc'
