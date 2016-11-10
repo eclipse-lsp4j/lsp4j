@@ -1,0 +1,79 @@
+/*******************************************************************************
+ * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
+apply plugin: 'osgi'
+
+def baseVersion = project.version
+if (baseVersion.endsWith('-SNAPSHOT'))
+	baseVersion = baseVersion.substring(0, baseVersion.length() - 9)
+
+jar.manifest {
+	version = baseVersion + '.' + buildTime
+}
+
+def limitLineLength = { line, output ->
+	def firstLine = true
+	while (line.length() > 70) {
+		if (firstLine) {
+			output.add(line.substring(0, 70))
+			line = line.substring(70)
+			firstLine = false
+		} else {
+			output.add(' ' + line.substring(0, 69))
+			line = line.substring(69)
+		}
+	}
+	if (firstLine)
+		output.add(line)
+	else
+		output.add(' ' + line)
+}
+
+def ignoreInstructions = ['Import-Package:', 'Export-Package:', 'Require-Capability:']
+
+task sourcesJarManifest(type: Copy) {
+	dependsOn(jar)
+    from "$buildDir/tmp/jar/MANIFEST.MF"
+    into "$buildDir/tmp/sourcesJar"
+    doLast {
+    	def f = new File("$buildDir/tmp/sourcesJar/MANIFEST.MF")
+    	def lines = new ArrayList()
+    	def doIgnore = false
+    	f.eachLine { line ->
+    		if (line.startsWith('Bundle-SymbolicName:')) {
+    			limitLineLength(line + '.source', lines)
+    			doIgnore = false
+    		} else if (ignoreInstructions.any{ prefix -> line.startsWith(prefix) }) {
+    			doIgnore = true
+    		} else if (!line.isEmpty() && !(doIgnore && line.startsWith(' '))) {
+    			lines.add(line)
+    			doIgnore = false
+    		}
+    	}
+    	limitLineLength('Eclipse-SourceBundle: ' + project.name + ';version="' + baseVersion + '.' + buildTime + '"', lines)
+    	def writer = new PrintWriter(f)
+    	lines.each { line -> writer.println(line) }
+    	writer.close()
+    }
+}
+
+sourcesJar {
+	dependsOn sourcesJarManifest
+	inputs.file("$buildDir/tmp/sourcesJar/MANIFEST.MF")
+	manifest {
+		from "$buildDir/tmp/sourcesJar/MANIFEST.MF"
+	}
+}
+
+task eclipseManifest(type: Copy) {
+	dependsOn(jar)
+    from "$buildDir/tmp/jar/MANIFEST.MF"
+    into 'META-INF'
+}
+
+tasks['eclipse'].dependsOn(eclipseManifest)

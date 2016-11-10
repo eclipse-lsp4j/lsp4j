@@ -1,0 +1,49 @@
+/*******************************************************************************
+ * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	javaMaven
+}
+
+dependencies {
+	// http://stackoverflow.com/questions/4206679/can-anyone-give-a-good-example-of-using-org-apache-maven-cli-mavencli-programatt
+	javaMaven 'org.slf4j:slf4j-simple:1.7.21'
+	javaMaven 'org.eclipse.aether:aether-connector-basic:1.1.0'
+	javaMaven 'org.eclipse.aether:aether-transport-wagon:1.1.0'
+	javaMaven 'org.apache.maven.wagon:wagon-http:2.10'
+	javaMaven 'org.apache.maven.wagon:wagon-file:2.10'
+	javaMaven 'org.apache.maven.wagon:wagon-http-lightweight:2.10'
+	javaMaven 'org.apache.maven.wagon:wagon-provider-api:2.10'
+	javaMaven 'org.apache.maven:maven-embedder:3.3.9'
+}
+
+task cleanLocalP2Repo(type: Delete) {
+	group = 'Repository'
+	description = 'Delete the local P2 repository'
+	delete 'build/p2-repository'
+}
+
+task createLocalP2Repo(type: JavaExec) {
+	group = 'Repository'
+	description = 'Create a local P2 repository'
+	dependsOn cleanLocalP2Repo,
+		":org.eclipse.lsp4j:createLocalMavenRepo",
+		":org.eclipse.lsp4j.annotations:createLocalMavenRepo",
+		":org.eclipse.lsp4j.services:createLocalMavenRepo"
+	classpath configurations.javaMaven
+	workingDir 'gradle/maven-tycho-p2-repository'
+	main = 'org.apache.maven.cli.MavenCli'
+	systemProperties = [
+		'maven.multiModuleProjectDirectory': 'gradle/maven-tycho-p2-repository'
+	]
+	args '-U', 'install'
+}

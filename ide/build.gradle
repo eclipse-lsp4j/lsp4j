@@ -1,0 +1,39 @@
+plugins {
+	id 'com.diffplug.gradle.oomph.ide' version '3.1.0'
+}
+
+oomphIde {
+	splash 'typefox.png'
+
+	// JDT neon
+	repoEclipse '4.6.0'
+	jdt {}
+
+	// add buildship support
+	repo    'http://download.eclipse.org/buildship/updates/e45/milestones/2.x/'
+	feature 'org.eclipse.buildship'
+
+	// add xtend support
+	repo 'http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/'
+	feature 'org.eclipse.xtend.sdk'
+
+	// setup the workspace
+	eclipseIni {
+		vmargs('-Xmx2g')
+	}
+	// normally we could just call `addAllProjects()`
+	// but something in the xtend plugin is messing up
+	// goomph (org.eclipse bundles with different signing
+	// info).  Putting the ide in a separate build and
+	// explicitly adding the folders is an easy workaround.
+	addProjectFolder('../')
+	addProjectFolder('../org.eclipse.lsp4j')
+	addProjectFolder('../org.eclipse.lsp4j.annotations')
+	addProjectFolder('../org.eclipse.lsp4j.services')
+
+	// setup theming
+	style {
+		classicTheme()	// oldschool cool
+		niceText()		// nice fonts and visible whitespace
+	}
+}

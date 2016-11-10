@@ -1,0 +1,22 @@
+/*******************************************************************************
+ * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
+description 'Xtend active annotations that generate Java code from Language Server interfaces'
+
+dependencies {
+	compile "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtext"
+	compile "com.google.code.findbugs:jsr305:$versions.jsr305"
+}
+
+jar.manifest {
+	name = 'Language Server Java Annotations'
+	vendor = 'Eclipse LSP4J'
+	instruction 'Import-Package', "javax.annotation;version=!;resolution:=optional"
+	instruction 'Import-Package', "com.google.common.*;version=\"$versions.guava\""
+	instruction 'Import-Package', '*'
+}
