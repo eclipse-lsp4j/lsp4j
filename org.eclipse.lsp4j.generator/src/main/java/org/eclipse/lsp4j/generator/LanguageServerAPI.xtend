@@ -5,17 +5,15 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.test
+package org.eclipse.lsp4j.generator
 
-import org.eclipse.lsp4j.CodeLens
-import org.eclipse.lsp4j.generator.LanguageServerAPI
-import org.junit.Assert
-import org.junit.Test
+import java.lang.annotation.ElementType
+import java.lang.annotation.Target
+import org.eclipse.xtend.lib.macro.Active
+import java.lang.annotation.Retention
 
-class NoAnnotationTest {
-    
-    @Test def void testNoAnnotation() {
-        Assert.assertFalse(CodeLens.annotations.exists[annotationType == LanguageServerAPI])
-    }
-    
+@Target(ElementType.TYPE)
+@Active(LanguageServerProcessor)
+@Retention(SOURCE)
+annotation LanguageServerAPI {
 }
