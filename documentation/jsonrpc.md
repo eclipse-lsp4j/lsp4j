@@ -8,7 +8,7 @@ On the lowest Level JSON RPC just sends messages from a client to a server. Thos
 
 # Endpoint
 
-LSP4J provides the notion of an [Endpoint] (https://github.com/eclipse/lsp4j/blob/master/org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/Endpoint.java) that takes care of the connecting a request messages with responses. The interface defines two methods 
+LSP4J provides the notion of an [Endpoint] (../org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/Endpoint.java) that takes care of the connecting a request messages with responses. The interface defines two methods 
 
 ``` java
 /**
@@ -36,7 +36,7 @@ The returned `CompletableFuture` will complete once a corresponsing result messa
 
 # Cancelling Requests
 
-The LSP defines an extension to the JSON RPC, that allows to cancel requests. It is done through a special notification message, that contains the request id that should be cancelled. If you want a pending request in LSP4J, you can simply call `cancel(true)` on the returned `CompletableFuture`. The `RemoteEndpoint` will send the cancellation notification. If you are implementing a request message, you should return a `CompletableFuture` created through [`CompletebleFutures.computeAsync`] (https://github.com/eclipse/lsp4j/blob/master/org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/CompletableFutures.java#L24). It accepts a lambda that is provided with a `CancelChecker`, which you need to ask `checkCanceled` and which will throw a `CancellationException` in case the request got canceled.
+The LSP defines an extension to the JSON RPC, that allows to cancel requests. It is done through a special notification message, that contains the request id that should be cancelled. If you want a pending request in LSP4J, you can simply call `cancel(true)` on the returned `CompletableFuture`. The `RemoteEndpoint` will send the cancellation notification. If you are implementing a request message, you should return a `CompletableFuture` created through [`CompletebleFutures.computeAsync`] (../org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/CompletableFutures.java#L24). It accepts a lambda that is provided with a `CancelChecker`, which you need to ask `checkCanceled` and which will throw a `CancellationException` in case the request got canceled.
 
 ``` java
 @JsonRequest
@@ -86,6 +86,6 @@ Endpoint endpoint = ...
 MyService proxy = ServiceEndpoints.toProxy(endpoint, MyService.class);
 ```
 
-Of course you can use the same interface, as is done with the [interfaces](https://github.com/eclipse/lsp4j/blob/master/org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/services/LanguageServer.java) defining the messages of the LSP.
+Of course you can use the same interface, as is done with the [interfaces](../org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/services/LanguageServer.java) defining the messages of the LSP.
 
 
