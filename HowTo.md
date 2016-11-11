@@ -15,12 +15,11 @@ Now that you have an actual implementation you can connect it with a remote clie
 The utility class LSPLauncher does most of the wiring for you. Here is the code needed.
 
 ``` java
-LanguageServer myImpl = ... ;
+LanguageServer server = ... ;
 Launcher<LanguageClient> launcher = 
-    Launcher.createLauncher(server, 
-                            LanguageClient.class, 
-                            inputstream, 
-                            outputstream);
+    LSPLauncher.createServerLauncher(server,
+                                     inputstream, 
+                                     outputstream);
 ```
 
 With this we have a Launcher object on which we can obtain the remote proxy. Usually a language server should also implement `LanguageClientAware`, which defines a single method `connect(LanguageClient)` over which you can pass the remote proxy to the language server.
