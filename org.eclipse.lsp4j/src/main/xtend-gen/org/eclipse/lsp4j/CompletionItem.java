@@ -1,5 +1,7 @@
 package org.eclipse.lsp4j;
 
+import java.util.List;
+import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -55,6 +57,20 @@ public class CompletionItem {
    * insertText is ignored.
    */
   private TextEdit textEdit;
+  
+  /**
+   * An optional array of additional text edits that are applied when
+   * selecting this completion. Edits must not overlap with the main edit
+   * nor with themselves.
+   */
+  private List<TextEdit> additionalTextEdits;
+  
+  /**
+   * An optional command that is executed *after* inserting this completion. *Note* that
+   * additional modifications to the current document should be described with the
+   * additionalTextEdits-property.
+   */
+  private Command command;
   
   /**
    * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
@@ -184,6 +200,44 @@ public class CompletionItem {
   }
   
   /**
+   * An optional array of additional text edits that are applied when
+   * selecting this completion. Edits must not overlap with the main edit
+   * nor with themselves.
+   */
+  @Pure
+  public List<TextEdit> getAdditionalTextEdits() {
+    return this.additionalTextEdits;
+  }
+  
+  /**
+   * An optional array of additional text edits that are applied when
+   * selecting this completion. Edits must not overlap with the main edit
+   * nor with themselves.
+   */
+  public void setAdditionalTextEdits(final List<TextEdit> additionalTextEdits) {
+    this.additionalTextEdits = additionalTextEdits;
+  }
+  
+  /**
+   * An optional command that is executed *after* inserting this completion. *Note* that
+   * additional modifications to the current document should be described with the
+   * additionalTextEdits-property.
+   */
+  @Pure
+  public Command getCommand() {
+    return this.command;
+  }
+  
+  /**
+   * An optional command that is executed *after* inserting this completion. *Note* that
+   * additional modifications to the current document should be described with the
+   * additionalTextEdits-property.
+   */
+  public void setCommand(final Command command) {
+    this.command = command;
+  }
+  
+  /**
    * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
    */
   @Pure
@@ -214,6 +268,8 @@ public class CompletionItem {
     b.add("filterText", this.filterText);
     b.add("insertText", this.insertText);
     b.add("textEdit", this.textEdit);
+    b.add("additionalTextEdits", this.additionalTextEdits);
+    b.add("command", this.command);
     b.add("data", this.data);
     return b.toString();
   }
@@ -270,6 +326,16 @@ public class CompletionItem {
         return false;
     } else if (!this.textEdit.equals(other.textEdit))
       return false;
+    if (this.additionalTextEdits == null) {
+      if (other.additionalTextEdits != null)
+        return false;
+    } else if (!this.additionalTextEdits.equals(other.additionalTextEdits))
+      return false;
+    if (this.command == null) {
+      if (other.command != null)
+        return false;
+    } else if (!this.command.equals(other.command))
+      return false;
     if (this.data == null) {
       if (other.data != null)
         return false;
@@ -291,6 +357,8 @@ public class CompletionItem {
     result = prime * result + ((this.filterText== null) ? 0 : this.filterText.hashCode());
     result = prime * result + ((this.insertText== null) ? 0 : this.insertText.hashCode());
     result = prime * result + ((this.textEdit== null) ? 0 : this.textEdit.hashCode());
+    result = prime * result + ((this.additionalTextEdits== null) ? 0 : this.additionalTextEdits.hashCode());
+    result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
     result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());
     return result;
   }

@@ -35,11 +35,13 @@ class CodeActionParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+
 	/**
 	 * The range for which the command was invoked.
 	 */
 	@NonNull
 	Range range
+
 	/**
 	 * Context carrying additional information.
 	 */
@@ -61,10 +63,12 @@ class CodeLens {
 	 */
 	@NonNull
 	Range range
+
 	/**
 	 * The command this code lens represents.
 	 */
 	Command command
+
 	/**
 	 * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
 	 */
@@ -105,11 +109,13 @@ class Command {
 	 */
 	@NonNull
 	String title
+
 	/**
 	 * The identifier of the actual command handler.
 	 */
 	@NonNull
 	String command
+
 	/**
 	 * Arguments that the command handler should be invoked with.
 	 */
@@ -129,35 +135,57 @@ class CompletionItem {
 	 */
 	@NonNull
 	String label
+
 	/**
 	 * The kind of this completion item. Based of the kind an icon is chosen by the editor.
 	 */
 	CompletionItemKind kind
+
 	/**
 	 * A human-readable string with additional information about this item, like type or symbol information.
 	 */
 	String detail
+
 	/**
 	 * A human-readable string that represents a doc-comment.
 	 */
 	String documentation
+
 	/**
 	 * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
 	 */
 	String sortText
+
 	/**
 	 * A string that should be used when filtering a set of completion items. When `falsy` the label is used.
 	 */
 	String filterText
+
 	/**
 	 * A string that should be inserted a document when selecting this completion. When `falsy` the label is used.
 	 */
 	String insertText
+
 	/**
 	 * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
 	 * insertText is ignored.
 	 */
 	TextEdit textEdit
+
+	/**
+	 * An optional array of additional text edits that are applied when
+	 * selecting this completion. Edits must not overlap with the main edit
+	 * nor with themselves.
+	 */
+	List<TextEdit> additionalTextEdits
+
+	/**
+	 * An optional command that is executed *after* inserting this completion. *Note* that
+	 * additional modifications to the current document should be described with the
+	 * additionalTextEdits-property.
+	 */
+	Command command
+
 	/**
 	 * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
 	 */
@@ -173,6 +201,7 @@ class CompletionList {
 	 * This list it not complete. Further typing should result in recomputing this list.
 	 */
 	boolean isIncomplete
+
 	/**
 	 * The completion items.
 	 */
@@ -189,6 +218,7 @@ class CompletionOptions {
 	 * The server provides support to resolve additional information for a completion item.
 	 */
 	Boolean resolveProvider
+
 	/**
 	 * The characters that trigger completion automatically.
 	 */
@@ -205,19 +235,23 @@ class Diagnostic {
 	 */
 	@NonNull
 	Range range
+
 	/**
 	 * The diagnostic's severity. Can be omitted. If omitted it is up to the client to interpret diagnostics as error,
 	 * warning, info or hint.
 	 */
 	DiagnosticSeverity severity
+
 	/**
 	 * The diagnostic's code. Can be omitted.
 	 */
 	String code
+
 	/**
 	 * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
 	 */
 	String source
+
 	/**
 	 * The diagnostic's message.
 	 */
@@ -245,11 +279,13 @@ class DidChangeTextDocumentParams {
 	 */
 	@NonNull
 	VersionedTextDocumentIdentifier textDocument
+
 	/**
 	 * Legacy property to support protocol version 1.0 requests.
 	 */
 	@Deprecated
 	String uri
+
 	/**
 	 * The actual content changes.
 	 */
@@ -296,6 +332,7 @@ class DidOpenTextDocumentParams extends TextDocumentIdentifier {
 	 */
 	@NonNull
 	TextDocumentItem textDocument
+
 	/**
 	 * Legacy property to support protocol version 1.0 requests.
 	 */
@@ -325,6 +362,7 @@ class DocumentFormattingParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+
 	/**
 	 * The format options
 	 */
@@ -343,6 +381,7 @@ class DocumentHighlight {
 	 */
 	@NonNull
 	Range range
+
 	/**
 	 * The highlight kind, default is {@link DocumentHighlightKind#Text}.
 	 */
@@ -359,6 +398,7 @@ class DocumentOnTypeFormattingOptions {
 	 */
 	@NonNull
 	String firstTriggerCharacter
+
 	/**
 	 * More trigger characters.
 	 */
@@ -375,6 +415,7 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	 */
 	@NonNull
 	Position position
+
 	/**
 	 * The character that has been typed.
 	 */
@@ -416,6 +457,7 @@ class FileEvent {
 	 */
 	@NonNull
 	String uri
+
 	/**
 	 * The change type.
 	 */
@@ -432,10 +474,12 @@ class FormattingOptions {
 	 * Size of a tab in spaces.
 	 */
 	int tabSize
+
 	/**
 	 * Prefer spaces over tabs.
 	 */
 	boolean insertSpaces
+
 	/**
 	 * Signature for further properties.
 	 */
@@ -452,6 +496,7 @@ class Hover {
 	 */
 	@NonNull
 	List<String> contents = newArrayList()
+
 	/**
 	 * An optional range
 	 */
@@ -476,18 +521,22 @@ class InitializeParams {
 	 * The process Id of the parent process that started the server.
 	 */
 	Integer processId
+
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
 	 */
 	String rootPath
+
 	/**
 	 * User provided initialization options.
 	 */
 	Object initializationOptions
+
 	/**
 	 * The capabilities provided by the client (editor)
 	 */
 	ClientCapabilities capabilities
+
 	/**
 	 * An optional extension to the protocol.
 	 * To tell the server what client (editor) is talking to it.
@@ -511,6 +560,7 @@ class InitializeResult {
 class Location {
 	@NonNull
 	String uri
+
 	@NonNull
 	Range range
 }
@@ -542,6 +592,7 @@ class MessageParams {
 	 */
 	@NonNull
 	MessageType type
+
 	/**
 	 * The actual message.
 	 */
@@ -559,6 +610,7 @@ class ParameterInformation {
 	 */
 	@NonNull
 	String label
+
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
@@ -574,6 +626,7 @@ class Position {
 	 * Line position in a document (zero-based).
 	 */
 	int line
+
 	/**
 	 * Character offset on a line in a document (zero-based).
 	 */
@@ -590,6 +643,7 @@ class PublishDiagnosticsParams {
 	 */
 	@NonNull
 	String uri
+
 	/**
 	 * An array of diagnostic information items.
 	 */
@@ -607,6 +661,7 @@ class Range {
 	 */
 	@NonNull
 	Position start
+
 	/**
 	 * The range's end position
 	 */
@@ -646,11 +701,13 @@ class RenameParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+
 	/**
 	 * The position at which this request was send.
 	 */
 	@NonNull
 	Position position
+
 	/**
 	 * The new name of the symbol. If the given name is not valid the request must return a
 	 * ResponseError with an appropriate message set.
@@ -665,58 +722,72 @@ class ServerCapabilities {
 	 * Defines how text documents are synced.
 	 */
 	TextDocumentSyncKind textDocumentSync
+
 	/**
 	 * The server provides hover support.
 	 */
 	Boolean hoverProvider
+
 	/**
 	 * The server provides completion support.
 	 */
 	CompletionOptions completionProvider
+
 	/**
 	 * The server provides signature help support.
 	 */
 	SignatureHelpOptions signatureHelpProvider
+
 	/**
 	 * The server provides goto definition support.
 	 */
 	Boolean definitionProvider
+
 	/**
 	 * The server provides find references support.
 	 */
 	Boolean referencesProvider
+
 	/**
 	 * The server provides document highlight support.
 	 */
 	Boolean documentHighlightProvider
+
 	/**
 	 * The server provides document symbol support.
 	 */
 	Boolean documentSymbolProvider
+
 	/**
 	 * The server provides workspace symbol support.
 	 */
 	Boolean workspaceSymbolProvider
+
 	/**
 	 * The server provides code actions.
 	 */
 	Boolean codeActionProvider
+
 	/**
 	 * The server provides code lens.
 	 */
 	CodeLensOptions codeLensProvider
+
 	/**
 	 * The server provides document formatting.
 	 */
 	Boolean documentFormattingProvider
+
 	/**
 	 * The server provides document range formatting.
 	 */
 	Boolean documentRangeFormattingProvider
+
 	/**
 	 * The server provides document formatting on typing.
 	 */
 	DocumentOnTypeFormattingOptions documentOnTypeFormattingProvider
+
 	/**
 	 * The server provides rename support.
 	 */
@@ -747,10 +818,12 @@ class SignatureHelp {
 	 */
 	@NonNull
 	List<SignatureInformation> signatures = new ArrayList
+
 	/**
 	 * The active signature.
 	 */
 	Integer activeSignature
+
 	/**
 	 * The active parameter of the active signature.
 	 */
@@ -779,10 +852,12 @@ class SignatureInformation {
 	 */
 	@NonNull
 	String label
+
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
 	String documentation
+
 	/**
 	 * The parameters of this signature.
 	 */
@@ -799,16 +874,19 @@ class SymbolInformation {
 	 */
 	@NonNull
 	String name
+
 	/**
 	 * The kind of this symbol.
 	 */
 	@NonNull
 	SymbolKind kind
+
 	/**
 	 * The location of this symbol.
 	 */
 	@NonNull
 	Location location
+
 	/**
 	 * The name of the symbol containing this symbol.
 	 */
@@ -825,10 +903,12 @@ class TextDocumentContentChangeEvent {
 	 * The range of the document that changed.
 	 */
 	Range range
+
 	/**
 	 * The length of the range that got replaced.
 	 */
 	Integer rangeLength
+
 	/**
 	 * The new text of the document.
 	 */
@@ -858,15 +938,18 @@ class TextDocumentItem {
 	 */
 	@NonNull
 	String uri
+
 	/**
 	 * The text document's language identifier
 	 */
 	@NonNull
 	String languageId
+
 	/**
 	 * The version number of this document (it will strictly increase after each change, including undo/redo).
 	 */
 	int version
+
 	/**
 	 * The content of the opened  text document.
 	 */
@@ -884,11 +967,13 @@ class TextDocumentPositionParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+
 	/**
 	 * Legacy property to support protocol version 1.0 requests.
 	 */
 	@Deprecated
 	String uri
+
 	/**
 	 * The position inside the text document.
 	 */
@@ -906,6 +991,7 @@ class TextEdit {
 	 */
 	@NonNull
 	Range range
+
 	/**
 	 * The string to be inserted. For delete operations use an empty string.
 	 */
