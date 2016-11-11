@@ -67,3 +67,7 @@ CompletableFuture<CompletionList> result = languageServer
 // cancel the request
 result.cancel(true);
 ```
+
+# JSON RPC
+
+For more information about the underlying json rpc framework see [JSON RPC Documentation](jsonrpc.md).
