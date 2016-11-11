@@ -5,7 +5,7 @@ Java binding for the [Language Server Protocol](https://github.com/Microsoft/lan
 ### How To Use
 
 A brief overview of how to use LSP4J to implement a server or a client can be found here:
-https://github.com/TypeFox/ls-api/blob/lsp4j/HowTo.md
+https://github.com/eclipse/lsp4j/blob/master/HowTo.md
 
 ### Snapshots
 
@@ -16,6 +16,7 @@ Also, you can get them directly from the TypeFox Jenkins server:
  * http://services.typefox.io/open-source/jenkins/job/lsp4j/lastSuccessfulBuild/artifact/build/maven-repository/
  * http://services.typefox.io/open-source/jenkins/job/lsp4j/lastSuccessfulBuild/artifact/build/p2-repository/
 
-### License
+### Licenses
 
 [Eclipse Public License v1.0](https://www.eclipse.org/legal/epl-v10.html)
+[Eclipse Distribution License - v 1.0](https://www.eclipse.org/org/documents/edl-v10.php) [A BSD 3-clause License](https://opensource.org/licenses/BSD-3-Clause)
