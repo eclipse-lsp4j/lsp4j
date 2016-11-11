@@ -1,45 +1,52 @@
-# Core Concepts
+# Introduction
 
-The LSP is based on an extended version of [JSON RPC v2.0](http://www.jsonrpc.org/specification), for which LSP4J provides a Java implementation. There are basically three levels of interaction:
+A brief description for using LSP4j to develop a language server.
 
-# Basic Message Sending
+# Implement your language server
 
-On the lowest Level JSON RPC just sends messages from a client to a server. Those messages can be notifications, requests or responses. The relation between an incoming request and a sent response is done through a request id. As a user you usually don't want to do the wiring yourself, but want to work at least with an `Endpoint`.
+The first thing you should do is to implement your language server. To do so just implement the interface `org.eclipse.lsp4j.LanguageServer`.
 
-# Endpoint
+If you are implementing a client (e.g. an editor) you simply need to implement `org.eclipse.lsp4j.LanguageClient` instead.
 
-LSP4J provides the notion of an [Endpoint] (https://github.com/eclipse/lsp4j/blob/master/org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/Endpoint.java) that takes care of the connecting a request messages with responses. The interface defines two methods 
+# Launch and connect with a `LanguageClient`
+
+Now that you have an actual implementation you can connect it with a remote client. Let's assume you have an `Inputstream` and an `Outputstream`, over which you want to communicate with a language client.
+
+The utility class LSPLauncher does most of the wiring for you. Here is the code needed.
 
 ``` java
-/**
- * An endpoint is a generic interface that accepts jsonrpc requests and notifications.
- */
-public interface Endpoint {
+LanguageServer server = ... ;
+Launcher<LanguageClient> launcher = 
+    LSPLauncher.createServerLauncher(server,
+                                     inputstream, 
+                                     outputstream);
+```
 
-	CompletableFuture<?> request(String method, Object parameter);
-	
-	void notify(String method, Object parameter);
-	
+With this we have a Launcher object on which we can obtain the remote proxy. Usually a language server should also implement `LanguageClientAware`, which defines a single method `connect(LanguageClient)` over which you can pass the remote proxy to the language server.
+
+``` java
+if (myImpl instanceof LanguageClientAware) {
+   LanguageClient client = launcher.getRemoteProxy();
+   ((LanguageClientAware)myImpl).connect(client);
 }
 ```
 
-# Notifications
+Now your language server is not only able to receive messages from the other side, but can send messages back as well.
 
-You always work with two `Endpoints`. Usually one of the endpoints, a `RemoteEndpoint`, sits on some remote communication channel, like a socket and receives and sends json messages. A local `Endpoint` implementation is connected bidirectionally such that it can receive and send messages. For instance, when a notification messages comes in the `RemoteEndpoint` simply translates it to a call on your local Endpoint implementation. This simple approach works nicely in both directions.
-
-# Requests
-
-For requests the story is slightly more complicated. When a request message comes in, the `RemoteEndpoint` tracks the request `id` and invokes `request` on the local endpoint. In addition it adds completion stage to the returned `CompletableFuture`, that translates the result into a JSON RPC response message.
-
-For the other direction, if the implementation calls request on the RemoteEndpoint, the message is send and tracked locally. 
-The returned `CompletableFuture` will complete once a corresponsing result message is received.
-
-# Cancelling Requests
-
-The LSP defines an extension to the JSON RPC, that allows to cancel requests. It is done through a special notification message, that contains the request id that should be cancelled. If you want a pending request in LSP4J, you can simply call `cancel(true)` on the returned `CompletableFuture`. The `RemoteEndpoint` will send the cancellation notification. If you are implementing a request message, you should return a `CompletableFuture` created through [`CompletebleFutures.computeAsync`] (https://github.com/eclipse/lsp4j/blob/master/org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/CompletableFutures.java#L24). It accepts a lambda that is provided with a `CancelChecker`, which you need to ask `checkCanceled` and which will throw a `CancellationException` in case the request got canceled.
+The final thing you need to to do in order to start listening on the given inputstream, is this:
 
 ``` java
-@JsonRequest
+launcher.startListening();
+```
+
+This will start the listening process in a new thread.
+
+# Cancellation Support
+
+The LSP has extended JSON RPC with support for request cancellation. LSP4J supports this through the cancellation of `CompletableFuture`s. To use it a request method needs to be implemented like this:
+
+``` java
+@Override
 public CompletableFuture<CompletionList> completion(
                                          TextDocumentPositionParams position) {
    return CompletableFutures.computeAsync(cancelToken -> {
@@ -47,45 +54,16 @@ public CompletableFuture<CompletionList> completion(
       // cancellation like this
       cancelToken.checkCancelled();
       // more code...  and more cancel checking
-      return completionList;
    });
 }
 ```
+The method `checkCancelled` will throw a `CancellationException` in case the request was cancelled. So make sure you don't catch it accidentally.
 
-# Static Typing through Service Layer
-
-So far with `Endpoint` and `Object` as parameter and result the API is quite generic. In order to leverage Java's type system and tool support, the JSON RPC module supports the notion of service objects.
-
-# Service Objects
-
-A service object provides methods that are annotated with either `@JsonNotification` or `@JsonRequest`. A `GenericEndpoint` is a reflective implementation of an Endpoint, that simply delegates any calls to `request` or `notify` to the corresponding method in the service object. Here is a simple example:
+If you are on the other side and want to cancel a request you made, you need to call cancel on the returned future :
 
 ``` java
-public class MyService {
-   @JsonNotification public void sayHello(HelloParam param) {
-      ... do stuff 
-   }
-}
-
-// turn it into an Endpoint
-
-MyService service = new MyService();
-Endpoint serviceAsEndpoint = ServiceEndpoints.toEndpoint(service);
-
+CompletableFuture<CompletionList> result = languageServer
+                  .getTextDocumentService().completion(myparams);
+// cancel the request
+result.cancel(true);
 ```
-
-If in turn you want to talk to an Endpoint i a more statically typed fashion, the `EndpointProxy` comes in handy. It is a dynamic proxy for a given service interface with annotated @JsonRequest and @JsonNotification methods. You can create one like this:
-
-``` java
-public interface MyService {
-   @JsonNotification public void sayHello(HelloParam param);
-}
-
-
-Endpoint endpoint = ...
-MyService proxy = ServiceEndpoints.toProxy(endpoint, MyService.class);
-```
-
-Of course you can use the same interface, as is done with the [interfaces](https://github.com/eclipse/lsp4j/blob/master/org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/services/LanguageServer.java) defining the messages of the LSP.
-
-
