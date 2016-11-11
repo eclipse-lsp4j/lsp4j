@@ -6,10 +6,10 @@
    <bundle id="org.eclipse.lsp4j.source" version="0.1.0.qualifier">
       <category name="lsp4j"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.annotations" version="0.1.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.generator" version="0.1.0.qualifier">
       <category name="lsp4j"/>
    </bundle>
-   <bundle id="org.eclipse.lsp4j.annotations.source" version="0.1.0.qualifier">
+   <bundle id="org.eclipse.lsp4j.generator.source" version="0.1.0.qualifier">
       <category name="lsp4j"/>
    </bundle>
    <bundle id="org.eclipse.lsp4j.jsonrpc" version="0.1.0.qualifier">

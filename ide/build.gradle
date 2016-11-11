@@ -28,7 +28,7 @@ oomphIde {
 	// explicitly adding the folders is an easy workaround.
 	addProjectFolder('../')
 	addProjectFolder('../org.eclipse.lsp4j')
-	addProjectFolder('../org.eclipse.lsp4j.annotations')
+	addProjectFolder('../org.eclipse.lsp4j.generator')
 	addProjectFolder('../org.eclipse.lsp4j.jsonrpc')
 
 	// setup theming

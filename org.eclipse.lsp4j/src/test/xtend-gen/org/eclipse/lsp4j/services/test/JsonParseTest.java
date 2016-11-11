@@ -367,12 +367,10 @@ public class JsonParseTest {
   public void testRenameResponse() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_RENAME;
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = MessageMethods.DOC_RENAME;
+          break;
       }
       return _switchResult;
     };
@@ -537,12 +535,10 @@ public class JsonParseTest {
   public void testResponseError() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = "textDocument/rename";
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = "textDocument/rename";
+          break;
       }
       return _switchResult;
     };
@@ -628,12 +624,10 @@ public class JsonParseTest {
   public void testHoverResponse() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = MessageMethods.DOC_HOVER;
+          break;
       }
       return _switchResult;
     };

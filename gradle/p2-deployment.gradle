@@ -37,7 +37,7 @@ task createLocalP2Repo(type: JavaExec) {
 	description = 'Create a local P2 repository'
 	dependsOn cleanLocalP2Repo,
 		":org.eclipse.lsp4j:createLocalMavenRepo",
-		":org.eclipse.lsp4j.annotations:createLocalMavenRepo",
+		":org.eclipse.lsp4j.generator:createLocalMavenRepo",
 		":org.eclipse.lsp4j.jsonrpc:createLocalMavenRepo"
 	classpath configurations.javaMaven
 	workingDir 'gradle/maven-tycho-p2-repository'
