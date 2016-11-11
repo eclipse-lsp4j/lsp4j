@@ -5,7 +5,8 @@ Java binding for the [Language Server Protocol](https://github.com/Microsoft/lan
 ### How To Use
 
 A brief overview of how to use LSP4J to implement a server or a client can be found here:
-(documentation/GettingStarted.md)
+ * [Getting Started] (documentation/GettingStarted.md)
+ * [Core Concepts] (documentation/jsonrpc.md)
 
 ### Snapshots
 
