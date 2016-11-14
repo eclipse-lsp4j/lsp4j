@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -15,12 +17,34 @@ import java.util.logging.Logger;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 
+import com.google.common.util.concurrent.ForwardingFuture;
+
 public class ConcurrentMessageProcessor implements Runnable {
     
     public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
     		ExecutorService executorService) {
     	ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
-        return executorService.submit(reader);
+    	Future<?> result = executorService.submit(reader);
+    	return new ForwardingFuture<Object>() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			protected Future<Object> delegate() {
+				return (Future<Object>)result;
+			}
+    		
+			@Override
+			public boolean cancel(boolean mayInterruptIfRunning) {
+				if (mayInterruptIfRunning && messageProducer instanceof Closeable) {
+					try {
+						((Closeable) messageProducer).close();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+				return super.cancel(mayInterruptIfRunning);
+			}
+		};
     }
 	
 	private static final Logger LOG = Logger.getLogger(ConcurrentMessageProcessor.class.getName());
