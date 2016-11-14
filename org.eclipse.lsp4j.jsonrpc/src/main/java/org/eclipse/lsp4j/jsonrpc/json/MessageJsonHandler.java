@@ -12,7 +12,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
@@ -23,10 +22,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -93,12 +90,16 @@ public class MessageJsonHandler {
 				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
 				if (jsonRpcMethod != null)
 					paramType = jsonRpcMethod.getParameterType();
-				result.setParams(gson.fromJson(paramsElement, paramType != null ? paramType : Object.class));
+				result.setParams(fromJson(paramsElement, paramType));
 			}
 			return result;
 		} catch (Exception e) {
 			throw new InvalidMessageException("Could not parse request: " + e.getMessage(), json, requestId, e);
 		}
+	}
+
+	protected Object fromJson(JsonElement json, Type type) {
+		return gson.fromJson(json, type != null ? type : Object.class);
 	}
 	
 	protected ResponseMessage parseResponse(JsonObject json, String responseId) {
@@ -113,17 +114,8 @@ public class MessageJsonHandler {
 				JsonRpcMethod jsonRpcMethod = supportedMethods.get(methodProvider.resolveMethod(responseId));
 				if (jsonRpcMethod != null) {
 					resultType = jsonRpcMethod.getReturnType();
-					if (resultType != null && resultElem.isJsonArray()) {
-						JsonArray arrayElem = resultElem.getAsJsonArray();
-						List<?> list = Lists.newArrayListWithExpectedSize(arrayElem.size());
-						for (JsonElement e : arrayElem) {
-							list.add(gson.fromJson(e, resultType));
-						}
-						result.setResult(list);
-						return result;
-					}
 				}
-				result.setResult(gson.fromJson(resultElem, resultType != null ? resultType : Object.class));
+				result.setResult(fromJson(resultElem, resultType));
 			} else {
 				JsonElement errorElement = json.get("error");
 				if (errorElement != null) {
@@ -147,7 +139,7 @@ public class MessageJsonHandler {
 				if (jsonRpcMethod != null) {
 					paramType = jsonRpcMethod.getParameterType();
 				}
-				result.setParams(gson.fromJson(paramsElement, paramType != null ? paramType : Object.class));
+				result.setParams(fromJson(paramsElement, paramType));
 			}
 			return result;
 		} catch (Exception e) {
