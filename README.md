@@ -11,7 +11,7 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
 ### Snapshots
 
 Snapshots are regularly deployed to 
- * https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/lsp4j/org.eclipse.lsp4j/0.1.0-SNAPSHOT/
+ * https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/lsp4j/
 
 Also, you can get them directly from the TypeFox Jenkins server:
  * http://services.typefox.io/open-source/jenkins/job/lsp4j/lastSuccessfulBuild/artifact/build/maven-repository/
