@@ -17,11 +17,11 @@ public class ColoringInformation {
   private Range range;
   
   /**
-   * A list of highlighting style identifiers, that should be applied on
+   * A list of highlighting styles, that should be applied on
    * the range. Several styles could be merged on the client-side by
    * applying all styles on the range.
    */
-  private List<String> ids;
+  private List<Integer> styles;
   
   /**
    * The range that should be highlighted on the client-side.
@@ -39,31 +39,31 @@ public class ColoringInformation {
   }
   
   /**
-   * A list of highlighting style identifiers, that should be applied on
+   * A list of highlighting styles, that should be applied on
    * the range. Several styles could be merged on the client-side by
    * applying all styles on the range.
    */
   @Pure
-  public List<String> getIds() {
-    return this.ids;
+  public List<Integer> getStyles() {
+    return this.styles;
   }
   
   /**
-   * A list of highlighting style identifiers, that should be applied on
+   * A list of highlighting styles, that should be applied on
    * the range. Several styles could be merged on the client-side by
    * applying all styles on the range.
    */
-  public void setIds(final List<String> ids) {
-    this.ids = ids;
+  public void setStyles(final List<Integer> styles) {
+    this.styles = styles;
   }
   
   public ColoringInformation() {
     
   }
   
-  public ColoringInformation(final Range range, final List<String> ids) {
+  public ColoringInformation(final Range range, final List<Integer> styles) {
     this.range = range;
-    this.ids = ids;
+    this.styles = styles;
   }
   
   @Override
@@ -71,7 +71,7 @@ public class ColoringInformation {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("range", this.range);
-    b.add("ids", this.ids);
+    b.add("styles", this.styles);
     return b.toString();
   }
   
@@ -92,10 +92,10 @@ public class ColoringInformation {
         return false;
     } else if (!this.range.equals(other.range))
       return false;
-    if (this.ids == null) {
-      if (other.ids != null)
+    if (this.styles == null) {
+      if (other.styles != null)
         return false;
-    } else if (!this.ids.equals(other.ids))
+    } else if (!this.styles.equals(other.styles))
       return false;
     return true;
   }
@@ -106,7 +106,7 @@ public class ColoringInformation {
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.ids== null) ? 0 : this.ids.hashCode());
+    result = prime * result + ((this.styles== null) ? 0 : this.styles.hashCode());
     return result;
   }
 }
