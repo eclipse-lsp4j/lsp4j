@@ -48,32 +48,31 @@ class ColoringInformation {
 
 class ColoringStyle {
 	
-	public val identifier     = 1
-	public val entity         = 2
-	public val constructor    = 3
-	public val operators      = 4
-	public val tag            = 5
-	public val namespace      = 6
-	public val keyword        = 7
-	public val info_token     = 8
-	public val type           = 9
-	public val string         = 10
-	public val warn_token     = 11
-	public val predefined     = 12
-	public val string_escape  = 13
-	public val error_token    = 14
-	public val invalid        = 15
-	public val comment        = 16
-	public val debug_token    = 17
-	public val comment_doc    = 18
-	public val regexp         = 19
-	public val constant       = 20
-	public val attribute      = 21
+	public static val Identifier     = 1
+	public static val Entity         = 2
+	public static val Constructor    = 3
+	public static val Operators      = 4
+	public static val Tag            = 5
+	public static val Namespace      = 6
+	public static val Keyword        = 7
+	public static val Info_token     = 8
+	public static val Type           = 9
+	public static val String         = 10
+	public static val Warn_token     = 11
+	public static val Predefined     = 12
+	public static val String_escape  = 13
+	public static val Error_token    = 14
+	public static val Invalid        = 15
+	public static val Comment        = 16
+	public static val Debug_token    = 17
+	public static val Comment_doc    = 18
+	public static val Regexp         = 19
+	public static val Constant       = 20
+	public static val Attribute      = 21
 	
-	// modifiers
-	public val modifier_public = 22
-	public val modifier_private = 23
-	public val modifier_protected = 24
-	public val modifier_static = 25
-	public val modifier_final= 26
+	public static val Modifier_public  = 22
+	public static val Modifier_private = 23
+	public static val Modifier_protected = 24
+	public static val Modifier_static  = 25
+	public static val Modifier_final   = 26
 }
