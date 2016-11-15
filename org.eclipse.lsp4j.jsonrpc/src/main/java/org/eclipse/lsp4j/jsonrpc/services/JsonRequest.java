@@ -22,4 +22,5 @@ import java.util.concurrent.CompletableFuture;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface JsonRequest {
 	String value() default "";
+	boolean useSegment() default true;
 }

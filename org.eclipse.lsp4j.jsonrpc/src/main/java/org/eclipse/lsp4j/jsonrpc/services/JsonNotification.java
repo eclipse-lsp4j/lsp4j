@@ -21,4 +21,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface JsonNotification {
 	String value() default "";
+	boolean useSegment() default true;
 }

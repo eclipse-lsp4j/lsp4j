@@ -55,7 +55,7 @@ public interface TextDocumentService {
 	 * The request is sent from the client to the server to resolve additional
 	 * information for a given completion item.
 	 */
-	@JsonRequest
+	@JsonRequest(value="completionItem/resolve", useSegment = false)
 	CompletableFuture<CompletionItem> resolveCompletionItem(CompletionItem unresolved);
 
 	/**
@@ -122,7 +122,7 @@ public interface TextDocumentService {
 	 * The code lens resolve request is sent from the clien to the server to
 	 * resolve the command for a given code lens item.
 	 */
-	@JsonRequest
+	@JsonRequest(value="codeLens/resolve", useSegment = false)
 	CompletableFuture<CodeLens> resolveCodeLens(CodeLens unresolved);
 
 	/**

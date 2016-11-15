@@ -66,7 +66,7 @@ public final class AnnotationUtil {
 				JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
 				if (jsonRequest != null) {
 					String name = Strings.isNullOrEmpty(jsonRequest.value()) ? method.getName() : jsonRequest.value();
-					methodInfo.name = prefix + name;
+					methodInfo.name = jsonRequest.useSegment() ? prefix + name : name;
 					methodInfo.isNotification = false;
 					acceptor.accept(methodInfo);
 				} else {
@@ -74,7 +74,7 @@ public final class AnnotationUtil {
 					if (jsonNotification != null) {
 						String name = Strings.isNullOrEmpty(jsonNotification.value()) ? method.getName()
 								: jsonNotification.value();
-						methodInfo.name = prefix + name;
+						methodInfo.name = jsonNotification.useSegment() ? prefix + name : name;
 						methodInfo.isNotification = true;
 						acceptor.accept(methodInfo);
 					}
