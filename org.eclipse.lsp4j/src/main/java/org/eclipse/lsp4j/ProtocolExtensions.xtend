@@ -3,6 +3,7 @@ package org.eclipse.lsp4j
 import java.util.List
 import org.eclipse.lsp4j.generator.LanguageServerAPI
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import java.util.ArrayList
 
 /**
  * Representation of a computed mapping from ranges to the appropriate
@@ -20,7 +21,8 @@ class ColoringParams {
 	/**
 	 * A list of coloring information instances.
 	 */
-	List<? extends ColoringInformation> infos;
+	@NonNull
+	List<? extends ColoringInformation> infos = new ArrayList;
 
 }
 
@@ -35,6 +37,7 @@ class ColoringInformation {
 	/**
 	 * The range that should be highlighted on the client-side.
 	 */
+	@NonNull
 	Range range;
 
 	/**
@@ -42,7 +45,8 @@ class ColoringInformation {
 	 * the range. Several styles could be merged on the client-side by 
 	 * applying all styles on the range. 
 	 */
-	List<Integer> styles;
+	@NonNull
+	List<Integer> styles = new ArrayList;
 
 }
 

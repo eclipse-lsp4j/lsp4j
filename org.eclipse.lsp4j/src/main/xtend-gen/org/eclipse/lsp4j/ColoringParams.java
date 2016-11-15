@@ -1,5 +1,6 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.ColoringInformation;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -21,7 +22,8 @@ public class ColoringParams {
   /**
    * A list of coloring information instances.
    */
-  private List<? extends ColoringInformation> infos;
+  @NonNull
+  private List<? extends ColoringInformation> infos = new ArrayList<ColoringInformation>();
   
   /**
    * The URI for which coloring information is reported.

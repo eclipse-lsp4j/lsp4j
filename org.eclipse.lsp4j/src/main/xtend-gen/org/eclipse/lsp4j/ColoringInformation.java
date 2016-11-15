@@ -1,7 +1,9 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -14,6 +16,7 @@ public class ColoringInformation {
   /**
    * The range that should be highlighted on the client-side.
    */
+  @NonNull
   private Range range;
   
   /**
@@ -21,7 +24,8 @@ public class ColoringInformation {
    * the range. Several styles could be merged on the client-side by
    * applying all styles on the range.
    */
-  private List<Integer> styles;
+  @NonNull
+  private List<Integer> styles = new ArrayList<Integer>();
   
   /**
    * The range that should be highlighted on the client-side.
