@@ -11,36 +11,36 @@ public class CodeLensOptions {
   /**
    * Code lens has a resolve provider as well.
    */
-  private boolean ResolveProvider;
+  private boolean resolveProvider;
   
   /**
    * Code lens has a resolve provider as well.
    */
   @Pure
   public boolean isResolveProvider() {
-    return this.ResolveProvider;
+    return this.resolveProvider;
   }
   
   /**
    * Code lens has a resolve provider as well.
    */
-  public void setResolveProvider(final boolean ResolveProvider) {
-    this.ResolveProvider = ResolveProvider;
+  public void setResolveProvider(final boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
   }
   
   public CodeLensOptions() {
     
   }
   
-  public CodeLensOptions(final boolean ResolveProvider) {
-    this.ResolveProvider = ResolveProvider;
+  public CodeLensOptions(final boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("ResolveProvider", this.ResolveProvider);
+    b.add("resolveProvider", this.resolveProvider);
     return b.toString();
   }
   
@@ -56,7 +56,7 @@ public class CodeLensOptions {
     if (!super.equals(obj))
       return false;
     CodeLensOptions other = (CodeLensOptions) obj;
-    if (other.ResolveProvider != this.ResolveProvider)
+    if (other.resolveProvider != this.resolveProvider)
       return false;
     return true;
   }
@@ -66,7 +66,7 @@ public class CodeLensOptions {
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = prime * result + (this.ResolveProvider ? 1231 : 1237);
+    result = prime * result + (this.resolveProvider ? 1231 : 1237);
     return result;
   }
 }

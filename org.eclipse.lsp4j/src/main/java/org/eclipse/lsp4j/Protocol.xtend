@@ -83,7 +83,7 @@ class CodeLensOptions {
 	/**
 	 * Code lens has a resolve provider as well.
 	 */
-	boolean ResolveProvider
+	boolean resolveProvider
 }
 
 /**
