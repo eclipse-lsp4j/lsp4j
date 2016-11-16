@@ -11,9 +11,11 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -142,6 +144,70 @@ public class IntegrationTest {
 			Assert.fail("Expected cancellation.");
 		} catch (CancellationException e) {
 		}
+	}
+	
+	
+	@Test
+	public void testVersatility() throws Exception{
+		// create client side
+		PipedInputStream in = new PipedInputStream();
+		PipedOutputStream out = new PipedOutputStream();
+		PipedInputStream in2 = new PipedInputStream();
+		PipedOutputStream out2 = new PipedOutputStream();
+		
+		in.connect(out2);
+		out.connect(in2);
+		
+		MyClient client = new MyClient() {
+			
+			private int tries = 0;
+			
+			@Override
+			public CompletableFuture<MyParam> askClient(MyParam param) {
+				if (tries == 0) {
+					tries++;
+					throw new UnsupportedOperationException();
+				}
+				return CompletableFutures.computeAsync(cancelToken -> {
+					if (tries++ == 1)
+						throw new UnsupportedOperationException();
+					return param;
+				});
+			}
+			
+		};
+		Launcher<MyServer> clientSideLauncher = Launcher.createLauncher(client, MyServer.class, in, out);
+		
+		// create server side
+		MyServer server = new MyServer() {
+			
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+			
+		};
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in2, out2);
+		
+		clientSideLauncher.startListening();
+		serverSideLauncher.startListening();
+		
+		CompletableFuture<MyParam> errorFuture1 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		try {
+			System.out.println(errorFuture1.get());
+			Assert.fail();
+		} catch (ExecutionException e) {
+			Assert.assertNotNull(((ResponseErrorException)e.getCause()).getResponseError().getMessage());
+		}
+		CompletableFuture<MyParam> errorFuture2 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		try {
+			errorFuture2.get();
+			Assert.fail();
+		} catch (ExecutionException e) {
+			Assert.assertNotNull(((ResponseErrorException)e.getCause()).getResponseError().getMessage());
+		}
+		CompletableFuture<MyParam> goodFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		Assert.assertEquals("FOO", goodFuture.get().value);
 	}
 	
 }

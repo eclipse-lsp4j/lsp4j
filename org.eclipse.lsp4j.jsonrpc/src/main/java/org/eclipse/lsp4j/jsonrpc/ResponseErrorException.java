@@ -23,4 +23,7 @@ public class ResponseErrorException extends RuntimeException {
 		return responseError.getMessage();
 	}
 	
+	public ResponseError getResponseError() {
+		return responseError;
+	}
 }

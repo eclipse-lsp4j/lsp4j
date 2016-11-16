@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
@@ -138,7 +139,11 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		if (pendingRequestInfo == null) {
 			throw new IllegalStateException("Unmatched response message " + responseMessage);
 		}
-		pendingRequestInfo.responseHandler.accept(responseMessage);
+		try {
+			pendingRequestInfo.responseHandler.accept(responseMessage);
+		} catch (RuntimeException e) {
+			LOG.log(Level.WARNING, "Handling repsonse "+responseMessage+" threw an exception.", e);
+		}
 	}
 
 	protected void handleNotification(NotificationMessage notificationMessage) {
@@ -158,14 +163,28 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 				LOG.warning("Cancellation support disabled, since the '"+CANCEL_METHOD+"' method has explicitly been registered.");
 			}
 		}
-		localEndpoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());
+		try {
+			localEndpoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());
+		} catch (RuntimeException e) {
+			LOG.log(Level.WARNING, "Notification "+notificationMessage+" threw an exception.", e);
+		}
 	}
 	
 	protected void handleRequest(RequestMessage requestMessage) {
 		final ResponseMessage responseMessage = new ResponseMessage();
 		responseMessage.setId(requestMessage.getId());
 		responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
-		CompletableFuture<?> future = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
+		CompletableFuture<?> future; 
+		try {
+			future = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
+		} catch (RuntimeException e) {
+			ResponseError errorObject = exceptionHandler.apply(e);
+			if (errorObject != null) {
+				responseMessage.setError(errorObject);
+				out.consume(responseMessage);
+			}
+			return;
+		}
 		synchronized (receivedRequestMap) {
 			receivedRequestMap.put(requestMessage.getId(), future);
 		}
