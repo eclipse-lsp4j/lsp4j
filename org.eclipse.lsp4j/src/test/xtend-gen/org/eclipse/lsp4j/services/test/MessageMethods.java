@@ -68,6 +68,4 @@ public interface MessageMethods {
   public final static String LOG_MESSAGE = "window/logMessage";
   
   public final static String TELEMETRY_EVENT = "telemetry/event";
-  
-  public final static String CANCEL = "$/cancelRequest";
 }

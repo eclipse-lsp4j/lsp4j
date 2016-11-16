@@ -32,7 +32,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
  */
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
 
-	private final static String CANCEL_METHOD = "$/cancel";
+	private final static String CANCEL_METHOD = "$/cancelRequest";
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
 	
 	private final MessageConsumer out;
@@ -155,7 +155,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 				}
 				return;
 			} else {
-				LOG.warning("Cancellation support disabled, since the '$/cancel' method has explicitly been registered.");
+				LOG.warning("Cancellation support disabled, since the '"+CANCEL_METHOD+"' method has explicitly been registered.");
 			}
 		}
 		localEndpoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());

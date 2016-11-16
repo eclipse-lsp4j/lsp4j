@@ -41,6 +41,4 @@ interface MessageMethods {
 	public static val LOG_MESSAGE = 'window/logMessage'
 	public static val TELEMETRY_EVENT = 'telemetry/event'
 	
-	public static val CANCEL = '$/cancelRequest'
-	
 }
