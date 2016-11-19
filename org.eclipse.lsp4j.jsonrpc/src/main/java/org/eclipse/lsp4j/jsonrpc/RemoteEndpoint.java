@@ -138,12 +138,13 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			pendingRequestInfo = sentRequestMap.remove(responseMessage.getId());
 		}
 		if (pendingRequestInfo == null) {
-			throw new IllegalStateException("Unmatched response message " + responseMessage);
-		}
-		try {
-			pendingRequestInfo.responseHandler.accept(responseMessage);
-		} catch (RuntimeException e) {
-			LOG.log(Level.WARNING, "Handling repsonse "+responseMessage+" threw an exception.", e);
+			LOG.log(Level.WARNING, "Unmatched response message " + responseMessage);
+		} else {
+			try {
+				pendingRequestInfo.responseHandler.accept(responseMessage);
+			} catch (RuntimeException e) {
+				LOG.log(Level.WARNING, "Handling repsonse "+responseMessage+" threw an exception.", e);
+			}
 		}
 	}
 
@@ -159,9 +160,10 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 						String id = idParam.toString();
 						CompletableFuture<?> future = receivedRequestMap.get(id);
 						if (future == null) {
-							throw new IllegalStateException("Unmatched cancel notification: " + notificationMessage);
+							LOG.log(Level.WARNING, "Unmatched cancel notification: " + notificationMessage);
+						} else {
+							future.cancel(true);
 						}
-						future.cancel(true);
 					}
 				}
 				return;
