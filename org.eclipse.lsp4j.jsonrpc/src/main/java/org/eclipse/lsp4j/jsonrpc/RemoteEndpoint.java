@@ -34,6 +34,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
 
 	private final static String CANCEL_METHOD = "$/cancelRequest";
+	private final static String CANCEL_METHOD_PARAM_ID = "id";
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
 	
 	private final MessageConsumer out;
@@ -113,7 +114,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 
 	protected void sendCancelNotification(String id) {
 		Map<String, String> cancelParams = new HashMap<String, String>();
-		cancelParams.put("id", id);
+		cancelParams.put(CANCEL_METHOD_PARAM_ID, id);
 		notify(CANCEL_METHOD, cancelParams);
 	}
 
@@ -151,12 +152,17 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			Object cancelParams = notificationMessage.getParams();
 			if (cancelParams instanceof Map<?,?>) {
 				synchronized (receivedRequestMap) {
-					String id = (String) ((Map<?, ?>) cancelParams).get("id");
-					CompletableFuture<?> future = receivedRequestMap.get(id);
-					if (future == null) {
-						throw new IllegalStateException("Unmatched cancel notification: " + notificationMessage);
+					Object idParam = ((Map<?, ?>) cancelParams).get(CANCEL_METHOD_PARAM_ID);
+					if (idParam == null) {
+						LOG.warning("Invalid cancel notification. No id. "+notificationMessage);
+					} else {
+						String id = idParam.toString();
+						CompletableFuture<?> future = receivedRequestMap.get(id);
+						if (future == null) {
+							throw new IllegalStateException("Unmatched cancel notification: " + notificationMessage);
+						}
+						future.cancel(true);
 					}
-					future.cancel(true);
 				}
 				return;
 			} else {
