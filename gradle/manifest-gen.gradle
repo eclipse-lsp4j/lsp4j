@@ -34,7 +34,7 @@ def limitLineLength = { line, output ->
 		output.add(' ' + line)
 }
 
-def ignoreInstructions = ['Import-Package:', 'Export-Package:', 'Require-Capability:']
+def ignoreInstructions = ['Import-Package:', 'Export-Package:', 'Require-Capability:', 'Bundle-RequiredExecutionEnvironment:']
 
 task sourcesJarManifest(type: Copy) {
 	dependsOn(jar)
