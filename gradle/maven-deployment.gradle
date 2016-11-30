@@ -59,32 +59,28 @@ def configurePom = { pom ->
 			developer {
 				name 'Sven Efftinge'
 				email 'sven.efftinge@typefox.io'
-				organization 'TypeFox'
 				organizationUrl 'http://typefox.io'
 			}
 			developer {
 				name 'Dennis Hübner'
 				email 'dennis.huebner@typefox.io'
-				organization 'TypeFox'
 				organizationUrl 'http://typefox.io'
 			}
 			developer {
 				name 'Anton Kosyakov'
 				email 'anton.kosyakov@typefox.io'
-				organization 'TypeFox'
 				organizationUrl 'http://typefox.io'
 			}
 			developer {
 				name 'Miro Spönemann'
 				email 'miro.spoenemann@typefox.io'
-				organization 'TypeFox'
 				organizationUrl 'http://typefox.io'
 			}
 		}
 		scm {
-			connection 'scm:git:git@github.com:TypeFox/ls-api.git'
-			developerConnection 'scm:git:git@github.com:TypeFox/ls-api.git'
-			url 'git@github.com:TypeFox/ls-api.git'
+			connection 'scm:git:git@github.com:eclipse/lsp4j.git'
+			developerConnection 'scm:git:git@github.com:eclipse/lsp4j.git'
+			url 'git@github.com:eclipse/lsp4j.git'
 		}
 	}
 }
