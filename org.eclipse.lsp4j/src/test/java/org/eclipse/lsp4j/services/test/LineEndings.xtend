@@ -19,5 +19,5 @@ final class LineEndings {
 	static def toSystemLineEndings(CharSequence s) {
 		LINE_ENDING_PAT.matcher(s).replaceAll(StringConcatenation.DEFAULT_LINE_DELIMITER)
 	}
-	
+
 }

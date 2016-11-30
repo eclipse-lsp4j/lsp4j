@@ -210,42 +210,38 @@ class JsonSerializeTest {
             ]
         ]
         message.assertSerialize('''
-            {
-              "id": "12",
-              "result": {
-                "changes": {
-                  "file:///tmp/foo": [
-                    {
-                      "range": {
-                        "start": {
-                          "line": 3,
-                          "character": 32
-                        },
-                        "end": {
-                          "line": 3,
-                          "character": 35
-                        }
+            {"id":12,"jsonrpc":2.0,"result":{
+              "changes": {
+                "file:///tmp/foo": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 3,
+                        "character": 32
                       },
-                      "newText": "foobar"
+                      "end": {
+                        "line": 3,
+                        "character": 35
+                      }
                     },
-                    {
-                      "range": {
-                        "start": {
-                          "line": 4,
-                          "character": 22
-                        },
-                        "end": {
-                          "line": 4,
-                          "character": 25
-                        }
+                    "newText": "foobar"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 4,
+                        "character": 22
                       },
-                      "newText": "foobar"
-                    }
-                  ]
-                }
-              },
-              "jsonrpc": "2.0"
-            }
+                      "end": {
+                        "line": 4,
+                        "character": 25
+                      }
+                    },
+                    "newText": "foobar"
+                  }
+                ]
+              }
+            }}
         ''')
     }
     
@@ -266,26 +262,22 @@ class JsonSerializeTest {
             ]
         ]
         message.assertSerialize('''
-            {
-              "id": "12",
-              "result": {
-                "contents": [
-                  "foo",
-                  "boo shuby doo"
-                ],
-                "range": {
-                  "start": {
-                    "line": 3,
-                    "character": 32
-                  },
-                  "end": {
-                    "line": 3,
-                    "character": 35
-                  }
+            {"id":12,"jsonrpc":2.0,"result":{
+              "contents": [
+                "foo",
+                "boo shuby doo"
+              ],
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 32
+                },
+                "end": {
+                  "line": 3,
+                  "character": 35
                 }
-              },
-              "jsonrpc": "2.0"
-            }
+              }
+            }}
         ''')
     }
     
@@ -300,14 +292,10 @@ class JsonSerializeTest {
             ]
         ]
         message.assertSerialize('''
-            {
-              "id": "12",
-              "error": {
-                "code": -32600,
-                "message": "Could not parse request."
-              },
-              "jsonrpc": "2.0"
-            }
+            {"id":12,"jsonrpc":2.0,"error":{
+              "code": -32600,
+              "message": "Could not parse request."
+            }}
         ''')
     }
         
@@ -326,18 +314,14 @@ class JsonSerializeTest {
 			]
 		]
 		message.assertSerialize('''
-			{
-			  "id": "12",
-			  "result": {
-			    "isIncomplete": true,
-			    "items": [
-			      {
-			        "label": "foo"
-			      }
-			    ]
-			  },
-			  "jsonrpc": "2.0"
-			}
+			{"id":12,"jsonrpc":2.0,"result":{
+			  "isIncomplete": true,
+			  "items": [
+			    {
+			      "label": "foo"
+			    }
+			  ]
+			}}
 		''')
 	}
 	

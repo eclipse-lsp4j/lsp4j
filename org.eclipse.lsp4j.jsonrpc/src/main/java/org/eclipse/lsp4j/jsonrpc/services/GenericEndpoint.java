@@ -47,7 +47,9 @@ public class GenericEndpoint implements Endpoint {
 		});
 		AnnotationUtil.findDelegateSegments(current.getClass(), visitedForDelegate, (method) -> {
 			try {
-				recursiveFindRpcMethods(method.invoke(current), visited, visitedForDelegate);
+				Object delegate = method.invoke(current);
+				if (delegate != null)
+					recursiveFindRpcMethods(delegate, visited, visitedForDelegate);
 			} catch (InvocationTargetException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}

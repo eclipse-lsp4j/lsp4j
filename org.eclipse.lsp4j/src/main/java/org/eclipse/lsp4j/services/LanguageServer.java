@@ -34,7 +34,7 @@ public interface LanguageServer {
 	 * that asks the server to exit.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> shutdown();
+	CompletableFuture<Object> shutdown();
 
 	/**
 	 * A notification to ask the server to exit its process.

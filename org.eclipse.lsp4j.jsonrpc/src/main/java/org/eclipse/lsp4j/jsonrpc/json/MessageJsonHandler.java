@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -154,7 +155,25 @@ public class MessageJsonHandler {
 	}
 	
 	public void serialize(Message message, Writer output) {
-		gson.toJson(message, output);
+		if (message instanceof ResponseMessage) {
+			ResponseMessage responseMessage = (ResponseMessage) message;
+			try {
+				output.append("{\"id\":"+responseMessage.getId());
+				output.append(",\"jsonrpc\":"+responseMessage.getJsonrpc());
+				if (responseMessage.getError() != null) {
+					output.append(",\"error\":");
+					gson.toJson(responseMessage.getError(), output);
+				} else {
+					output.append(",\"result\":");
+					gson.toJson(responseMessage.getResult(), output);
+				}
+				output.append("}");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			gson.toJson(message, output);
+		}
 	}
 	
 }
