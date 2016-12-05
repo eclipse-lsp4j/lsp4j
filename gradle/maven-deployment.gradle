@@ -91,7 +91,6 @@ def configurePom = { pom ->
 task createLocalMavenRepo(type: Upload) {
 	group = 'Repository'
 	description = 'Create or update the local Maven repository'
-	dependsOn ":cleanLocalMavenRepo"
 	configuration = configurations.archives
 	repositories.mavenDeployer {
 		repository(url: "file:" + file("../build/maven-repository"))

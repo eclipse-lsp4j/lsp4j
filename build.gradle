@@ -15,11 +15,6 @@ buildscript {
 	}
 }
 
-task cleanLocalMavenRepo(type: Delete) {
-	group = 'Repository'
-	description = 'Delete the local Maven repository'
-	delete 'build/maven-repository'
-}
 
 ext.buildTime = new java.text.SimpleDateFormat('yyyyMMddHHmm').format(new Date())
 
@@ -40,7 +35,11 @@ subprojects {
 	apply from: "${rootDir}/gradle/manifest-gen.gradle"
 }
 
-apply from: "${rootDir}/gradle/p2-deployment.gradle"
+task clean(type: Delete) {
+	group 'Build'
+	description 'Deletes the local repositories'
+	delete 'build'
+}
 
 // generate an ide with xtend support
 task ide(type: GradleBuild) {
