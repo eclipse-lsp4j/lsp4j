@@ -9,12 +9,18 @@
 buildscript {
 	repositories {
 		jcenter()
+		maven {
+			url 'http://services.typefox.io/open-source/jenkins/job/gradle-plugins/lastStableBuild/artifact/build/maven-repository/'
+		}
 	}
 	dependencies {
 		classpath 'org.xtext:xtext-gradle-plugin:1.0.5'
+		classpath 'io.typefox.gradle:io.typefox.gradle.p2gen:0.1.0'
 	}
 }
 
+apply from: "${rootDir}/gradle/versions.gradle"
+apply from: "${rootDir}/gradle/p2-deployment.gradle"
 
 ext.buildTime = new java.text.SimpleDateFormat('yyyyMMddHHmm').format(new Date())
 
@@ -24,11 +30,11 @@ subprojects {
 	}
 	
 	group = 'org.eclipse.lsp4j'
+	version = rootProject.version
 	
 	apply plugin: 'java'
 	apply plugin: 'org.xtext.xtend'
 	apply plugin: 'eclipse'
-	apply from: "${rootDir}/gradle/versions.gradle"
 	apply plugin: 'maven'
 	
 	apply from: "${rootDir}/gradle/java-compiler-settings.gradle"

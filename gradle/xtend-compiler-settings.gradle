@@ -6,6 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
+xtext.version = versions.xtext
+
 xtend {
 	debugger {
 		sourceInstaller = 'PRIMARY'

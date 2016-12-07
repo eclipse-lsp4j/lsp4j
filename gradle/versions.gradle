@@ -12,7 +12,6 @@ ext.versions = [
 	'xtext': '2.10.0',
 	'guava': '[14.0,19)',
 	'gson': '2.7',
+	'gson_orbit': '2.7.0.v20161205-1708',
 	'junit': '4.12'
 ]
-
-xtext.version = versions.xtext
