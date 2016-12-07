@@ -3,12 +3,6 @@
 	<feature url="features/org.eclipse.lsp4j.sdk_0.1.0.qualifier.jar" id="org.eclipse.lsp4j.sdk" version="0.1.0.qualifier">
 		<category name="lsp4j"/>
 	</feature>
-	<bundle id="org.eclipse.lsp4j.generator" version="0.1.0.qualifier">
-		<category name="lsp4j"/>
-	</bundle>
-	<bundle id="org.eclipse.lsp4j.generator.source" version="0.1.0.qualifier">
-		<category name="lsp4j"/>
-	</bundle>
-	<bundle id="com.google.gson"/>
+	<bundle id="com.google.gson" version="0.0.0"/>
    <category-def name="lsp4j" label="Lsp4j"/>
 </site>

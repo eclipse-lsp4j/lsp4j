@@ -22,7 +22,7 @@ node {
 		stage 'Maven Build'
         def mvnHome = tool 'M3'
         env.M2_HOME = "${mvnHome}"
-        sh "${mvnHome}/bin/mvn -f releng/pom.xml --batch-mode --update-snapshots clean install"
+        sh "${mvnHome}/bin/mvn -f releng --batch-mode --update-snapshots -Dmaven.repo.local=.m2/repository clean install"
         archive 'build/**/*.*'
 		
 		slackSend "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
