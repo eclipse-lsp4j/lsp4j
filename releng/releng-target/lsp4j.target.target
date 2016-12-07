@@ -3,8 +3,13 @@
 <target name="org.eclipse.xtext.helios.target" sequenceNumber="0">
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
-			<unit id="com.google.guava" version="0.0.0"/>
 			<repository location="http://download.eclipse.org/releases/luna/201502271000/"/>
+			<unit id="com.google.guava" version="0.0.0"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
+			<repository location="http://download.eclipse.org/tools/orbit/S-builds/S20161205183421/repository/"/>
+			<unit id="com.google.gson" version="2.7.0.v20161205-1708"/>
+			<unit id="com.google.gson.source" version="2.7.0.v20161205-1708"/>
 		</location>
 	</locations>
 </target>
