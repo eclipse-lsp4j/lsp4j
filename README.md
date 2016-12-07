@@ -14,8 +14,8 @@ Snapshots are regularly deployed to
  * https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/lsp4j/
 
 Also, you can get them directly from the TypeFox Jenkins server:
- * http://services.typefox.io/open-source/jenkins/job/lsp4j/lastSuccessfulBuild/artifact/build/maven-repository/
- * http://services.typefox.io/open-source/jenkins/job/lsp4j/lastSuccessfulBuild/artifact/build/p2-repository/
+ * http://services.typefox.io/open-source/jenkins/job/lsp4j/job/master/lastSuccessfulBuild/artifact/build/maven-repository/
+ * http://services.typefox.io/open-source/jenkins/job/lsp4j/job/master/lastSuccessfulBuild/artifact/build/p2-repository/
 
 ### Licenses
 
