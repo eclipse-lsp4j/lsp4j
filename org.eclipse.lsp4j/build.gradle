@@ -6,7 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-description 'Data structures implementing the Language Server Protocol'
+ext.title = 'LSP4J'
+description = 'Java bindings for the Language Server Protocol'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'

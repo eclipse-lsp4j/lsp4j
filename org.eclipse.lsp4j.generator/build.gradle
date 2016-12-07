@@ -6,7 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-description 'Xtend active annotations that generate Java code from Language Server interfaces'
+ext.title = 'LSP4J Generator'
+description = 'Code generator for Language Server Protocol classes'
 
 dependencies {
 	compile project(":org.eclipse.lsp4j.jsonrpc")

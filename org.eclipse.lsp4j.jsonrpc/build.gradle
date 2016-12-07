@@ -6,7 +6,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-description 'JSON-RPC implementation'
+ext.title = 'LSP4J JSON-RPC'
+description = 'Generic JSON-RPC implementation'
 
 dependencies {
 	compile "com.google.guava:guava:$versions.guava"
