@@ -11,6 +11,7 @@ apply plugin: 'io.typefox.gradle.p2gen'
 group = 'org.eclipse.lsp4j'
 
 p2gen {
+	zipRepository true
 	feature 'lsp4j-feature'
 	
 	additionalBundle {

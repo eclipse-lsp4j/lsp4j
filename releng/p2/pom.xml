@@ -47,6 +47,10 @@
 								<copy todir="${root-dir}/build/p2-repository">
 									<fileset dir="${basedir}/target/repository/" />
 								</copy>
+								<copy
+									file="${basedir}/target/lsp4j.p2-repository-0.1.0-SNAPSHOT.zip"
+									toDir="${root-dir}/build/p2-repository/..">
+								</copy>
 							</tasks>
 						</configuration>
 					</execution>
