@@ -13,7 +13,7 @@
 	</parent>
 
 	<properties>
-		<tycho-version>0.25.0</tycho-version>
+		<tycho-version>0.26.0</tycho-version>
 		<root-dir>${basedir}/../..</root-dir>
 	</properties>
 
@@ -49,7 +49,7 @@
 								</copy>
 								<copy
 									file="${basedir}/target/lsp4j.p2-repository-0.1.0-SNAPSHOT.zip"
-									toDir="${root-dir}/build/p2-repository/..">
+									tofile="${root-dir}/build/p2-repository/../lsp4j.p2-repository-0.1.0.M4.zip">
 								</copy>
 							</tasks>
 						</configuration>
