@@ -7,11 +7,13 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -33,9 +35,23 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
  */
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
 
-	private final static String CANCEL_METHOD = "$/cancelRequest";
-	private final static String CANCEL_METHOD_PARAM_ID = "id";
+	private static final String CANCEL_METHOD = "$/cancelRequest";
+	private static final String CANCEL_METHOD_PARAM_ID = "id";
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
+	
+	private static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = (throwable) -> {
+		if (throwable instanceof ResponseErrorException) {
+			return ((ResponseErrorException) throwable).getResponseError();
+		} else if ((throwable instanceof CompletionException || throwable instanceof InvocationTargetException)
+				&& throwable.getCause() instanceof ResponseErrorException) {
+			return ((ResponseErrorException) throwable.getCause()).getResponseError();
+		} else {
+			ResponseError error = new ResponseError();
+			error.setMessage(throwable.getMessage());
+			error.setCode(ResponseErrorCode.InternalError);
+			return error;
+		}
+	};
 	
 	private final MessageConsumer out;
 	private final Endpoint localEndpoint;
@@ -67,12 +83,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 	
 	public RemoteEndpoint(MessageConsumer out, Endpoint localEndpoint) {
-		this(out, localEndpoint, (throwable) -> {
-			ResponseError error = new ResponseError();
-			error.setMessage(throwable.getMessage());
-			error.setCode(ResponseErrorCode.InternalError);
-			return error;
-		});
+		this(out, localEndpoint, DEFAULT_EXCEPTION_HANDLER);
 	}
 
 	@Override

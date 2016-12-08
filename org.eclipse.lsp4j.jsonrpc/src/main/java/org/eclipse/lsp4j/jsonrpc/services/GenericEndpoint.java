@@ -13,14 +13,21 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
+import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 
 /**
  * An endpoint that reflectively delegates to {@link JsonNotification} and
  * {@link JsonRequest} methods of a given delegate object.
  */
 public class GenericEndpoint implements Endpoint {
+	
+	private static final Logger LOG = Logger.getLogger(GenericEndpoint.class.getName());
 
 	private final LinkedHashMap<String, Function<Object, CompletableFuture<Object>>> methodHandlers = new LinkedHashMap<>();
 	private final Object delegate;
@@ -65,7 +72,12 @@ public class GenericEndpoint implements Endpoint {
 		if (delegate instanceof Endpoint) {
 			return ((Endpoint) delegate).request(method, parameter);
 		}
-		throw new UnsupportedOperationException("request : " + method);
+		String message = "Unsupported request method: " + method;
+		LOG.log(Level.WARNING, message);
+		CompletableFuture<?> exceptionalResult = new CompletableFuture<Object>();
+		ResponseError error = new ResponseError(ResponseErrorCode.InvalidRequest, message, null);
+		exceptionalResult.completeExceptionally(new ResponseErrorException(error));
+		return exceptionalResult;
 	}
 
 	@Override
@@ -79,7 +91,7 @@ public class GenericEndpoint implements Endpoint {
 			((Endpoint) delegate).notify(method, parameter);
 			return;
 		}
-		throw new UnsupportedOperationException("notification : " + method);
+		LOG.log(Level.WARNING, "Unsupported notification method: " + method);
 	}
 
 }
