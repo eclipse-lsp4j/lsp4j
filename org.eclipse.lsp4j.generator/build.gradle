@@ -15,10 +15,6 @@ dependencies {
 }
 
 jar.manifest {
-	name = 'Language Server Java Annotations'
-	vendor = 'Eclipse LSP4J'
-	instruction 'Import-Package', "javax.annotation;version=!;resolution:=optional"
 	instruction 'Import-Package', "com.google.common.*;version=\"$versions.guava\""
 	instruction 'Import-Package', '*'
-    instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
 }

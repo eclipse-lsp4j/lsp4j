@@ -11,64 +11,53 @@ apply plugin: 'osgi'
 def baseVersion = project.version
 if (baseVersion.endsWith('-SNAPSHOT'))
 	baseVersion = baseVersion.substring(0, baseVersion.length() - 9)
+else if (baseVersion.split('\\.').length == 4)
+	baseVersion = baseVersion.substring(0, baseVersion.lastIndexOf('.'))
+def qualifiedVersion = baseVersion + '.v' + buildTime
 
 jar.manifest {
-	version = baseVersion + '.' + buildTime
+	version = qualifiedVersion
+	if (project.hasProperty('title'))
+		name = project.title
+	vendor = 'Eclipse LSP4J'
+	instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
 }
 
-def limitLineLength = { line, output ->
-	def firstLine = true
-	while (line.length() > 70) {
-		if (firstLine) {
-			output.add(line.substring(0, 70))
-			line = line.substring(70)
-			firstLine = false
-		} else {
-			output.add(' ' + line.substring(0, 69))
-			line = line.substring(69)
-		}
+//------------------------------------------------------
+// Generate a manifest for the source bundle
+
+def sourcesManifestFile = "$buildDir/tmp/sourcesJar/MANIFEST.MF"
+
+task genSourcesManifest {
+	outputs.file(sourcesManifestFile)
+	doLast {
+		def f = new File(sourcesManifestFile)
+		f.parentFile.mkdirs()
+		def writer = new PrintWriter(f)
+		writer.println("Manifest-Version: 1.0")
+		writer.println("Bundle-ManifestVersion: 2")
+		writer.println("Bundle-SymbolicName: ${project.name}.source")
+		writer.println("Bundle-Version: ${qualifiedVersion}")
+		if (project.hasProperty('title'))
+			writer.println("Bundle-Name: ${project.title} Sources")
+		else
+			writer.println("Bundle-Name: Sources")
+		writer.println("Bundle-Vendor: Eclipse LSP4J")
+		writer.println("Eclipse-SourceBundle: ${project.name};version=\"${qualifiedVersion}\"")
+		writer.close()
 	}
-	if (firstLine)
-		output.add(line)
-	else
-		output.add(' ' + line)
-}
-
-def ignoreInstructions = ['Import-Package:', 'Export-Package:', 'Require-Capability:', 'Bundle-RequiredExecutionEnvironment:']
-
-task sourcesJarManifest(type: Copy) {
-	dependsOn(jar)
-    from "$buildDir/tmp/jar/MANIFEST.MF"
-    into "$buildDir/tmp/sourcesJar"
-    doLast {
-    	def f = new File("$buildDir/tmp/sourcesJar/MANIFEST.MF")
-    	def lines = new ArrayList()
-    	def doIgnore = false
-    	f.eachLine { line ->
-    		if (line.startsWith('Bundle-SymbolicName:')) {
-    			limitLineLength(line + '.source', lines)
-    			doIgnore = false
-    		} else if (ignoreInstructions.any{ prefix -> line.startsWith(prefix) }) {
-    			doIgnore = true
-    		} else if (!line.isEmpty() && !(doIgnore && line.startsWith(' '))) {
-    			lines.add(line)
-    			doIgnore = false
-    		}
-    	}
-    	limitLineLength('Eclipse-SourceBundle: ' + project.name + ';version="' + baseVersion + '.' + buildTime + '"', lines)
-    	def writer = new PrintWriter(f)
-    	lines.each { line -> writer.println(line) }
-    	writer.close()
-    }
 }
 
 sourcesJar {
-	dependsOn sourcesJarManifest
-	inputs.file("$buildDir/tmp/sourcesJar/MANIFEST.MF")
+	dependsOn genSourcesManifest
+	inputs.file(sourcesManifestFile)
 	manifest {
-		from "$buildDir/tmp/sourcesJar/MANIFEST.MF"
+		from sourcesManifestFile
 	}
 }
+
+//------------------------------------------------------
+// Task to copy the generated manifest into the project
 
 task eclipseManifest(type: Copy) {
 	dependsOn(jar)
