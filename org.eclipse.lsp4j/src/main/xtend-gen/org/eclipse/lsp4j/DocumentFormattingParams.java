@@ -27,6 +27,7 @@ public class DocumentFormattingParams {
    * The document to format.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -34,7 +35,7 @@ public class DocumentFormattingParams {
   /**
    * The document to format.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
@@ -42,6 +43,7 @@ public class DocumentFormattingParams {
    * The format options
    */
   @Pure
+  @NonNull
   public FormattingOptions getOptions() {
     return this.options;
   }
@@ -49,7 +51,7 @@ public class DocumentFormattingParams {
   /**
    * The format options
    */
-  public void setOptions(final FormattingOptions options) {
+  public void setOptions(@NonNull final FormattingOptions options) {
     this.options = options;
   }
   

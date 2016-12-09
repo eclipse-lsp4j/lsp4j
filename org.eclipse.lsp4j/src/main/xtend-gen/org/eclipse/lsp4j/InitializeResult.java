@@ -17,6 +17,7 @@ public class InitializeResult {
    * The capabilities the language server provides.
    */
   @Pure
+  @NonNull
   public ServerCapabilities getCapabilities() {
     return this.capabilities;
   }
@@ -24,7 +25,7 @@ public class InitializeResult {
   /**
    * The capabilities the language server provides.
    */
-  public void setCapabilities(final ServerCapabilities capabilities) {
+  public void setCapabilities(@NonNull final ServerCapabilities capabilities) {
     this.capabilities = capabilities;
   }
   

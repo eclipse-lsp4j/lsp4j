@@ -22,6 +22,7 @@ public class DidCloseTextDocumentParams {
    * The document that was closed.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -29,7 +30,7 @@ public class DidCloseTextDocumentParams {
   /**
    * The document that was closed.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

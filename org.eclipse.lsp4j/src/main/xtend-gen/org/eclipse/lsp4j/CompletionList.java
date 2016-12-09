@@ -42,6 +42,7 @@ public class CompletionList {
    * The completion items.
    */
   @Pure
+  @NonNull
   public List<CompletionItem> getItems() {
     return this.items;
   }
@@ -49,7 +50,7 @@ public class CompletionList {
   /**
    * The completion items.
    */
-  public void setItems(final List<CompletionItem> items) {
+  public void setItems(@NonNull final List<CompletionItem> items) {
     this.items = items;
   }
   

@@ -13,11 +13,12 @@ public class DidChangeConfigurationParams {
   private Object settings;
   
   @Pure
+  @NonNull
   public Object getSettings() {
     return this.settings;
   }
   
-  public void setSettings(final Object settings) {
+  public void setSettings(@NonNull final Object settings) {
     this.settings = settings;
   }
   

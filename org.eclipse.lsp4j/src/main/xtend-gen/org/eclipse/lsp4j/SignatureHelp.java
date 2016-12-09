@@ -33,6 +33,7 @@ public class SignatureHelp {
    * One or more signatures.
    */
   @Pure
+  @NonNull
   public List<SignatureInformation> getSignatures() {
     return this.signatures;
   }
@@ -40,7 +41,7 @@ public class SignatureHelp {
   /**
    * One or more signatures.
    */
-  public void setSignatures(final List<SignatureInformation> signatures) {
+  public void setSignatures(@NonNull final List<SignatureInformation> signatures) {
     this.signatures = signatures;
   }
   

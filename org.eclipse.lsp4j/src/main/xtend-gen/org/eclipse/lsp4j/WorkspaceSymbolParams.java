@@ -19,6 +19,7 @@ public class WorkspaceSymbolParams {
    * A non-empty query string
    */
   @Pure
+  @NonNull
   public String getQuery() {
     return this.query;
   }
@@ -26,7 +27,7 @@ public class WorkspaceSymbolParams {
   /**
    * A non-empty query string
    */
-  public void setQuery(final String query) {
+  public void setQuery(@NonNull final String query) {
     this.query = query;
   }
   

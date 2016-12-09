@@ -27,6 +27,7 @@ public class DocumentHighlight {
    * The range this highlight applies to.
    */
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
@@ -34,7 +35,7 @@ public class DocumentHighlight {
   /**
    * The range this highlight applies to.
    */
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   

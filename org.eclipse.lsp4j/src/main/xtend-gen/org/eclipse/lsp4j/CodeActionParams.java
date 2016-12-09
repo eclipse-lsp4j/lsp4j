@@ -36,6 +36,7 @@ public class CodeActionParams {
    * The document in which the command was invoked.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -43,7 +44,7 @@ public class CodeActionParams {
   /**
    * The document in which the command was invoked.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
@@ -51,6 +52,7 @@ public class CodeActionParams {
    * The range for which the command was invoked.
    */
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
@@ -58,7 +60,7 @@ public class CodeActionParams {
   /**
    * The range for which the command was invoked.
    */
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   
@@ -66,6 +68,7 @@ public class CodeActionParams {
    * Context carrying additional information.
    */
   @Pure
+  @NonNull
   public CodeActionContext getContext() {
     return this.context;
   }
@@ -73,7 +76,7 @@ public class CodeActionParams {
   /**
    * Context carrying additional information.
    */
-  public void setContext(final CodeActionContext context) {
+  public void setContext(@NonNull final CodeActionContext context) {
     this.context = context;
   }
   

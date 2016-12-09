@@ -7,7 +7,8 @@
  */
 package org.eclipse.lsp4j.jsonrpc.validation;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,21 +46,42 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 	}
 
 	protected void validate(Object object, List<String> issues, LinkedList<Object> objectStack) throws Exception {
+		if (object == null 
+				|| object instanceof Enum<?> 
+				|| object instanceof String 
+				|| object instanceof Number
+				|| object instanceof Boolean) {
+			return;
+		}
 		if (objectStack.contains(object)) {
 			issues.add("An element of the message has a direct or indirect reference to itself.");
 			return;
 		}
 		objectStack.push(object);
-		for (Field field : object.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			Object value = field.get(object);
-			if (value == null && field.getAnnotation(NonNull.class) != null) {
-				issues.add("The property '" + field.getName() + "' must have a non-null value.");
-			} else if (value != null && !value.getClass().getName().startsWith("java.")
-					&& !(value instanceof Enum<?>)) {
-				validate(value, issues, objectStack);
+		if (object instanceof List<?>) {
+			for (Object obj : (List<?>) object) {
+				if (obj == null) {
+					issues.add("Lists must not container null references.");
+				}
+				validate(obj, issues, objectStack);
+			}
+		} else {
+			for (Method method : object.getClass().getMethods()) {
+				if (isGetter(method)) {
+					method.setAccessible(true);
+					Object value = method.invoke(object);
+					if (value == null && method.getAnnotation(NonNull.class) != null) {
+						issues.add("The accessor '" + method.getName() + "' must return a non-null value.");
+					}
+					validate(value, issues, objectStack);
+				}
 			}
 		}
 		objectStack.pop();
+	}
+
+	protected boolean isGetter(Method method) {
+		return !Modifier.isStatic(method.getModifiers()) && method.getName().startsWith("get")
+				&& method.getParameterCount() == 0 && method.getDeclaringClass() != Object.class;
 	}
 }

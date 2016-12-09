@@ -27,6 +27,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The position at which this request was send.
    */
   @Pure
+  @NonNull
   public Position getPosition() {
     return this.position;
   }
@@ -34,7 +35,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   /**
    * The position at which this request was send.
    */
-  public void setPosition(final Position position) {
+  public void setPosition(@NonNull final Position position) {
     this.position = position;
   }
   
@@ -42,6 +43,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The character that has been typed.
    */
   @Pure
+  @NonNull
   public String getCh() {
     return this.ch;
   }
@@ -49,7 +51,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   /**
    * The character that has been typed.
    */
-  public void setCh(final String ch) {
+  public void setCh(@NonNull final String ch) {
     this.ch = ch;
   }
   

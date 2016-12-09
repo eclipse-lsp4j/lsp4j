@@ -43,6 +43,7 @@ public class Diagnostic {
    * The range at which the message applies
    */
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
@@ -50,7 +51,7 @@ public class Diagnostic {
   /**
    * The range at which the message applies
    */
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   
@@ -105,6 +106,7 @@ public class Diagnostic {
    * The diagnostic's message.
    */
   @Pure
+  @NonNull
   public String getMessage() {
     return this.message;
   }
@@ -112,7 +114,7 @@ public class Diagnostic {
   /**
    * The diagnostic's message.
    */
-  public void setMessage(final String message) {
+  public void setMessage(@NonNull final String message) {
     this.message = message;
   }
   

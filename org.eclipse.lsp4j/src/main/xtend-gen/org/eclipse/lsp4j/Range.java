@@ -26,6 +26,7 @@ public class Range {
    * The range's start position
    */
   @Pure
+  @NonNull
   public Position getStart() {
     return this.start;
   }
@@ -33,7 +34,7 @@ public class Range {
   /**
    * The range's start position
    */
-  public void setStart(final Position start) {
+  public void setStart(@NonNull final Position start) {
     this.start = start;
   }
   
@@ -41,6 +42,7 @@ public class Range {
    * The range's end position
    */
   @Pure
+  @NonNull
   public Position getEnd() {
     return this.end;
   }
@@ -48,7 +50,7 @@ public class Range {
   /**
    * The range's end position
    */
-  public void setEnd(final Position end) {
+  public void setEnd(@NonNull final Position end) {
     this.end = end;
   }
   

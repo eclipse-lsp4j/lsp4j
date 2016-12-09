@@ -34,6 +34,7 @@ public class RenameParams {
    * The document in which to find the symbol.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -41,7 +42,7 @@ public class RenameParams {
   /**
    * The document in which to find the symbol.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
@@ -49,6 +50,7 @@ public class RenameParams {
    * The position at which this request was send.
    */
   @Pure
+  @NonNull
   public Position getPosition() {
     return this.position;
   }
@@ -56,7 +58,7 @@ public class RenameParams {
   /**
    * The position at which this request was send.
    */
-  public void setPosition(final Position position) {
+  public void setPosition(@NonNull final Position position) {
     this.position = position;
   }
   
@@ -65,6 +67,7 @@ public class RenameParams {
    * ResponseError with an appropriate message set.
    */
   @Pure
+  @NonNull
   public String getNewName() {
     return this.newName;
   }
@@ -73,7 +76,7 @@ public class RenameParams {
    * The new name of the symbol. If the given name is not valid the request must return a
    * ResponseError with an appropriate message set.
    */
-  public void setNewName(final String newName) {
+  public void setNewName(@NonNull final String newName) {
     this.newName = newName;
   }
   

@@ -28,6 +28,7 @@ public class PublishDiagnosticsParams {
    * The URI for which diagnostic information is reported.
    */
   @Pure
+  @NonNull
   public String getUri() {
     return this.uri;
   }
@@ -35,7 +36,7 @@ public class PublishDiagnosticsParams {
   /**
    * The URI for which diagnostic information is reported.
    */
-  public void setUri(final String uri) {
+  public void setUri(@NonNull final String uri) {
     this.uri = uri;
   }
   
@@ -43,6 +44,7 @@ public class PublishDiagnosticsParams {
    * An array of diagnostic information items.
    */
   @Pure
+  @NonNull
   public List<Diagnostic> getDiagnostics() {
     return this.diagnostics;
   }
@@ -50,7 +52,7 @@ public class PublishDiagnosticsParams {
   /**
    * An array of diagnostic information items.
    */
-  public void setDiagnostics(final List<Diagnostic> diagnostics) {
+  public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
     this.diagnostics = diagnostics;
   }
   

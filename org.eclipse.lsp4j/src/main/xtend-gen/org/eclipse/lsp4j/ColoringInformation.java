@@ -31,6 +31,7 @@ public class ColoringInformation {
    * The range that should be highlighted on the client-side.
    */
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
@@ -38,7 +39,7 @@ public class ColoringInformation {
   /**
    * The range that should be highlighted on the client-side.
    */
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   
@@ -48,6 +49,7 @@ public class ColoringInformation {
    * applying all styles on the range.
    */
   @Pure
+  @NonNull
   public List<Integer> getStyles() {
     return this.styles;
   }
@@ -57,7 +59,7 @@ public class ColoringInformation {
    * the range. Several styles could be merged on the client-side by
    * applying all styles on the range.
    */
-  public void setStyles(final List<Integer> styles) {
+  public void setStyles(@NonNull final List<Integer> styles) {
     this.styles = styles;
   }
   

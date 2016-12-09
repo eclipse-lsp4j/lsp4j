@@ -38,6 +38,7 @@ public class SymbolInformation {
    * The name of this symbol.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -45,7 +46,7 @@ public class SymbolInformation {
   /**
    * The name of this symbol.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -53,6 +54,7 @@ public class SymbolInformation {
    * The kind of this symbol.
    */
   @Pure
+  @NonNull
   public SymbolKind getKind() {
     return this.kind;
   }
@@ -60,7 +62,7 @@ public class SymbolInformation {
   /**
    * The kind of this symbol.
    */
-  public void setKind(final SymbolKind kind) {
+  public void setKind(@NonNull final SymbolKind kind) {
     this.kind = kind;
   }
   
@@ -68,6 +70,7 @@ public class SymbolInformation {
    * The location of this symbol.
    */
   @Pure
+  @NonNull
   public Location getLocation() {
     return this.location;
   }
@@ -75,7 +78,7 @@ public class SymbolInformation {
   /**
    * The location of this symbol.
    */
-  public void setLocation(final Location location) {
+  public void setLocation(@NonNull final Location location) {
     this.location = location;
   }
   

@@ -21,6 +21,7 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams {
    * The range to format
    */
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
@@ -28,7 +29,7 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams {
   /**
    * The range to format
    */
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   

@@ -17,20 +17,22 @@ public class Location {
   private Range range;
   
   @Pure
+  @NonNull
   public String getUri() {
     return this.uri;
   }
   
-  public void setUri(final String uri) {
+  public void setUri(@NonNull final String uri) {
     this.uri = uri;
   }
   
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
   
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   

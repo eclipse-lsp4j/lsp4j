@@ -16,6 +16,7 @@ import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 class LanguageServerProcessor extends AbstractClassProcessor {
 
@@ -66,8 +67,12 @@ class LanguageServerProcessor extends AbstractClassProcessor {
 			val accessorsUtil = new AccessorsProcessor.Util(context)
 			val deprecated = field.findAnnotation(Deprecated.findTypeGlobally)
 			accessorsUtil.addGetter(field, Visibility.PUBLIC)
+			val hasNonNull = field.findAnnotation(NonNull.newTypeReference.type) !== null
 			impl.findDeclaredMethod(accessorsUtil.getGetterName(field)) => [
 				docComment = field.docComment
+				if (hasNonNull) {
+				    addAnnotation(newAnnotationReference(NonNull))
+				}
 				if (deprecated !== null)
 					addAnnotation(newAnnotationReference(Deprecated))
 			]
@@ -76,6 +81,9 @@ class LanguageServerProcessor extends AbstractClassProcessor {
 				accessorsUtil.addSetter(field, Visibility.PUBLIC)
 				impl.findDeclaredMethod(accessorsUtil.getSetterName(field), field.type) => [
 					docComment = field.docComment
+    				if (hasNonNull) {
+    				    parameters.head.addAnnotation(newAnnotationReference(NonNull))
+    				}
 					if (deprecated !== null)
 						addAnnotation(newAnnotationReference(Deprecated))
 				]

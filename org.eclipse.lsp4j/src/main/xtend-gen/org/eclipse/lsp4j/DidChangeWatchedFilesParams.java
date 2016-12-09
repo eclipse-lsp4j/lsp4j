@@ -23,6 +23,7 @@ public class DidChangeWatchedFilesParams {
    * The actual file events.
    */
   @Pure
+  @NonNull
   public List<FileEvent> getChanges() {
     return this.changes;
   }
@@ -30,7 +31,7 @@ public class DidChangeWatchedFilesParams {
   /**
    * The actual file events.
    */
-  public void setChanges(final List<FileEvent> changes) {
+  public void setChanges(@NonNull final List<FileEvent> changes) {
     this.changes = changes;
   }
   

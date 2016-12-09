@@ -28,7 +28,7 @@ public class ValidationTest {
 		params.setTextDocument(new TextDocumentIdentifier("file:///tmp/foo"));
 		message.setParams(params);
 		
-		assertIssues(message, "The property \'position\' must have a non-null value.");
+		assertIssues(message, "The accessor 'getPosition' must return a non-null value.");
 	}
 	
 	@Test

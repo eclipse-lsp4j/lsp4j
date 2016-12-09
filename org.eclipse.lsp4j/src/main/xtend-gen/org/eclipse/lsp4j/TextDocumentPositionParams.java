@@ -33,6 +33,7 @@ public class TextDocumentPositionParams {
    * The text document.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -40,7 +41,7 @@ public class TextDocumentPositionParams {
   /**
    * The text document.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
@@ -65,6 +66,7 @@ public class TextDocumentPositionParams {
    * The position inside the text document.
    */
   @Pure
+  @NonNull
   public Position getPosition() {
     return this.position;
   }
@@ -72,7 +74,7 @@ public class TextDocumentPositionParams {
   /**
    * The position inside the text document.
    */
-  public void setPosition(final Position position) {
+  public void setPosition(@NonNull final Position position) {
     this.position = position;
   }
   

@@ -35,6 +35,7 @@ public class CodeLens {
    * The range in which this code lens is valid. Should only span a single line.
    */
   @Pure
+  @NonNull
   public Range getRange() {
     return this.range;
   }
@@ -42,7 +43,7 @@ public class CodeLens {
   /**
    * The range in which this code lens is valid. Should only span a single line.
    */
-  public void setRange(final Range range) {
+  public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   

@@ -37,6 +37,7 @@ public class DidChangeTextDocumentParams {
    * been applied.
    */
   @Pure
+  @NonNull
   public VersionedTextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -45,7 +46,7 @@ public class DidChangeTextDocumentParams {
    * The document that did change. The version number points to the version after all provided content changes have
    * been applied.
    */
-  public void setTextDocument(final VersionedTextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
@@ -70,6 +71,7 @@ public class DidChangeTextDocumentParams {
    * The actual content changes.
    */
   @Pure
+  @NonNull
   public List<TextDocumentContentChangeEvent> getContentChanges() {
     return this.contentChanges;
   }
@@ -77,7 +79,7 @@ public class DidChangeTextDocumentParams {
   /**
    * The actual content changes.
    */
-  public void setContentChanges(final List<TextDocumentContentChangeEvent> contentChanges) {
+  public void setContentChanges(@NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
     this.contentChanges = contentChanges;
   }
   

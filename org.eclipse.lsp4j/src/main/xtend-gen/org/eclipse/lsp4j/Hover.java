@@ -27,6 +27,7 @@ public class Hover {
    * The hover's content as markdown
    */
   @Pure
+  @NonNull
   public List<String> getContents() {
     return this.contents;
   }
@@ -34,7 +35,7 @@ public class Hover {
   /**
    * The hover's content as markdown
    */
-  public void setContents(final List<String> contents) {
+  public void setContents(@NonNull final List<String> contents) {
     this.contents = contents;
   }
   

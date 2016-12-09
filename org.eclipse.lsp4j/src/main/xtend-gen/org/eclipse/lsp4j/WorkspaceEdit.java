@@ -23,6 +23,7 @@ public class WorkspaceEdit {
    * Holds changes to existing resources.
    */
   @Pure
+  @NonNull
   public Map<String, List<TextEdit>> getChanges() {
     return this.changes;
   }
@@ -30,7 +31,7 @@ public class WorkspaceEdit {
   /**
    * Holds changes to existing resources.
    */
-  public void setChanges(final Map<String, List<TextEdit>> changes) {
+  public void setChanges(@NonNull final Map<String, List<TextEdit>> changes) {
     this.changes = changes;
   }
   

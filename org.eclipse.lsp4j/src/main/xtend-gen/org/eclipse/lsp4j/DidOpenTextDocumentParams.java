@@ -29,6 +29,7 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
    * The document that was opened.
    */
   @Pure
+  @NonNull
   public TextDocumentItem getTextDocument() {
     return this.textDocument;
   }
@@ -36,7 +37,7 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
   /**
    * The document that was opened.
    */
-  public void setTextDocument(final TextDocumentItem textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentItem textDocument) {
     this.textDocument = textDocument;
   }
   

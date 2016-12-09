@@ -16,11 +16,12 @@ public class ReferenceParams extends TextDocumentPositionParams {
   private ReferenceContext context;
   
   @Pure
+  @NonNull
   public ReferenceContext getContext() {
     return this.context;
   }
   
-  public void setContext(final ReferenceContext context) {
+  public void setContext(@NonNull final ReferenceContext context) {
     this.context = context;
   }
   

@@ -19,6 +19,7 @@ public class TextDocumentIdentifier {
    * The text document's uri.
    */
   @Pure
+  @NonNull
   public String getUri() {
     return this.uri;
   }
@@ -26,7 +27,7 @@ public class TextDocumentIdentifier {
   /**
    * The text document's uri.
    */
-  public void setUri(final String uri) {
+  public void setUri(@NonNull final String uri) {
     this.uri = uri;
   }
   

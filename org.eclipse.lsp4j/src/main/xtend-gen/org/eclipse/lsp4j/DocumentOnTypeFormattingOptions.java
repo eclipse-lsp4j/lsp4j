@@ -25,6 +25,7 @@ public class DocumentOnTypeFormattingOptions {
    * A character on which formatting should be triggered, like `}`.
    */
   @Pure
+  @NonNull
   public String getFirstTriggerCharacter() {
     return this.firstTriggerCharacter;
   }
@@ -32,7 +33,7 @@ public class DocumentOnTypeFormattingOptions {
   /**
    * A character on which formatting should be triggered, like `}`.
    */
-  public void setFirstTriggerCharacter(final String firstTriggerCharacter) {
+  public void setFirstTriggerCharacter(@NonNull final String firstTriggerCharacter) {
     this.firstTriggerCharacter = firstTriggerCharacter;
   }
   

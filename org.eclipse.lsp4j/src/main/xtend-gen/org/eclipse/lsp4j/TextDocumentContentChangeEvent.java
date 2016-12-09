@@ -61,6 +61,7 @@ public class TextDocumentContentChangeEvent {
    * The new text of the document.
    */
   @Pure
+  @NonNull
   public String getText() {
     return this.text;
   }
@@ -68,7 +69,7 @@ public class TextDocumentContentChangeEvent {
   /**
    * The new text of the document.
    */
-  public void setText(final String text) {
+  public void setText(@NonNull final String text) {
     this.text = text;
   }
   

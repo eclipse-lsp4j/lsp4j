@@ -32,6 +32,7 @@ public class Command {
    * Title of the command, like `save`.
    */
   @Pure
+  @NonNull
   public String getTitle() {
     return this.title;
   }
@@ -39,7 +40,7 @@ public class Command {
   /**
    * Title of the command, like `save`.
    */
-  public void setTitle(final String title) {
+  public void setTitle(@NonNull final String title) {
     this.title = title;
   }
   
@@ -47,6 +48,7 @@ public class Command {
    * The identifier of the actual command handler.
    */
   @Pure
+  @NonNull
   public String getCommand() {
     return this.command;
   }
@@ -54,7 +56,7 @@ public class Command {
   /**
    * The identifier of the actual command handler.
    */
-  public void setCommand(final String command) {
+  public void setCommand(@NonNull final String command) {
     this.command = command;
   }
   

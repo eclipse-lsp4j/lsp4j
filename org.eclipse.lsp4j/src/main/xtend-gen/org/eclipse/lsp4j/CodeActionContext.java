@@ -22,6 +22,7 @@ public class CodeActionContext {
    * An array of diagnostics.
    */
   @Pure
+  @NonNull
   public List<Diagnostic> getDiagnostics() {
     return this.diagnostics;
   }
@@ -29,7 +30,7 @@ public class CodeActionContext {
   /**
    * An array of diagnostics.
    */
-  public void setDiagnostics(final List<Diagnostic> diagnostics) {
+  public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
     this.diagnostics = diagnostics;
   }
   

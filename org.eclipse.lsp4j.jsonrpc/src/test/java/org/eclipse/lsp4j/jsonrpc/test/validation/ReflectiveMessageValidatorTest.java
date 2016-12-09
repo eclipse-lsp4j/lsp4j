@@ -7,6 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.validation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.lsp4j.jsonrpc.json.InvalidMessageException;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
@@ -18,9 +21,29 @@ import org.junit.Test;
 public class ReflectiveMessageValidatorTest {
 	
 	static class Foo {
+		// a non exposed self reference
+		Foo self = this;
+		
 		Foo nested;
-		@NonNull String nonNullString;
+		String nonNullString;
 		String nullableString;
+		List<Foo> foos;
+		
+		public Foo getNested() {
+			return nested;
+		}
+		 
+		public @NonNull String getNonNullString() {
+			return nonNullString;
+		}
+		
+		public String getNullableString() {
+			return nullableString;
+		}
+		
+		public List<Foo> getFoos() {
+			return foos;
+		}
 	}
 	
 	@Test public void testNonNullViolated() {
@@ -33,7 +56,7 @@ public class ReflectiveMessageValidatorTest {
 			validator.consume(message);
 			Assert.fail();
 		} catch (InvalidMessageException e) {
-			Assert.assertEquals("The property 'nonNullString' must have a non-null value.", ((ResponseError)e.getMessageObject()).getMessage());
+			Assert.assertEquals("The accessor 'getNonNullString' must return a non-null value.", ((ResponseError)e.getMessageObject()).getMessage());
 		}
 	}
 	
@@ -50,7 +73,7 @@ public class ReflectiveMessageValidatorTest {
 			validator.consume(message);
 			Assert.fail();
 		} catch (InvalidMessageException e) {
-			Assert.assertEquals("The property 'nonNullString' must have a non-null value.", ((ResponseError)e.getMessageObject()).getMessage());
+			Assert.assertEquals("The accessor 'getNonNullString' must return a non-null value.", ((ResponseError)e.getMessageObject()).getMessage());
 		}
 	}
 	
@@ -82,6 +105,27 @@ public class ReflectiveMessageValidatorTest {
 			Assert.fail();
 		} catch (InvalidMessageException e) {
 			Assert.assertEquals("An element of the message has a direct or indirect reference to itself.", ((ResponseError)e.getMessageObject()).getMessage());
+		}
+	}
+	
+	@Test public void testReflectionOnPropertiesOnly() {
+		ReflectiveMessageValidator validator = new ReflectiveMessageValidator((message) -> {});
+		
+		NotificationMessage message = new NotificationMessage();
+		message.setMethod("foo");
+		Foo foo = new Foo();
+		foo.nonNullString = "test";
+		foo.nested = new Foo() {{
+			nonNullString = "something";
+		}};
+		foo.foos = new ArrayList<>();
+		foo.foos.add(new Foo());
+		message.setParams(foo);
+		try {
+			validator.consume(message);
+			Assert.fail();
+		} catch (InvalidMessageException e) {
+			Assert.assertEquals("The accessor 'getNonNullString' must return a non-null value.", ((ResponseError)e.getMessageObject()).getMessage());
 		}
 	}
 }

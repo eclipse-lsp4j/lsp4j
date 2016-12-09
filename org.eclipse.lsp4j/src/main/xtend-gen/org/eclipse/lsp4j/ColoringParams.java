@@ -29,6 +29,7 @@ public class ColoringParams {
    * The URI for which coloring information is reported.
    */
   @Pure
+  @NonNull
   public String getUri() {
     return this.uri;
   }
@@ -36,7 +37,7 @@ public class ColoringParams {
   /**
    * The URI for which coloring information is reported.
    */
-  public void setUri(final String uri) {
+  public void setUri(@NonNull final String uri) {
     this.uri = uri;
   }
   
@@ -44,6 +45,7 @@ public class ColoringParams {
    * A list of coloring information instances.
    */
   @Pure
+  @NonNull
   public List<? extends ColoringInformation> getInfos() {
     return this.infos;
   }
@@ -51,7 +53,7 @@ public class ColoringParams {
   /**
    * A list of coloring information instances.
    */
-  public void setInfos(final List<? extends ColoringInformation> infos) {
+  public void setInfos(@NonNull final List<? extends ColoringInformation> infos) {
     this.infos = infos;
   }
   

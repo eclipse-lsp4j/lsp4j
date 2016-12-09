@@ -20,6 +20,7 @@ public class DocumentSymbolParams {
    * The text document.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -27,7 +28,7 @@ public class DocumentSymbolParams {
   /**
    * The text document.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

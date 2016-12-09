@@ -81,6 +81,7 @@ public class CompletionItem {
    * The label of this completion item. By default also the text that is inserted when selecting this completion.
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -88,7 +89,7 @@ public class CompletionItem {
   /**
    * The label of this completion item. By default also the text that is inserted when selecting this completion.
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   

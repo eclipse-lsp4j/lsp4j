@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.Consumer;
 import org.eclipse.lsp4j.generator.LanguageServerAPI;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor;
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor;
@@ -25,6 +26,7 @@ import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableConstructorDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration;
+import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.Type;
 import org.eclipse.xtend.lib.macro.declaration.TypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
@@ -125,31 +127,45 @@ public class LanguageServerProcessor extends AbstractClassProcessor {
       Type _findTypeGlobally = context.findTypeGlobally(Deprecated.class);
       final AnnotationReference deprecated = field.findAnnotation(_findTypeGlobally);
       accessorsUtil.addGetter(field, Visibility.PUBLIC);
+      TypeReference _newTypeReference = context.newTypeReference(NonNull.class);
+      Type _type = _newTypeReference.getType();
+      AnnotationReference _findAnnotation = field.findAnnotation(_type);
+      final boolean hasNonNull = (_findAnnotation != null);
       String _getterName = accessorsUtil.getGetterName(field);
       MutableMethodDeclaration _findDeclaredMethod = impl.findDeclaredMethod(_getterName);
       final Procedure1<MutableMethodDeclaration> _function_2 = (MutableMethodDeclaration it) -> {
         String _docComment = field.getDocComment();
         it.setDocComment(_docComment);
-        if ((deprecated != null)) {
-          AnnotationReference _newAnnotationReference = context.newAnnotationReference(Deprecated.class);
+        if (hasNonNull) {
+          AnnotationReference _newAnnotationReference = context.newAnnotationReference(NonNull.class);
           it.addAnnotation(_newAnnotationReference);
+        }
+        if ((deprecated != null)) {
+          AnnotationReference _newAnnotationReference_1 = context.newAnnotationReference(Deprecated.class);
+          it.addAnnotation(_newAnnotationReference_1);
         }
       };
       ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod, _function_2);
-      TypeReference _type = field.getType();
-      boolean _isInferred = _type.isInferred();
+      TypeReference _type_1 = field.getType();
+      boolean _isInferred = _type_1.isInferred();
       boolean _not = (!_isInferred);
       if (_not) {
         accessorsUtil.addSetter(field, Visibility.PUBLIC);
         String _setterName = accessorsUtil.getSetterName(field);
-        TypeReference _type_1 = field.getType();
-        MutableMethodDeclaration _findDeclaredMethod_1 = impl.findDeclaredMethod(_setterName, _type_1);
+        TypeReference _type_2 = field.getType();
+        MutableMethodDeclaration _findDeclaredMethod_1 = impl.findDeclaredMethod(_setterName, _type_2);
         final Procedure1<MutableMethodDeclaration> _function_3 = (MutableMethodDeclaration it) -> {
           String _docComment = field.getDocComment();
           it.setDocComment(_docComment);
+          if (hasNonNull) {
+            Iterable<? extends MutableParameterDeclaration> _parameters = it.getParameters();
+            MutableParameterDeclaration _head = IterableExtensions.head(_parameters);
+            AnnotationReference _newAnnotationReference = context.newAnnotationReference(NonNull.class);
+            _head.addAnnotation(_newAnnotationReference);
+          }
           if ((deprecated != null)) {
-            AnnotationReference _newAnnotationReference = context.newAnnotationReference(Deprecated.class);
-            it.addAnnotation(_newAnnotationReference);
+            AnnotationReference _newAnnotationReference_1 = context.newAnnotationReference(Deprecated.class);
+            it.addAnnotation(_newAnnotationReference_1);
           }
         };
         ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod_1, _function_3);

@@ -24,6 +24,7 @@ public class ParameterInformation {
    * The label of this signature. Will be shown in the UI.
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -31,7 +32,7 @@ public class ParameterInformation {
   /**
    * The label of this signature. Will be shown in the UI.
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   

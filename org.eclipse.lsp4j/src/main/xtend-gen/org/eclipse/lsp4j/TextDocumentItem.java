@@ -36,6 +36,7 @@ public class TextDocumentItem {
    * The text document's uri.
    */
   @Pure
+  @NonNull
   public String getUri() {
     return this.uri;
   }
@@ -43,7 +44,7 @@ public class TextDocumentItem {
   /**
    * The text document's uri.
    */
-  public void setUri(final String uri) {
+  public void setUri(@NonNull final String uri) {
     this.uri = uri;
   }
   
@@ -51,6 +52,7 @@ public class TextDocumentItem {
    * The text document's language identifier
    */
   @Pure
+  @NonNull
   public String getLanguageId() {
     return this.languageId;
   }
@@ -58,7 +60,7 @@ public class TextDocumentItem {
   /**
    * The text document's language identifier
    */
-  public void setLanguageId(final String languageId) {
+  public void setLanguageId(@NonNull final String languageId) {
     this.languageId = languageId;
   }
   
@@ -81,6 +83,7 @@ public class TextDocumentItem {
    * The content of the opened  text document.
    */
   @Pure
+  @NonNull
   public String getText() {
     return this.text;
   }
@@ -88,7 +91,7 @@ public class TextDocumentItem {
   /**
    * The content of the opened  text document.
    */
-  public void setText(final String text) {
+  public void setText(@NonNull final String text) {
     this.text = text;
   }
   
