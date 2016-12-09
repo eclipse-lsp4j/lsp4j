@@ -22,6 +22,7 @@ import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentHighlight;
+import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
 import org.eclipse.lsp4j.DocumentSymbolParams;
@@ -31,6 +32,7 @@ import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SymbolInformation;
+import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WorkspaceEdit;
@@ -125,6 +127,20 @@ public interface TextDocumentService {
 	@JsonRequest(value="codeLens/resolve", useSegment = false)
 	CompletableFuture<CodeLens> resolveCodeLens(CodeLens unresolved);
 
+	/**
+	 * The document links request is sent from the client to the server 
+	 * to request the location of links in a document.
+	 */
+	@JsonRequest
+	CompletableFuture<List<? extends DocumentLink>> documentLink(TextDocumentIdentifier params);
+	
+	/**
+	 * The document link resolve request is sent from the client 
+	 * to the server to resolve the target of a given document link.
+	 */
+	@JsonRequest(value="documentLink/resolve", useSegment = false)
+	CompletableFuture<DocumentLink> resolveDocumentLink(DocumentLink unresolved);
+	
 	/**
 	 * The document formatting request is sent from the client to the server to
 	 * format a whole document.
