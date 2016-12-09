@@ -18,7 +18,7 @@ import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
-class LanguageServerProcessor extends AbstractClassProcessor {
+class JsonRpcDataProcessor extends AbstractClassProcessor {
 
 	static val MAX_CONSTRUCTOR_ARGS = 3
 
@@ -28,7 +28,7 @@ class LanguageServerProcessor extends AbstractClassProcessor {
 
 	protected def generateImpl(MutableClassDeclaration impl, extension TransformationContext context) {
 		impl.removeAnnotation(impl.annotations.findFirst [
-			annotationTypeDeclaration == LanguageServerAPI.findTypeGlobally
+			annotationTypeDeclaration == JsonRpcData.findTypeGlobally
 		])
 		impl.generateImplMembers(context)
 		val fields = impl.declaredFields.filter [ !static ]

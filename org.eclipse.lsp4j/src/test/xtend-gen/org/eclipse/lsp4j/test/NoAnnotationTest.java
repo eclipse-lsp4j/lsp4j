@@ -10,7 +10,7 @@ package org.eclipse.lsp4j.test;
 import com.google.common.base.Objects;
 import java.lang.annotation.Annotation;
 import org.eclipse.lsp4j.CodeLens;
-import org.eclipse.lsp4j.generator.LanguageServerAPI;
+import org.eclipse.lsp4j.generator.JsonRpcData;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -24,7 +24,7 @@ public class NoAnnotationTest {
     Annotation[] _annotations = CodeLens.class.getAnnotations();
     final Function1<Annotation, Boolean> _function = (Annotation it) -> {
       Class<? extends Annotation> _annotationType = it.annotationType();
-      return Boolean.valueOf(Objects.equal(_annotationType, LanguageServerAPI.class));
+      return Boolean.valueOf(Objects.equal(_annotationType, JsonRpcData.class));
     };
     boolean _exists = IterableExtensions.<Annotation>exists(((Iterable<Annotation>)Conversions.doWrapArray(_annotations)), _function);
     Assert.assertFalse(_exists);

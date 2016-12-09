@@ -11,11 +11,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.eclipse.lsp4j.generator.LanguageServerProcessor;
+import org.eclipse.lsp4j.generator.JsonRpcDataProcessor;
 import org.eclipse.xtend.lib.macro.Active;
 
+/**
+ * @deprecated use JsonRpcData instead
+ */
+@Deprecated
 @Target(ElementType.TYPE)
-@Active(LanguageServerProcessor.class)
+@Active(JsonRpcDataProcessor.class)
 @Retention(RetentionPolicy.SOURCE)
 public @interface LanguageServerAPI {
 }

@@ -12,7 +12,7 @@ import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.function.Consumer;
-import org.eclipse.lsp4j.generator.LanguageServerAPI;
+import org.eclipse.lsp4j.generator.JsonRpcData;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor;
@@ -42,7 +42,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class LanguageServerProcessor extends AbstractClassProcessor {
+public class JsonRpcDataProcessor extends AbstractClassProcessor {
   private final static int MAX_CONSTRUCTOR_ARGS = 3;
   
   @Override
@@ -54,7 +54,7 @@ public class LanguageServerProcessor extends AbstractClassProcessor {
     Iterable<? extends AnnotationReference> _annotations = impl.getAnnotations();
     final Function1<AnnotationReference, Boolean> _function = (AnnotationReference it) -> {
       AnnotationTypeDeclaration _annotationTypeDeclaration = it.getAnnotationTypeDeclaration();
-      Type _findTypeGlobally = context.findTypeGlobally(LanguageServerAPI.class);
+      Type _findTypeGlobally = context.findTypeGlobally(JsonRpcData.class);
       return Boolean.valueOf(Objects.equal(_annotationTypeDeclaration, _findTypeGlobally));
     };
     AnnotationReference _findFirst = IterableExtensions.findFirst(_annotations, _function);
@@ -78,7 +78,7 @@ public class LanguageServerProcessor extends AbstractClassProcessor {
         it.setBody(_client);
       };
       impl.addConstructor(_function_2);
-      if (((IterableExtensions.size(fields) <= LanguageServerProcessor.MAX_CONSTRUCTOR_ARGS) && (impl.getExtendedClass() != context.getObject()))) {
+      if (((IterableExtensions.size(fields) <= JsonRpcDataProcessor.MAX_CONSTRUCTOR_ARGS) && (impl.getExtendedClass() != context.getObject()))) {
         final Procedure1<MutableConstructorDeclaration> _function_3 = (MutableConstructorDeclaration constructor) -> {
           final Consumer<MutableFieldDeclaration> _function_4 = (MutableFieldDeclaration field) -> {
             String _simpleName = field.getSimpleName();

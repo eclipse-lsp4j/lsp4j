@@ -1,7 +1,7 @@
 package org.eclipse.lsp4j
 
 import java.util.List
-import org.eclipse.lsp4j.generator.LanguageServerAPI
+import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import java.util.ArrayList
 
@@ -9,7 +9,7 @@ import java.util.ArrayList
  * Representation of a computed mapping from ranges to the appropriate
  * highlighting style.
  */
-@LanguageServerAPI
+@JsonRpcData
 class ColoringParams {
 
 	/**
@@ -31,7 +31,7 @@ class ColoringParams {
  * Representation of a range and highlighting style identifiers that should be
  * highlighted based on the underlying model.
  */
-@LanguageServerAPI
+@JsonRpcData
 class ColoringInformation {
 
 	/**

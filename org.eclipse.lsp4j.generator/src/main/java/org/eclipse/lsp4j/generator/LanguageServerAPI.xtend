@@ -12,8 +12,12 @@ import java.lang.annotation.Target
 import org.eclipse.xtend.lib.macro.Active
 import java.lang.annotation.Retention
 
+/**
+ * @deprecated use JsonRpcData instead 
+ */
+@Deprecated
 @Target(ElementType.TYPE)
-@Active(LanguageServerProcessor)
+@Active(JsonRpcDataProcessor)
 @Retention(SOURCE)
 annotation LanguageServerAPI {
 }

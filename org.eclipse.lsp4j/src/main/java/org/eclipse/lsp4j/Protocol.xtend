@@ -4,17 +4,17 @@ import java.util.ArrayList
 import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
-import org.eclipse.lsp4j.generator.LanguageServerAPI
+import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
-@LanguageServerAPI
+@JsonRpcData
 class ClientCapabilities {
 }
 
 /**
  * Contains additional diagnostic information about the context in which a code action is run.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CodeActionContext {
 	/**
 	 * An array of diagnostics.
@@ -28,7 +28,7 @@ class CodeActionContext {
  * The request is triggered when the user moves the cursor into an problem marker in the editor or presses the lightbulb
  * associated with a marker.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CodeActionParams {
 	/**
 	 * The document in which the command was invoked.
@@ -56,7 +56,7 @@ class CodeActionParams {
  * A code lens is <em>unresolved</em> when no command is associated to it. For performance reasons the creation of a
  * code lens and resolving should be done to two stages.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CodeLens {
 	/**
 	 * The range in which this code lens is valid. Should only span a single line.
@@ -78,7 +78,7 @@ class CodeLens {
 /**
  * Code Lens options.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CodeLensOptions {
 	/**
 	 * Code lens has a resolve provider as well.
@@ -89,7 +89,7 @@ class CodeLensOptions {
 /**
  * The code lens request is sent from the client to the server to compute code lenses for a given text document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CodeLensParams {
 	/**
 	 * The document to request code lens for.
@@ -102,7 +102,7 @@ class CodeLensParams {
  * Represents a reference to a command. Provides a title which will be used to represent a command in the UI and,
  * optionally, an array of arguments which will be passed to the command handler function when invoked.
  */
-@LanguageServerAPI
+@JsonRpcData
 class Command {
 	/**
 	 * Title of the command, like `save`.
@@ -128,7 +128,7 @@ class Command {
  * servers can additional provide a handler for the resolve completion item request. This request is send when a
  * completion item is selected in the user class.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CompletionItem {
 	/**
 	 * The label of this completion item. By default also the text that is inserted when selecting this completion.
@@ -195,7 +195,7 @@ class CompletionItem {
 /**
  * Represents a collection of completion items to be presented in the editor.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CompletionList {
 	/**
 	 * This list it not complete. Further typing should result in recomputing this list.
@@ -212,7 +212,7 @@ class CompletionList {
 /**
  * Completion options.
  */
-@LanguageServerAPI
+@JsonRpcData
 class CompletionOptions {
 	/**
 	 * The server provides support to resolve additional information for a completion item.
@@ -228,7 +228,7 @@ class CompletionOptions {
 /**
  * Represents a diagnostic, such as a compiler error or warning. Diagnostic objects are only valid in the scope of a resource.
  */
-@LanguageServerAPI
+@JsonRpcData
 class Diagnostic {
 	/**
 	 * The range at which the message applies
@@ -262,7 +262,7 @@ class Diagnostic {
 /**
  * A notification sent from the client to the server to signal the change of configuration settings.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DidChangeConfigurationParams {
 	@NonNull
 	Object settings
@@ -271,7 +271,7 @@ class DidChangeConfigurationParams {
 /**
  * The document change notification is sent from the client to the server to signal changes to a text document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DidChangeTextDocumentParams {
 	/**
 	 * The document that did change. The version number points to the version after all provided content changes have
@@ -297,7 +297,7 @@ class DidChangeTextDocumentParams {
  * The watched files notification is sent from the client to the server when the client detects changes
  * to file watched by the language client.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DidChangeWatchedFilesParams {
 	/**
 	 * The actual file events.
@@ -311,7 +311,7 @@ class DidChangeWatchedFilesParams {
  * The document's truth now exists where the document's uri points to (e.g. if the document's uri is a file uri the
  * truth now exists on disk).
  */
-@LanguageServerAPI
+@JsonRpcData
 class DidCloseTextDocumentParams {
 	/**
 	 * The document that was closed.
@@ -325,7 +325,7 @@ class DidCloseTextDocumentParams {
  * The document's truth is now managed by the client and the server must not try to read the document's truth using
  * the document's uri.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DidOpenTextDocumentParams extends TextDocumentIdentifier {
 	/**
 	 * The document that was opened.
@@ -343,7 +343,7 @@ class DidOpenTextDocumentParams extends TextDocumentIdentifier {
 /**
  * The document save notification is sent from the client to the server when the document for saved in the clinet.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DidSaveTextDocumentParams {
 	/**
 	 * The document that was closed.
@@ -355,7 +355,7 @@ class DidSaveTextDocumentParams {
 /**
  * The document formatting request is sent from the server to the client to format a whole document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DocumentFormattingParams {
 	/**
 	 * The document to format.
@@ -374,7 +374,7 @@ class DocumentFormattingParams {
  * A document highlight is a range inside a text document which deserves special attention. Usually a document highlight
  * is visualized by changing the background color of its range.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DocumentHighlight {
 	/**
 	 * The range this highlight applies to.
@@ -391,7 +391,7 @@ class DocumentHighlight {
 /**
  * Format document on type options
  */
-@LanguageServerAPI
+@JsonRpcData
 class DocumentOnTypeFormattingOptions {
 	/**
 	 * A character on which formatting should be triggered, like `}`.
@@ -408,7 +408,7 @@ class DocumentOnTypeFormattingOptions {
 /**
  * The document on type formatting request is sent from the client to the server to format parts of the document during typing.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	/**
 	 * The position at which this request was send.
@@ -426,7 +426,7 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 /**
  * The document range formatting request is sent from the client to the server to format a given range in a document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DocumentRangeFormattingParams extends DocumentFormattingParams {
 	/**
 	 * The range to format
@@ -438,7 +438,7 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
 /**
  * The document symbol request is sent from the client to the server to list all symbols found in a given text document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class DocumentSymbolParams {
 	/**
 	 * The text document.
@@ -450,7 +450,7 @@ class DocumentSymbolParams {
 /**
  * An event describing a file change.
  */
-@LanguageServerAPI
+@JsonRpcData
 class FileEvent {
 	/**
 	 * The file's uri.
@@ -468,7 +468,7 @@ class FileEvent {
 /**
  * Value-object describing what options formatting should use.
  */
-@LanguageServerAPI
+@JsonRpcData
 class FormattingOptions {
 	/**
 	 * Size of a tab in spaces.
@@ -489,7 +489,7 @@ class FormattingOptions {
 /**
  * The result of a hover request.
  */
-@LanguageServerAPI
+@JsonRpcData
 class Hover {
 	/**
 	 * The hover's content as markdown
@@ -503,7 +503,7 @@ class Hover {
 	Range range
 }
 
-@LanguageServerAPI
+@JsonRpcData
 class InitializeError {
 	/**
 	 * Indicates whether the client should retry to send the initialize request after showing the message provided
@@ -515,7 +515,7 @@ class InitializeError {
 /**
  * The initialize request is sent as the first request from the client to the server.
  */
-@LanguageServerAPI
+@JsonRpcData
 class InitializeParams {
 	/**
 	 * The process Id of the parent process that started the server.
@@ -544,7 +544,7 @@ class InitializeParams {
 	String clientName
 }
 
-@LanguageServerAPI
+@JsonRpcData
 class InitializeResult {
 	/**
 	 * The capabilities the language server provides.
@@ -556,7 +556,7 @@ class InitializeResult {
 /**
  * Represents a location inside a resource, such as a line inside a text file.
  */
-@LanguageServerAPI
+@JsonRpcData
 class Location {
 	@NonNull
 	String uri
@@ -570,7 +570,7 @@ class Location {
  * user class. In addition to the show message notification the request allows to pass actions and to wait for an
  * answer from the client.
  */
-@LanguageServerAPI
+@JsonRpcData
 class MessageActionItem {
 	/**
 	 * A short title like 'Retry', 'Open Log' etc.
@@ -585,7 +585,7 @@ class MessageActionItem {
  * 
  * The log message notification is send from the server to the client to ask the client to log a particular message.
  */
-@LanguageServerAPI
+@JsonRpcData
 class MessageParams {
 	/**
 	 * The message type.
@@ -603,7 +603,7 @@ class MessageParams {
 /**
  * Represents a parameter of a callable-signature. A parameter can have a label and a doc-comment.
  */
-@LanguageServerAPI
+@JsonRpcData
 class ParameterInformation {
 	/**
 	 * The label of this signature. Will be shown in the UI.
@@ -620,7 +620,7 @@ class ParameterInformation {
 /**
  * Position in a text document expressed as zero-based line and character offset.
  */
-@LanguageServerAPI
+@JsonRpcData
 class Position {
 	/**
 	 * Line position in a document (zero-based).
@@ -636,7 +636,7 @@ class Position {
 /**
  * Diagnostics notification are sent from the server to the client to signal results of validation runs.
  */
-@LanguageServerAPI
+@JsonRpcData
 class PublishDiagnosticsParams {
 	/**
 	 * The URI for which diagnostic information is reported.
@@ -654,7 +654,7 @@ class PublishDiagnosticsParams {
 /**
  * A range in a text document expressed as (zero-based) start and end positions.
  */
-@LanguageServerAPI
+@JsonRpcData
 class Range {
 	/**
 	 * The range's start position
@@ -673,7 +673,7 @@ class Range {
  * The references request is sent from the client to the server to resolve project-wide references for the symbol
  * denoted by the given text document position.
  */
-@LanguageServerAPI
+@JsonRpcData
 class ReferenceContext {
 	/**
 	 * Include the declaration of the current symbol.
@@ -685,7 +685,7 @@ class ReferenceContext {
  * The references request is sent from the client to the server to resolve project-wide references for the symbol
  * denoted by the given text document position.
  */
-@LanguageServerAPI
+@JsonRpcData
 class ReferenceParams extends TextDocumentPositionParams {
 	@NonNull
 	ReferenceContext context
@@ -694,7 +694,7 @@ class ReferenceParams extends TextDocumentPositionParams {
 /**
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
-@LanguageServerAPI
+@JsonRpcData
 class RenameParams {
 	/**
 	 * The document in which to find the symbol.
@@ -716,7 +716,7 @@ class RenameParams {
 	String newName
 }
 
-@LanguageServerAPI
+@JsonRpcData
 class ServerCapabilities {
 	/**
 	 * Defines how text documents are synced.
@@ -799,7 +799,7 @@ class ServerCapabilities {
  * user class. In addition to the show message notification the request allows to pass actions and to wait for an
  * answer from the client.
  */
-@LanguageServerAPI
+@JsonRpcData
 class ShowMessageRequestParams extends MessageParams {
 	/**
 	 * The message action items to present.
@@ -811,7 +811,7 @@ class ShowMessageRequestParams extends MessageParams {
  * Signature help represents the signature of something callable. There can be multiple signature but only one
  * active and only one active parameter.
  */
-@LanguageServerAPI
+@JsonRpcData
 class SignatureHelp {
 	/**
 	 * One or more signatures.
@@ -833,7 +833,7 @@ class SignatureHelp {
 /**
  * Signature help options.
  */
-@LanguageServerAPI
+@JsonRpcData
 class SignatureHelpOptions {
 	/**
 	 * The characters that trigger signature help automatically.
@@ -845,7 +845,7 @@ class SignatureHelpOptions {
  * Represents the signature of something callable. A signature can have a label, like a function-name, a doc-comment, and
  * a set of parameters.
  */
-@LanguageServerAPI
+@JsonRpcData
 class SignatureInformation {
 	/**
 	 * The label of this signature. Will be shown in the UI.
@@ -867,7 +867,7 @@ class SignatureInformation {
 /**
  * Represents information about programming constructs like variables, classes, classs etc.
  */
-@LanguageServerAPI
+@JsonRpcData
 class SymbolInformation {
 	/**
 	 * The name of this symbol.
@@ -897,7 +897,7 @@ class SymbolInformation {
  * An event describing a change to a text document. If range and rangeLength are omitted the new text is considered
  * to be the full content of the document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class TextDocumentContentChangeEvent {
 	/**
 	 * The range of the document that changed.
@@ -919,7 +919,7 @@ class TextDocumentContentChangeEvent {
 /**
  * Text documents are identified using an URI. On the protocol level URI's are passed as strings.
  */
-@LanguageServerAPI
+@JsonRpcData
 class TextDocumentIdentifier {
 	/**
 	 * The text document's uri.
@@ -931,7 +931,7 @@ class TextDocumentIdentifier {
 /**
  * An item to transfer a text document from the client to the server.
  */
-@LanguageServerAPI
+@JsonRpcData
 class TextDocumentItem {
 	/**
 	 * The text document's uri.
@@ -960,7 +960,7 @@ class TextDocumentItem {
 /**
  * A parameter literal used in requests to pass a text document and a position inside that document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class TextDocumentPositionParams {
 	/**
 	 * The text document.
@@ -984,7 +984,7 @@ class TextDocumentPositionParams {
 /**
  * A textual edit applicable to a text document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class TextEdit {
 	/**
 	 * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
@@ -1002,7 +1002,7 @@ class TextEdit {
 /**
  * An identifier to denote a specific version of a text document.
  */
-@LanguageServerAPI
+@JsonRpcData
 class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 	/**
 	 * The version number of this document.
@@ -1013,7 +1013,7 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 /**
  * A workspace edit represents changes to many resources managed in the workspace.
  */
-@LanguageServerAPI
+@JsonRpcData
 class WorkspaceEdit {
 	/**
 	 * Holds changes to existing resources.
@@ -1025,7 +1025,7 @@ class WorkspaceEdit {
 /**
  * The parameters of a Workspace Symbol Request.
  */
-@LanguageServerAPI
+@JsonRpcData
 class WorkspaceSymbolParams {
 	/**
 	 * A non-empty query string

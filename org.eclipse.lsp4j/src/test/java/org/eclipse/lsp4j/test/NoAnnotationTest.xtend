@@ -8,14 +8,14 @@
 package org.eclipse.lsp4j.test
 
 import org.eclipse.lsp4j.CodeLens
-import org.eclipse.lsp4j.generator.LanguageServerAPI
+import org.eclipse.lsp4j.generator.JsonRpcData
 import org.junit.Assert
 import org.junit.Test
 
 class NoAnnotationTest {
     
     @Test def void testNoAnnotation() {
-        Assert.assertFalse(CodeLens.annotations.exists[annotationType == LanguageServerAPI])
+        Assert.assertFalse(CodeLens.annotations.exists[annotationType == JsonRpcData])
     }
     
 }
