@@ -22,6 +22,8 @@ import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentHighlight;
+import org.eclipse.lsp4j.DocumentLink;
+import org.eclipse.lsp4j.DocumentLinkParams;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
 import org.eclipse.lsp4j.DocumentSymbolParams;
@@ -184,4 +186,20 @@ public interface TextDocumentService {
 	 */
 	@JsonNotification
 	void didSave(DidSaveTextDocumentParams params);
+	
+	/**
+	 * The document links request is sent from the client to the server to request the location of links in a document.
+	 */
+	@JsonRequest
+	default CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The document link resolve request is sent from the client to the server to resolve the target of a given document link.
+	 */
+	@JsonRequest(value="documentLink/resolve", useSegment = false)
+	default CompletableFuture<DocumentLink> documentLinkResolve(DocumentLink params) {
+		throw new UnsupportedOperationException();
+	}
 }

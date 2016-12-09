@@ -389,6 +389,31 @@ class DocumentHighlight {
 }
 
 /**
+ * A document link is a range in a text document that links to an internal or external resource, like another
+ * text document or a web site.
+ */
+@JsonRpcData
+class DocumentLink {
+    /**
+     * The range this link applies to.
+     */
+    @NonNull Range range
+    
+    /**
+     * The uri this link points to.
+     */
+    @NonNull String target
+}
+
+@JsonRpcData
+class DocumentLinkParams {
+    /**
+     * The document to provide document links for.
+     */
+    TextDocumentIdentifier textDocument
+}
+
+/**
  * Format document on type options
  */
 @JsonRpcData

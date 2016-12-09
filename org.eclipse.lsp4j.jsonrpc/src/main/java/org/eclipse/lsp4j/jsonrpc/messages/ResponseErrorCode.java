@@ -8,7 +8,7 @@
 package org.eclipse.lsp4j.jsonrpc.messages;
 
 /**
- * A number indicating the error type that occured.
+ * A number indicating the error type that occurred.
  */
 public enum ResponseErrorCode {
 	
@@ -24,7 +24,9 @@ public enum ResponseErrorCode {
 	
 	serverErrorStart(-32099),
 	
-	serverErrorEnd(-32000);
+	serverErrorEnd(-32000),
+	
+	serverNotInitialized(-32001);
 	
 	private final int value;
 	
