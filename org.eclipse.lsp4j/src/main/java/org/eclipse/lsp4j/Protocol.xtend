@@ -1033,3 +1033,23 @@ class WorkspaceSymbolParams {
 	@NonNull
 	String query
 }
+
+/**
+ * A document link is a range in a text document that links to an internal or external resource, like another
+ * text document or a web site.
+ */
+@LanguageServerAPI
+class DocumentLink {
+
+	/**
+	 * The range this link applies to.
+	 */
+	@NonNull
+	Range range
+	
+	/**
+	 * The uri this link points to.
+	 */
+	@NonNull
+	String uri
+}
