@@ -84,8 +84,6 @@ public class MessageParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     MessageParams other = (MessageParams) obj;
     if (this.type == null) {
       if (other.type != null)
@@ -104,7 +102,7 @@ public class MessageParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
     result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
     return result;

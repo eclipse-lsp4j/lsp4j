@@ -53,9 +53,10 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 
 		generateToString(impl, context)
 
+        val shouldIncludeSuper = impl.extendedClass.type != Object.newTypeReference.type
 		val equalsHashCodeUtil = new EqualsHashCodeProcessor.Util(context)
-		equalsHashCodeUtil.addEquals(impl, fields, true)
-		equalsHashCodeUtil.addHashCode(impl, fields, true)
+		equalsHashCodeUtil.addEquals(impl, fields, shouldIncludeSuper)
+		equalsHashCodeUtil.addHashCode(impl, fields, shouldIncludeSuper)
 
 		return impl
 	}

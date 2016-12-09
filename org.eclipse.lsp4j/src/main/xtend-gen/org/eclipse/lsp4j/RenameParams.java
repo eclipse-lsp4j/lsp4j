@@ -109,8 +109,6 @@ public class RenameParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     RenameParams other = (RenameParams) obj;
     if (this.textDocument == null) {
       if (other.textDocument != null)
@@ -134,7 +132,7 @@ public class RenameParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());
     result = prime * result + ((this.newName== null) ? 0 : this.newName.hashCode());

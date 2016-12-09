@@ -143,8 +143,6 @@ public class Diagnostic {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     Diagnostic other = (Diagnostic) obj;
     if (this.range == null) {
       if (other.range != null)
@@ -178,7 +176,7 @@ public class Diagnostic {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.severity== null) ? 0 : this.severity.hashCode());
     result = prime * result + ((this.code== null) ? 0 : this.code.hashCode());

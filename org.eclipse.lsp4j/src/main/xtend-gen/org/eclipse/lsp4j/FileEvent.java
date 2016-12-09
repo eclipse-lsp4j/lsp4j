@@ -81,8 +81,6 @@ public class FileEvent {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     FileEvent other = (FileEvent) obj;
     if (this.uri == null) {
       if (other.uri != null)
@@ -101,7 +99,7 @@ public class FileEvent {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
     return result;

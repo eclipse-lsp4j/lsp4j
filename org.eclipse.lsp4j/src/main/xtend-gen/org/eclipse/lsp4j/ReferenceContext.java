@@ -54,8 +54,6 @@ public class ReferenceContext {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     ReferenceContext other = (ReferenceContext) obj;
     if (other.includeDeclaration != this.includeDeclaration)
       return false;
@@ -66,7 +64,7 @@ public class ReferenceContext {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + (this.includeDeclaration ? 1231 : 1237);
     return result;
   }

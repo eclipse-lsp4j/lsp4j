@@ -82,8 +82,6 @@ public class DocumentLink {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     DocumentLink other = (DocumentLink) obj;
     if (this.range == null) {
       if (other.range != null)
@@ -102,7 +100,7 @@ public class DocumentLink {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.target== null) ? 0 : this.target.hashCode());
     return result;

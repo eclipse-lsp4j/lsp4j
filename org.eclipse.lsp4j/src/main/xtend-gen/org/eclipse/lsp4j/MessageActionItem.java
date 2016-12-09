@@ -58,8 +58,6 @@ public class MessageActionItem {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     MessageActionItem other = (MessageActionItem) obj;
     if (this.title == null) {
       if (other.title != null)
@@ -73,7 +71,7 @@ public class MessageActionItem {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
     return result;
   }

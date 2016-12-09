@@ -21,8 +21,6 @@ public class ClientCapabilities {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     ClientCapabilities other = (ClientCapabilities) obj;
     return true;
   }
@@ -31,7 +29,7 @@ public class ClientCapabilities {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     return result;
   }
 }

@@ -284,8 +284,6 @@ public class CompletionItem {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     CompletionItem other = (CompletionItem) obj;
     if (this.label == null) {
       if (other.label != null)
@@ -349,7 +347,7 @@ public class CompletionItem {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());

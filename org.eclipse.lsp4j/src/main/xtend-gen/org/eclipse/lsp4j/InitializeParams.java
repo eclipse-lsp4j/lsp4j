@@ -137,8 +137,6 @@ public class InitializeParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     InitializeParams other = (InitializeParams) obj;
     if (this.processId == null) {
       if (other.processId != null)
@@ -172,7 +170,7 @@ public class InitializeParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.processId== null) ? 0 : this.processId.hashCode());
     result = prime * result + ((this.rootPath== null) ? 0 : this.rootPath.hashCode());
     result = prime * result + ((this.initializationOptions== null) ? 0 : this.initializationOptions.hashCode());

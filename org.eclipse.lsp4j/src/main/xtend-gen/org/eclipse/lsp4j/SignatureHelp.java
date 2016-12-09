@@ -104,8 +104,6 @@ public class SignatureHelp {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     SignatureHelp other = (SignatureHelp) obj;
     if (this.signatures == null) {
       if (other.signatures != null)
@@ -129,7 +127,7 @@ public class SignatureHelp {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.signatures== null) ? 0 : this.signatures.hashCode());
     result = prime * result + ((this.activeSignature== null) ? 0 : this.activeSignature.hashCode());
     result = prime * result + ((this.activeParameter== null) ? 0 : this.activeParameter.hashCode());

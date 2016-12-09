@@ -121,8 +121,6 @@ public class SymbolInformation {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     SymbolInformation other = (SymbolInformation) obj;
     if (this.name == null) {
       if (other.name != null)
@@ -151,7 +149,7 @@ public class SymbolInformation {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.location== null) ? 0 : this.location.hashCode());

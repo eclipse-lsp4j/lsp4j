@@ -345,8 +345,6 @@ public class ServerCapabilities {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     ServerCapabilities other = (ServerCapabilities) obj;
     if (this.textDocumentSync == null) {
       if (other.textDocumentSync != null)
@@ -430,7 +428,7 @@ public class ServerCapabilities {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.textDocumentSync== null) ? 0 : this.textDocumentSync.hashCode());
     result = prime * result + ((this.hoverProvider== null) ? 0 : this.hoverProvider.hashCode());
     result = prime * result + ((this.completionProvider== null) ? 0 : this.completionProvider.hashCode());

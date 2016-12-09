@@ -107,8 +107,6 @@ public class TextDocumentPositionParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     TextDocumentPositionParams other = (TextDocumentPositionParams) obj;
     if (this.textDocument == null) {
       if (other.textDocument != null)
@@ -132,7 +130,7 @@ public class TextDocumentPositionParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());

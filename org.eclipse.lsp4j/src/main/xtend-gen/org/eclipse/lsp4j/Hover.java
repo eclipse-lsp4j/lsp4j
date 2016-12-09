@@ -81,8 +81,6 @@ public class Hover {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     Hover other = (Hover) obj;
     if (this.contents == null) {
       if (other.contents != null)
@@ -101,7 +99,7 @@ public class Hover {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.contents== null) ? 0 : this.contents.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     return result;

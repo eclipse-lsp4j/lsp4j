@@ -106,8 +106,6 @@ public class CodeLens {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     CodeLens other = (CodeLens) obj;
     if (this.range == null) {
       if (other.range != null)
@@ -131,7 +129,7 @@ public class CodeLens {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
     result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());

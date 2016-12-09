@@ -98,8 +98,6 @@ public class FormattingOptions {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     FormattingOptions other = (FormattingOptions) obj;
     if (other.tabSize != this.tabSize)
       return false;
@@ -117,7 +115,7 @@ public class FormattingOptions {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + this.tabSize;
     result = prime * result + (this.insertSpaces ? 1231 : 1237);
     result = prime * result + ((this.properties== null) ? 0 : this.properties.hashCode());

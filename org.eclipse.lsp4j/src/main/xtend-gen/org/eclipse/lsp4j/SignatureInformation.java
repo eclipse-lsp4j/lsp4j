@@ -103,8 +103,6 @@ public class SignatureInformation {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     SignatureInformation other = (SignatureInformation) obj;
     if (this.label == null) {
       if (other.label != null)
@@ -128,7 +126,7 @@ public class SignatureInformation {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
     result = prime * result + ((this.parameters== null) ? 0 : this.parameters.hashCode());

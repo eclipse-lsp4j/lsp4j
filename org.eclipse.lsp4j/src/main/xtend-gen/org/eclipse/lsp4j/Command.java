@@ -104,8 +104,6 @@ public class Command {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     Command other = (Command) obj;
     if (this.title == null) {
       if (other.title != null)
@@ -129,7 +127,7 @@ public class Command {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
     result = prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());

@@ -81,8 +81,6 @@ public class DocumentHighlight {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     DocumentHighlight other = (DocumentHighlight) obj;
     if (this.range == null) {
       if (other.range != null)
@@ -101,7 +99,7 @@ public class DocumentHighlight {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     return result;

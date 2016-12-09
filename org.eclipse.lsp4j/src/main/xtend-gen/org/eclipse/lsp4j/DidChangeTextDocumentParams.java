@@ -112,8 +112,6 @@ public class DidChangeTextDocumentParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     DidChangeTextDocumentParams other = (DidChangeTextDocumentParams) obj;
     if (this.textDocument == null) {
       if (other.textDocument != null)
@@ -137,7 +135,7 @@ public class DidChangeTextDocumentParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.contentChanges== null) ? 0 : this.contentChanges.hashCode());

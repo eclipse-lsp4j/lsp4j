@@ -76,8 +76,6 @@ public class CompletionOptions {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     CompletionOptions other = (CompletionOptions) obj;
     if (this.resolveProvider == null) {
       if (other.resolveProvider != null)
@@ -96,7 +94,7 @@ public class CompletionOptions {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
     result = prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
     return result;

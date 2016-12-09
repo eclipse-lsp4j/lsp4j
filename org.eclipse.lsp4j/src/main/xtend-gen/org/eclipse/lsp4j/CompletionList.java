@@ -81,8 +81,6 @@ public class CompletionList {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     CompletionList other = (CompletionList) obj;
     if (other.isIncomplete != this.isIncomplete)
       return false;
@@ -98,7 +96,7 @@ public class CompletionList {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + (this.isIncomplete ? 1231 : 1237);
     result = prime * result + ((this.items== null) ? 0 : this.items.hashCode());
     return result;

@@ -60,8 +60,6 @@ public class DidChangeWatchedFilesParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     DidChangeWatchedFilesParams other = (DidChangeWatchedFilesParams) obj;
     if (this.changes == null) {
       if (other.changes != null)
@@ -75,7 +73,7 @@ public class DidChangeWatchedFilesParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.changes== null) ? 0 : this.changes.hashCode());
     return result;
   }

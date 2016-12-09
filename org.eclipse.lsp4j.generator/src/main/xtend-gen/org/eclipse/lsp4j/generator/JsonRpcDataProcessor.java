@@ -109,9 +109,14 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       }
     }
     this.generateToString(impl, context);
+    TypeReference _extendedClass = impl.getExtendedClass();
+    Type _type = _extendedClass.getType();
+    TypeReference _newTypeReference = context.newTypeReference(Object.class);
+    Type _type_1 = _newTypeReference.getType();
+    final boolean shouldIncludeSuper = (!Objects.equal(_type, _type_1));
     final EqualsHashCodeProcessor.Util equalsHashCodeUtil = new EqualsHashCodeProcessor.Util(context);
-    equalsHashCodeUtil.addEquals(impl, fields, true);
-    equalsHashCodeUtil.addHashCode(impl, fields, true);
+    equalsHashCodeUtil.addEquals(impl, fields, shouldIncludeSuper);
+    equalsHashCodeUtil.addHashCode(impl, fields, shouldIncludeSuper);
     return impl;
   }
   

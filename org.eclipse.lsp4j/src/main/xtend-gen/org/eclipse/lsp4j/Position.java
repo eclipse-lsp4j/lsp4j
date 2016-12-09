@@ -75,8 +75,6 @@ public class Position {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     Position other = (Position) obj;
     if (other.line != this.line)
       return false;
@@ -89,7 +87,7 @@ public class Position {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + this.line;
     result = prime * result + this.character;
     return result;
