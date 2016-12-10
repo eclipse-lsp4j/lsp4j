@@ -1,10 +1,13 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * A code lens represents a command that should be shown along with source text, like the number of references,
@@ -14,22 +17,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * code lens and resolving should be done to two stages.
  */
 @SuppressWarnings("all")
-public class CodeLens {
-  /**
-   * The range in which this code lens is valid. Should only span a single line.
-   */
-  @NonNull
-  private Range range;
-  
-  /**
-   * The command this code lens represents.
-   */
-  private Command command;
-  
-  /**
-   * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
-   */
-  private Object data;
+public class CodeLens extends WrappedJsonObject {
+  private static WrappedJsonProperty<Range> rangeProperty = new WrappedJsonProperty<>("range", WrappedJsonConverter.objectConverter(Range.class));
   
   /**
    * The range in which this code lens is valid. Should only span a single line.
@@ -37,102 +26,82 @@ public class CodeLens {
   @Pure
   @NonNull
   public Range getRange() {
-    return this.range;
+    return rangeProperty.get(jsonObject);
   }
   
   /**
    * The range in which this code lens is valid. Should only span a single line.
    */
   public void setRange(@NonNull final Range range) {
-    this.range = range;
+    rangeProperty.set(jsonObject, range);
   }
+  
+  /**
+   * Removes the property range from the underlying JSON object.
+   */
+  public Range removeRange() {
+    return rangeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Command> commandProperty = new WrappedJsonProperty<>("command", WrappedJsonConverter.objectConverter(Command.class));
   
   /**
    * The command this code lens represents.
    */
   @Pure
   public Command getCommand() {
-    return this.command;
+    return commandProperty.get(jsonObject);
   }
   
   /**
    * The command this code lens represents.
    */
   public void setCommand(final Command command) {
-    this.command = command;
+    commandProperty.set(jsonObject, command);
   }
+  
+  /**
+   * Removes the property command from the underlying JSON object.
+   */
+  public Command removeCommand() {
+    return commandProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Object> dataProperty = new WrappedJsonProperty<>("data", WrappedJsonConverter.noConverter);
   
   /**
    * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
   @Pure
   public Object getData() {
-    return this.data;
+    return dataProperty.get(jsonObject);
   }
   
   /**
    * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
   public void setData(final Object data) {
-    this.data = data;
+    dataProperty.set(jsonObject, data);
+  }
+  
+  /**
+   * Removes the property data from the underlying JSON object.
+   */
+  public Object removeData() {
+    return dataProperty.remove(jsonObject);
   }
   
   public CodeLens() {
-    
+    super();
+  }
+  
+  public CodeLens(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public CodeLens(final Range range, final Command command, final Object data) {
-    this.range = range;
-    this.command = command;
-    this.data = data;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("range", this.range);
-    b.add("command", this.command);
-    b.add("data", this.data);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    CodeLens other = (CodeLens) obj;
-    if (this.range == null) {
-      if (other.range != null)
-        return false;
-    } else if (!this.range.equals(other.range))
-      return false;
-    if (this.command == null) {
-      if (other.command != null)
-        return false;
-    } else if (!this.command.equals(other.command))
-      return false;
-    if (this.data == null) {
-      if (other.data != null)
-        return false;
-    } else if (!this.data.equals(other.data))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
-    result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());
-    return result;
+    this.setRange(range);
+    this.setCommand(command);
+    this.setData(data);
   }
 }

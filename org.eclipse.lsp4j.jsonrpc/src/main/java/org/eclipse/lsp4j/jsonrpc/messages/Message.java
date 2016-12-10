@@ -8,28 +8,31 @@
 package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
-import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
-public abstract class Message {
-	
-	@NonNull
-	private String jsonrpc = MessageConstants.JSONRPC_VERSION;
+import com.google.gson.JsonObject;
 
-	public String getJsonrpc() {
-		return this.jsonrpc;
+public abstract class Message extends WrappedJsonObject {
+	
+	private static WrappedJsonProperty<String> jsonrpcProperty = new WrappedJsonProperty<>("jsonrpc",WrappedJsonConverter.stringConverter);
+	
+	public Message() {
+		this(new JsonObject());
+	}
+	public Message(JsonObject jsonObject) {
+		super(jsonObject);
+		setJsonrpc(MessageConstants.JSONRPC_VERSION);
+	}
+	
+	@NonNull public String getJsonrpc() {
+		return jsonrpcProperty.get(jsonObject);
 	}
 
-	public void setJsonrpc(String jsonrpc) {
-		this.jsonrpc = jsonrpc;
-	}
-	
-	@Override
-	public String toString() {
-		return MessageJsonHandler.getDefaultGsonBuilder()
-				.setPrettyPrinting()
-				.create()
-				.toJson(this);
+	public void setJsonrpc(@NonNull String jsonrpc) {
+		jsonrpcProperty.set(jsonObject, jsonrpc);
 	}
 	
 }

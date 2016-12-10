@@ -1,24 +1,18 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Represents a parameter of a callable-signature. A parameter can have a label and a doc-comment.
  */
 @SuppressWarnings("all")
-public class ParameterInformation {
-  /**
-   * The label of this signature. Will be shown in the UI.
-   */
-  @NonNull
-  private String label;
-  
-  /**
-   * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
-   */
-  private String documentation;
+public class ParameterInformation extends WrappedJsonObject {
+  private static WrappedJsonProperty<String> labelProperty = new WrappedJsonProperty<>("label", WrappedJsonConverter.stringConverter);
   
   /**
    * The label of this signature. Will be shown in the UI.
@@ -26,79 +20,57 @@ public class ParameterInformation {
   @Pure
   @NonNull
   public String getLabel() {
-    return this.label;
+    return labelProperty.get(jsonObject);
   }
   
   /**
    * The label of this signature. Will be shown in the UI.
    */
   public void setLabel(@NonNull final String label) {
-    this.label = label;
+    labelProperty.set(jsonObject, label);
   }
+  
+  /**
+   * Removes the property label from the underlying JSON object.
+   */
+  public String removeLabel() {
+    return labelProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> documentationProperty = new WrappedJsonProperty<>("documentation", WrappedJsonConverter.stringConverter);
   
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
   @Pure
   public String getDocumentation() {
-    return this.documentation;
+    return documentationProperty.get(jsonObject);
   }
   
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
   public void setDocumentation(final String documentation) {
-    this.documentation = documentation;
+    documentationProperty.set(jsonObject, documentation);
+  }
+  
+  /**
+   * Removes the property documentation from the underlying JSON object.
+   */
+  public String removeDocumentation() {
+    return documentationProperty.remove(jsonObject);
   }
   
   public ParameterInformation() {
-    
+    super();
+  }
+  
+  public ParameterInformation(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public ParameterInformation(final String label, final String documentation) {
-    this.label = label;
-    this.documentation = documentation;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("label", this.label);
-    b.add("documentation", this.documentation);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    ParameterInformation other = (ParameterInformation) obj;
-    if (this.label == null) {
-      if (other.label != null)
-        return false;
-    } else if (!this.label.equals(other.label))
-      return false;
-    if (this.documentation == null) {
-      if (other.documentation != null)
-        return false;
-    } else if (!this.documentation.equals(other.documentation))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
-    result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
-    return result;
+    this.setLabel(label);
+    this.setDocumentation(documentation);
   }
 }

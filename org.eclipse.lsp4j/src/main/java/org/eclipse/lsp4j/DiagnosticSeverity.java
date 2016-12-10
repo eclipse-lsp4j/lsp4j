@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
-public enum DiagnosticSeverity {
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
+public enum DiagnosticSeverity implements WrappedJsonEnum {
 	
 	/**
 	 * Reports an error.

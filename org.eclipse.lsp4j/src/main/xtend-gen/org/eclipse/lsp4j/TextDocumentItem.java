@@ -1,36 +1,18 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * An item to transfer a text document from the client to the server.
  */
 @SuppressWarnings("all")
-public class TextDocumentItem {
-  /**
-   * The text document's uri.
-   */
-  @NonNull
-  private String uri;
-  
-  /**
-   * The text document's language identifier
-   */
-  @NonNull
-  private String languageId;
-  
-  /**
-   * The version number of this document (it will strictly increase after each change, including undo/redo).
-   */
-  private int version;
-  
-  /**
-   * The content of the opened  text document.
-   */
-  @NonNull
-  private String text;
+public class TextDocumentItem extends WrappedJsonObject {
+  private static WrappedJsonProperty<String> uriProperty = new WrappedJsonProperty<>("uri", WrappedJsonConverter.stringConverter);
   
   /**
    * The text document's uri.
@@ -38,15 +20,24 @@ public class TextDocumentItem {
   @Pure
   @NonNull
   public String getUri() {
-    return this.uri;
+    return uriProperty.get(jsonObject);
   }
   
   /**
    * The text document's uri.
    */
   public void setUri(@NonNull final String uri) {
-    this.uri = uri;
+    uriProperty.set(jsonObject, uri);
   }
+  
+  /**
+   * Removes the property uri from the underlying JSON object.
+   */
+  public String removeUri() {
+    return uriProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> languageIdProperty = new WrappedJsonProperty<>("languageId", WrappedJsonConverter.stringConverter);
   
   /**
    * The text document's language identifier
@@ -54,30 +45,48 @@ public class TextDocumentItem {
   @Pure
   @NonNull
   public String getLanguageId() {
-    return this.languageId;
+    return languageIdProperty.get(jsonObject);
   }
   
   /**
    * The text document's language identifier
    */
   public void setLanguageId(@NonNull final String languageId) {
-    this.languageId = languageId;
+    languageIdProperty.set(jsonObject, languageId);
   }
+  
+  /**
+   * Removes the property languageId from the underlying JSON object.
+   */
+  public String removeLanguageId() {
+    return languageIdProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Integer> versionProperty = new WrappedJsonProperty<>("version", WrappedJsonConverter.integerConverter);
   
   /**
    * The version number of this document (it will strictly increase after each change, including undo/redo).
    */
   @Pure
   public int getVersion() {
-    return this.version;
+    return versionProperty.get(jsonObject);
   }
   
   /**
    * The version number of this document (it will strictly increase after each change, including undo/redo).
    */
   public void setVersion(final int version) {
-    this.version = version;
+    versionProperty.set(jsonObject, version);
   }
+  
+  /**
+   * Removes the property version from the underlying JSON object.
+   */
+  public int removeVersion() {
+    return versionProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> textProperty = new WrappedJsonProperty<>("text", WrappedJsonConverter.stringConverter);
   
   /**
    * The content of the opened  text document.
@@ -85,70 +94,28 @@ public class TextDocumentItem {
   @Pure
   @NonNull
   public String getText() {
-    return this.text;
+    return textProperty.get(jsonObject);
   }
   
   /**
    * The content of the opened  text document.
    */
   public void setText(@NonNull final String text) {
-    this.text = text;
+    textProperty.set(jsonObject, text);
+  }
+  
+  /**
+   * Removes the property text from the underlying JSON object.
+   */
+  public String removeText() {
+    return textProperty.remove(jsonObject);
   }
   
   public TextDocumentItem() {
-    
+    super();
   }
   
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("uri", this.uri);
-    b.add("languageId", this.languageId);
-    b.add("version", this.version);
-    b.add("text", this.text);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    TextDocumentItem other = (TextDocumentItem) obj;
-    if (this.uri == null) {
-      if (other.uri != null)
-        return false;
-    } else if (!this.uri.equals(other.uri))
-      return false;
-    if (this.languageId == null) {
-      if (other.languageId != null)
-        return false;
-    } else if (!this.languageId.equals(other.languageId))
-      return false;
-    if (other.version != this.version)
-      return false;
-    if (this.text == null) {
-      if (other.text != null)
-        return false;
-    } else if (!this.text.equals(other.text))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
-    result = prime * result + ((this.languageId== null) ? 0 : this.languageId.hashCode());
-    result = prime * result + this.version;
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    return result;
+  public TextDocumentItem(final JsonObject jsonObject) {
+    super(jsonObject);
   }
 }

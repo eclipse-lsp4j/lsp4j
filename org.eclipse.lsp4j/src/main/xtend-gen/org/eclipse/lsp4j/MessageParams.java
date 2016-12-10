@@ -1,9 +1,12 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.MessageType;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The show message notification is sent from a server to a client to ask the client to display a particular message
@@ -12,18 +15,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The log message notification is send from the server to the client to ask the client to log a particular message.
  */
 @SuppressWarnings("all")
-public class MessageParams {
-  /**
-   * The message type.
-   */
-  @NonNull
-  private MessageType type;
-  
-  /**
-   * The actual message.
-   */
-  @NonNull
-  private String message;
+public class MessageParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<MessageType> typeProperty = new WrappedJsonProperty<>("type", WrappedJsonConverter.enumConverter(MessageType.class));
   
   /**
    * The message type.
@@ -31,15 +24,24 @@ public class MessageParams {
   @Pure
   @NonNull
   public MessageType getType() {
-    return this.type;
+    return typeProperty.get(jsonObject);
   }
   
   /**
    * The message type.
    */
   public void setType(@NonNull final MessageType type) {
-    this.type = type;
+    typeProperty.set(jsonObject, type);
   }
+  
+  /**
+   * Removes the property type from the underlying JSON object.
+   */
+  public MessageType removeType() {
+    return typeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> messageProperty = new WrappedJsonProperty<>("message", WrappedJsonConverter.stringConverter);
   
   /**
    * The actual message.
@@ -47,64 +49,33 @@ public class MessageParams {
   @Pure
   @NonNull
   public String getMessage() {
-    return this.message;
+    return messageProperty.get(jsonObject);
   }
   
   /**
    * The actual message.
    */
   public void setMessage(@NonNull final String message) {
-    this.message = message;
+    messageProperty.set(jsonObject, message);
+  }
+  
+  /**
+   * Removes the property message from the underlying JSON object.
+   */
+  public String removeMessage() {
+    return messageProperty.remove(jsonObject);
   }
   
   public MessageParams() {
-    
+    super();
+  }
+  
+  public MessageParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public MessageParams(final MessageType type, final String message) {
-    this.type = type;
-    this.message = message;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("type", this.type);
-    b.add("message", this.message);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MessageParams other = (MessageParams) obj;
-    if (this.type == null) {
-      if (other.type != null)
-        return false;
-    } else if (!this.type.equals(other.type))
-      return false;
-    if (this.message == null) {
-      if (other.message != null)
-        return false;
-    } else if (!this.message.equals(other.message))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
-    result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
-    return result;
+    this.setType(type);
+    this.setMessage(message);
   }
 }

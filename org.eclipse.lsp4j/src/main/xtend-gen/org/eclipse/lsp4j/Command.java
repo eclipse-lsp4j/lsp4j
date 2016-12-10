@@ -1,32 +1,20 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import java.util.List;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Represents a reference to a command. Provides a title which will be used to represent a command in the UI and,
  * optionally, an array of arguments which will be passed to the command handler function when invoked.
  */
 @SuppressWarnings("all")
-public class Command {
-  /**
-   * Title of the command, like `save`.
-   */
-  @NonNull
-  private String title;
-  
-  /**
-   * The identifier of the actual command handler.
-   */
-  @NonNull
-  private String command;
-  
-  /**
-   * Arguments that the command handler should be invoked with.
-   */
-  private List<Object> arguments;
+public class Command extends WrappedJsonObject {
+  private static WrappedJsonProperty<String> titleProperty = new WrappedJsonProperty<>("title", WrappedJsonConverter.stringConverter);
   
   /**
    * Title of the command, like `save`.
@@ -34,15 +22,24 @@ public class Command {
   @Pure
   @NonNull
   public String getTitle() {
-    return this.title;
+    return titleProperty.get(jsonObject);
   }
   
   /**
    * Title of the command, like `save`.
    */
   public void setTitle(@NonNull final String title) {
-    this.title = title;
+    titleProperty.set(jsonObject, title);
   }
+  
+  /**
+   * Removes the property title from the underlying JSON object.
+   */
+  public String removeTitle() {
+    return titleProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> commandProperty = new WrappedJsonProperty<>("command", WrappedJsonConverter.stringConverter);
   
   /**
    * The identifier of the actual command handler.
@@ -50,87 +47,58 @@ public class Command {
   @Pure
   @NonNull
   public String getCommand() {
-    return this.command;
+    return commandProperty.get(jsonObject);
   }
   
   /**
    * The identifier of the actual command handler.
    */
   public void setCommand(@NonNull final String command) {
-    this.command = command;
+    commandProperty.set(jsonObject, command);
   }
+  
+  /**
+   * Removes the property command from the underlying JSON object.
+   */
+  public String removeCommand() {
+    return commandProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<List<Object>> argumentsProperty = new WrappedJsonProperty<>("arguments", WrappedJsonConverter.listConverter(WrappedJsonConverter.noConverter));
   
   /**
    * Arguments that the command handler should be invoked with.
    */
   @Pure
   public List<Object> getArguments() {
-    return this.arguments;
+    return argumentsProperty.get(jsonObject);
   }
   
   /**
    * Arguments that the command handler should be invoked with.
    */
   public void setArguments(final List<Object> arguments) {
-    this.arguments = arguments;
+    argumentsProperty.set(jsonObject, arguments);
+  }
+  
+  /**
+   * Removes the property arguments from the underlying JSON object.
+   */
+  public List<Object> removeArguments() {
+    return argumentsProperty.remove(jsonObject);
   }
   
   public Command() {
-    
+    super();
+  }
+  
+  public Command(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public Command(final String title, final String command, final List<Object> arguments) {
-    this.title = title;
-    this.command = command;
-    this.arguments = arguments;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("title", this.title);
-    b.add("command", this.command);
-    b.add("arguments", this.arguments);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Command other = (Command) obj;
-    if (this.title == null) {
-      if (other.title != null)
-        return false;
-    } else if (!this.title.equals(other.title))
-      return false;
-    if (this.command == null) {
-      if (other.command != null)
-        return false;
-    } else if (!this.command.equals(other.command))
-      return false;
-    if (this.arguments == null) {
-      if (other.arguments != null)
-        return false;
-    } else if (!this.arguments.equals(other.arguments))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
-    result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
-    result = prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());
-    return result;
+    this.setTitle(title);
+    this.setCommand(command);
+    this.setArguments(arguments);
   }
 }

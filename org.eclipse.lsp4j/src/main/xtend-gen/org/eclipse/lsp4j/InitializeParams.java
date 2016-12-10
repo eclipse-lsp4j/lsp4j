@@ -1,99 +1,114 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The initialize request is sent as the first request from the client to the server.
  */
 @SuppressWarnings("all")
-public class InitializeParams {
-  /**
-   * The process Id of the parent process that started the server.
-   */
-  private Integer processId;
-  
-  /**
-   * The rootPath of the workspace. Is null if no folder is open.
-   */
-  private String rootPath;
-  
-  /**
-   * User provided initialization options.
-   */
-  private Object initializationOptions;
-  
-  /**
-   * The capabilities provided by the client (editor)
-   */
-  private ClientCapabilities capabilities;
-  
-  /**
-   * An optional extension to the protocol.
-   * To tell the server what client (editor) is talking to it.
-   */
-  private String clientName;
+public class InitializeParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<Integer> processIdProperty = new WrappedJsonProperty<>("processId", WrappedJsonConverter.integerConverter);
   
   /**
    * The process Id of the parent process that started the server.
    */
   @Pure
   public Integer getProcessId() {
-    return this.processId;
+    return processIdProperty.get(jsonObject);
   }
   
   /**
    * The process Id of the parent process that started the server.
    */
   public void setProcessId(final Integer processId) {
-    this.processId = processId;
+    processIdProperty.set(jsonObject, processId);
   }
+  
+  /**
+   * Removes the property processId from the underlying JSON object.
+   */
+  public Integer removeProcessId() {
+    return processIdProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> rootPathProperty = new WrappedJsonProperty<>("rootPath", WrappedJsonConverter.stringConverter);
   
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    */
   @Pure
   public String getRootPath() {
-    return this.rootPath;
+    return rootPathProperty.get(jsonObject);
   }
   
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    */
   public void setRootPath(final String rootPath) {
-    this.rootPath = rootPath;
+    rootPathProperty.set(jsonObject, rootPath);
   }
+  
+  /**
+   * Removes the property rootPath from the underlying JSON object.
+   */
+  public String removeRootPath() {
+    return rootPathProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Object> initializationOptionsProperty = new WrappedJsonProperty<>("initializationOptions", WrappedJsonConverter.noConverter);
   
   /**
    * User provided initialization options.
    */
   @Pure
   public Object getInitializationOptions() {
-    return this.initializationOptions;
+    return initializationOptionsProperty.get(jsonObject);
   }
   
   /**
    * User provided initialization options.
    */
   public void setInitializationOptions(final Object initializationOptions) {
-    this.initializationOptions = initializationOptions;
+    initializationOptionsProperty.set(jsonObject, initializationOptions);
   }
+  
+  /**
+   * Removes the property initializationOptions from the underlying JSON object.
+   */
+  public Object removeInitializationOptions() {
+    return initializationOptionsProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<ClientCapabilities> capabilitiesProperty = new WrappedJsonProperty<>("capabilities", WrappedJsonConverter.objectConverter(ClientCapabilities.class));
   
   /**
    * The capabilities provided by the client (editor)
    */
   @Pure
   public ClientCapabilities getCapabilities() {
-    return this.capabilities;
+    return capabilitiesProperty.get(jsonObject);
   }
   
   /**
    * The capabilities provided by the client (editor)
    */
   public void setCapabilities(final ClientCapabilities capabilities) {
-    this.capabilities = capabilities;
+    capabilitiesProperty.set(jsonObject, capabilities);
   }
+  
+  /**
+   * Removes the property capabilities from the underlying JSON object.
+   */
+  public ClientCapabilities removeCapabilities() {
+    return capabilitiesProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> clientNameProperty = new WrappedJsonProperty<>("clientName", WrappedJsonConverter.stringConverter);
   
   /**
    * An optional extension to the protocol.
@@ -101,7 +116,7 @@ public class InitializeParams {
    */
   @Pure
   public String getClientName() {
-    return this.clientName;
+    return clientNameProperty.get(jsonObject);
   }
   
   /**
@@ -109,73 +124,21 @@ public class InitializeParams {
    * To tell the server what client (editor) is talking to it.
    */
   public void setClientName(final String clientName) {
-    this.clientName = clientName;
+    clientNameProperty.set(jsonObject, clientName);
+  }
+  
+  /**
+   * Removes the property clientName from the underlying JSON object.
+   */
+  public String removeClientName() {
+    return clientNameProperty.remove(jsonObject);
   }
   
   public InitializeParams() {
-    
+    super();
   }
   
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("processId", this.processId);
-    b.add("rootPath", this.rootPath);
-    b.add("initializationOptions", this.initializationOptions);
-    b.add("capabilities", this.capabilities);
-    b.add("clientName", this.clientName);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    InitializeParams other = (InitializeParams) obj;
-    if (this.processId == null) {
-      if (other.processId != null)
-        return false;
-    } else if (!this.processId.equals(other.processId))
-      return false;
-    if (this.rootPath == null) {
-      if (other.rootPath != null)
-        return false;
-    } else if (!this.rootPath.equals(other.rootPath))
-      return false;
-    if (this.initializationOptions == null) {
-      if (other.initializationOptions != null)
-        return false;
-    } else if (!this.initializationOptions.equals(other.initializationOptions))
-      return false;
-    if (this.capabilities == null) {
-      if (other.capabilities != null)
-        return false;
-    } else if (!this.capabilities.equals(other.capabilities))
-      return false;
-    if (this.clientName == null) {
-      if (other.clientName != null)
-        return false;
-    } else if (!this.clientName.equals(other.clientName))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.processId== null) ? 0 : this.processId.hashCode());
-    result = prime * result + ((this.rootPath== null) ? 0 : this.rootPath.hashCode());
-    result = prime * result + ((this.initializationOptions== null) ? 0 : this.initializationOptions.hashCode());
-    result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
-    result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
-    return result;
+  public InitializeParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
 }

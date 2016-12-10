@@ -1,61 +1,68 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * An event describing a change to a text document. If range and rangeLength are omitted the new text is considered
  * to be the full content of the document.
  */
 @SuppressWarnings("all")
-public class TextDocumentContentChangeEvent {
-  /**
-   * The range of the document that changed.
-   */
-  private Range range;
-  
-  /**
-   * The length of the range that got replaced.
-   */
-  private Integer rangeLength;
-  
-  /**
-   * The new text of the document.
-   */
-  @NonNull
-  private String text;
+public class TextDocumentContentChangeEvent extends WrappedJsonObject {
+  private static WrappedJsonProperty<Range> rangeProperty = new WrappedJsonProperty<>("range", WrappedJsonConverter.objectConverter(Range.class));
   
   /**
    * The range of the document that changed.
    */
   @Pure
   public Range getRange() {
-    return this.range;
+    return rangeProperty.get(jsonObject);
   }
   
   /**
    * The range of the document that changed.
    */
   public void setRange(final Range range) {
-    this.range = range;
+    rangeProperty.set(jsonObject, range);
   }
+  
+  /**
+   * Removes the property range from the underlying JSON object.
+   */
+  public Range removeRange() {
+    return rangeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Integer> rangeLengthProperty = new WrappedJsonProperty<>("rangeLength", WrappedJsonConverter.integerConverter);
   
   /**
    * The length of the range that got replaced.
    */
   @Pure
   public Integer getRangeLength() {
-    return this.rangeLength;
+    return rangeLengthProperty.get(jsonObject);
   }
   
   /**
    * The length of the range that got replaced.
    */
   public void setRangeLength(final Integer rangeLength) {
-    this.rangeLength = rangeLength;
+    rangeLengthProperty.set(jsonObject, rangeLength);
   }
+  
+  /**
+   * Removes the property rangeLength from the underlying JSON object.
+   */
+  public Integer removeRangeLength() {
+    return rangeLengthProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> textProperty = new WrappedJsonProperty<>("text", WrappedJsonConverter.stringConverter);
   
   /**
    * The new text of the document.
@@ -63,72 +70,34 @@ public class TextDocumentContentChangeEvent {
   @Pure
   @NonNull
   public String getText() {
-    return this.text;
+    return textProperty.get(jsonObject);
   }
   
   /**
    * The new text of the document.
    */
   public void setText(@NonNull final String text) {
-    this.text = text;
+    textProperty.set(jsonObject, text);
+  }
+  
+  /**
+   * Removes the property text from the underlying JSON object.
+   */
+  public String removeText() {
+    return textProperty.remove(jsonObject);
   }
   
   public TextDocumentContentChangeEvent() {
-    
+    super();
+  }
+  
+  public TextDocumentContentChangeEvent(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, final String text) {
-    this.range = range;
-    this.rangeLength = rangeLength;
-    this.text = text;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("range", this.range);
-    b.add("rangeLength", this.rangeLength);
-    b.add("text", this.text);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    TextDocumentContentChangeEvent other = (TextDocumentContentChangeEvent) obj;
-    if (this.range == null) {
-      if (other.range != null)
-        return false;
-    } else if (!this.range.equals(other.range))
-      return false;
-    if (this.rangeLength == null) {
-      if (other.rangeLength != null)
-        return false;
-    } else if (!this.rangeLength.equals(other.rangeLength))
-      return false;
-    if (this.text == null) {
-      if (other.text != null)
-        return false;
-    } else if (!this.text.equals(other.text))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.rangeLength== null) ? 0 : this.rangeLength.hashCode());
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    return result;
+    this.setRange(range);
+    this.setRangeLength(rangeLength);
+    this.setText(text);
   }
 }

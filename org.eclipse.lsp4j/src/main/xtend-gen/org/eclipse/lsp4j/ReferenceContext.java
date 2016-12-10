@@ -1,71 +1,50 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The references request is sent from the client to the server to resolve project-wide references for the symbol
  * denoted by the given text document position.
  */
 @SuppressWarnings("all")
-public class ReferenceContext {
-  /**
-   * Include the declaration of the current symbol.
-   */
-  private boolean includeDeclaration;
+public class ReferenceContext extends WrappedJsonObject {
+  private static WrappedJsonProperty<Boolean> includeDeclarationProperty = new WrappedJsonProperty<>("includeDeclaration", WrappedJsonConverter.booleanConverter);
   
   /**
    * Include the declaration of the current symbol.
    */
   @Pure
   public boolean isIncludeDeclaration() {
-    return this.includeDeclaration;
+    return includeDeclarationProperty.get(jsonObject);
   }
   
   /**
    * Include the declaration of the current symbol.
    */
   public void setIncludeDeclaration(final boolean includeDeclaration) {
-    this.includeDeclaration = includeDeclaration;
+    includeDeclarationProperty.set(jsonObject, includeDeclaration);
+  }
+  
+  /**
+   * Removes the property includeDeclaration from the underlying JSON object.
+   */
+  public boolean removeIncludeDeclaration() {
+    return includeDeclarationProperty.remove(jsonObject);
   }
   
   public ReferenceContext() {
-    
+    super();
+  }
+  
+  public ReferenceContext(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public ReferenceContext(final boolean includeDeclaration) {
-    this.includeDeclaration = includeDeclaration;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("includeDeclaration", this.includeDeclaration);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    ReferenceContext other = (ReferenceContext) obj;
-    if (other.includeDeclaration != this.includeDeclaration)
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (this.includeDeclaration ? 1231 : 1237);
-    return result;
+    this.setIncludeDeclaration(includeDeclaration);
   }
 }

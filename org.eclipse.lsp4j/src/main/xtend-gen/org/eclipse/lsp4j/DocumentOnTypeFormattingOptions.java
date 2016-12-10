@@ -1,25 +1,19 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import java.util.List;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Format document on type options
  */
 @SuppressWarnings("all")
-public class DocumentOnTypeFormattingOptions {
-  /**
-   * A character on which formatting should be triggered, like `}`.
-   */
-  @NonNull
-  private String firstTriggerCharacter;
-  
-  /**
-   * More trigger characters.
-   */
-  private List<String> moreTriggerCharacter;
+public class DocumentOnTypeFormattingOptions extends WrappedJsonObject {
+  private static WrappedJsonProperty<String> firstTriggerCharacterProperty = new WrappedJsonProperty<>("firstTriggerCharacter", WrappedJsonConverter.stringConverter);
   
   /**
    * A character on which formatting should be triggered, like `}`.
@@ -27,79 +21,57 @@ public class DocumentOnTypeFormattingOptions {
   @Pure
   @NonNull
   public String getFirstTriggerCharacter() {
-    return this.firstTriggerCharacter;
+    return firstTriggerCharacterProperty.get(jsonObject);
   }
   
   /**
    * A character on which formatting should be triggered, like `}`.
    */
   public void setFirstTriggerCharacter(@NonNull final String firstTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
+    firstTriggerCharacterProperty.set(jsonObject, firstTriggerCharacter);
   }
+  
+  /**
+   * Removes the property firstTriggerCharacter from the underlying JSON object.
+   */
+  public String removeFirstTriggerCharacter() {
+    return firstTriggerCharacterProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<List<String>> moreTriggerCharacterProperty = new WrappedJsonProperty<>("moreTriggerCharacter", WrappedJsonConverter.listConverter(WrappedJsonConverter.stringConverter));
   
   /**
    * More trigger characters.
    */
   @Pure
   public List<String> getMoreTriggerCharacter() {
-    return this.moreTriggerCharacter;
+    return moreTriggerCharacterProperty.get(jsonObject);
   }
   
   /**
    * More trigger characters.
    */
   public void setMoreTriggerCharacter(final List<String> moreTriggerCharacter) {
-    this.moreTriggerCharacter = moreTriggerCharacter;
+    moreTriggerCharacterProperty.set(jsonObject, moreTriggerCharacter);
+  }
+  
+  /**
+   * Removes the property moreTriggerCharacter from the underlying JSON object.
+   */
+  public List<String> removeMoreTriggerCharacter() {
+    return moreTriggerCharacterProperty.remove(jsonObject);
   }
   
   public DocumentOnTypeFormattingOptions() {
-    
+    super();
+  }
+  
+  public DocumentOnTypeFormattingOptions(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public DocumentOnTypeFormattingOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
-    this.moreTriggerCharacter = moreTriggerCharacter;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("firstTriggerCharacter", this.firstTriggerCharacter);
-    b.add("moreTriggerCharacter", this.moreTriggerCharacter);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    DocumentOnTypeFormattingOptions other = (DocumentOnTypeFormattingOptions) obj;
-    if (this.firstTriggerCharacter == null) {
-      if (other.firstTriggerCharacter != null)
-        return false;
-    } else if (!this.firstTriggerCharacter.equals(other.firstTriggerCharacter))
-      return false;
-    if (this.moreTriggerCharacter == null) {
-      if (other.moreTriggerCharacter != null)
-        return false;
-    } else if (!this.moreTriggerCharacter.equals(other.moreTriggerCharacter))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.firstTriggerCharacter== null) ? 0 : this.firstTriggerCharacter.hashCode());
-    result = prime * result + ((this.moreTriggerCharacter== null) ? 0 : this.moreTriggerCharacter.hashCode());
-    return result;
+    this.setFirstTriggerCharacter(firstTriggerCharacter);
+    this.setMoreTriggerCharacter(moreTriggerCharacter);
   }
 }

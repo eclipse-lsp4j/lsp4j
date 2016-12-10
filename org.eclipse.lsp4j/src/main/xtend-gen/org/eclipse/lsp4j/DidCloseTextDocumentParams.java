@@ -1,9 +1,12 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The document close notification is sent from the client to the server when the document got closed in the client.
@@ -11,12 +14,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * truth now exists on disk).
  */
 @SuppressWarnings("all")
-public class DidCloseTextDocumentParams {
-  /**
-   * The document that was closed.
-   */
-  @NonNull
-  private TextDocumentIdentifier textDocument;
+public class DidCloseTextDocumentParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<TextDocumentIdentifier> textDocumentProperty = new WrappedJsonProperty<>("textDocument", WrappedJsonConverter.objectConverter(TextDocumentIdentifier.class));
   
   /**
    * The document that was closed.
@@ -24,56 +23,32 @@ public class DidCloseTextDocumentParams {
   @Pure
   @NonNull
   public TextDocumentIdentifier getTextDocument() {
-    return this.textDocument;
+    return textDocumentProperty.get(jsonObject);
   }
   
   /**
    * The document that was closed.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
+    textDocumentProperty.set(jsonObject, textDocument);
+  }
+  
+  /**
+   * Removes the property textDocument from the underlying JSON object.
+   */
+  public TextDocumentIdentifier removeTextDocument() {
+    return textDocumentProperty.remove(jsonObject);
   }
   
   public DidCloseTextDocumentParams() {
-    
+    super();
+  }
+  
+  public DidCloseTextDocumentParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public DidCloseTextDocumentParams(final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    DidCloseTextDocumentParams other = (DidCloseTextDocumentParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
-        return false;
-    } else if (!this.textDocument.equals(other.textDocument))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    return result;
+    this.setTextDocument(textDocument);
   }
 }

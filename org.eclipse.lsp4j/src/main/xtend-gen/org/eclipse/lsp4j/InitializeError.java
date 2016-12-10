@@ -1,15 +1,14 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class InitializeError {
-  /**
-   * Indicates whether the client should retry to send the initialize request after showing the message provided
-   * in the ResponseError.
-   */
-  private boolean retry;
+public class InitializeError extends WrappedJsonObject {
+  private static WrappedJsonProperty<Boolean> retryProperty = new WrappedJsonProperty<>("retry", WrappedJsonConverter.booleanConverter);
   
   /**
    * Indicates whether the client should retry to send the initialize request after showing the message provided
@@ -17,7 +16,7 @@ public class InitializeError {
    */
   @Pure
   public boolean isRetry() {
-    return this.retry;
+    return retryProperty.get(jsonObject);
   }
   
   /**
@@ -25,46 +24,25 @@ public class InitializeError {
    * in the ResponseError.
    */
   public void setRetry(final boolean retry) {
-    this.retry = retry;
+    retryProperty.set(jsonObject, retry);
+  }
+  
+  /**
+   * Removes the property retry from the underlying JSON object.
+   */
+  public boolean removeRetry() {
+    return retryProperty.remove(jsonObject);
   }
   
   public InitializeError() {
-    
+    super();
+  }
+  
+  public InitializeError(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public InitializeError(final boolean retry) {
-    this.retry = retry;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("retry", this.retry);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    InitializeError other = (InitializeError) obj;
-    if (other.retry != this.retry)
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (this.retry ? 1231 : 1237);
-    return result;
+    this.setRetry(retry);
   }
 }

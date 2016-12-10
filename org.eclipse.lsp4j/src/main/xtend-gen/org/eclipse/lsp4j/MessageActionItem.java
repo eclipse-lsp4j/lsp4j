@@ -1,8 +1,11 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The show message request is sent from a server to a client to ask the client to display a particular message in the
@@ -10,12 +13,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * answer from the client.
  */
 @SuppressWarnings("all")
-public class MessageActionItem {
-  /**
-   * A short title like 'Retry', 'Open Log' etc.
-   */
-  @NonNull
-  private String title;
+public class MessageActionItem extends WrappedJsonObject {
+  private static WrappedJsonProperty<String> titleProperty = new WrappedJsonProperty<>("title", WrappedJsonConverter.stringConverter);
   
   /**
    * A short title like 'Retry', 'Open Log' etc.
@@ -23,56 +22,32 @@ public class MessageActionItem {
   @Pure
   @NonNull
   public String getTitle() {
-    return this.title;
+    return titleProperty.get(jsonObject);
   }
   
   /**
    * A short title like 'Retry', 'Open Log' etc.
    */
   public void setTitle(@NonNull final String title) {
-    this.title = title;
+    titleProperty.set(jsonObject, title);
+  }
+  
+  /**
+   * Removes the property title from the underlying JSON object.
+   */
+  public String removeTitle() {
+    return titleProperty.remove(jsonObject);
   }
   
   public MessageActionItem() {
-    
+    super();
+  }
+  
+  public MessageActionItem(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public MessageActionItem(final String title) {
-    this.title = title;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("title", this.title);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    MessageActionItem other = (MessageActionItem) obj;
-    if (this.title == null) {
-      if (other.title != null)
-        return false;
-    } else if (!this.title.equals(other.title))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
-    return result;
+    this.setTitle(title);
   }
 }

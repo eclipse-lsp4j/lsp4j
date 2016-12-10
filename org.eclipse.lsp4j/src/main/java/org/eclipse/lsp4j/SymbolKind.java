@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
-public enum SymbolKind {
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
+public enum SymbolKind implements WrappedJsonEnum {
 	
 	File(1),
 	

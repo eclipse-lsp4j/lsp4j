@@ -1,67 +1,45 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * A notification sent from the client to the server to signal the change of configuration settings.
  */
 @SuppressWarnings("all")
-public class DidChangeConfigurationParams {
-  @NonNull
-  private Object settings;
+public class DidChangeConfigurationParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<Object> settingsProperty = new WrappedJsonProperty<>("settings", WrappedJsonConverter.noConverter);
   
   @Pure
   @NonNull
   public Object getSettings() {
-    return this.settings;
+    return settingsProperty.get(jsonObject);
   }
   
   public void setSettings(@NonNull final Object settings) {
-    this.settings = settings;
+    settingsProperty.set(jsonObject, settings);
+  }
+  
+  /**
+   * Removes the property settings from the underlying JSON object.
+   */
+  public Object removeSettings() {
+    return settingsProperty.remove(jsonObject);
   }
   
   public DidChangeConfigurationParams() {
-    
+    super();
+  }
+  
+  public DidChangeConfigurationParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public DidChangeConfigurationParams(final Object settings) {
-    this.settings = settings;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("settings", this.settings);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    DidChangeConfigurationParams other = (DidChangeConfigurationParams) obj;
-    if (this.settings == null) {
-      if (other.settings != null)
-        return false;
-    } else if (!this.settings.equals(other.settings))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.settings== null) ? 0 : this.settings.hashCode());
-    return result;
+    this.setSettings(settings);
   }
 }

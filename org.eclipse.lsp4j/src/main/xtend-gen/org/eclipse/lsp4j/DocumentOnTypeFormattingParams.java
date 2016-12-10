@@ -1,27 +1,19 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The document on type formatting request is sent from the client to the server to format parts of the document during typing.
  */
 @SuppressWarnings("all")
 public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
-  /**
-   * The position at which this request was send.
-   */
-  @NonNull
-  private Position position;
-  
-  /**
-   * The character that has been typed.
-   */
-  @NonNull
-  private String ch;
+  private static WrappedJsonProperty<Position> positionProperty = new WrappedJsonProperty<>("position", WrappedJsonConverter.objectConverter(Position.class));
   
   /**
    * The position at which this request was send.
@@ -29,15 +21,24 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   @Pure
   @NonNull
   public Position getPosition() {
-    return this.position;
+    return positionProperty.get(jsonObject);
   }
   
   /**
    * The position at which this request was send.
    */
   public void setPosition(@NonNull final Position position) {
-    this.position = position;
+    positionProperty.set(jsonObject, position);
   }
+  
+  /**
+   * Removes the property position from the underlying JSON object.
+   */
+  public Position removePosition() {
+    return positionProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> chProperty = new WrappedJsonProperty<>("ch", WrappedJsonConverter.stringConverter);
   
   /**
    * The character that has been typed.
@@ -45,68 +46,33 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   @Pure
   @NonNull
   public String getCh() {
-    return this.ch;
+    return chProperty.get(jsonObject);
   }
   
   /**
    * The character that has been typed.
    */
   public void setCh(@NonNull final String ch) {
-    this.ch = ch;
+    chProperty.set(jsonObject, ch);
+  }
+  
+  /**
+   * Removes the property ch from the underlying JSON object.
+   */
+  public String removeCh() {
+    return chProperty.remove(jsonObject);
   }
   
   public DocumentOnTypeFormattingParams() {
-    
+    super();
+  }
+  
+  public DocumentOnTypeFormattingParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public DocumentOnTypeFormattingParams(final Position position, final String ch) {
-    this.position = position;
-    this.ch = ch;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("position", this.position);
-    b.add("ch", this.ch);
-    b.add("textDocument", getTextDocument());
-    b.add("options", getOptions());
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    if (!super.equals(obj))
-      return false;
-    DocumentOnTypeFormattingParams other = (DocumentOnTypeFormattingParams) obj;
-    if (this.position == null) {
-      if (other.position != null)
-        return false;
-    } else if (!this.position.equals(other.position))
-      return false;
-    if (this.ch == null) {
-      if (other.ch != null)
-        return false;
-    } else if (!this.ch.equals(other.ch))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());
-    result = prime * result + ((this.ch== null) ? 0 : this.ch.hashCode());
-    return result;
+    this.setPosition(position);
+    this.setCh(ch);
   }
 }

@@ -1,26 +1,19 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * A textual edit applicable to a text document.
  */
 @SuppressWarnings("all")
-public class TextEdit {
-  /**
-   * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
-   */
-  @NonNull
-  private Range range;
-  
-  /**
-   * The string to be inserted. For delete operations use an empty string.
-   */
-  @NonNull
-  private String newText;
+public class TextEdit extends WrappedJsonObject {
+  private static WrappedJsonProperty<Range> rangeProperty = new WrappedJsonProperty<>("range", WrappedJsonConverter.objectConverter(Range.class));
   
   /**
    * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
@@ -28,15 +21,24 @@ public class TextEdit {
   @Pure
   @NonNull
   public Range getRange() {
-    return this.range;
+    return rangeProperty.get(jsonObject);
   }
   
   /**
    * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
    */
   public void setRange(@NonNull final Range range) {
-    this.range = range;
+    rangeProperty.set(jsonObject, range);
   }
+  
+  /**
+   * Removes the property range from the underlying JSON object.
+   */
+  public Range removeRange() {
+    return rangeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> newTextProperty = new WrappedJsonProperty<>("newText", WrappedJsonConverter.stringConverter);
   
   /**
    * The string to be inserted. For delete operations use an empty string.
@@ -44,64 +46,33 @@ public class TextEdit {
   @Pure
   @NonNull
   public String getNewText() {
-    return this.newText;
+    return newTextProperty.get(jsonObject);
   }
   
   /**
    * The string to be inserted. For delete operations use an empty string.
    */
   public void setNewText(@NonNull final String newText) {
-    this.newText = newText;
+    newTextProperty.set(jsonObject, newText);
+  }
+  
+  /**
+   * Removes the property newText from the underlying JSON object.
+   */
+  public String removeNewText() {
+    return newTextProperty.remove(jsonObject);
   }
   
   public TextEdit() {
-    
+    super();
+  }
+  
+  public TextEdit(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public TextEdit(final Range range, final String newText) {
-    this.range = range;
-    this.newText = newText;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("range", this.range);
-    b.add("newText", this.newText);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    TextEdit other = (TextEdit) obj;
-    if (this.range == null) {
-      if (other.range != null)
-        return false;
-    } else if (!this.range.equals(other.range))
-      return false;
-    if (this.newText == null) {
-      if (other.newText != null)
-        return false;
-    } else if (!this.newText.equals(other.newText))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.newText== null) ? 0 : this.newText.hashCode());
-    return result;
+    this.setRange(range);
+    this.setNewText(newText);
   }
 }

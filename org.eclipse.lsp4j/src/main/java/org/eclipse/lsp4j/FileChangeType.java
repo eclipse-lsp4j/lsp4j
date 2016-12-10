@@ -7,10 +7,12 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
 /**
  * The file event type.
  */
-public enum FileChangeType {
+public enum FileChangeType implements WrappedJsonEnum {
 	
 	/**
 	 * The file got created.

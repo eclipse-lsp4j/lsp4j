@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
-public enum CompletionItemKind {
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
+public enum CompletionItemKind implements WrappedJsonEnum {
 	
 	Text(1),
 	

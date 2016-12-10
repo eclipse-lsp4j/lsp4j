@@ -1,17 +1,16 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.ServerCapabilities;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class InitializeResult {
-  /**
-   * The capabilities the language server provides.
-   */
-  @NonNull
-  private ServerCapabilities capabilities;
+public class InitializeResult extends WrappedJsonObject {
+  private static WrappedJsonProperty<ServerCapabilities> capabilitiesProperty = new WrappedJsonProperty<>("capabilities", WrappedJsonConverter.objectConverter(ServerCapabilities.class));
   
   /**
    * The capabilities the language server provides.
@@ -19,56 +18,32 @@ public class InitializeResult {
   @Pure
   @NonNull
   public ServerCapabilities getCapabilities() {
-    return this.capabilities;
+    return capabilitiesProperty.get(jsonObject);
   }
   
   /**
    * The capabilities the language server provides.
    */
   public void setCapabilities(@NonNull final ServerCapabilities capabilities) {
-    this.capabilities = capabilities;
+    capabilitiesProperty.set(jsonObject, capabilities);
+  }
+  
+  /**
+   * Removes the property capabilities from the underlying JSON object.
+   */
+  public ServerCapabilities removeCapabilities() {
+    return capabilitiesProperty.remove(jsonObject);
   }
   
   public InitializeResult() {
-    
+    super();
+  }
+  
+  public InitializeResult(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public InitializeResult(final ServerCapabilities capabilities) {
-    this.capabilities = capabilities;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("capabilities", this.capabilities);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    InitializeResult other = (InitializeResult) obj;
-    if (this.capabilities == null) {
-      if (other.capabilities != null)
-        return false;
-    } else if (!this.capabilities.equals(other.capabilities))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
-    return result;
+    this.setCapabilities(capabilities);
   }
 }

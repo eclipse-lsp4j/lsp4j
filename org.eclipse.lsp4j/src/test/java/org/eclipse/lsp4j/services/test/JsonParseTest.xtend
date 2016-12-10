@@ -36,6 +36,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import com.google.gson.JsonObject
 
 class JsonParseTest {
 	
@@ -60,7 +61,7 @@ class JsonParseTest {
 		'''
 			{
 				"jsonrpc": "2.0",
-				"id": 1,
+				"id": "1",
 				"method": "textDocument/completion",
 				"params": {
 					"textDocument": {
@@ -147,18 +148,18 @@ class JsonParseTest {
 					"uri": "file:///tmp/foo",
 					"diagnostics": [
 						{
-							"message": "Couldn\u0027t resolve reference to State \u0027bar\u0027.",
 							"range": {
 								"start": {
-									"character": 22,
-									"line": 4
+									"line": 4,
+									"character": 22
 								},
 								"end": {
-									"character": 25,
-									"line": 4
+									"line": 4,
+									"character": 25
 								}
 							},
-							"severity": 1
+							"severity": 1,
+							"message": "Couldn\u0027t resolve reference to State \u0027bar\u0027."
 						}
 					]
 				}
@@ -199,12 +200,12 @@ class JsonParseTest {
 							{
 								"range": {
 									"start": {
-										"character": 32,
-										"line": 3
+										"line": 3,
+										"character": 32
 									},
 									"end": {
-										"character": 35,
-										"line": 3
+										"line": 3,
+										"character": 35
 									}
 								},
 								"newText": "foobar"
@@ -212,12 +213,12 @@ class JsonParseTest {
 							{
 								"range": {
 									"start": {
-										"character": 22,
-										"line": 4
+										"line": 4,
+										"character": 22
 									},
 									"end": {
-										"character": 25,
-										"line": 4
+										"line": 4,
+										"character": 25
 									}
 								},
 								"newText": "foobar"
@@ -293,7 +294,10 @@ class JsonParseTest {
 		'''.assertParse(new NotificationMessage => [
 			jsonrpc = "2.0"
 			method = MessageMethods.TELEMETRY_EVENT
-			params = newLinkedHashMap('foo' -> 12.3, 'bar' -> 'qwertz')
+			params = new JsonObject() => [
+			    addProperty('foo',12.3)
+			    addProperty('bar','qwertz')
+			]
 		])
 	}
 	
@@ -311,12 +315,12 @@ class JsonParseTest {
                 "result": {
                     "range": {
                         "start": {
-                            "character": 32,
-                            "line": 3
+                            "line": 3,
+                            "character": 32
                         },
                         "end": {
-                            "character": 35,
-                            "line": 3
+                            "line": 3,
+                            "character": 35
                         }
                     },
                     "contents": [

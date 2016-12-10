@@ -1,27 +1,20 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The document formatting request is sent from the server to the client to format a whole document.
  */
 @SuppressWarnings("all")
-public class DocumentFormattingParams {
-  /**
-   * The document to format.
-   */
-  @NonNull
-  private TextDocumentIdentifier textDocument;
-  
-  /**
-   * The format options
-   */
-  @NonNull
-  private FormattingOptions options;
+public class DocumentFormattingParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<TextDocumentIdentifier> textDocumentProperty = new WrappedJsonProperty<>("textDocument", WrappedJsonConverter.objectConverter(TextDocumentIdentifier.class));
   
   /**
    * The document to format.
@@ -29,15 +22,24 @@ public class DocumentFormattingParams {
   @Pure
   @NonNull
   public TextDocumentIdentifier getTextDocument() {
-    return this.textDocument;
+    return textDocumentProperty.get(jsonObject);
   }
   
   /**
    * The document to format.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
+    textDocumentProperty.set(jsonObject, textDocument);
   }
+  
+  /**
+   * Removes the property textDocument from the underlying JSON object.
+   */
+  public TextDocumentIdentifier removeTextDocument() {
+    return textDocumentProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<FormattingOptions> optionsProperty = new WrappedJsonProperty<>("options", WrappedJsonConverter.objectConverter(FormattingOptions.class));
   
   /**
    * The format options
@@ -45,64 +47,33 @@ public class DocumentFormattingParams {
   @Pure
   @NonNull
   public FormattingOptions getOptions() {
-    return this.options;
+    return optionsProperty.get(jsonObject);
   }
   
   /**
    * The format options
    */
   public void setOptions(@NonNull final FormattingOptions options) {
-    this.options = options;
+    optionsProperty.set(jsonObject, options);
+  }
+  
+  /**
+   * Removes the property options from the underlying JSON object.
+   */
+  public FormattingOptions removeOptions() {
+    return optionsProperty.remove(jsonObject);
   }
   
   public DocumentFormattingParams() {
-    
+    super();
+  }
+  
+  public DocumentFormattingParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public DocumentFormattingParams(final TextDocumentIdentifier textDocument, final FormattingOptions options) {
-    this.textDocument = textDocument;
-    this.options = options;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
-    b.add("options", this.options);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    DocumentFormattingParams other = (DocumentFormattingParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
-        return false;
-    } else if (!this.textDocument.equals(other.textDocument))
-      return false;
-    if (this.options == null) {
-      if (other.options != null)
-        return false;
-    } else if (!this.options.equals(other.options))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.options== null) ? 0 : this.options.hashCode());
-    return result;
+    this.setTextDocument(textDocument);
+    this.setOptions(options);
   }
 }

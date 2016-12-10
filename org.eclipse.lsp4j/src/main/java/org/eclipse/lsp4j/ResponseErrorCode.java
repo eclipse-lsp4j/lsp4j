@@ -7,10 +7,12 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
 /**
  * A number indicating the error type that occured.
  */
-public enum ResponseErrorCode {
+public enum ResponseErrorCode implements WrappedJsonEnum {
 	
 	ParseError(-32700),
 	

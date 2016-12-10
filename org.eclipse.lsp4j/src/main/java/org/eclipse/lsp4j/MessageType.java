@@ -7,7 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
-public enum MessageType {
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
+public enum MessageType implements WrappedJsonEnum {
 	
 	/**
 	 * An error message.

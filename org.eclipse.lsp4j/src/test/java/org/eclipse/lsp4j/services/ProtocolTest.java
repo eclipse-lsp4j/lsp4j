@@ -1,5 +1,7 @@
 package org.eclipse.lsp4j.services;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -8,13 +10,17 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.eclipse.lsp4j.CompletionItem;
+import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.DocumentLinkParams;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.jsonrpc.json.Either;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -66,6 +72,24 @@ public class ProtocolTest {
 		).get();
 		
 		Assert.assertEquals("resolved", resolved.getTarget());
+	}
+	
+	@Test public void testCompletion() throws Exception {
+		LanguageServer languageServer = wrap(LanguageServer.class, new MockLanguageServer() {
+			@Override
+			public CompletableFuture<Either<CompletionList, List<CompletionItem>>> completion(
+					TextDocumentPositionParams position) {
+				return CompletableFutures.computeAsync(canceler -> {
+					List<CompletionItem> items = newArrayList();
+					return Either.forRight(items);
+				});
+			}
+		});
+		
+		Either<CompletionList, List<CompletionItem>> resolved = languageServer.getTextDocumentService().completion(new TextDocumentPositionParams(new TextDocumentIdentifier("foo"), null, new Position(1, 1))).get();
+		Assert.assertTrue(resolved.isRight());
+		Assert.assertFalse(resolved.isLeft());
+		Assert.assertTrue(resolved.getRight().isEmpty());
 	}
 	
 	/**

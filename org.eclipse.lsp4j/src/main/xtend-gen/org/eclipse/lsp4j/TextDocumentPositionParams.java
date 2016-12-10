@@ -1,33 +1,20 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * A parameter literal used in requests to pass a text document and a position inside that document.
  */
 @SuppressWarnings("all")
-public class TextDocumentPositionParams {
-  /**
-   * The text document.
-   */
-  @NonNull
-  private TextDocumentIdentifier textDocument;
-  
-  /**
-   * Legacy property to support protocol version 1.0 requests.
-   */
-  @Deprecated
-  private String uri;
-  
-  /**
-   * The position inside the text document.
-   */
-  @NonNull
-  private Position position;
+public class TextDocumentPositionParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<TextDocumentIdentifier> textDocumentProperty = new WrappedJsonProperty<>("textDocument", WrappedJsonConverter.objectConverter(TextDocumentIdentifier.class));
   
   /**
    * The text document.
@@ -35,15 +22,24 @@ public class TextDocumentPositionParams {
   @Pure
   @NonNull
   public TextDocumentIdentifier getTextDocument() {
-    return this.textDocument;
+    return textDocumentProperty.get(jsonObject);
   }
   
   /**
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
+    textDocumentProperty.set(jsonObject, textDocument);
   }
+  
+  /**
+   * Removes the property textDocument from the underlying JSON object.
+   */
+  public TextDocumentIdentifier removeTextDocument() {
+    return textDocumentProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> uriProperty = new WrappedJsonProperty<>("uri", WrappedJsonConverter.stringConverter);
   
   /**
    * Legacy property to support protocol version 1.0 requests.
@@ -51,7 +47,7 @@ public class TextDocumentPositionParams {
   @Pure
   @Deprecated
   public String getUri() {
-    return this.uri;
+    return uriProperty.get(jsonObject);
   }
   
   /**
@@ -59,8 +55,18 @@ public class TextDocumentPositionParams {
    */
   @Deprecated
   public void setUri(final String uri) {
-    this.uri = uri;
+    uriProperty.set(jsonObject, uri);
   }
+  
+  /**
+   * Removes the property uri from the underlying JSON object.
+   */
+  @Deprecated
+  public String removeUri() {
+    return uriProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Position> positionProperty = new WrappedJsonProperty<>("position", WrappedJsonConverter.objectConverter(Position.class));
   
   /**
    * The position inside the text document.
@@ -68,72 +74,34 @@ public class TextDocumentPositionParams {
   @Pure
   @NonNull
   public Position getPosition() {
-    return this.position;
+    return positionProperty.get(jsonObject);
   }
   
   /**
    * The position inside the text document.
    */
   public void setPosition(@NonNull final Position position) {
-    this.position = position;
+    positionProperty.set(jsonObject, position);
+  }
+  
+  /**
+   * Removes the property position from the underlying JSON object.
+   */
+  public Position removePosition() {
+    return positionProperty.remove(jsonObject);
   }
   
   public TextDocumentPositionParams() {
-    
+    super();
+  }
+  
+  public TextDocumentPositionParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public TextDocumentPositionParams(final TextDocumentIdentifier textDocument, final String uri, final Position position) {
-    this.textDocument = textDocument;
-    this.uri = uri;
-    this.position = position;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
-    b.add("uri", this.uri);
-    b.add("position", this.position);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    TextDocumentPositionParams other = (TextDocumentPositionParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
-        return false;
-    } else if (!this.textDocument.equals(other.textDocument))
-      return false;
-    if (this.uri == null) {
-      if (other.uri != null)
-        return false;
-    } else if (!this.uri.equals(other.uri))
-      return false;
-    if (this.position == null) {
-      if (other.position != null)
-        return false;
-    } else if (!this.position.equals(other.position))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
-    result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());
-    return result;
+    this.setTextDocument(textDocument);
+    this.setUri(uri);
+    this.setPosition(position);
   }
 }

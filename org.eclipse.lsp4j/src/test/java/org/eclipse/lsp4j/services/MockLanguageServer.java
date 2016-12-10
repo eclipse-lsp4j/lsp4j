@@ -34,6 +34,7 @@ import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
+import org.eclipse.lsp4j.jsonrpc.json.Either;
 
 public class MockLanguageServer implements LanguageServer, TextDocumentService, WorkspaceService {
 
@@ -74,8 +75,10 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	public void didChangeWatchedFiles(DidChangeWatchedFilesParams params) {
 	}
 
+
 	@Override
-	public CompletableFuture<CompletionList> completion(TextDocumentPositionParams position) {
+	public CompletableFuture<Either<CompletionList, List<CompletionItem>>> completion(
+			TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 

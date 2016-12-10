@@ -1,124 +1,100 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import java.util.Map;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Value-object describing what options formatting should use.
  */
 @SuppressWarnings("all")
-public class FormattingOptions {
-  /**
-   * Size of a tab in spaces.
-   */
-  private int tabSize;
-  
-  /**
-   * Prefer spaces over tabs.
-   */
-  private boolean insertSpaces;
-  
-  /**
-   * Signature for further properties.
-   */
-  private Map<String, String> properties;
+public class FormattingOptions extends WrappedJsonObject {
+  private static WrappedJsonProperty<Integer> tabSizeProperty = new WrappedJsonProperty<>("tabSize", WrappedJsonConverter.integerConverter);
   
   /**
    * Size of a tab in spaces.
    */
   @Pure
   public int getTabSize() {
-    return this.tabSize;
+    return tabSizeProperty.get(jsonObject);
   }
   
   /**
    * Size of a tab in spaces.
    */
   public void setTabSize(final int tabSize) {
-    this.tabSize = tabSize;
+    tabSizeProperty.set(jsonObject, tabSize);
   }
+  
+  /**
+   * Removes the property tabSize from the underlying JSON object.
+   */
+  public int removeTabSize() {
+    return tabSizeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Boolean> insertSpacesProperty = new WrappedJsonProperty<>("insertSpaces", WrappedJsonConverter.booleanConverter);
   
   /**
    * Prefer spaces over tabs.
    */
   @Pure
   public boolean isInsertSpaces() {
-    return this.insertSpaces;
+    return insertSpacesProperty.get(jsonObject);
   }
   
   /**
    * Prefer spaces over tabs.
    */
   public void setInsertSpaces(final boolean insertSpaces) {
-    this.insertSpaces = insertSpaces;
+    insertSpacesProperty.set(jsonObject, insertSpaces);
   }
+  
+  /**
+   * Removes the property insertSpaces from the underlying JSON object.
+   */
+  public boolean removeInsertSpaces() {
+    return insertSpacesProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Map<String, String>> propertiesProperty = new WrappedJsonProperty<>("properties", WrappedJsonConverter.mapConverter(WrappedJsonConverter.stringConverter));
   
   /**
    * Signature for further properties.
    */
   @Pure
   public Map<String, String> getProperties() {
-    return this.properties;
+    return propertiesProperty.get(jsonObject);
   }
   
   /**
    * Signature for further properties.
    */
   public void setProperties(final Map<String, String> properties) {
-    this.properties = properties;
+    propertiesProperty.set(jsonObject, properties);
+  }
+  
+  /**
+   * Removes the property properties from the underlying JSON object.
+   */
+  public Map<String, String> removeProperties() {
+    return propertiesProperty.remove(jsonObject);
   }
   
   public FormattingOptions() {
-    
+    super();
+  }
+  
+  public FormattingOptions(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public FormattingOptions(final int tabSize, final boolean insertSpaces, final Map<String, String> properties) {
-    this.tabSize = tabSize;
-    this.insertSpaces = insertSpaces;
-    this.properties = properties;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("tabSize", this.tabSize);
-    b.add("insertSpaces", this.insertSpaces);
-    b.add("properties", this.properties);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    FormattingOptions other = (FormattingOptions) obj;
-    if (other.tabSize != this.tabSize)
-      return false;
-    if (other.insertSpaces != this.insertSpaces)
-      return false;
-    if (this.properties == null) {
-      if (other.properties != null)
-        return false;
-    } else if (!this.properties.equals(other.properties))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + this.tabSize;
-    result = prime * result + (this.insertSpaces ? 1231 : 1237);
-    result = prime * result + ((this.properties== null) ? 0 : this.properties.hashCode());
-    return result;
+    this.setTabSize(tabSize);
+    this.setInsertSpaces(insertSpaces);
+    this.setProperties(properties);
   }
 }

@@ -7,26 +7,38 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
 /**
  * Defines how text documents are synced.
  */
-public enum TextDocumentSyncKind {
+public enum TextDocumentSyncKind implements WrappedJsonEnum {
 	
 	/**
 	 * Documents should not be synced at all.
 	 */
-	None,
+	None(0),
 	
 	/**
 	 * Documents are synced by always sending the full content of the document.
 	 */
-	Full,
+	Full(1),
 	
 	/**
 	 * Documents are synced by sending the full content on open. After that only incremental
      * updates to the document are send.
 	 */
-	Incremental;
+	Incremental(2);
+	
+	private final int value;
+	
+	TextDocumentSyncKind(int value) {
+		this.value = value;
+	}
+	
+	public int getValue() {
+		return value;
+	}
 	
 	public static TextDocumentSyncKind forValue(int value) {
 		TextDocumentSyncKind[] allValues = TextDocumentSyncKind.values();

@@ -1,10 +1,12 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.ReferenceContext;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The references request is sent from the client to the server to resolve project-wide references for the symbol
@@ -12,64 +14,34 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class ReferenceParams extends TextDocumentPositionParams {
-  @NonNull
-  private ReferenceContext context;
+  private static WrappedJsonProperty<ReferenceContext> contextProperty = new WrappedJsonProperty<>("context", WrappedJsonConverter.objectConverter(ReferenceContext.class));
   
   @Pure
   @NonNull
   public ReferenceContext getContext() {
-    return this.context;
+    return contextProperty.get(jsonObject);
   }
   
   public void setContext(@NonNull final ReferenceContext context) {
-    this.context = context;
+    contextProperty.set(jsonObject, context);
+  }
+  
+  /**
+   * Removes the property context from the underlying JSON object.
+   */
+  public ReferenceContext removeContext() {
+    return contextProperty.remove(jsonObject);
   }
   
   public ReferenceParams() {
-    
+    super();
+  }
+  
+  public ReferenceParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public ReferenceParams(final ReferenceContext context) {
-    this.context = context;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("context", this.context);
-    b.add("textDocument", getTextDocument());
-    b.add("uri", getUri());
-    b.add("position", getPosition());
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    if (!super.equals(obj))
-      return false;
-    ReferenceParams other = (ReferenceParams) obj;
-    if (this.context == null) {
-      if (other.context != null)
-        return false;
-    } else if (!this.context.equals(other.context))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.context== null) ? 0 : this.context.hashCode());
-    return result;
+    this.setContext(context);
   }
 }

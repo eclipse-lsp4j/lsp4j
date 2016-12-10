@@ -6,6 +6,7 @@ import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import org.eclipse.lsp4j.jsonrpc.json.Either
 
 @JsonRpcData
 class ClientCapabilities {
@@ -245,7 +246,7 @@ class Diagnostic {
 	/**
 	 * The diagnostic's code. Can be omitted.
 	 */
-	String code
+	Either<String, Integer> code
 
 	/**
 	 * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.

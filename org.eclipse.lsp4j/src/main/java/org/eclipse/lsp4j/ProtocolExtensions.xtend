@@ -22,7 +22,7 @@ class ColoringParams {
 	 * A list of coloring information instances.
 	 */
 	@NonNull
-	List<? extends ColoringInformation> infos = new ArrayList;
+	List<ColoringInformation> infos = new ArrayList;
 
 }
 

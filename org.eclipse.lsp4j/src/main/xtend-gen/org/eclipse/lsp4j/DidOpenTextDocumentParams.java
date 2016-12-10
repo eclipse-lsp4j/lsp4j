@@ -1,10 +1,12 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentItem;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The document open notification is sent from the client to the server to signal newly opened text documents.
@@ -13,17 +15,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
-  /**
-   * The document that was opened.
-   */
-  @NonNull
-  private TextDocumentItem textDocument;
-  
-  /**
-   * Legacy property to support protocol version 1.0 requests.
-   */
-  @Deprecated
-  private String text;
+  private static WrappedJsonProperty<TextDocumentItem> textDocumentProperty = new WrappedJsonProperty<>("textDocument", WrappedJsonConverter.objectConverter(TextDocumentItem.class));
   
   /**
    * The document that was opened.
@@ -31,15 +23,24 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
   @Pure
   @NonNull
   public TextDocumentItem getTextDocument() {
-    return this.textDocument;
+    return textDocumentProperty.get(jsonObject);
   }
   
   /**
    * The document that was opened.
    */
   public void setTextDocument(@NonNull final TextDocumentItem textDocument) {
-    this.textDocument = textDocument;
+    textDocumentProperty.set(jsonObject, textDocument);
   }
+  
+  /**
+   * Removes the property textDocument from the underlying JSON object.
+   */
+  public TextDocumentItem removeTextDocument() {
+    return textDocumentProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> textProperty = new WrappedJsonProperty<>("text", WrappedJsonConverter.stringConverter);
   
   /**
    * Legacy property to support protocol version 1.0 requests.
@@ -47,7 +48,7 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
   @Pure
   @Deprecated
   public String getText() {
-    return this.text;
+    return textProperty.get(jsonObject);
   }
   
   /**
@@ -55,60 +56,27 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
    */
   @Deprecated
   public void setText(final String text) {
-    this.text = text;
+    textProperty.set(jsonObject, text);
+  }
+  
+  /**
+   * Removes the property text from the underlying JSON object.
+   */
+  @Deprecated
+  public String removeText() {
+    return textProperty.remove(jsonObject);
   }
   
   public DidOpenTextDocumentParams() {
-    
+    super();
+  }
+  
+  public DidOpenTextDocumentParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public DidOpenTextDocumentParams(final TextDocumentItem textDocument, final String text) {
-    this.textDocument = textDocument;
-    this.text = text;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
-    b.add("text", this.text);
-    b.add("uri", getUri());
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    if (!super.equals(obj))
-      return false;
-    DidOpenTextDocumentParams other = (DidOpenTextDocumentParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
-        return false;
-    } else if (!this.textDocument.equals(other.textDocument))
-      return false;
-    if (this.text == null) {
-      if (other.text != null)
-        return false;
-    } else if (!this.text.equals(other.text))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    return result;
+    this.setTextDocument(textDocument);
+    this.setText(text);
   }
 }

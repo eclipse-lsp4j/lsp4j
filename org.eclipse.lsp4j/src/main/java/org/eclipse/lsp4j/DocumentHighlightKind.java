@@ -7,10 +7,12 @@
  *******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
+
 /**
  * A document highlight kind.
  */
-public enum DocumentHighlightKind {
+public enum DocumentHighlightKind implements WrappedJsonEnum {
 	
 	/**
 	 * A textual occurrance.

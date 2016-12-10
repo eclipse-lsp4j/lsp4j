@@ -1,11 +1,14 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The code action request is sent from the client to the server to compute commands for a given text document and range.
@@ -13,24 +16,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * associated with a marker.
  */
 @SuppressWarnings("all")
-public class CodeActionParams {
-  /**
-   * The document in which the command was invoked.
-   */
-  @NonNull
-  private TextDocumentIdentifier textDocument;
-  
-  /**
-   * The range for which the command was invoked.
-   */
-  @NonNull
-  private Range range;
-  
-  /**
-   * Context carrying additional information.
-   */
-  @NonNull
-  private CodeActionContext context;
+public class CodeActionParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<TextDocumentIdentifier> textDocumentProperty = new WrappedJsonProperty<>("textDocument", WrappedJsonConverter.objectConverter(TextDocumentIdentifier.class));
   
   /**
    * The document in which the command was invoked.
@@ -38,15 +25,24 @@ public class CodeActionParams {
   @Pure
   @NonNull
   public TextDocumentIdentifier getTextDocument() {
-    return this.textDocument;
+    return textDocumentProperty.get(jsonObject);
   }
   
   /**
    * The document in which the command was invoked.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
+    textDocumentProperty.set(jsonObject, textDocument);
   }
+  
+  /**
+   * Removes the property textDocument from the underlying JSON object.
+   */
+  public TextDocumentIdentifier removeTextDocument() {
+    return textDocumentProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Range> rangeProperty = new WrappedJsonProperty<>("range", WrappedJsonConverter.objectConverter(Range.class));
   
   /**
    * The range for which the command was invoked.
@@ -54,15 +50,24 @@ public class CodeActionParams {
   @Pure
   @NonNull
   public Range getRange() {
-    return this.range;
+    return rangeProperty.get(jsonObject);
   }
   
   /**
    * The range for which the command was invoked.
    */
   public void setRange(@NonNull final Range range) {
-    this.range = range;
+    rangeProperty.set(jsonObject, range);
   }
+  
+  /**
+   * Removes the property range from the underlying JSON object.
+   */
+  public Range removeRange() {
+    return rangeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<CodeActionContext> contextProperty = new WrappedJsonProperty<>("context", WrappedJsonConverter.objectConverter(CodeActionContext.class));
   
   /**
    * Context carrying additional information.
@@ -70,72 +75,34 @@ public class CodeActionParams {
   @Pure
   @NonNull
   public CodeActionContext getContext() {
-    return this.context;
+    return contextProperty.get(jsonObject);
   }
   
   /**
    * Context carrying additional information.
    */
   public void setContext(@NonNull final CodeActionContext context) {
-    this.context = context;
+    contextProperty.set(jsonObject, context);
+  }
+  
+  /**
+   * Removes the property context from the underlying JSON object.
+   */
+  public CodeActionContext removeContext() {
+    return contextProperty.remove(jsonObject);
   }
   
   public CodeActionParams() {
-    
+    super();
+  }
+  
+  public CodeActionParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public CodeActionParams(final TextDocumentIdentifier textDocument, final Range range, final CodeActionContext context) {
-    this.textDocument = textDocument;
-    this.range = range;
-    this.context = context;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
-    b.add("range", this.range);
-    b.add("context", this.context);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    CodeActionParams other = (CodeActionParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
-        return false;
-    } else if (!this.textDocument.equals(other.textDocument))
-      return false;
-    if (this.range == null) {
-      if (other.range != null)
-        return false;
-    } else if (!this.range.equals(other.range))
-      return false;
-    if (this.context == null) {
-      if (other.context != null)
-        return false;
-    } else if (!this.context.equals(other.context))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.context== null) ? 0 : this.context.hashCode());
-    return result;
+    this.setTextDocument(textDocument);
+    this.setRange(range);
+    this.setContext(context);
   }
 }

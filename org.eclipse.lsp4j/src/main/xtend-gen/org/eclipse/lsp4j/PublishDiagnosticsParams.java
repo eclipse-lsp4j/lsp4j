@@ -1,28 +1,20 @@
 package org.eclipse.lsp4j;
 
-import java.util.ArrayList;
+import com.google.gson.JsonObject;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Diagnostics notification are sent from the server to the client to signal results of validation runs.
  */
 @SuppressWarnings("all")
-public class PublishDiagnosticsParams {
-  /**
-   * The URI for which diagnostic information is reported.
-   */
-  @NonNull
-  private String uri;
-  
-  /**
-   * An array of diagnostic information items.
-   */
-  @NonNull
-  private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+public class PublishDiagnosticsParams extends WrappedJsonObject {
+  private static WrappedJsonProperty<String> uriProperty = new WrappedJsonProperty<>("uri", WrappedJsonConverter.stringConverter);
   
   /**
    * The URI for which diagnostic information is reported.
@@ -30,15 +22,24 @@ public class PublishDiagnosticsParams {
   @Pure
   @NonNull
   public String getUri() {
-    return this.uri;
+    return uriProperty.get(jsonObject);
   }
   
   /**
    * The URI for which diagnostic information is reported.
    */
   public void setUri(@NonNull final String uri) {
-    this.uri = uri;
+    uriProperty.set(jsonObject, uri);
   }
+  
+  /**
+   * Removes the property uri from the underlying JSON object.
+   */
+  public String removeUri() {
+    return uriProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<List<Diagnostic>> diagnosticsProperty = new WrappedJsonProperty<>("diagnostics", WrappedJsonConverter.listConverter(WrappedJsonConverter.objectConverter(Diagnostic.class)));
   
   /**
    * An array of diagnostic information items.
@@ -46,64 +47,33 @@ public class PublishDiagnosticsParams {
   @Pure
   @NonNull
   public List<Diagnostic> getDiagnostics() {
-    return this.diagnostics;
+    return diagnosticsProperty.get(jsonObject);
   }
   
   /**
    * An array of diagnostic information items.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
-    this.diagnostics = diagnostics;
+    diagnosticsProperty.set(jsonObject, diagnostics);
+  }
+  
+  /**
+   * Removes the property diagnostics from the underlying JSON object.
+   */
+  public List<Diagnostic> removeDiagnostics() {
+    return diagnosticsProperty.remove(jsonObject);
   }
   
   public PublishDiagnosticsParams() {
-    
+    super();
+  }
+  
+  public PublishDiagnosticsParams(final JsonObject jsonObject) {
+    super(jsonObject);
   }
   
   public PublishDiagnosticsParams(final String uri, final List<Diagnostic> diagnostics) {
-    this.uri = uri;
-    this.diagnostics = diagnostics;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("uri", this.uri);
-    b.add("diagnostics", this.diagnostics);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    PublishDiagnosticsParams other = (PublishDiagnosticsParams) obj;
-    if (this.uri == null) {
-      if (other.uri != null)
-        return false;
-    } else if (!this.uri.equals(other.uri))
-      return false;
-    if (this.diagnostics == null) {
-      if (other.diagnostics != null)
-        return false;
-    } else if (!this.diagnostics.equals(other.diagnostics))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
-    result = prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
-    return result;
+    this.setUri(uri);
+    this.setDiagnostics(diagnostics);
   }
 }

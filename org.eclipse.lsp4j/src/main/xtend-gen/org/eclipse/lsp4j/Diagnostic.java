@@ -1,43 +1,21 @@
 package org.eclipse.lsp4j;
 
+import com.google.gson.JsonObject;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.Either;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Represents a diagnostic, such as a compiler error or warning. Diagnostic objects are only valid in the scope of a resource.
  */
 @SuppressWarnings("all")
-public class Diagnostic {
-  /**
-   * The range at which the message applies
-   */
-  @NonNull
-  private Range range;
-  
-  /**
-   * The diagnostic's severity. Can be omitted. If omitted it is up to the client to interpret diagnostics as error,
-   * warning, info or hint.
-   */
-  private DiagnosticSeverity severity;
-  
-  /**
-   * The diagnostic's code. Can be omitted.
-   */
-  private String code;
-  
-  /**
-   * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
-   */
-  private String source;
-  
-  /**
-   * The diagnostic's message.
-   */
-  @NonNull
-  private String message;
+public class Diagnostic extends WrappedJsonObject {
+  private static WrappedJsonProperty<Range> rangeProperty = new WrappedJsonProperty<>("range", WrappedJsonConverter.objectConverter(Range.class));
   
   /**
    * The range at which the message applies
@@ -45,15 +23,24 @@ public class Diagnostic {
   @Pure
   @NonNull
   public Range getRange() {
-    return this.range;
+    return rangeProperty.get(jsonObject);
   }
   
   /**
    * The range at which the message applies
    */
   public void setRange(@NonNull final Range range) {
-    this.range = range;
+    rangeProperty.set(jsonObject, range);
   }
+  
+  /**
+   * Removes the property range from the underlying JSON object.
+   */
+  public Range removeRange() {
+    return rangeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<DiagnosticSeverity> severityProperty = new WrappedJsonProperty<>("severity", WrappedJsonConverter.enumConverter(DiagnosticSeverity.class));
   
   /**
    * The diagnostic's severity. Can be omitted. If omitted it is up to the client to interpret diagnostics as error,
@@ -61,7 +48,7 @@ public class Diagnostic {
    */
   @Pure
   public DiagnosticSeverity getSeverity() {
-    return this.severity;
+    return severityProperty.get(jsonObject);
   }
   
   /**
@@ -69,38 +56,65 @@ public class Diagnostic {
    * warning, info or hint.
    */
   public void setSeverity(final DiagnosticSeverity severity) {
-    this.severity = severity;
+    severityProperty.set(jsonObject, severity);
   }
+  
+  /**
+   * Removes the property severity from the underlying JSON object.
+   */
+  public DiagnosticSeverity removeSeverity() {
+    return severityProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<Either<String, Integer>> codeProperty = new WrappedJsonProperty<>("code", WrappedJsonConverter.eitherConverter(WrappedJsonConverter.stringConverter, WrappedJsonConverter.integerConverter));
   
   /**
    * The diagnostic's code. Can be omitted.
    */
   @Pure
-  public String getCode() {
-    return this.code;
+  public Either<String, Integer> getCode() {
+    return codeProperty.get(jsonObject);
   }
   
   /**
    * The diagnostic's code. Can be omitted.
    */
-  public void setCode(final String code) {
-    this.code = code;
+  public void setCode(final Either<String, Integer> code) {
+    codeProperty.set(jsonObject, code);
   }
+  
+  /**
+   * Removes the property code from the underlying JSON object.
+   */
+  public Either<String, Integer> removeCode() {
+    return codeProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> sourceProperty = new WrappedJsonProperty<>("source", WrappedJsonConverter.stringConverter);
   
   /**
    * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
    */
   @Pure
   public String getSource() {
-    return this.source;
+    return sourceProperty.get(jsonObject);
   }
   
   /**
    * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
    */
   public void setSource(final String source) {
-    this.source = source;
+    sourceProperty.set(jsonObject, source);
   }
+  
+  /**
+   * Removes the property source from the underlying JSON object.
+   */
+  public String removeSource() {
+    return sourceProperty.remove(jsonObject);
+  }
+  
+  private static WrappedJsonProperty<String> messageProperty = new WrappedJsonProperty<>("message", WrappedJsonConverter.stringConverter);
   
   /**
    * The diagnostic's message.
@@ -108,80 +122,28 @@ public class Diagnostic {
   @Pure
   @NonNull
   public String getMessage() {
-    return this.message;
+    return messageProperty.get(jsonObject);
   }
   
   /**
    * The diagnostic's message.
    */
   public void setMessage(@NonNull final String message) {
-    this.message = message;
+    messageProperty.set(jsonObject, message);
+  }
+  
+  /**
+   * Removes the property message from the underlying JSON object.
+   */
+  public String removeMessage() {
+    return messageProperty.remove(jsonObject);
   }
   
   public Diagnostic() {
-    
+    super();
   }
   
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("range", this.range);
-    b.add("severity", this.severity);
-    b.add("code", this.code);
-    b.add("source", this.source);
-    b.add("message", this.message);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Diagnostic other = (Diagnostic) obj;
-    if (this.range == null) {
-      if (other.range != null)
-        return false;
-    } else if (!this.range.equals(other.range))
-      return false;
-    if (this.severity == null) {
-      if (other.severity != null)
-        return false;
-    } else if (!this.severity.equals(other.severity))
-      return false;
-    if (this.code == null) {
-      if (other.code != null)
-        return false;
-    } else if (!this.code.equals(other.code))
-      return false;
-    if (this.source == null) {
-      if (other.source != null)
-        return false;
-    } else if (!this.source.equals(other.source))
-      return false;
-    if (this.message == null) {
-      if (other.message != null)
-        return false;
-    } else if (!this.message.equals(other.message))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.severity== null) ? 0 : this.severity.hashCode());
-    result = prime * result + ((this.code== null) ? 0 : this.code.hashCode());
-    result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
-    result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
-    return result;
+  public Diagnostic(final JsonObject jsonObject) {
+    super(jsonObject);
   }
 }

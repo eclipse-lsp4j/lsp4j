@@ -36,6 +36,7 @@ import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.jsonrpc.json.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
@@ -51,7 +52,7 @@ public interface TextDocumentService {
 	 * completion item is selected in the user interface.
 	 */
 	@JsonRequest
-	CompletableFuture<CompletionList> completion(TextDocumentPositionParams position);
+	CompletableFuture<Either<CompletionList, List<CompletionItem>>> completion(TextDocumentPositionParams position);
 
 	/**
 	 * The request is sent from the client to the server to resolve additional

@@ -1,35 +1,15 @@
 package org.eclipse.lsp4j;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
+import com.google.gson.JsonObject;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
 
 @SuppressWarnings("all")
-public class ClientCapabilities {
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    return b.toString();
+public class ClientCapabilities extends WrappedJsonObject {
+  public ClientCapabilities() {
+    super();
   }
   
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    ClientCapabilities other = (ClientCapabilities) obj;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    return result;
+  public ClientCapabilities(final JsonObject jsonObject) {
+    super(jsonObject);
   }
 }
