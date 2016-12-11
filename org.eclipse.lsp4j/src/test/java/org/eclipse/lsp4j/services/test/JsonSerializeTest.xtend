@@ -112,7 +112,6 @@ class JsonSerializeTest {
 			  "method": "textDocument/didChange",
 			  "params": {
 			    "textDocument": {
-			      "version": 0,
 			      "uri": "file:///tmp/foo"
 			    },
 			    "contentChanges": [
@@ -263,10 +262,6 @@ class JsonSerializeTest {
         ]
         message.assertSerialize('''
             {"id":12,"jsonrpc":2.0,"result":{
-              "contents": [
-                "foo",
-                "boo shuby doo"
-              ],
               "range": {
                 "start": {
                   "line": 3,
@@ -276,7 +271,11 @@ class JsonSerializeTest {
                   "line": 3,
                   "character": 35
                 }
-              }
+              },
+              "contents": [
+                "foo",
+                "boo shuby doo"
+              ]
             }}
         ''')
     }

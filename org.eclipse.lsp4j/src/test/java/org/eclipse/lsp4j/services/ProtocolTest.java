@@ -21,6 +21,7 @@ import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.json.Either;
+import org.eclipse.lsp4j.jsonrpc.json.EitherFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -80,8 +81,12 @@ public class ProtocolTest {
 			public CompletableFuture<Either<CompletionList, List<CompletionItem>>> completion(
 					TextDocumentPositionParams position) {
 				return CompletableFutures.computeAsync(canceler -> {
+					
 					List<CompletionItem> items = newArrayList();
-					return Either.forRight(items);
+					Either<CompletionList, List<CompletionItem>> result = 
+							new EitherFactory<CompletionList, List<CompletionItem>>() {}.create();
+					result.setRight(items);
+					return result;
 				});
 			}
 		});

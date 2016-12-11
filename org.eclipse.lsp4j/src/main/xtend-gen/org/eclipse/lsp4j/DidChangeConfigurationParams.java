@@ -12,7 +12,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 @SuppressWarnings("all")
 public class DidChangeConfigurationParams extends WrappedJsonObject {
-  private static WrappedJsonProperty<Object> settingsProperty = new WrappedJsonProperty<>("settings", WrappedJsonConverter.noConverter);
+  private static WrappedJsonProperty<Object> settingsProperty = new WrappedJsonProperty<>("settings", WrappedJsonConverter.anyConverter);
   
   @Pure
   @NonNull

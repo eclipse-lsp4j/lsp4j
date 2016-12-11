@@ -7,12 +7,10 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
-import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonEnum;
-
 /**
  * A number indicating the error type that occurred.
  */
-public enum ResponseErrorCode implements WrappedJsonEnum {
+public enum ResponseErrorCode {
 	
 	ParseError(-32700),
 	
@@ -40,10 +38,4 @@ public enum ResponseErrorCode implements WrappedJsonEnum {
 		return value;
 	}
 
-	public static ResponseErrorCode forValue(int value) {
-		ResponseErrorCode[] allValues = ResponseErrorCode.values();
-		if (value < 1 || value > allValues.length)
-			throw new IllegalArgumentException("Illegal enum value: " + value);
-		return allValues[value - 1];
-	}
 }

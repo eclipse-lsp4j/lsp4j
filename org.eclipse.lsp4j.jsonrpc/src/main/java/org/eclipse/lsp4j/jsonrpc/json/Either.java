@@ -1,69 +1,82 @@
 package org.eclipse.lsp4j.jsonrpc.json;
 
-import java.util.NoSuchElementException;
-import java.util.function.Consumer;
+import com.google.gson.JsonElement;
 
-public interface Either<L, R> {
-	public static <L, R> Either<L, R> forLeft(L value) {
-		return new Either<L,R>() {
-
-			@Override
-			public boolean isLeft() {
-				return true;
-			}
-
-			@Override
-			public L getLeft() {
-				return value;
-			}
-
-			@Override
-			public void onLeft(Consumer<L> consumer) {
-				consumer.accept(value);
-			}
-			
-			@Override
-			public String toString() {
-				return value.toString();
-			}
-		};
+public class Either<L, R> implements WrappedJson {
+	
+	private WrappedJsonConverter<L> leftConverter;
+	private WrappedJsonConverter<R> rightConverter;
+	private JsonElement wrapped;
+	
+	public Either(WrappedJsonConverter<L> leftConverter2, WrappedJsonConverter<R> rightConverter2) {
+		leftConverter = leftConverter2;
+		rightConverter = rightConverter2;
 	}
 
-	public static <L, R> Either<L, R> forRight(R value) {
-		return new Either<L,R>() {
-
-			@Override
-			public boolean isRight() {
-				return true;
-			}
-
-			@Override
-			public R getRight() {
-				return value;
-			}
-
-			@Override
-			public void onRight(Consumer<R> consumer) {
-				consumer.accept(value);
-			}
-			
-			@Override
-			public String toString() {
-				return value.toString();
-			}
-		};
+	public void setLeft(L left) {
+		this.wrapped = leftConverter.toJson(left);
+	}
+	
+	public void setRight(R right) {
+		this.wrapped = rightConverter.toJson(right);
+	}
+	
+	public boolean isLeft() {
+		return wrapped != null && leftConverter.isCompatible(wrapped); 
 	}
 
-	default boolean isLeft() { return false; }
+	public boolean isRight() { 
+		return wrapped != null && rightConverter.isCompatible(wrapped); 
+	}
 
-	default boolean isRight() { return false; }
+	public L getLeft() {
+		if (wrapped == null) {
+			return null;
+		}
+		return leftConverter.fromJson(wrapped);
+	}
 
-	default L getLeft() { throw new NoSuchElementException(); }
+	public R getRight() { 
+		if (wrapped == null) {
+			return null;
+		}
+		return rightConverter.fromJson(wrapped);
+	}
+	
+	@Override
+	public JsonElement jsonElement() {
+		return wrapped;
+	}
+	
+	public void setWrapped(JsonElement wrapped) {
+		this.wrapped = wrapped;
+	}
+	
+	@Override
+	public String toString() {
+		return wrapped.toString();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof WrappedJson) {
+			JsonElement otherWrapped = ((WrappedJson) obj).jsonElement();
+			if (this.wrapped == otherWrapped) {
+				return true;
+			}
+			if (this.wrapped == null) {
+				return false;
+			}
+			return this.wrapped.equals(otherWrapped);
+		}
+		return false;
+	}
 
-	default R getRight() { throw new NoSuchElementException(); }
-
-	default void onLeft(Consumer<L> consumer) {}
-
-	default void onRight(Consumer<R> consumer) {}
-
+	@Override
+	public int hashCode() {
+		if (this.wrapped != null) {
+			return wrapped.hashCode();
+		}
+		return -1;
+	}
 }

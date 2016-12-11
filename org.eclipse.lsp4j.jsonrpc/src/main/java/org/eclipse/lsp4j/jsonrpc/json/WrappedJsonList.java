@@ -4,11 +4,20 @@ import java.util.AbstractList;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 public class WrappedJsonList<T> extends AbstractList<T> implements WrappedJson {
 	
 	private JsonArray delegate;
 	private WrappedJsonConverter<T> converter;
+	
+	public WrappedJsonList(Class<T> type) {
+		this(WrappedJsonConverter.getConverter(type));
+	}
+	
+	public WrappedJsonList(TypeToken<T> type) {
+		this(WrappedJsonConverter.getConverter(type.getType()));
+	}
 	
 	public WrappedJsonList(WrappedJsonConverter<T> converter) {
 		this(new JsonArray(), converter);
@@ -39,7 +48,7 @@ public class WrappedJsonList<T> extends AbstractList<T> implements WrappedJson {
 		} else if (e instanceof Boolean) {
 			delegate.add((Boolean)e);
 		} else if (e instanceof WrappedJson) {
-			delegate.add(((WrappedJson) e).getWrapped());
+			delegate.add(((WrappedJson) e).jsonElement());
 		} else {
 			throw new IllegalArgumentException("Cannot add "+e+" to the list.");
 		}
@@ -60,7 +69,7 @@ public class WrappedJsonList<T> extends AbstractList<T> implements WrappedJson {
 	}
 	
 	@Override
-	public JsonElement getWrapped() {
+	public JsonElement jsonElement() {
 		return delegate;
 	}
 	

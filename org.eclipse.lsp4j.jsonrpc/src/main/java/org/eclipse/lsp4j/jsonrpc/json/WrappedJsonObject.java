@@ -12,11 +12,14 @@ public abstract class WrappedJsonObject implements WrappedJson {
 	}
 	
 	protected WrappedJsonObject(JsonObject jsonObject) {
+		if (jsonObject == null) {
+			throw new NullPointerException("jsonObject");
+		}
 		this.jsonObject = jsonObject;
 	}
 	
 	@Override
-	public JsonElement getWrapped() {
+	public JsonElement jsonElement() {
 		return jsonObject;
 	}
 
@@ -28,7 +31,7 @@ public abstract class WrappedJsonObject implements WrappedJson {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof WrappedJsonObject) {
-			return jsonObject.equals(((WrappedJsonObject) obj).getWrapped());
+			return jsonObject.equals(((WrappedJsonObject) obj).jsonElement());
 		}
 		return false;
 	}

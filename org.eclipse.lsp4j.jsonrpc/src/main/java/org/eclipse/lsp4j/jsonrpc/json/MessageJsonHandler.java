@@ -16,8 +16,8 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
-import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapterFactory;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.WrappedJsonTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -34,8 +34,8 @@ public class MessageJsonHandler {
     
 	public static GsonBuilder getDefaultGsonBuilder() {
 	    return new GsonBuilder()
+	    	.registerTypeAdapterFactory(new WrappedJsonTypeAdapterFactory())
 	    	.registerTypeAdapterFactory(new CollectionTypeAdapterFactory())
-	    	.registerTypeAdapterFactory(new EitherTypeAdapterFactory())
             .registerTypeAdapterFactory(new EnumTypeAdapterFactory());
 	}
 	
@@ -69,14 +69,85 @@ public class MessageJsonHandler {
 		JsonElement methodElement = json.get("method");
 		Message result;
 		if (idElement != null && methodElement != null)
-			result = new RequestMessage(json);
+			result = parseRequest(json, idElement.getAsString(), methodElement.getAsString());
 		else if (idElement != null && (json.get("result") != null || json.get("error") != null))
-			result = new ResponseMessage(json);
+			result = parseResponse(json, idElement.getAsString());
 		else if (methodElement != null)
-			result = new NotificationMessage(json);
+			result = parseNotification(json, methodElement.getAsString());
 		else
 			throw new IllegalStateException("Unknown message "+json);
+		JsonElement jsonRpcElement = json.get("jsonrpc");
+		if (jsonRpcElement != null)
+			result.setJsonrpc(jsonRpcElement.getAsString());
 		return result;
+	}
+	
+	protected RequestMessage parseRequest(JsonObject json, String requestId, String method) {
+		try {
+			RequestMessage result = new RequestMessage();
+			result.setId(requestId);
+			result.setMethod(method);
+			JsonElement paramsElement = json.get("params");
+			if (paramsElement != null) {
+				Type paramType = null;
+				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
+				if (jsonRpcMethod != null)
+					paramType = jsonRpcMethod.getParameterType();
+				result.setParams(fromJson(paramsElement, paramType));
+			}
+			return result;
+		} catch (Exception e) {
+			throw new InvalidMessageException("Could not parse request: " + e.getMessage(), json, requestId, e);
+		}
+	}
+
+	protected Object fromJson(JsonElement json, Type type) {
+		return gson.fromJson(json, type != null ? type : Object.class);
+	}
+	
+	protected ResponseMessage parseResponse(JsonObject json, String responseId) {
+		if (methodProvider == null)
+			throw new IllegalStateException("Response methods are not accepted.");
+		try {
+			ResponseMessage result = new ResponseMessage();
+			result.setId(responseId);
+			JsonElement resultElem = json.get("result");
+			if (resultElem != null) {
+				Type resultType = null;
+				JsonRpcMethod jsonRpcMethod = supportedMethods.get(methodProvider.resolveMethod(responseId));
+				if (jsonRpcMethod != null) {
+					resultType = jsonRpcMethod.getReturnType();
+				}
+				result.setResult(fromJson(resultElem, resultType));
+			} else {
+				JsonElement errorElement = json.get("error");
+				if (errorElement != null) {
+					result.setError(gson.fromJson(errorElement, ResponseError.class));
+				}
+			}
+			return result;
+		} catch (Exception e) {
+			throw new InvalidMessageException("Could not parse response: " + e.getMessage(), json, responseId, e);
+		}
+	}
+	
+	protected NotificationMessage parseNotification(JsonObject json, String method) {
+		try {
+			NotificationMessage result = new NotificationMessage();
+			result.setMethod(method);
+			JsonElement paramsElement = json.get("params");
+			if (paramsElement != null) {
+				Type paramType = null;
+				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
+				if (jsonRpcMethod != null) {
+					paramType = jsonRpcMethod.getParameterType();
+				}
+				result.setParams(fromJson(paramsElement, paramType));
+			}
+			return result;
+		} catch (Exception e) {
+			throw new InvalidMessageException("Could not parse notification: " + e.getMessage(), json, null, e);
+		}
 	}
 	
 	public String serialize(Message message) {
@@ -93,7 +164,7 @@ public class MessageJsonHandler {
 				output.append(",\"jsonrpc\":"+responseMessage.getJsonrpc());
 				if (responseMessage.getError() != null) {
 					output.append(",\"error\":");
-					gson.toJson(responseMessage.getError().getWrapped(), output);
+					gson.toJson(responseMessage.getError(), output);
 				} else {
 					output.append(",\"result\":");
 					gson.toJson(responseMessage.getResult(), output);
@@ -103,7 +174,7 @@ public class MessageJsonHandler {
 				throw new RuntimeException(e);
 			}
 		} else {
-			gson.toJson(message.getWrapped(), output);
+			gson.toJson(message, output);
 		}
 	}
 	

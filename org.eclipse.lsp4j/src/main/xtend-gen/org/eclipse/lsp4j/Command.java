@@ -64,7 +64,7 @@ public class Command extends WrappedJsonObject {
     return commandProperty.remove(jsonObject);
   }
   
-  private static WrappedJsonProperty<List<Object>> argumentsProperty = new WrappedJsonProperty<>("arguments", WrappedJsonConverter.listConverter(WrappedJsonConverter.noConverter));
+  private static WrappedJsonProperty<List<Object>> argumentsProperty = new WrappedJsonProperty<>("arguments", WrappedJsonConverter.listConverter(WrappedJsonConverter.anyConverter));
   
   /**
    * Arguments that the command handler should be invoked with.

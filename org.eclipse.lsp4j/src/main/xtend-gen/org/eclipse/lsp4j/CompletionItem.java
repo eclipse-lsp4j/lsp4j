@@ -270,7 +270,7 @@ public class CompletionItem extends WrappedJsonObject {
     return commandProperty.remove(jsonObject);
   }
   
-  private static WrappedJsonProperty<Object> dataProperty = new WrappedJsonProperty<>("data", WrappedJsonConverter.noConverter);
+  private static WrappedJsonProperty<Object> dataProperty = new WrappedJsonProperty<>("data", WrappedJsonConverter.anyConverter);
   
   /**
    * An data entry field that is preserved on a completion item between a completion and a completion resolve request.

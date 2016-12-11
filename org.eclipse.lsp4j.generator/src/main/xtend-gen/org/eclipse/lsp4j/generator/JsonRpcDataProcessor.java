@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.generator;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Collections;
 import java.util.List;
@@ -224,8 +225,8 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       }
     }
     if (!_matched) {
-      TypeReference _object = context.getObject();
-      Type _type_8 = _object.getType();
+      TypeReference _newTypeReference_4 = context.newTypeReference(JsonElement.class);
+      Type _type_8 = _newTypeReference_4.getType();
       if (Objects.equal(_type, _type_8)) {
         _matched=true;
         StringConcatenation _builder_5 = new StringConcatenation();
@@ -234,53 +235,63 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       }
     }
     if (!_matched) {
-      TypeReference _newTypeReference_4 = context.newTypeReference(Either.class);
-      Type _type_9 = _newTypeReference_4.getType();
+      TypeReference _object = context.getObject();
+      Type _type_9 = _object.getType();
       if (Objects.equal(_type, _type_9)) {
         _matched=true;
         StringConcatenation _builder_6 = new StringConcatenation();
-        _builder_6.append("eitherConverter(WrappedJsonConverter.");
-        List<TypeReference> _actualTypeArguments_2 = ref.getActualTypeArguments();
-        TypeReference _get_1 = _actualTypeArguments_2.get(0);
-        StringConcatenation _converterExpression_2 = this.getConverterExpression(_get_1, context);
-        _builder_6.append(_converterExpression_2, "");
-        _builder_6.append(", WrappedJsonConverter.");
-        List<TypeReference> _actualTypeArguments_3 = ref.getActualTypeArguments();
-        TypeReference _get_2 = _actualTypeArguments_3.get(1);
-        StringConcatenation _converterExpression_3 = this.getConverterExpression(_get_2, context);
-        _builder_6.append(_converterExpression_3, "");
-        _builder_6.append(")");
+        _builder_6.append("anyConverter");
         return _builder_6;
       }
     }
     if (!_matched) {
-      TypeReference _newTypeReference_5 = context.newTypeReference(WrappedJsonEnum.class);
-      boolean _isAssignableFrom = _newTypeReference_5.isAssignableFrom(ref);
-      if (_isAssignableFrom) {
+      TypeReference _newTypeReference_5 = context.newTypeReference(Either.class);
+      Type _type_10 = _newTypeReference_5.getType();
+      if (Objects.equal(_type, _type_10)) {
         _matched=true;
         StringConcatenation _builder_7 = new StringConcatenation();
-        _builder_7.append("enumConverter(");
-        _builder_7.append(ref, "");
-        _builder_7.append(".class)");
+        _builder_7.append("eitherConverter(WrappedJsonConverter.");
+        List<TypeReference> _actualTypeArguments_2 = ref.getActualTypeArguments();
+        TypeReference _get_1 = _actualTypeArguments_2.get(0);
+        StringConcatenation _converterExpression_2 = this.getConverterExpression(_get_1, context);
+        _builder_7.append(_converterExpression_2, "");
+        _builder_7.append(", WrappedJsonConverter.");
+        List<TypeReference> _actualTypeArguments_3 = ref.getActualTypeArguments();
+        TypeReference _get_2 = _actualTypeArguments_3.get(1);
+        StringConcatenation _converterExpression_3 = this.getConverterExpression(_get_2, context);
+        _builder_7.append(_converterExpression_3, "");
+        _builder_7.append(")");
         return _builder_7;
       }
     }
     if (!_matched) {
-      TypeReference _newTypeReference_6 = context.newTypeReference(WrappedJsonObject.class);
-      boolean _isAssignableFrom_1 = _newTypeReference_6.isAssignableFrom(ref);
-      if (_isAssignableFrom_1) {
+      TypeReference _newTypeReference_6 = context.newTypeReference(WrappedJsonEnum.class);
+      boolean _isAssignableFrom = _newTypeReference_6.isAssignableFrom(ref);
+      if (_isAssignableFrom) {
         _matched=true;
         StringConcatenation _builder_8 = new StringConcatenation();
-        _builder_8.append("objectConverter(");
+        _builder_8.append("enumConverter(");
         _builder_8.append(ref, "");
         _builder_8.append(".class)");
         return _builder_8;
       }
     }
-    StringConcatenation _builder_9 = new StringConcatenation();
-    _builder_9.append("!!!! unhandled type ");
-    _builder_9.append(ref, "");
-    return _builder_9;
+    if (!_matched) {
+      TypeReference _newTypeReference_7 = context.newTypeReference(WrappedJsonObject.class);
+      boolean _isAssignableFrom_1 = _newTypeReference_7.isAssignableFrom(ref);
+      if (_isAssignableFrom_1) {
+        _matched=true;
+        StringConcatenation _builder_9 = new StringConcatenation();
+        _builder_9.append("objectConverter(");
+        _builder_9.append(ref, "");
+        _builder_9.append(".class)");
+        return _builder_9;
+      }
+    }
+    StringConcatenation _builder_10 = new StringConcatenation();
+    _builder_10.append("!!!! unhandled type ");
+    _builder_10.append(ref, "");
+    return _builder_10;
   }
   
   private void generateImplMembers(final MutableClassDeclaration impl, @Extension final TransformationContext context) {

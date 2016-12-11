@@ -10,15 +10,18 @@ package org.eclipse.lsp4j.jsonrpc.validation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.json.InvalidMessageException;
+import org.eclipse.lsp4j.jsonrpc.json.WrappedJson;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
+
+import com.google.gson.JsonElement;
 
 public class ReflectiveMessageValidator implements MessageConsumer {
 
@@ -32,7 +35,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 	public void consume(Message message) {
 		List<String> result = new ArrayList<>();
 		try {
-			validate(message, result, new LinkedList<>());
+			validate(message, result, new IdentityHashMap<>());
 		} catch (Exception e) {
 			result.add("Error during message validation: " + e.getMessage());
 		}
@@ -45,7 +48,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		}
 	}
 
-	protected void validate(Object object, List<String> issues, LinkedList<Object> objectStack) throws Exception {
+	protected void validate(Object object, List<String> issues, IdentityHashMap<Object,Object> objectStack) throws Exception {
 		if (object == null 
 				|| object instanceof Enum<?> 
 				|| object instanceof String 
@@ -53,11 +56,12 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				|| object instanceof Boolean) {
 			return;
 		}
-		if (objectStack.contains(object)) {
+		Object toCheck = object instanceof WrappedJson ? ((WrappedJson)object).jsonElement(): object;
+		if (objectStack.containsKey(toCheck)) {
 			issues.add("An element of the message has a direct or indirect reference to itself.");
 			return;
 		}
-		objectStack.push(object);
+		objectStack.put(toCheck, null);
 		if (object instanceof List<?>) {
 			for (Object obj : (List<?>) object) {
 				if (obj == null) {
@@ -66,18 +70,20 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				validate(obj, issues, objectStack);
 			}
 		} else {
-			for (Method method : object.getClass().getMethods()) {
-				if (isGetter(method)) {
-					method.setAccessible(true);
-					Object value = method.invoke(object);
-					if (value == null && method.getAnnotation(NonNull.class) != null) {
-						issues.add("The accessor '" + method.getName() + "' must return a non-null value.");
+			if (!(object instanceof JsonElement)) {
+				for (Method method : object.getClass().getMethods()) {
+					if (isGetter(method)) {
+						method.setAccessible(true);
+						Object value = method.invoke(object);
+						if (value == null && method.getAnnotation(NonNull.class) != null) {
+							issues.add("The accessor '" + method.getName() + "' must return a non-null value.");
+						}
+						validate(value, issues, objectStack);
 					}
-					validate(value, issues, objectStack);
 				}
 			}
 		}
-		objectStack.pop();
+		objectStack.remove(toCheck);
 	}
 
 	protected boolean isGetter(Method method) {

@@ -8,11 +8,20 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 public class WrappedJsonStringMap<T> implements Map<String, T>, WrappedJson {
 	
 	private JsonObject wrapped;
 	private WrappedJsonConverter<T> converter;
+	
+	public WrappedJsonStringMap(Class<T> type) {
+		this(new JsonObject(), WrappedJsonConverter.getConverter(type));
+	}
+	
+	public WrappedJsonStringMap(TypeToken<T> type) {
+		this(new JsonObject(), WrappedJsonConverter.getConverter(type.getType()));
+	}
 	
 	public WrappedJsonStringMap(WrappedJsonConverter<T> converter) {
 		this(new JsonObject(), converter);
@@ -100,10 +109,12 @@ public class WrappedJsonStringMap<T> implements Map<String, T>, WrappedJson {
 	}
 
 	@Override
-	public JsonElement getWrapped() {
+	public JsonElement jsonElement() {
 		return wrapped;
 	}
 
-	
-
+	@Override
+	public String toString() {
+		return wrapped.toString();
+	}
 }

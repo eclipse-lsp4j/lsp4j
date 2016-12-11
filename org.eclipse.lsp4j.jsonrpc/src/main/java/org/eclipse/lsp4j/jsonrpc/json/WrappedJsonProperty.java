@@ -2,11 +2,20 @@ package org.eclipse.lsp4j.jsonrpc.json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 public class WrappedJsonProperty<T> {
 	
 	private String property;
 	private WrappedJsonConverter<T> converter;
+	
+	public WrappedJsonProperty(String property, TypeToken<T> type) {
+		this(property, WrappedJsonConverter.getConverter(type.getType()));
+	}
+	
+	public WrappedJsonProperty(String property, Class<T> type) {
+		this(property, WrappedJsonConverter.getConverter(type));
+	}
 	
 	public WrappedJsonProperty(String property, WrappedJsonConverter<T> converter) {
 		super();

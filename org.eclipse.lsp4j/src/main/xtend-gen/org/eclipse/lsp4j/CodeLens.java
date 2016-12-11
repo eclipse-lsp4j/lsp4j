@@ -67,7 +67,7 @@ public class CodeLens extends WrappedJsonObject {
     return commandProperty.remove(jsonObject);
   }
   
-  private static WrappedJsonProperty<Object> dataProperty = new WrappedJsonProperty<>("data", WrappedJsonConverter.noConverter);
+  private static WrappedJsonProperty<Object> dataProperty = new WrappedJsonProperty<>("data", WrappedJsonConverter.anyConverter);
   
   /**
    * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.

@@ -64,7 +64,7 @@ public class WrappingFoo extends WrappedJsonObject {
 	}
 
 	@Override
-	public JsonElement getWrapped() {
+	public JsonElement jsonElement() {
 		return wrapped;
 	}
 }

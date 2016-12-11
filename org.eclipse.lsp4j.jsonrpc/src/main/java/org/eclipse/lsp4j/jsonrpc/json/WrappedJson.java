@@ -4,5 +4,6 @@ import com.google.gson.JsonElement;
 
 public interface WrappedJson {
 
-	public JsonElement getWrapped();
+	public JsonElement jsonElement();
+	
 }

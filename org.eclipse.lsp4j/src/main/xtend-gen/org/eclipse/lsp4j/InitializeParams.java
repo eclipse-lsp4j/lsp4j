@@ -60,7 +60,7 @@ public class InitializeParams extends WrappedJsonObject {
     return rootPathProperty.remove(jsonObject);
   }
   
-  private static WrappedJsonProperty<Object> initializationOptionsProperty = new WrappedJsonProperty<>("initializationOptions", WrappedJsonConverter.noConverter);
+  private static WrappedJsonProperty<Object> initializationOptionsProperty = new WrappedJsonProperty<>("initializationOptions", WrappedJsonConverter.anyConverter);
   
   /**
    * User provided initialization options.

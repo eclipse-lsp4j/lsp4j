@@ -25,6 +25,7 @@ import org.eclipse.xtend.lib.macro.declaration.TypeReference
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtend2.lib.StringConcatenation
 import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter
+import com.google.gson.JsonElement
 
 class JsonRpcDataProcessor extends AbstractClassProcessor {
 
@@ -98,8 +99,11 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
             case Map.newTypeReference.type : {
                 return '''mapConverter(WrappedJsonConverter.«getConverterExpression(ref.actualTypeArguments.get(1), context)»)'''
             }
-            case object.type : {
+            case JsonElement.newTypeReference.type : {
                 return '''noConverter'''
+            }
+            case object.type : {
+                return '''anyConverter'''
             }
             case Either.newTypeReference.type : {
                 return '''eitherConverter(WrappedJsonConverter.«getConverterExpression(ref.actualTypeArguments.get(0), context)», WrappedJsonConverter.«getConverterExpression(ref.actualTypeArguments.get(1), context)»)'''

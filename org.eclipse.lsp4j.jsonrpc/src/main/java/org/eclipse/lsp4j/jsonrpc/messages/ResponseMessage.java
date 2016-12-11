@@ -7,58 +7,48 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
-import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
-import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
-import com.google.gson.JsonObject;
-
 public class ResponseMessage extends Message {
-	
-	public ResponseMessage() {
-		super();
-	}
-
-	public ResponseMessage(JsonObject jsonObject) {
-		super(jsonObject);
-	}
-
-	private static WrappedJsonProperty<String> idProperty = new WrappedJsonProperty<>("id",WrappedJsonConverter.stringConverter);
-	private static WrappedJsonProperty<Object> resultProperty = new WrappedJsonProperty<>("result",WrappedJsonConverter.noConverter);
-	private static WrappedJsonProperty<ResponseError> errorProperty = new WrappedJsonProperty<>("error",WrappedJsonConverter.objectConverter(ResponseError.class));
 
 	/**
 	 * The request id.
 	 */
 	@NonNull
+	private String id;
+
 	public String getId() {
-		return idProperty.get(jsonObject);
+		return this.id;
 	}
 
 	public void setId(String id) {
-		idProperty.set(jsonObject, id);
+		this.id = id;
 	}
 
 	/**
 	 * The result of a request. This can be omitted in the case of an error.
 	 */
+	private Object result;
+
 	public Object getResult() {
-		return resultProperty.get(jsonObject);
+		return this.result;
 	}
 
 	public void setResult(Object result) {
-		resultProperty.set(jsonObject, result);
+		this.result = result;
 	}
 
 	/**
 	 * The error object in case a request fails.
 	 */
+	private ResponseError error;
+
 	public ResponseError getError() {
-		return errorProperty.get(jsonObject);
+		return this.error;
 	}
 
 	public void setError(ResponseError error) {
-		errorProperty.set(jsonObject, error);
+		this.error = error;
 	}
 	
 }

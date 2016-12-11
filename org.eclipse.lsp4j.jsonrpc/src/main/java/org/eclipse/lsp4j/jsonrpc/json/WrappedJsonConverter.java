@@ -3,6 +3,8 @@ package org.eclipse.lsp4j.jsonrpc.json;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,44 @@ public interface WrappedJsonConverter<T> {
 	JsonElement toJson(T e);
 	boolean isCompatible(JsonElement e);
 	
-	public static WrappedJsonConverter<Object> noConverter = new WrappedJsonConverter<Object>() {
+	@SuppressWarnings("unchecked")
+	public static <T> WrappedJsonConverter<T> getConverter(Type t) {
+		if (t == String.class) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.stringConverter;
+		} else if (t == Integer.class || t == int.class) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.integerConverter;
+		} else if (t == Boolean.class || t == boolean.class) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.booleanConverter;
+		} else if (t == JsonElement.class) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.noConverter;
+		} else if (t == Object.class) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.anyConverter;
+		} else if (t instanceof Class<?> && WrappedJsonObject.class.isAssignableFrom((Class<?>)t)) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.objectConverter((Class<WrappedJsonObject>) t);
+		} else if (t instanceof Class<?> && WrappedJsonEnum.class.isAssignableFrom((Class<?>)t)) {
+			return (WrappedJsonConverter<T>) WrappedJsonConverter.enumConverter((Class<WrappedJsonEnum>) t);
+		} else if (t instanceof ParameterizedType) {
+			ParameterizedType pType = (ParameterizedType) t;
+			Class<?> rawType = (Class<?>)pType.getRawType();
+			if (Either.class.isAssignableFrom(rawType)) {
+				WrappedJsonConverter<?> left = getConverter(pType.getActualTypeArguments()[0]);
+				WrappedJsonConverter<?> right = getConverter(pType.getActualTypeArguments()[1]);
+				return (WrappedJsonConverter<T>) WrappedJsonConverter.eitherConverter(left, right);
+			} else if (List.class.isAssignableFrom(rawType)) {
+				WrappedJsonConverter<?> component = getConverter(pType.getActualTypeArguments()[0]);
+				return (WrappedJsonConverter<T>) WrappedJsonConverter.listConverter(component);
+			} else if (Map.class.isAssignableFrom(rawType)) {
+				WrappedJsonConverter<?> component = getConverter(pType.getActualTypeArguments()[1]);
+				return (WrappedJsonConverter<T>) WrappedJsonConverter.mapConverter(component);
+			} else {
+				throw new IllegalArgumentException("Unknown type "+t);
+			}
+		} else {
+			throw new IllegalArgumentException("Unknown type "+t);
+		}
+	}
+	
+	public static WrappedJsonConverter<Object> anyConverter = new WrappedJsonConverter<Object>() {
 		@Override
 		public Object fromJson(JsonElement e) {
 			return e;
@@ -25,8 +64,23 @@ public interface WrappedJsonConverter<T> {
 		@Override
 		public JsonElement toJson(Object e) {
 			if (e instanceof WrappedJson) {
-				return ((WrappedJson) e).getWrapped();
+				return ((WrappedJson) e).jsonElement();
 			}
+			return (JsonElement) e;
+		}
+		@Override
+		public boolean isCompatible(JsonElement e) {
+			return true;
+		}
+	};
+	
+	public static WrappedJsonConverter<JsonElement> noConverter = new WrappedJsonConverter<JsonElement>() {
+		@Override
+		public JsonElement fromJson(JsonElement e) {
+			return e;
+		}
+		@Override
+		public JsonElement toJson(JsonElement e) {
 			return (JsonElement) e;
 		}
 		@Override
@@ -67,6 +121,8 @@ public interface WrappedJsonConverter<T> {
 	public static WrappedJsonConverter<String> stringConverter = new WrappedJsonConverter<String>() {
 		@Override
 		public String fromJson(JsonElement e) {
+			if (e == null)
+				return null;
 			if (e instanceof JsonNull)
 				return null;
 			return e.getAsString();
@@ -95,6 +151,8 @@ public interface WrappedJsonConverter<T> {
 	public static WrappedJsonConverter<Integer> integerConverter = new WrappedJsonConverter<Integer>() {
 		@Override
 		public Integer fromJson(JsonElement e) {
+			if (e == null)
+				return 0;
 			if (e instanceof JsonNull)
 				return null;
 			return e.getAsInt();
@@ -124,6 +182,8 @@ public interface WrappedJsonConverter<T> {
 	public static WrappedJsonConverter<Boolean> booleanConverter = new WrappedJsonConverter<Boolean>() {
 		@Override
 		public Boolean fromJson(JsonElement e) {
+			if (e == null)
+				return false;
 			if (e instanceof JsonNull)
 				return null;
 			return e.getAsBoolean();
@@ -156,7 +216,7 @@ public interface WrappedJsonConverter<T> {
 				@Override
 				public T fromJson(JsonElement e) {
 					try {
-						if (e instanceof JsonNull)
+						if (e == null || e instanceof JsonNull)
 							return null;
 						return constructor.newInstance(e);
 					} catch (InstantiationException | IllegalAccessException  | IllegalArgumentException  | InvocationTargetException ex) {
@@ -167,7 +227,7 @@ public interface WrappedJsonConverter<T> {
 				public JsonElement toJson(T e) {
 					if (e == null)
 						return JsonNull.INSTANCE;
-					return e.getWrapped();
+					return e.jsonElement();
 				}
 				
 				@Override
@@ -195,7 +255,7 @@ public interface WrappedJsonConverter<T> {
 				if (e == null)
 					return JsonNull.INSTANCE;
 				if (e instanceof WrappedJsonList) {
-			        return ((WrappedJsonList<?>) e).getWrapped();
+			        return ((WrappedJsonList<?>) e).jsonElement();
 			    } else {
 			        JsonArray jsonArray = new JsonArray();
 			        WrappedJsonList<T> newElements = new WrappedJsonList<>(jsonArray, componentConverter);
@@ -223,7 +283,7 @@ public interface WrappedJsonConverter<T> {
 				if (e == null)
 					return JsonNull.INSTANCE;
 				if (e instanceof WrappedJsonStringMap) {
-					return ((WrappedJsonStringMap<?>) e).getWrapped();
+					return ((WrappedJsonStringMap<?>) e).jsonElement();
 				} else {
 					JsonObject jsonObject = new JsonObject();
 					WrappedJsonStringMap<T> newElements = new WrappedJsonStringMap<>(jsonObject, componentConverter);
@@ -242,13 +302,9 @@ public interface WrappedJsonConverter<T> {
 			
 			@Override
 			public Either<L, R> fromJson(JsonElement e) {
-				if (e instanceof JsonNull)
-					return null;
-				if (leftConverter.isCompatible(e)) {
-					return Either.forLeft(leftConverter.fromJson(e));
-				} else {
-					return Either.forRight(rightConverter.fromJson(e));
-				}
+				Either<L,R> result = new Either<L,R>(leftConverter, rightConverter);
+				result.setWrapped(e);
+				return result;
 			}
 			
 			@Override

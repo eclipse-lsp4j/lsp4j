@@ -7,66 +7,68 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
-import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonConverter;
-import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonObject;
-import org.eclipse.lsp4j.jsonrpc.json.WrappedJsonProperty;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
-import com.google.gson.JsonObject;
-
-public class ResponseError extends WrappedJsonObject {
-
-	public ResponseError() {
-	}
-	
-	public ResponseError(JsonObject jsonObject) {
-		super(jsonObject);
-	}
-	
-	public ResponseError(ResponseErrorCode code, String message, Object data) {
-		this.setCode(code);
-		this.setMessage(message);
-		this.setData(data);
-	}
-
-	private static WrappedJsonProperty<ResponseErrorCode> codeProperty = new WrappedJsonProperty<>("code", WrappedJsonConverter.enumConverter(ResponseErrorCode.class));
-	private static WrappedJsonProperty<String> messageProperty = new WrappedJsonProperty<>("message", WrappedJsonConverter.stringConverter);
-	private static WrappedJsonProperty<Object> dataProperty = new WrappedJsonProperty<>("data", WrappedJsonConverter.noConverter);
+public class ResponseError {
 	
 	/**
 	 * A number indicating the error type that occured.
 	 */
-	@NonNull public ResponseErrorCode getCode() {
-		return codeProperty.get(jsonObject);
+	@NonNull
+	private ResponseErrorCode code;
+
+	public ResponseErrorCode getCode() {
+		return this.code;
 	}
 
-	public void setCode(@NonNull ResponseErrorCode code) {
-		codeProperty.set(jsonObject, code);
+	public void setCode(ResponseErrorCode code) {
+		this.code = code;
 	}
 
 	/**
 	 * A string providing a short decription of the error.
 	 */
 	@NonNull
+	private String message;
+
 	public String getMessage() {
-		return messageProperty.get(jsonObject);
+		return this.message;
 	}
 
 	public void setMessage(String message) {
-		messageProperty.set(jsonObject, message);
+		this.message = message;
 	}
 
 	/**
 	 * A Primitive or Structured value that contains additional information
 	 * about the error. Can be omitted.
 	 */
+	private Object data;
+
 	public Object getData() {
-		return dataProperty.get(jsonObject);
+		return this.data;
 	}
 
 	public void setData(Object data) {
-		dataProperty.set(jsonObject, data);
+		this.data = data;
 	}
 
+	public ResponseError() {
+	}
+	
+	public ResponseError(ResponseErrorCode code, String message, Object data) {
+		this.code = code;
+		this.message = message;
+		this.data = data;
+	}
+	
+	@Override
+	public String toString() {
+		return MessageJsonHandler.getDefaultGsonBuilder()
+				.setPrettyPrinting()
+				.create()
+				.toJson(this);
+	}
 	
 }
