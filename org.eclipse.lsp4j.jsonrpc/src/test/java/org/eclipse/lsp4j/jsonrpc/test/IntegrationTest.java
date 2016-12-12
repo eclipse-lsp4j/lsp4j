@@ -103,14 +103,15 @@ public class IntegrationTest {
 			public CompletableFuture<MyParam> askClient(MyParam param) {
 				return CompletableFutures.computeAsync(cancelToken -> {
 					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						Assert.fail("Thread was interrupted unexpectedly.");
-					}
-					try {
-						cancelToken.checkCanceled();
+						long startTime = System.currentTimeMillis();
+						do {
+							cancelToken.checkCanceled();
+							Thread.sleep(50);
+						} while (System.currentTimeMillis() - startTime < 2000);
 					} catch (CancellationException e) {
 						cancellationHappened[0] = true;
+					} catch (InterruptedException e) {
+						Assert.fail("Thread was interrupted unexpectedly.");
 					}
 					return param;
 				});
@@ -240,8 +241,8 @@ public class IntegrationTest {
 			logMessages.await(Level.WARNING, "Unsupported notification method: foo1");
 			logMessages.await(Level.WARNING, "Unsupported request method: foo2");
 			
-			Assert.assertEquals("Content-Length: 91" + CRLF + CRLF
-					+ "{\"id\":1,\"jsonrpc\":2.0,\"error\":{\"code\":-32600,\"message\":\"Unsupported request method: foo2\"}}",
+			Assert.assertEquals("Content-Length: 95" + CRLF + CRLF
+					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32600,\"message\":\"Unsupported request method: foo2\"}}",
 					out.toString());
 		} finally {
 			logMessages.unregister();

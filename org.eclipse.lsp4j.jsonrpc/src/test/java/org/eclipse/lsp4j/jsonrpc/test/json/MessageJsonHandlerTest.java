@@ -81,11 +81,13 @@ public class MessageJsonHandlerTest {
 	@Test
 	public void testEither() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
-		supportedMethods.put("foo", JsonRpcMethod.request("foo", new TypeToken<Either<String, Integer>>() {}.getType(), new TypeToken<Either<String, List<Map<String,String>>>>() {}.getType()));
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Either<String, Integer>>() {}.getType(),
+				new TypeToken<Either<String, List<Map<String,String>>>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider((id) -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"2\",\n" 
+				+ "\"id\":\"2\",\n"
 				+ " \"result\": [\n"
 				+ "  {\"name\":\"foo\"},\n"
 				+ "  {\"name\":\"bar\"}\n"

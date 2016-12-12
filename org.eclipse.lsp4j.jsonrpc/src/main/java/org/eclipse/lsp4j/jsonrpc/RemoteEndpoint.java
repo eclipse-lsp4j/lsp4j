@@ -8,7 +8,6 @@
 package org.eclipse.lsp4j.jsonrpc;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -28,6 +27,10 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
+
+import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * An {@link Endpoint} that can be connected to a {@link MessageConsumer} and {@link MessageProducer}.
@@ -124,7 +127,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 
 	protected void sendCancelNotification(String id) {
-		Map<String, String> cancelParams = new HashMap<String, String>();
+		Map<String, String> cancelParams = Maps.newHashMapWithExpectedSize(1);
 		cancelParams.put(CANCEL_METHOD_PARAM_ID, id);
 		notify(CANCEL_METHOD, cancelParams);
 	}
@@ -149,44 +152,58 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			pendingRequestInfo = sentRequestMap.remove(responseMessage.getId());
 		}
 		if (pendingRequestInfo == null) {
-			LOG.log(Level.WARNING, "Unmatched response message " + responseMessage);
+			LOG.log(Level.WARNING, "Unmatched response message: " + responseMessage);
 		} else {
 			try {
 				pendingRequestInfo.responseHandler.accept(responseMessage);
 			} catch (RuntimeException e) {
-				LOG.log(Level.WARNING, "Handling repsonse "+responseMessage+" threw an exception.", e);
+				LOG.log(Level.WARNING, "Handling repsonse threw an exception: " + responseMessage, e);
 			}
 		}
 	}
 
 	protected void handleNotification(NotificationMessage notificationMessage) {
-		if (CANCEL_METHOD.equals(notificationMessage.getMethod())) {
-			Object cancelParams = notificationMessage.getParams();
-			if (cancelParams instanceof Map<?,?>) {
-				synchronized (receivedRequestMap) {
-					Object idParam = ((Map<?, ?>) cancelParams).get(CANCEL_METHOD_PARAM_ID);
-					if (idParam == null) {
-						LOG.warning("Invalid cancel notification. No id. "+notificationMessage);
-					} else {
-						String id = idParam.toString();
-						CompletableFuture<?> future = receivedRequestMap.get(id);
-						if (future == null) {
-							LOG.log(Level.WARNING, "Unmatched cancel notification: " + notificationMessage);
-						} else {
-							future.cancel(true);
-						}
-					}
-				}
-				return;
-			} else {
-				LOG.warning("Cancellation support disabled, since the '"+CANCEL_METHOD+"' method has explicitly been registered.");
+		if (!handleCancellation(notificationMessage)) {
+			try {
+				localEndpoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());
+			} catch (RuntimeException e) {
+				LOG.log(Level.WARNING, "Notification threw an exception: " + notificationMessage, e);
 			}
 		}
-		try {
-			localEndpoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());
-		} catch (RuntimeException e) {
-			LOG.log(Level.WARNING, "Notification "+notificationMessage+" threw an exception.", e);
+	}
+	
+	protected boolean handleCancellation(NotificationMessage notificationMessage) {
+		if (CANCEL_METHOD.equals(notificationMessage.getMethod())) {
+			Object cancelParams = notificationMessage.getParams();
+			String id = null;
+			if (cancelParams instanceof JsonObject) {
+				JsonElement idElem = ((JsonObject) cancelParams).get(CANCEL_METHOD_PARAM_ID);
+				if (idElem != null)
+					id = idElem.getAsString();
+				else
+					LOG.warning("Invalid cancel notification (missing id): " + notificationMessage);
+			} else if (cancelParams instanceof Map<?,?>) {
+				Object idParam = ((Map<?, ?>) cancelParams).get(CANCEL_METHOD_PARAM_ID);
+				if (idParam != null)
+					id = idParam.toString();
+				else
+					LOG.warning("Invalid cancel notification (missing id): " + notificationMessage);
+			} else {
+				LOG.warning("Cancellation support disabled, since the '"+CANCEL_METHOD+"' method has been registered explicitly.");
+				return false;
+			}
+			if (id != null) {
+				synchronized (receivedRequestMap) {
+					CompletableFuture<?> future = receivedRequestMap.get(id);
+					if (future != null)
+						future.cancel(true);
+					else
+						LOG.log(Level.WARNING, "Unmatched cancel notification for request id " + id);
+				}
+			}
+			return true;
 		}
+		return false;
 	}
 	
 	protected void handleRequest(RequestMessage requestMessage) {

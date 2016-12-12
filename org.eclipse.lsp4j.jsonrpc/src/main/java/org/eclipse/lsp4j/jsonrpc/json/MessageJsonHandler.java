@@ -7,39 +7,26 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
 
-import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapterFactory;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
-import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
-import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
-import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
-import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
+/**
+ * A wrapper around Gson that includes configuration required for JSON-RPC messages.
+ * Override {@link #getDefaultGsonBuilder()} to replace or extend the default configuration.
+ */
 public class MessageJsonHandler {
-    
-	public static GsonBuilder getDefaultGsonBuilder() {
-	    return new GsonBuilder()
-	    	.registerTypeAdapterFactory(new CollectionTypeAdapterFactory())
-	    	.registerTypeAdapterFactory(new EitherTypeAdapterFactory())
-            .registerTypeAdapterFactory(new EnumTypeAdapterFactory());
-	}
 	
-	private final JsonParser jsonParser = new JsonParser();
 	private final Gson gson;
 	
 	private final Map<String, JsonRpcMethod> supportedMethods;
@@ -47,12 +34,24 @@ public class MessageJsonHandler {
 	private MethodProvider methodProvider;
 	
 	public MessageJsonHandler(Map<String, JsonRpcMethod> supportedMethods) {
-		this(getDefaultGsonBuilder().create(), supportedMethods);
+		this.supportedMethods = supportedMethods;
+		this.gson = getDefaultGsonBuilder().create();
+	}
+    
+	public GsonBuilder getDefaultGsonBuilder() {
+	    return new GsonBuilder()
+	    	.registerTypeAdapterFactory(new CollectionTypeAdapterFactory())
+	    	.registerTypeAdapterFactory(new EitherTypeAdapterFactory())
+            .registerTypeAdapterFactory(new EnumTypeAdapterFactory())
+            .registerTypeAdapterFactory(new MessageTypeAdapterFactory(this));
 	}
 	
-	public MessageJsonHandler(Gson gson, Map<String, JsonRpcMethod> supportedMethods) {
-		this.gson = gson;
-		this.supportedMethods = supportedMethods;
+	public JsonRpcMethod getJsonRpcMethod(String name) {
+		return supportedMethods.get(name);
+	}
+	
+	public MethodProvider getMethodProvider() {
+		return methodProvider;
 	}
 	
 	public void setMethodProvider(MethodProvider methodProvider) {
@@ -60,122 +59,38 @@ public class MessageJsonHandler {
 	}
 	
 	public Message parseMessage(CharSequence input) {
-		return parseMessage(new StringReader(input.toString()));
+		return gson.fromJson(input.toString(), Message.class);
 	}
 	
 	public Message parseMessage(Reader input) {
-		JsonObject json = jsonParser.parse(input).getAsJsonObject();
-		JsonElement idElement = json.get("id");
-		JsonElement methodElement = json.get("method");
-		Message result;
-		if (idElement != null && methodElement != null)
-			result = parseRequest(json, idElement.getAsString(), methodElement.getAsString());
-		else if (idElement != null && (json.get("result") != null || json.get("error") != null))
-			result = parseResponse(json, idElement.getAsString());
-		else if (methodElement != null)
-			result = parseNotification(json, methodElement.getAsString());
-		else
-			throw new IllegalStateException("Unknown message "+json);
-		JsonElement jsonRpcElement = json.get("jsonrpc");
-		if (jsonRpcElement != null)
-			result.setJsonrpc(jsonRpcElement.getAsString());
-		return result;
-	}
-	
-	protected RequestMessage parseRequest(JsonObject json, String requestId, String method) {
-		try {
-			RequestMessage result = new RequestMessage();
-			result.setId(requestId);
-			result.setMethod(method);
-			JsonElement paramsElement = json.get("params");
-			if (paramsElement != null) {
-				Type paramType = null;
-				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
-				if (jsonRpcMethod != null)
-					paramType = jsonRpcMethod.getParameterType();
-				result.setParams(fromJson(paramsElement, paramType));
-			}
-			return result;
-		} catch (Exception e) {
-			throw new InvalidMessageException("Could not parse request: " + e.getMessage(), json, requestId, e);
-		}
-	}
-
-	protected Object fromJson(JsonElement json, Type type) {
-		return gson.fromJson(json, type != null ? type : Object.class);
-	}
-	
-	protected ResponseMessage parseResponse(JsonObject json, String responseId) {
-		if (methodProvider == null)
-			throw new IllegalStateException("Response methods are not accepted.");
-		try {
-			ResponseMessage result = new ResponseMessage();
-			result.setId(responseId);
-			JsonElement resultElem = json.get("result");
-			if (resultElem != null) {
-				Type resultType = null;
-				JsonRpcMethod jsonRpcMethod = supportedMethods.get(methodProvider.resolveMethod(responseId));
-				if (jsonRpcMethod != null) {
-					resultType = jsonRpcMethod.getReturnType();
-				}
-				result.setResult(fromJson(resultElem, resultType));
-			} else {
-				JsonElement errorElement = json.get("error");
-				if (errorElement != null) {
-					result.setError(gson.fromJson(errorElement, ResponseError.class));
-				}
-			}
-			return result;
-		} catch (Exception e) {
-			throw new InvalidMessageException("Could not parse response: " + e.getMessage(), json, responseId, e);
-		}
-	}
-	
-	protected NotificationMessage parseNotification(JsonObject json, String method) {
-		try {
-			NotificationMessage result = new NotificationMessage();
-			result.setMethod(method);
-			JsonElement paramsElement = json.get("params");
-			if (paramsElement != null) {
-				Type paramType = null;
-				JsonRpcMethod jsonRpcMethod = supportedMethods.get(method);
-				if (jsonRpcMethod != null) {
-					paramType = jsonRpcMethod.getParameterType();
-				}
-				result.setParams(fromJson(paramsElement, paramType));
-			}
-			return result;
-		} catch (Exception e) {
-			throw new InvalidMessageException("Could not parse notification: " + e.getMessage(), json, null, e);
-		}
+		return gson.fromJson(input, Message.class);
 	}
 	
 	public String serialize(Message message) {
-		StringWriter writer = new StringWriter();
-		serialize(message, writer);
-		return writer.toString();
+		return gson.toJson(message, Message.class);
 	}
 	
 	public void serialize(Message message, Writer output) {
-		if (message instanceof ResponseMessage) {
-			ResponseMessage responseMessage = (ResponseMessage) message;
-			try {
-				output.append("{\"id\":"+responseMessage.getId());
-				output.append(",\"jsonrpc\":"+responseMessage.getJsonrpc());
-				if (responseMessage.getError() != null) {
-					output.append(",\"error\":");
-					gson.toJson(responseMessage.getError(), output);
-				} else {
-					output.append(",\"result\":");
-					gson.toJson(responseMessage.getResult(), output);
+		gson.toJson(message, Message.class, output);
+	}
+	
+	
+	private static MessageJsonHandler toStringInstance;
+	
+	/**
+	 * Perform JSON serialization of the given object using the default configuration of JSON-RPC messages
+	 * enhanced with the pretty printing option.
+	 */
+	public static String toString(Object object) {
+		if (toStringInstance == null) {
+			toStringInstance = new MessageJsonHandler(Collections.emptyMap()) {
+				@Override
+				public GsonBuilder getDefaultGsonBuilder() {
+					return super.getDefaultGsonBuilder().setPrettyPrinting();
 				}
-				output.append("}");
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		} else {
-			gson.toJson(message, output);
+			};
 		}
+		return toStringInstance.gson.toJson(object);
 	}
 	
 }
