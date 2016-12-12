@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Assert;
@@ -74,5 +75,32 @@ public class MessageJsonHandlerTest {
 		for (Entry e : result) {
 			Assert.assertTrue(e.location.uri, e.location.uri.startsWith("file:/home/mistria"));
 		}
+	}
+	
+	@SuppressWarnings({ "serial", "unchecked" })
+	@Test
+	public void testEither() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo", new TypeToken<Either<String, Integer>>() {}.getType(), new TypeToken<Either<String, List<Map<String,String>>>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id)->"foo");
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n" 
+				+ " \"result\": [\n"
+				+ "  {\"name\":\"foo\"},\n"
+				+ "  {\"name\":\"bar\"}\n"
+				+ "]}");
+		Either<String, List<Map<String, String>>> result = (Either<String, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isRight());
+		for (Map<String, String> e : result.getRight()) {
+			Assert.assertNotNull(e.get("name"));
+		}
+		message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n" 
+				+ "\"result\": \"name\"\n"
+				+ "}");
+		result = (Either<String, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
+		Assert.assertFalse(result.isRight());
+		Assert.assertEquals("name",result.getLeft());
 	}
 }

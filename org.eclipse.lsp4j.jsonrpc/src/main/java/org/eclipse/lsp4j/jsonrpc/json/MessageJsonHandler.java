@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
@@ -34,6 +35,7 @@ public class MessageJsonHandler {
 	public static GsonBuilder getDefaultGsonBuilder() {
 	    return new GsonBuilder()
 	    	.registerTypeAdapterFactory(new CollectionTypeAdapterFactory())
+	    	.registerTypeAdapterFactory(new EitherTypeAdapterFactory())
             .registerTypeAdapterFactory(new EnumTypeAdapterFactory());
 	}
 	
