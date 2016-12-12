@@ -21,12 +21,10 @@ node {
 		stage 'Maven Build'
 		def mvnHome = tool 'M3'
 		env.M2_HOME = "${mvnHome}"
-		dir('.m2/repository/org/eclipse/lsp4j') {
-			deleteDir()
-		}
+		dir('.m2/repository/org/eclipse/lsp4j') { deleteDir() }
 		sh "${mvnHome}/bin/mvn -f releng --batch-mode --update-snapshots -Dmaven.repo.local=.m2/repository clean install"
 		
-		archive 'build/**/*.*'
+		archive 'build/**'
 		slackSend "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
 		
 	} catch (e) {
