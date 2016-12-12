@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
@@ -24,6 +25,8 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 import org.junit.Test;
 
 public class EndpointsTest {
+	
+	private static final long TIMEOUT = 2000;
 	
 	@JsonSegment("foo")
 	public static interface Foo {
@@ -61,7 +64,7 @@ public class EndpointsTest {
 		};
 		Foo foo = ServiceEndpoints.toServiceObject(endpoint, Foo.class);
 		foo.myNotification("notificationParam");
-		assertEquals("result", foo.doStuff("param").get());
+		assertEquals("result", foo.doStuff("param").get(TIMEOUT, TimeUnit.MILLISECONDS));
 	}
 	
 	@Test public void testBackAndForth() throws Exception {
@@ -84,7 +87,7 @@ public class EndpointsTest {
 		Endpoint secondEndpoint = ServiceEndpoints.toEndpoint(intermediateFoo); 
 		Foo foo = ServiceEndpoints.toServiceObject(secondEndpoint, Foo.class);
 		foo.myNotification("notificationParam");
-		assertEquals("result", foo.doStuff("param").get());
+		assertEquals("result", foo.doStuff("param").get(TIMEOUT, TimeUnit.MILLISECONDS));
 	}
 	
 	@Test public void testRpcMethods() {

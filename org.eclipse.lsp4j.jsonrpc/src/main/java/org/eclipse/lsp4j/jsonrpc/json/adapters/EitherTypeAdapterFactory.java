@@ -38,7 +38,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 		return (TypeAdapter<T>) new Adapter(gson, left, right);
 	}
 
-	static class Adapter extends TypeAdapter<Either<?,?>> {
+	private static class Adapter extends TypeAdapter<Either<?,?>> {
 		
 		private final TypeToken<?> left;
 		private final TypeToken<?> right;
@@ -55,7 +55,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 			return true;
 		}
 
-		public Adapter(Gson gson, Type left, Type right) {
+		Adapter(Gson gson, Type left, Type right) {
 			this.gson = gson;
 			this.left = TypeToken.of(left);
 			this.right = TypeToken.of(right);

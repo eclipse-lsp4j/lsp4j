@@ -65,10 +65,7 @@ public class ResponseError {
 	
 	@Override
 	public String toString() {
-		return MessageJsonHandler.getDefaultGsonBuilder()
-				.setPrettyPrinting()
-				.create()
-				.toJson(this);
+		return MessageJsonHandler.toString(this);
 	}
 	
 }

@@ -49,8 +49,11 @@ class JsonSerializeTest {
 	@Before
 	def void setup() {
 		val methods = ServiceEndpoints.getSupportedMethods(LanguageServer)
-		val gsonBuilder = MessageJsonHandler.defaultGsonBuilder.setPrettyPrinting
-		jsonHandler = new MessageJsonHandler(gsonBuilder.create(), methods)
+		jsonHandler = new MessageJsonHandler(methods) {
+			override getDefaultGsonBuilder() {
+				super.defaultGsonBuilder.setPrettyPrinting
+			}
+		}
 	}
 	
 	private def assertSerialize(Message message, CharSequence expected) {
@@ -70,6 +73,7 @@ class JsonSerializeTest {
 		]
 		message.assertSerialize('''
 			{
+			  "jsonrpc": "2.0",
 			  "id": "1",
 			  "method": "textDocument/completion",
 			  "params": {
@@ -80,8 +84,7 @@ class JsonSerializeTest {
 			      "line": 4,
 			      "character": 22
 			    }
-			  },
-			  "jsonrpc": "2.0"
+			  }
 			}
 		''')
 	}
@@ -109,6 +112,7 @@ class JsonSerializeTest {
 		]
 		message.assertSerialize('''
 			{
+			  "jsonrpc": "2.0",
 			  "method": "textDocument/didChange",
 			  "params": {
 			    "textDocument": {
@@ -131,8 +135,7 @@ class JsonSerializeTest {
 			        "text": "bar"
 			      }
 			    ]
-			  },
-			  "jsonrpc": "2.0"
+			  }
 			}
 		''')
 	}
@@ -158,6 +161,7 @@ class JsonSerializeTest {
 		]
 		message.assertSerialize('''
 			{
+			  "jsonrpc": "2.0",
 			  "method": "textDocument/publishDiagnostics",
 			  "params": {
 			    "uri": "file:///tmp/foo",
@@ -177,8 +181,7 @@ class JsonSerializeTest {
 			        "message": "Couldn\u0027t resolve reference to State \u0027bar\u0027."
 			      }
 			    ]
-			  },
-			  "jsonrpc": "2.0"
+			  }
 			}
 		''')
 	}
@@ -210,38 +213,42 @@ class JsonSerializeTest {
             ]
         ]
         message.assertSerialize('''
-            {"id":12,"jsonrpc":2.0,"result":{
-              "changes": {
-                "file:///tmp/foo": [
-                  {
-                    "range": {
-                      "start": {
-                        "line": 3,
-                        "character": 32
+            {
+              "jsonrpc": "2.0",
+              "id": "12",
+              "result": {
+                "changes": {
+                  "file:///tmp/foo": [
+                    {
+                      "range": {
+                        "start": {
+                          "line": 3,
+                          "character": 32
+                        },
+                        "end": {
+                          "line": 3,
+                          "character": 35
+                        }
                       },
-                      "end": {
-                        "line": 3,
-                        "character": 35
-                      }
+                      "newText": "foobar"
                     },
-                    "newText": "foobar"
-                  },
-                  {
-                    "range": {
-                      "start": {
-                        "line": 4,
-                        "character": 22
+                    {
+                      "range": {
+                        "start": {
+                          "line": 4,
+                          "character": 22
+                        },
+                        "end": {
+                          "line": 4,
+                          "character": 25
+                        }
                       },
-                      "end": {
-                        "line": 4,
-                        "character": 25
-                      }
-                    },
-                    "newText": "foobar"
-                  }
-                ]
+                      "newText": "foobar"
+                    }
+                  ]
+                }
               }
-            }}
+            }
         ''')
     }
     
@@ -262,22 +269,26 @@ class JsonSerializeTest {
             ]
         ]
         message.assertSerialize('''
-            {"id":12,"jsonrpc":2.0,"result":{
-              "contents": [
-                "foo",
-                "boo shuby doo"
-              ],
-              "range": {
-                "start": {
-                  "line": 3,
-                  "character": 32
-                },
-                "end": {
-                  "line": 3,
-                  "character": 35
+            {
+              "jsonrpc": "2.0",
+              "id": "12",
+              "result": {
+                "contents": [
+                  "foo",
+                  "boo shuby doo"
+                ],
+                "range": {
+                  "start": {
+                    "line": 3,
+                    "character": 32
+                  },
+                  "end": {
+                    "line": 3,
+                    "character": 35
+                  }
                 }
               }
-            }}
+            }
         ''')
     }
     
@@ -292,10 +303,14 @@ class JsonSerializeTest {
             ]
         ]
         message.assertSerialize('''
-            {"id":12,"jsonrpc":2.0,"error":{
-              "code": -32600,
-              "message": "Could not parse request."
-            }}
+            {
+              "jsonrpc": "2.0",
+              "id": "12",
+              "error": {
+                "code": -32600,
+                "message": "Could not parse request."
+              }
+            }
         ''')
     }
         
@@ -314,14 +329,18 @@ class JsonSerializeTest {
 			]
 		]
 		message.assertSerialize('''
-			{"id":12,"jsonrpc":2.0,"result":{
-			  "isIncomplete": true,
-			  "items": [
-			    {
-			      "label": "foo"
-			    }
-			  ]
-			}}
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": {
+			    "isIncomplete": true,
+			    "items": [
+			      {
+			        "label": "foo"
+			      }
+			    ]
+			  }
+			}
 		''')
 	}
 	
@@ -341,6 +360,7 @@ class JsonSerializeTest {
 		]
 		message.assertSerialize('''
 			{
+			  "jsonrpc": "2.0",
 			  "id": "12",
 			  "method": "textDocument/formatting",
 			  "params": {
@@ -351,8 +371,7 @@ class JsonSerializeTest {
 			      "tabSize": 4,
 			      "insertSpaces": false
 			    }
-			  },
-			  "jsonrpc": "2.0"
+			  }
 			}
 		''')
 	}
@@ -366,12 +385,12 @@ class JsonSerializeTest {
 		]
 		message.assertSerialize('''
 			{
+			  "jsonrpc": "2.0",
 			  "method": "telemetry/event",
 			  "params": {
 			    "foo": 12.3,
 			    "bar": "qwertz"
-			  },
-			  "jsonrpc": "2.0"
+			  }
 			}
 		''')
 	}

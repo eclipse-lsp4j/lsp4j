@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.DocumentLinkParams;
@@ -19,8 +20,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class ProtocolTest {
+	
+	private static final long TIMEOUT = 2000;
 
-	@Test public void testDocumentLink() throws Exception, ExecutionException {
+	@Test public void testDocumentLink_01() throws Exception, ExecutionException {
 		LanguageServer languageServer = wrap(LanguageServer.class, new MockLanguageServer() {
 			@Override
 			public CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
@@ -30,12 +33,13 @@ public class ProtocolTest {
 			}
 		});
 		
-		List<DocumentLink> list = languageServer.getTextDocumentService().documentLink(new DocumentLinkParams(new TextDocumentIdentifier("test"))).get();
+		CompletableFuture<List<DocumentLink>> future = languageServer.getTextDocumentService().documentLink(new DocumentLinkParams(new TextDocumentIdentifier("test")));
+		List<DocumentLink> list = future.get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		Assert.assertTrue(list.isEmpty());
 	}
 	
-	@Test public void testDocumentLink_01() throws Exception, ExecutionException {
+	@Test public void testDocumentLink_02() throws Exception, ExecutionException {
 		LanguageServer languageServer = wrap(LanguageServer.class, new MockLanguageServer() {
 			@Override
 			public CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
@@ -45,7 +49,8 @@ public class ProtocolTest {
 			}
 		});
 		
-		List<DocumentLink> list = languageServer.getTextDocumentService().documentLink(new DocumentLinkParams(new TextDocumentIdentifier("test"))).get();
+		CompletableFuture<List<DocumentLink>> future = languageServer.getTextDocumentService().documentLink(new DocumentLinkParams(new TextDocumentIdentifier("test")));
+		List<DocumentLink> list = future.get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		Assert.assertNull(list);
 	}
@@ -61,9 +66,10 @@ public class ProtocolTest {
 			}
 		});
 		
-		DocumentLink resolved = languageServer.getTextDocumentService().documentLinkResolve(
+		CompletableFuture<DocumentLink> future = languageServer.getTextDocumentService().documentLinkResolve(
 				new DocumentLink(new Range(new Position(0, 0), new Position(0, 0)), "unresolved")
-		).get();
+		);
+		DocumentLink resolved = future.get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		Assert.assertEquals("resolved", resolved.getTarget());
 	}
