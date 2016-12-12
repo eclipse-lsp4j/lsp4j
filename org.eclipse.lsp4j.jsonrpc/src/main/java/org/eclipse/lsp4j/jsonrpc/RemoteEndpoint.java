@@ -20,7 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
+import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -28,18 +30,12 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
-import com.google.common.collect.Maps;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 /**
  * An {@link Endpoint} that can be connected to a {@link MessageConsumer} and {@link MessageProducer}.
  * It handles the translation from {@link Message} objects to calls on {@link Endpoint}.
  */
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
 
-	private static final String CANCEL_METHOD = "$/cancelRequest";
-	private static final String CANCEL_METHOD_PARAM_ID = "id";
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
 	
 	private static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = (throwable) -> {
@@ -127,9 +123,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 
 	protected void sendCancelNotification(String id) {
-		Map<String, String> cancelParams = Maps.newHashMapWithExpectedSize(1);
-		cancelParams.put(CANCEL_METHOD_PARAM_ID, id);
-		notify(CANCEL_METHOD, cancelParams);
+		CancelParams cancelParams = new CancelParams();
+		cancelParams.setId(id);
+		notify(MessageJsonHandler.CANCEL_METHOD.getMethodName(), cancelParams);
 	}
 
 	@Override
@@ -173,35 +169,26 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 	
 	protected boolean handleCancellation(NotificationMessage notificationMessage) {
-		if (CANCEL_METHOD.equals(notificationMessage.getMethod())) {
+		if (MessageJsonHandler.CANCEL_METHOD.getMethodName().equals(notificationMessage.getMethod())) {
 			Object cancelParams = notificationMessage.getParams();
-			String id = null;
-			if (cancelParams instanceof JsonObject) {
-				JsonElement idElem = ((JsonObject) cancelParams).get(CANCEL_METHOD_PARAM_ID);
-				if (idElem != null)
-					id = idElem.getAsString();
-				else
-					LOG.warning("Invalid cancel notification (missing id): " + notificationMessage);
-			} else if (cancelParams instanceof Map<?,?>) {
-				Object idParam = ((Map<?, ?>) cancelParams).get(CANCEL_METHOD_PARAM_ID);
-				if (idParam != null)
-					id = idParam.toString();
-				else
-					LOG.warning("Invalid cancel notification (missing id): " + notificationMessage);
-			} else {
-				LOG.warning("Cancellation support disabled, since the '"+CANCEL_METHOD+"' method has been registered explicitly.");
-				return false;
-			}
-			if (id != null) {
-				synchronized (receivedRequestMap) {
-					CompletableFuture<?> future = receivedRequestMap.get(id);
-					if (future != null)
-						future.cancel(true);
-					else
-						LOG.log(Level.WARNING, "Unmatched cancel notification for request id " + id);
+			if (cancelParams != null) {
+				if (cancelParams instanceof CancelParams) {
+					synchronized (receivedRequestMap) {
+						String id = ((CancelParams) cancelParams).getId();
+						CompletableFuture<?> future = receivedRequestMap.get(id);
+						if (future != null)
+							future.cancel(true);
+						else
+							LOG.warning("Unmatched cancel notification for request id " + id);
+					}
+					return true;
+				} else {
+					LOG.warning("Cancellation support disabled, since the '" + MessageJsonHandler.CANCEL_METHOD.getMethodName() + "' method has been registered explicitly.");
+					return false;
 				}
+			} else {
+				LOG.warning("Missing 'params' attribute of cancel notification.");
 			}
-			return true;
 		}
 		return false;
 	}
