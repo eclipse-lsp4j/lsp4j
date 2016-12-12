@@ -144,7 +144,7 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				}
 				message.setParams(params);
 				return message;
-			} else if (id != null && (error != null || result != null)) {
+			} else if (id != null) {
 				ResponseMessage message = new ResponseMessage();
 				message.setJsonrpc(jsonrpc);
 				message.setId(id);
@@ -195,10 +195,12 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				out.value(requestMessage.getId());
 				out.name("method");
 				out.value(requestMessage.getMethod());
-				if (requestMessage.getParams() != null) {
-					out.name("params");
-					gson.toJson(requestMessage.getParams(), requestMessage.getParams().getClass(), out);
-				}
+				out.name("params");
+				Object params = requestMessage.getParams();
+				if (params == null)
+					out.nullValue();
+				else
+					gson.toJson(params, params.getClass(), out);
 			} else if (message instanceof ResponseMessage) {
 				ResponseMessage responseMessage = (ResponseMessage) message;
 				out.name("id");
@@ -206,18 +208,24 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				if (responseMessage.getError() != null) {
 					out.name("error");
 					gson.toJson(responseMessage.getError(), ResponseError.class, out);
-				} else if (responseMessage.getResult() != null) {
+				} else {
 					out.name("result");
-					gson.toJson(responseMessage.getResult(), responseMessage.getResult().getClass(), out);
+					Object result = responseMessage.getResult();
+					if (result == null)
+						out.nullValue();
+					else
+						gson.toJson(result, result.getClass(), out);
 				}
 			} else if (message instanceof NotificationMessage) {
 				NotificationMessage notificationMessage = (NotificationMessage) message;
 				out.name("method");
 				out.value(notificationMessage.getMethod());
-				if (notificationMessage.getParams() != null) {
-					out.name("params");
-					gson.toJson(notificationMessage.getParams(), notificationMessage.getParams().getClass(), out);
-				}
+				out.name("params");
+				Object params = notificationMessage.getParams();
+				if (params == null)
+					out.nullValue();
+				else
+					gson.toJson(params, params.getClass(), out);
 			}
 			
 			out.endObject();

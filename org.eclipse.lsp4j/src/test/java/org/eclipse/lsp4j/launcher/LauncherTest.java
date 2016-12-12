@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionItemKind;
@@ -33,6 +34,7 @@ import org.junit.Test;
 
 public class LauncherTest {
 	
+	private static final long TIMEOUT = 2000;
 	
 	@Test public void testNotification() throws IOException {
 		
@@ -45,7 +47,7 @@ public class LauncherTest {
 		client.joinOnEmpty();
 	}
 	
-	@Test public void testRequest() throws IOException, InterruptedException, ExecutionException {
+	@Test public void testRequest() throws Exception {
 		
 		TextDocumentPositionParams p = new TextDocumentPositionParams();
 		p.setPosition(new Position(1,1));
@@ -64,7 +66,8 @@ public class LauncherTest {
 		result.getItems().add(item);
 		
 		server.expectedRequests.put("textDocument/completion", new Pair<>(p, result));
-		Assert.assertEquals(result.toString(), clientLauncher.getRemoteProxy().getTextDocumentService().completion(p).get().toString());
+		CompletableFuture<CompletionList> future = clientLauncher.getRemoteProxy().getTextDocumentService().completion(p);
+		Assert.assertEquals(result.toString(), future.get(TIMEOUT, TimeUnit.MILLISECONDS).toString());
 		client.joinOnEmpty();
 	}
 	

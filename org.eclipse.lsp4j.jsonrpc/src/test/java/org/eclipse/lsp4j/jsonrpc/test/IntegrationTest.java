@@ -17,6 +17,7 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
@@ -28,6 +29,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class IntegrationTest {
+	
+	private static final long TIMEOUT = 2000;
 
 	public static class MyParam {
 		public MyParam(String string) {
@@ -81,8 +84,8 @@ public class IntegrationTest {
 		CompletableFuture<MyParam> fooFuture = clientSideLauncher.getRemoteProxy().askServer(new MyParam("FOO"));
 		CompletableFuture<MyParam> barFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("BAR"));
 		
-		Assert.assertEquals("FOO", fooFuture.get().value);
-		Assert.assertEquals("BAR", barFuture.get().value);
+		Assert.assertEquals("FOO", fooFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
+		Assert.assertEquals("BAR", barFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
 	}
 
 	@Test
@@ -107,7 +110,7 @@ public class IntegrationTest {
 						do {
 							cancelToken.checkCanceled();
 							Thread.sleep(50);
-						} while (System.currentTimeMillis() - startTime < 2000);
+						} while (System.currentTimeMillis() - startTime < TIMEOUT);
 					} catch (CancellationException e) {
 						cancellationHappened[0] = true;
 					} catch (InterruptedException e) {
@@ -136,11 +139,11 @@ public class IntegrationTest {
 		long startTime = System.currentTimeMillis();
 		while (!cancellationHappened[0]) {
 			Thread.sleep(50);
-			if (System.currentTimeMillis() - startTime > 2000)
+			if (System.currentTimeMillis() - startTime > TIMEOUT)
 				Assert.fail("Timeout waiting for confirmation of cancellation.");
 		}
 		try {
-			future.get();
+			future.get(TIMEOUT, TimeUnit.MILLISECONDS);
 			Assert.fail("Expected cancellation.");
 		} catch (CancellationException e) {
 		}
