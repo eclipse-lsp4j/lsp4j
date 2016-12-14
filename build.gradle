@@ -22,7 +22,7 @@ buildscript {
 apply from: "${rootDir}/gradle/versions.gradle"
 apply from: "${rootDir}/gradle/p2-deployment.gradle"
 
-ext.buildTime = new java.text.SimpleDateFormat('yyyyMMddHHmm').format(new Date())
+ext.buildTime = new java.text.SimpleDateFormat('yyyyMMdd-HHmm').format(new Date())
 
 subprojects {
 	repositories {
