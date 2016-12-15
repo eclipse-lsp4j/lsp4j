@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.eclipse.lsp4j.services.test;
+package org.eclipse.lsp4j.test.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageServer;
-import org.eclipse.lsp4j.services.test.MessageMethods;
+import org.eclipse.lsp4j.test.services.MessageMethods;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.ObjectExtensions;
@@ -367,12 +367,10 @@ public class JsonParseTest {
   public void testRenameResponse() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_RENAME;
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = MessageMethods.DOC_RENAME;
+          break;
       }
       return _switchResult;
     };
@@ -537,12 +535,10 @@ public class JsonParseTest {
   public void testResponseError() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = "textDocument/rename";
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = "textDocument/rename";
+          break;
       }
       return _switchResult;
     };
@@ -628,12 +624,10 @@ public class JsonParseTest {
   public void testHoverResponse() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = MessageMethods.DOC_HOVER;
+          break;
       }
       return _switchResult;
     };

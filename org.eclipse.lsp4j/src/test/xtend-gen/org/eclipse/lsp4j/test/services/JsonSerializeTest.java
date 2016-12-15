@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.eclipse.lsp4j.services.test;
+package org.eclipse.lsp4j.test.services;
 
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
@@ -40,8 +40,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.services.LanguageServer;
-import org.eclipse.lsp4j.services.test.LineEndings;
-import org.eclipse.lsp4j.services.test.MessageMethods;
+import org.eclipse.lsp4j.test.services.LineEndings;
+import org.eclipse.lsp4j.test.services.MessageMethods;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.ObjectExtensions;

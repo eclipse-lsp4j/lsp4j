@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.services.test
+package org.eclipse.lsp4j.test.services
 
 import java.util.regex.Pattern
 import org.eclipse.xtend2.lib.StringConcatenation

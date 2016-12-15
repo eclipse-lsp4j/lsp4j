@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.services.test;
+package org.eclipse.lsp4j.test.services;
 
 import java.util.ArrayList;
 import java.util.List;

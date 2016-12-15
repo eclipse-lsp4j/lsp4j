@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.services;
+package org.eclipse.lsp4j.test.services;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.services.LanguageServer;
 import org.junit.Assert;
 import org.junit.Test;
 

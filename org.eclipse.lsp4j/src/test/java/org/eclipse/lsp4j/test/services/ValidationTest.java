@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.services.test;
+package org.eclipse.lsp4j.test.services;
 
 import org.eclipse.lsp4j.CodeLens;
 import org.eclipse.lsp4j.Position;

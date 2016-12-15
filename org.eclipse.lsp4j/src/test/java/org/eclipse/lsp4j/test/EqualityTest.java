@@ -1,7 +1,12 @@
-package org.eclipse.lsp4j;
+package org.eclipse.lsp4j.test;
 
 import java.util.ArrayList;
 
+import org.eclipse.lsp4j.CompletionItem;
+import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.TextEdit;
 import org.junit.Assert;
 import org.junit.Test;
 

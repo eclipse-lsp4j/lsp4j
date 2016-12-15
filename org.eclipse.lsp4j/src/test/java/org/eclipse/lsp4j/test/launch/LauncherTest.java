@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.launcher;
+package org.eclipse.lsp4j.test.launch;
 
 import java.io.IOException;
 import java.io.PipedInputStream;

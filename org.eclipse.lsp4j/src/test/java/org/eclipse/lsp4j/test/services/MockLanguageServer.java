@@ -1,4 +1,4 @@
-package org.eclipse.lsp4j.services;
+package org.eclipse.lsp4j.test.services;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -34,6 +34,9 @@ import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
+import org.eclipse.lsp4j.services.LanguageServer;
+import org.eclipse.lsp4j.services.TextDocumentService;
+import org.eclipse.lsp4j.services.WorkspaceService;
 
 public class MockLanguageServer implements LanguageServer, TextDocumentService, WorkspaceService {
 

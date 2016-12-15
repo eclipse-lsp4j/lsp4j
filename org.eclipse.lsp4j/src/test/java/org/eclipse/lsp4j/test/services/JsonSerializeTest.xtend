@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.services.test
+package org.eclipse.lsp4j.test.services
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -40,7 +40,7 @@ import org.junit.Test
 
 import static org.junit.Assert.*
 
-import static extension org.eclipse.lsp4j.services.test.LineEndings.*
+import static extension org.eclipse.lsp4j.test.services.LineEndings.*
 
 class JsonSerializeTest {
 	
