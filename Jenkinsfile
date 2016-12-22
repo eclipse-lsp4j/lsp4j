@@ -8,6 +8,10 @@
 
 node {
 	try {
+		properties([
+			[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', numToKeepStr: '15']]
+		])
+		
 		stage 'Checkout'
 		checkout scm
 		
