@@ -6,23 +6,30 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-plugins.withType(JavaBasePlugin) {
-	sourceCompatibility = '1.8'
-}
+sourceCompatibility = '1.8'
 
 tasks.withType(Javadoc) {
 	options.addStringOption('Xdoclint:none', '-quiet')
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+	group 'Build'
+	description 'Assembles a jar archive containing the sources.'
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	group 'Build'
+	description 'Assembles a jar archive containing the JavaDoc output.'
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts.archives sourcesJar, javadocJar
+
 configurations.all {
 	resolutionStrategy {
 		force "com.google.guava:guava:18.0"
-	}
-}
-
-eclipse {
-	project {
-		natures 'org.eclipse.xtext.ui.shared.xtextNature'
-		buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
 	}
 }

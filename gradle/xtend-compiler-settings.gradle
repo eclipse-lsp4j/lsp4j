@@ -19,3 +19,16 @@ sourceSets {
 	main.xtendOutputDir = 'src/main/xtend-gen'
 	test.xtendOutputDir = 'src/test/xtend-gen'
 }
+
+sourcesJar {
+	from (sourceSets.main.xtendOutputDir) {
+		include '**/*._trace'
+	}
+}
+
+eclipse {
+	project {
+		natures 'org.eclipse.xtext.ui.shared.xtextNature'
+		buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
+	}
+}

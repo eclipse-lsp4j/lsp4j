@@ -6,6 +6,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
+import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
+
 buildscript {
 	repositories {
 		jcenter()
@@ -14,7 +17,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath 'org.xtext:xtext-gradle-plugin:1.0.5'
+		classpath 'org.xtext:xtext-gradle-plugin:1.0.15'
 		classpath 'io.typefox.gradle:io.typefox.gradle.p2gen:0.1.0'
 	}
 }
@@ -22,7 +25,7 @@ buildscript {
 apply from: "${rootDir}/gradle/versions.gradle"
 apply from: "${rootDir}/gradle/p2-deployment.gradle"
 
-ext.buildTime = new java.text.SimpleDateFormat('yyyyMMdd-HHmm').format(new Date())
+ext.buildTime = DateTimeFormatter.ofPattern('yyyyMMdd-HHmm').format(LocalDateTime.now())
 
 subprojects {
 	repositories {
@@ -49,7 +52,7 @@ task clean(type: Delete) {
 	delete 'build'
 }
 
-// generate an ide with xtend support
+// Generate an IDE with Xtend support
 task ide(type: GradleBuild) {
 	buildFile = 'ide/build.gradle'
 	tasks = ['ide']
