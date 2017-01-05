@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapterFactory;
+import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
 import com.google.gson.Gson;
@@ -26,6 +27,8 @@ import com.google.gson.GsonBuilder;
  * Override {@link #getDefaultGsonBuilder()} to replace or extend the default configuration.
  */
 public class MessageJsonHandler {
+	
+	public static final JsonRpcMethod CANCEL_METHOD = JsonRpcMethod.notification("$/cancelRequest", CancelParams.class);
 	
 	private final Gson gson;
 	
@@ -47,7 +50,12 @@ public class MessageJsonHandler {
 	}
 	
 	public JsonRpcMethod getJsonRpcMethod(String name) {
-		return supportedMethods.get(name);
+		JsonRpcMethod result = supportedMethods.get(name);
+		if (result != null)
+			return result;
+		else if (CANCEL_METHOD.getMethodName().equals(name))
+			return CANCEL_METHOD;
+		return null;
 	}
 	
 	public MethodProvider getMethodProvider() {
