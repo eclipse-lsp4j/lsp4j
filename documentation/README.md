@@ -52,12 +52,12 @@ public CompletableFuture<CompletionList> completion(
    return CompletableFutures.computeAsync(cancelToken -> {
       // the actual implementation should check for 
       // cancellation like this
-      cancelToken.checkCancelled();
+      cancelToken.checkCanceled();
       // more code...  and more cancel checking
    });
 }
 ```
-The method `checkCancelled` will throw a `CancellationException` in case the request was cancelled. So make sure you don't catch it accidentally.
+The method `checkCanceled` will throw a `CancellationException` in case the request was cancelled. So make sure you don't catch it accidentally.
 
 If you are on the other side and want to cancel a request you made, you need to call cancel on the returned future :
 
