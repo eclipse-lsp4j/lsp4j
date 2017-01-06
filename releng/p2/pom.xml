@@ -49,7 +49,7 @@
 								</copy>
 								<copy
 									file="${basedir}/target/lsp4j.p2-repository-0.1.0-SNAPSHOT.zip"
-									tofile="${root-dir}/build/p2-repository/../lsp4j.p2-repository-0.1.0-SNAPSHOT.zip">
+									tofile="${root-dir}/build/p2-repository/../lsp4j.p2-repository-0.1.0.zip">
 								</copy>
 							</tasks>
 						</configuration>
