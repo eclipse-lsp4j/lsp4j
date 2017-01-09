@@ -45,7 +45,7 @@ public CompletableFuture<CompletionList> completion(
    return CompletableFutures.computeAsync(cancelToken -> {
       // the actual implementation should check for 
       // cancellation like this
-      cancelToken.checkCancelled();
+      cancelToken.checkCanceled();
       // more code...  and more cancel checking
       return completionList;
    });
