@@ -817,6 +817,21 @@ class ServerCapabilities {
 	 * The server provides rename support.
 	 */
 	Boolean renameProvider
+	
+	/**
+	 * The server provides document link support.
+	 */	
+	DocumentLinkOptions documentLinkProvider
+	
+	/**
+	 * The server provides execute command support.
+	 */
+	ExecuteCommandOptions executeCommandProvider
+	
+	/**
+	 * Experimental server capabilities.
+	 */
+	Object experimental
 }
 
 /**
@@ -1057,4 +1072,26 @@ class WorkspaceSymbolParams {
 	 */
 	@NonNull
 	String query
+}
+
+/**
+ * Document link options
+ */
+@JsonRpcData
+class DocumentLinkOptions {
+	/**
+	 * Document links have a resolve provider as well.
+	 */
+	boolean resolveProvider
+}
+
+/**
+ * Execute command options
+ */
+@JsonRpcData
+class ExecuteCommandOptions {
+	/**
+	 * The commands to be executed on the server
+	 */
+	List<String> commands
 }
