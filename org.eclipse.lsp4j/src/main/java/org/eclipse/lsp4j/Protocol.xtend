@@ -166,10 +166,26 @@ class CompletionItem {
 	 */
 	String insertText
 
-	/**
-	 * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-	 * insertText is ignored.
-	 */
+    /**
+     * A range of text that should be replaced by this completion item.
+     *
+     * Defaults to a range from the start of the current word to the current position.
+     *
+     * *Note:* The range must be a single line range and it must contain the position at which completion
+     * has been requested.
+     */	
+	Range range
+
+    /**
+     * @deprecated in favour of `insertText` and `range`.
+     *
+     * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
+     * `insertText` and `range` is ignored.
+     *
+     * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
+     * has been requested.
+     */
+    @Deprecated
 	TextEdit textEdit
 
 	/**
