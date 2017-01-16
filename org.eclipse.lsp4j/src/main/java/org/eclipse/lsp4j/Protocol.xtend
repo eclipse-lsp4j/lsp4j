@@ -326,7 +326,7 @@ class DidCloseTextDocumentParams {
  * the document's uri.
  */
 @JsonRpcData
-class DidOpenTextDocumentParams extends TextDocumentIdentifier {
+class DidOpenTextDocumentParams {
 	/**
 	 * The document that was opened.
 	 */

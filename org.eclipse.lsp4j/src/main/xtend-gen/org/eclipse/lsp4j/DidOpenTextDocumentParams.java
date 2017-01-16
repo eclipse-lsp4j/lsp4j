@@ -1,6 +1,5 @@
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -12,7 +11,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * the document's uri.
  */
 @SuppressWarnings("all")
-public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
+public class DidOpenTextDocumentParams {
   /**
    * The document that was opened.
    */
@@ -73,7 +72,6 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
     b.add("text", this.text);
-    b.add("uri", getUri());
     return b.toString();
   }
   
@@ -85,8 +83,6 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
-      return false;
-    if (!super.equals(obj))
       return false;
     DidOpenTextDocumentParams other = (DidOpenTextDocumentParams) obj;
     if (this.textDocument == null) {
@@ -106,7 +102,7 @@ public class DidOpenTextDocumentParams extends TextDocumentIdentifier {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
     return result;
