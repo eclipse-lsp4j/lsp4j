@@ -7,14 +7,9 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.SocketAddress;
-import java.nio.channels.Channels;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -23,9 +18,9 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor;
-import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethodProvider;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
@@ -82,23 +77,6 @@ public interface Launcher<T> {
 	 */
 	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper);
-	}
-	
-	/**
-	 * 
-	 * @param localService
-	 * @param remoteInterface
-	 * @param in
-	 * @param out
-	 * @return
-	 * @throws IOException 
-	 */
-	static <T> Launcher<T> createSocketLauncher(Object localService, Class<T> remoteInterface, SocketAddress socketAddress, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) throws IOException {
-		ServerSocketChannel serverSocket = ServerSocketChannel.open();
-		serverSocket.bind(socketAddress);
-		SocketChannel socketChannel = serverSocket.accept();
-		
-		return createIoLauncher(localService, remoteInterface, Channels.newInputStream(socketChannel), Channels.newOutputStream(socketChannel), executorService, wrapper);
 	}
 	
 	static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
