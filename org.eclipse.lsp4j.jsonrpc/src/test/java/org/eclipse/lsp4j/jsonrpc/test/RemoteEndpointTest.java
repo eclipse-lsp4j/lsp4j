@@ -96,4 +96,21 @@ public class RemoteEndpointTest {
 		assertEquals("success", ((ResponseMessage)consumer.messages.get(0)).getResult());
 	}
 	
+	@Test public void testCancellation() {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		endpoint.consume(new RequestMessage() {{
+			setId("1");
+			setMethod("foo");
+			setParams("myparam");
+		}});
+		
+		Entry<RequestMessage, CompletableFuture<Object>> entry = endp.requests.entrySet().iterator().next();
+		entry.getValue().cancel(true);
+		assertTrue(consumer.messages.toString(), consumer.messages.isEmpty());
+
+	}
+	
 }

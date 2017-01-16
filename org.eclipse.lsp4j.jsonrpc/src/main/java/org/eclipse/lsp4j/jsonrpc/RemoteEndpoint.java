@@ -215,7 +215,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			responseMessage.setResult(result);
 			out.consume(responseMessage);
 		}).exceptionally((Throwable t) -> {
-			if (!(t instanceof CancellationException)) {
+			if (!isCancellation(t)) {
 				ResponseError errorObject = exceptionHandler.apply(t);
 				if (errorObject != null) {
 					responseMessage.setError(errorObject);
@@ -229,6 +229,13 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			}
 			return null;
 		});
+	}
+
+	protected boolean isCancellation(Throwable t) {
+		if (t instanceof CompletionException) {
+			return isCancellation(t.getCause());
+		}
+		return (t instanceof CancellationException);
 	}
 
 	@Override
