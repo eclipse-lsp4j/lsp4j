@@ -74,7 +74,7 @@ Endpoint serviceAsEndpoint = ServiceEndpoints.toEndpoint(service);
 
 ```
 
-If in turn you want to talk to an Endpoint i a more statically typed fashion, the `EndpointProxy` comes in handy. It is a dynamic proxy for a given service interface with annotated @JsonRequest and @JsonNotification methods. You can create one like this:
+If in turn you want to talk to an Endpoint in a more statically typed fashion, the `EndpointProxy` comes in handy. It is a dynamic proxy for a given service interface with annotated @JsonRequest and @JsonNotification methods. You can create one like this:
 
 ``` java
 public interface MyService {
