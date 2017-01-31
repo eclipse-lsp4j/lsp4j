@@ -20,6 +20,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 
+import com.google.gson.JsonElement;
+
 public class ReflectiveMessageValidator implements MessageConsumer {
 
 	private MessageConsumer delegate;
@@ -50,7 +52,8 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				|| object instanceof Enum<?> 
 				|| object instanceof String 
 				|| object instanceof Number
-				|| object instanceof Boolean) {
+				|| object instanceof Boolean
+				|| object instanceof JsonElement) {
 			return;
 		}
 		if (objectStack.contains(object)) {
