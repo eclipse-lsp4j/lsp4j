@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.jsonrpc.test.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.lsp4j.jsonrpc.json.InvalidMessageException;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
@@ -17,6 +18,8 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.gson.JsonObject;
 
 public class ReflectiveMessageValidatorTest {
 	
@@ -127,5 +130,17 @@ public class ReflectiveMessageValidatorTest {
 		} catch (InvalidMessageException e) {
 			Assert.assertEquals("The accessor 'getNonNullString' must return a non-null value.", ((ResponseError)e.getMessageObject()).getMessage());
 		}
+	}
+
+	@Test public void testSkipJsonElement() {
+		final AtomicBoolean result = new AtomicBoolean(false);
+		ReflectiveMessageValidator validator = new ReflectiveMessageValidator((message) -> {
+			result.set(true);
+		});
+		NotificationMessage message = new NotificationMessage();
+		message.setMethod("foo");
+		message.setParams(new JsonObject());
+		validator.consume(message);
+		Assert.assertTrue(result.get());
 	}
 }
