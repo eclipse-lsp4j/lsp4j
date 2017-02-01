@@ -21,10 +21,12 @@ import org.junit.Test;
 public class NoAnnotationTest {
   @Test
   public void testNoAnnotation() {
+    Annotation[] _annotations = CodeLens.class.getAnnotations();
     final Function1<Annotation, Boolean> _function = (Annotation it) -> {
       Class<? extends Annotation> _annotationType = it.annotationType();
       return Boolean.valueOf(Objects.equal(_annotationType, JsonRpcData.class));
     };
-    Assert.assertFalse(IterableExtensions.<Annotation>exists(((Iterable<Annotation>)Conversions.doWrapArray(CodeLens.class.getAnnotations())), _function));
+    boolean _exists = IterableExtensions.<Annotation>exists(((Iterable<Annotation>)Conversions.doWrapArray(_annotations)), _function);
+    Assert.assertFalse(_exists);
   }
 }

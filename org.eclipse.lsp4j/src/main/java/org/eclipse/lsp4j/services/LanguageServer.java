@@ -33,7 +33,7 @@ public interface LanguageServer {
 	 */
 	@JsonRequest
 	CompletableFuture<InitializeResult> initialize(InitializeParams params);
-	
+
 	/**
 	 * The initialized notification is sent from the client to the server 
 	 * after the client is fully initialized 

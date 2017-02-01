@@ -66,13 +66,18 @@ public class JsonSerializeTest {
     this.jsonHandler = new MessageJsonHandler(methods) {
       @Override
       public GsonBuilder getDefaultGsonBuilder() {
-        return super.getDefaultGsonBuilder().setPrettyPrinting();
+        GsonBuilder _defaultGsonBuilder = super.getDefaultGsonBuilder();
+        return _defaultGsonBuilder.setPrettyPrinting();
       }
     };
   }
   
   private void assertSerialize(final Message message, final CharSequence expected) {
-    Assert.assertEquals(expected.toString().trim(), LineEndings.toSystemLineEndings(this.jsonHandler.serialize(message)));
+    String _string = expected.toString();
+    String _trim = _string.trim();
+    String _serialize = this.jsonHandler.serialize(message);
+    String _systemLineEndings = LineEndings.toSystemLineEndings(_serialize);
+    Assert.assertEquals(_trim, _systemLineEndings);
   }
   
   @Test
@@ -401,7 +406,8 @@ public class JsonSerializeTest {
             it_3.setNewText("foobar");
           };
           TextEdit _doubleArrow_1 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit_1, _function_4);
-          it_2.put("file:///tmp/foo", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow, _doubleArrow_1));
+          ArrayList<TextEdit> _newArrayList = CollectionLiterals.<TextEdit>newArrayList(_doubleArrow, _doubleArrow_1);
+          it_2.put("file:///tmp/foo", _newArrayList);
         };
         HashMap<String, List<TextEdit>> _doubleArrow = ObjectExtensions.<HashMap<String, List<TextEdit>>>operator_doubleArrow(_hashMap, _function_2);
         it_1.setChanges(_doubleArrow);
@@ -537,9 +543,10 @@ public class JsonSerializeTest {
         };
         Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_2);
         it_1.setRange(_doubleArrow);
-        it_1.setContents(CollectionLiterals.<String>newArrayList(
+        ArrayList<String> _newArrayList = CollectionLiterals.<String>newArrayList(
           "foo", 
-          "boo shuby doo"));
+          "boo shuby doo");
+        it_1.setContents(_newArrayList);
       };
       Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_1);
       it.setResult(_doubleArrow);
