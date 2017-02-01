@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.test.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.lsp4j.Diagnostic;
@@ -62,7 +63,10 @@ public class JsonParseTest {
   }
   
   private void assertParse(final CharSequence json, final Message expected) {
-    Assert.assertEquals(expected.toString(), this.jsonHandler.parseMessage(json).toString());
+    String _string = expected.toString();
+    Message _parseMessage = this.jsonHandler.parseMessage(json);
+    String _string_1 = _parseMessage.toString();
+    Assert.assertEquals(_string, _string_1);
   }
   
   @Test
@@ -363,12 +367,10 @@ public class JsonParseTest {
   public void testRenameResponse() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_RENAME;
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = MessageMethods.DOC_RENAME;
+          break;
       }
       return _switchResult;
     };
@@ -516,7 +518,8 @@ public class JsonParseTest {
             it_3.setNewText("foobar");
           };
           TextEdit _doubleArrow_1 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit_1, _function_5);
-          it_2.put("file:///tmp/foo", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow, _doubleArrow_1));
+          ArrayList<TextEdit> _newArrayList = CollectionLiterals.<TextEdit>newArrayList(_doubleArrow, _doubleArrow_1);
+          it_2.put("file:///tmp/foo", _newArrayList);
         };
         HashMap<String, List<TextEdit>> _doubleArrow = ObjectExtensions.<HashMap<String, List<TextEdit>>>operator_doubleArrow(_hashMap, _function_3);
         it_1.setChanges(_doubleArrow);
@@ -532,12 +535,10 @@ public class JsonParseTest {
   public void testResponseError() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = "textDocument/rename";
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = "textDocument/rename";
+          break;
       }
       return _switchResult;
     };
@@ -612,7 +613,8 @@ public class JsonParseTest {
       it.setMethod(MessageMethods.TELEMETRY_EVENT);
       Pair<String, Double> _mappedTo = Pair.<String, Double>of("foo", Double.valueOf(12.3));
       Pair<String, String> _mappedTo_1 = Pair.<String, String>of("bar", "qwertz");
-      it.setParams(CollectionLiterals.<String, Object>newLinkedHashMap(_mappedTo, _mappedTo_1));
+      LinkedHashMap<String, Object> _newLinkedHashMap = CollectionLiterals.<String, Object>newLinkedHashMap(_mappedTo, _mappedTo_1);
+      it.setParams(_newLinkedHashMap);
     };
     NotificationMessage _doubleArrow = ObjectExtensions.<NotificationMessage>operator_doubleArrow(_notificationMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -622,12 +624,10 @@ public class JsonParseTest {
   public void testHoverResponse() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
-        }
+      switch (id) {
+        case "12":
+          _switchResult = MessageMethods.DOC_HOVER;
+          break;
       }
       return _switchResult;
     };
@@ -706,9 +706,10 @@ public class JsonParseTest {
         };
         Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_3);
         it_1.setRange(_doubleArrow);
-        it_1.setContents(CollectionLiterals.<String>newArrayList(
+        ArrayList<String> _newArrayList = CollectionLiterals.<String>newArrayList(
           "foo", 
-          "boo shuby doo"));
+          "boo shuby doo");
+        it_1.setContents(_newArrayList);
       };
       Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
       it.setResult(_doubleArrow);

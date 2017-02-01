@@ -6,11 +6,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class InitializeError {
   /**
-   * If the protocol version provided by the client can't be handled by the server.
-   */
-  public final static int unknownProtocolVersion = 1;
-  
-  /**
    * Indicates whether the client should retry to send the initialize request after showing the message provided
    * in the ResponseError.
    */
@@ -45,7 +40,6 @@ public class InitializeError {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("unknownProtocolVersion", this.unknownProtocolVersion);
     b.add("retry", this.retry);
     return b.toString();
   }

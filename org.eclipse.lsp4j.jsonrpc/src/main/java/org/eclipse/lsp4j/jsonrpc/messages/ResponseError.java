@@ -16,14 +16,18 @@ public class ResponseError {
 	 * A number indicating the error type that occured.
 	 */
 	@NonNull
-	private ResponseErrorCode code;
+	private int code;
 
-	public ResponseErrorCode getCode() {
+	public int getCode() {
 		return this.code;
 	}
 
-	public void setCode(ResponseErrorCode code) {
+	public void setCode(int code) {
 		this.code = code;
+	}
+
+	public void setCode(ResponseErrorCode code) {
+		this.setCode(code.getValue());
 	}
 
 	/**
@@ -58,6 +62,10 @@ public class ResponseError {
 	}
 	
 	public ResponseError(ResponseErrorCode code, String message, Object data) {
+		this(code.getValue(), message, data);
+	}
+	
+	public ResponseError(int code, String message, Object data) {
 		this.code = code;
 		this.message = message;
 		this.data = data;

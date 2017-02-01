@@ -859,14 +859,20 @@ class Hover {
 @JsonRpcData
 class InitializeError {
 	/**
-     * If the protocol version provided by the client can't be handled by the server.
-     */
-    public val static unknownProtocolVersion = 1
-	/**
 	 * Indicates whether the client should retry to send the initialize request after showing the message provided
 	 * in the ResponseError.
 	 */
 	boolean retry
+}
+
+/**
+ * Known error codes for an `InitializeError`
+ */
+interface InitializeErrorCode {
+	/**
+     * If the protocol version provided by the client can't be handled by the server.
+     */
+    val unknownProtocolVersion = 1
 }
 
 /**
