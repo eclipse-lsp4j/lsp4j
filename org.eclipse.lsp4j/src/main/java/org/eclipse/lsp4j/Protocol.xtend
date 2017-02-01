@@ -231,6 +231,13 @@ class TextDocumentClientCapabilities {
     RenameCapabilities rename
 }
 
+/**
+ * Defines capabilities for dynamic registration, workspace and text document features the client supports
+ * The experimental can be used to pass experimential capabilities under development.
+ * For future compatibility a ClientCapabilities object literal can have more properties set than currently defined.
+ * Servers receiving a ClientCapabilities object literal with unknown properties should ignore these properties.
+ * A missing property should be interpreted as an absence of the capability.
+ */
 @JsonRpcData
 class ClientCapabilities {
 	/**
