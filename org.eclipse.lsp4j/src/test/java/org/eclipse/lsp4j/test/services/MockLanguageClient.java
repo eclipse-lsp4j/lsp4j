@@ -2,6 +2,7 @@ package org.eclipse.lsp4j.test.services;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
@@ -22,7 +23,7 @@ public class MockLanguageClient implements LanguageClient {
 	}
 
 	@Override
-	public CompletableFuture<Void> showMessageRequest(ShowMessageRequestParams requestParams) {
+	public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams) {
 		throw new UnsupportedOperationException();
 	}
 

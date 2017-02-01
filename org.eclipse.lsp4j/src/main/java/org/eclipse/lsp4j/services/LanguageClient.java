@@ -2,6 +2,7 @@ package org.eclipse.lsp4j.services;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.RegistrationParams;
@@ -59,7 +60,7 @@ public interface LanguageClient {
 	 * to wait for an answer from the client.
 	 */
 	@JsonRequest("window/showMessageRequest")
-	CompletableFuture<Void> showMessageRequest(ShowMessageRequestParams requestParams);
+	CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams);
 
 	/**
 	 * The log message notification is send from the server to the client to ask
