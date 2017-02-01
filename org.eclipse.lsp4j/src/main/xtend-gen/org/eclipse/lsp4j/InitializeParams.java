@@ -16,8 +16,17 @@ public class InitializeParams {
   
   /**
    * The rootPath of the workspace. Is null if no folder is open.
+   * 
+   * @deprecared in favour of rootUri.
    */
+  @Deprecated
   private String rootPath;
+  
+  /**
+   * The rootUri of the workspace. Is null if no
+   * folder is open.
+   */
+  private String rootUri;
   
   /**
    * User provided initialization options.
@@ -33,7 +42,15 @@ public class InitializeParams {
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
    */
+  @Deprecated
   private String clientName;
+  
+  /**
+   * The initial trace setting. If omitted trace is disabled ('off').
+   * 
+   * Legal values: 'off' | 'messages' | 'verbose'
+   */
+  private String trace;
   
   /**
    * The process Id of the parent process that started the server.
@@ -52,17 +69,40 @@ public class InitializeParams {
   
   /**
    * The rootPath of the workspace. Is null if no folder is open.
+   * 
+   * @deprecared in favour of rootUri.
    */
   @Pure
+  @Deprecated
   public String getRootPath() {
     return this.rootPath;
   }
   
   /**
    * The rootPath of the workspace. Is null if no folder is open.
+   * 
+   * @deprecared in favour of rootUri.
    */
+  @Deprecated
   public void setRootPath(final String rootPath) {
     this.rootPath = rootPath;
+  }
+  
+  /**
+   * The rootUri of the workspace. Is null if no
+   * folder is open.
+   */
+  @Pure
+  public String getRootUri() {
+    return this.rootUri;
+  }
+  
+  /**
+   * The rootUri of the workspace. Is null if no
+   * folder is open.
+   */
+  public void setRootUri(final String rootUri) {
+    this.rootUri = rootUri;
   }
   
   /**
@@ -100,6 +140,7 @@ public class InitializeParams {
    * To tell the server what client (editor) is talking to it.
    */
   @Pure
+  @Deprecated
   public String getClientName() {
     return this.clientName;
   }
@@ -108,8 +149,28 @@ public class InitializeParams {
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
    */
+  @Deprecated
   public void setClientName(final String clientName) {
     this.clientName = clientName;
+  }
+  
+  /**
+   * The initial trace setting. If omitted trace is disabled ('off').
+   * 
+   * Legal values: 'off' | 'messages' | 'verbose'
+   */
+  @Pure
+  public String getTrace() {
+    return this.trace;
+  }
+  
+  /**
+   * The initial trace setting. If omitted trace is disabled ('off').
+   * 
+   * Legal values: 'off' | 'messages' | 'verbose'
+   */
+  public void setTrace(final String trace) {
+    this.trace = trace;
   }
   
   public InitializeParams() {
@@ -122,9 +183,11 @@ public class InitializeParams {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("processId", this.processId);
     b.add("rootPath", this.rootPath);
+    b.add("rootUri", this.rootUri);
     b.add("initializationOptions", this.initializationOptions);
     b.add("capabilities", this.capabilities);
     b.add("clientName", this.clientName);
+    b.add("trace", this.trace);
     return b.toString();
   }
   
@@ -148,6 +211,11 @@ public class InitializeParams {
         return false;
     } else if (!this.rootPath.equals(other.rootPath))
       return false;
+    if (this.rootUri == null) {
+      if (other.rootUri != null)
+        return false;
+    } else if (!this.rootUri.equals(other.rootUri))
+      return false;
     if (this.initializationOptions == null) {
       if (other.initializationOptions != null)
         return false;
@@ -163,6 +231,11 @@ public class InitializeParams {
         return false;
     } else if (!this.clientName.equals(other.clientName))
       return false;
+    if (this.trace == null) {
+      if (other.trace != null)
+        return false;
+    } else if (!this.trace.equals(other.trace))
+      return false;
     return true;
   }
   
@@ -173,9 +246,11 @@ public class InitializeParams {
     int result = 1;
     result = prime * result + ((this.processId== null) ? 0 : this.processId.hashCode());
     result = prime * result + ((this.rootPath== null) ? 0 : this.rootPath.hashCode());
+    result = prime * result + ((this.rootUri== null) ? 0 : this.rootUri.hashCode());
     result = prime * result + ((this.initializationOptions== null) ? 0 : this.initializationOptions.hashCode());
     result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
     result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
+    result = prime * result + ((this.trace== null) ? 0 : this.trace.hashCode());
     return result;
   }
 }

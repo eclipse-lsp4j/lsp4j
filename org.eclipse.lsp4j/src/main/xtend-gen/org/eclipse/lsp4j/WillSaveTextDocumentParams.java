@@ -1,29 +1,27 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.TextDocumentSaveReason;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-/**
- * The document save notification is sent from the client to the server when the document for saved in the clinet.
- */
 @SuppressWarnings("all")
-public class DidSaveTextDocumentParams {
+public class WillSaveTextDocumentParams {
   /**
-   * The document that was closed.
+   * The document that will be saved.
    */
   @NonNull
   private TextDocumentIdentifier textDocument;
   
   /**
-   * Optional the content when saved. Depends on the includeText value
-   * when the save notification was requested.
+   * A reason why a text document is saved.
    */
-  private String text;
+  @NonNull
+  private TextDocumentSaveReason reason;
   
   /**
-   * The document that was closed.
+   * The document that will be saved.
    */
   @Pure
   @NonNull
@@ -32,36 +30,35 @@ public class DidSaveTextDocumentParams {
   }
   
   /**
-   * The document that was closed.
+   * The document that will be saved.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
   /**
-   * Optional the content when saved. Depends on the includeText value
-   * when the save notification was requested.
+   * A reason why a text document is saved.
    */
   @Pure
-  public String getText() {
-    return this.text;
+  @NonNull
+  public TextDocumentSaveReason getReason() {
+    return this.reason;
   }
   
   /**
-   * Optional the content when saved. Depends on the includeText value
-   * when the save notification was requested.
+   * A reason why a text document is saved.
    */
-  public void setText(final String text) {
-    this.text = text;
+  public void setReason(@NonNull final TextDocumentSaveReason reason) {
+    this.reason = reason;
   }
   
-  public DidSaveTextDocumentParams() {
+  public WillSaveTextDocumentParams() {
     
   }
   
-  public DidSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final String text) {
+  public WillSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final TextDocumentSaveReason reason) {
     this.textDocument = textDocument;
-    this.text = text;
+    this.reason = reason;
   }
   
   @Override
@@ -69,7 +66,7 @@ public class DidSaveTextDocumentParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
-    b.add("text", this.text);
+    b.add("reason", this.reason);
     return b.toString();
   }
   
@@ -82,16 +79,16 @@ public class DidSaveTextDocumentParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    DidSaveTextDocumentParams other = (DidSaveTextDocumentParams) obj;
+    WillSaveTextDocumentParams other = (WillSaveTextDocumentParams) obj;
     if (this.textDocument == null) {
       if (other.textDocument != null)
         return false;
     } else if (!this.textDocument.equals(other.textDocument))
       return false;
-    if (this.text == null) {
-      if (other.text != null)
+    if (this.reason == null) {
+      if (other.reason != null)
         return false;
-    } else if (!this.text.equals(other.text))
+    } else if (!this.reason.equals(other.reason))
       return false;
     return true;
   }
@@ -102,7 +99,7 @@ public class DidSaveTextDocumentParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
+    result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
     return result;
   }
 }

@@ -7,16 +7,15 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.generator
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
-import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 class JsonRpcDataProcessor extends AbstractClassProcessor {
 
@@ -113,10 +112,6 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 				return b.toString();
 			'''
 		]
-	}
-
-	private def Iterable<FieldDeclaration> getAllFields(ClassDeclaration it) {
-		declaredFields + ((extendedClass?.type as ClassDeclaration)?.allFields ?: #[])
 	}
 
 }

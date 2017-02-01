@@ -3,7 +3,7 @@ package org.eclipse.lsp4j;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItemKind;
-import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.InsertTextFormat;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -54,25 +54,18 @@ public class CompletionItem {
   private String insertText;
   
   /**
-   * A range of text that should be replaced by this completion item.
-   * 
-   * Defaults to a range from the start of the current word to the current position.
-   * 
-   * *Note:* The range must be a single line range and it must contain the position at which completion
-   * has been requested.
+   * The format of the insert text. The format applies to both the `insertText` property
+   * and the `newText` property of a provided `textEdit`.
    */
-  private Range range;
+  private InsertTextFormat insertTextFormat;
   
   /**
-   * @deprecated in favour of `insertText` and `range`.
-   * 
    * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
    * `insertText` and `range` is ignored.
    * 
    * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
    * has been requested.
    */
-  @Deprecated
   private TextEdit textEdit;
   
   /**
@@ -201,33 +194,23 @@ public class CompletionItem {
   }
   
   /**
-   * A range of text that should be replaced by this completion item.
-   * 
-   * Defaults to a range from the start of the current word to the current position.
-   * 
-   * *Note:* The range must be a single line range and it must contain the position at which completion
-   * has been requested.
+   * The format of the insert text. The format applies to both the `insertText` property
+   * and the `newText` property of a provided `textEdit`.
    */
   @Pure
-  public Range getRange() {
-    return this.range;
+  public InsertTextFormat getInsertTextFormat() {
+    return this.insertTextFormat;
   }
   
   /**
-   * A range of text that should be replaced by this completion item.
-   * 
-   * Defaults to a range from the start of the current word to the current position.
-   * 
-   * *Note:* The range must be a single line range and it must contain the position at which completion
-   * has been requested.
+   * The format of the insert text. The format applies to both the `insertText` property
+   * and the `newText` property of a provided `textEdit`.
    */
-  public void setRange(final Range range) {
-    this.range = range;
+  public void setInsertTextFormat(final InsertTextFormat insertTextFormat) {
+    this.insertTextFormat = insertTextFormat;
   }
   
   /**
-   * @deprecated in favour of `insertText` and `range`.
-   * 
    * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
    * `insertText` and `range` is ignored.
    * 
@@ -235,21 +218,17 @@ public class CompletionItem {
    * has been requested.
    */
   @Pure
-  @Deprecated
   public TextEdit getTextEdit() {
     return this.textEdit;
   }
   
   /**
-   * @deprecated in favour of `insertText` and `range`.
-   * 
    * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
    * `insertText` and `range` is ignored.
    * 
    * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
    * has been requested.
    */
-  @Deprecated
   public void setTextEdit(final TextEdit textEdit) {
     this.textEdit = textEdit;
   }
@@ -322,7 +301,7 @@ public class CompletionItem {
     b.add("sortText", this.sortText);
     b.add("filterText", this.filterText);
     b.add("insertText", this.insertText);
-    b.add("range", this.range);
+    b.add("insertTextFormat", this.insertTextFormat);
     b.add("textEdit", this.textEdit);
     b.add("additionalTextEdits", this.additionalTextEdits);
     b.add("command", this.command);
@@ -375,10 +354,10 @@ public class CompletionItem {
         return false;
     } else if (!this.insertText.equals(other.insertText))
       return false;
-    if (this.range == null) {
-      if (other.range != null)
+    if (this.insertTextFormat == null) {
+      if (other.insertTextFormat != null)
         return false;
-    } else if (!this.range.equals(other.range))
+    } else if (!this.insertTextFormat.equals(other.insertTextFormat))
       return false;
     if (this.textEdit == null) {
       if (other.textEdit != null)
@@ -415,7 +394,7 @@ public class CompletionItem {
     result = prime * result + ((this.sortText== null) ? 0 : this.sortText.hashCode());
     result = prime * result + ((this.filterText== null) ? 0 : this.filterText.hashCode());
     result = prime * result + ((this.insertText== null) ? 0 : this.insertText.hashCode());
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
+    result = prime * result + ((this.insertTextFormat== null) ? 0 : this.insertTextFormat.hashCode());
     result = prime * result + ((this.textEdit== null) ? 0 : this.textEdit.hashCode());
     result = prime * result + ((this.additionalTextEdits== null) ? 0 : this.additionalTextEdits.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());

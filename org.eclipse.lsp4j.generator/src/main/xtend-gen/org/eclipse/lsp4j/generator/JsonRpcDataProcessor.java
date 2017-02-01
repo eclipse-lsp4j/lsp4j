@@ -10,7 +10,6 @@ package org.eclipse.lsp4j.generator;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.function.Consumer;
 import org.eclipse.lsp4j.generator.JsonRpcData;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -244,29 +243,5 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       _xblockexpression = impl.addMethod("toString", _function);
     }
     return _xblockexpression;
-  }
-  
-  private Iterable<FieldDeclaration> getAllFields(final ClassDeclaration it) {
-    Iterable<? extends FieldDeclaration> _declaredFields = it.getDeclaredFields();
-    Iterable<FieldDeclaration> _elvis = null;
-    TypeReference _extendedClass = it.getExtendedClass();
-    Type _type = null;
-    if (_extendedClass!=null) {
-      _type=_extendedClass.getType();
-    }
-    Iterable<FieldDeclaration> _allFields = null;
-    if (((ClassDeclaration) _type)!=null) {
-      Type _type_1 = null;
-      if (_extendedClass!=null) {
-        _type_1=_extendedClass.getType();
-      }
-      _allFields=this.getAllFields(((ClassDeclaration) _type_1));
-    }
-    if (_allFields != null) {
-      _elvis = _allFields;
-    } else {
-      _elvis = Collections.<FieldDeclaration>unmodifiableList(CollectionLiterals.<FieldDeclaration>newArrayList());
-    }
-    return Iterables.<FieldDeclaration>concat(_declaredFields, _elvis);
   }
 }

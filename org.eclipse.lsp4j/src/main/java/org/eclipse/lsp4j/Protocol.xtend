@@ -5,10 +5,248 @@ import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.generator.JsonRpcData
+import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 @JsonRpcData
+class DynamicRegistrationCapabilities {
+	/**
+     * Supports dynamic registration.
+     */
+    Boolean dynamicRegistration
+}
+
+@JsonRpcData
+class DidChangeConfigurationCapabilites extends DynamicRegistrationCapabilities {
+}
+
+@JsonRpcData
+class DidChangeWatchedFilesCapabilites extends DynamicRegistrationCapabilities {
+}
+
+@JsonRpcData
+class SymbolCapabilites extends DynamicRegistrationCapabilities {
+}
+
+@JsonRpcData
+class ExecuteCommandCapabilites extends DynamicRegistrationCapabilities {
+}
+
+/**
+ * Workspace specific client capabilities.
+ */
+@JsonRpcData
+class WorkspaceClientCapabilites {
+	/**
+     * The client supports applying batch edits
+     * to the workspace.
+     */
+    Boolean applyEdit
+    
+    /**
+     * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+     */
+    DidChangeConfigurationCapabilites didChangeConfiguration
+    
+    /**
+     * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+     */
+    DidChangeWatchedFilesCapabilites didChangeWatchedFiles
+    
+    /**
+     * Capabilities specific to the `workspace/symbol` request.
+     */
+    SymbolCapabilites symbol
+    
+    /**
+     * Capabilities specific to the `workspace/executeCommand` request.
+     */
+    ExecuteCommandCapabilites executeCommand
+}
+
+@JsonRpcData
+class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
+    /**
+     * The client supports sending will save notifications.
+     */
+    Boolean willSave
+    
+    /**
+     * The client supports sending a will save request and
+     * waits for a response providing text edits which will
+     * be applied to the document before it is saved.
+     */
+    Boolean willSaveWaitUntil
+    
+    /**
+     * The client supports did save notifications.
+     */
+    Boolean didSave
+}
+
+@JsonRpcData
+class CompletionItemCapabilities {
+	/**
+     * Client supports snippets as insert text.
+     *
+     * A snippet can define tab stops and placeholders with `$1`, `$2`
+     * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+     * the end of the snippet. Placeholders with equal identifiers are linked,
+     * that is typing in one will update others too.
+     */
+    Boolean snippetSupport
+}
+
+@JsonRpcData
+class CompletionCapabilities extends DynamicRegistrationCapabilities {     
+    /**
+	 * The client supports the following `CompletionItem` specific
+	 * capabilities.
+	 */
+	CompletionItemCapabilities completionItem
+}
+
+@JsonRpcData
+class HoverCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class ReferencesCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class FormattingCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class DefinitionCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class CodeActionCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class CodeLensCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+@JsonRpcData
+class RenameCapabilities extends DynamicRegistrationCapabilities {	
+}
+
+/**
+ * Text document specific client capabilities.
+ */
+@JsonRpcData
+class TextDocumentClientCapabilities {
+	SynchronizationCapabilities synchronization
+    
+    /**
+     * Capabilities specific to the `textDocument/hover`
+     */
+    HoverCapabilities hover
+    
+    /**
+     * Capabilities specific to the `textDocument/signatureHelp`
+     */
+    SignatureHelpCapabilities signatureHelp
+    
+    /**
+     * Capabilities specific to the `textDocument/references`
+     */
+    ReferencesCapabilities references
+    
+    /**
+     * Capabilities specific to the `textDocument/documentHighlight`
+     */
+    DocumentHighlightCapabilities documentHighlight
+    
+    /**
+     * Capabilities specific to the `textDocument/documentSymbol`
+     */
+    DocumentSymbolCapabilities documentSymbol
+    
+    /**
+     * Capabilities specific to the `textDocument/formatting`
+     */
+    FormattingCapabilities formatting
+    
+    /**
+     * Capabilities specific to the `textDocument/rangeFormatting`
+     */
+    RangeFormattingCapabilities rangeFormatting
+    
+    /**
+     * Capabilities specific to the `textDocument/onTypeFormatting`
+     */
+    OnTypeFormattingCapabilities onTypeFormatting
+    
+    /**
+     * Capabilities specific to the `textDocument/definition`
+     */
+    DefinitionCapabilities definition
+    
+    /**
+     * Capabilities specific to the `textDocument/codeAction`
+     */
+    CodeActionCapabilities codeAction
+    
+    /**
+     * Capabilities specific to the `textDocument/codeLens`
+     */
+    CodeLensCapabilities codeLens
+    
+    /**
+     * Capabilities specific to the `textDocument/documentLink`
+     */
+    DocumentLinkCapabilities documentLink
+    
+    /**
+     * Capabilities specific to the `textDocument/rename`
+     */
+    RenameCapabilities rename
+}
+
+@JsonRpcData
 class ClientCapabilities {
+	/**
+     * Workspace specific client capabilities.
+     */
+    WorkspaceClientCapabilites workspace
+    
+    /**
+     * Text document specific client capabilities.
+     */
+    TextDocumentClientCapabilities textDocument
+    
+    /**
+     * Experimental client capabilities.
+     */
+    Object experimental
 }
 
 /**
@@ -165,28 +403,21 @@ class CompletionItem {
 	 * A string that should be inserted a document when selecting this completion. When `falsy` the label is used.
 	 */
 	String insertText
+	
+	/**
+     * The format of the insert text. The format applies to both the `insertText` property
+     * and the `newText` property of a provided `textEdit`.
+     */
+    InsertTextFormat insertTextFormat
 
     /**
-     * A range of text that should be replaced by this completion item.
-     *
-     * Defaults to a range from the start of the current word to the current position.
-     *
-     * *Note:* The range must be a single line range and it must contain the position at which completion
-     * has been requested.
-     */	
-	Range range
-
-    /**
-     * @deprecated in favour of `insertText` and `range`.
-     *
      * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
      * `insertText` and `range` is ignored.
      *
      * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
      * has been requested.
      */
-    @Deprecated
-	TextEdit textEdit
+    TextEdit textEdit
 
 	/**
 	 * An optional array of additional text edits that are applied when
@@ -366,6 +597,28 @@ class DidSaveTextDocumentParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+	
+	/**
+     * Optional the content when saved. Depends on the includeText value
+     * when the save notification was requested.
+     */
+    String text
+}
+
+
+@JsonRpcData
+class WillSaveTextDocumentParams {
+	/**
+	 * The document that will be saved.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+	
+	/**
+	 * A reason why a text document is saved.
+	 */
+	@NonNull
+	TextDocumentSaveReason reason
 }
 
 /**
@@ -427,6 +680,65 @@ class DocumentLinkParams {
      * The document to provide document links for.
      */
     TextDocumentIdentifier textDocument
+}
+
+/**
+ * Document link options
+ */
+@JsonRpcData
+class DocumentLinkOptions {
+	/**
+     * Document links have a resolve provider as well.
+     */
+    Boolean resolveProvider
+}
+
+/**
+ * Execute command options.
+ */
+@JsonRpcData
+class ExecuteCommandOptions {
+	/**
+     * The commands to be executed on the server
+     */
+    @NonNull
+    List<String> commands = newArrayList
+}
+
+/**
+ * Save options.
+ */
+@JsonRpcData
+class SaveOptions {
+	/**
+     * The client is supposed to include the content on save.
+     */
+    Boolean includeText	
+}
+
+@JsonRpcData
+class TextDocumentSyncOptions {
+	/**
+     * Open and close notifications are sent to the server.
+     */
+    Boolean openClose
+    /**
+     * Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
+     * and TextDocumentSyncKind.Incremental.
+     */
+    TextDocumentSyncKind change
+    /**
+     * Will save notifications are sent to the server.
+     */
+    Boolean willSave
+    /**
+     * Will save wait until requests are sent to the server.
+     */
+    Boolean willSaveWaitUntil
+    /**
+     * Save notifications are sent to the server.
+     */
+    SaveOptions save
 }
 
 /**
@@ -547,6 +859,10 @@ class Hover {
 @JsonRpcData
 class InitializeError {
 	/**
+     * If the protocol version provided by the client can't be handled by the server.
+     */
+    public val static unknownProtocolVersion = 1
+	/**
 	 * Indicates whether the client should retry to send the initialize request after showing the message provided
 	 * in the ResponseError.
 	 */
@@ -565,8 +881,17 @@ class InitializeParams {
 
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
+	 * 
+	 * @deprecared in favour of rootUri.
 	 */
+	@Deprecated
 	String rootPath
+	
+	/**
+     * The rootUri of the workspace. Is null if no
+     * folder is open.
+     */
+	String rootUri
 
 	/**
 	 * User provided initialization options.
@@ -582,7 +907,15 @@ class InitializeParams {
 	 * An optional extension to the protocol.
 	 * To tell the server what client (editor) is talking to it.
 	 */
+	@Deprecated
 	String clientName
+	
+	/**
+     * The initial trace setting. If omitted trace is disabled ('off').
+     * 
+     * Legal values: 'off' | 'messages' | 'verbose'
+     */
+    String trace
 }
 
 @JsonRpcData
@@ -760,9 +1093,10 @@ class RenameParams {
 @JsonRpcData
 class ServerCapabilities {
 	/**
-	 * Defines how text documents are synced.
+	 * Defines how text documents are synced. Is either a detailed structure defining each notification or
+     * for backwards compatibility the TextDocumentSyncKind number.
 	 */
-	TextDocumentSyncKind textDocumentSync
+	Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync
 
 	/**
 	 * The server provides hover support.
@@ -833,6 +1167,21 @@ class ServerCapabilities {
 	 * The server provides rename support.
 	 */
 	Boolean renameProvider
+	
+	/**
+     * The server provides document link support.
+     */
+    DocumentLinkOptions documentLinkProvider
+    
+    /**
+     * The server provides execute command support.
+     */
+    ExecuteCommandOptions executeCommandProvider
+    
+    /**
+     * Experimental server capabilities.
+     */
+    Object experimental
 }
 
 /**
@@ -1073,4 +1422,211 @@ class WorkspaceSymbolParams {
 	 */
 	@NonNull
 	String query
+}
+
+/**
+ * General parameters to register for a capability.
+ */
+@JsonRpcData
+class Registration {
+	/**
+     * The id used to register the request. The id can be used to deregister
+     * the request again.
+     */
+    @NonNull
+	String id
+	
+	/**
+     * The method / capability to register for.
+     */
+    @NonNull
+	String method
+	
+	/**
+     * Options necessary for the registration.
+     */
+    Object registerOptions
+}
+
+@JsonRpcData
+class RegistrationParams {
+	@NonNull
+	List<Registration> registrations = newArrayList
+}
+
+/**
+ * A document filter denotes a document through properties like language, schema or pattern.
+ */
+@JsonRpcData
+class DocumentFilter {
+	/**
+     * A language id, like `typescript`.
+     */
+    String language
+	
+	/**
+     * A uri scheme, like `file` or `untitled`.
+     */
+    String schema
+	
+	/**
+     * A glob pattern, like `*.{ts,js}`.
+     */
+    String pattern
+}
+
+/**
+ * A document selector is the combination of one or many document filters.
+ */
+interface DocumentSelector extends List<DocumentFilter> {
+}
+
+/**
+ * Since most of the registration options require to specify a document selector there is a base interface that can be used.
+ */
+@JsonRpcData
+class TextDocumentRegistrationOptions {
+	/**
+     * A document selector to identify the scope of the registration. If set to null
+     * the document selector provided on the client side will be used.
+     */
+    DocumentSelector documentSelector
+}
+
+/**
+ * General parameters to unregister a capability.
+ */
+@JsonRpcData
+class Unregistration {
+	/**
+     * The id used to unregister the request or notification. Usually an id
+     * provided during the register request.
+     */
+    @NonNull
+	String id
+	
+	/**
+     * The method / capability to unregister for.
+     */
+    @NonNull
+	String method
+}
+
+@JsonRpcData
+class UnregistrationParams {
+	@NonNull
+	List<Unregistration> unregisterations = newArrayList
+}
+
+/**
+ * Describe options to be used when registered for text document change events.
+ */
+@JsonRpcData
+class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+     * How documents are synced to the server. See TextDocumentSyncKind.Full 
+     * and TextDocumentSyncKind.Incremental.
+     */
+    @NonNull
+	TextDocumentSyncKind syncKind	
+}
+
+@JsonRpcData
+class TextDocumentSaveRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+	 * The client is supposed to include the content on save.
+	 */
+	Boolean includeText
+}
+
+@JsonRpcData
+class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+     * The characters that trigger completion automatically.
+     */
+    List<String> triggerCharacters
+
+    /**
+     * The server provides support to resolve additional information for a completion item.
+     */
+    Boolean resolveProvider
+}
+
+@JsonRpcData
+class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+     * The characters that trigger signature help automatically.
+     */
+    List<String> triggerCharacters
+}
+
+@JsonRpcData
+class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+     * Code lens has a resolve provider as well.
+     */
+    Boolean resolveProvider
+}
+
+@JsonRpcData
+class DocumentLinkRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+     * Document links have a resolve provider as well.
+     */
+    Boolean resolveProvider
+}
+
+@JsonRpcData
+class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+     * A character on which formatting should be triggered, like `}`.
+     */
+    String firstTriggerCharacter
+	/**
+     * More trigger characters.
+     */
+    List<String> moreTriggerCharacter	
+}
+
+@JsonRpcData
+class ExecuteCommandParams {
+	/**
+     * The identifier of the actual command handler.
+     */
+    @NonNull
+	String command
+	
+	/**
+     * Arguments that the command should be invoked with.
+     * The arguments are typically specified when a command is returned from the server to the client.
+     * Example requests that return a command are textDocument/codeAction or textDocument/codeLens.
+     */
+    List<Object> arguments
+}
+
+/**
+ * Execute command registration options.
+ */
+@JsonRpcData
+class ExecuteCommandRegistrationOptions {
+	/**
+     * The commands to be executed on the server
+     */
+    List<String> commands
+}
+
+@JsonRpcData
+class ApplyWorkspaceEditParams {
+	/**
+     * The edits to apply.
+     */
+    WorkspaceEdit edit
+}
+
+@JsonRpcData
+class ApplyWorkspaceEditResponse {
+	/**
+     * Indicates whether the edit was applied or not.
+     */
+    Boolean applied	
 }
