@@ -2,18 +2,23 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.CodeLensOptions;
 import org.eclipse.lsp4j.CompletionOptions;
+import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
+import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
+import org.eclipse.lsp4j.TextDocumentSyncOptions;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class ServerCapabilities {
   /**
-   * Defines how text documents are synced.
+   * Defines how text documents are synced. Is either a detailed structure defining each notification or
+   * for backwards compatibility the TextDocumentSyncKind number.
    */
-  private TextDocumentSyncKind textDocumentSync;
+  private Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync;
   
   /**
    * The server provides hover support.
@@ -86,17 +91,34 @@ public class ServerCapabilities {
   private Boolean renameProvider;
   
   /**
-   * Defines how text documents are synced.
+   * The server provides document link support.
+   */
+  private DocumentLinkOptions documentLinkProvider;
+  
+  /**
+   * The server provides execute command support.
+   */
+  private ExecuteCommandOptions executeCommandProvider;
+  
+  /**
+   * Experimental server capabilities.
+   */
+  private Object experimental;
+  
+  /**
+   * Defines how text documents are synced. Is either a detailed structure defining each notification or
+   * for backwards compatibility the TextDocumentSyncKind number.
    */
   @Pure
-  public TextDocumentSyncKind getTextDocumentSync() {
+  public Either<TextDocumentSyncKind, TextDocumentSyncOptions> getTextDocumentSync() {
     return this.textDocumentSync;
   }
   
   /**
-   * Defines how text documents are synced.
+   * Defines how text documents are synced. Is either a detailed structure defining each notification or
+   * for backwards compatibility the TextDocumentSyncKind number.
    */
-  public void setTextDocumentSync(final TextDocumentSyncKind textDocumentSync) {
+  public void setTextDocumentSync(final Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync) {
     this.textDocumentSync = textDocumentSync;
   }
   
@@ -310,6 +332,51 @@ public class ServerCapabilities {
     this.renameProvider = renameProvider;
   }
   
+  /**
+   * The server provides document link support.
+   */
+  @Pure
+  public DocumentLinkOptions getDocumentLinkProvider() {
+    return this.documentLinkProvider;
+  }
+  
+  /**
+   * The server provides document link support.
+   */
+  public void setDocumentLinkProvider(final DocumentLinkOptions documentLinkProvider) {
+    this.documentLinkProvider = documentLinkProvider;
+  }
+  
+  /**
+   * The server provides execute command support.
+   */
+  @Pure
+  public ExecuteCommandOptions getExecuteCommandProvider() {
+    return this.executeCommandProvider;
+  }
+  
+  /**
+   * The server provides execute command support.
+   */
+  public void setExecuteCommandProvider(final ExecuteCommandOptions executeCommandProvider) {
+    this.executeCommandProvider = executeCommandProvider;
+  }
+  
+  /**
+   * Experimental server capabilities.
+   */
+  @Pure
+  public Object getExperimental() {
+    return this.experimental;
+  }
+  
+  /**
+   * Experimental server capabilities.
+   */
+  public void setExperimental(final Object experimental) {
+    this.experimental = experimental;
+  }
+  
   public ServerCapabilities() {
     
   }
@@ -333,6 +400,9 @@ public class ServerCapabilities {
     b.add("documentRangeFormattingProvider", this.documentRangeFormattingProvider);
     b.add("documentOnTypeFormattingProvider", this.documentOnTypeFormattingProvider);
     b.add("renameProvider", this.renameProvider);
+    b.add("documentLinkProvider", this.documentLinkProvider);
+    b.add("executeCommandProvider", this.executeCommandProvider);
+    b.add("experimental", this.experimental);
     return b.toString();
   }
   
@@ -421,6 +491,21 @@ public class ServerCapabilities {
         return false;
     } else if (!this.renameProvider.equals(other.renameProvider))
       return false;
+    if (this.documentLinkProvider == null) {
+      if (other.documentLinkProvider != null)
+        return false;
+    } else if (!this.documentLinkProvider.equals(other.documentLinkProvider))
+      return false;
+    if (this.executeCommandProvider == null) {
+      if (other.executeCommandProvider != null)
+        return false;
+    } else if (!this.executeCommandProvider.equals(other.executeCommandProvider))
+      return false;
+    if (this.experimental == null) {
+      if (other.experimental != null)
+        return false;
+    } else if (!this.experimental.equals(other.experimental))
+      return false;
     return true;
   }
   
@@ -444,6 +529,9 @@ public class ServerCapabilities {
     result = prime * result + ((this.documentRangeFormattingProvider== null) ? 0 : this.documentRangeFormattingProvider.hashCode());
     result = prime * result + ((this.documentOnTypeFormattingProvider== null) ? 0 : this.documentOnTypeFormattingProvider.hashCode());
     result = prime * result + ((this.renameProvider== null) ? 0 : this.renameProvider.hashCode());
+    result = prime * result + ((this.documentLinkProvider== null) ? 0 : this.documentLinkProvider.hashCode());
+    result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
+    result = prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
     return result;
   }
 }

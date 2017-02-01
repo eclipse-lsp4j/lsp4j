@@ -4,11 +4,33 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
+import org.eclipse.lsp4j.RegistrationParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
+import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 public interface LanguageClient {
+	/**
+	 * The client/registerCapability request is sent from the server to the client
+	 * to register for a new capability on the client side.
+	 * Not all clients need to support dynamic capability registration.
+	 * A client opts in via the ClientCapabilities.dynamicRegistration property
+	 */
+	@JsonRequest("client/registerCapability")
+	default CompletableFuture<Void> registerCapability(RegistrationParams params) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The client/unregisterCapability request is sent from the server to the client 
+	 * to unregister a previously register capability.
+	 */
+	@JsonRequest("client/unregisterCapability")
+	default CompletableFuture<Void> unregisterCapability(UnregistrationParams params) {
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * The telemetry notification is sent from the server to the client to ask
 	 * the client to log a telemetry event.
