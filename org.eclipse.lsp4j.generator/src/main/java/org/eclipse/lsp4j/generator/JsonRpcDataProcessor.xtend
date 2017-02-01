@@ -16,6 +16,9 @@ import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
+import org.eclipse.lsp4j.jsonrpc.messages.Either
+import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
+import org.eclipse.xtend.lib.macro.declaration.TypeReference
 
 class JsonRpcDataProcessor extends AbstractClassProcessor {
 
@@ -79,7 +82,8 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 
 			if (!field.type.inferred) {
 				accessorsUtil.addSetter(field, Visibility.PUBLIC)
-				impl.findDeclaredMethod(accessorsUtil.getSetterName(field), field.type) => [
+				val setterName = accessorsUtil.getSetterName(field)
+				impl.findDeclaredMethod(setterName, field.type) => [
 					docComment = field.docComment
     				if (hasNonNull) {
     				    parameters.head.addAnnotation(newAnnotationReference(NonNull))
@@ -87,7 +91,48 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 					if (deprecated !== null)
 						addAnnotation(newAnnotationReference(Deprecated))
 				]
+				field.addEitherSetter(setterName, context)
 			}
+		]
+	}
+	
+	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, extension TransformationContext context) {
+		val eitherType = Either.newTypeReference.type
+		if (field.type.type.isAssignableFrom(eitherType)) {
+			field.addEitherSetter(setterName, field.type, context)
+		}
+	}
+	
+	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, extension TransformationContext context) {
+		val eitherType = Either.newTypeReference.type
+		val leftType = type.actualTypeArguments.head
+		if (leftType !== null) {
+			if (leftType.type.isAssignableFrom(eitherType)) {
+				// TODO recursive
+			} else {
+				field.addEitherSetter(setterName, leftType, false, context);
+			}
+		}
+		val rightType = type.actualTypeArguments.last
+		if (rightType !== null && rightType !== leftType) {
+			if (rightType.type.isAssignableFrom(eitherType)) {
+				// TODO recursive
+			} else {
+				field.addEitherSetter(setterName, rightType, true, context);
+			}
+		}
+	}
+	
+	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, boolean right, extension TransformationContext context) {
+		field.declaringType.addMethod(setterName) [ method |
+			method.primarySourceElement = field.primarySourceElement
+			method.addParameter(field.simpleName, type)
+			method.static = field.static
+			method.visibility = Visibility.PUBLIC
+			method.returnType = primitiveVoid
+			method.body = '''
+				this.«field.simpleName» = «Either.newTypeReference».for«IF right»Right«ELSE»Left«ENDIF»(«field.simpleName»);
+			'''
 		]
 	}
 

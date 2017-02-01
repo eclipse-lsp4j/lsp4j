@@ -122,6 +122,14 @@ public class ServerCapabilities {
     this.textDocumentSync = textDocumentSync;
   }
   
+  public void setTextDocumentSync(final TextDocumentSyncKind textDocumentSync) {
+    this.textDocumentSync = Either.forLeft(textDocumentSync);
+  }
+  
+  public void setTextDocumentSync(final TextDocumentSyncOptions textDocumentSync) {
+    this.textDocumentSync = Either.forRight(textDocumentSync);
+  }
+  
   /**
    * The server provides hover support.
    */

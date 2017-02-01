@@ -10,8 +10,10 @@ package org.eclipse.lsp4j.generator;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import org.eclipse.lsp4j.generator.JsonRpcData;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor;
@@ -20,12 +22,14 @@ import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration;
+import org.eclipse.xtend.lib.macro.declaration.Element;
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableConstructorDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration;
+import org.eclipse.xtend.lib.macro.declaration.MutableTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.Type;
 import org.eclipse.xtend.lib.macro.declaration.TypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
@@ -155,9 +159,9 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       boolean _not = (!_isInferred);
       if (_not) {
         accessorsUtil.addSetter(field, Visibility.PUBLIC);
-        String _setterName = accessorsUtil.getSetterName(field);
+        final String setterName = accessorsUtil.getSetterName(field);
         TypeReference _type_2 = field.getType();
-        MutableMethodDeclaration _findDeclaredMethod_1 = impl.findDeclaredMethod(_setterName, _type_2);
+        MutableMethodDeclaration _findDeclaredMethod_1 = impl.findDeclaredMethod(setterName, _type_2);
         final Procedure1<MutableMethodDeclaration> _function_3 = (MutableMethodDeclaration it) -> {
           String _docComment = field.getDocComment();
           it.setDocComment(_docComment);
@@ -173,9 +177,88 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           }
         };
         ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod_1, _function_3);
+        this.addEitherSetter(field, setterName, context);
       }
     };
     _filter.forEach(_function_1);
+  }
+  
+  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, @Extension final TransformationContext context) {
+    TypeReference _newTypeReference = context.newTypeReference(Either.class);
+    final Type eitherType = _newTypeReference.getType();
+    TypeReference _type = field.getType();
+    Type _type_1 = _type.getType();
+    boolean _isAssignableFrom = _type_1.isAssignableFrom(eitherType);
+    if (_isAssignableFrom) {
+      TypeReference _type_2 = field.getType();
+      this.addEitherSetter(field, setterName, _type_2, context);
+    }
+  }
+  
+  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, @Extension final TransformationContext context) {
+    TypeReference _newTypeReference = context.newTypeReference(Either.class);
+    final Type eitherType = _newTypeReference.getType();
+    List<TypeReference> _actualTypeArguments = type.getActualTypeArguments();
+    final TypeReference leftType = IterableExtensions.<TypeReference>head(_actualTypeArguments);
+    if ((leftType != null)) {
+      Type _type = leftType.getType();
+      boolean _isAssignableFrom = _type.isAssignableFrom(eitherType);
+      if (_isAssignableFrom) {
+      } else {
+        this.addEitherSetter(field, setterName, leftType, false, context);
+      }
+    }
+    List<TypeReference> _actualTypeArguments_1 = type.getActualTypeArguments();
+    final TypeReference rightType = IterableExtensions.<TypeReference>last(_actualTypeArguments_1);
+    if (((rightType != null) && (rightType != leftType))) {
+      Type _type_1 = rightType.getType();
+      boolean _isAssignableFrom_1 = _type_1.isAssignableFrom(eitherType);
+      if (_isAssignableFrom_1) {
+      } else {
+        this.addEitherSetter(field, setterName, rightType, true, context);
+      }
+    }
+  }
+  
+  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, final boolean right, @Extension final TransformationContext context) {
+    MutableTypeDeclaration _declaringType = field.getDeclaringType();
+    final Procedure1<MutableMethodDeclaration> _function = (MutableMethodDeclaration method) -> {
+      Element _primarySourceElement = context.getPrimarySourceElement(field);
+      context.setPrimarySourceElement(method, _primarySourceElement);
+      String _simpleName = field.getSimpleName();
+      method.addParameter(_simpleName, type);
+      boolean _isStatic = field.isStatic();
+      method.setStatic(_isStatic);
+      method.setVisibility(Visibility.PUBLIC);
+      TypeReference _primitiveVoid = context.getPrimitiveVoid();
+      method.setReturnType(_primitiveVoid);
+      StringConcatenationClient _client = new StringConcatenationClient() {
+        @Override
+        protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+          _builder.append("this.");
+          String _simpleName = field.getSimpleName();
+          _builder.append(_simpleName, "");
+          _builder.append(" = ");
+          TypeReference _newTypeReference = context.newTypeReference(Either.class);
+          _builder.append(_newTypeReference, "");
+          _builder.append(".for");
+          {
+            if (right) {
+              _builder.append("Right");
+            } else {
+              _builder.append("Left");
+            }
+          }
+          _builder.append("(");
+          String _simpleName_1 = field.getSimpleName();
+          _builder.append(_simpleName_1, "");
+          _builder.append(");");
+          _builder.newLineIfNotEmpty();
+        }
+      };
+      method.setBody(_client);
+    };
+    _declaringType.addMethod(setterName, _function);
   }
   
   private MutableMethodDeclaration generateToString(final MutableClassDeclaration impl, @Extension final TransformationContext context) {
