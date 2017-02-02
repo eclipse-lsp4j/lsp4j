@@ -10,7 +10,10 @@ package org.eclipse.lsp4j.generator;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
+import org.eclipse.lsp4j.generator.EitherTypeArgument;
 import org.eclipse.lsp4j.generator.JsonRpcData;
 import org.eclipse.lsp4j.generator.JsonRpcDataTransformationContext;
 import org.eclipse.lsp4j.generator.JsonType;
@@ -22,6 +25,7 @@ import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration;
+import org.eclipse.xtend.lib.macro.declaration.CompilationStrategy;
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableConstructorDeclaration;
@@ -153,73 +157,97 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           }
         };
         ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod_1, _function_3);
-        boolean _isEither = context.isEither(field.getType());
-        if (_isEither) {
-          this.addEitherSetter(field, setterName, field.getType(), context);
+        final Collection<EitherTypeArgument> childTypes = context.getChildTypes(field.getType());
+        boolean _isEmpty = childTypes.isEmpty();
+        boolean _not_1 = (!_isEmpty);
+        if (_not_1) {
+          final Function1<EitherTypeArgument, JsonType> _function_4 = (EitherTypeArgument it) -> {
+            return context.getJsonType(it.getType());
+          };
+          final List<JsonType> jsonTypes = IterableExtensions.<JsonType>toList(IterableExtensions.<EitherTypeArgument, JsonType>map(childTypes, _function_4));
+          int _size = jsonTypes.size();
+          int _size_1 = IterableExtensions.<JsonType>toSet(jsonTypes).size();
+          boolean _tripleNotEquals = (_size != _size_1);
+          if (_tripleNotEquals) {
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("The json types of an Either must be distinct.");
+            context.addWarning(field, _builder.toString());
+          } else {
+            for (final EitherTypeArgument childType : childTypes) {
+              this.addEitherSetter(field, setterName, childType, context);
+            }
+          }
         }
       }
     };
     IterableExtensions.filter(impl.getDeclaredFields(), _function).forEach(_function_1);
   }
   
-  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, @Extension final JsonRpcDataTransformationContext context) {
-    final TypeReference leftType = context.getLeftType(type);
-    final TypeReference rightType = context.getRightType(type);
-    JsonType _jsonType = context.getJsonType(leftType);
-    JsonType _jsonType_1 = context.getJsonType(rightType);
-    boolean _tripleEquals = (_jsonType == _jsonType_1);
-    if (_tripleEquals) {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("The json types of an Either must be distinct.");
-      context.addError(field, _builder.toString());
-      return;
-    }
-    boolean _isEither = context.isEither(leftType);
-    if (_isEither) {
-    } else {
-      this.addEitherSetter(field, setterName, leftType, false, context);
-    }
-    boolean _isEither_1 = context.isEither(rightType);
-    if (_isEither_1) {
-    } else {
-      this.addEitherSetter(field, setterName, rightType, true, context);
-    }
-  }
-  
-  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, final boolean right, @Extension final JsonRpcDataTransformationContext context) {
+  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final EitherTypeArgument argument, @Extension final JsonRpcDataTransformationContext context) {
     final Procedure1<MutableMethodDeclaration> _function = (MutableMethodDeclaration method) -> {
       context.setPrimarySourceElement(method, context.getPrimarySourceElement(field));
-      method.addParameter(field.getSimpleName(), type);
+      method.addParameter(field.getSimpleName(), argument.getType());
       method.setStatic(field.isStatic());
       method.setVisibility(Visibility.PUBLIC);
       method.setReturnType(context.getPrimitiveVoid());
-      StringConcatenationClient _client = new StringConcatenationClient() {
-        @Override
-        protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-          _builder.append("this.");
-          String _simpleName = field.getSimpleName();
-          _builder.append(_simpleName);
-          _builder.append(" = ");
-          TypeReference _eitherType = context.getEitherType();
-          _builder.append(_eitherType);
-          _builder.append(".for");
-          {
-            if (right) {
-              _builder.append("Right");
-            } else {
-              _builder.append("Left");
-            }
-          }
-          _builder.append("(");
-          String _simpleName_1 = field.getSimpleName();
-          _builder.append(_simpleName_1);
-          _builder.append(");");
-          _builder.newLineIfNotEmpty();
-        }
+      final CompilationStrategy _function_1 = (CompilationStrategy.CompilationContext ctx) -> {
+        return this.compileEitherSetterBody(field, argument, field.getSimpleName(), ctx, context);
       };
-      method.setBody(_client);
+      method.setBody(_function_1);
     };
     field.getDeclaringType().addMethod(setterName, _function);
+  }
+  
+  protected CharSequence compileEitherSetterBody(final MutableFieldDeclaration field, final EitherTypeArgument argument, final String variableName, @Extension final CompilationStrategy.CompilationContext compilaitonContext, @Extension final JsonRpcDataTransformationContext context) {
+    CharSequence _xblockexpression = null;
+    {
+      final String newVariableName = ("_" + variableName);
+      StringConcatenation _builder = new StringConcatenation();
+      String _javaCode = compilaitonContext.toJavaCode(context.getEitherType());
+      _builder.append(_javaCode);
+      _builder.append(".for");
+      {
+        boolean _isRight = argument.isRight();
+        if (_isRight) {
+          _builder.append("Right");
+        } else {
+          _builder.append("Left");
+        }
+      }
+      _builder.append("(");
+      _builder.append(variableName);
+      _builder.append(")");
+      final String compileNewEither = _builder.toString();
+      StringConcatenation _builder_1 = new StringConcatenation();
+      {
+        EitherTypeArgument _parent = argument.getParent();
+        boolean _tripleNotEquals = (_parent != null);
+        if (_tripleNotEquals) {
+          _builder_1.append("final ");
+          String _javaCode_1 = compilaitonContext.toJavaCode(argument.getParent().getType());
+          _builder_1.append(_javaCode_1);
+          _builder_1.append(" ");
+          _builder_1.append(newVariableName);
+          _builder_1.append(" = ");
+          _builder_1.append(compileNewEither);
+          _builder_1.append(";");
+          _builder_1.newLineIfNotEmpty();
+          CharSequence _compileEitherSetterBody = this.compileEitherSetterBody(field, argument.getParent(), newVariableName, compilaitonContext, context);
+          _builder_1.append(_compileEitherSetterBody);
+          _builder_1.newLineIfNotEmpty();
+        } else {
+          _builder_1.append("this.");
+          String _simpleName = field.getSimpleName();
+          _builder_1.append(_simpleName);
+          _builder_1.append(" = ");
+          _builder_1.append(compileNewEither);
+          _builder_1.append(";");
+          _builder_1.newLineIfNotEmpty();
+        }
+      }
+      _xblockexpression = _builder_1;
+    }
+    return _xblockexpression;
   }
   
   private MutableMethodDeclaration generateToString(final MutableClassDeclaration impl, @Extension final TransformationContext context) {

@@ -44,9 +44,6 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 
 			this.left = new EitherTypeArgument<L>(gson, left);
 			this.right = new EitherTypeArgument<R>(gson, right);
-			if (this.left.equals(this.right)) {
-				throw new IllegalArgumentException("The json types of an Either must be distinct.");
-			}
 		}
 
 		@Override
@@ -120,12 +117,6 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 			return this.token.toString();
 		}
 
-		public boolean equals(Object obj) {
-			if (obj instanceof EitherTypeArgument<?>) {
-				return this.expectedToken == ((EitherTypeArgument<?>) obj).expectedToken;
-			}
-			return false;
-		}
 	}
 
 }

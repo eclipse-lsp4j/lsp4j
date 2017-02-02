@@ -13,9 +13,9 @@ import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
+import org.eclipse.xtend.lib.macro.declaration.CompilationStrategy.CompilationContext
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
-import org.eclipse.xtend.lib.macro.declaration.TypeReference
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
@@ -32,7 +32,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			annotationTypeDeclaration == JsonRpcData.findTypeGlobally
 		])
 		impl.generateImplMembers(new JsonRpcDataTransformationContext(context))
-		val fields = impl.declaredFields.filter [ !static ]
+		val fields = impl.declaredFields.filter[!static]
 
 		if (!fields.empty) {
 			impl.addConstructor [
@@ -54,7 +54,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 
 		generateToString(impl, context)
 
-        val shouldIncludeSuper = impl.extendedClass.type != Object.newTypeReference.type
+		val shouldIncludeSuper = impl.extendedClass.type != Object.newTypeReference.type
 		val equalsHashCodeUtil = new EqualsHashCodeProcessor.Util(context)
 		equalsHashCodeUtil.addEquals(impl, fields, shouldIncludeSuper)
 		equalsHashCodeUtil.addHashCode(impl, fields, shouldIncludeSuper)
@@ -62,7 +62,8 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 		return impl
 	}
 
-	private def void generateImplMembers(MutableClassDeclaration impl, extension JsonRpcDataTransformationContext context) {
+	private def void generateImplMembers(MutableClassDeclaration impl,
+		extension JsonRpcDataTransformationContext context) {
 		impl.declaredFields.filter [
 			!static
 		].forEach [ field |
@@ -73,7 +74,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			impl.findDeclaredMethod(accessorsUtil.getGetterName(field)) => [
 				docComment = field.docComment
 				if (hasNonNull) {
-				    addAnnotation(newAnnotationReference(NonNull))
+					addAnnotation(newAnnotationReference(NonNull))
 				}
 				if (deprecated !== null)
 					addAnnotation(newAnnotationReference(Deprecated))
@@ -84,50 +85,60 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 				val setterName = accessorsUtil.getSetterName(field)
 				impl.findDeclaredMethod(setterName, field.type) => [
 					docComment = field.docComment
-    				if (hasNonNull) {
-    				    parameters.head.addAnnotation(newAnnotationReference(NonNull))
-    				}
+					if (hasNonNull) {
+						parameters.head.addAnnotation(newAnnotationReference(NonNull))
+					}
 					if (deprecated !== null)
 						addAnnotation(newAnnotationReference(Deprecated))
 				]
-				if (field.type.either) {
-					field.addEitherSetter(setterName, field.type, context)
+				val childTypes = field.type.childTypes
+				if (!childTypes.empty) {
+					val jsonTypes = childTypes.map[type.jsonType].toList
+					if (jsonTypes.size !== jsonTypes.toSet.size) {
+						field.addWarning('''The json types of an Either must be distinct.''')
+					} else {
+						for (childType : childTypes) {
+							field.addEitherSetter(setterName, childType, context)
+						}
+					}
 				}
 			}
 		]
 	}
 
-	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, extension JsonRpcDataTransformationContext context) {
-		val leftType = type.leftType
-		val rightType = type.rightType
-		if (leftType.jsonType === rightType.jsonType) {
-			// TODO add an error to a type reference, there is no such API
-			field.addError('''The json types of an Either must be distinct.''')
-			return;
-		}
-		if (leftType.either) {
-			// TODO recursive
-		} else {
-			field.addEitherSetter(setterName, leftType, false, context);
-		}
-		if (rightType.either) {
-			// TODO recursive
-		} else {
-			field.addEitherSetter(setterName, rightType, true, context);
-		}
-	}
-
-	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, boolean right, extension JsonRpcDataTransformationContext context) {
+	protected def void addEitherSetter(
+		MutableFieldDeclaration field,
+		String setterName,
+		EitherTypeArgument argument,
+		extension JsonRpcDataTransformationContext context
+	) {
 		field.declaringType.addMethod(setterName) [ method |
 			method.primarySourceElement = field.primarySourceElement
-			method.addParameter(field.simpleName, type)
+			method.addParameter(field.simpleName, argument.type)
 			method.static = field.static
 			method.visibility = Visibility.PUBLIC
 			method.returnType = primitiveVoid
-			method.body = '''
-				this.«field.simpleName» = «eitherType».for«IF right»Right«ELSE»Left«ENDIF»(«field.simpleName»);
-			'''
+			method.body = [ctx|compileEitherSetterBody(field, argument, field.simpleName, ctx, context)]
 		]
+	}
+
+	protected def CharSequence compileEitherSetterBody(
+		MutableFieldDeclaration field,
+		EitherTypeArgument argument,
+		String variableName,
+		extension CompilationContext compilaitonContext,
+		extension JsonRpcDataTransformationContext context
+	) {
+		val newVariableName = '_' + variableName
+		val compileNewEither = '''«eitherType.toJavaCode».for«IF argument.right»Right«ELSE»Left«ENDIF»(«variableName»)'''
+		'''
+			«IF argument.parent !== null»
+				final «argument.parent.type.toJavaCode» «newVariableName» = «compileNewEither»;
+				«compileEitherSetterBody(field, argument.parent, newVariableName, compilaitonContext, context)»
+			«ELSE»
+				this.«field.simpleName» = «compileNewEither»;
+			«ENDIF»
+		'''
 	}
 
 	private def generateToString(MutableClassDeclaration impl, extension TransformationContext context) {
