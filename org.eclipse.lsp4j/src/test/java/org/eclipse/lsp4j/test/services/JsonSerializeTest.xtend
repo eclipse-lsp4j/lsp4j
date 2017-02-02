@@ -41,6 +41,7 @@ import org.junit.Test
 import static org.junit.Assert.*
 
 import static extension org.eclipse.lsp4j.test.services.LineEndings.*
+import org.eclipse.lsp4j.jsonrpc.messages.Either
 
 class JsonSerializeTest {
 	
@@ -263,8 +264,8 @@ class JsonSerializeTest {
                     end = new Position(3, 35)
                 ]
                 contents = newArrayList(
-                    "foo",
-                    "boo shuby doo"
+                    Either.forLeft("foo"),
+                    Either.forLeft("boo shuby doo")
                 )
             ]
         ]

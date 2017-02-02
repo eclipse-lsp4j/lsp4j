@@ -1,9 +1,10 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.MarkedString;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -16,7 +17,7 @@ public class Hover {
    * The hover's content as markdown
    */
   @NonNull
-  private List<String> contents = CollectionLiterals.<String>newArrayList();
+  private Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents;
   
   /**
    * An optional range
@@ -28,15 +29,29 @@ public class Hover {
    */
   @Pure
   @NonNull
-  public List<String> getContents() {
+  public Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> getContents() {
     return this.contents;
   }
   
   /**
    * The hover's content as markdown
    */
-  public void setContents(@NonNull final List<String> contents) {
+  public void setContents(@NonNull final Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents) {
     this.contents = contents;
+  }
+  
+  public void setContents(final String contents) {
+    final Either<String, MarkedString> _contents = Either.forLeft(contents);
+    this.contents = Either.forLeft(_contents);
+  }
+  
+  public void setContents(final MarkedString contents) {
+    final Either<String, MarkedString> _contents = Either.forRight(contents);
+    this.contents = Either.forLeft(_contents);
+  }
+  
+  public void setContents(final List<Either<String, MarkedString>> contents) {
+    this.contents = Either.forRight(contents);
   }
   
   /**
@@ -58,7 +73,7 @@ public class Hover {
     
   }
   
-  public Hover(final List<String> contents, final Range range) {
+  public Hover(final Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents, final Range range) {
     this.contents = contents;
     this.range = range;
   }

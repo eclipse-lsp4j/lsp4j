@@ -34,6 +34,7 @@ import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
@@ -78,7 +79,7 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	}
 
 	@Override
-	public CompletableFuture<CompletionList> completion(TextDocumentPositionParams position) {
+	public CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -98,7 +99,7 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	}
 
 	@Override
-	public CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position) {
+	public CompletableFuture<Either<Location, List<? extends Location>>> definition(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 

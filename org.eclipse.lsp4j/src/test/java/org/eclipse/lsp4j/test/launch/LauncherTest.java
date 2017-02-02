@@ -5,6 +5,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -21,6 +22,7 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.launch.LSPLauncher;
 import org.eclipse.lsp4j.services.LanguageClient;
@@ -66,8 +68,8 @@ public class LauncherTest {
 		result.getItems().add(item);
 		
 		server.expectedRequests.put("textDocument/completion", new Pair<>(p, result));
-		CompletableFuture<CompletionList> future = clientLauncher.getRemoteProxy().getTextDocumentService().completion(p);
-		Assert.assertEquals(result.toString(), future.get(TIMEOUT, TimeUnit.MILLISECONDS).toString());
+		CompletableFuture<Either<List<CompletionItem>, CompletionList>> future = clientLauncher.getRemoteProxy().getTextDocumentService().completion(p);
+		Assert.assertEquals(Either.forRight(result).toString(), future.get(TIMEOUT, TimeUnit.MILLISECONDS).toString());
 		client.joinOnEmpty();
 	}
 	

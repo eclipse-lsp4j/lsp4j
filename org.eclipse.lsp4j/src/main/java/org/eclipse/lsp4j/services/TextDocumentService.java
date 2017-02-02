@@ -37,6 +37,7 @@ import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
@@ -54,7 +55,7 @@ public interface TextDocumentService {
 	 * Registration Options: CompletionRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<CompletionList> completion(TextDocumentPositionParams position);
+	CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(TextDocumentPositionParams position);
 
 	/**
 	 * The request is sent from the client to the server to resolve additional
@@ -89,7 +90,7 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position);
+	CompletableFuture<Either<Location, List<? extends Location>>> definition(TextDocumentPositionParams position);
 
 	/**
 	 * The references request is sent from the client to the server to resolve

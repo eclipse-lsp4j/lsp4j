@@ -36,6 +36,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import org.eclipse.lsp4j.jsonrpc.messages.Either
 
 class JsonParseTest {
 	
@@ -334,8 +335,8 @@ class JsonParseTest {
                     end = new Position(3, 35)
                 ]
                 contents = newArrayList(
-                    "foo",
-                    "boo shuby doo"
+                    Either.forLeft("foo"),
+                    Either.forLeft("boo shuby doo")
                 )
             ]
         ])

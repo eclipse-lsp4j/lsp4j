@@ -2,8 +2,11 @@ package org.eclipse.lsp4j.generator;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import org.eclipse.lsp4j.generator.EitherTypeArgument;
 import org.eclipse.lsp4j.generator.JsonType;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtend.lib.annotations.AccessorType;
@@ -12,6 +15,7 @@ import org.eclipse.xtend.lib.annotations.Delegate;
 import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference;
 import org.eclipse.xtend.lib.macro.declaration.Element;
+import org.eclipse.xtend.lib.macro.declaration.InterfaceDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableAnnotationTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableElement;
@@ -22,6 +26,8 @@ import org.eclipse.xtend.lib.macro.declaration.TypeReference;
 import org.eclipse.xtend.lib.macro.file.Path;
 import org.eclipse.xtend.lib.macro.services.AnnotationReferenceBuildContext;
 import org.eclipse.xtend.lib.macro.services.Problem;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure0;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -40,16 +46,63 @@ public class JsonRpcDataTransformationContext implements TransformationContext {
     this.eitherType = this.newTypeReference(Either.class);
   }
   
-  public boolean isEither(final TypeReference type) {
-    return ((type != null) && this.eitherType.isAssignableFrom(type));
+  public boolean isEither(final TypeReference typeReference) {
+    return ((typeReference != null) && this.eitherType.isAssignableFrom(typeReference));
   }
   
-  public TypeReference getLeftType(final TypeReference eitherType) {
-    return IterableExtensions.<TypeReference>head(eitherType.getActualTypeArguments());
+  public TypeReference getLeftType(final TypeReference typeReference) {
+    final Type type = typeReference.getType();
+    Type _type = this.eitherType.getType();
+    boolean _tripleEquals = (type == _type);
+    if (_tripleEquals) {
+      return IterableExtensions.<TypeReference>head(typeReference.getActualTypeArguments());
+    }
+    if ((type instanceof InterfaceDeclaration)) {
+      final Function1<TypeReference, TypeReference> _function = (TypeReference it) -> {
+        return this.getLeftType(it);
+      };
+      return IterableExtensions.<TypeReference>head(IterableExtensions.<TypeReference>filterNull(IterableExtensions.map(((InterfaceDeclaration)type).getExtendedInterfaces(), _function)));
+    }
+    return null;
   }
   
-  public TypeReference getRightType(final TypeReference eitherType) {
-    return IterableExtensions.<TypeReference>last(eitherType.getActualTypeArguments());
+  public TypeReference getRightType(final TypeReference typeReference) {
+    final Type type = typeReference.getType();
+    Type _type = this.eitherType.getType();
+    boolean _tripleEquals = (type == _type);
+    if (_tripleEquals) {
+      return IterableExtensions.<TypeReference>last(typeReference.getActualTypeArguments());
+    }
+    if ((type instanceof InterfaceDeclaration)) {
+      final Function1<TypeReference, TypeReference> _function = (TypeReference it) -> {
+        return this.getRightType(it);
+      };
+      return IterableExtensions.<TypeReference>head(IterableExtensions.<TypeReference>filterNull(IterableExtensions.map(((InterfaceDeclaration)type).getExtendedInterfaces(), _function)));
+    }
+    return null;
+  }
+  
+  public Collection<EitherTypeArgument> getChildTypes(final TypeReference typeReference) {
+    final ArrayList<EitherTypeArgument> types = CollectionLiterals.<EitherTypeArgument>newArrayList();
+    boolean _isEither = this.isEither(typeReference);
+    if (_isEither) {
+      this.collectChildTypes(this.getLeftType(typeReference), null, false, types);
+      this.collectChildTypes(this.getRightType(typeReference), null, true, types);
+    }
+    return types;
+  }
+  
+  protected void collectChildTypes(final TypeReference type, final EitherTypeArgument parent, final boolean right, final Collection<EitherTypeArgument> types) {
+    final EitherTypeArgument argument = new EitherTypeArgument(type, parent, right);
+    boolean _isEither = this.isEither(type);
+    if (_isEither) {
+      this.collectChildTypes(this.getLeftType(type), argument, false, types);
+      this.collectChildTypes(this.getRightType(type), argument, true, types);
+    } else {
+      if ((type != null)) {
+        types.add(argument);
+      }
+    }
   }
   
   public boolean isJsonNull(final TypeReference type) {

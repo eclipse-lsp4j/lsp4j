@@ -21,6 +21,7 @@ import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.Hover;
+import org.eclipse.lsp4j.MarkedString;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
@@ -32,6 +33,7 @@ import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -537,9 +539,9 @@ public class JsonSerializeTest {
         };
         Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_2);
         it_1.setRange(_doubleArrow);
-        it_1.setContents(CollectionLiterals.<String>newArrayList(
-          "foo", 
-          "boo shuby doo"));
+        it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(
+          Either.<String, MarkedString>forLeft("foo"), 
+          Either.<String, MarkedString>forLeft("boo shuby doo")));
       };
       Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_1);
       it.setResult(_doubleArrow);

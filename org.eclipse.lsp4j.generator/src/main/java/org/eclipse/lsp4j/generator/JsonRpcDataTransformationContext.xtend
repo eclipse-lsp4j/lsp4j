@@ -1,10 +1,13 @@
 package org.eclipse.lsp4j.generator
 
+import java.util.Collection
 import java.util.List
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Delegate
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtend.lib.macro.TransformationContext
+import org.eclipse.xtend.lib.macro.declaration.InterfaceDeclaration
 import org.eclipse.xtend.lib.macro.declaration.TypeReference
 
 class JsonRpcDataTransformationContext implements TransformationContext {
@@ -19,16 +22,49 @@ class JsonRpcDataTransformationContext implements TransformationContext {
 		this.eitherType = Either.newTypeReference
 	}
 
-	def boolean isEither(TypeReference type) {
-		return type !== null && eitherType.isAssignableFrom(type)
+	def boolean isEither(TypeReference typeReference) {
+		return typeReference !== null && eitherType.isAssignableFrom(typeReference)
 	}
 
-	def TypeReference getLeftType(TypeReference eitherType) {
-		return eitherType.actualTypeArguments.head
+	def TypeReference getLeftType(TypeReference typeReference) {
+		val type = typeReference.type
+		if (type === eitherType.type) {
+			return typeReference.actualTypeArguments.head
+		}
+		if (type instanceof InterfaceDeclaration) {
+			return type.extendedInterfaces.map[leftType].filterNull.head
+		}
+		return null
 	}
 
-	def TypeReference getRightType(TypeReference eitherType) {
-		return eitherType.actualTypeArguments.last
+	def TypeReference getRightType(TypeReference typeReference) {
+		val type = typeReference.type
+		if (type === eitherType.type) {
+			return typeReference.actualTypeArguments.last
+		}
+		if (type instanceof InterfaceDeclaration) {
+			return type.extendedInterfaces.map[rightType].filterNull.head
+		}
+		return null
+	}
+
+	def Collection<EitherTypeArgument> getChildTypes(TypeReference typeReference) {
+		val types = newArrayList
+		if (typeReference.either) {
+			typeReference.leftType.collectChildTypes(null, false, types)
+			typeReference.rightType.collectChildTypes(null, true, types)
+		}
+		return types
+	}
+
+	protected def void collectChildTypes(TypeReference type, EitherTypeArgument parent, boolean right, Collection<EitherTypeArgument> types) {
+		val argument = new EitherTypeArgument(type, parent, right)
+		if (type.either) {
+			type.leftType.collectChildTypes(argument, false, types)
+			type.rightType.collectChildTypes(argument, true, types)
+		} else if (type !== null) {
+			types.add(argument)
+		}
 	}
 
 	def boolean isJsonNull(TypeReference type) {
@@ -54,7 +90,7 @@ class JsonRpcDataTransformationContext implements TransformationContext {
 	def boolean isJsonObject(TypeReference type) {
 		return type.jsonType === JsonType.OBJECT
 	}
-	
+
 	def JsonType getJsonType(TypeReference type) {
 		if (type === null) {
 			return JsonType.NULL
@@ -79,6 +115,19 @@ class JsonRpcDataTransformationContext implements TransformationContext {
 
 }
 
+@Accessors
+@FinalFieldsConstructor
+class EitherTypeArgument {
+	val TypeReference type
+	val EitherTypeArgument parent
+	val boolean right
+}
+
 enum JsonType {
-	NULL, STRING, NUMBER, BOOLEAN, ARRAY, OBJECT
+	NULL,
+	STRING,
+	NUMBER,
+	BOOLEAN,
+	ARRAY,
+	OBJECT
 }

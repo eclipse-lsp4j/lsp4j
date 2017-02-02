@@ -52,4 +52,11 @@ public class Either<L, R> {
 		return right != null;
 	}
 	
+	public String toString() {
+		StringBuilder builder = new StringBuilder("Either [").append(System.lineSeparator());
+		builder.append("  left = ").append(left).append(System.lineSeparator());
+		builder.append("  right = ").append(right).append(System.lineSeparator());
+		return builder.append("]").toString();
+	}
+	
 }
