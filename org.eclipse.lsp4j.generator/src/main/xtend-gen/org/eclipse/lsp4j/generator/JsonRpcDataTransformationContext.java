@@ -37,8 +37,7 @@ public class JsonRpcDataTransformationContext implements TransformationContext {
   
   public JsonRpcDataTransformationContext(final TransformationContext delegate) {
     this.delegate = delegate;
-    TypeReference _newTypeReference = this.newTypeReference(Either.class);
-    this.eitherType = _newTypeReference;
+    this.eitherType = this.newTypeReference(Either.class);
   }
   
   public boolean isEither(final TypeReference type) {
@@ -46,13 +45,11 @@ public class JsonRpcDataTransformationContext implements TransformationContext {
   }
   
   public TypeReference getLeftType(final TypeReference eitherType) {
-    List<TypeReference> _actualTypeArguments = eitherType.getActualTypeArguments();
-    return IterableExtensions.<TypeReference>head(_actualTypeArguments);
+    return IterableExtensions.<TypeReference>head(eitherType.getActualTypeArguments());
   }
   
   public TypeReference getRightType(final TypeReference eitherType) {
-    List<TypeReference> _actualTypeArguments = eitherType.getActualTypeArguments();
-    return IterableExtensions.<TypeReference>last(_actualTypeArguments);
+    return IterableExtensions.<TypeReference>last(eitherType.getActualTypeArguments());
   }
   
   public boolean isJsonNull(final TypeReference type) {
@@ -95,8 +92,7 @@ public class JsonRpcDataTransformationContext implements TransformationContext {
     if ((this.newTypeReference(Enum.class).isAssignableFrom(type) || this.newTypeReference(Number.class).isAssignableFrom(type))) {
       return JsonType.NUMBER;
     }
-    TypeReference _newTypeReference = this.newTypeReference(Boolean.class);
-    boolean _isAssignableFrom = _newTypeReference.isAssignableFrom(type);
+    boolean _isAssignableFrom = this.newTypeReference(Boolean.class).isAssignableFrom(type);
     if (_isAssignableFrom) {
       return JsonType.BOOLEAN;
     }

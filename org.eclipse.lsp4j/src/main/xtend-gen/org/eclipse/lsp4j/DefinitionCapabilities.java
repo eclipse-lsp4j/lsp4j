@@ -25,14 +25,12 @@ public class DefinitionCapabilities extends DynamicRegistrationCapabilities {
       return false;
     if (!super.equals(obj))
       return false;
-    DefinitionCapabilities other = (DefinitionCapabilities) obj;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
     int result = super.hashCode();
     return result;
   }

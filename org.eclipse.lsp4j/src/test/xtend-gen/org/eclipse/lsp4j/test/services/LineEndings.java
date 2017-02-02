@@ -7,7 +7,6 @@
  */
 package org.eclipse.lsp4j.test.services;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.eclipse.xtend2.lib.StringConcatenation;
 
@@ -19,7 +18,6 @@ public final class LineEndings {
   }
   
   public static String toSystemLineEndings(final CharSequence s) {
-    Matcher _matcher = LineEndings.LINE_ENDING_PAT.matcher(s);
-    return _matcher.replaceAll(StringConcatenation.DEFAULT_LINE_DELIMITER);
+    return LineEndings.LINE_ENDING_PAT.matcher(s).replaceAll(StringConcatenation.DEFAULT_LINE_DELIMITER);
   }
 }

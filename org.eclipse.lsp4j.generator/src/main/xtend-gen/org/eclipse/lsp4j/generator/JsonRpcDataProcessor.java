@@ -22,14 +22,11 @@ import org.eclipse.xtend.lib.macro.TransformationContext;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationReference;
 import org.eclipse.xtend.lib.macro.declaration.AnnotationTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration;
-import org.eclipse.xtend.lib.macro.declaration.Element;
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableConstructorDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration;
-import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration;
-import org.eclipse.xtend.lib.macro.declaration.MutableTypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.Type;
 import org.eclipse.xtend.lib.macro.declaration.TypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
@@ -55,22 +52,19 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
   }
   
   protected MutableClassDeclaration generateImpl(final MutableClassDeclaration impl, @Extension final TransformationContext context) {
-    Iterable<? extends AnnotationReference> _annotations = impl.getAnnotations();
     final Function1<AnnotationReference, Boolean> _function = (AnnotationReference it) -> {
       AnnotationTypeDeclaration _annotationTypeDeclaration = it.getAnnotationTypeDeclaration();
       Type _findTypeGlobally = context.findTypeGlobally(JsonRpcData.class);
       return Boolean.valueOf(Objects.equal(_annotationTypeDeclaration, _findTypeGlobally));
     };
-    AnnotationReference _findFirst = IterableExtensions.findFirst(_annotations, _function);
-    impl.removeAnnotation(_findFirst);
+    impl.removeAnnotation(IterableExtensions.findFirst(impl.getAnnotations(), _function));
     JsonRpcDataTransformationContext _jsonRpcDataTransformationContext = new JsonRpcDataTransformationContext(context);
     this.generateImplMembers(impl, _jsonRpcDataTransformationContext);
-    Iterable<? extends MutableFieldDeclaration> _declaredFields = impl.getDeclaredFields();
     final Function1<MutableFieldDeclaration, Boolean> _function_1 = (MutableFieldDeclaration it) -> {
       boolean _isStatic = it.isStatic();
       return Boolean.valueOf((!_isStatic));
     };
-    final Iterable<? extends MutableFieldDeclaration> fields = IterableExtensions.filter(_declaredFields, _function_1);
+    final Iterable<? extends MutableFieldDeclaration> fields = IterableExtensions.filter(impl.getDeclaredFields(), _function_1);
     boolean _isEmpty = IterableExtensions.isEmpty(fields);
     boolean _not = (!_isEmpty);
     if (_not) {
@@ -86,9 +80,7 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       if (((IterableExtensions.size(fields) <= JsonRpcDataProcessor.MAX_CONSTRUCTOR_ARGS) && (impl.getExtendedClass() != context.getObject()))) {
         final Procedure1<MutableConstructorDeclaration> _function_3 = (MutableConstructorDeclaration constructor) -> {
           final Consumer<MutableFieldDeclaration> _function_4 = (MutableFieldDeclaration field) -> {
-            String _simpleName = field.getSimpleName();
-            TypeReference _type = field.getType();
-            constructor.addParameter(_simpleName, _type);
+            constructor.addParameter(field.getSimpleName(), field.getType());
           };
           fields.forEach(_function_4);
           StringConcatenationClient _client = new StringConcatenationClient() {
@@ -98,10 +90,10 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
                 for(final MutableFieldDeclaration field : fields) {
                   _builder.append("this.");
                   String _simpleName = field.getSimpleName();
-                  _builder.append(_simpleName, "");
+                  _builder.append(_simpleName);
                   _builder.append(" = ");
                   String _simpleName_1 = field.getSimpleName();
-                  _builder.append(_simpleName_1, "");
+                  _builder.append(_simpleName_1);
                   _builder.append(";");
                   _builder.newLineIfNotEmpty();
                 }
@@ -114,10 +106,8 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       }
     }
     this.generateToString(impl, context);
-    TypeReference _extendedClass = impl.getExtendedClass();
-    Type _type = _extendedClass.getType();
-    TypeReference _newTypeReference = context.newTypeReference(Object.class);
-    Type _type_1 = _newTypeReference.getType();
+    Type _type = impl.getExtendedClass().getType();
+    Type _type_1 = context.newTypeReference(Object.class).getType();
     final boolean shouldIncludeSuper = (!Objects.equal(_type, _type_1));
     final EqualsHashCodeProcessor.Util equalsHashCodeUtil = new EqualsHashCodeProcessor.Util(context);
     equalsHashCodeUtil.addEquals(impl, fields, shouldIncludeSuper);
@@ -126,68 +116,50 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
   }
   
   private void generateImplMembers(final MutableClassDeclaration impl, @Extension final JsonRpcDataTransformationContext context) {
-    Iterable<? extends MutableFieldDeclaration> _declaredFields = impl.getDeclaredFields();
     final Function1<MutableFieldDeclaration, Boolean> _function = (MutableFieldDeclaration it) -> {
       boolean _isStatic = it.isStatic();
       return Boolean.valueOf((!_isStatic));
     };
-    Iterable<? extends MutableFieldDeclaration> _filter = IterableExtensions.filter(_declaredFields, _function);
     final Consumer<MutableFieldDeclaration> _function_1 = (MutableFieldDeclaration field) -> {
       final AccessorsProcessor.Util accessorsUtil = new AccessorsProcessor.Util(context);
-      Type _findTypeGlobally = context.findTypeGlobally(Deprecated.class);
-      final AnnotationReference deprecated = field.findAnnotation(_findTypeGlobally);
+      final AnnotationReference deprecated = field.findAnnotation(context.findTypeGlobally(Deprecated.class));
       accessorsUtil.addGetter(field, Visibility.PUBLIC);
-      TypeReference _newTypeReference = context.newTypeReference(NonNull.class);
-      Type _type = _newTypeReference.getType();
-      AnnotationReference _findAnnotation = field.findAnnotation(_type);
+      AnnotationReference _findAnnotation = field.findAnnotation(context.newTypeReference(NonNull.class).getType());
       final boolean hasNonNull = (_findAnnotation != null);
-      String _getterName = accessorsUtil.getGetterName(field);
-      MutableMethodDeclaration _findDeclaredMethod = impl.findDeclaredMethod(_getterName);
+      MutableMethodDeclaration _findDeclaredMethod = impl.findDeclaredMethod(accessorsUtil.getGetterName(field));
       final Procedure1<MutableMethodDeclaration> _function_2 = (MutableMethodDeclaration it) -> {
-        String _docComment = field.getDocComment();
-        it.setDocComment(_docComment);
+        it.setDocComment(field.getDocComment());
         if (hasNonNull) {
-          AnnotationReference _newAnnotationReference = context.newAnnotationReference(NonNull.class);
-          it.addAnnotation(_newAnnotationReference);
+          it.addAnnotation(context.newAnnotationReference(NonNull.class));
         }
         if ((deprecated != null)) {
-          AnnotationReference _newAnnotationReference_1 = context.newAnnotationReference(Deprecated.class);
-          it.addAnnotation(_newAnnotationReference_1);
+          it.addAnnotation(context.newAnnotationReference(Deprecated.class));
         }
       };
       ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod, _function_2);
-      TypeReference _type_1 = field.getType();
-      boolean _isInferred = _type_1.isInferred();
+      boolean _isInferred = field.getType().isInferred();
       boolean _not = (!_isInferred);
       if (_not) {
         accessorsUtil.addSetter(field, Visibility.PUBLIC);
         final String setterName = accessorsUtil.getSetterName(field);
-        TypeReference _type_2 = field.getType();
-        MutableMethodDeclaration _findDeclaredMethod_1 = impl.findDeclaredMethod(setterName, _type_2);
+        MutableMethodDeclaration _findDeclaredMethod_1 = impl.findDeclaredMethod(setterName, field.getType());
         final Procedure1<MutableMethodDeclaration> _function_3 = (MutableMethodDeclaration it) -> {
-          String _docComment = field.getDocComment();
-          it.setDocComment(_docComment);
+          it.setDocComment(field.getDocComment());
           if (hasNonNull) {
-            Iterable<? extends MutableParameterDeclaration> _parameters = it.getParameters();
-            MutableParameterDeclaration _head = IterableExtensions.head(_parameters);
-            AnnotationReference _newAnnotationReference = context.newAnnotationReference(NonNull.class);
-            _head.addAnnotation(_newAnnotationReference);
+            IterableExtensions.head(it.getParameters()).addAnnotation(context.newAnnotationReference(NonNull.class));
           }
           if ((deprecated != null)) {
-            AnnotationReference _newAnnotationReference_1 = context.newAnnotationReference(Deprecated.class);
-            it.addAnnotation(_newAnnotationReference_1);
+            it.addAnnotation(context.newAnnotationReference(Deprecated.class));
           }
         };
         ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod_1, _function_3);
-        TypeReference _type_3 = field.getType();
-        boolean _isEither = context.isEither(_type_3);
+        boolean _isEither = context.isEither(field.getType());
         if (_isEither) {
-          TypeReference _type_4 = field.getType();
-          this.addEitherSetter(field, setterName, _type_4, context);
+          this.addEitherSetter(field, setterName, field.getType(), context);
         }
       }
     };
-    _filter.forEach(_function_1);
+    IterableExtensions.filter(impl.getDeclaredFields(), _function).forEach(_function_1);
   }
   
   protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, @Extension final JsonRpcDataTransformationContext context) {
@@ -215,26 +187,21 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
   }
   
   protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, final boolean right, @Extension final JsonRpcDataTransformationContext context) {
-    MutableTypeDeclaration _declaringType = field.getDeclaringType();
     final Procedure1<MutableMethodDeclaration> _function = (MutableMethodDeclaration method) -> {
-      Element _primarySourceElement = context.getPrimarySourceElement(field);
-      context.setPrimarySourceElement(method, _primarySourceElement);
-      String _simpleName = field.getSimpleName();
-      method.addParameter(_simpleName, type);
-      boolean _isStatic = field.isStatic();
-      method.setStatic(_isStatic);
+      context.setPrimarySourceElement(method, context.getPrimarySourceElement(field));
+      method.addParameter(field.getSimpleName(), type);
+      method.setStatic(field.isStatic());
       method.setVisibility(Visibility.PUBLIC);
-      TypeReference _primitiveVoid = context.getPrimitiveVoid();
-      method.setReturnType(_primitiveVoid);
+      method.setReturnType(context.getPrimitiveVoid());
       StringConcatenationClient _client = new StringConcatenationClient() {
         @Override
         protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
           _builder.append("this.");
           String _simpleName = field.getSimpleName();
-          _builder.append(_simpleName, "");
+          _builder.append(_simpleName);
           _builder.append(" = ");
           TypeReference _eitherType = context.getEitherType();
-          _builder.append(_eitherType, "");
+          _builder.append(_eitherType);
           _builder.append(".for");
           {
             if (right) {
@@ -245,14 +212,14 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           }
           _builder.append("(");
           String _simpleName_1 = field.getSimpleName();
-          _builder.append(_simpleName_1, "");
+          _builder.append(_simpleName_1);
           _builder.append(");");
           _builder.newLineIfNotEmpty();
         }
       };
       method.setBody(_client);
     };
-    _declaringType.addMethod(setterName, _function);
+    field.getDeclaringType().addMethod(setterName, _function);
   }
   
   private MutableMethodDeclaration generateToString(final MutableClassDeclaration impl, @Extension final TransformationContext context) {
@@ -273,26 +240,23 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
         }
       } while(((c != null) && (!Objects.equal(c, context.getObject()))));
       final Procedure1<MutableMethodDeclaration> _function = (MutableMethodDeclaration it) -> {
-        TypeReference _string = context.getString();
-        it.setReturnType(_string);
-        AnnotationReference _newAnnotationReference = context.newAnnotationReference(Override.class);
-        it.addAnnotation(_newAnnotationReference);
-        AnnotationReference _newAnnotationReference_1 = context.newAnnotationReference(Pure.class);
-        it.addAnnotation(_newAnnotationReference_1);
+        it.setReturnType(context.getString());
+        it.addAnnotation(context.newAnnotationReference(Override.class));
+        it.addAnnotation(context.newAnnotationReference(Pure.class));
         final AccessorsProcessor.Util accessorsUtil = new AccessorsProcessor.Util(context);
         StringConcatenationClient _client = new StringConcatenationClient() {
           @Override
           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-            _builder.append(ToStringBuilder.class, "");
+            _builder.append(ToStringBuilder.class);
             _builder.append(" b = new ");
-            _builder.append(ToStringBuilder.class, "");
+            _builder.append(ToStringBuilder.class);
             _builder.append("(this);");
             _builder.newLineIfNotEmpty();
             {
               for(final FieldDeclaration field : toStringFields) {
                 _builder.append("b.add(\"");
                 String _simpleName = field.getSimpleName();
-                _builder.append(_simpleName, "");
+                _builder.append(_simpleName);
                 _builder.append("\", ");
                 {
                   TypeDeclaration _declaringType = field.getDeclaringType();
@@ -300,10 +264,10 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
                   if (_equals) {
                     _builder.append("this.");
                     String _simpleName_1 = field.getSimpleName();
-                    _builder.append(_simpleName_1, "");
+                    _builder.append(_simpleName_1);
                   } else {
                     String _getterName = accessorsUtil.getGetterName(field);
-                    _builder.append(_getterName, "");
+                    _builder.append(_getterName);
                     _builder.append("()");
                   }
                 }
