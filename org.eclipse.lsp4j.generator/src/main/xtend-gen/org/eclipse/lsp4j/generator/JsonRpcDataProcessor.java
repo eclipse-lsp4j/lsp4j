@@ -10,10 +10,10 @@ package org.eclipse.lsp4j.generator;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 import org.eclipse.lsp4j.generator.JsonRpcData;
-import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.generator.JsonRpcDataTransformationContext;
+import org.eclipse.lsp4j.generator.JsonType;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor;
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor;
@@ -34,6 +34,7 @@ import org.eclipse.xtend.lib.macro.declaration.Type;
 import org.eclipse.xtend.lib.macro.declaration.TypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
 import org.eclipse.xtend.lib.macro.declaration.Visibility;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -62,7 +63,8 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
     };
     AnnotationReference _findFirst = IterableExtensions.findFirst(_annotations, _function);
     impl.removeAnnotation(_findFirst);
-    this.generateImplMembers(impl, context);
+    JsonRpcDataTransformationContext _jsonRpcDataTransformationContext = new JsonRpcDataTransformationContext(context);
+    this.generateImplMembers(impl, _jsonRpcDataTransformationContext);
     Iterable<? extends MutableFieldDeclaration> _declaredFields = impl.getDeclaredFields();
     final Function1<MutableFieldDeclaration, Boolean> _function_1 = (MutableFieldDeclaration it) -> {
       boolean _isStatic = it.isStatic();
@@ -123,7 +125,7 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
     return impl;
   }
   
-  private void generateImplMembers(final MutableClassDeclaration impl, @Extension final TransformationContext context) {
+  private void generateImplMembers(final MutableClassDeclaration impl, @Extension final JsonRpcDataTransformationContext context) {
     Iterable<? extends MutableFieldDeclaration> _declaredFields = impl.getDeclaredFields();
     final Function1<MutableFieldDeclaration, Boolean> _function = (MutableFieldDeclaration it) -> {
       boolean _isStatic = it.isStatic();
@@ -177,50 +179,42 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           }
         };
         ObjectExtensions.<MutableMethodDeclaration>operator_doubleArrow(_findDeclaredMethod_1, _function_3);
-        this.addEitherSetter(field, setterName, context);
+        TypeReference _type_3 = field.getType();
+        boolean _isEither = context.isEither(_type_3);
+        if (_isEither) {
+          TypeReference _type_4 = field.getType();
+          this.addEitherSetter(field, setterName, _type_4, context);
+        }
       }
     };
     _filter.forEach(_function_1);
   }
   
-  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, @Extension final TransformationContext context) {
-    TypeReference _newTypeReference = context.newTypeReference(Either.class);
-    final Type eitherType = _newTypeReference.getType();
-    TypeReference _type = field.getType();
-    Type _type_1 = _type.getType();
-    boolean _isAssignableFrom = _type_1.isAssignableFrom(eitherType);
-    if (_isAssignableFrom) {
-      TypeReference _type_2 = field.getType();
-      this.addEitherSetter(field, setterName, _type_2, context);
+  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, @Extension final JsonRpcDataTransformationContext context) {
+    final TypeReference leftType = context.getLeftType(type);
+    final TypeReference rightType = context.getRightType(type);
+    JsonType _jsonType = context.getJsonType(leftType);
+    JsonType _jsonType_1 = context.getJsonType(rightType);
+    boolean _tripleEquals = (_jsonType == _jsonType_1);
+    if (_tripleEquals) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("The json types of an Either must be distinct.");
+      context.addError(field, _builder.toString());
+      return;
+    }
+    boolean _isEither = context.isEither(leftType);
+    if (_isEither) {
+    } else {
+      this.addEitherSetter(field, setterName, leftType, false, context);
+    }
+    boolean _isEither_1 = context.isEither(rightType);
+    if (_isEither_1) {
+    } else {
+      this.addEitherSetter(field, setterName, rightType, true, context);
     }
   }
   
-  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, @Extension final TransformationContext context) {
-    TypeReference _newTypeReference = context.newTypeReference(Either.class);
-    final Type eitherType = _newTypeReference.getType();
-    List<TypeReference> _actualTypeArguments = type.getActualTypeArguments();
-    final TypeReference leftType = IterableExtensions.<TypeReference>head(_actualTypeArguments);
-    if ((leftType != null)) {
-      Type _type = leftType.getType();
-      boolean _isAssignableFrom = _type.isAssignableFrom(eitherType);
-      if (_isAssignableFrom) {
-      } else {
-        this.addEitherSetter(field, setterName, leftType, false, context);
-      }
-    }
-    List<TypeReference> _actualTypeArguments_1 = type.getActualTypeArguments();
-    final TypeReference rightType = IterableExtensions.<TypeReference>last(_actualTypeArguments_1);
-    if (((rightType != null) && (rightType != leftType))) {
-      Type _type_1 = rightType.getType();
-      boolean _isAssignableFrom_1 = _type_1.isAssignableFrom(eitherType);
-      if (_isAssignableFrom_1) {
-      } else {
-        this.addEitherSetter(field, setterName, rightType, true, context);
-      }
-    }
-  }
-  
-  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, final boolean right, @Extension final TransformationContext context) {
+  protected void addEitherSetter(final MutableFieldDeclaration field, final String setterName, final TypeReference type, final boolean right, @Extension final JsonRpcDataTransformationContext context) {
     MutableTypeDeclaration _declaringType = field.getDeclaringType();
     final Procedure1<MutableMethodDeclaration> _function = (MutableMethodDeclaration method) -> {
       Element _primarySourceElement = context.getPrimarySourceElement(field);
@@ -239,8 +233,8 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           String _simpleName = field.getSimpleName();
           _builder.append(_simpleName, "");
           _builder.append(" = ");
-          TypeReference _newTypeReference = context.newTypeReference(Either.class);
-          _builder.append(_newTypeReference, "");
+          TypeReference _eitherType = context.getEitherType();
+          _builder.append(_eitherType, "");
           _builder.append(".for");
           {
             if (right) {

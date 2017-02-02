@@ -7,124 +7,125 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
-import static com.google.common.collect.Sets.newHashSet;
-
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	@SuppressWarnings("unchecked")
-	public <T> TypeAdapter<T> create(Gson gson, com.google.gson.reflect.TypeToken<T> typeToken) {
+	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
 		if (!Either.class.isAssignableFrom(typeToken.getRawType()))
 			return null;
-		ParameterizedType parameterizedType = (ParameterizedType)typeToken.getType();
-		Type left = parameterizedType.getActualTypeArguments()[0];
-		Type right = parameterizedType.getActualTypeArguments()[1];
-		return (TypeAdapter<T>) new Adapter(gson, left, right);
+		return new Adapter(gson, typeToken);
 	}
 
-	private static class Adapter extends TypeAdapter<Either<?,?>> {
-		
-		private final TypeToken<?> left;
-		private final TypeToken<?> right;
-		private final Gson gson;
-		
-		private final Set<Class<?>> specialRawTypes = newHashSet(String.class, Integer.class, Boolean.class, List.class);
-		
-		private boolean isObject(TypeToken<?> t) {
-			for (Class<?> class1 : specialRawTypes) {
-				if (class1.isAssignableFrom(t.getRawType())) {
-					return false;
-				}
-			}
-			return true;
-		}
+	protected static class Adapter<L, R> extends TypeAdapter<Either<L, R>> {
 
-		Adapter(Gson gson, Type left, Type right) {
-			this.gson = gson;
-			this.left = TypeToken.of(left);
-			this.right = TypeToken.of(right);
-			if (isObject(this.left) && isObject(this.right)) {
-				throw new IllegalArgumentException("Only one of the Either types can be a json object or StringMap.");
-			}
-			if (this.left.getRawType() == this.right.getRawType()) {
-				throw new IllegalArgumentException("The raw types of an Either must be distinct.");
+		protected final EitherTypeArgument<L> left;
+		protected final EitherTypeArgument<R> right;
+
+		public Adapter(Gson gson, TypeToken<Either<L, R>> typeToken) {
+			ParameterizedType parameterizedType = (ParameterizedType) typeToken.getType();
+			Type left = parameterizedType.getActualTypeArguments()[0];
+			Type right = parameterizedType.getActualTypeArguments()[1];
+
+			this.left = new EitherTypeArgument<L>(gson, left);
+			this.right = new EitherTypeArgument<R>(gson, right);
+			if (this.left.equals(this.right)) {
+				throw new IllegalArgumentException("The json types of an Either must be distinct.");
 			}
 		}
 
 		@Override
-		public void write(JsonWriter out, Either<?,?> value) throws IOException {
+		public void write(JsonWriter out, Either<L, R> value) throws IOException {
 			if (value.isLeft()) {
-				gson.toJson(value.getLeft(), left.getRawType(), out);
+				left.write(out, value.getLeft());
 			} else {
-				gson.toJson(value.getRight(), right.getRawType(), out);
+				right.write(out, value.getRight());
 			}
 		}
 
 		@Override
-		public Either<?,?> read(JsonReader in) throws IOException {
-			JsonToken peek = in.peek();
-			TypeToken<?> next;
-			switch (in.peek()) {
-				case NULL : {
-					return null;
-				}
-				case BEGIN_ARRAY : {
-					next = TypeToken.of(List.class);
-					break;
-				}
-				case BOOLEAN : {
-					next = TypeToken.of(Boolean.class);
-					break;
-				}
-				case NUMBER : {
-					next = TypeToken.of(Number.class);
-					break;
-				}
-				case STRING : {
-					next = TypeToken.of(String.class);
-					break;
-				}
-				case BEGIN_OBJECT : {
-					next = null;
-					break;
-				}
-				default : {
-					throw new IllegalStateException("Illegal token "+in.peek());
-				}
+		public Either<L, R> read(JsonReader in) throws IOException {
+			JsonToken next = in.peek();
+			if (next == JsonToken.NULL) {
+				return null;
 			}
-			if (next != null) {
-				if (next.isAssignableFrom(left)) {
-					return Either.forLeft(gson.fromJson(in, left.getType()));
-				} else if (next.isAssignableFrom(right)) {
-					return Either.forRight(gson.fromJson(in, right.getType()));
-				} else {
-					throw new IOException("Unexpected token '"+peek+"', for type '"+left+" | "+right+"'.");
-				}
+			if (left.isAssignable(next)) {
+				return Either.forLeft(left.read(in));
 			}
-			// handle object type
-			if (isObject(left)) {
-				return Either.forLeft(gson.fromJson(in, left.getType()));
-			} else if (isObject(right)) {
-				return Either.forRight(gson.fromJson(in, right.getType()));
+			if (right.isAssignable(next)) {
+				return Either.forRight(right.read(in));
 			}
-			throw new IOException("Unexpected token '"+peek+"', for type '"+left+" | "+right+"'.");
+			throw new IOException("Unexpected token '" + next + "', for type '" + left + " | " + right + "'.");
 		}
-		
+
 	}
+
+	protected static class EitherTypeArgument<T> {
+
+		protected final TypeToken<T> token;
+		protected final TypeAdapter<T> adapter;
+		protected final JsonToken expectedToken;
+
+		@SuppressWarnings("unchecked")
+		public EitherTypeArgument(Gson gson, Type type) {
+			this.token = (TypeToken<T>) TypeToken.get(type);
+			this.adapter = gson.getAdapter(this.token);
+			this.expectedToken = getExpectedToken(this.token.getRawType());
+		}
+
+		protected JsonToken getExpectedToken(Class<? super T> rawType) {
+			if (rawType.isArray() || List.class.isAssignableFrom(rawType)) {
+				return JsonToken.BEGIN_ARRAY;
+			}
+			if (Boolean.class.isAssignableFrom(rawType)) {
+				return JsonToken.BOOLEAN;
+			}
+			if (Number.class.isAssignableFrom(rawType) || Enum.class.isAssignableFrom(rawType)) {
+				return JsonToken.NUMBER;
+			}
+			if (Character.class.isAssignableFrom(rawType) || String.class.isAssignableFrom(rawType)) {
+				return JsonToken.STRING;
+			}
+			return JsonToken.BEGIN_OBJECT;
+		}
+
+		public boolean isAssignable(JsonToken token) {
+			return this.expectedToken == token;
+		}
+
+		public void write(JsonWriter out, T value) throws IOException {
+			this.adapter.write(out, value);
+		}
+
+		public T read(JsonReader in) throws IOException {
+			return this.adapter.read(in);
+		}
+
+		public String toString() {
+			return this.token.toString();
+		}
+
+		public boolean equals(Object obj) {
+			if (obj instanceof EitherTypeArgument<?>) {
+				return this.expectedToken == ((EitherTypeArgument<?>) obj).expectedToken;
+			}
+			return false;
+		}
+	}
+
 }

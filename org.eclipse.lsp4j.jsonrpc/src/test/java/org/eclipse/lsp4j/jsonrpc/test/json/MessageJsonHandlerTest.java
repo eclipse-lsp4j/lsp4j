@@ -79,7 +79,7 @@ public class MessageJsonHandlerTest {
 	
 	@SuppressWarnings({ "serial", "unchecked" })
 	@Test
-	public void testEither() {
+	public void testEither_01() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<String, Integer>>() {}.getType(),
@@ -104,5 +104,23 @@ public class MessageJsonHandlerTest {
 		result = (Either<String, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
 		Assert.assertFalse(result.isRight());
 		Assert.assertEquals("name",result.getLeft());
+	}
+	
+	@SuppressWarnings({ "serial", "unchecked" })
+	@Test
+	public void testEither_02() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Object>() {}.getType(),
+				new TypeToken<Either<MyEnum, Map<String,String>>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"result\": 2\n"
+				+ "}");
+		Either<MyEnum, List<Map<String, String>>> result = (Either<MyEnum, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isLeft());
+		Assert.assertEquals(MyEnum.B, result.getLeft());
 	}
 }

@@ -14,11 +14,10 @@ import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
-import org.eclipse.xtend.lib.macro.declaration.Visibility
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
-import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.TypeReference
+import org.eclipse.xtend.lib.macro.declaration.Visibility
+import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 class JsonRpcDataProcessor extends AbstractClassProcessor {
 
@@ -32,7 +31,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 		impl.removeAnnotation(impl.annotations.findFirst [
 			annotationTypeDeclaration == JsonRpcData.findTypeGlobally
 		])
-		impl.generateImplMembers(context)
+		impl.generateImplMembers(new JsonRpcDataTransformationContext(context))
 		val fields = impl.declaredFields.filter [ !static ]
 
 		if (!fields.empty) {
@@ -63,7 +62,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 		return impl
 	}
 
-	private def void generateImplMembers(MutableClassDeclaration impl, extension TransformationContext context) {
+	private def void generateImplMembers(MutableClassDeclaration impl, extension JsonRpcDataTransformationContext context) {
 		impl.declaredFields.filter [
 			!static
 		].forEach [ field |
@@ -91,39 +90,34 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 					if (deprecated !== null)
 						addAnnotation(newAnnotationReference(Deprecated))
 				]
-				field.addEitherSetter(setterName, context)
+				if (field.type.either) {
+					field.addEitherSetter(setterName, field.type, context)
+				}
 			}
 		]
 	}
-	
-	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, extension TransformationContext context) {
-		val eitherType = Either.newTypeReference.type
-		if (field.type.type.isAssignableFrom(eitherType)) {
-			field.addEitherSetter(setterName, field.type, context)
+
+	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, extension JsonRpcDataTransformationContext context) {
+		val leftType = type.leftType
+		val rightType = type.rightType
+		if (leftType.jsonType === rightType.jsonType) {
+			// TODO add an error to a type reference, there is no such API
+			field.addError('''The json types of an Either must be distinct.''')
+			return;
+		}
+		if (leftType.either) {
+			// TODO recursive
+		} else {
+			field.addEitherSetter(setterName, leftType, false, context);
+		}
+		if (rightType.either) {
+			// TODO recursive
+		} else {
+			field.addEitherSetter(setterName, rightType, true, context);
 		}
 	}
-	
-	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, extension TransformationContext context) {
-		val eitherType = Either.newTypeReference.type
-		val leftType = type.actualTypeArguments.head
-		if (leftType !== null) {
-			if (leftType.type.isAssignableFrom(eitherType)) {
-				// TODO recursive
-			} else {
-				field.addEitherSetter(setterName, leftType, false, context);
-			}
-		}
-		val rightType = type.actualTypeArguments.last
-		if (rightType !== null && rightType !== leftType) {
-			if (rightType.type.isAssignableFrom(eitherType)) {
-				// TODO recursive
-			} else {
-				field.addEitherSetter(setterName, rightType, true, context);
-			}
-		}
-	}
-	
-	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, boolean right, extension TransformationContext context) {
+
+	protected def void addEitherSetter(MutableFieldDeclaration field, String setterName, TypeReference type, boolean right, extension JsonRpcDataTransformationContext context) {
 		field.declaringType.addMethod(setterName) [ method |
 			method.primarySourceElement = field.primarySourceElement
 			method.addParameter(field.simpleName, type)
@@ -131,7 +125,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			method.visibility = Visibility.PUBLIC
 			method.returnType = primitiveVoid
 			method.body = '''
-				this.«field.simpleName» = «Either.newTypeReference».for«IF right»Right«ELSE»Left«ENDIF»(«field.simpleName»);
+				this.«field.simpleName» = «eitherType».for«IF right»Right«ELSE»Left«ENDIF»(«field.simpleName»);
 			'''
 		]
 	}
