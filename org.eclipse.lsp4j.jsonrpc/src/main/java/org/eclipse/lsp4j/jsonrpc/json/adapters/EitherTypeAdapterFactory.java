@@ -8,7 +8,6 @@
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,8 +28,10 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
-		if (!Either.class.isAssignableFrom(typeToken.getRawType()))
+		final Type type = typeToken.getType();
+		if (!Either.isEither(type)) {
 			return null;
+		}
 		return new Adapter(gson, typeToken);
 	}
 
@@ -40,10 +41,8 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 		protected final EitherTypeArgument<R> right;
 
 		public Adapter(Gson gson, TypeToken<Either<L, R>> typeToken) {
-			ParameterizedType parameterizedType = (ParameterizedType) typeToken.getType();
-			Type left = parameterizedType.getActualTypeArguments()[0];
-			Type right = parameterizedType.getActualTypeArguments()[1];
-
+			Type left = Either.getLeftDisjointType(typeToken.getType());
+			Type right = Either.getRightDisjointType(typeToken.getType());
 			this.left = new EitherTypeArgument<L>(gson, left);
 			this.right = new EitherTypeArgument<R>(gson, right);
 		}
@@ -85,7 +84,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 			this.token = (TypeToken<T>) TypeToken.get(type);
 			this.adapter = gson.getAdapter(this.token);
 			this.expectedTokens = new ArrayList<>();
-			for (Type disjoinType : Either.getDisjoinTypes(type)) {
+			for (Type disjoinType : Either.getAllDisjoinTypes(type)) {
 				Class<?> rawType = TypeToken.get(disjoinType).getRawType();
 				JsonToken expectedToken = getExpectedToken(rawType);
 				expectedTokens.add(expectedToken);

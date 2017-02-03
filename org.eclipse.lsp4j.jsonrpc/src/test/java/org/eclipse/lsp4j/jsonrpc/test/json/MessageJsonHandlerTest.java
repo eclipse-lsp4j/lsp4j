@@ -177,4 +177,63 @@ public class MessageJsonHandlerTest {
 		Assert.assertTrue(result.getRight().get(0).isLeft());
 		Assert.assertEquals(MyEnum.B, result.getRight().get(0).getLeft());
 	}
+	
+	@SuppressWarnings({ "serial", "unchecked" })
+	@Test
+	public void testEither_04() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Object>() {}.getType(),
+				new TypeToken<Either<MyClass, List<? extends MyClass>>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"result\": {\n"
+				+ "  value:\"foo\"\n"
+				+ "}}");
+		Either<MyClass, List<? extends MyClass>> result = (Either<MyClass, List<? extends MyClass>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isLeft());
+		Assert.assertEquals("foo", result.getLeft().getValue());
+		
+		message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"result\": [{\n"
+				+ "  value:\"bar\"\n"
+				+ "}]}");
+		result = (Either<MyClass, List<? extends MyClass>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isRight());
+		Assert.assertEquals("bar", result.getRight().get(0).getValue());
+	}
+	
+	@SuppressWarnings({ "serial", "unchecked" })
+	@Test
+	public void testEither_05() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Object>() {}.getType(),
+				new TypeToken<Either<List<MyClass>, MyClassList>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"result\": [{\n"
+				+ "  value:\"foo\"\n"
+				+ "}]}");
+		Either<List<MyClass>, MyClassList> result = (Either<List<MyClass>, MyClassList>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isLeft());
+		Assert.assertEquals("foo", result.getLeft().get(0).getValue());
+		
+		message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"result\": {\n"
+				+ "  items: [{\n"
+				+ "    value:\"bar\"\n"
+				+ "}]}}");
+		result = (Either<List<MyClass>, MyClassList>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isRight());
+		Assert.assertEquals("bar", result.getRight().getItems().get(0).getValue());
+	}
 }

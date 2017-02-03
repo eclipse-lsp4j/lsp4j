@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
-
 /**
  * 
  * An either type maps union types in protocol specifications.
@@ -23,18 +22,18 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
  * @param <R>
  */
 public class Either<L, R> {
-	
-	public static <L,R> Either<L,R> forLeft(@NonNull L left) {
-		return new Either<L,R>(left, null);
+
+	public static <L, R> Either<L, R> forLeft(@NonNull L left) {
+		return new Either<L, R>(left, null);
 	}
-	
-	public static <L,R> Either<L,R> forRight(@NonNull R right) {
-		return new Either<L,R>(null, right);
+
+	public static <L, R> Either<L, R> forRight(@NonNull R right) {
+		return new Either<L, R>(null, right);
 	}
 
 	private final L left;
 	private final R right;
-	
+
 	protected Either(L left, R right) {
 		super();
 		this.left = left;
@@ -44,45 +43,94 @@ public class Either<L, R> {
 	public L getLeft() {
 		return left;
 	}
-	
+
 	public R getRight() {
 		return right;
 	}
-	
+
 	public boolean isLeft() {
 		return left != null;
 	}
-	
+
 	public boolean isRight() {
 		return right != null;
 	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder("Either [").append(System.lineSeparator());
 		builder.append("  left = ").append(left).append(System.lineSeparator());
 		builder.append("  right = ").append(right).append(System.lineSeparator());
 		return builder.append("]").toString();
 	}
-	
+
+	/**
+	 * Return a left disjoint type if the given type is either.
+	 */
+	public static Type getLeftDisjointType(Type type) {
+		if (isEither(type)) {
+			if (type instanceof ParameterizedType) {
+				final ParameterizedType parameterizedType = (ParameterizedType) type;
+				return parameterizedType.getActualTypeArguments()[0];
+			}
+			if (type instanceof Class) {
+				final Class<?> cls = (Class<?>) type;
+				return cls.getTypeParameters()[0];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Return a right disjoint type if the given type is either.
+	 */
+	public static Type getRightDisjointType(Type type) {
+		if (isEither(type)) {
+			if (type instanceof ParameterizedType) {
+				final ParameterizedType parameterizedType = (ParameterizedType) type;
+				return parameterizedType.getActualTypeArguments()[1];
+			}
+			if (type instanceof Class) {
+				final Class<?> cls = (Class<?>) type;
+				return cls.getTypeParameters()[1];
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Return all disjoint types.
 	 */
-	public static Collection<Type> getDisjoinTypes(Type type) {
+	public static Collection<Type> getAllDisjoinTypes(Type type) {
 		return collectDisjoinTypes(type, new ArrayList<>());
 	}
-	
+
 	protected static Collection<Type> collectDisjoinTypes(Type type, Collection<Type> types) {
 		if (isEither(type)) {
-			final ParameterizedType parameterizedType = (ParameterizedType) type;
-			for (Type typeArgument : parameterizedType.getActualTypeArguments()) {
-				collectDisjoinTypes(typeArgument, types);
+			if (type instanceof ParameterizedType) {
+				return collectDisjoinTypes((ParameterizedType) type, types);
 			}
-		} else {
-			types.add(type);
+			if (type instanceof Class) {
+				return collectDisjoinTypes((Class<?>) type, types);
+			}
+		}
+		types.add(type);
+		return types;
+	}
+
+	protected static Collection<Type> collectDisjoinTypes(ParameterizedType type, Collection<Type> types) {
+		for (Type typeArgument : type.getActualTypeArguments()) {
+			collectDisjoinTypes(typeArgument, types);
 		}
 		return types;
 	}
-	
+
+	protected static Collection<Type> collectDisjoinTypes(Class<?> type, Collection<Type> types) {
+		for (Type typeParameter : type.getTypeParameters()) {
+			collectDisjoinTypes(typeParameter, types);
+		}
+		return types;
+	}
+
 	/**
 	 * Test whether the given type is Either.
 	 */
@@ -95,19 +143,19 @@ public class Either<L, R> {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Test whether the given type is Either.
 	 */
 	public static boolean isEither(ParameterizedType type) {
 		return isEither(type.getRawType());
 	}
-	
+
 	/**
 	 * Test whether the given class is Either.
 	 */
 	public static boolean isEither(Class<?> cls) {
 		return Either.class.isAssignableFrom(cls);
 	}
-	
+
 }
