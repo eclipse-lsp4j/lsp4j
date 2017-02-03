@@ -123,4 +123,58 @@ public class MessageJsonHandlerTest {
 		Assert.assertTrue(result.isLeft());
 		Assert.assertEquals(MyEnum.B, result.getLeft());
 	}
+	
+	@SuppressWarnings({ "serial", "unchecked" })
+	@Test
+	public void testEither_03() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Object>() {}.getType(),
+				new TypeToken<Either<Either<MyEnum, Map<String,String>>, List<Either<MyEnum, Map<String,String>>>>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"result\": 2\n"
+				+ "}");
+		Either<Either<MyEnum, Map<String,String>>, List<Either<MyEnum, Map<String,String>>>> result = (Either<Either<MyEnum, Map<String, String>>, List<Either<MyEnum, Map<String, String>>>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isLeft());
+		Assert.assertTrue(result.getLeft().isLeft());
+		Assert.assertEquals(MyEnum.B, result.getLeft().getLeft());
+
+		message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ " \"result\": {\n"
+				+ "  \"foo\":\"1\",\n"
+				+ "  \"bar\":\"2\"\n"
+				+ "}}");
+		result = (Either<Either<MyEnum, Map<String, String>>, List<Either<MyEnum, Map<String, String>>>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isLeft());
+		Assert.assertTrue(result.getLeft().isRight());
+		Assert.assertEquals("1", result.getLeft().getRight().get("foo"));
+		Assert.assertEquals("2", result.getLeft().getRight().get("bar"));
+
+		message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ " \"result\": [{\n"
+				+ "  \"foo\":\"1\",\n"
+				+ "  \"bar\":\"2\"\n"
+				+ "}]}");
+		result = (Either<Either<MyEnum, Map<String, String>>, List<Either<MyEnum, Map<String, String>>>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isRight());
+		Assert.assertTrue(result.getRight().get(0).isRight());
+		Assert.assertEquals("1", result.getRight().get(0).getRight().get("foo"));
+		Assert.assertEquals("2", result.getRight().get(0).getRight().get("bar"));
+		
+		message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ " \"result\": [\n"
+				+ "  2\n"
+				+ "]}");
+		result = (Either<Either<MyEnum, Map<String, String>>, List<Either<MyEnum, Map<String, String>>>>) ((ResponseMessage)message).getResult();
+		Assert.assertTrue(result.isRight());
+		Assert.assertTrue(result.getRight().get(0).isLeft());
+		Assert.assertEquals(MyEnum.B, result.getRight().get(0).getLeft());
+	}
 }
