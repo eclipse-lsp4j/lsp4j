@@ -10,6 +10,8 @@ package org.eclipse.lsp4j.jsonrpc.json.adapters;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -67,7 +69,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 			if (right.isAssignable(next)) {
 				return Either.forRight(right.read(in));
 			}
-			throw new IOException("Unexpected token '" + next + "', for type '" + left + " | " + right + "'.");
+			throw new IOException("Unexpected token " + next + ", expected " + left + " | " + right + " tokens.");
 		}
 
 	}
@@ -76,16 +78,21 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 
 		protected final TypeToken<T> token;
 		protected final TypeAdapter<T> adapter;
-		protected final JsonToken expectedToken;
+		protected final Collection<JsonToken> expectedTokens;
 
 		@SuppressWarnings("unchecked")
 		public EitherTypeArgument(Gson gson, Type type) {
 			this.token = (TypeToken<T>) TypeToken.get(type);
 			this.adapter = gson.getAdapter(this.token);
-			this.expectedToken = getExpectedToken(this.token.getRawType());
+			this.expectedTokens = new ArrayList<>();
+			for (Type disjoinType : Either.getDisjoinTypes(type)) {
+				Class<?> rawType = TypeToken.get(disjoinType).getRawType();
+				JsonToken expectedToken = getExpectedToken(rawType);
+				expectedTokens.add(expectedToken);
+			}
 		}
 
-		protected JsonToken getExpectedToken(Class<? super T> rawType) {
+		protected JsonToken getExpectedToken(Class<?> rawType) {
 			if (rawType.isArray() || List.class.isAssignableFrom(rawType)) {
 				return JsonToken.BEGIN_ARRAY;
 			}
@@ -102,7 +109,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 		}
 
 		public boolean isAssignable(JsonToken token) {
-			return this.expectedToken == token;
+			return this.expectedTokens.contains(token);
 		}
 
 		public void write(JsonWriter out, T value) throws IOException {
@@ -114,7 +121,14 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 		}
 
 		public String toString() {
-			return this.token.toString();
+			StringBuilder builder = new StringBuilder();
+			for (JsonToken expectedToken : expectedTokens) {
+				if (builder.length() != 0) {
+					builder.append(" | ");
+				}
+				builder.append(expectedToken);
+			}
+			return builder.toString();
 		}
 
 	}
