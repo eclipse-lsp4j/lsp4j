@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<feature id="org.eclipse.lsp4j.sdk" version="0.1.1.qualifier">
+	<feature id="org.eclipse.lsp4j.sdk" version="0.1.2.qualifier">
 		<category name="lsp4j"/>
 	</feature>
 	<bundle id="com.google.gson" version="2.7.0.v20161205-1708"/>
