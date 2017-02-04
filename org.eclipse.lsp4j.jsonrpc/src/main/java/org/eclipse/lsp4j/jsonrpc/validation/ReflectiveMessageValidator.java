@@ -12,6 +12,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
@@ -20,7 +22,11 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 
+import com.google.gson.JsonElement;
+
 public class ReflectiveMessageValidator implements MessageConsumer {
+
+	private static final Logger LOG = Logger.getLogger(ReflectiveMessageValidator.class.getName());
 
 	private MessageConsumer delegate;
 
@@ -33,8 +39,9 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		List<String> result = new ArrayList<>();
 		try {
 			validate(message, result, new LinkedList<>());
-		} catch (Exception e) {
-			result.add("Error during message validation: " + e.getMessage());
+		} catch (Throwable e) {
+			LOG.log(Level.SEVERE, "Error during message validation: " + e.getMessage(), e);
+			result.add("The message validation failed, please look at the server's logs.");
 		}
 		if (!result.isEmpty()) {
 			ResponseError error = new ResponseError(ResponseErrorCode.InvalidParams,
@@ -50,7 +57,8 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				|| object instanceof Enum<?> 
 				|| object instanceof String 
 				|| object instanceof Number
-				|| object instanceof Boolean) {
+				|| object instanceof Boolean
+				|| object instanceof JsonElement) {
 			return;
 		}
 		if (objectStack.contains(object)) {

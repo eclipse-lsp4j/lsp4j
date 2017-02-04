@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.lsp4j.sdk"
       label="LSP4J SDK"
-      version="0.1.1.qualifier"
+      version="0.1.2.qualifier"
       provider-name="Eclipse LSP4J">
 
    <description>
