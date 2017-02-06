@@ -38,15 +38,16 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
 	
-	private static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = (throwable) -> {
+	public static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = (throwable) -> {
 		if (throwable instanceof ResponseErrorException) {
 			return ((ResponseErrorException) throwable).getResponseError();
 		} else if ((throwable instanceof CompletionException || throwable instanceof InvocationTargetException)
 				&& throwable.getCause() instanceof ResponseErrorException) {
 			return ((ResponseErrorException) throwable.getCause()).getResponseError();
 		} else {
+			LOG.log(Level.SEVERE, "Internal error: " + throwable.getMessage(), throwable);
 			ResponseError error = new ResponseError();
-			error.setMessage(throwable.getMessage());
+			error.setMessage("Internal error, please look at the server's logs.");
 			error.setCode(ResponseErrorCode.InternalError);
 			return error;
 		}
@@ -200,7 +201,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		CompletableFuture<?> future; 
 		try {
 			future = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
-		} catch (RuntimeException e) {
+		} catch (Throwable e) {
 			ResponseError errorObject = exceptionHandler.apply(e);
 			if (errorObject != null) {
 				responseMessage.setError(errorObject);
