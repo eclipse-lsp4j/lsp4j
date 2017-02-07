@@ -99,7 +99,7 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	}
 
 	@Override
-	public CompletableFuture<Either<Location, List<? extends Location>>> definition(TextDocumentPositionParams position) {
+	public CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 

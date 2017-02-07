@@ -855,7 +855,7 @@ class Hover {
 	 * The hover's content as markdown
 	 */
 	@NonNull
-	Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents
+	List<Either<String, MarkedString>> contents
 
 	/**
 	 * An optional range

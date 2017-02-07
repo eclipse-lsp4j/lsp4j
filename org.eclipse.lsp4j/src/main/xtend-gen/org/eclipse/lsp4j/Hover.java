@@ -17,7 +17,7 @@ public class Hover {
    * The hover's content as markdown
    */
   @NonNull
-  private Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents;
+  private List<Either<String, MarkedString>> contents;
   
   /**
    * An optional range
@@ -29,29 +29,15 @@ public class Hover {
    */
   @Pure
   @NonNull
-  public Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> getContents() {
+  public List<Either<String, MarkedString>> getContents() {
     return this.contents;
   }
   
   /**
    * The hover's content as markdown
    */
-  public void setContents(@NonNull final Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents) {
+  public void setContents(@NonNull final List<Either<String, MarkedString>> contents) {
     this.contents = contents;
-  }
-  
-  public void setContents(final String contents) {
-    final Either<String, MarkedString> _contents = Either.forLeft(contents);
-    this.contents = Either.forLeft(_contents);
-  }
-  
-  public void setContents(final MarkedString contents) {
-    final Either<String, MarkedString> _contents = Either.forRight(contents);
-    this.contents = Either.forLeft(_contents);
-  }
-  
-  public void setContents(final List<Either<String, MarkedString>> contents) {
-    this.contents = Either.forRight(contents);
   }
   
   /**
@@ -73,7 +59,7 @@ public class Hover {
     
   }
   
-  public Hover(final Either<Either<String, MarkedString>, List<Either<String, MarkedString>>> contents, final Range range) {
+  public Hover(final List<Either<String, MarkedString>> contents, final Range range) {
     this.contents = contents;
     this.range = range;
   }

@@ -90,7 +90,7 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<Either<Location, List<? extends Location>>> definition(TextDocumentPositionParams position);
+	CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position);
 
 	/**
 	 * The references request is sent from the client to the server to resolve
