@@ -10,8 +10,6 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
-import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
 import org.eclipse.lsp4j.ExecuteCommandParams;
@@ -23,14 +21,6 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
 @JsonSegment("workspace")
 public interface WorkspaceService {
-	
-	/**
-	 * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
-	 */
-	default CompletableFuture<ApplyWorkspaceEditResponse> applyEdit(ApplyWorkspaceEditParams params) {
-		throw new UnsupportedOperationException();
-	}
-
 	/**
 	 * The workspace/executeCommand request is sent from the client to the
 	 * server to trigger command execution on the server. In most cases the
