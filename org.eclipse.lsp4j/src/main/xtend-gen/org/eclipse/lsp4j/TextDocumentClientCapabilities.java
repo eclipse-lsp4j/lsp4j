@@ -2,6 +2,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLensCapabilities;
+import org.eclipse.lsp4j.CompletionCapabilities;
 import org.eclipse.lsp4j.DefinitionCapabilities;
 import org.eclipse.lsp4j.DocumentHighlightCapabilities;
 import org.eclipse.lsp4j.DocumentLinkCapabilities;
@@ -23,6 +24,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class TextDocumentClientCapabilities {
   private SynchronizationCapabilities synchronization;
+  
+  /**
+   * Capabilities specific to the `textDocument/completion`
+   */
+  private CompletionCapabilities completion;
   
   /**
    * Capabilities specific to the `textDocument/hover`
@@ -96,6 +102,21 @@ public class TextDocumentClientCapabilities {
   
   public void setSynchronization(final SynchronizationCapabilities synchronization) {
     this.synchronization = synchronization;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/completion`
+   */
+  @Pure
+  public CompletionCapabilities getCompletion() {
+    return this.completion;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/completion`
+   */
+  public void setCompletion(final CompletionCapabilities completion) {
+    this.completion = completion;
   }
   
   /**
@@ -302,6 +323,7 @@ public class TextDocumentClientCapabilities {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("synchronization", this.synchronization);
+    b.add("completion", this.completion);
     b.add("hover", this.hover);
     b.add("signatureHelp", this.signatureHelp);
     b.add("references", this.references);
@@ -332,6 +354,11 @@ public class TextDocumentClientCapabilities {
       if (other.synchronization != null)
         return false;
     } else if (!this.synchronization.equals(other.synchronization))
+      return false;
+    if (this.completion == null) {
+      if (other.completion != null)
+        return false;
+    } else if (!this.completion.equals(other.completion))
       return false;
     if (this.hover == null) {
       if (other.hover != null)
@@ -407,6 +434,7 @@ public class TextDocumentClientCapabilities {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.synchronization== null) ? 0 : this.synchronization.hashCode());
+    result = prime * result + ((this.completion== null) ? 0 : this.completion.hashCode());
     result = prime * result + ((this.hover== null) ? 0 : this.hover.hashCode());
     result = prime * result + ((this.signatureHelp== null) ? 0 : this.signatureHelp.hashCode());
     result = prime * result + ((this.references== null) ? 0 : this.references.hashCode());

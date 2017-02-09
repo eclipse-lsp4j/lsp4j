@@ -18,7 +18,7 @@ public class DocumentLink {
   private Range range;
   
   /**
-   * The uri this link points to.
+   * The uri this link points to. If missing a resolve request is sent later.
    */
   @NonNull
   private String target;
@@ -40,7 +40,7 @@ public class DocumentLink {
   }
   
   /**
-   * The uri this link points to.
+   * The uri this link points to. If missing a resolve request is sent later.
    */
   @Pure
   @NonNull
@@ -49,7 +49,7 @@ public class DocumentLink {
   }
   
   /**
-   * The uri this link points to.
+   * The uri this link points to. If missing a resolve request is sent later.
    */
   public void setTarget(@NonNull final String target) {
     this.target = target;

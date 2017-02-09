@@ -61,7 +61,7 @@ public class CompletionItem {
   
   /**
    * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-   * `insertText` and `range` is ignored.
+   * `insertText` is ignored.
    * 
    * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
    * has been requested.
@@ -212,7 +212,7 @@ public class CompletionItem {
   
   /**
    * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-   * `insertText` and `range` is ignored.
+   * `insertText` is ignored.
    * 
    * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
    * has been requested.
@@ -224,7 +224,7 @@ public class CompletionItem {
   
   /**
    * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-   * `insertText` and `range` is ignored.
+   * `insertText` is ignored.
    * 
    * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
    * has been requested.

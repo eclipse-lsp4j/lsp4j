@@ -164,6 +164,11 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 @JsonRpcData
 class TextDocumentClientCapabilities {
 	SynchronizationCapabilities synchronization
+	
+	/**
+     * Capabilities specific to the `textDocument/completion`
+     */
+    CompletionCapabilities completion
     
     /**
      * Capabilities specific to the `textDocument/hover`
@@ -419,7 +424,7 @@ class CompletionItem {
 
     /**
      * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-     * `insertText` and `range` is ignored.
+     * `insertText` is ignored.
      *
      * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
      * has been requested.
@@ -676,7 +681,7 @@ class DocumentLink {
     @NonNull Range range
     
     /**
-     * The uri this link points to.
+     * The uri this link points to. If missing a resolve request is sent later.
      */
     @NonNull String target
 }
