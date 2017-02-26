@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
@@ -28,6 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 public class GenericEndpoint implements Endpoint {
 	
 	private static final Logger LOG = Logger.getLogger(GenericEndpoint.class.getName());
+	private static final Object[] NO_ARGUMENTS = {};
 
 	private final LinkedHashMap<String, Function<Object, CompletableFuture<Object>>> methodHandlers = new LinkedHashMap<>();
 	private final Object delegate;
@@ -42,8 +44,9 @@ public class GenericEndpoint implements Endpoint {
 			@SuppressWarnings("unchecked")
 			Function<Object, CompletableFuture<Object>> handler = (arg) -> {
 				try {
-					Object[] argument = arg == null ? new Object[0] : new Object[] { arg };
-					return (CompletableFuture<Object>) methodInfo.method.invoke(current, argument);
+					Method method = methodInfo.method;
+					Object[] arguments = this.getArguments(method, arg);
+					return (CompletableFuture<Object>) method.invoke(current, arguments);
 				} catch (InvocationTargetException | IllegalAccessException e) {
 					throw new RuntimeException(e);
 				}
@@ -61,6 +64,17 @@ public class GenericEndpoint implements Endpoint {
 				throw new RuntimeException(e);
 			}
 		});
+	}
+	
+	protected Object[] getArguments(Method method, Object arg) {
+		if (arg == null) {
+			return NO_ARGUMENTS;
+		}
+		if (method.getParameterCount() == 0) {
+			LOG.warning("Unexpected params '" + arg + "' for '" + method + "' is ignored");
+			return NO_ARGUMENTS;
+		}
+		return new Object[] { arg };
 	}
 
 	@Override
