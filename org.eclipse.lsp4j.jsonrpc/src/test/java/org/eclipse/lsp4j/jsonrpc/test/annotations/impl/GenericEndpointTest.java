@@ -57,4 +57,13 @@ public class GenericEndpointTest {
 		
 		Assert.assertEquals(2, foo.calls);
 	}
+	
+	@Test public void testUnexpectedParams() {
+		Foo foo = new Foo();
+		GenericEndpoint endpoint = new GenericEndpoint(foo);
+		Assert.assertEquals(0, foo.calls);
+
+		endpoint.notify("myNotification", new Object());
+		Assert.assertEquals(1, foo.calls);
+	}
 }
