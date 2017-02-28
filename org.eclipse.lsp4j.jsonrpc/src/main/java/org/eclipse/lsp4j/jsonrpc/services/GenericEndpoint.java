@@ -58,8 +58,11 @@ public class GenericEndpoint implements Endpoint {
 		AnnotationUtil.findDelegateSegments(current.getClass(), visitedForDelegate, (method) -> {
 			try {
 				Object delegate = method.invoke(current);
-				if (delegate != null)
+				if (delegate != null) {
 					recursiveFindRpcMethods(delegate, visited, visitedForDelegate);
+				} else {
+					LOG.log(Level.SEVERE, "A delegate object is null, jsonrpc methods of '" + method + "' are ignored");
+				}
 			} catch (InvocationTargetException | IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
