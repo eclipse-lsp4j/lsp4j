@@ -13,8 +13,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A method annotated with {@link JsonDelegate} is treated a s a delegate method. 
+ * A method annotated with {@link JsonDelegate} is treated as a delegate method.
  * As a result jsonrpc methods of the delegate will be considered, too.
+ * If an annotated method returns `null`
+ * then jsonrpc methods of the delegate are not considered.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
