@@ -17,6 +17,14 @@ class DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
+class WorkspaceEditCapabilites {
+	/**
+	 * The client supports versioned document changes in `WorkspaceEdit`s
+	 */
+	Boolean documentChanges
+}
+
+@JsonRpcData
 class DidChangeConfigurationCapabilites extends DynamicRegistrationCapabilities {
 }
 
@@ -42,6 +50,11 @@ class WorkspaceClientCapabilites {
      * to the workspace.
      */
     Boolean applyEdit
+    
+    /**
+     * Capabilities specific to `WorkspaceEdit`s
+     */
+    WorkspaceEditCapabilites workspaceEdit
     
     /**
      * Capabilities specific to the `workspace/didChangeConfiguration` notification.
@@ -1444,15 +1457,44 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 }
 
 /**
- * A workspace edit represents changes to many resources managed in the workspace.
+ * Describes textual changes on a single text document.
+ * The text document is referred to as a `VersionedTextDocumentIdentifier`
+ * to allow clients to check the text document version before an edit is applied.
+ */
+@JsonRpcData
+class TextDocumentEdit {
+	/**
+	 * The text document to change.
+	 */
+	@NonNull
+	VersionedTextDocumentIdentifier textDocument
+	
+	/**
+	 * The edits to be applied
+	 */
+	@NonNull
+	List<TextEdit> edits
+}
+
+/**
+ * A workspace edit represents changes to many resources managed in the workspace. 
+ * The edit should either provide `changes` or `documentChanges`.
+ * If documentChanges are present they are preferred over `changes`
+ * if the client can handle versioned document edits.
  */
 @JsonRpcData
 class WorkspaceEdit {
 	/**
 	 * Holds changes to existing resources.
 	 */
-	@NonNull
 	Map<String, List<TextEdit>> changes = new LinkedHashMap
+
+	/**
+	 * An array of `TextDocumentEdit`s to express changes to specific a specific
+	 * version of a text document. Whether a client supports versioned document
+	 * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
+	 */
+	List<TextDocumentEdit> documentChanges
 }
 
 /**

@@ -4,6 +4,7 @@ import org.eclipse.lsp4j.DidChangeConfigurationCapabilites;
 import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilites;
 import org.eclipse.lsp4j.ExecuteCommandCapabilites;
 import org.eclipse.lsp4j.SymbolCapabilites;
+import org.eclipse.lsp4j.WorkspaceEditCapabilites;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -17,6 +18,11 @@ public class WorkspaceClientCapabilites {
    * to the workspace.
    */
   private Boolean applyEdit;
+  
+  /**
+   * Capabilities specific to `WorkspaceEdit`s
+   */
+  private WorkspaceEditCapabilites workspaceEdit;
   
   /**
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
@@ -53,6 +59,21 @@ public class WorkspaceClientCapabilites {
    */
   public void setApplyEdit(final Boolean applyEdit) {
     this.applyEdit = applyEdit;
+  }
+  
+  /**
+   * Capabilities specific to `WorkspaceEdit`s
+   */
+  @Pure
+  public WorkspaceEditCapabilites getWorkspaceEdit() {
+    return this.workspaceEdit;
+  }
+  
+  /**
+   * Capabilities specific to `WorkspaceEdit`s
+   */
+  public void setWorkspaceEdit(final WorkspaceEditCapabilites workspaceEdit) {
+    this.workspaceEdit = workspaceEdit;
   }
   
   /**
@@ -124,6 +145,7 @@ public class WorkspaceClientCapabilites {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("applyEdit", this.applyEdit);
+    b.add("workspaceEdit", this.workspaceEdit);
     b.add("didChangeConfiguration", this.didChangeConfiguration);
     b.add("didChangeWatchedFiles", this.didChangeWatchedFiles);
     b.add("symbol", this.symbol);
@@ -145,6 +167,11 @@ public class WorkspaceClientCapabilites {
       if (other.applyEdit != null)
         return false;
     } else if (!this.applyEdit.equals(other.applyEdit))
+      return false;
+    if (this.workspaceEdit == null) {
+      if (other.workspaceEdit != null)
+        return false;
+    } else if (!this.workspaceEdit.equals(other.workspaceEdit))
       return false;
     if (this.didChangeConfiguration == null) {
       if (other.didChangeConfiguration != null)
@@ -175,6 +202,7 @@ public class WorkspaceClientCapabilites {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.applyEdit== null) ? 0 : this.applyEdit.hashCode());
+    result = prime * result + ((this.workspaceEdit== null) ? 0 : this.workspaceEdit.hashCode());
     result = prime * result + ((this.didChangeConfiguration== null) ? 0 : this.didChangeConfiguration.hashCode());
     result = prime * result + ((this.didChangeWatchedFiles== null) ? 0 : this.didChangeWatchedFiles.hashCode());
     result = prime * result + ((this.symbol== null) ? 0 : this.symbol.hashCode());
