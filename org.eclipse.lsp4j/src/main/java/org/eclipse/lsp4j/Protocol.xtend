@@ -683,7 +683,7 @@ class DocumentLink {
     /**
      * The uri this link points to. If missing a resolve request is sent later.
      */
-    @NonNull String target
+    String target
 }
 
 @JsonRpcData
