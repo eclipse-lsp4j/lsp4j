@@ -20,7 +20,6 @@ public class DocumentLink {
   /**
    * The uri this link points to.
    */
-  @NonNull
   private String target;
   
   /**
@@ -43,7 +42,6 @@ public class DocumentLink {
    * The uri this link points to.
    */
   @Pure
-  @NonNull
   public String getTarget() {
     return this.target;
   }
@@ -51,7 +49,7 @@ public class DocumentLink {
   /**
    * The uri this link points to.
    */
-  public void setTarget(@NonNull final String target) {
+  public void setTarget(final String target) {
     this.target = target;
   }
   

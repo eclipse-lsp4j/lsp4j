@@ -402,7 +402,7 @@ class DocumentLink {
     /**
      * The uri this link points to.
      */
-    @NonNull String target
+    String target
 }
 
 @JsonRpcData
