@@ -10,27 +10,20 @@ import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
 
 buildscript {
-	repositories {
-		jcenter()
-		maven {
-			url 'http://services.typefox.io/open-source/jenkins/job/gradle-plugins/lastStableBuild/artifact/build/maven-repository/'
-		}
-	}
+	repositories.jcenter()
 	dependencies {
-		classpath 'org.xtext:xtext-gradle-plugin:1.0.15'
-		classpath 'io.typefox.gradle:io.typefox.gradle.p2gen:0.1.0'
+		classpath 'org.xtext:xtext-gradle-plugin:1.0.17'
+		classpath 'io.typefox.gradle:gradle-p2gen:0.1.0'
 	}
 }
+
+ext.buildTime = DateTimeFormatter.ofPattern('yyyyMMdd-HHmm').format(LocalDateTime.now())
 
 apply from: "${rootDir}/gradle/versions.gradle"
 apply from: "${rootDir}/gradle/p2-deployment.gradle"
 
-ext.buildTime = DateTimeFormatter.ofPattern('yyyyMMdd-HHmm').format(LocalDateTime.now())
-
 subprojects {
-	repositories {
-		jcenter()
-	}
+	repositories.jcenter()
 	
 	group = 'org.eclipse.lsp4j'
 	version = rootProject.version

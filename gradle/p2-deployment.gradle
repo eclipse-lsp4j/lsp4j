@@ -28,7 +28,7 @@ p2gen {
 		bundle 'com.google.guava'
 	}
 	dependencies {
-		repositoryUrl 'http://download.eclipse.org/tools/orbit/S-builds/S20161205183421/repository/'
+		repositoryUrl 'http://download.eclipse.org/tools/orbit/S-builds/S20170306214312/repository/'
 		bundle {
 			id 'com.google.gson'
 			version versions.gson_orbit
