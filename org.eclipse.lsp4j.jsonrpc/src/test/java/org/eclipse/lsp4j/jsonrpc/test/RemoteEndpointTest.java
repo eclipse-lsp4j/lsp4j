@@ -20,6 +20,8 @@ import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Test;
 
@@ -109,7 +111,12 @@ public class RemoteEndpointTest {
 		
 		Entry<RequestMessage, CompletableFuture<Object>> entry = endp.requests.entrySet().iterator().next();
 		entry.getValue().cancel(true);
-		assertTrue(consumer.messages.toString(), consumer.messages.isEmpty());
+		ResponseMessage message = (ResponseMessage) consumer.messages.get(0);
+		assertNotNull(message);
+		ResponseError error = message.getError();
+		assertNotNull(error);
+		assertEquals(error.getCode(), ResponseErrorCode.RequestCancelled.getValue());
+		assertEquals(error.getMessage(), "The request (id: 1, method: 'foo') has been cancelled");
 
 	}
 	

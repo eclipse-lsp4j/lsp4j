@@ -149,6 +149,49 @@ public class IntegrationTest {
 		}
 	}
 	
+	@Test
+	public void testCancellationResponse() throws Exception {
+		// create client messages
+		String requestMessage = "{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"1\",\n" 
+				+ "\"method\":\"askServer\",\n" 
+				+ "\"params\": { value: \"bar\" }\n"
+				+ "}";
+		String cancellationMessage = "{\"jsonrpc\":\"2.0\","
+				+ "\"method\":\"$/cancelRequest\",\n" 
+				+ "\"params\": { id: 1 }\n"
+				+ "}";
+		String clientMessages = getHeader(requestMessage.getBytes().length) + requestMessage
+				+ getHeader(cancellationMessage.getBytes().length) + cancellationMessage;
+		
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFutures.computeAsync(cancelToken -> {
+					try {
+						long startTime = System.currentTimeMillis();
+						do {
+							cancelToken.checkCanceled();
+							Thread.sleep(50);
+						} while (System.currentTimeMillis() - startTime < TIMEOUT);
+					} catch (InterruptedException e) {
+						Assert.fail("Thread was interrupted unexpectedly.");
+					}
+					return param;
+				});
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+		
+		Assert.assertEquals("Content-Length: 132" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32800,\"message\":\"The request (id: 1, method: \\u0027askServer\\u0027) has been cancelled\"}}",
+				out.toString());
+	}
+	
 	
 	@Test
 	public void testVersatility() throws Exception {
