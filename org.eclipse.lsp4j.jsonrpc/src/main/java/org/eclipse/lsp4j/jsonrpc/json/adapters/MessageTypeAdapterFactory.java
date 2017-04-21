@@ -88,16 +88,20 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 					break;
 				}
 				case "params": {
-					Type type = null;
+					Type parameterType = null;
 					if (method != null) {
 						JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
 						if (jsonRpcMethod != null)
-							type = jsonRpcMethod.getParameterType();
+							parameterType = jsonRpcMethod.getParameterType();
 					}
-					if (type == null)
+					if (parameterType == null || parameterType == Void.class) {
 						params = new JsonParser().parse(in);
-					else
-						params = gson.fromJson(in, type);
+					} else {
+						params = gson.fromJson(in, parameterType);
+						if (params instanceof JsonElement) {
+							params = gson.fromJson((JsonElement) params, parameterType);
+						}
+					}
 					break;
 				}
 				case "result": {
@@ -136,12 +140,6 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				message.setJsonrpc(jsonrpc);
 				message.setId(id);
 				message.setMethod(method);
-				if (params instanceof JsonElement) {
-					// Type of params could not be resolved - try again with the parsed JSON tree
-					JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
-					if (jsonRpcMethod != null)
-						params = gson.fromJson((JsonElement) params, jsonRpcMethod.getParameterType());
-				}
 				message.setParams(params);
 				return message;
 			} else if (id != null) {
@@ -170,12 +168,6 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				NotificationMessage message = new NotificationMessage();
 				message.setJsonrpc(jsonrpc);
 				message.setMethod(method);
-				if (params instanceof JsonElement) {
-					// Type of params could not be resolved - try again with the parsed JSON tree
-					JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
-					if (jsonRpcMethod != null)
-						params = gson.fromJson((JsonElement) params, jsonRpcMethod.getParameterType());
-				}
 				message.setParams(params);
 				return message;
 			} else {

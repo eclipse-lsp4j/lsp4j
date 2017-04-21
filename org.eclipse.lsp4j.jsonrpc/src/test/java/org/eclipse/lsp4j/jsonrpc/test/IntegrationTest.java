@@ -24,6 +24,7 @@ import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -333,6 +334,42 @@ public class IntegrationTest {
 			Assert.assertEquals("Content-Length: 26" + CRLF + CRLF
 					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\"}",
 					out.toString());
+		} finally {
+			logMessages.unregister();
+		}
+	}
+	
+	public static interface UnexpectedParamsTestServer {
+		@JsonNotification
+		void myNotification();
+	}
+	
+	@Test
+	public void testUnexpectedParams() throws Exception {
+		// intercept log messages
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(GenericEndpoint.class.getName());
+			
+			// create client messages
+			String notificationMessage = "{\"jsonrpc\":\"2.0\","
+					+ "\"method\":\"myNotification\",\n" 
+					+ "\"params\": { \"value\": \"foo\" }\n"
+					+ "}";
+			String clientMessages = getHeader(notificationMessage.getBytes().length) + notificationMessage;
+			
+			// create server side
+			ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			UnexpectedParamsTestServer server = new UnexpectedParamsTestServer() {
+				public void myNotification() {
+				}
+			};
+			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+			serverSideLauncher.startListening();
+			
+			logMessages.await(Level.WARNING, "Unexpected params '{\"value\":\"foo\"}' for "
+					+ "'public abstract void org.eclipse.lsp4j.jsonrpc.test.IntegrationTest$UnexpectedParamsTestServer.myNotification()' is ignored");
 		} finally {
 			logMessages.unregister();
 		}
