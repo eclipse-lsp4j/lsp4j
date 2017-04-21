@@ -991,6 +991,11 @@ class InitializeResult {
 	ServerCapabilities capabilities
 }
 
+@JsonRpcData
+class InitializedParams {
+	
+}
+
 /**
  * Represents a location inside a resource, such as a line inside a text file.
  */

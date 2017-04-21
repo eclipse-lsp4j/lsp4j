@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
+import org.eclipse.lsp4j.InitializedParams;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -45,6 +46,13 @@ public interface LanguageServer {
 	 * register capabilities.
 	 */
 	@JsonNotification
+	default void initialized(InitializedParams params) {
+		initialized();
+	}
+	/**
+	 * @deprecated see initialized(InitializedParams)
+	 */
+	@Deprecated
 	default void initialized() {
 	}
 
