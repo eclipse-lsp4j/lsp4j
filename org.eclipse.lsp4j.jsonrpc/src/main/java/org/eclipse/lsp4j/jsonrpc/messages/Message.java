@@ -11,6 +11,10 @@ import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
+/**
+ * A general message as defined by JSON-RPC. The language server protocol always
+ * uses "2.0" as the jsonrpc version.
+ */
 public abstract class Message {
 	
 	@NonNull

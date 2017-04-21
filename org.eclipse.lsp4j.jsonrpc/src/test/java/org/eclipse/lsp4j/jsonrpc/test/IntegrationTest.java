@@ -245,7 +245,50 @@ public class IntegrationTest {
 			logMessages.await(Level.WARNING, "Unsupported request method: foo2");
 			
 			Assert.assertEquals("Content-Length: 95" + CRLF + CRLF
-					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32600,\"message\":\"Unsupported request method: foo2\"}}",
+					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32601,\"message\":\"Unsupported request method: foo2\"}}",
+					out.toString());
+		} finally {
+			logMessages.unregister();
+		}
+	}
+	
+	@Test
+	public void testUnknownOptionalMessages() throws Exception {
+		// intercept log messages
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(GenericEndpoint.class.getName());
+			
+			// create client messages
+			String clientMessage1 = "{\"jsonrpc\":\"2.0\","
+					+ "\"method\":\"$/foo1\",\n" 
+					+ " \"params\":\"bar\"\n"
+					+ "}";
+			String clientMessage2 = "{\"jsonrpc\":\"2.0\","
+					+ "\"id\":\"1\",\n" 
+					+ "\"method\":\"$/foo2\",\n" 
+					+ " \"params\":\"bar\"\n"
+					+ "}";
+			String clientMessages = getHeader(clientMessage1.getBytes().length) + clientMessage1
+					+ getHeader(clientMessage2.getBytes().length) + clientMessage2;
+			
+			// create server side
+			ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			MyServer server = new MyServer() {
+				@Override
+				public CompletableFuture<MyParam> askServer(MyParam param) {
+					return CompletableFuture.completedFuture(param);
+				}
+			};
+			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+			serverSideLauncher.startListening();
+			
+			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
+			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
+			
+			Assert.assertEquals("Content-Length: 26" + CRLF + CRLF
+					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\"}",
 					out.toString());
 		} finally {
 			logMessages.unregister();

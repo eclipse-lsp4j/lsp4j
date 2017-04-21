@@ -9,6 +9,13 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
+/**
+ * Response Message sent as a result of a request. If a request doesn't provide
+ * a result value the receiver of a request still needs to return a response
+ * message to conform to the JSON RPC specification. The result property of the
+ * ResponseMessage should be set to null in this case to signal a successful
+ * request.
+ */
 public class ResponseMessage extends Message {
 
 	/**
