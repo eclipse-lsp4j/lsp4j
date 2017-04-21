@@ -122,9 +122,8 @@ public interface TextDocumentService {
 
 	/**
 	 * The code action request is sent from the client to the server to compute
-	 * commands for a given text document and range. The request is trigger when
-	 * the user moves the cursor into an problem marker in the editor or presses
-	 * the lightbulb associated with a marker.
+	 * commands for a given text document and range. These commands are
+	 * typically code fixes to either fix problems or to beautify/refactor code.
 	 * 
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
@@ -189,7 +188,7 @@ public interface TextDocumentService {
 	 * by the client and the server must not try to read the document's truth
 	 * using the document's uri.
 	 * 
-	 * Registration Options: TextDocumentRegistrationsOptions
+	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonNotification
 	void didOpen(DidOpenTextDocumentParams params);

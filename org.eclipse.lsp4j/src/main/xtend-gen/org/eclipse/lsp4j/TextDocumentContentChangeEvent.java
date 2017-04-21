@@ -22,7 +22,7 @@ public class TextDocumentContentChangeEvent {
   private Integer rangeLength;
   
   /**
-   * The new text of the document.
+   * The new text of the range/document.
    */
   @NonNull
   private String text;
@@ -58,7 +58,7 @@ public class TextDocumentContentChangeEvent {
   }
   
   /**
-   * The new text of the document.
+   * The new text of the range/document.
    */
   @Pure
   @NonNull
@@ -67,7 +67,7 @@ public class TextDocumentContentChangeEvent {
   }
   
   /**
-   * The new text of the document.
+   * The new text of the range/document.
    */
   public void setText(@NonNull final String text) {
     this.text = text;

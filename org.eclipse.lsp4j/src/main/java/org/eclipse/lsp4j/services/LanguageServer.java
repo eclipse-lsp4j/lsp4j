@@ -26,7 +26,7 @@ public interface LanguageServer {
 	 * 
 	 * If the server receives request or notification before the initialize request it should act as follows:
 	 * 	- for a request the respond should be errored with code: -32001. The message can be picked by the server.
-	 *  - notifications should be dropped.
+	 *  - notifications should be dropped, except for the exit notification. This will allow the exit a server without an initialize request.
 	 *  
 	 * Until the server has responded to the initialize request with an InitializeResult 
 	 * the client must not sent any additional requests or notifications to the server.
@@ -38,9 +38,11 @@ public interface LanguageServer {
 	CompletableFuture<InitializeResult> initialize(InitializeParams params);
 
 	/**
-	 * The initialized notification is sent from the client to the server 
-	 * after the client is fully initialized 
-	 * and is able to listen to arbitrary requests and notifications sent from the server.
+	 * The initialized notification is sent from the client to the server after
+	 * the client received the result of the initialize request but before the
+	 * client is sending any other request or notification to the server. The
+	 * server can use the initialized notification for example to dynamically
+	 * register capabilities.
 	 */
 	@JsonNotification
 	default void initialized() {
