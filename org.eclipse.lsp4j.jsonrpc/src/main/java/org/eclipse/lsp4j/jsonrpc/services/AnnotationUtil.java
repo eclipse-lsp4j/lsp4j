@@ -12,8 +12,6 @@ import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.google.common.base.Strings;
-
 public final class AnnotationUtil {
 	private AnnotationUtil() {}
 	
@@ -65,15 +63,16 @@ public final class AnnotationUtil {
 				}
 				JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
 				if (jsonRequest != null) {
-					String name = Strings.isNullOrEmpty(jsonRequest.value()) ? method.getName() : jsonRequest.value();
+					String value = jsonRequest.value();
+					String name = value != null && value.length() > 0 ? value : method.getName();
 					methodInfo.name = jsonRequest.useSegment() ? prefix + name : name;
 					methodInfo.isNotification = false;
 					acceptor.accept(methodInfo);
 				} else {
 					JsonNotification jsonNotification = method.getAnnotation(JsonNotification.class);
 					if (jsonNotification != null) {
-						String name = Strings.isNullOrEmpty(jsonNotification.value()) ? method.getName()
-								: jsonNotification.value();
+						String value = jsonNotification.value();
+						String name = value != null && value.length() > 0 ? value : method.getName();
 						methodInfo.name = jsonNotification.useSegment() ? prefix + name : name;
 						methodInfo.isNotification = true;
 						acceptor.accept(methodInfo);

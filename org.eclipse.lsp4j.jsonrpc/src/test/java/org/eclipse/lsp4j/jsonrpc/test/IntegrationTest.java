@@ -19,9 +19,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
@@ -196,6 +198,7 @@ public class IntegrationTest {
 	
 	@Test
 	public void testVersatility() throws Exception {
+		Logger.getLogger(RemoteEndpoint.class.getName()).setLevel(Level.OFF);
 		// create client side
 		PipedInputStream in = new PipedInputStream();
 		PipedOutputStream out = new PipedOutputStream();

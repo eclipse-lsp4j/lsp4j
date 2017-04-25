@@ -9,30 +9,41 @@ package org.eclipse.lsp4j.jsonrpc.json;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 
-import com.google.common.util.concurrent.ForwardingFuture;
-
 public class ConcurrentMessageProcessor implements Runnable {
     
     public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
     		ExecutorService executorService) {
     	ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
-    	Future<?> result = executorService.submit(reader);
-    	return new ForwardingFuture<Object>() {
+    	final Future<?> result = executorService.submit(reader);
+    	return new Future<Object>() {
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected Future<Object> delegate() {
-				return (Future<Object>)result;
+			public Object get() throws InterruptedException, ExecutionException {
+				return result.get();
 			}
-    		
+
+			@Override
+			public Object get(long timeout, TimeUnit unit)
+					throws InterruptedException, ExecutionException, TimeoutException {
+				return result.get(timeout, unit);
+			}
+
+			@Override
+			public boolean isDone() {
+				return result.isDone();
+			}
+
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning) {
 				if (mayInterruptIfRunning && messageProducer instanceof Closeable) {
@@ -42,7 +53,12 @@ public class ConcurrentMessageProcessor implements Runnable {
 						throw new RuntimeException(e);
 					}
 				}
-				return super.cancel(mayInterruptIfRunning);
+				return result.cancel(mayInterruptIfRunning);
+			}
+
+			@Override
+			public boolean isCancelled() {
+				return result.isCancelled();
 			}
 		};
     }
