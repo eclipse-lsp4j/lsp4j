@@ -9,11 +9,13 @@ import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.common.reflect.TypeToken;
+import com.google.gson.JsonObject;
 
 public class MessageJsonHandlerTest {
 
@@ -235,5 +237,56 @@ public class MessageJsonHandlerTest {
 		result = (Either<List<MyClass>, MyClassList>) ((ResponseMessage)message).getResult();
 		Assert.assertTrue(result.isRight());
 		Assert.assertEquals("bar", result.getRight().getItems().get(0).getValue());
+	}
+	
+	@Test
+	public void testParamsParsing_01() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": {\"uri\": \"dummy://mymodel.mydsl\"},\n"
+				+ "\"method\":\"foo\"\n"
+				+ "}");
+		Assert.assertEquals(Location.class, message.getParams().getClass());
+	}
+	
+	@Test
+	public void testParamsParsing_02() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"method\":\"foo\",\n"
+				+ "\"params\": {\"uri\": \"dummy://mymodel.mydsl\"}\n"
+				+ "}");
+		Assert.assertEquals(Location.class, message.getParams().getClass());
+	}
+	
+	@Test
+	public void testParamsParsing_03() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"method\":\"bar\",\n"
+				+ "\"params\": {\"uri\": \"dummy://mymodel.mydsl\"}\n"
+				+ "}");
+		Assert.assertEquals(JsonObject.class, message.getParams().getClass());
 	}
 }

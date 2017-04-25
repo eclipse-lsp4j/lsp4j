@@ -88,19 +88,11 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 					break;
 				}
 				case "params": {
-					Type parameterType = null;
-					if (method != null) {
-						JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
-						if (jsonRpcMethod != null)
-							parameterType = jsonRpcMethod.getParameterType();
-					}
-					if (parameterType == null || parameterType == Void.class) {
+					Type parameterType = getParameterType(method);
+					if (isNullOrVoidType(parameterType)) {
 						params = new JsonParser().parse(in);
 					} else {
 						params = gson.fromJson(in, parameterType);
-						if (params instanceof JsonElement) {
-							params = gson.fromJson((JsonElement) params, parameterType);
-						}
 					}
 					break;
 				}
@@ -130,8 +122,24 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				}
 			}
 			in.endObject();
-			
+			Type parameterType = getParameterType(method);
+			if (params instanceof JsonElement && !isNullOrVoidType(parameterType)) {
+				params = gson.fromJson((JsonElement) params, parameterType);
+			}
 			return createMessage(jsonrpc, id, method, params, result, error);
+		}
+
+		protected Type getParameterType(String method) {
+			if (method != null) {
+				JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
+				if (jsonRpcMethod != null)
+					return jsonRpcMethod.getParameterType();
+			}
+			return null;
+		}
+		
+		protected boolean isNullOrVoidType(Type type) {
+			return type == null || type == Void.class;
 		}
 		
 		private Message createMessage(String jsonrpc, String id, String method, Object params, Object result, ResponseError error) {
