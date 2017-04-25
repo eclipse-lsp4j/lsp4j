@@ -1,10 +1,10 @@
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.DidChangeConfigurationCapabilites;
-import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilites;
-import org.eclipse.lsp4j.ExecuteCommandCapabilites;
-import org.eclipse.lsp4j.SymbolCapabilites;
-import org.eclipse.lsp4j.WorkspaceEditCapabilites;
+import org.eclipse.lsp4j.DidChangeConfigurationCapabilities;
+import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilities;
+import org.eclipse.lsp4j.ExecuteCommandCapabilities;
+import org.eclipse.lsp4j.SymbolCapabilities;
+import org.eclipse.lsp4j.WorkspaceEditCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -12,7 +12,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Workspace specific client capabilities.
  */
 @SuppressWarnings("all")
-public class WorkspaceClientCapabilites {
+public class WorkspaceClientCapabilities {
   /**
    * The client supports applying batch edits to the workspace by supporting
    * the request 'workspace/applyEdit'.
@@ -22,27 +22,27 @@ public class WorkspaceClientCapabilites {
   /**
    * Capabilities specific to `WorkspaceEdit`s
    */
-  private WorkspaceEditCapabilites workspaceEdit;
+  private WorkspaceEditCapabilities workspaceEdit;
   
   /**
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
    */
-  private DidChangeConfigurationCapabilites didChangeConfiguration;
+  private DidChangeConfigurationCapabilities didChangeConfiguration;
   
   /**
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
    */
-  private DidChangeWatchedFilesCapabilites didChangeWatchedFiles;
+  private DidChangeWatchedFilesCapabilities didChangeWatchedFiles;
   
   /**
    * Capabilities specific to the `workspace/symbol` request.
    */
-  private SymbolCapabilites symbol;
+  private SymbolCapabilities symbol;
   
   /**
    * Capabilities specific to the `workspace/executeCommand` request.
    */
-  private ExecuteCommandCapabilites executeCommand;
+  private ExecuteCommandCapabilities executeCommand;
   
   /**
    * The client supports applying batch edits to the workspace by supporting
@@ -65,14 +65,14 @@ public class WorkspaceClientCapabilites {
    * Capabilities specific to `WorkspaceEdit`s
    */
   @Pure
-  public WorkspaceEditCapabilites getWorkspaceEdit() {
+  public WorkspaceEditCapabilities getWorkspaceEdit() {
     return this.workspaceEdit;
   }
   
   /**
    * Capabilities specific to `WorkspaceEdit`s
    */
-  public void setWorkspaceEdit(final WorkspaceEditCapabilites workspaceEdit) {
+  public void setWorkspaceEdit(final WorkspaceEditCapabilities workspaceEdit) {
     this.workspaceEdit = workspaceEdit;
   }
   
@@ -80,14 +80,14 @@ public class WorkspaceClientCapabilites {
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
    */
   @Pure
-  public DidChangeConfigurationCapabilites getDidChangeConfiguration() {
+  public DidChangeConfigurationCapabilities getDidChangeConfiguration() {
     return this.didChangeConfiguration;
   }
   
   /**
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
    */
-  public void setDidChangeConfiguration(final DidChangeConfigurationCapabilites didChangeConfiguration) {
+  public void setDidChangeConfiguration(final DidChangeConfigurationCapabilities didChangeConfiguration) {
     this.didChangeConfiguration = didChangeConfiguration;
   }
   
@@ -95,14 +95,14 @@ public class WorkspaceClientCapabilites {
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
    */
   @Pure
-  public DidChangeWatchedFilesCapabilites getDidChangeWatchedFiles() {
+  public DidChangeWatchedFilesCapabilities getDidChangeWatchedFiles() {
     return this.didChangeWatchedFiles;
   }
   
   /**
    * Capabilities specific to the `workspace/didChangeConfiguration` notification.
    */
-  public void setDidChangeWatchedFiles(final DidChangeWatchedFilesCapabilites didChangeWatchedFiles) {
+  public void setDidChangeWatchedFiles(final DidChangeWatchedFilesCapabilities didChangeWatchedFiles) {
     this.didChangeWatchedFiles = didChangeWatchedFiles;
   }
   
@@ -110,14 +110,14 @@ public class WorkspaceClientCapabilites {
    * Capabilities specific to the `workspace/symbol` request.
    */
   @Pure
-  public SymbolCapabilites getSymbol() {
+  public SymbolCapabilities getSymbol() {
     return this.symbol;
   }
   
   /**
    * Capabilities specific to the `workspace/symbol` request.
    */
-  public void setSymbol(final SymbolCapabilites symbol) {
+  public void setSymbol(final SymbolCapabilities symbol) {
     this.symbol = symbol;
   }
   
@@ -125,14 +125,14 @@ public class WorkspaceClientCapabilites {
    * Capabilities specific to the `workspace/executeCommand` request.
    */
   @Pure
-  public ExecuteCommandCapabilites getExecuteCommand() {
+  public ExecuteCommandCapabilities getExecuteCommand() {
     return this.executeCommand;
   }
   
   /**
    * Capabilities specific to the `workspace/executeCommand` request.
    */
-  public void setExecuteCommand(final ExecuteCommandCapabilites executeCommand) {
+  public void setExecuteCommand(final ExecuteCommandCapabilities executeCommand) {
     this.executeCommand = executeCommand;
   }
   
@@ -158,7 +158,7 @@ public class WorkspaceClientCapabilites {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    WorkspaceClientCapabilites other = (WorkspaceClientCapabilites) obj;
+    WorkspaceClientCapabilities other = (WorkspaceClientCapabilities) obj;
     if (this.applyEdit == null) {
       if (other.applyEdit != null)
         return false;

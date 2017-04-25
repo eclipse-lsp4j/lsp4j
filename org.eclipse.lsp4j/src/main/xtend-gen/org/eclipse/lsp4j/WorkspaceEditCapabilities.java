@@ -4,16 +4,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class WorkspaceEditCapabilites {
+public class WorkspaceEditCapabilities {
   /**
    * The client supports versioned document changes in `WorkspaceEdit`s
    */
   private Boolean documentChanges;
   
-  public WorkspaceEditCapabilites() {
+  public WorkspaceEditCapabilities() {
   }
   
-  public WorkspaceEditCapabilites(final Boolean documentChanges) {
+  public WorkspaceEditCapabilities(final Boolean documentChanges) {
     this.documentChanges = documentChanges;
   }
   
@@ -49,7 +49,7 @@ public class WorkspaceEditCapabilites {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    WorkspaceEditCapabilites other = (WorkspaceEditCapabilites) obj;
+    WorkspaceEditCapabilities other = (WorkspaceEditCapabilities) obj;
     if (this.documentChanges == null) {
       if (other.documentChanges != null)
         return false;

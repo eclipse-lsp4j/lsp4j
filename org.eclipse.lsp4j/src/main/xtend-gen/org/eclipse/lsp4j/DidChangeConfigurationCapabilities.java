@@ -5,7 +5,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class DidChangeConfigurationCapabilites extends DynamicRegistrationCapabilities {
+public class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities {
   @Override
   @Pure
   public String toString() {

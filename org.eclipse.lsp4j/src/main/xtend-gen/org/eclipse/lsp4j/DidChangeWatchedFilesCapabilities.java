@@ -5,7 +5,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class DidChangeWatchedFilesCapabilites extends DynamicRegistrationCapabilities {
+public class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities {
   @Override
   @Pure
   public String toString() {
