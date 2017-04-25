@@ -9,6 +9,11 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
+/**
+ * A request message to describe a request between the client and the server.
+ * Every processed request must send a response back to the sender of the
+ * request.
+ */
 public class RequestMessage extends Message {
 
 	/**

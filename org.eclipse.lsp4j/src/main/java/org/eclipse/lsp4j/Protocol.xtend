@@ -46,8 +46,8 @@ class ExecuteCommandCapabilites extends DynamicRegistrationCapabilities {
 @JsonRpcData
 class WorkspaceClientCapabilites {
 	/**
-     * The client supports applying batch edits
-     * to the workspace.
+     * The client supports applying batch edits to the workspace by supporting 
+     * the request 'workspace/applyEdit'.
      */
     Boolean applyEdit
     
@@ -250,11 +250,17 @@ class TextDocumentClientCapabilities {
 }
 
 /**
- * Defines capabilities for dynamic registration, workspace and text document features the client supports
- * The experimental can be used to pass experimential capabilities under development.
- * For future compatibility a ClientCapabilities object literal can have more properties set than currently defined.
- * Servers receiving a ClientCapabilities object literal with unknown properties should ignore these properties.
+ * `ClientCapabilities` now define capabilities for dynamic registration, workspace and text document features the client supports. 
+ * The `experimental` can be used to pass experimental capabilities under development.
+ * For future compatibility a `ClientCapabilities` object literal can have more properties set than currently defined.
+ * Servers receiving a `ClientCapabilities` object literal with unknown properties should ignore these properties.
  * A missing property should be interpreted as an absence of the capability.
+ * If a property is missing that defines sub properties all sub properties should be interpreted as an absence of the capability.
+ * 
+ * Client capabilities got introduced with the version 3.0 of the protocol. They therefore only describe capabilities that got introduced in 3.x or later.
+ * Capabilities that existed in the 2.x version of the protocol are still mandatory for clients. Clients cannot opt out of providing them.
+ * So even if a client omits the `ClientCapabilities.textDocument.synchronization` 
+ * it is still required that the client provides text document synchronization (e.g. open, changed and close notifications).
  */
 @JsonRpcData
 class ClientCapabilities {
@@ -905,8 +911,10 @@ class MarkedString {
 @JsonRpcData
 class InitializeError {
 	/**
-	 * Indicates whether the client should retry to send the initialize request after showing the message provided
-	 * in the ResponseError.
+	 * Indicates whether the client execute the following retry logic:
+	 * (1) show the message provided by the ResponseError to the user
+	 * (2) user selects retry or cancel
+	 * (3) if user selected retry the initialize method is sent again.
 	 */
 	boolean retry
 }
@@ -981,6 +989,11 @@ class InitializeResult {
 	 */
 	@NonNull
 	ServerCapabilities capabilities
+}
+
+@JsonRpcData
+class InitializedParams {
+	
 }
 
 /**
@@ -1266,12 +1279,24 @@ class SignatureHelp {
 	List<SignatureInformation> signatures = new ArrayList
 
 	/**
-	 * The active signature.
+	 * The active signature. If omitted or the value lies outside the
+	 * range of `signatures` the value defaults to zero or is ignored if
+	 * `signatures.length === 0`. Whenever possible implementors should 
+	 * make an active decision about the active signature and shouldn't 
+	 * rely on a default value.
+	 * In future version of the protocol this property might become
+	 * mandantory to better express this.
 	 */
 	Integer activeSignature
 
 	/**
-	 * The active parameter of the active signature.
+	 * The active parameter of the active signature. If omitted or the value
+	 * lies outside the range of `signatures[activeSignature].parameters` 
+	 * defaults to 0 if the active signature has parameters. If 
+	 * the active signature has no parameters it is ignored. 
+	 * In future version of the protocol this property might become
+	 * mandantory to better express the active parameter if the
+	 * active signature does have any.
 	 */
 	Integer activeParameter
 }
@@ -1356,7 +1381,7 @@ class TextDocumentContentChangeEvent {
 	Integer rangeLength
 
 	/**
-	 * The new text of the document.
+	 * The new text of the range/document.
 	 */
 	@NonNull
 	String text

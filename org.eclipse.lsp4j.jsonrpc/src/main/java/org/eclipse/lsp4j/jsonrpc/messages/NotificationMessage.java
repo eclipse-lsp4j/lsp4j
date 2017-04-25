@@ -9,6 +9,10 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
+/**
+ * A notification message. A processed notification message must not send a
+ * response back. They work like events.
+ */
 public class NotificationMessage extends Message {
 
 	/**

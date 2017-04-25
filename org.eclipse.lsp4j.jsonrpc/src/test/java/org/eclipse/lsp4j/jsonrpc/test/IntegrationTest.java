@@ -24,6 +24,7 @@ import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -149,6 +150,49 @@ public class IntegrationTest {
 		}
 	}
 	
+	@Test
+	public void testCancellationResponse() throws Exception {
+		// create client messages
+		String requestMessage = "{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"1\",\n" 
+				+ "\"method\":\"askServer\",\n" 
+				+ "\"params\": { value: \"bar\" }\n"
+				+ "}";
+		String cancellationMessage = "{\"jsonrpc\":\"2.0\","
+				+ "\"method\":\"$/cancelRequest\",\n" 
+				+ "\"params\": { id: 1 }\n"
+				+ "}";
+		String clientMessages = getHeader(requestMessage.getBytes().length) + requestMessage
+				+ getHeader(cancellationMessage.getBytes().length) + cancellationMessage;
+		
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFutures.computeAsync(cancelToken -> {
+					try {
+						long startTime = System.currentTimeMillis();
+						do {
+							cancelToken.checkCanceled();
+							Thread.sleep(50);
+						} while (System.currentTimeMillis() - startTime < TIMEOUT);
+					} catch (InterruptedException e) {
+						Assert.fail("Thread was interrupted unexpectedly.");
+					}
+					return param;
+				});
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+		
+		Assert.assertEquals("Content-Length: 132" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32800,\"message\":\"The request (id: 1, method: \\u0027askServer\\u0027) has been cancelled\"}}",
+				out.toString());
+	}
+	
 	
 	@Test
 	public void testVersatility() throws Exception {
@@ -245,8 +289,87 @@ public class IntegrationTest {
 			logMessages.await(Level.WARNING, "Unsupported request method: foo2");
 			
 			Assert.assertEquals("Content-Length: 95" + CRLF + CRLF
-					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32600,\"message\":\"Unsupported request method: foo2\"}}",
+					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32601,\"message\":\"Unsupported request method: foo2\"}}",
 					out.toString());
+		} finally {
+			logMessages.unregister();
+		}
+	}
+	
+	@Test
+	public void testUnknownOptionalMessages() throws Exception {
+		// intercept log messages
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(GenericEndpoint.class.getName());
+			
+			// create client messages
+			String clientMessage1 = "{\"jsonrpc\":\"2.0\","
+					+ "\"method\":\"$/foo1\",\n" 
+					+ " \"params\":\"bar\"\n"
+					+ "}";
+			String clientMessage2 = "{\"jsonrpc\":\"2.0\","
+					+ "\"id\":\"1\",\n" 
+					+ "\"method\":\"$/foo2\",\n" 
+					+ " \"params\":\"bar\"\n"
+					+ "}";
+			String clientMessages = getHeader(clientMessage1.getBytes().length) + clientMessage1
+					+ getHeader(clientMessage2.getBytes().length) + clientMessage2;
+			
+			// create server side
+			ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			MyServer server = new MyServer() {
+				@Override
+				public CompletableFuture<MyParam> askServer(MyParam param) {
+					return CompletableFuture.completedFuture(param);
+				}
+			};
+			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+			serverSideLauncher.startListening();
+			
+			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
+			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
+			
+			Assert.assertEquals("Content-Length: 26" + CRLF + CRLF
+					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\"}",
+					out.toString());
+		} finally {
+			logMessages.unregister();
+		}
+	}
+	
+	public static interface UnexpectedParamsTestServer {
+		@JsonNotification
+		void myNotification();
+	}
+	
+	@Test
+	public void testUnexpectedParams() throws Exception {
+		// intercept log messages
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(GenericEndpoint.class.getName());
+			
+			// create client messages
+			String notificationMessage = "{\"jsonrpc\":\"2.0\","
+					+ "\"method\":\"myNotification\",\n" 
+					+ "\"params\": { \"value\": \"foo\" }\n"
+					+ "}";
+			String clientMessages = getHeader(notificationMessage.getBytes().length) + notificationMessage;
+			
+			// create server side
+			ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			UnexpectedParamsTestServer server = new UnexpectedParamsTestServer() {
+				public void myNotification() {
+				}
+			};
+			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+			serverSideLauncher.startListening();
+			
+			logMessages.await(Level.WARNING, "Unexpected params '{\"value\":\"foo\"}' for "
+					+ "'public abstract void org.eclipse.lsp4j.jsonrpc.test.IntegrationTest$UnexpectedParamsTestServer.myNotification()' is ignored");
 		} finally {
 			logMessages.unregister();
 		}

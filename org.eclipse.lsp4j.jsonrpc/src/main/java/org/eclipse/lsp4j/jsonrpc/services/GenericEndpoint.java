@@ -90,9 +90,13 @@ public class GenericEndpoint implements Endpoint {
 			return ((Endpoint) delegate).request(method, parameter);
 		}
 		String message = "Unsupported request method: " + method;
+		if (isOptionalMethod(method)) {
+			LOG.log(Level.INFO, message);
+			return CompletableFuture.completedFuture(null);
+		}
 		LOG.log(Level.WARNING, message);
 		CompletableFuture<?> exceptionalResult = new CompletableFuture<Object>();
-		ResponseError error = new ResponseError(ResponseErrorCode.InvalidRequest, message, null);
+		ResponseError error = new ResponseError(ResponseErrorCode.MethodNotFound, message, null);
 		exceptionalResult.completeExceptionally(new ResponseErrorException(error));
 		return exceptionalResult;
 	}
@@ -108,7 +112,16 @@ public class GenericEndpoint implements Endpoint {
 			((Endpoint) delegate).notify(method, parameter);
 			return;
 		}
-		LOG.log(Level.WARNING, "Unsupported notification method: " + method);
+		String message = "Unsupported notification method: " + method;
+		if (isOptionalMethod(method)) {
+			LOG.log(Level.INFO, message);
+		} else {
+			LOG.log(Level.WARNING, message);
+		}
+	}
+	
+	protected boolean isOptionalMethod(String method) {
+		return method != null && method.startsWith("$/");
 	}
 
 }

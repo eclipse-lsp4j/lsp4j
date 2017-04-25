@@ -216,13 +216,17 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			responseMessage.setResult(result);
 			out.consume(responseMessage);
 		}).exceptionally((Throwable t) -> {
-			if (!isCancellation(t)) {
+			if (isCancellation(t)) {
+				String message = "The request (id: " + requestMessage.getId() + ", method: '" + requestMessage.getMethod()  + "') has been cancelled";
+				ResponseError errorObject = new ResponseError(ResponseErrorCode.RequestCancelled, message, null);
+				responseMessage.setError(errorObject);
+			} else {
 				ResponseError errorObject = exceptionHandler.apply(t);
 				if (errorObject != null) {
 					responseMessage.setError(errorObject);
-					out.consume(responseMessage);
 				}
 			}
+			out.consume(responseMessage);
 			return null;
 		}).thenApply((obj) -> {
 			synchronized (receivedRequestMap) {

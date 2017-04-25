@@ -26,7 +26,11 @@ public enum ResponseErrorCode {
 	
 	serverErrorEnd(-32000),
 	
-	serverNotInitialized(-32001);
+	serverNotInitialized(-32002),
+	
+	UnknownErrorCode(-32001),
+	
+	RequestCancelled(-32800);
 	
 	private final int value;
 	

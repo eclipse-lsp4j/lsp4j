@@ -14,8 +14,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class WorkspaceClientCapabilites {
   /**
-   * The client supports applying batch edits
-   * to the workspace.
+   * The client supports applying batch edits to the workspace by supporting
+   * the request 'workspace/applyEdit'.
    */
   private Boolean applyEdit;
   
@@ -45,8 +45,8 @@ public class WorkspaceClientCapabilites {
   private ExecuteCommandCapabilites executeCommand;
   
   /**
-   * The client supports applying batch edits
-   * to the workspace.
+   * The client supports applying batch edits to the workspace by supporting
+   * the request 'workspace/applyEdit'.
    */
   @Pure
   public Boolean getApplyEdit() {
@@ -54,8 +54,8 @@ public class WorkspaceClientCapabilites {
   }
   
   /**
-   * The client supports applying batch edits
-   * to the workspace.
+   * The client supports applying batch edits to the workspace by supporting
+   * the request 'workspace/applyEdit'.
    */
   public void setApplyEdit(final Boolean applyEdit) {
     this.applyEdit = applyEdit;
