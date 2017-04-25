@@ -26,6 +26,14 @@ public class TextDocumentEdit {
   @NonNull
   private List<TextEdit> edits;
   
+  public TextDocumentEdit() {
+  }
+  
+  public TextDocumentEdit(final VersionedTextDocumentIdentifier textDocument, final List<TextEdit> edits) {
+    this.textDocument = textDocument;
+    this.edits = edits;
+  }
+  
   /**
    * The text document to change.
    */
@@ -55,15 +63,6 @@ public class TextDocumentEdit {
    * The edits to be applied
    */
   public void setEdits(@NonNull final List<TextEdit> edits) {
-    this.edits = edits;
-  }
-  
-  public TextDocumentEdit() {
-    
-  }
-  
-  public TextDocumentEdit(final VersionedTextDocumentIdentifier textDocument, final List<TextEdit> edits) {
-    this.textDocument = textDocument;
     this.edits = edits;
   }
   

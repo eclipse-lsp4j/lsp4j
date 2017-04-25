@@ -11,6 +11,13 @@ public class TextDocumentSaveRegistrationOptions extends TextDocumentRegistratio
    */
   private Boolean includeText;
   
+  public TextDocumentSaveRegistrationOptions() {
+  }
+  
+  public TextDocumentSaveRegistrationOptions(final Boolean includeText) {
+    this.includeText = includeText;
+  }
+  
   /**
    * The client is supposed to include the content on save.
    */
@@ -23,14 +30,6 @@ public class TextDocumentSaveRegistrationOptions extends TextDocumentRegistratio
    * The client is supposed to include the content on save.
    */
   public void setIncludeText(final Boolean includeText) {
-    this.includeText = includeText;
-  }
-  
-  public TextDocumentSaveRegistrationOptions() {
-    
-  }
-  
-  public TextDocumentSaveRegistrationOptions(final Boolean includeText) {
     this.includeText = includeText;
   }
   

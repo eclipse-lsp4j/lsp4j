@@ -14,6 +14,13 @@ public class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
    */
   private int version;
   
+  public VersionedTextDocumentIdentifier() {
+  }
+  
+  public VersionedTextDocumentIdentifier(final int version) {
+    this.version = version;
+  }
+  
   /**
    * The version number of this document.
    */
@@ -26,14 +33,6 @@ public class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
    * The version number of this document.
    */
   public void setVersion(final int version) {
-    this.version = version;
-  }
-  
-  public VersionedTextDocumentIdentifier() {
-    
-  }
-  
-  public VersionedTextDocumentIdentifier(final int version) {
     this.version = version;
   }
   

@@ -11,6 +11,13 @@ public class DocumentLinkRegistrationOptions extends TextDocumentRegistrationOpt
    */
   private Boolean resolveProvider;
   
+  public DocumentLinkRegistrationOptions() {
+  }
+  
+  public DocumentLinkRegistrationOptions(final Boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
+  }
+  
   /**
    * Document links have a resolve provider as well.
    */
@@ -23,14 +30,6 @@ public class DocumentLinkRegistrationOptions extends TextDocumentRegistrationOpt
    * Document links have a resolve provider as well.
    */
   public void setResolveProvider(final Boolean resolveProvider) {
-    this.resolveProvider = resolveProvider;
-  }
-  
-  public DocumentLinkRegistrationOptions() {
-    
-  }
-  
-  public DocumentLinkRegistrationOptions(final Boolean resolveProvider) {
     this.resolveProvider = resolveProvider;
   }
   

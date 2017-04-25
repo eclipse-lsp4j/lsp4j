@@ -25,6 +25,14 @@ public class MessageParams {
   @NonNull
   private String message;
   
+  public MessageParams() {
+  }
+  
+  public MessageParams(final MessageType type, final String message) {
+    this.type = type;
+    this.message = message;
+  }
+  
   /**
    * The message type.
    */
@@ -54,15 +62,6 @@ public class MessageParams {
    * The actual message.
    */
   public void setMessage(@NonNull final String message) {
-    this.message = message;
-  }
-  
-  public MessageParams() {
-    
-  }
-  
-  public MessageParams(final MessageType type, final String message) {
-    this.type = type;
     this.message = message;
   }
   

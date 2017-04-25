@@ -11,6 +11,13 @@ public class ApplyWorkspaceEditParams {
    */
   private WorkspaceEdit edit;
   
+  public ApplyWorkspaceEditParams() {
+  }
+  
+  public ApplyWorkspaceEditParams(final WorkspaceEdit edit) {
+    this.edit = edit;
+  }
+  
   /**
    * The edits to apply.
    */
@@ -23,14 +30,6 @@ public class ApplyWorkspaceEditParams {
    * The edits to apply.
    */
   public void setEdit(final WorkspaceEdit edit) {
-    this.edit = edit;
-  }
-  
-  public ApplyWorkspaceEditParams() {
-    
-  }
-  
-  public ApplyWorkspaceEditParams(final WorkspaceEdit edit) {
     this.edit = edit;
   }
   

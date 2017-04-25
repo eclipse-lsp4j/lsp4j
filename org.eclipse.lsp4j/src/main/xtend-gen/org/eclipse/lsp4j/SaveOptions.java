@@ -13,6 +13,13 @@ public class SaveOptions {
    */
   private Boolean includeText;
   
+  public SaveOptions() {
+  }
+  
+  public SaveOptions(final Boolean includeText) {
+    this.includeText = includeText;
+  }
+  
   /**
    * The client is supposed to include the content on save.
    */
@@ -25,14 +32,6 @@ public class SaveOptions {
    * The client is supposed to include the content on save.
    */
   public void setIncludeText(final Boolean includeText) {
-    this.includeText = includeText;
-  }
-  
-  public SaveOptions() {
-    
-  }
-  
-  public SaveOptions(final Boolean includeText) {
     this.includeText = includeText;
   }
   

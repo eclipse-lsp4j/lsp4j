@@ -28,6 +28,15 @@ public class SignatureInformation {
    */
   private List<ParameterInformation> parameters;
   
+  public SignatureInformation() {
+  }
+  
+  public SignatureInformation(final String label, final String documentation, final List<ParameterInformation> parameters) {
+    this.label = label;
+    this.documentation = documentation;
+    this.parameters = parameters;
+  }
+  
   /**
    * The label of this signature. Will be shown in the UI.
    */
@@ -71,16 +80,6 @@ public class SignatureInformation {
    * The parameters of this signature.
    */
   public void setParameters(final List<ParameterInformation> parameters) {
-    this.parameters = parameters;
-  }
-  
-  public SignatureInformation() {
-    
-  }
-  
-  public SignatureInformation(final String label, final String documentation, final List<ParameterInformation> parameters) {
-    this.label = label;
-    this.documentation = documentation;
     this.parameters = parameters;
   }
   

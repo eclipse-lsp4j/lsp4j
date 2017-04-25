@@ -17,6 +17,14 @@ public class CompletionRegistrationOptions extends TextDocumentRegistrationOptio
    */
   private Boolean resolveProvider;
   
+  public CompletionRegistrationOptions() {
+  }
+  
+  public CompletionRegistrationOptions(final List<String> triggerCharacters, final Boolean resolveProvider) {
+    this.triggerCharacters = triggerCharacters;
+    this.resolveProvider = resolveProvider;
+  }
+  
   /**
    * The characters that trigger completion automatically.
    */
@@ -44,15 +52,6 @@ public class CompletionRegistrationOptions extends TextDocumentRegistrationOptio
    * The server provides support to resolve additional information for a completion item.
    */
   public void setResolveProvider(final Boolean resolveProvider) {
-    this.resolveProvider = resolveProvider;
-  }
-  
-  public CompletionRegistrationOptions() {
-    
-  }
-  
-  public CompletionRegistrationOptions(final List<String> triggerCharacters, final Boolean resolveProvider) {
-    this.triggerCharacters = triggerCharacters;
     this.resolveProvider = resolveProvider;
   }
   

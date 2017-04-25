@@ -23,7 +23,17 @@ public class ColoringParams {
    * A list of coloring information instances.
    */
   @NonNull
-  private List<? extends ColoringInformation> infos = new ArrayList<ColoringInformation>();
+  private List<? extends ColoringInformation> infos;
+  
+  public ColoringParams() {
+    ArrayList<ColoringInformation> _arrayList = new ArrayList<ColoringInformation>();
+    this.infos = _arrayList;
+  }
+  
+  public ColoringParams(final String uri, final List<? extends ColoringInformation> infos) {
+    this.uri = uri;
+    this.infos = infos;
+  }
   
   /**
    * The URI for which coloring information is reported.
@@ -54,15 +64,6 @@ public class ColoringParams {
    * A list of coloring information instances.
    */
   public void setInfos(@NonNull final List<? extends ColoringInformation> infos) {
-    this.infos = infos;
-  }
-  
-  public ColoringParams() {
-    
-  }
-  
-  public ColoringParams(final String uri, final List<? extends ColoringInformation> infos) {
-    this.uri = uri;
     this.infos = infos;
   }
   

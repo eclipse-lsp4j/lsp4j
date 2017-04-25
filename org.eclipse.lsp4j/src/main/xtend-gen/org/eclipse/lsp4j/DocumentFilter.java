@@ -23,6 +23,15 @@ public class DocumentFilter {
    */
   private String pattern;
   
+  public DocumentFilter() {
+  }
+  
+  public DocumentFilter(final String language, final String schema, final String pattern) {
+    this.language = language;
+    this.schema = schema;
+    this.pattern = pattern;
+  }
+  
   /**
    * A language id, like `typescript`.
    */
@@ -65,16 +74,6 @@ public class DocumentFilter {
    * A glob pattern, like `*.{ts,js}`.
    */
   public void setPattern(final String pattern) {
-    this.pattern = pattern;
-  }
-  
-  public DocumentFilter() {
-    
-  }
-  
-  public DocumentFilter(final String language, final String schema, final String pattern) {
-    this.language = language;
-    this.schema = schema;
     this.pattern = pattern;
   }
   

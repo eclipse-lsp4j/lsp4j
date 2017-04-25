@@ -14,6 +14,13 @@ public class SignatureHelpOptions {
    */
   private List<String> triggerCharacters;
   
+  public SignatureHelpOptions() {
+  }
+  
+  public SignatureHelpOptions(final List<String> triggerCharacters) {
+    this.triggerCharacters = triggerCharacters;
+  }
+  
   /**
    * The characters that trigger signature help automatically.
    */
@@ -26,14 +33,6 @@ public class SignatureHelpOptions {
    * The characters that trigger signature help automatically.
    */
   public void setTriggerCharacters(final List<String> triggerCharacters) {
-    this.triggerCharacters = triggerCharacters;
-  }
-  
-  public SignatureHelpOptions() {
-    
-  }
-  
-  public SignatureHelpOptions(final List<String> triggerCharacters) {
     this.triggerCharacters = triggerCharacters;
   }
   

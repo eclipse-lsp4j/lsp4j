@@ -14,6 +14,13 @@ public class ExecuteCommandRegistrationOptions {
    */
   private List<String> commands;
   
+  public ExecuteCommandRegistrationOptions() {
+  }
+  
+  public ExecuteCommandRegistrationOptions(final List<String> commands) {
+    this.commands = commands;
+  }
+  
   /**
    * The commands to be executed on the server
    */
@@ -26,14 +33,6 @@ public class ExecuteCommandRegistrationOptions {
    * The commands to be executed on the server
    */
   public void setCommands(final List<String> commands) {
-    this.commands = commands;
-  }
-  
-  public ExecuteCommandRegistrationOptions() {
-    
-  }
-  
-  public ExecuteCommandRegistrationOptions(final List<String> commands) {
     this.commands = commands;
   }
   

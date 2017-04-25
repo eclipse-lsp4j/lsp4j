@@ -14,6 +14,13 @@ public class ReferenceContext {
    */
   private boolean includeDeclaration;
   
+  public ReferenceContext() {
+  }
+  
+  public ReferenceContext(final boolean includeDeclaration) {
+    this.includeDeclaration = includeDeclaration;
+  }
+  
   /**
    * Include the declaration of the current symbol.
    */
@@ -26,14 +33,6 @@ public class ReferenceContext {
    * Include the declaration of the current symbol.
    */
   public void setIncludeDeclaration(final boolean includeDeclaration) {
-    this.includeDeclaration = includeDeclaration;
-  }
-  
-  public ReferenceContext() {
-    
-  }
-  
-  public ReferenceContext(final boolean includeDeclaration) {
     this.includeDeclaration = includeDeclaration;
   }
   

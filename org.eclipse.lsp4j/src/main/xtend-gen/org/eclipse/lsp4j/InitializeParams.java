@@ -173,10 +173,6 @@ public class InitializeParams {
     this.trace = trace;
   }
   
-  public InitializeParams() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

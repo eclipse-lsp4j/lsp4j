@@ -11,6 +11,13 @@ public class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions
    */
   private Boolean resolveProvider;
   
+  public CodeLensRegistrationOptions() {
+  }
+  
+  public CodeLensRegistrationOptions(final Boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
+  }
+  
   /**
    * Code lens has a resolve provider as well.
    */
@@ -23,14 +30,6 @@ public class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions
    * Code lens has a resolve provider as well.
    */
   public void setResolveProvider(final Boolean resolveProvider) {
-    this.resolveProvider = resolveProvider;
-  }
-  
-  public CodeLensRegistrationOptions() {
-    
-  }
-  
-  public CodeLensRegistrationOptions(final Boolean resolveProvider) {
     this.resolveProvider = resolveProvider;
   }
   

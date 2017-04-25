@@ -18,6 +18,13 @@ public class DidCloseTextDocumentParams {
   @NonNull
   private TextDocumentIdentifier textDocument;
   
+  public DidCloseTextDocumentParams() {
+  }
+  
+  public DidCloseTextDocumentParams(final TextDocumentIdentifier textDocument) {
+    this.textDocument = textDocument;
+  }
+  
   /**
    * The document that was closed.
    */
@@ -31,14 +38,6 @@ public class DidCloseTextDocumentParams {
    * The document that was closed.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
-  }
-  
-  public DidCloseTextDocumentParams() {
-    
-  }
-  
-  public DidCloseTextDocumentParams(final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

@@ -136,10 +136,6 @@ public class WorkspaceClientCapabilites {
     this.executeCommand = executeCommand;
   }
   
-  public WorkspaceClientCapabilites() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

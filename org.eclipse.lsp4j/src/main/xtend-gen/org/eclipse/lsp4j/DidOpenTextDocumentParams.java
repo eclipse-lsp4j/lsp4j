@@ -24,6 +24,14 @@ public class DidOpenTextDocumentParams {
   @Deprecated
   private String text;
   
+  public DidOpenTextDocumentParams() {
+  }
+  
+  public DidOpenTextDocumentParams(final TextDocumentItem textDocument, final String text) {
+    this.textDocument = textDocument;
+    this.text = text;
+  }
+  
   /**
    * The document that was opened.
    */
@@ -54,15 +62,6 @@ public class DidOpenTextDocumentParams {
    */
   @Deprecated
   public void setText(final String text) {
-    this.text = text;
-  }
-  
-  public DidOpenTextDocumentParams() {
-    
-  }
-  
-  public DidOpenTextDocumentParams(final TextDocumentItem textDocument, final String text) {
-    this.textDocument = textDocument;
     this.text = text;
   }
   

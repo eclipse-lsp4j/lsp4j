@@ -18,6 +18,13 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
   @NonNull
   private TextDocumentSyncKind syncKind;
   
+  public TextDocumentChangeRegistrationOptions() {
+  }
+  
+  public TextDocumentChangeRegistrationOptions(final TextDocumentSyncKind syncKind) {
+    this.syncKind = syncKind;
+  }
+  
   /**
    * How documents are synced to the server. See TextDocumentSyncKind.Full
    * and TextDocumentSyncKind.Incremental.
@@ -33,14 +40,6 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
    * and TextDocumentSyncKind.Incremental.
    */
   public void setSyncKind(@NonNull final TextDocumentSyncKind syncKind) {
-    this.syncKind = syncKind;
-  }
-  
-  public TextDocumentChangeRegistrationOptions() {
-    
-  }
-  
-  public TextDocumentChangeRegistrationOptions(final TextDocumentSyncKind syncKind) {
     this.syncKind = syncKind;
   }
   

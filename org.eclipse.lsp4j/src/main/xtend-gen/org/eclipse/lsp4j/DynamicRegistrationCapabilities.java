@@ -10,6 +10,13 @@ public class DynamicRegistrationCapabilities {
    */
   private Boolean dynamicRegistration;
   
+  public DynamicRegistrationCapabilities() {
+  }
+  
+  public DynamicRegistrationCapabilities(final Boolean dynamicRegistration) {
+    this.dynamicRegistration = dynamicRegistration;
+  }
+  
   /**
    * Supports dynamic registration.
    */
@@ -22,14 +29,6 @@ public class DynamicRegistrationCapabilities {
    * Supports dynamic registration.
    */
   public void setDynamicRegistration(final Boolean dynamicRegistration) {
-    this.dynamicRegistration = dynamicRegistration;
-  }
-  
-  public DynamicRegistrationCapabilities() {
-    
-  }
-  
-  public DynamicRegistrationCapabilities(final Boolean dynamicRegistration) {
     this.dynamicRegistration = dynamicRegistration;
   }
   

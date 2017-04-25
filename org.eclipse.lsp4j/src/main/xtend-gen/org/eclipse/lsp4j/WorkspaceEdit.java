@@ -19,7 +19,7 @@ public class WorkspaceEdit {
   /**
    * Holds changes to existing resources.
    */
-  private Map<String, List<TextEdit>> changes = new LinkedHashMap<String, List<TextEdit>>();
+  private Map<String, List<TextEdit>> changes;
   
   /**
    * An array of `TextDocumentEdit`s to express changes to specific a specific
@@ -27,6 +27,16 @@ public class WorkspaceEdit {
    * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
    */
   private List<TextDocumentEdit> documentChanges;
+  
+  public WorkspaceEdit() {
+    LinkedHashMap<String, List<TextEdit>> _linkedHashMap = new LinkedHashMap<String, List<TextEdit>>();
+    this.changes = _linkedHashMap;
+  }
+  
+  public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<TextDocumentEdit> documentChanges) {
+    this.changes = changes;
+    this.documentChanges = documentChanges;
+  }
   
   /**
    * Holds changes to existing resources.
@@ -59,15 +69,6 @@ public class WorkspaceEdit {
    * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
    */
   public void setDocumentChanges(final List<TextDocumentEdit> documentChanges) {
-    this.documentChanges = documentChanges;
-  }
-  
-  public WorkspaceEdit() {
-    
-  }
-  
-  public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<TextDocumentEdit> documentChanges) {
-    this.changes = changes;
     this.documentChanges = documentChanges;
   }
   

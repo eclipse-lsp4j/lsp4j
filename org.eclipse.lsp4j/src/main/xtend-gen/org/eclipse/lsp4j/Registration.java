@@ -27,6 +27,15 @@ public class Registration {
    */
   private Object registerOptions;
   
+  public Registration() {
+  }
+  
+  public Registration(final String id, final String method, final Object registerOptions) {
+    this.id = id;
+    this.method = method;
+    this.registerOptions = registerOptions;
+  }
+  
   /**
    * The id used to register the request. The id can be used to deregister
    * the request again.
@@ -73,16 +82,6 @@ public class Registration {
    * Options necessary for the registration.
    */
   public void setRegisterOptions(final Object registerOptions) {
-    this.registerOptions = registerOptions;
-  }
-  
-  public Registration() {
-    
-  }
-  
-  public Registration(final String id, final String method, final Object registerOptions) {
-    this.id = id;
-    this.method = method;
     this.registerOptions = registerOptions;
   }
   

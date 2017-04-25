@@ -32,6 +32,15 @@ public class DidChangeTextDocumentParams {
   @NonNull
   private List<TextDocumentContentChangeEvent> contentChanges = new ArrayList<TextDocumentContentChangeEvent>();
   
+  public DidChangeTextDocumentParams() {
+  }
+  
+  public DidChangeTextDocumentParams(final VersionedTextDocumentIdentifier textDocument, final String uri, final List<TextDocumentContentChangeEvent> contentChanges) {
+    this.textDocument = textDocument;
+    this.uri = uri;
+    this.contentChanges = contentChanges;
+  }
+  
   /**
    * The document that did change. The version number points to the version after all provided content changes have
    * been applied.
@@ -80,16 +89,6 @@ public class DidChangeTextDocumentParams {
    * The actual content changes.
    */
   public void setContentChanges(@NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
-    this.contentChanges = contentChanges;
-  }
-  
-  public DidChangeTextDocumentParams() {
-    
-  }
-  
-  public DidChangeTextDocumentParams(final VersionedTextDocumentIdentifier textDocument, final String uri, final List<TextDocumentContentChangeEvent> contentChanges) {
-    this.textDocument = textDocument;
-    this.uri = uri;
     this.contentChanges = contentChanges;
   }
   

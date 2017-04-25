@@ -18,6 +18,13 @@ public class ShowMessageRequestParams extends MessageParams {
    */
   private List<MessageActionItem> actions;
   
+  public ShowMessageRequestParams() {
+  }
+  
+  public ShowMessageRequestParams(final List<MessageActionItem> actions) {
+    this.actions = actions;
+  }
+  
   /**
    * The message action items to present.
    */
@@ -30,14 +37,6 @@ public class ShowMessageRequestParams extends MessageParams {
    * The message action items to present.
    */
   public void setActions(final List<MessageActionItem> actions) {
-    this.actions = actions;
-  }
-  
-  public ShowMessageRequestParams() {
-    
-  }
-  
-  public ShowMessageRequestParams(final List<MessageActionItem> actions) {
     this.actions = actions;
   }
   

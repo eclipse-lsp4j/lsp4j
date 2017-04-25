@@ -95,10 +95,6 @@ public class TextDocumentItem {
     this.text = text;
   }
   
-  public TextDocumentItem() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

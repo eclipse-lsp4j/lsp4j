@@ -118,10 +118,6 @@ public class Diagnostic {
     this.message = message;
   }
   
-  public Diagnostic() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

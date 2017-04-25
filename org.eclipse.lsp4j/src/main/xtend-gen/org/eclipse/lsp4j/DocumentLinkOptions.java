@@ -13,6 +13,13 @@ public class DocumentLinkOptions {
    */
   private Boolean resolveProvider;
   
+  public DocumentLinkOptions() {
+  }
+  
+  public DocumentLinkOptions(final Boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
+  }
+  
   /**
    * Document links have a resolve provider as well.
    */
@@ -25,14 +32,6 @@ public class DocumentLinkOptions {
    * Document links have a resolve provider as well.
    */
   public void setResolveProvider(final Boolean resolveProvider) {
-    this.resolveProvider = resolveProvider;
-  }
-  
-  public DocumentLinkOptions() {
-    
-  }
-  
-  public DocumentLinkOptions(final Boolean resolveProvider) {
     this.resolveProvider = resolveProvider;
   }
   

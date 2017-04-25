@@ -18,6 +18,14 @@ public class Position {
    */
   private int character;
   
+  public Position() {
+  }
+  
+  public Position(final int line, final int character) {
+    this.line = line;
+    this.character = character;
+  }
+  
   /**
    * Line position in a document (zero-based).
    */
@@ -45,15 +53,6 @@ public class Position {
    * Character offset on a line in a document (zero-based).
    */
   public void setCharacter(final int character) {
-    this.character = character;
-  }
-  
-  public Position() {
-    
-  }
-  
-  public Position(final int line, final int character) {
-    this.line = line;
     this.character = character;
   }
   

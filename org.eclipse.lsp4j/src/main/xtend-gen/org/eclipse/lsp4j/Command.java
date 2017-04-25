@@ -28,6 +28,15 @@ public class Command {
    */
   private List<Object> arguments;
   
+  public Command() {
+  }
+  
+  public Command(final String title, final String command, final List<Object> arguments) {
+    this.title = title;
+    this.command = command;
+    this.arguments = arguments;
+  }
+  
   /**
    * Title of the command, like `save`.
    */
@@ -72,16 +81,6 @@ public class Command {
    * Arguments that the command handler should be invoked with.
    */
   public void setArguments(final List<Object> arguments) {
-    this.arguments = arguments;
-  }
-  
-  public Command() {
-    
-  }
-  
-  public Command(final String title, final String command, final List<Object> arguments) {
-    this.title = title;
-    this.command = command;
     this.arguments = arguments;
   }
   

@@ -110,10 +110,6 @@ public class TextDocumentSyncOptions {
     this.save = save;
   }
   
-  public TextDocumentSyncOptions() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

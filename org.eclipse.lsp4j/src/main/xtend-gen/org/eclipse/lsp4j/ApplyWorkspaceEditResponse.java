@@ -10,6 +10,13 @@ public class ApplyWorkspaceEditResponse {
    */
   private Boolean applied;
   
+  public ApplyWorkspaceEditResponse() {
+  }
+  
+  public ApplyWorkspaceEditResponse(final Boolean applied) {
+    this.applied = applied;
+  }
+  
   /**
    * Indicates whether the edit was applied or not.
    */
@@ -22,14 +29,6 @@ public class ApplyWorkspaceEditResponse {
    * Indicates whether the edit was applied or not.
    */
   public void setApplied(final Boolean applied) {
-    this.applied = applied;
-  }
-  
-  public ApplyWorkspaceEditResponse() {
-    
-  }
-  
-  public ApplyWorkspaceEditResponse(final Boolean applied) {
     this.applied = applied;
   }
   

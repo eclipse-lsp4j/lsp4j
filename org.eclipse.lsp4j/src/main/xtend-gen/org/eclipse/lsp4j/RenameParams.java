@@ -30,6 +30,15 @@ public class RenameParams {
   @NonNull
   private String newName;
   
+  public RenameParams() {
+  }
+  
+  public RenameParams(final TextDocumentIdentifier textDocument, final Position position, final String newName) {
+    this.textDocument = textDocument;
+    this.position = position;
+    this.newName = newName;
+  }
+  
   /**
    * The document in which to find the symbol.
    */
@@ -77,16 +86,6 @@ public class RenameParams {
    * ResponseError with an appropriate message set.
    */
   public void setNewName(@NonNull final String newName) {
-    this.newName = newName;
-  }
-  
-  public RenameParams() {
-    
-  }
-  
-  public RenameParams(final TextDocumentIdentifier textDocument, final Position position, final String newName) {
-    this.textDocument = textDocument;
-    this.position = position;
     this.newName = newName;
   }
   

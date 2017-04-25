@@ -15,6 +15,13 @@ public class WorkspaceSymbolParams {
   @NonNull
   private String query;
   
+  public WorkspaceSymbolParams() {
+  }
+  
+  public WorkspaceSymbolParams(final String query) {
+    this.query = query;
+  }
+  
   /**
    * A non-empty query string
    */
@@ -28,14 +35,6 @@ public class WorkspaceSymbolParams {
    * A non-empty query string
    */
   public void setQuery(@NonNull final String query) {
-    this.query = query;
-  }
-  
-  public WorkspaceSymbolParams() {
-    
-  }
-  
-  public WorkspaceSymbolParams(final String query) {
     this.query = query;
   }
   

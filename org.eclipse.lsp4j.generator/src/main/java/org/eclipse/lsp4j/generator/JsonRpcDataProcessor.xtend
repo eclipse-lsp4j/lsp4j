@@ -21,9 +21,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
 class JsonRpcDataProcessor extends AbstractClassProcessor {
 
-	static val MAX_CONSTRUCTOR_ARGS = 3
-
-	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+	override doTransform(MutableClassDeclaration annotatedClass, TransformationContext context) {
 		generateImpl(annotatedClass, context)
 	}
 
@@ -32,37 +30,19 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			annotationTypeDeclaration == JsonRpcData.findTypeGlobally
 		])
 		impl.generateImplMembers(new JsonRpcDataTransformationContext(context))
-		val fields = impl.declaredFields.filter[!static]
-
-		if (!fields.empty) {
-			impl.addConstructor [
-				body = ''''''
-			]
-			if (fields.size <= MAX_CONSTRUCTOR_ARGS && impl.extendedClass !== object) {
-				impl.addConstructor [ constructor |
-					fields.forEach [ field |
-						constructor.addParameter(field.simpleName, field.type)
-					]
-					constructor.body = '''
-						«FOR field : fields»
-							this.«field.simpleName» = «field.simpleName»;
-						«ENDFOR»
-					'''
-				]
-			}
-		}
 
 		generateToString(impl, context)
 
 		val shouldIncludeSuper = impl.extendedClass.type != Object.newTypeReference.type
 		val equalsHashCodeUtil = new EqualsHashCodeProcessor.Util(context)
+		val fields = impl.declaredFields.filter[!static]
 		equalsHashCodeUtil.addEquals(impl, fields, shouldIncludeSuper)
 		equalsHashCodeUtil.addHashCode(impl, fields, shouldIncludeSuper)
 
 		return impl
 	}
 
-	private def void generateImplMembers(MutableClassDeclaration impl,
+	protected def void generateImplMembers(MutableClassDeclaration impl,
 		extension JsonRpcDataTransformationContext context) {
 		impl.declaredFields.filter [
 			!static
@@ -141,7 +121,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 		'''
 	}
 
-	private def generateToString(MutableClassDeclaration impl, extension TransformationContext context) {
+	protected def generateToString(MutableClassDeclaration impl, extension TransformationContext context) {
 		val toStringFields = newArrayList
 		var ClassDeclaration c = impl
 		do {

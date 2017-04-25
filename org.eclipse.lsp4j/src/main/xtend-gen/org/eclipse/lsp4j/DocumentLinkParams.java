@@ -11,6 +11,13 @@ public class DocumentLinkParams {
    */
   private TextDocumentIdentifier textDocument;
   
+  public DocumentLinkParams() {
+  }
+  
+  public DocumentLinkParams(final TextDocumentIdentifier textDocument) {
+    this.textDocument = textDocument;
+  }
+  
   /**
    * The document to provide document links for.
    */
@@ -23,14 +30,6 @@ public class DocumentLinkParams {
    * The document to provide document links for.
    */
   public void setTextDocument(final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
-  }
-  
-  public DocumentLinkParams() {
-    
-  }
-  
-  public DocumentLinkParams(final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

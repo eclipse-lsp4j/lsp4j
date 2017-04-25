@@ -29,6 +29,15 @@ public class TextDocumentPositionParams {
   @NonNull
   private Position position;
   
+  public TextDocumentPositionParams() {
+  }
+  
+  public TextDocumentPositionParams(final TextDocumentIdentifier textDocument, final String uri, final Position position) {
+    this.textDocument = textDocument;
+    this.uri = uri;
+    this.position = position;
+  }
+  
   /**
    * The text document.
    */
@@ -75,16 +84,6 @@ public class TextDocumentPositionParams {
    * The position inside the text document.
    */
   public void setPosition(@NonNull final Position position) {
-    this.position = position;
-  }
-  
-  public TextDocumentPositionParams() {
-    
-  }
-  
-  public TextDocumentPositionParams(final TextDocumentIdentifier textDocument, final String uri, final Position position) {
-    this.textDocument = textDocument;
-    this.uri = uri;
     this.position = position;
   }
   

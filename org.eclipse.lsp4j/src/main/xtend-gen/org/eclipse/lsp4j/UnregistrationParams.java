@@ -1,16 +1,25 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Unregistration;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class UnregistrationParams {
   @NonNull
-  private List<Unregistration> unregisterations = CollectionLiterals.<Unregistration>newArrayList();
+  private List<Unregistration> unregisterations;
+  
+  public UnregistrationParams() {
+    ArrayList<Unregistration> _arrayList = new ArrayList<Unregistration>();
+    this.unregisterations = _arrayList;
+  }
+  
+  public UnregistrationParams(final List<Unregistration> unregisterations) {
+    this.unregisterations = unregisterations;
+  }
   
   @Pure
   @NonNull
@@ -19,14 +28,6 @@ public class UnregistrationParams {
   }
   
   public void setUnregisterations(@NonNull final List<Unregistration> unregisterations) {
-    this.unregisterations = unregisterations;
-  }
-  
-  public UnregistrationParams() {
-    
-  }
-  
-  public UnregistrationParams(final List<Unregistration> unregisterations) {
     this.unregisterations = unregisterations;
   }
   

@@ -20,6 +20,14 @@ public class WillSaveTextDocumentParams {
   @NonNull
   private TextDocumentSaveReason reason;
   
+  public WillSaveTextDocumentParams() {
+  }
+  
+  public WillSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final TextDocumentSaveReason reason) {
+    this.textDocument = textDocument;
+    this.reason = reason;
+  }
+  
   /**
    * The document that will be saved.
    */
@@ -49,15 +57,6 @@ public class WillSaveTextDocumentParams {
    * A reason why a text document is saved.
    */
   public void setReason(@NonNull final TextDocumentSaveReason reason) {
-    this.reason = reason;
-  }
-  
-  public WillSaveTextDocumentParams() {
-    
-  }
-  
-  public WillSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final TextDocumentSaveReason reason) {
-    this.textDocument = textDocument;
     this.reason = reason;
   }
   

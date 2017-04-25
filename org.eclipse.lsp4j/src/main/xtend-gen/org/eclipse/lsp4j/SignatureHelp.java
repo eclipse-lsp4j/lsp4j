@@ -17,7 +17,7 @@ public class SignatureHelp {
    * One or more signatures.
    */
   @NonNull
-  private List<SignatureInformation> signatures = new ArrayList<SignatureInformation>();
+  private List<SignatureInformation> signatures;
   
   /**
    * The active signature.
@@ -28,6 +28,17 @@ public class SignatureHelp {
    * The active parameter of the active signature.
    */
   private Integer activeParameter;
+  
+  public SignatureHelp() {
+    ArrayList<SignatureInformation> _arrayList = new ArrayList<SignatureInformation>();
+    this.signatures = _arrayList;
+  }
+  
+  public SignatureHelp(final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
+    this.signatures = signatures;
+    this.activeSignature = activeSignature;
+    this.activeParameter = activeParameter;
+  }
   
   /**
    * One or more signatures.
@@ -72,16 +83,6 @@ public class SignatureHelp {
    * The active parameter of the active signature.
    */
   public void setActiveParameter(final Integer activeParameter) {
-    this.activeParameter = activeParameter;
-  }
-  
-  public SignatureHelp() {
-    
-  }
-  
-  public SignatureHelp(final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
-    this.signatures = signatures;
-    this.activeSignature = activeSignature;
     this.activeParameter = activeParameter;
   }
   

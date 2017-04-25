@@ -15,6 +15,13 @@ public class ReferenceParams extends TextDocumentPositionParams {
   @NonNull
   private ReferenceContext context;
   
+  public ReferenceParams() {
+  }
+  
+  public ReferenceParams(final ReferenceContext context) {
+    this.context = context;
+  }
+  
   @Pure
   @NonNull
   public ReferenceContext getContext() {
@@ -22,14 +29,6 @@ public class ReferenceParams extends TextDocumentPositionParams {
   }
   
   public void setContext(@NonNull final ReferenceContext context) {
-    this.context = context;
-  }
-  
-  public ReferenceParams() {
-    
-  }
-  
-  public ReferenceParams(final ReferenceContext context) {
     this.context = context;
   }
   

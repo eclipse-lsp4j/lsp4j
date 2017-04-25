@@ -1,9 +1,9 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -21,7 +21,17 @@ public class CompletionList {
    * The completion items.
    */
   @NonNull
-  private List<CompletionItem> items = CollectionLiterals.<CompletionItem>newArrayList();
+  private List<CompletionItem> items;
+  
+  public CompletionList() {
+    ArrayList<CompletionItem> _arrayList = new ArrayList<CompletionItem>();
+    this.items = _arrayList;
+  }
+  
+  public CompletionList(final boolean isIncomplete, final List<CompletionItem> items) {
+    this.isIncomplete = isIncomplete;
+    this.items = items;
+  }
   
   /**
    * This list it not complete. Further typing should result in recomputing this list.
@@ -51,15 +61,6 @@ public class CompletionList {
    * The completion items.
    */
   public void setItems(@NonNull final List<CompletionItem> items) {
-    this.items = items;
-  }
-  
-  public CompletionList() {
-    
-  }
-  
-  public CompletionList(final boolean isIncomplete, final List<CompletionItem> items) {
-    this.isIncomplete = isIncomplete;
     this.items = items;
   }
   

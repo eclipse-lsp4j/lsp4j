@@ -13,6 +13,13 @@ public class CodeLensOptions {
    */
   private boolean resolveProvider;
   
+  public CodeLensOptions() {
+  }
+  
+  public CodeLensOptions(final boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
+  }
+  
   /**
    * Code lens has a resolve provider as well.
    */
@@ -25,14 +32,6 @@ public class CodeLensOptions {
    * Code lens has a resolve provider as well.
    */
   public void setResolveProvider(final boolean resolveProvider) {
-    this.resolveProvider = resolveProvider;
-  }
-  
-  public CodeLensOptions() {
-    
-  }
-  
-  public CodeLensOptions(final boolean resolveProvider) {
     this.resolveProvider = resolveProvider;
   }
   

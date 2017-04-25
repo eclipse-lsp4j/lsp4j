@@ -14,6 +14,13 @@ class DynamicRegistrationCapabilities {
      * Supports dynamic registration.
      */
     Boolean dynamicRegistration
+    
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	this.dynamicRegistration = dynamicRegistration
+    }
 }
 
 @JsonRpcData
@@ -22,6 +29,13 @@ class WorkspaceEditCapabilites {
 	 * The client supports versioned document changes in `WorkspaceEdit`s
 	 */
 	Boolean documentChanges
+    
+    new() {
+    }
+    
+    new(Boolean documentChanges) {
+    	this.documentChanges = documentChanges
+    }
 }
 
 @JsonRpcData
@@ -95,6 +109,15 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
      * The client supports did save notifications.
      */
     Boolean didSave
+    
+    new() {
+    }
+    
+    new(Boolean willSave, Boolean willSaveWaitUntil, Boolean didSave) {
+    	this.willSave = willSave
+    	this.willSaveWaitUntil = willSaveWaitUntil
+    	this.didSave = didSave
+    }
 }
 
 @JsonRpcData
@@ -108,6 +131,13 @@ class CompletionItemCapabilities {
      * that is typing in one will update others too.
      */
     Boolean snippetSupport
+    
+    new() {
+    }
+    
+    new(Boolean snippetSupport) {
+    	this.snippetSupport = snippetSupport
+    }
 }
 
 @JsonRpcData
@@ -117,6 +147,13 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	 * capabilities.
 	 */
 	CompletionItemCapabilities completionItem
+    
+    new() {
+    }
+    
+    new(CompletionItemCapabilities completionItem) {
+    	this.completionItem = completionItem
+    }
 }
 
 @JsonRpcData
@@ -272,6 +309,15 @@ class ClientCapabilities {
      * Experimental client capabilities.
      */
     Object experimental
+    
+    new() {
+    }
+    
+    new(WorkspaceClientCapabilites workspace,  TextDocumentClientCapabilities textDocument, Object experimental) {
+    	this.workspace = workspace
+    	this.textDocument = textDocument
+    	this.experimental = experimental
+    }
 }
 
 /**
@@ -283,7 +329,15 @@ class CodeActionContext {
 	 * An array of diagnostics.
 	 */
 	@NonNull
-	List<Diagnostic> diagnostics = newArrayList
+	List<Diagnostic> diagnostics
+    
+    new() {
+    	this.diagnostics = new ArrayList
+    }
+    
+    new(List<Diagnostic> diagnostics) {
+    	this.diagnostics = diagnostics
+    }
 }
 
 /**
@@ -310,6 +364,15 @@ class CodeActionParams {
 	 */
 	@NonNull
 	CodeActionContext context
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument, Range range, CodeActionContext context) {
+    	this.textDocument = textDocument
+    	this.range = range
+    	this.context = context
+    }
 }
 
 /**
@@ -336,6 +399,15 @@ class CodeLens {
 	 * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
 	 */
 	Object data
+    
+    new() {
+    }
+    
+    new(Range range, Command command, Object data) {
+    	this.range = range
+    	this.command = command
+    	this.data = data
+    }
 }
 
 /**
@@ -347,6 +419,13 @@ class CodeLensOptions {
 	 * Code lens has a resolve provider as well.
 	 */
 	boolean resolveProvider
+    
+    new() {
+    }
+    
+    new(boolean resolveProvider) {
+    	this.resolveProvider = resolveProvider
+    }
 }
 
 /**
@@ -359,6 +438,13 @@ class CodeLensParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument) {
+    	this.textDocument = textDocument
+    }
 }
 
 /**
@@ -383,6 +469,15 @@ class Command {
 	 * Arguments that the command handler should be invoked with.
 	 */
 	List<Object> arguments
+    
+    new() {
+    }
+    
+    new(String title, String command, List<Object> arguments) {
+    	this.title = title
+    	this.command = command
+    	this.arguments = arguments
+    }
 }
 
 /**
@@ -478,7 +573,16 @@ class CompletionList {
 	 * The completion items.
 	 */
 	@NonNull
-	List<CompletionItem> items = newArrayList
+	List<CompletionItem> items
+    
+    new() {
+    	this.items = new ArrayList
+    }
+    
+    new(boolean isIncomplete, List<CompletionItem> items) {
+    	this.isIncomplete = isIncomplete
+    	this.items = items
+    }
 }
 
 /**
@@ -495,6 +599,14 @@ class CompletionOptions {
 	 * The characters that trigger completion automatically.
 	 */
 	List<String> triggerCharacters
+    
+    new() {
+    }
+    
+    new(Boolean resolveProvider, List<String> triggerCharacters) {
+    	this.resolveProvider = resolveProvider
+    	this.triggerCharacters = triggerCharacters
+    }
 }
 
 /**
@@ -538,6 +650,13 @@ class Diagnostic {
 class DidChangeConfigurationParams {
 	@NonNull
 	Object settings
+    
+    new() {
+    }
+    
+    new(Object settings) {
+    	this.settings = settings
+    }
 }
 
 /**
@@ -563,6 +682,15 @@ class DidChangeTextDocumentParams {
 	 */
 	@NonNull
 	List<TextDocumentContentChangeEvent> contentChanges = new ArrayList
+    
+    new() {
+    }
+    
+    new(VersionedTextDocumentIdentifier textDocument, String uri, List<TextDocumentContentChangeEvent> contentChanges) {
+    	this.textDocument = textDocument
+    	this.uri = uri
+    	this.contentChanges = contentChanges
+    }
 }
 
 /**
@@ -575,7 +703,15 @@ class DidChangeWatchedFilesParams {
 	 * The actual file events.
 	 */
 	@NonNull
-	List<FileEvent> changes = new ArrayList
+	List<FileEvent> changes
+    
+    new() {
+    	this.changes = new ArrayList
+    }
+    
+    new(List<FileEvent> changes) {
+    	this.changes = changes
+    }
 }
 
 /**
@@ -590,6 +726,13 @@ class DidCloseTextDocumentParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument) {
+    	this.textDocument = textDocument
+    }
 }
 
 /**
@@ -610,6 +753,14 @@ class DidOpenTextDocumentParams {
 	 */
 	@Deprecated
 	String text
+    
+    new() {
+    }
+    
+    new(TextDocumentItem textDocument, String text) {
+    	this.textDocument = textDocument
+    	this.text = text
+    }
 }
 
 /**
@@ -628,6 +779,14 @@ class DidSaveTextDocumentParams {
      * when the save notification was requested.
      */
     String text
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument, String text) {
+    	this.textDocument = textDocument
+    	this.text = text
+    }
 }
 
 
@@ -644,6 +803,14 @@ class WillSaveTextDocumentParams {
 	 */
 	@NonNull
 	TextDocumentSaveReason reason
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument, TextDocumentSaveReason reason) {
+    	this.textDocument = textDocument
+    	this.reason = reason
+    }
 }
 
 /**
@@ -662,6 +829,14 @@ class DocumentFormattingParams {
 	 */
 	@NonNull
 	FormattingOptions options
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument, FormattingOptions options) {
+    	this.textDocument = textDocument
+    	this.options = options
+    }
 }
 
 /**
@@ -680,6 +855,14 @@ class DocumentHighlight {
 	 * The highlight kind, default is {@link DocumentHighlightKind#Text}.
 	 */
 	DocumentHighlightKind kind
+    
+    new() {
+    }
+    
+    new(Range range, DocumentHighlightKind kind) {
+    	this.range = range
+    	this.kind = kind
+    }
 }
 
 /**
@@ -691,12 +874,21 @@ class DocumentLink {
     /**
      * The range this link applies to.
      */
-    @NonNull Range range
+    @NonNull
+    Range range
     
     /**
      * The uri this link points to. If missing a resolve request is sent later.
      */
     String target
+    
+    new() {
+    }
+    
+    new(Range range, String target) {
+    	this.range = range
+    	this.target = target
+    }
 }
 
 @JsonRpcData
@@ -705,6 +897,13 @@ class DocumentLinkParams {
      * The document to provide document links for.
      */
     TextDocumentIdentifier textDocument
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument) {
+    	this.textDocument = textDocument
+    }
 }
 
 /**
@@ -716,6 +915,13 @@ class DocumentLinkOptions {
      * Document links have a resolve provider as well.
      */
     Boolean resolveProvider
+    
+    new() {
+    }
+    
+    new(Boolean resolveProvider) {
+    	this.resolveProvider = resolveProvider
+    }
 }
 
 /**
@@ -727,7 +933,15 @@ class ExecuteCommandOptions {
      * The commands to be executed on the server
      */
     @NonNull
-    List<String> commands = newArrayList
+    List<String> commands
+    
+    new() {
+    	this.commands = new ArrayList
+    }
+    
+    new(List<String> commands) {
+    	this.commands = commands
+    }
 }
 
 /**
@@ -738,7 +952,14 @@ class SaveOptions {
 	/**
      * The client is supposed to include the content on save.
      */
-    Boolean includeText	
+    Boolean includeText
+    
+    new() {
+    }
+    
+    new(Boolean includeText) {
+    	this.includeText = includeText
+    }
 }
 
 @JsonRpcData
@@ -781,6 +1002,14 @@ class DocumentOnTypeFormattingOptions {
 	 * More trigger characters.
 	 */
 	List<String> moreTriggerCharacter
+    
+    new() {
+    }
+    
+    new(String firstTriggerCharacter, List<String> moreTriggerCharacter) {
+    	this.firstTriggerCharacter = firstTriggerCharacter
+    	this.moreTriggerCharacter = moreTriggerCharacter
+    }
 }
 
 /**
@@ -799,6 +1028,14 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	 */
 	@NonNull
 	String ch
+    
+    new() {
+    }
+    
+    new(Position position, String ch) {
+    	this.position = position
+    	this.ch = ch
+    }
 }
 
 /**
@@ -811,6 +1048,13 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
 	 */
 	@NonNull
 	Range range
+    
+    new() {
+    }
+    
+    new(Range range) {
+    	this.range = range
+    }
 }
 
 /**
@@ -823,6 +1067,13 @@ class DocumentSymbolParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument) {
+    	this.textDocument = textDocument
+    }
 }
 
 /**
@@ -841,6 +1092,14 @@ class FileEvent {
 	 */
 	@NonNull
 	FileChangeType type
+    
+    new() {
+    }
+    
+    new(String uri, FileChangeType type) {
+    	this.uri = uri
+    	this.type = type
+    }
 }
 
 /**
@@ -862,6 +1121,15 @@ class FormattingOptions {
 	 * Signature for further properties.
 	 */
 	Map<String, String> properties
+    
+    new() {
+    }
+    
+    new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
+    	this.tabSize = tabSize
+    	this.insertSpaces = insertSpaces
+    	this.properties = properties
+    }
 }
 
 /**
@@ -879,6 +1147,14 @@ class Hover {
 	 * An optional range
 	 */
 	Range range
+    
+    new() {
+    }
+    
+    new(List<Either<String, MarkedString>> contents, Range range) {
+    	this.contents = contents
+    	this.range = range
+    }
 }
 
 /**
@@ -898,8 +1174,17 @@ class Hover {
 class MarkedString {
 	@NonNull
 	String language
+	
 	@NonNull
 	String value
+    
+    new() {
+    }
+    
+    new(String language, String value) {
+    	this.language = language
+    	this.value = value
+    }
 }
 
 @JsonRpcData
@@ -909,6 +1194,13 @@ class InitializeError {
 	 * in the ResponseError.
 	 */
 	boolean retry
+    
+    new() {
+    }
+    
+    new(boolean retry) {
+    	this.retry = retry
+    }
 }
 
 /**
@@ -981,6 +1273,13 @@ class InitializeResult {
 	 */
 	@NonNull
 	ServerCapabilities capabilities
+    
+    new() {
+    }
+    
+    new(ServerCapabilities capabilities) {
+    	this.capabilities = capabilities
+    }
 }
 
 /**
@@ -993,6 +1292,14 @@ class Location {
 
 	@NonNull
 	Range range
+    
+    new() {
+    }
+    
+    new(String uri, Range range) {
+    	this.uri = uri
+    	this.range = range
+    }
 }
 
 /**
@@ -1007,6 +1314,13 @@ class MessageActionItem {
 	 */
 	@NonNull
 	String title
+    
+    new() {
+    }
+    
+    new(String title) {
+    	this.title = title
+    }
 }
 
 /**
@@ -1028,6 +1342,14 @@ class MessageParams {
 	 */
 	@NonNull
 	String message
+    
+    new() {
+    }
+    
+    new(MessageType type, String message) {
+    	this.type = type
+    	this.message = message
+    }
 }
 
 /**
@@ -1045,6 +1367,14 @@ class ParameterInformation {
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
 	String documentation
+    
+    new() {
+    }
+    
+    new(String label, String documentation) {
+    	this.label = label
+    	this.documentation = documentation
+    }
 }
 
 /**
@@ -1061,6 +1391,14 @@ class Position {
 	 * Character offset on a line in a document (zero-based).
 	 */
 	int character
+    
+    new() {
+    }
+    
+    new(int line, int character) {
+    	this.line = line
+    	this.character = character
+    }
 }
 
 /**
@@ -1078,7 +1416,16 @@ class PublishDiagnosticsParams {
 	 * An array of diagnostic information items.
 	 */
 	@NonNull
-	List<Diagnostic> diagnostics = new ArrayList
+	List<Diagnostic> diagnostics
+    
+    new() {
+    	this.diagnostics = new ArrayList
+    }
+    
+    new(String uri, List<Diagnostic> diagnostics) {
+    	this.uri = uri
+    	this.diagnostics = diagnostics
+    }
 }
 
 /**
@@ -1097,6 +1444,14 @@ class Range {
 	 */
 	@NonNull
 	Position end
+    
+    new() {
+    }
+    
+    new(Position start, Position end) {
+    	this.start = start
+    	this.end = end
+    }
 }
 
 /**
@@ -1109,6 +1464,13 @@ class ReferenceContext {
 	 * Include the declaration of the current symbol.
 	 */
 	boolean includeDeclaration
+    
+    new() {
+    }
+    
+    new(boolean includeDeclaration) {
+    	this.includeDeclaration = includeDeclaration
+    }
 }
 
 /**
@@ -1119,6 +1481,13 @@ class ReferenceContext {
 class ReferenceParams extends TextDocumentPositionParams {
 	@NonNull
 	ReferenceContext context
+    
+    new() {
+    }
+    
+    new(ReferenceContext context) {
+    	this.context = context
+    }
 }
 
 /**
@@ -1144,6 +1513,15 @@ class RenameParams {
 	 */
 	@NonNull
 	String newName
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument, Position position, String newName) {
+    	this.textDocument = textDocument
+    	this.position = position
+    	this.newName = newName
+    }
 }
 
 @JsonRpcData
@@ -1251,6 +1629,13 @@ class ShowMessageRequestParams extends MessageParams {
 	 * The message action items to present.
 	 */
 	List<MessageActionItem> actions
+    
+    new() {
+    }
+    
+    new(List<MessageActionItem> actions) {
+    	this.actions = actions
+    }
 }
 
 /**
@@ -1263,7 +1648,7 @@ class SignatureHelp {
 	 * One or more signatures.
 	 */
 	@NonNull
-	List<SignatureInformation> signatures = new ArrayList
+	List<SignatureInformation> signatures
 
 	/**
 	 * The active signature.
@@ -1274,6 +1659,16 @@ class SignatureHelp {
 	 * The active parameter of the active signature.
 	 */
 	Integer activeParameter
+    
+    new() {
+    	this.signatures = new ArrayList
+    }
+    
+    new(List<SignatureInformation> signatures, Integer activeSignature, Integer activeParameter) {
+    	this.signatures = signatures
+    	this.activeSignature = activeSignature
+    	this.activeParameter = activeParameter
+    }
 }
 
 /**
@@ -1285,6 +1680,13 @@ class SignatureHelpOptions {
 	 * The characters that trigger signature help automatically.
 	 */
 	List<String> triggerCharacters
+    
+    new() {
+    }
+    
+    new(List<String> triggerCharacters) {
+    	this.triggerCharacters = triggerCharacters
+    }
 }
 
 /**
@@ -1308,6 +1710,15 @@ class SignatureInformation {
 	 * The parameters of this signature.
 	 */
 	List<ParameterInformation> parameters
+    
+    new() {
+    }
+    
+    new(String label, String documentation, List<ParameterInformation> parameters) {
+    	this.label = label
+    	this.documentation = documentation
+    	this.parameters = parameters
+    }
 }
 
 /**
@@ -1360,6 +1771,15 @@ class TextDocumentContentChangeEvent {
 	 */
 	@NonNull
 	String text
+    
+    new() {
+    }
+    
+    new(Range range, Integer rangeLength, String text) {
+    	this.range = range
+    	this.rangeLength = rangeLength
+    	this.text = text
+    }
 }
 
 /**
@@ -1372,6 +1792,13 @@ class TextDocumentIdentifier {
 	 */
 	@NonNull
 	String uri
+    
+    new() {
+    }
+    
+    new(String uri) {
+    	this.uri = uri
+    }
 }
 
 /**
@@ -1425,6 +1852,15 @@ class TextDocumentPositionParams {
 	 */
 	@NonNull
 	Position position
+    
+    new() {
+    }
+    
+    new(TextDocumentIdentifier textDocument, String uri, Position position) {
+    	this.textDocument = textDocument
+    	this.uri = uri
+    	this.position = position
+    }
 }
 
 /**
@@ -1443,6 +1879,14 @@ class TextEdit {
 	 */
 	@NonNull
 	String newText
+    
+    new() {
+    }
+    
+    new(Range range, String newText) {
+    	this.range = range
+    	this.newText = newText
+    }
 }
 
 /**
@@ -1454,6 +1898,13 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 	 * The version number of this document.
 	 */
 	int version
+    
+    new() {
+    }
+    
+    new(int version) {
+    	this.version = version
+    }
 }
 
 /**
@@ -1474,6 +1925,14 @@ class TextDocumentEdit {
 	 */
 	@NonNull
 	List<TextEdit> edits
+    
+    new() {
+    }
+    
+    new(VersionedTextDocumentIdentifier textDocument, List<TextEdit> edits) {
+    	this.textDocument = textDocument
+    	this.edits = edits
+    }
 }
 
 /**
@@ -1487,7 +1946,7 @@ class WorkspaceEdit {
 	/**
 	 * Holds changes to existing resources.
 	 */
-	Map<String, List<TextEdit>> changes = new LinkedHashMap
+	Map<String, List<TextEdit>> changes
 
 	/**
 	 * An array of `TextDocumentEdit`s to express changes to specific a specific
@@ -1495,6 +1954,15 @@ class WorkspaceEdit {
 	 * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
 	 */
 	List<TextDocumentEdit> documentChanges
+    
+    new() {
+    	this.changes = new LinkedHashMap
+    }
+    
+    new(Map<String, List<TextEdit>> changes, List<TextDocumentEdit> documentChanges) {
+    	this.changes = changes
+    	this.documentChanges = documentChanges
+    }
 }
 
 /**
@@ -1507,6 +1975,13 @@ class WorkspaceSymbolParams {
 	 */
 	@NonNull
 	String query
+    
+    new() {
+    }
+    
+    new(String query) {
+    	this.query = query
+    }
 }
 
 /**
@@ -1531,12 +2006,29 @@ class Registration {
      * Options necessary for the registration.
      */
     Object registerOptions
+    
+    new() {
+    }
+    
+    new(String id, String method, Object registerOptions) {
+    	this.id = id
+    	this.method = method
+    	this.registerOptions = registerOptions
+    }
 }
 
 @JsonRpcData
 class RegistrationParams {
 	@NonNull
-	List<Registration> registrations = newArrayList
+	List<Registration> registrations
+    
+    new() {
+    	this.registrations = new ArrayList
+    }
+    
+    new(List<Registration> registrations) {
+    	this.registrations = registrations
+    }
 }
 
 /**
@@ -1558,6 +2050,15 @@ class DocumentFilter {
      * A glob pattern, like `*.{ts,js}`.
      */
     String pattern
+    
+    new() {
+    }
+    
+    new(String language, String schema, String pattern) {
+    	this.language = language
+    	this.schema = schema
+    	this.pattern = pattern
+    }
 }
 
 /**
@@ -1576,6 +2077,13 @@ class TextDocumentRegistrationOptions {
      * the document selector provided on the client side will be used.
      */
     DocumentSelector documentSelector
+    
+    new() {
+    }
+    
+    new(DocumentSelector documentSelector) {
+    	this.documentSelector = documentSelector
+    }
 }
 
 /**
@@ -1595,12 +2103,28 @@ class Unregistration {
      */
     @NonNull
 	String method
+    
+    new() {
+    }
+    
+    new(String id, String method) {
+    	this.id = id
+    	this.method = method
+    }
 }
 
 @JsonRpcData
 class UnregistrationParams {
 	@NonNull
-	List<Unregistration> unregisterations = newArrayList
+	List<Unregistration> unregisterations
+    
+    new() {
+    	this.unregisterations = new ArrayList
+    }
+    
+    new(List<Unregistration> unregisterations) {
+    	this.unregisterations = unregisterations
+    }
 }
 
 /**
@@ -1613,7 +2137,14 @@ class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOpti
      * and TextDocumentSyncKind.Incremental.
      */
     @NonNull
-	TextDocumentSyncKind syncKind	
+	TextDocumentSyncKind syncKind
+    
+    new() {
+    }
+    
+    new(TextDocumentSyncKind syncKind) {
+    	this.syncKind = syncKind
+    }
 }
 
 @JsonRpcData
@@ -1622,6 +2153,13 @@ class TextDocumentSaveRegistrationOptions extends TextDocumentRegistrationOption
 	 * The client is supposed to include the content on save.
 	 */
 	Boolean includeText
+    
+    new() {
+    }
+    
+    new(Boolean includeText) {
+    	this.includeText = includeText
+    }
 }
 
 @JsonRpcData
@@ -1635,6 +2173,14 @@ class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
      * The server provides support to resolve additional information for a completion item.
      */
     Boolean resolveProvider
+    
+    new() {
+    }
+    
+    new(List<String> triggerCharacters, Boolean resolveProvider) {
+    	this.triggerCharacters = triggerCharacters
+    	this.resolveProvider = resolveProvider
+    }
 }
 
 @JsonRpcData
@@ -1643,6 +2189,13 @@ class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOptions {
      * The characters that trigger signature help automatically.
      */
     List<String> triggerCharacters
+    
+    new() {
+    }
+    
+    new(List<String> triggerCharacters) {
+    	this.triggerCharacters = triggerCharacters
+    }
 }
 
 @JsonRpcData
@@ -1651,6 +2204,13 @@ class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions {
      * Code lens has a resolve provider as well.
      */
     Boolean resolveProvider
+    
+    new() {
+    }
+    
+    new(Boolean resolveProvider) {
+    	this.resolveProvider = resolveProvider
+    }
 }
 
 @JsonRpcData
@@ -1659,6 +2219,13 @@ class DocumentLinkRegistrationOptions extends TextDocumentRegistrationOptions {
      * Document links have a resolve provider as well.
      */
     Boolean resolveProvider
+    
+    new() {
+    }
+    
+    new(Boolean resolveProvider) {
+    	this.resolveProvider = resolveProvider
+    }
 }
 
 @JsonRpcData
@@ -1670,7 +2237,15 @@ class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrati
 	/**
      * More trigger characters.
      */
-    List<String> moreTriggerCharacter	
+    List<String> moreTriggerCharacter
+    
+    new() {
+    }
+    
+    new(String firstTriggerCharacter, List<String> moreTriggerCharacter) {
+    	this.firstTriggerCharacter = firstTriggerCharacter
+    	this.moreTriggerCharacter = moreTriggerCharacter
+    }
 }
 
 @JsonRpcData
@@ -1687,6 +2262,14 @@ class ExecuteCommandParams {
      * Example requests that return a command are textDocument/codeAction or textDocument/codeLens.
      */
     List<Object> arguments
+    
+    new() {
+    }
+    
+    new(String command, List<Object> arguments) {
+    	this.command = command
+    	this.arguments = arguments
+    }
 }
 
 /**
@@ -1698,6 +2281,13 @@ class ExecuteCommandRegistrationOptions {
      * The commands to be executed on the server
      */
     List<String> commands
+    
+    new() {
+    }
+    
+    new(List<String> commands) {
+    	this.commands = commands
+    }
 }
 
 @JsonRpcData
@@ -1706,6 +2296,13 @@ class ApplyWorkspaceEditParams {
      * The edits to apply.
      */
     WorkspaceEdit edit
+    
+    new() {
+    }
+    
+    new(WorkspaceEdit edit) {
+    	this.edit = edit
+    }
 }
 
 @JsonRpcData
@@ -1713,5 +2310,12 @@ class ApplyWorkspaceEditResponse {
 	/**
      * Indicates whether the edit was applied or not.
      */
-    Boolean applied	
+    Boolean applied
+    
+    new() {
+    }
+    
+    new(Boolean applied) {
+    	this.applied = applied
+    }
 }

@@ -17,6 +17,13 @@ public class MessageActionItem {
   @NonNull
   private String title;
   
+  public MessageActionItem() {
+  }
+  
+  public MessageActionItem(final String title) {
+    this.title = title;
+  }
+  
   /**
    * A short title like 'Retry', 'Open Log' etc.
    */
@@ -30,14 +37,6 @@ public class MessageActionItem {
    * A short title like 'Retry', 'Open Log' etc.
    */
   public void setTitle(@NonNull final String title) {
-    this.title = title;
-  }
-  
-  public MessageActionItem() {
-    
-  }
-  
-  public MessageActionItem(final String title) {
     this.title = title;
   }
   

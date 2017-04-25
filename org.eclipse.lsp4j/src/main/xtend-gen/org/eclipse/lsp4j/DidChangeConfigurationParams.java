@@ -12,6 +12,13 @@ public class DidChangeConfigurationParams {
   @NonNull
   private Object settings;
   
+  public DidChangeConfigurationParams() {
+  }
+  
+  public DidChangeConfigurationParams(final Object settings) {
+    this.settings = settings;
+  }
+  
   @Pure
   @NonNull
   public Object getSettings() {
@@ -19,14 +26,6 @@ public class DidChangeConfigurationParams {
   }
   
   public void setSettings(@NonNull final Object settings) {
-    this.settings = settings;
-  }
-  
-  public DidChangeConfigurationParams() {
-    
-  }
-  
-  public DidChangeConfigurationParams(final Object settings) {
     this.settings = settings;
   }
   

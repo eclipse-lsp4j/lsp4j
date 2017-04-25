@@ -11,6 +11,13 @@ public class InitializeError {
    */
   private boolean retry;
   
+  public InitializeError() {
+  }
+  
+  public InitializeError(final boolean retry) {
+    this.retry = retry;
+  }
+  
   /**
    * Indicates whether the client should retry to send the initialize request after showing the message provided
    * in the ResponseError.
@@ -25,14 +32,6 @@ public class InitializeError {
    * in the ResponseError.
    */
   public void setRetry(final boolean retry) {
-    this.retry = retry;
-  }
-  
-  public InitializeError() {
-    
-  }
-  
-  public InitializeError(final boolean retry) {
     this.retry = retry;
   }
   
