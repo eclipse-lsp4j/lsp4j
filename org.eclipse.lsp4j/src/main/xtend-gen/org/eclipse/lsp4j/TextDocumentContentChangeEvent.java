@@ -27,6 +27,15 @@ public class TextDocumentContentChangeEvent {
   @NonNull
   private String text;
   
+  public TextDocumentContentChangeEvent() {
+  }
+  
+  public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, final String text) {
+    this.range = range;
+    this.rangeLength = rangeLength;
+    this.text = text;
+  }
+  
   /**
    * The range of the document that changed.
    */
@@ -70,16 +79,6 @@ public class TextDocumentContentChangeEvent {
    * The new text of the range/document.
    */
   public void setText(@NonNull final String text) {
-    this.text = text;
-  }
-  
-  public TextDocumentContentChangeEvent() {
-    
-  }
-  
-  public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, final String text) {
-    this.range = range;
-    this.rangeLength = rangeLength;
     this.text = text;
   }
   

@@ -385,10 +385,6 @@ public class ServerCapabilities {
     this.experimental = experimental;
   }
   
-  public ServerCapabilities() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

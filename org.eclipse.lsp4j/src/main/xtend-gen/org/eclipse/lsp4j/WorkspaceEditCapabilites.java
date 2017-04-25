@@ -10,6 +10,13 @@ public class WorkspaceEditCapabilites {
    */
   private Boolean documentChanges;
   
+  public WorkspaceEditCapabilites() {
+  }
+  
+  public WorkspaceEditCapabilites(final Boolean documentChanges) {
+    this.documentChanges = documentChanges;
+  }
+  
   /**
    * The client supports versioned document changes in `WorkspaceEdit`s
    */
@@ -22,14 +29,6 @@ public class WorkspaceEditCapabilites {
    * The client supports versioned document changes in `WorkspaceEdit`s
    */
   public void setDocumentChanges(final Boolean documentChanges) {
-    this.documentChanges = documentChanges;
-  }
-  
-  public WorkspaceEditCapabilites() {
-    
-  }
-  
-  public WorkspaceEditCapabilites(final Boolean documentChanges) {
     this.documentChanges = documentChanges;
   }
   

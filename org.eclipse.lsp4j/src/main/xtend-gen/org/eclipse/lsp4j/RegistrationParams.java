@@ -1,16 +1,25 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Registration;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class RegistrationParams {
   @NonNull
-  private List<Registration> registrations = CollectionLiterals.<Registration>newArrayList();
+  private List<Registration> registrations;
+  
+  public RegistrationParams() {
+    ArrayList<Registration> _arrayList = new ArrayList<Registration>();
+    this.registrations = _arrayList;
+  }
+  
+  public RegistrationParams(final List<Registration> registrations) {
+    this.registrations = registrations;
+  }
   
   @Pure
   @NonNull
@@ -19,14 +28,6 @@ public class RegistrationParams {
   }
   
   public void setRegistrations(@NonNull final List<Registration> registrations) {
-    this.registrations = registrations;
-  }
-  
-  public RegistrationParams() {
-    
-  }
-  
-  public RegistrationParams(final List<Registration> registrations) {
     this.registrations = registrations;
   }
   

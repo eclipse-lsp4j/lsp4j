@@ -17,7 +17,7 @@ public class SignatureHelp {
    * One or more signatures.
    */
   @NonNull
-  private List<SignatureInformation> signatures = new ArrayList<SignatureInformation>();
+  private List<SignatureInformation> signatures;
   
   /**
    * The active signature. If omitted or the value lies outside the
@@ -40,6 +40,17 @@ public class SignatureHelp {
    * active signature does have any.
    */
   private Integer activeParameter;
+  
+  public SignatureHelp() {
+    ArrayList<SignatureInformation> _arrayList = new ArrayList<SignatureInformation>();
+    this.signatures = _arrayList;
+  }
+  
+  public SignatureHelp(final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
+    this.signatures = signatures;
+    this.activeSignature = activeSignature;
+    this.activeParameter = activeParameter;
+  }
   
   /**
    * One or more signatures.
@@ -108,16 +119,6 @@ public class SignatureHelp {
    * active signature does have any.
    */
   public void setActiveParameter(final Integer activeParameter) {
-    this.activeParameter = activeParameter;
-  }
-  
-  public SignatureHelp() {
-    
-  }
-  
-  public SignatureHelp(final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
-    this.signatures = signatures;
-    this.activeSignature = activeSignature;
     this.activeParameter = activeParameter;
   }
   

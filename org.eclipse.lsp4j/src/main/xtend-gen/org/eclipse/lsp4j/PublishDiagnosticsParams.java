@@ -22,7 +22,17 @@ public class PublishDiagnosticsParams {
    * An array of diagnostic information items.
    */
   @NonNull
-  private List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
+  private List<Diagnostic> diagnostics;
+  
+  public PublishDiagnosticsParams() {
+    ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
+    this.diagnostics = _arrayList;
+  }
+  
+  public PublishDiagnosticsParams(final String uri, final List<Diagnostic> diagnostics) {
+    this.uri = uri;
+    this.diagnostics = diagnostics;
+  }
   
   /**
    * The URI for which diagnostic information is reported.
@@ -53,15 +63,6 @@ public class PublishDiagnosticsParams {
    * An array of diagnostic information items.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
-    this.diagnostics = diagnostics;
-  }
-  
-  public PublishDiagnosticsParams() {
-    
-  }
-  
-  public PublishDiagnosticsParams(final String uri, final List<Diagnostic> diagnostics) {
-    this.uri = uri;
     this.diagnostics = diagnostics;
   }
   

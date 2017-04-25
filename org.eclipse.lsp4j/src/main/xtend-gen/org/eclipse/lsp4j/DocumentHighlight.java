@@ -23,6 +23,14 @@ public class DocumentHighlight {
    */
   private DocumentHighlightKind kind;
   
+  public DocumentHighlight() {
+  }
+  
+  public DocumentHighlight(final Range range, final DocumentHighlightKind kind) {
+    this.range = range;
+    this.kind = kind;
+  }
+  
   /**
    * The range this highlight applies to.
    */
@@ -51,15 +59,6 @@ public class DocumentHighlight {
    * The highlight kind, default is {@link DocumentHighlightKind#Text}.
    */
   public void setKind(final DocumentHighlightKind kind) {
-    this.kind = kind;
-  }
-  
-  public DocumentHighlight() {
-    
-  }
-  
-  public DocumentHighlight(final Range range, final DocumentHighlightKind kind) {
-    this.range = range;
     this.kind = kind;
   }
   

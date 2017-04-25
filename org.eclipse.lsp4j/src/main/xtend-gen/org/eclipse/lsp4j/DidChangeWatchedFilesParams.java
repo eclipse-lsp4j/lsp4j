@@ -17,7 +17,16 @@ public class DidChangeWatchedFilesParams {
    * The actual file events.
    */
   @NonNull
-  private List<FileEvent> changes = new ArrayList<FileEvent>();
+  private List<FileEvent> changes;
+  
+  public DidChangeWatchedFilesParams() {
+    ArrayList<FileEvent> _arrayList = new ArrayList<FileEvent>();
+    this.changes = _arrayList;
+  }
+  
+  public DidChangeWatchedFilesParams(final List<FileEvent> changes) {
+    this.changes = changes;
+  }
   
   /**
    * The actual file events.
@@ -32,14 +41,6 @@ public class DidChangeWatchedFilesParams {
    * The actual file events.
    */
   public void setChanges(@NonNull final List<FileEvent> changes) {
-    this.changes = changes;
-  }
-  
-  public DidChangeWatchedFilesParams() {
-    
-  }
-  
-  public DidChangeWatchedFilesParams(final List<FileEvent> changes) {
     this.changes = changes;
   }
   

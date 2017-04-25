@@ -24,6 +24,15 @@ public class FormattingOptions {
    */
   private Map<String, String> properties;
   
+  public FormattingOptions() {
+  }
+  
+  public FormattingOptions(final int tabSize, final boolean insertSpaces, final Map<String, String> properties) {
+    this.tabSize = tabSize;
+    this.insertSpaces = insertSpaces;
+    this.properties = properties;
+  }
+  
   /**
    * Size of a tab in spaces.
    */
@@ -66,16 +75,6 @@ public class FormattingOptions {
    * Signature for further properties.
    */
   public void setProperties(final Map<String, String> properties) {
-    this.properties = properties;
-  }
-  
-  public FormattingOptions() {
-    
-  }
-  
-  public FormattingOptions(final int tabSize, final boolean insertSpaces, final Map<String, String> properties) {
-    this.tabSize = tabSize;
-    this.insertSpaces = insertSpaces;
     this.properties = properties;
   }
   

@@ -20,6 +20,14 @@ public class ExecuteCommandParams {
    */
   private List<Object> arguments;
   
+  public ExecuteCommandParams() {
+  }
+  
+  public ExecuteCommandParams(final String command, final List<Object> arguments) {
+    this.command = command;
+    this.arguments = arguments;
+  }
+  
   /**
    * The identifier of the actual command handler.
    */
@@ -52,15 +60,6 @@ public class ExecuteCommandParams {
    * Example requests that return a command are textDocument/codeAction or textDocument/codeLens.
    */
   public void setArguments(final List<Object> arguments) {
-    this.arguments = arguments;
-  }
-  
-  public ExecuteCommandParams() {
-    
-  }
-  
-  public ExecuteCommandParams(final String command, final List<Object> arguments) {
-    this.command = command;
     this.arguments = arguments;
   }
   

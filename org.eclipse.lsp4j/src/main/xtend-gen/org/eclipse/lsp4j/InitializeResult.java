@@ -13,6 +13,13 @@ public class InitializeResult {
   @NonNull
   private ServerCapabilities capabilities;
   
+  public InitializeResult() {
+  }
+  
+  public InitializeResult(final ServerCapabilities capabilities) {
+    this.capabilities = capabilities;
+  }
+  
   /**
    * The capabilities the language server provides.
    */
@@ -26,14 +33,6 @@ public class InitializeResult {
    * The capabilities the language server provides.
    */
   public void setCapabilities(@NonNull final ServerCapabilities capabilities) {
-    this.capabilities = capabilities;
-  }
-  
-  public InitializeResult() {
-    
-  }
-  
-  public InitializeResult(final ServerCapabilities capabilities) {
     this.capabilities = capabilities;
   }
   

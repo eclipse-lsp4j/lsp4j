@@ -22,6 +22,14 @@ public class DocumentLink {
    */
   private String target;
   
+  public DocumentLink() {
+  }
+  
+  public DocumentLink(final Range range, final String target) {
+    this.range = range;
+    this.target = target;
+  }
+  
   /**
    * The range this link applies to.
    */
@@ -50,15 +58,6 @@ public class DocumentLink {
    * The uri this link points to. If missing a resolve request is sent later.
    */
   public void setTarget(final String target) {
-    this.target = target;
-  }
-  
-  public DocumentLink() {
-    
-  }
-  
-  public DocumentLink(final Range range, final String target) {
-    this.range = range;
     this.target = target;
   }
   

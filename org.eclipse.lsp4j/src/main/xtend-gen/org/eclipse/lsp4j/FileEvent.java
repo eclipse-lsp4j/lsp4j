@@ -22,6 +22,14 @@ public class FileEvent {
   @NonNull
   private FileChangeType type;
   
+  public FileEvent() {
+  }
+  
+  public FileEvent(final String uri, final FileChangeType type) {
+    this.uri = uri;
+    this.type = type;
+  }
+  
   /**
    * The file's uri.
    */
@@ -51,15 +59,6 @@ public class FileEvent {
    * The change type.
    */
   public void setType(@NonNull final FileChangeType type) {
-    this.type = type;
-  }
-  
-  public FileEvent() {
-    
-  }
-  
-  public FileEvent(final String uri, final FileChangeType type) {
-    this.uri = uri;
     this.type = type;
   }
   

@@ -314,10 +314,6 @@ public class TextDocumentClientCapabilities {
     this.rename = rename;
   }
   
-  public TextDocumentClientCapabilities() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

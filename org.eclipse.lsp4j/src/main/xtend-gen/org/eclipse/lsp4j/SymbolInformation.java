@@ -97,10 +97,6 @@ public class SymbolInformation {
     this.containerName = containerName;
   }
   
-  public SymbolInformation() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

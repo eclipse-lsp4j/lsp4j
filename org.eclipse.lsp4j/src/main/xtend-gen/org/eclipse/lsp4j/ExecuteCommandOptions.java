@@ -1,8 +1,8 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -15,7 +15,16 @@ public class ExecuteCommandOptions {
    * The commands to be executed on the server
    */
   @NonNull
-  private List<String> commands = CollectionLiterals.<String>newArrayList();
+  private List<String> commands;
+  
+  public ExecuteCommandOptions() {
+    ArrayList<String> _arrayList = new ArrayList<String>();
+    this.commands = _arrayList;
+  }
+  
+  public ExecuteCommandOptions(final List<String> commands) {
+    this.commands = commands;
+  }
   
   /**
    * The commands to be executed on the server
@@ -30,14 +39,6 @@ public class ExecuteCommandOptions {
    * The commands to be executed on the server
    */
   public void setCommands(@NonNull final List<String> commands) {
-    this.commands = commands;
-  }
-  
-  public ExecuteCommandOptions() {
-    
-  }
-  
-  public ExecuteCommandOptions(final List<String> commands) {
     this.commands = commands;
   }
   

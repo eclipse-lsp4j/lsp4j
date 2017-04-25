@@ -20,6 +20,14 @@ public class ParameterInformation {
    */
   private String documentation;
   
+  public ParameterInformation() {
+  }
+  
+  public ParameterInformation(final String label, final String documentation) {
+    this.label = label;
+    this.documentation = documentation;
+  }
+  
   /**
    * The label of this signature. Will be shown in the UI.
    */
@@ -48,15 +56,6 @@ public class ParameterInformation {
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
   public void setDocumentation(final String documentation) {
-    this.documentation = documentation;
-  }
-  
-  public ParameterInformation() {
-    
-  }
-  
-  public ParameterInformation(final String label, final String documentation) {
-    this.label = label;
     this.documentation = documentation;
   }
   

@@ -13,6 +13,13 @@ public class CompletionCapabilities extends DynamicRegistrationCapabilities {
    */
   private CompletionItemCapabilities completionItem;
   
+  public CompletionCapabilities() {
+  }
+  
+  public CompletionCapabilities(final CompletionItemCapabilities completionItem) {
+    this.completionItem = completionItem;
+  }
+  
   /**
    * The client supports the following `CompletionItem` specific
    * capabilities.
@@ -27,14 +34,6 @@ public class CompletionCapabilities extends DynamicRegistrationCapabilities {
    * capabilities.
    */
   public void setCompletionItem(final CompletionItemCapabilities completionItem) {
-    this.completionItem = completionItem;
-  }
-  
-  public CompletionCapabilities() {
-    
-  }
-  
-  public CompletionCapabilities(final CompletionItemCapabilities completionItem) {
     this.completionItem = completionItem;
   }
   

@@ -16,6 +16,13 @@ public class DocumentSymbolParams {
   @NonNull
   private TextDocumentIdentifier textDocument;
   
+  public DocumentSymbolParams() {
+  }
+  
+  public DocumentSymbolParams(final TextDocumentIdentifier textDocument) {
+    this.textDocument = textDocument;
+  }
+  
   /**
    * The text document.
    */
@@ -29,14 +36,6 @@ public class DocumentSymbolParams {
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
-  }
-  
-  public DocumentSymbolParams() {
-    
-  }
-  
-  public DocumentSymbolParams(final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

@@ -31,6 +31,15 @@ public class CodeLens {
    */
   private Object data;
   
+  public CodeLens() {
+  }
+  
+  public CodeLens(final Range range, final Command command, final Object data) {
+    this.range = range;
+    this.command = command;
+    this.data = data;
+  }
+  
   /**
    * The range in which this code lens is valid. Should only span a single line.
    */
@@ -74,16 +83,6 @@ public class CodeLens {
    * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
   public void setData(final Object data) {
-    this.data = data;
-  }
-  
-  public CodeLens() {
-    
-  }
-  
-  public CodeLens(final Range range, final Command command, final Object data) {
-    this.range = range;
-    this.command = command;
     this.data = data;
   }
   

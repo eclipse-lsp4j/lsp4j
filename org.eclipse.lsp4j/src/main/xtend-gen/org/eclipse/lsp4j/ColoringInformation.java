@@ -25,7 +25,17 @@ public class ColoringInformation {
    * applying all styles on the range.
    */
   @NonNull
-  private List<Integer> styles = new ArrayList<Integer>();
+  private List<Integer> styles;
+  
+  public ColoringInformation() {
+    ArrayList<Integer> _arrayList = new ArrayList<Integer>();
+    this.styles = _arrayList;
+  }
+  
+  public ColoringInformation(final Range range, final List<Integer> styles) {
+    this.range = range;
+    this.styles = styles;
+  }
   
   /**
    * The range that should be highlighted on the client-side.
@@ -60,15 +70,6 @@ public class ColoringInformation {
    * applying all styles on the range.
    */
   public void setStyles(@NonNull final List<Integer> styles) {
-    this.styles = styles;
-  }
-  
-  public ColoringInformation() {
-    
-  }
-  
-  public ColoringInformation(final Range range, final List<Integer> styles) {
-    this.range = range;
     this.styles = styles;
   }
   

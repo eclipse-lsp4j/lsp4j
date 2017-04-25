@@ -12,6 +12,13 @@ public class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOp
    */
   private List<String> triggerCharacters;
   
+  public SignatureHelpRegistrationOptions() {
+  }
+  
+  public SignatureHelpRegistrationOptions(final List<String> triggerCharacters) {
+    this.triggerCharacters = triggerCharacters;
+  }
+  
   /**
    * The characters that trigger signature help automatically.
    */
@@ -24,14 +31,6 @@ public class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOp
    * The characters that trigger signature help automatically.
    */
   public void setTriggerCharacters(final List<String> triggerCharacters) {
-    this.triggerCharacters = triggerCharacters;
-  }
-  
-  public SignatureHelpRegistrationOptions() {
-    
-  }
-  
-  public SignatureHelpRegistrationOptions(final List<String> triggerCharacters) {
     this.triggerCharacters = triggerCharacters;
   }
   

@@ -32,6 +32,15 @@ public class CodeActionParams {
   @NonNull
   private CodeActionContext context;
   
+  public CodeActionParams() {
+  }
+  
+  public CodeActionParams(final TextDocumentIdentifier textDocument, final Range range, final CodeActionContext context) {
+    this.textDocument = textDocument;
+    this.range = range;
+    this.context = context;
+  }
+  
   /**
    * The document in which the command was invoked.
    */
@@ -77,16 +86,6 @@ public class CodeActionParams {
    * Context carrying additional information.
    */
   public void setContext(@NonNull final CodeActionContext context) {
-    this.context = context;
-  }
-  
-  public CodeActionParams() {
-    
-  }
-  
-  public CodeActionParams(final TextDocumentIdentifier textDocument, final Range range, final CodeActionContext context) {
-    this.textDocument = textDocument;
-    this.range = range;
     this.context = context;
   }
   

@@ -25,6 +25,14 @@ public class MarkedString {
   @NonNull
   private String value;
   
+  public MarkedString() {
+  }
+  
+  public MarkedString(final String language, final String value) {
+    this.language = language;
+    this.value = value;
+  }
+  
   @Pure
   @NonNull
   public String getLanguage() {
@@ -42,15 +50,6 @@ public class MarkedString {
   }
   
   public void setValue(@NonNull final String value) {
-    this.value = value;
-  }
-  
-  public MarkedString() {
-    
-  }
-  
-  public MarkedString(final String language, final String value) {
-    this.language = language;
     this.value = value;
   }
   

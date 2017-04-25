@@ -17,6 +17,14 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
    */
   private List<String> moreTriggerCharacter;
   
+  public DocumentOnTypeFormattingRegistrationOptions() {
+  }
+  
+  public DocumentOnTypeFormattingRegistrationOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
+    this.firstTriggerCharacter = firstTriggerCharacter;
+    this.moreTriggerCharacter = moreTriggerCharacter;
+  }
+  
   /**
    * A character on which formatting should be triggered, like `}`.
    */
@@ -44,15 +52,6 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
    * More trigger characters.
    */
   public void setMoreTriggerCharacter(final List<String> moreTriggerCharacter) {
-    this.moreTriggerCharacter = moreTriggerCharacter;
-  }
-  
-  public DocumentOnTypeFormattingRegistrationOptions() {
-    
-  }
-  
-  public DocumentOnTypeFormattingRegistrationOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
     this.moreTriggerCharacter = moreTriggerCharacter;
   }
   

@@ -16,6 +16,13 @@ public class CodeLensParams {
   @NonNull
   private TextDocumentIdentifier textDocument;
   
+  public CodeLensParams() {
+  }
+  
+  public CodeLensParams(final TextDocumentIdentifier textDocument) {
+    this.textDocument = textDocument;
+  }
+  
   /**
    * The document to request code lens for.
    */
@@ -29,14 +36,6 @@ public class CodeLensParams {
    * The document to request code lens for.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
-  }
-  
-  public CodeLensParams() {
-    
-  }
-  
-  public CodeLensParams(final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

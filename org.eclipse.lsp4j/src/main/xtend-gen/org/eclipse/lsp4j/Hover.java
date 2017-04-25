@@ -24,6 +24,14 @@ public class Hover {
    */
   private Range range;
   
+  public Hover() {
+  }
+  
+  public Hover(final List<Either<String, MarkedString>> contents, final Range range) {
+    this.contents = contents;
+    this.range = range;
+  }
+  
   /**
    * The hover's content as markdown
    */
@@ -52,15 +60,6 @@ public class Hover {
    * An optional range
    */
   public void setRange(final Range range) {
-    this.range = range;
-  }
-  
-  public Hover() {
-    
-  }
-  
-  public Hover(final List<Either<String, MarkedString>> contents, final Range range) {
-    this.contents = contents;
     this.range = range;
   }
   

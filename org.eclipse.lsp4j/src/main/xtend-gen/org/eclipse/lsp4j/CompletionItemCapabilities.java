@@ -15,6 +15,13 @@ public class CompletionItemCapabilities {
    */
   private Boolean snippetSupport;
   
+  public CompletionItemCapabilities() {
+  }
+  
+  public CompletionItemCapabilities(final Boolean snippetSupport) {
+    this.snippetSupport = snippetSupport;
+  }
+  
   /**
    * Client supports snippets as insert text.
    * 
@@ -37,14 +44,6 @@ public class CompletionItemCapabilities {
    * that is typing in one will update others too.
    */
   public void setSnippetSupport(final Boolean snippetSupport) {
-    this.snippetSupport = snippetSupport;
-  }
-  
-  public CompletionItemCapabilities() {
-    
-  }
-  
-  public CompletionItemCapabilities(final Boolean snippetSupport) {
     this.snippetSupport = snippetSupport;
   }
   

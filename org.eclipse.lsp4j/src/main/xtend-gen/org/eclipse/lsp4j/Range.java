@@ -22,6 +22,14 @@ public class Range {
   @NonNull
   private Position end;
   
+  public Range() {
+  }
+  
+  public Range(final Position start, final Position end) {
+    this.start = start;
+    this.end = end;
+  }
+  
   /**
    * The range's start position
    */
@@ -51,15 +59,6 @@ public class Range {
    * The range's end position
    */
   public void setEnd(@NonNull final Position end) {
-    this.end = end;
-  }
-  
-  public Range() {
-    
-  }
-  
-  public Range(final Position start, final Position end) {
-    this.start = start;
     this.end = end;
   }
   

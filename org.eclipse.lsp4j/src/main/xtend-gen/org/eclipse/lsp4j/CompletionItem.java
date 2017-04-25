@@ -286,10 +286,6 @@ public class CompletionItem {
     this.data = data;
   }
   
-  public CompletionItem() {
-    
-  }
-  
   @Override
   @Pure
   public String toString() {

@@ -21,6 +21,14 @@ public class DocumentOnTypeFormattingOptions {
    */
   private List<String> moreTriggerCharacter;
   
+  public DocumentOnTypeFormattingOptions() {
+  }
+  
+  public DocumentOnTypeFormattingOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
+    this.firstTriggerCharacter = firstTriggerCharacter;
+    this.moreTriggerCharacter = moreTriggerCharacter;
+  }
+  
   /**
    * A character on which formatting should be triggered, like `}`.
    */
@@ -49,15 +57,6 @@ public class DocumentOnTypeFormattingOptions {
    * More trigger characters.
    */
   public void setMoreTriggerCharacter(final List<String> moreTriggerCharacter) {
-    this.moreTriggerCharacter = moreTriggerCharacter;
-  }
-  
-  public DocumentOnTypeFormattingOptions() {
-    
-  }
-  
-  public DocumentOnTypeFormattingOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
     this.moreTriggerCharacter = moreTriggerCharacter;
   }
   

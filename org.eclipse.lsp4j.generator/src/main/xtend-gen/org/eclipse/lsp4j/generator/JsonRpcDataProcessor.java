@@ -28,7 +28,6 @@ import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.CompilationStrategy;
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
-import org.eclipse.xtend.lib.macro.declaration.MutableConstructorDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.Type;
@@ -48,10 +47,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class JsonRpcDataProcessor extends AbstractClassProcessor {
-  private final static int MAX_CONSTRUCTOR_ARGS = 3;
-  
   @Override
-  public void doTransform(final MutableClassDeclaration annotatedClass, @Extension final TransformationContext context) {
+  public void doTransform(final MutableClassDeclaration annotatedClass, final TransformationContext context) {
     this.generateImpl(annotatedClass, context);
   }
   
@@ -64,62 +61,22 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
     impl.removeAnnotation(IterableExtensions.findFirst(impl.getAnnotations(), _function));
     JsonRpcDataTransformationContext _jsonRpcDataTransformationContext = new JsonRpcDataTransformationContext(context);
     this.generateImplMembers(impl, _jsonRpcDataTransformationContext);
-    final Function1<MutableFieldDeclaration, Boolean> _function_1 = (MutableFieldDeclaration it) -> {
-      boolean _isStatic = it.isStatic();
-      return Boolean.valueOf((!_isStatic));
-    };
-    final Iterable<? extends MutableFieldDeclaration> fields = IterableExtensions.filter(impl.getDeclaredFields(), _function_1);
-    boolean _isEmpty = IterableExtensions.isEmpty(fields);
-    boolean _not = (!_isEmpty);
-    if (_not) {
-      final Procedure1<MutableConstructorDeclaration> _function_2 = (MutableConstructorDeclaration it) -> {
-        StringConcatenationClient _client = new StringConcatenationClient() {
-          @Override
-          protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-          }
-        };
-        it.setBody(_client);
-      };
-      impl.addConstructor(_function_2);
-      if (((IterableExtensions.size(fields) <= JsonRpcDataProcessor.MAX_CONSTRUCTOR_ARGS) && (impl.getExtendedClass() != context.getObject()))) {
-        final Procedure1<MutableConstructorDeclaration> _function_3 = (MutableConstructorDeclaration constructor) -> {
-          final Consumer<MutableFieldDeclaration> _function_4 = (MutableFieldDeclaration field) -> {
-            constructor.addParameter(field.getSimpleName(), field.getType());
-          };
-          fields.forEach(_function_4);
-          StringConcatenationClient _client = new StringConcatenationClient() {
-            @Override
-            protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-              {
-                for(final MutableFieldDeclaration field : fields) {
-                  _builder.append("this.");
-                  String _simpleName = field.getSimpleName();
-                  _builder.append(_simpleName);
-                  _builder.append(" = ");
-                  String _simpleName_1 = field.getSimpleName();
-                  _builder.append(_simpleName_1);
-                  _builder.append(";");
-                  _builder.newLineIfNotEmpty();
-                }
-              }
-            }
-          };
-          constructor.setBody(_client);
-        };
-        impl.addConstructor(_function_3);
-      }
-    }
     this.generateToString(impl, context);
     Type _type = impl.getExtendedClass().getType();
     Type _type_1 = context.newTypeReference(Object.class).getType();
     final boolean shouldIncludeSuper = (!Objects.equal(_type, _type_1));
     final EqualsHashCodeProcessor.Util equalsHashCodeUtil = new EqualsHashCodeProcessor.Util(context);
+    final Function1<MutableFieldDeclaration, Boolean> _function_1 = (MutableFieldDeclaration it) -> {
+      boolean _isStatic = it.isStatic();
+      return Boolean.valueOf((!_isStatic));
+    };
+    final Iterable<? extends MutableFieldDeclaration> fields = IterableExtensions.filter(impl.getDeclaredFields(), _function_1);
     equalsHashCodeUtil.addEquals(impl, fields, shouldIncludeSuper);
     equalsHashCodeUtil.addHashCode(impl, fields, shouldIncludeSuper);
     return impl;
   }
   
-  private void generateImplMembers(final MutableClassDeclaration impl, @Extension final JsonRpcDataTransformationContext context) {
+  protected void generateImplMembers(final MutableClassDeclaration impl, @Extension final JsonRpcDataTransformationContext context) {
     final Function1<MutableFieldDeclaration, Boolean> _function = (MutableFieldDeclaration it) -> {
       boolean _isStatic = it.isStatic();
       return Boolean.valueOf((!_isStatic));
@@ -250,7 +207,7 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
     return _xblockexpression;
   }
   
-  private MutableMethodDeclaration generateToString(final MutableClassDeclaration impl, @Extension final TransformationContext context) {
+  protected MutableMethodDeclaration generateToString(final MutableClassDeclaration impl, @Extension final TransformationContext context) {
     MutableMethodDeclaration _xblockexpression = null;
     {
       final ArrayList<FieldDeclaration> toStringFields = CollectionLiterals.<FieldDeclaration>newArrayList();

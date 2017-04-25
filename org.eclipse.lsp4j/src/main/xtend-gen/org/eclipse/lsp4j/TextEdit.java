@@ -22,6 +22,14 @@ public class TextEdit {
   @NonNull
   private String newText;
   
+  public TextEdit() {
+  }
+  
+  public TextEdit(final Range range, final String newText) {
+    this.range = range;
+    this.newText = newText;
+  }
+  
   /**
    * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
    */
@@ -51,15 +59,6 @@ public class TextEdit {
    * The string to be inserted. For delete operations use an empty string.
    */
   public void setNewText(@NonNull final String newText) {
-    this.newText = newText;
-  }
-  
-  public TextEdit() {
-    
-  }
-  
-  public TextEdit(final Range range, final String newText) {
-    this.range = range;
     this.newText = newText;
   }
   

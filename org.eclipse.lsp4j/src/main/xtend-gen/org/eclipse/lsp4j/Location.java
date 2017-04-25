@@ -16,6 +16,14 @@ public class Location {
   @NonNull
   private Range range;
   
+  public Location() {
+  }
+  
+  public Location(final String uri, final Range range) {
+    this.uri = uri;
+    this.range = range;
+  }
+  
   @Pure
   @NonNull
   public String getUri() {
@@ -33,15 +41,6 @@ public class Location {
   }
   
   public void setRange(@NonNull final Range range) {
-    this.range = range;
-  }
-  
-  public Location() {
-    
-  }
-  
-  public Location(final String uri, final Range range) {
-    this.uri = uri;
     this.range = range;
   }
   

@@ -13,6 +13,13 @@ public class InitializeError {
    */
   private boolean retry;
   
+  public InitializeError() {
+  }
+  
+  public InitializeError(final boolean retry) {
+    this.retry = retry;
+  }
+  
   /**
    * Indicates whether the client execute the following retry logic:
    * (1) show the message provided by the ResponseError to the user
@@ -31,14 +38,6 @@ public class InitializeError {
    * (3) if user selected retry the initialize method is sent again.
    */
   public void setRetry(final boolean retry) {
-    this.retry = retry;
-  }
-  
-  public InitializeError() {
-    
-  }
-  
-  public InitializeError(final boolean retry) {
     this.retry = retry;
   }
   

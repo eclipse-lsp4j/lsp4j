@@ -1,9 +1,9 @@
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -16,7 +16,16 @@ public class CodeActionContext {
    * An array of diagnostics.
    */
   @NonNull
-  private List<Diagnostic> diagnostics = CollectionLiterals.<Diagnostic>newArrayList();
+  private List<Diagnostic> diagnostics;
+  
+  public CodeActionContext() {
+    ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
+    this.diagnostics = _arrayList;
+  }
+  
+  public CodeActionContext(final List<Diagnostic> diagnostics) {
+    this.diagnostics = diagnostics;
+  }
   
   /**
    * An array of diagnostics.
@@ -31,14 +40,6 @@ public class CodeActionContext {
    * An array of diagnostics.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
-    this.diagnostics = diagnostics;
-  }
-  
-  public CodeActionContext() {
-    
-  }
-  
-  public CodeActionContext(final List<Diagnostic> diagnostics) {
     this.diagnostics = diagnostics;
   }
   

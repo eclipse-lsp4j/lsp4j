@@ -16,14 +16,22 @@ class ColoringParams {
 	 * The URI for which coloring information is reported.
 	 */
 	@NonNull
-	String uri;
+	String uri
 
 	/**
 	 * A list of coloring information instances.
 	 */
 	@NonNull
-	List<? extends ColoringInformation> infos = new ArrayList;
-
+	List<? extends ColoringInformation> infos
+	
+	new() {
+		this.infos = new ArrayList
+	}
+	
+	new(String uri, List<? extends ColoringInformation> infos) {
+		this.uri = uri
+		this.infos = infos
+	}
 }
 
 
@@ -38,7 +46,7 @@ class ColoringInformation {
 	 * The range that should be highlighted on the client-side.
 	 */
 	@NonNull
-	Range range;
+	Range range
 
 	/**
 	 * A list of highlighting styles, that should be applied on
@@ -46,8 +54,16 @@ class ColoringInformation {
 	 * applying all styles on the range. 
 	 */
 	@NonNull
-	List<Integer> styles = new ArrayList;
-
+	List<Integer> styles
+	
+	new() {
+		this.styles = new ArrayList
+	}
+	
+	new(Range range, List<Integer> styles) {
+		this.range = range
+		this.styles = styles
+	}
 }
 
 class ColoringStyle {

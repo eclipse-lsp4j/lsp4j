@@ -35,6 +35,15 @@ public class ClientCapabilities {
    */
   private Object experimental;
   
+  public ClientCapabilities() {
+  }
+  
+  public ClientCapabilities(final WorkspaceClientCapabilites workspace, final TextDocumentClientCapabilities textDocument, final Object experimental) {
+    this.workspace = workspace;
+    this.textDocument = textDocument;
+    this.experimental = experimental;
+  }
+  
   /**
    * Workspace specific client capabilities.
    */
@@ -77,16 +86,6 @@ public class ClientCapabilities {
    * Experimental client capabilities.
    */
   public void setExperimental(final Object experimental) {
-    this.experimental = experimental;
-  }
-  
-  public ClientCapabilities() {
-    
-  }
-  
-  public ClientCapabilities(final WorkspaceClientCapabilites workspace, final TextDocumentClientCapabilities textDocument, final Object experimental) {
-    this.workspace = workspace;
-    this.textDocument = textDocument;
     this.experimental = experimental;
   }
   

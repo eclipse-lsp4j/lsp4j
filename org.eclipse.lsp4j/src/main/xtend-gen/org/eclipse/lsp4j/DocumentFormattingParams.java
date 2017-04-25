@@ -23,6 +23,14 @@ public class DocumentFormattingParams {
   @NonNull
   private FormattingOptions options;
   
+  public DocumentFormattingParams() {
+  }
+  
+  public DocumentFormattingParams(final TextDocumentIdentifier textDocument, final FormattingOptions options) {
+    this.textDocument = textDocument;
+    this.options = options;
+  }
+  
   /**
    * The document to format.
    */
@@ -52,15 +60,6 @@ public class DocumentFormattingParams {
    * The format options
    */
   public void setOptions(@NonNull final FormattingOptions options) {
-    this.options = options;
-  }
-  
-  public DocumentFormattingParams() {
-    
-  }
-  
-  public DocumentFormattingParams(final TextDocumentIdentifier textDocument, final FormattingOptions options) {
-    this.textDocument = textDocument;
     this.options = options;
   }
   

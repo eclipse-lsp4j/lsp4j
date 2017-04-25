@@ -22,6 +22,14 @@ public class DidSaveTextDocumentParams {
    */
   private String text;
   
+  public DidSaveTextDocumentParams() {
+  }
+  
+  public DidSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final String text) {
+    this.textDocument = textDocument;
+    this.text = text;
+  }
+  
   /**
    * The document that was closed.
    */
@@ -52,15 +60,6 @@ public class DidSaveTextDocumentParams {
    * when the save notification was requested.
    */
   public void setText(final String text) {
-    this.text = text;
-  }
-  
-  public DidSaveTextDocumentParams() {
-    
-  }
-  
-  public DidSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final String text) {
-    this.textDocument = textDocument;
     this.text = text;
   }
   

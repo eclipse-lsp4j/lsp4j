@@ -22,6 +22,14 @@ public class Unregistration {
   @NonNull
   private String method;
   
+  public Unregistration() {
+  }
+  
+  public Unregistration(final String id, final String method) {
+    this.id = id;
+    this.method = method;
+  }
+  
   /**
    * The id used to unregister the request or notification. Usually an id
    * provided during the register request.
@@ -53,15 +61,6 @@ public class Unregistration {
    * The method / capability to unregister for.
    */
   public void setMethod(@NonNull final String method) {
-    this.method = method;
-  }
-  
-  public Unregistration() {
-    
-  }
-  
-  public Unregistration(final String id, final String method) {
-    this.id = id;
     this.method = method;
   }
   

@@ -19,6 +19,14 @@ public class CompletionOptions {
    */
   private List<String> triggerCharacters;
   
+  public CompletionOptions() {
+  }
+  
+  public CompletionOptions(final Boolean resolveProvider, final List<String> triggerCharacters) {
+    this.resolveProvider = resolveProvider;
+    this.triggerCharacters = triggerCharacters;
+  }
+  
   /**
    * The server provides support to resolve additional information for a completion item.
    */
@@ -46,15 +54,6 @@ public class CompletionOptions {
    * The characters that trigger completion automatically.
    */
   public void setTriggerCharacters(final List<String> triggerCharacters) {
-    this.triggerCharacters = triggerCharacters;
-  }
-  
-  public CompletionOptions() {
-    
-  }
-  
-  public CompletionOptions(final Boolean resolveProvider, final List<String> triggerCharacters) {
-    this.resolveProvider = resolveProvider;
     this.triggerCharacters = triggerCharacters;
   }
   

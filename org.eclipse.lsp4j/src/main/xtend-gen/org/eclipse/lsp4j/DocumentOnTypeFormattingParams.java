@@ -23,6 +23,14 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   @NonNull
   private String ch;
   
+  public DocumentOnTypeFormattingParams() {
+  }
+  
+  public DocumentOnTypeFormattingParams(final Position position, final String ch) {
+    this.position = position;
+    this.ch = ch;
+  }
+  
   /**
    * The position at which this request was send.
    */
@@ -52,15 +60,6 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The character that has been typed.
    */
   public void setCh(@NonNull final String ch) {
-    this.ch = ch;
-  }
-  
-  public DocumentOnTypeFormattingParams() {
-    
-  }
-  
-  public DocumentOnTypeFormattingParams(final Position position, final String ch) {
-    this.position = position;
     this.ch = ch;
   }
   
