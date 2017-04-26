@@ -1,7 +1,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentClientCapabilities;
-import org.eclipse.lsp4j.WorkspaceClientCapabilites;
+import org.eclipse.lsp4j.WorkspaceClientCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -23,7 +23,7 @@ public class ClientCapabilities {
   /**
    * Workspace specific client capabilities.
    */
-  private WorkspaceClientCapabilites workspace;
+  private WorkspaceClientCapabilities workspace;
   
   /**
    * Text document specific client capabilities.
@@ -38,7 +38,7 @@ public class ClientCapabilities {
   public ClientCapabilities() {
   }
   
-  public ClientCapabilities(final WorkspaceClientCapabilites workspace, final TextDocumentClientCapabilities textDocument, final Object experimental) {
+  public ClientCapabilities(final WorkspaceClientCapabilities workspace, final TextDocumentClientCapabilities textDocument, final Object experimental) {
     this.workspace = workspace;
     this.textDocument = textDocument;
     this.experimental = experimental;
@@ -48,14 +48,14 @@ public class ClientCapabilities {
    * Workspace specific client capabilities.
    */
   @Pure
-  public WorkspaceClientCapabilites getWorkspace() {
+  public WorkspaceClientCapabilities getWorkspace() {
     return this.workspace;
   }
   
   /**
    * Workspace specific client capabilities.
    */
-  public void setWorkspace(final WorkspaceClientCapabilites workspace) {
+  public void setWorkspace(final WorkspaceClientCapabilities workspace) {
     this.workspace = workspace;
   }
   

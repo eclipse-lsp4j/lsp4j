@@ -24,7 +24,7 @@ public class WorkspaceEdit {
   /**
    * An array of `TextDocumentEdit`s to express changes to specific a specific
    * version of a text document. Whether a client supports versioned document
-   * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
+   * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
   private List<TextDocumentEdit> documentChanges;
   
@@ -56,7 +56,7 @@ public class WorkspaceEdit {
   /**
    * An array of `TextDocumentEdit`s to express changes to specific a specific
    * version of a text document. Whether a client supports versioned document
-   * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
+   * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
   @Pure
   public List<TextDocumentEdit> getDocumentChanges() {
@@ -66,7 +66,7 @@ public class WorkspaceEdit {
   /**
    * An array of `TextDocumentEdit`s to express changes to specific a specific
    * version of a text document. Whether a client supports versioned document
-   * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
+   * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
   public void setDocumentChanges(final List<TextDocumentEdit> documentChanges) {
     this.documentChanges = documentChanges;

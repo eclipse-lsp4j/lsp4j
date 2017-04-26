@@ -5,7 +5,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class SymbolCapabilites extends DynamicRegistrationCapabilities {
+public class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
   @Override
   @Pure
   public String toString() {

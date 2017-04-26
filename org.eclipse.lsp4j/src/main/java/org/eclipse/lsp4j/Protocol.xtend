@@ -24,7 +24,7 @@ class DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
-class WorkspaceEditCapabilites {
+class WorkspaceEditCapabilities {
 	/**
 	 * The client supports versioned document changes in `WorkspaceEdit`s
 	 */
@@ -39,26 +39,26 @@ class WorkspaceEditCapabilites {
 }
 
 @JsonRpcData
-class DidChangeConfigurationCapabilites extends DynamicRegistrationCapabilities {
+class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
-class DidChangeWatchedFilesCapabilites extends DynamicRegistrationCapabilities {
+class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
-class SymbolCapabilites extends DynamicRegistrationCapabilities {
+class SymbolCapabilities extends DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
-class ExecuteCommandCapabilites extends DynamicRegistrationCapabilities {
+class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
  * Workspace specific client capabilities.
  */
 @JsonRpcData
-class WorkspaceClientCapabilites {
+class WorkspaceClientCapabilities {
 	/**
      * The client supports applying batch edits to the workspace by supporting 
      * the request 'workspace/applyEdit'.
@@ -68,27 +68,27 @@ class WorkspaceClientCapabilites {
     /**
      * Capabilities specific to `WorkspaceEdit`s
      */
-    WorkspaceEditCapabilites workspaceEdit
+    WorkspaceEditCapabilities workspaceEdit
     
     /**
      * Capabilities specific to the `workspace/didChangeConfiguration` notification.
      */
-    DidChangeConfigurationCapabilites didChangeConfiguration
+    DidChangeConfigurationCapabilities didChangeConfiguration
     
     /**
      * Capabilities specific to the `workspace/didChangeConfiguration` notification.
      */
-    DidChangeWatchedFilesCapabilites didChangeWatchedFiles
+    DidChangeWatchedFilesCapabilities didChangeWatchedFiles
     
     /**
      * Capabilities specific to the `workspace/symbol` request.
      */
-    SymbolCapabilites symbol
+    SymbolCapabilities symbol
     
     /**
      * Capabilities specific to the `workspace/executeCommand` request.
      */
-    ExecuteCommandCapabilites executeCommand
+    ExecuteCommandCapabilities executeCommand
 }
 
 @JsonRpcData
@@ -304,7 +304,7 @@ class ClientCapabilities {
 	/**
      * Workspace specific client capabilities.
      */
-    WorkspaceClientCapabilites workspace
+    WorkspaceClientCapabilities workspace
     
     /**
      * Text document specific client capabilities.
@@ -319,7 +319,7 @@ class ClientCapabilities {
     new() {
     }
     
-    new(WorkspaceClientCapabilites workspace,  TextDocumentClientCapabilities textDocument, Object experimental) {
+    new(WorkspaceClientCapabilities workspace, TextDocumentClientCapabilities textDocument, Object experimental) {
     	this.workspace = workspace
     	this.textDocument = textDocument
     	this.experimental = experimental
@@ -1976,7 +1976,7 @@ class WorkspaceEdit {
 	/**
 	 * An array of `TextDocumentEdit`s to express changes to specific a specific
 	 * version of a text document. Whether a client supports versioned document
-	 * edits is expressed via `WorkspaceClientCapabilites.versionedWorkspaceEdit`.
+	 * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
 	 */
 	List<TextDocumentEdit> documentChanges
     
