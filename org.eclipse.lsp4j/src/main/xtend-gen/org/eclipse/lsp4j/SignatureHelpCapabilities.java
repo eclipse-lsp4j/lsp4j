@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
+  public SignatureHelpCapabilities() {
+  }
+  
+  public SignatureHelpCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

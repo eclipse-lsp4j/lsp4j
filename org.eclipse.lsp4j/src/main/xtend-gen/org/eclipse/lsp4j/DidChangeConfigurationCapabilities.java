@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities {
+  public DidChangeConfigurationCapabilities() {
+  }
+  
+  public DidChangeConfigurationCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

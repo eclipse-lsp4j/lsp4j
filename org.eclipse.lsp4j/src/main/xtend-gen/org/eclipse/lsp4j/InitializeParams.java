@@ -23,8 +23,7 @@ public class InitializeParams {
   private String rootPath;
   
   /**
-   * The rootUri of the workspace. Is null if no
-   * folder is open.
+   * The rootUri of the workspace. Is null if no folder is open.
    */
   private String rootUri;
   
@@ -89,8 +88,7 @@ public class InitializeParams {
   }
   
   /**
-   * The rootUri of the workspace. Is null if no
-   * folder is open.
+   * The rootUri of the workspace. Is null if no folder is open.
    */
   @Pure
   public String getRootUri() {
@@ -98,8 +96,7 @@ public class InitializeParams {
   }
   
   /**
-   * The rootUri of the workspace. Is null if no
-   * folder is open.
+   * The rootUri of the workspace. Is null if no folder is open.
    */
   public void setRootUri(final String rootUri) {
     this.rootUri = rootUri;

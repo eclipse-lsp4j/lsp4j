@@ -30,7 +30,12 @@ public class Registration {
   public Registration() {
   }
   
-  public Registration(final String id, final String method, final Object registerOptions) {
+  public Registration(@NonNull final String id, @NonNull final String method) {
+    this.id = id;
+    this.method = method;
+  }
+  
+  public Registration(@NonNull final String id, @NonNull final String method, final Object registerOptions) {
     this.id = id;
     this.method = method;
     this.registerOptions = registerOptions;

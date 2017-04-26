@@ -25,7 +25,7 @@ public class FileEvent {
   public FileEvent() {
   }
   
-  public FileEvent(final String uri, final FileChangeType type) {
+  public FileEvent(@NonNull final String uri, @NonNull final FileChangeType type) {
     this.uri = uri;
     this.type = type;
   }

@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
+  public OnTypeFormattingCapabilities() {
+  }
+  
+  public OnTypeFormattingCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

@@ -35,10 +35,15 @@ public class DidChangeTextDocumentParams {
   public DidChangeTextDocumentParams() {
   }
   
-  public DidChangeTextDocumentParams(final VersionedTextDocumentIdentifier textDocument, final String uri, final List<TextDocumentContentChangeEvent> contentChanges) {
+  public DidChangeTextDocumentParams(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
     this.textDocument = textDocument;
-    this.uri = uri;
     this.contentChanges = contentChanges;
+  }
+  
+  @Deprecated
+  public DidChangeTextDocumentParams(@NonNull final VersionedTextDocumentIdentifier textDocument, final String uri, @NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
+    this(textDocument, contentChanges);
+    this.uri = uri;
   }
   
   /**

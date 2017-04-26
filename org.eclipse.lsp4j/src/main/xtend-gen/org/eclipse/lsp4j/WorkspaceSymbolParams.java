@@ -18,7 +18,7 @@ public class WorkspaceSymbolParams {
   public WorkspaceSymbolParams() {
   }
   
-  public WorkspaceSymbolParams(final String query) {
+  public WorkspaceSymbolParams(@NonNull final String query) {
     this.query = query;
   }
   

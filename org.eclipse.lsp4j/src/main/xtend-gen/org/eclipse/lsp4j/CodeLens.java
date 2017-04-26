@@ -34,8 +34,12 @@ public class CodeLens {
   public CodeLens() {
   }
   
-  public CodeLens(final Range range, final Command command, final Object data) {
+  public CodeLens(@NonNull final Range range) {
     this.range = range;
+  }
+  
+  public CodeLens(@NonNull final Range range, final Command command, final Object data) {
+    this(range);
     this.command = command;
     this.data = data;
   }

@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
+  public DocumentSymbolCapabilities() {
+  }
+  
+  public DocumentSymbolCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

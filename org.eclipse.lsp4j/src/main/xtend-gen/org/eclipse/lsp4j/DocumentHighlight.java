@@ -26,8 +26,12 @@ public class DocumentHighlight {
   public DocumentHighlight() {
   }
   
-  public DocumentHighlight(final Range range, final DocumentHighlightKind kind) {
+  public DocumentHighlight(@NonNull final Range range) {
     this.range = range;
+  }
+  
+  public DocumentHighlight(@NonNull final Range range, final DocumentHighlightKind kind) {
+    this(range);
     this.kind = kind;
   }
   

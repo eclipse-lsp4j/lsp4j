@@ -20,7 +20,7 @@ public class MessageActionItem {
   public MessageActionItem() {
   }
   
-  public MessageActionItem(final String title) {
+  public MessageActionItem(@NonNull final String title) {
     this.title = title;
   }
   

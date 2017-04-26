@@ -26,7 +26,7 @@ public class DocumentFormattingParams {
   public DocumentFormattingParams() {
   }
   
-  public DocumentFormattingParams(final TextDocumentIdentifier textDocument, final FormattingOptions options) {
+  public DocumentFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options) {
     this.textDocument = textDocument;
     this.options = options;
   }

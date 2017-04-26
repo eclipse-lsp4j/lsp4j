@@ -25,7 +25,7 @@ public class Unregistration {
   public Unregistration() {
   }
   
-  public Unregistration(final String id, final String method) {
+  public Unregistration(@NonNull final String id, @NonNull final String method) {
     this.id = id;
     this.method = method;
   }

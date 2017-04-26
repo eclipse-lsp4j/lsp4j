@@ -23,7 +23,7 @@ public class WillSaveTextDocumentParams {
   public WillSaveTextDocumentParams() {
   }
   
-  public WillSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final TextDocumentSaveReason reason) {
+  public WillSaveTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final TextDocumentSaveReason reason) {
     this.textDocument = textDocument;
     this.reason = reason;
   }

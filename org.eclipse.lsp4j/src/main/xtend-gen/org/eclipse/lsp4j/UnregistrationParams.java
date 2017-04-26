@@ -13,11 +13,10 @@ public class UnregistrationParams {
   private List<Unregistration> unregisterations;
   
   public UnregistrationParams() {
-    ArrayList<Unregistration> _arrayList = new ArrayList<Unregistration>();
-    this.unregisterations = _arrayList;
+    this(new ArrayList<Unregistration>());
   }
   
-  public UnregistrationParams(final List<Unregistration> unregisterations) {
+  public UnregistrationParams(@NonNull final List<Unregistration> unregisterations) {
     this.unregisterations = unregisterations;
   }
   

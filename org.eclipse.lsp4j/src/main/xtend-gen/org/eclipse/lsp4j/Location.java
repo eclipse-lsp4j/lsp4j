@@ -19,7 +19,7 @@ public class Location {
   public Location() {
   }
   
-  public Location(final String uri, final Range range) {
+  public Location(@NonNull final String uri, @NonNull final Range range) {
     this.uri = uri;
     this.range = range;
   }

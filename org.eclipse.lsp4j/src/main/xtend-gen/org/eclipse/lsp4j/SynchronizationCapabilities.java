@@ -32,6 +32,13 @@ public class SynchronizationCapabilities extends DynamicRegistrationCapabilities
     this.didSave = didSave;
   }
   
+  public SynchronizationCapabilities(final Boolean willSave, final Boolean willSaveWaitUntil, final Boolean didSave, final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+    this.willSave = willSave;
+    this.willSaveWaitUntil = willSaveWaitUntil;
+    this.didSave = didSave;
+  }
+  
   /**
    * The client supports sending will save notifications.
    */

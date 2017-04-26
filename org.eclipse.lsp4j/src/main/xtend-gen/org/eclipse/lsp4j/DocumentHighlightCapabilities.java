@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
+  public DocumentHighlightCapabilities() {
+  }
+  
+  public DocumentHighlightCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

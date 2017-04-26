@@ -23,7 +23,7 @@ public class ExecuteCommandParams {
   public ExecuteCommandParams() {
   }
   
-  public ExecuteCommandParams(final String command, final List<Object> arguments) {
+  public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments) {
     this.command = command;
     this.arguments = arguments;
   }

@@ -31,7 +31,11 @@ public class SignatureInformation {
   public SignatureInformation() {
   }
   
-  public SignatureInformation(final String label, final String documentation, final List<ParameterInformation> parameters) {
+  public SignatureInformation(@NonNull final String label) {
+    this.label = label;
+  }
+  
+  public SignatureInformation(@NonNull final String label, final String documentation, final List<ParameterInformation> parameters) {
     this.label = label;
     this.documentation = documentation;
     this.parameters = parameters;

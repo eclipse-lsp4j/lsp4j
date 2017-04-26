@@ -32,6 +32,16 @@ public class TextDocumentItem {
   @NonNull
   private String text;
   
+  public TextDocumentItem() {
+  }
+  
+  public TextDocumentItem(@NonNull final String uri, @NonNull final String languageId, final int version, @NonNull final String text) {
+    this.uri = uri;
+    this.languageId = languageId;
+    this.version = version;
+    this.text = text;
+  }
+  
   /**
    * The text document's uri.
    */

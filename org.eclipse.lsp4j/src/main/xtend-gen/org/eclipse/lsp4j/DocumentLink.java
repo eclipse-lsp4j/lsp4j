@@ -25,8 +25,12 @@ public class DocumentLink {
   public DocumentLink() {
   }
   
-  public DocumentLink(final Range range, final String target) {
+  public DocumentLink(@NonNull final Range range) {
     this.range = range;
+  }
+  
+  public DocumentLink(@NonNull final Range range, final String target) {
+    this(range);
     this.target = target;
   }
   

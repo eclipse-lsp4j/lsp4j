@@ -18,11 +18,10 @@ public class ExecuteCommandOptions {
   private List<String> commands;
   
   public ExecuteCommandOptions() {
-    ArrayList<String> _arrayList = new ArrayList<String>();
-    this.commands = _arrayList;
+    this(new ArrayList<String>());
   }
   
-  public ExecuteCommandOptions(final List<String> commands) {
+  public ExecuteCommandOptions(@NonNull final List<String> commands) {
     this.commands = commands;
   }
   

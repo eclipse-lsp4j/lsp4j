@@ -39,6 +39,25 @@ public class Diagnostic {
   @NonNull
   private String message;
   
+  public Diagnostic() {
+  }
+  
+  public Diagnostic(@NonNull final Range range, @NonNull final String message) {
+    this.range = range;
+    this.message = message;
+  }
+  
+  public Diagnostic(@NonNull final Range range, @NonNull final String message, final DiagnosticSeverity severity, final String source) {
+    this(range, message);
+    this.severity = severity;
+    this.source = source;
+  }
+  
+  public Diagnostic(@NonNull final Range range, @NonNull final String message, final DiagnosticSeverity severity, final String source, final String code) {
+    this(range, message, severity, source);
+    this.code = code;
+  }
+  
   /**
    * The range at which the message applies
    */

@@ -16,7 +16,7 @@ public class InitializeResult {
   public InitializeResult() {
   }
   
-  public InitializeResult(final ServerCapabilities capabilities) {
+  public InitializeResult(@NonNull final ServerCapabilities capabilities) {
     this.capabilities = capabilities;
   }
   

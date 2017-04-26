@@ -19,11 +19,10 @@ public class CodeActionContext {
   private List<Diagnostic> diagnostics;
   
   public CodeActionContext() {
-    ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
-    this.diagnostics = _arrayList;
+    this(new ArrayList<Diagnostic>());
   }
   
-  public CodeActionContext(final List<Diagnostic> diagnostics) {
+  public CodeActionContext(@NonNull final List<Diagnostic> diagnostics) {
     this.diagnostics = diagnostics;
   }
   

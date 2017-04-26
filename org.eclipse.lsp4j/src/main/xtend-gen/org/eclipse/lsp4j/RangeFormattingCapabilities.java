@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
+  public RangeFormattingCapabilities() {
+  }
+  
+  public RangeFormattingCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

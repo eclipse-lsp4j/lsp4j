@@ -46,7 +46,7 @@ public class SignatureHelp {
     this.signatures = _arrayList;
   }
   
-  public SignatureHelp(final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
+  public SignatureHelp(@NonNull final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
     this.signatures = signatures;
     this.activeSignature = activeSignature;
     this.activeParameter = activeParameter;

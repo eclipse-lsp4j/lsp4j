@@ -29,7 +29,7 @@ public class PublishDiagnosticsParams {
     this.diagnostics = _arrayList;
   }
   
-  public PublishDiagnosticsParams(final String uri, final List<Diagnostic> diagnostics) {
+  public PublishDiagnosticsParams(@NonNull final String uri, @NonNull final List<Diagnostic> diagnostics) {
     this.uri = uri;
     this.diagnostics = diagnostics;
   }
