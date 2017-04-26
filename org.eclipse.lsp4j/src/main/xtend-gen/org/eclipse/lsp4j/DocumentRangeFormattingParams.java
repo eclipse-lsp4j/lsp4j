@@ -20,7 +20,7 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams {
   public DocumentRangeFormattingParams() {
   }
   
-  public DocumentRangeFormattingParams(final Range range) {
+  public DocumentRangeFormattingParams(@NonNull final Range range) {
     this.range = range;
   }
   

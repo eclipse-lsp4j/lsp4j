@@ -25,8 +25,12 @@ public class DidSaveTextDocumentParams {
   public DidSaveTextDocumentParams() {
   }
   
-  public DidSaveTextDocumentParams(final TextDocumentIdentifier textDocument, final String text) {
+  public DidSaveTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
+  }
+  
+  public DidSaveTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument, final String text) {
+    this(textDocument);
     this.text = text;
   }
   

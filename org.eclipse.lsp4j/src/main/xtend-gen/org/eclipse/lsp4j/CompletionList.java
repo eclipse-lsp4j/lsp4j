@@ -24,13 +24,16 @@ public class CompletionList {
   private List<CompletionItem> items;
   
   public CompletionList() {
-    ArrayList<CompletionItem> _arrayList = new ArrayList<CompletionItem>();
-    this.items = _arrayList;
+    this(new ArrayList<CompletionItem>());
   }
   
-  public CompletionList(final boolean isIncomplete, final List<CompletionItem> items) {
-    this.isIncomplete = isIncomplete;
+  public CompletionList(@NonNull final List<CompletionItem> items) {
     this.items = items;
+  }
+  
+  public CompletionList(final boolean isIncomplete, @NonNull final List<CompletionItem> items) {
+    this(items);
+    this.isIncomplete = isIncomplete;
   }
   
   /**

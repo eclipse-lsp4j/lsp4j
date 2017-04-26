@@ -21,7 +21,7 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
   public TextDocumentChangeRegistrationOptions() {
   }
   
-  public TextDocumentChangeRegistrationOptions(final TextDocumentSyncKind syncKind) {
+  public TextDocumentChangeRegistrationOptions(@NonNull final TextDocumentSyncKind syncKind) {
     this.syncKind = syncKind;
   }
   

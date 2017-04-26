@@ -24,7 +24,11 @@ public class DocumentOnTypeFormattingOptions {
   public DocumentOnTypeFormattingOptions() {
   }
   
-  public DocumentOnTypeFormattingOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
+  public DocumentOnTypeFormattingOptions(@NonNull final String firstTriggerCharacter) {
+    this.firstTriggerCharacter = firstTriggerCharacter;
+  }
+  
+  public DocumentOnTypeFormattingOptions(@NonNull final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
     this.firstTriggerCharacter = firstTriggerCharacter;
     this.moreTriggerCharacter = moreTriggerCharacter;
   }

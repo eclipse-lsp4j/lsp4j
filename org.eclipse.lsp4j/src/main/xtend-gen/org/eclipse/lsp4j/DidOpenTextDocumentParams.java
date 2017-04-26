@@ -27,8 +27,13 @@ public class DidOpenTextDocumentParams {
   public DidOpenTextDocumentParams() {
   }
   
-  public DidOpenTextDocumentParams(final TextDocumentItem textDocument, final String text) {
+  public DidOpenTextDocumentParams(@NonNull final TextDocumentItem textDocument) {
     this.textDocument = textDocument;
+  }
+  
+  @Deprecated
+  public DidOpenTextDocumentParams(@NonNull final TextDocumentItem textDocument, final String text) {
+    this(textDocument);
     this.text = text;
   }
   

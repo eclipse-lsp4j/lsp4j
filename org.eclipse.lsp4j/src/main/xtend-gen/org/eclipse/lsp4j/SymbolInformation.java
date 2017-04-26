@@ -34,6 +34,22 @@ public class SymbolInformation {
    */
   private String containerName;
   
+  public SymbolInformation() {
+  }
+  
+  public SymbolInformation(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Location location) {
+    this.name = name;
+    this.kind = kind;
+    this.location = location;
+  }
+  
+  public SymbolInformation(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Location location, final String containerName) {
+    this.name = name;
+    this.kind = kind;
+    this.location = location;
+    this.containerName = containerName;
+  }
+  
   /**
    * The name of this symbol.
    */

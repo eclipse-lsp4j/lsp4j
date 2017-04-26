@@ -35,7 +35,7 @@ public class CodeActionParams {
   public CodeActionParams() {
   }
   
-  public CodeActionParams(final TextDocumentIdentifier textDocument, final Range range, final CodeActionContext context) {
+  public CodeActionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Range range, @NonNull final CodeActionContext context) {
     this.textDocument = textDocument;
     this.range = range;
     this.context = context;

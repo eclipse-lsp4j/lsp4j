@@ -25,7 +25,7 @@ public class TextEdit {
   public TextEdit() {
   }
   
-  public TextEdit(final Range range, final String newText) {
+  public TextEdit(@NonNull final Range range, @NonNull final String newText) {
     this.range = range;
     this.newText = newText;
   }

@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class ReferencesCapabilities extends DynamicRegistrationCapabilities {
+  public ReferencesCapabilities() {
+  }
+  
+  public ReferencesCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

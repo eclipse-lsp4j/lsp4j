@@ -40,18 +40,42 @@ class WorkspaceEditCapabilities {
 
 @JsonRpcData
 class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 /**
@@ -118,6 +142,13 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
     	this.willSaveWaitUntil = willSaveWaitUntil
     	this.didSave = didSave
     }
+    
+    new(Boolean willSave, Boolean willSaveWaitUntil, Boolean didSave, Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    	this.willSave = willSave
+    	this.willSaveWaitUntil = willSaveWaitUntil
+    	this.didSave = didSave
+    }
 }
 
 @JsonRpcData
@@ -154,58 +185,141 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
     new(CompletionItemCapabilities completionItem) {
     	this.completionItem = completionItem
     }
+    
+    new(CompletionItemCapabilities completionItem, Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    	this.completionItem = completionItem
+    }
 }
 
 @JsonRpcData
 class HoverCapabilities extends DynamicRegistrationCapabilities {	
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {	
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class ReferencesCapabilities extends DynamicRegistrationCapabilities {	
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {	
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
 class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {	
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class FormattingCapabilities extends DynamicRegistrationCapabilities {	
+class FormattingCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {	
+class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {	
+class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class DefinitionCapabilities extends DynamicRegistrationCapabilities {	
+class DefinitionCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class CodeActionCapabilities extends DynamicRegistrationCapabilities {	
+class CodeActionCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class CodeLensCapabilities extends DynamicRegistrationCapabilities {	
+class CodeLensCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {	
+class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 @JsonRpcData
-class RenameCapabilities extends DynamicRegistrationCapabilities {	
+class RenameCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    }
 }
 
 /**
@@ -338,10 +452,10 @@ class CodeActionContext {
 	List<Diagnostic> diagnostics
     
     new() {
-    	this.diagnostics = new ArrayList
+    	this(new ArrayList)
     }
     
-    new(List<Diagnostic> diagnostics) {
+    new(@NonNull List<Diagnostic> diagnostics) {
     	this.diagnostics = diagnostics
     }
 }
@@ -374,7 +488,7 @@ class CodeActionParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument, Range range, CodeActionContext context) {
+    new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range, @NonNull CodeActionContext context) {
     	this.textDocument = textDocument
     	this.range = range
     	this.context = context
@@ -409,8 +523,12 @@ class CodeLens {
     new() {
     }
     
-    new(Range range, Command command, Object data) {
+    new(@NonNull Range range) {
     	this.range = range
+    }
+    
+    new(@NonNull Range range, Command command, Object data) {
+    	this(range)
     	this.command = command
     	this.data = data
     }
@@ -448,7 +566,7 @@ class CodeLensParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument) {
+    new(@NonNull TextDocumentIdentifier textDocument) {
     	this.textDocument = textDocument
     }
 }
@@ -479,9 +597,13 @@ class Command {
     new() {
     }
     
-    new(String title, String command, List<Object> arguments) {
+    new(@NonNull String title, @NonNull String command) {
     	this.title = title
     	this.command = command
+    }
+    
+    new(@NonNull String title, @NonNull String command, List<Object> arguments) {
+    	this(title, command)
     	this.arguments = arguments
     }
 }
@@ -563,6 +685,13 @@ class CompletionItem {
 	 * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
 	 */
 	Object data
+	
+	new() {
+	}
+	
+	new(@NonNull String label) {
+		this.label = label
+	}
 }
 
 /**
@@ -582,12 +711,16 @@ class CompletionList {
 	List<CompletionItem> items
     
     new() {
-    	this.items = new ArrayList
+    	this(new ArrayList)
     }
     
-    new(boolean isIncomplete, List<CompletionItem> items) {
-    	this.isIncomplete = isIncomplete
+    new(@NonNull List<CompletionItem> items) {
     	this.items = items
+    }
+    
+    new(boolean isIncomplete, @NonNull List<CompletionItem> items) {
+    	this(items)
+    	this.isIncomplete = isIncomplete
     }
 }
 
@@ -647,6 +780,25 @@ class Diagnostic {
 	 */
 	@NonNull
 	String message
+	
+	new() {
+	}
+	
+	new(@NonNull Range range, @NonNull String message) {
+		this.range = range
+		this.message = message
+	}
+	
+	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source) {
+		this(range, message)
+		this.severity = severity
+		this.source = source
+	}
+	
+	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source, String code) {
+		this(range, message, severity, source)
+		this.code = code
+	}
 }
 
 /**
@@ -660,7 +812,7 @@ class DidChangeConfigurationParams {
     new() {
     }
     
-    new(Object settings) {
+    new(@NonNull Object settings) {
     	this.settings = settings
     }
 }
@@ -692,10 +844,15 @@ class DidChangeTextDocumentParams {
     new() {
     }
     
-    new(VersionedTextDocumentIdentifier textDocument, String uri, List<TextDocumentContentChangeEvent> contentChanges) {
+    new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextDocumentContentChangeEvent> contentChanges) {
     	this.textDocument = textDocument
-    	this.uri = uri
     	this.contentChanges = contentChanges
+    }
+    
+    @Deprecated
+    new(@NonNull VersionedTextDocumentIdentifier textDocument, String uri, @NonNull List<TextDocumentContentChangeEvent> contentChanges) {
+    	this(textDocument, contentChanges)
+    	this.uri = uri
     }
 }
 
@@ -712,10 +869,10 @@ class DidChangeWatchedFilesParams {
 	List<FileEvent> changes
     
     new() {
-    	this.changes = new ArrayList
+    	this(new ArrayList)
     }
     
-    new(List<FileEvent> changes) {
+    new(@NonNull List<FileEvent> changes) {
     	this.changes = changes
     }
 }
@@ -736,7 +893,7 @@ class DidCloseTextDocumentParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument) {
+    new(@NonNull TextDocumentIdentifier textDocument) {
     	this.textDocument = textDocument
     }
 }
@@ -763,8 +920,13 @@ class DidOpenTextDocumentParams {
     new() {
     }
     
-    new(TextDocumentItem textDocument, String text) {
+    new(@NonNull TextDocumentItem textDocument) {
     	this.textDocument = textDocument
+    }
+    
+    @Deprecated
+	new(@NonNull TextDocumentItem textDocument, String text) {
+    	this(textDocument)
     	this.text = text
     }
 }
@@ -789,8 +951,12 @@ class DidSaveTextDocumentParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument, String text) {
+    new(@NonNull TextDocumentIdentifier textDocument) {
     	this.textDocument = textDocument
+    }
+    
+    new(@NonNull TextDocumentIdentifier textDocument, String text) {
+    	this(textDocument)
     	this.text = text
     }
 }
@@ -813,7 +979,7 @@ class WillSaveTextDocumentParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument, TextDocumentSaveReason reason) {
+    new(@NonNull TextDocumentIdentifier textDocument, @NonNull TextDocumentSaveReason reason) {
     	this.textDocument = textDocument
     	this.reason = reason
     }
@@ -839,7 +1005,7 @@ class DocumentFormattingParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument, FormattingOptions options) {
+    new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options) {
     	this.textDocument = textDocument
     	this.options = options
     }
@@ -865,8 +1031,12 @@ class DocumentHighlight {
     new() {
     }
     
-    new(Range range, DocumentHighlightKind kind) {
+    new(@NonNull Range range) {
     	this.range = range
+    }
+    
+    new(@NonNull Range range, DocumentHighlightKind kind) {
+    	this(range)
     	this.kind = kind
     }
 }
@@ -891,8 +1061,12 @@ class DocumentLink {
     new() {
     }
     
-    new(Range range, String target) {
+    new(@NonNull Range range) {
     	this.range = range
+    }
+    
+    new(@NonNull Range range, String target) {
+    	this(range)
     	this.target = target
     }
 }
@@ -942,10 +1116,10 @@ class ExecuteCommandOptions {
     List<String> commands
     
     new() {
-    	this.commands = new ArrayList
+    	this(new ArrayList)
     }
     
-    new(List<String> commands) {
+    new(@NonNull List<String> commands) {
     	this.commands = commands
     }
 }
@@ -1012,7 +1186,11 @@ class DocumentOnTypeFormattingOptions {
     new() {
     }
     
-    new(String firstTriggerCharacter, List<String> moreTriggerCharacter) {
+    new(@NonNull String firstTriggerCharacter) {
+    	this.firstTriggerCharacter = firstTriggerCharacter
+    }
+    
+    new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
     	this.firstTriggerCharacter = firstTriggerCharacter
     	this.moreTriggerCharacter = moreTriggerCharacter
     }
@@ -1038,7 +1216,7 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
     new() {
     }
     
-    new(Position position, String ch) {
+    new(@NonNull Position position, @NonNull String ch) {
     	this.position = position
     	this.ch = ch
     }
@@ -1058,7 +1236,7 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
     new() {
     }
     
-    new(Range range) {
+    new(@NonNull Range range) {
     	this.range = range
     }
 }
@@ -1077,7 +1255,7 @@ class DocumentSymbolParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument) {
+    new(@NonNull TextDocumentIdentifier textDocument) {
     	this.textDocument = textDocument
     }
 }
@@ -1102,7 +1280,7 @@ class FileEvent {
     new() {
     }
     
-    new(String uri, FileChangeType type) {
+    new(@NonNull String uri, @NonNull FileChangeType type) {
     	this.uri = uri
     	this.type = type
     }
@@ -1157,7 +1335,11 @@ class Hover {
     new() {
     }
     
-    new(List<Either<String, MarkedString>> contents, Range range) {
+    new(@NonNull List<Either<String, MarkedString>> contents) {
+    	this.contents = contents
+    }
+    
+    new(@NonNull List<Either<String, MarkedString>> contents, Range range) {
     	this.contents = contents
     	this.range = range
     }
@@ -1187,7 +1369,7 @@ class MarkedString {
     new() {
     }
     
-    new(String language, String value) {
+    new(@NonNull String language, @NonNull String value) {
     	this.language = language
     	this.value = value
     }
@@ -1196,7 +1378,7 @@ class MarkedString {
 @JsonRpcData
 class InitializeError {
 	/**
-	 * Indicates whether the client execute the following retry logic:
+	 * Indicates whether the client executes the following retry logic:
 	 * (1) show the message provided by the ResponseError to the user
 	 * (2) user selects retry or cancel
 	 * (3) if user selected retry the initialize method is sent again.
@@ -1244,8 +1426,7 @@ class InitializeParams {
 	String rootPath
 	
 	/**
-     * The rootUri of the workspace. Is null if no
-     * folder is open.
+     * The rootUri of the workspace. Is null if no folder is open.
      */
 	String rootUri
 
@@ -1285,7 +1466,7 @@ class InitializeResult {
     new() {
     }
     
-    new(ServerCapabilities capabilities) {
+    new(@NonNull ServerCapabilities capabilities) {
     	this.capabilities = capabilities
     }
 }
@@ -1309,7 +1490,7 @@ class Location {
     new() {
     }
     
-    new(String uri, Range range) {
+    new(@NonNull String uri, @NonNull Range range) {
     	this.uri = uri
     	this.range = range
     }
@@ -1331,7 +1512,7 @@ class MessageActionItem {
     new() {
     }
     
-    new(String title) {
+    new(@NonNull String title) {
     	this.title = title
     }
 }
@@ -1359,7 +1540,7 @@ class MessageParams {
     new() {
     }
     
-    new(MessageType type, String message) {
+    new(@NonNull MessageType type, @NonNull String message) {
     	this.type = type
     	this.message = message
     }
@@ -1384,7 +1565,11 @@ class ParameterInformation {
     new() {
     }
     
-    new(String label, String documentation) {
+    new(@NonNull String label) {
+    	this.label = label
+    }
+    
+    new(@NonNull String label, String documentation) {
     	this.label = label
     	this.documentation = documentation
     }
@@ -1435,7 +1620,7 @@ class PublishDiagnosticsParams {
     	this.diagnostics = new ArrayList
     }
     
-    new(String uri, List<Diagnostic> diagnostics) {
+    new(@NonNull String uri, @NonNull List<Diagnostic> diagnostics) {
     	this.uri = uri
     	this.diagnostics = diagnostics
     }
@@ -1461,7 +1646,7 @@ class Range {
     new() {
     }
     
-    new(Position start, Position end) {
+    new(@NonNull Position start, @NonNull Position end) {
     	this.start = start
     	this.end = end
     }
@@ -1498,7 +1683,7 @@ class ReferenceParams extends TextDocumentPositionParams {
     new() {
     }
     
-    new(ReferenceContext context) {
+    new(@NonNull ReferenceContext context) {
     	this.context = context
     }
 }
@@ -1530,7 +1715,7 @@ class RenameParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument, Position position, String newName) {
+    new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull String newName) {
     	this.textDocument = textDocument
     	this.position = position
     	this.newName = newName
@@ -1689,7 +1874,7 @@ class SignatureHelp {
     	this.signatures = new ArrayList
     }
     
-    new(List<SignatureInformation> signatures, Integer activeSignature, Integer activeParameter) {
+    new(@NonNull List<SignatureInformation> signatures, Integer activeSignature, Integer activeParameter) {
     	this.signatures = signatures
     	this.activeSignature = activeSignature
     	this.activeParameter = activeParameter
@@ -1739,7 +1924,11 @@ class SignatureInformation {
     new() {
     }
     
-    new(String label, String documentation, List<ParameterInformation> parameters) {
+    new(@NonNull String label) {
+    	this.label = label
+    }
+    
+    new(@NonNull String label, String documentation, List<ParameterInformation> parameters) {
     	this.label = label
     	this.documentation = documentation
     	this.parameters = parameters
@@ -1773,6 +1962,22 @@ class SymbolInformation {
 	 * The name of the symbol containing this symbol.
 	 */
 	String containerName
+	
+    new() {
+    }
+    
+    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location) {
+    	this.name = name
+    	this.kind = kind
+    	this.location = location
+    }
+    
+    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
+    	this.name = name
+    	this.kind = kind
+    	this.location = location
+    	this.containerName = containerName
+    }
 }
 
 /**
@@ -1800,7 +2005,11 @@ class TextDocumentContentChangeEvent {
     new() {
     }
     
-    new(Range range, Integer rangeLength, String text) {
+    new(@NonNull String text) {
+    	this.text = text
+    }
+    
+    new(Range range, Integer rangeLength, @NonNull String text) {
     	this.range = range
     	this.rangeLength = rangeLength
     	this.text = text
@@ -1821,7 +2030,7 @@ class TextDocumentIdentifier {
     new() {
     }
     
-    new(String uri) {
+    new(@NonNull String uri) {
     	this.uri = uri
     }
 }
@@ -1853,6 +2062,16 @@ class TextDocumentItem {
 	 */
 	@NonNull
 	String text
+    
+    new() {
+    }
+    
+    new(@NonNull String uri, @NonNull String languageId, int version, @NonNull String text) {
+    	this.uri = uri
+    	this.languageId = languageId
+    	this.version = version
+    	this.text = text
+    }
 }
 
 /**
@@ -1881,7 +2100,13 @@ class TextDocumentPositionParams {
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument, String uri, Position position) {
+    new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+    	this.textDocument = textDocument
+    	this.position = position
+    }
+    
+    @Deprecated
+	new(@NonNull TextDocumentIdentifier textDocument, String uri, @NonNull Position position) {
     	this.textDocument = textDocument
     	this.uri = uri
     	this.position = position
@@ -1908,7 +2133,7 @@ class TextEdit {
     new() {
     }
     
-    new(Range range, String newText) {
+    new(@NonNull Range range, @NonNull String newText) {
     	this.range = range
     	this.newText = newText
     }
@@ -1954,7 +2179,7 @@ class TextDocumentEdit {
     new() {
     }
     
-    new(VersionedTextDocumentIdentifier textDocument, List<TextEdit> edits) {
+    new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextEdit> edits) {
     	this.textDocument = textDocument
     	this.edits = edits
     }
@@ -1984,6 +2209,19 @@ class WorkspaceEdit {
     	this.changes = new LinkedHashMap
     }
     
+    new(Map<String, List<TextEdit>> changes) {
+    	this.changes = changes
+    }
+    
+    new(List<TextDocumentEdit> documentChanges) {
+    	this.documentChanges = documentChanges
+    }
+    
+    /**
+     * @deprecated According to the protocol documentation, it doesn't make sense to send both
+     * 		changes and documentChanges
+     */
+    @Deprecated
     new(Map<String, List<TextEdit>> changes, List<TextDocumentEdit> documentChanges) {
     	this.changes = changes
     	this.documentChanges = documentChanges
@@ -2004,7 +2242,7 @@ class WorkspaceSymbolParams {
     new() {
     }
     
-    new(String query) {
+    new(@NonNull String query) {
     	this.query = query
     }
 }
@@ -2035,7 +2273,12 @@ class Registration {
     new() {
     }
     
-    new(String id, String method, Object registerOptions) {
+    new(@NonNull String id, @NonNull String method) {
+    	this.id = id
+    	this.method = method
+    }
+    
+    new(@NonNull String id, @NonNull String method, Object registerOptions) {
     	this.id = id
     	this.method = method
     	this.registerOptions = registerOptions
@@ -2048,10 +2291,10 @@ class RegistrationParams {
 	List<Registration> registrations
     
     new() {
-    	this.registrations = new ArrayList
+    	this(new ArrayList)
     }
     
-    new(List<Registration> registrations) {
+    new(@NonNull List<Registration> registrations) {
     	this.registrations = registrations
     }
 }
@@ -2132,7 +2375,7 @@ class Unregistration {
     new() {
     }
     
-    new(String id, String method) {
+    new(@NonNull String id, @NonNull String method) {
     	this.id = id
     	this.method = method
     }
@@ -2144,10 +2387,10 @@ class UnregistrationParams {
 	List<Unregistration> unregisterations
     
     new() {
-    	this.unregisterations = new ArrayList
+    	this(new ArrayList)
     }
     
-    new(List<Unregistration> unregisterations) {
+    new(@NonNull List<Unregistration> unregisterations) {
     	this.unregisterations = unregisterations
     }
 }
@@ -2167,7 +2410,7 @@ class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOpti
     new() {
     }
     
-    new(TextDocumentSyncKind syncKind) {
+    new(@NonNull TextDocumentSyncKind syncKind) {
     	this.syncKind = syncKind
     }
 }
@@ -2291,7 +2534,7 @@ class ExecuteCommandParams {
     new() {
     }
     
-    new(String command, List<Object> arguments) {
+    new(@NonNull String command, List<Object> arguments) {
     	this.command = command
     	this.arguments = arguments
     }

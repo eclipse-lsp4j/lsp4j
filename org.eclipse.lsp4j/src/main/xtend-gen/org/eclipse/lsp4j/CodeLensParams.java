@@ -19,7 +19,7 @@ public class CodeLensParams {
   public CodeLensParams() {
   }
   
-  public CodeLensParams(final TextDocumentIdentifier textDocument) {
+  public CodeLensParams(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

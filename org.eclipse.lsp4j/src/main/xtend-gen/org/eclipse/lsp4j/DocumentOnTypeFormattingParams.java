@@ -26,7 +26,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   public DocumentOnTypeFormattingParams() {
   }
   
-  public DocumentOnTypeFormattingParams(final Position position, final String ch) {
+  public DocumentOnTypeFormattingParams(@NonNull final Position position, @NonNull final String ch) {
     this.position = position;
     this.ch = ch;
   }

@@ -30,7 +30,11 @@ public class TextDocumentContentChangeEvent {
   public TextDocumentContentChangeEvent() {
   }
   
-  public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, final String text) {
+  public TextDocumentContentChangeEvent(@NonNull final String text) {
+    this.text = text;
+  }
+  
+  public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, @NonNull final String text) {
     this.range = range;
     this.rangeLength = rangeLength;
     this.text = text;

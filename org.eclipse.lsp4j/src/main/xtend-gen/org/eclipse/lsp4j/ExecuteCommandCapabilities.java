@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
+  public ExecuteCommandCapabilities() {
+  }
+  
+  public ExecuteCommandCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

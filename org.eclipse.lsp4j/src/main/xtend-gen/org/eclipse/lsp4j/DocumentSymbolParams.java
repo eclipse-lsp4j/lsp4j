@@ -19,7 +19,7 @@ public class DocumentSymbolParams {
   public DocumentSymbolParams() {
   }
   
-  public DocumentSymbolParams(final TextDocumentIdentifier textDocument) {
+  public DocumentSymbolParams(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

@@ -28,7 +28,7 @@ public class MessageParams {
   public MessageParams() {
   }
   
-  public MessageParams(final MessageType type, final String message) {
+  public MessageParams(@NonNull final MessageType type, @NonNull final String message) {
     this.type = type;
     this.message = message;
   }

@@ -32,7 +32,13 @@ public class TextDocumentPositionParams {
   public TextDocumentPositionParams() {
   }
   
-  public TextDocumentPositionParams(final TextDocumentIdentifier textDocument, final String uri, final Position position) {
+  public TextDocumentPositionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position) {
+    this.textDocument = textDocument;
+    this.position = position;
+  }
+  
+  @Deprecated
+  public TextDocumentPositionParams(@NonNull final TextDocumentIdentifier textDocument, final String uri, @NonNull final Position position) {
     this.textDocument = textDocument;
     this.uri = uri;
     this.position = position;

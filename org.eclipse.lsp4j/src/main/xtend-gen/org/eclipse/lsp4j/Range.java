@@ -25,7 +25,7 @@ public class Range {
   public Range() {
   }
   
-  public Range(final Position start, final Position end) {
+  public Range(@NonNull final Position start, @NonNull final Position end) {
     this.start = start;
     this.end = end;
   }

@@ -29,7 +29,7 @@ public class TextDocumentEdit {
   public TextDocumentEdit() {
   }
   
-  public TextDocumentEdit(final VersionedTextDocumentIdentifier textDocument, final List<TextEdit> edits) {
+  public TextDocumentEdit(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<TextEdit> edits) {
     this.textDocument = textDocument;
     this.edits = edits;
   }

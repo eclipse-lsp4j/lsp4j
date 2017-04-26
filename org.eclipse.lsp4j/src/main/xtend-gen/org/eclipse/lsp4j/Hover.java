@@ -27,7 +27,11 @@ public class Hover {
   public Hover() {
   }
   
-  public Hover(final List<Either<String, MarkedString>> contents, final Range range) {
+  public Hover(@NonNull final List<Either<String, MarkedString>> contents) {
+    this.contents = contents;
+  }
+  
+  public Hover(@NonNull final List<Either<String, MarkedString>> contents, final Range range) {
     this.contents = contents;
     this.range = range;
   }

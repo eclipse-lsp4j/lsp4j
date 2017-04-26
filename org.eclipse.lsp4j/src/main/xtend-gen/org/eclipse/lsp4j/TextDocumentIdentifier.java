@@ -18,7 +18,7 @@ public class TextDocumentIdentifier {
   public TextDocumentIdentifier() {
   }
   
-  public TextDocumentIdentifier(final String uri) {
+  public TextDocumentIdentifier(@NonNull final String uri) {
     this.uri = uri;
   }
   

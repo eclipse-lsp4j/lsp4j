@@ -28,7 +28,7 @@ public class MarkedString {
   public MarkedString() {
   }
   
-  public MarkedString(final String language, final String value) {
+  public MarkedString(@NonNull final String language, @NonNull final String value) {
     this.language = language;
     this.value = value;
   }

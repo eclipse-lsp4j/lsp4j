@@ -20,6 +20,11 @@ public class CompletionCapabilities extends DynamicRegistrationCapabilities {
     this.completionItem = completionItem;
   }
   
+  public CompletionCapabilities(final CompletionItemCapabilities completionItem, final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+    this.completionItem = completionItem;
+  }
+  
   /**
    * The client supports the following `CompletionItem` specific
    * capabilities.

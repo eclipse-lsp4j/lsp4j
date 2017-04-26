@@ -21,7 +21,7 @@ public class DidCloseTextDocumentParams {
   public DidCloseTextDocumentParams() {
   }
   
-  public DidCloseTextDocumentParams(final TextDocumentIdentifier textDocument) {
+  public DidCloseTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

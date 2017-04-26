@@ -23,7 +23,11 @@ public class ParameterInformation {
   public ParameterInformation() {
   }
   
-  public ParameterInformation(final String label, final String documentation) {
+  public ParameterInformation(@NonNull final String label) {
+    this.label = label;
+  }
+  
+  public ParameterInformation(@NonNull final String label, final String documentation) {
     this.label = label;
     this.documentation = documentation;
   }

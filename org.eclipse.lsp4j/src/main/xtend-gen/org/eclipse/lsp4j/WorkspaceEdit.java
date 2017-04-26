@@ -33,6 +33,19 @@ public class WorkspaceEdit {
     this.changes = _linkedHashMap;
   }
   
+  public WorkspaceEdit(final Map<String, List<TextEdit>> changes) {
+    this.changes = changes;
+  }
+  
+  public WorkspaceEdit(final List<TextDocumentEdit> documentChanges) {
+    this.documentChanges = documentChanges;
+  }
+  
+  /**
+   * @deprecated According to the protocol documentation, it doesn't make sense to send both
+   * 		changes and documentChanges
+   */
+  @Deprecated
   public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<TextDocumentEdit> documentChanges) {
     this.changes = changes;
     this.documentChanges = documentChanges;

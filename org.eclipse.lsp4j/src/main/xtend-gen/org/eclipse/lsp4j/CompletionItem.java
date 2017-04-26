@@ -87,6 +87,13 @@ public class CompletionItem {
    */
   private Object data;
   
+  public CompletionItem() {
+  }
+  
+  public CompletionItem(@NonNull final String label) {
+    this.label = label;
+  }
+  
   /**
    * The label of this completion item. By default also the text that is inserted when selecting this completion.
    */

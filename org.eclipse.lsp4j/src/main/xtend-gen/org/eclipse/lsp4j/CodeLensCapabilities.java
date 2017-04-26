@@ -6,6 +6,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class CodeLensCapabilities extends DynamicRegistrationCapabilities {
+  public CodeLensCapabilities() {
+  }
+  
+  public CodeLensCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+  }
+  
   @Override
   @Pure
   public String toString() {

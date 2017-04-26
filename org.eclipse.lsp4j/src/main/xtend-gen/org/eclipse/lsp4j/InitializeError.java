@@ -6,7 +6,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class InitializeError {
   /**
-   * Indicates whether the client execute the following retry logic:
+   * Indicates whether the client executes the following retry logic:
    * (1) show the message provided by the ResponseError to the user
    * (2) user selects retry or cancel
    * (3) if user selected retry the initialize method is sent again.
@@ -21,7 +21,7 @@ public class InitializeError {
   }
   
   /**
-   * Indicates whether the client execute the following retry logic:
+   * Indicates whether the client executes the following retry logic:
    * (1) show the message provided by the ResponseError to the user
    * (2) user selects retry or cancel
    * (3) if user selected retry the initialize method is sent again.
@@ -32,7 +32,7 @@ public class InitializeError {
   }
   
   /**
-   * Indicates whether the client execute the following retry logic:
+   * Indicates whether the client executes the following retry logic:
    * (1) show the message provided by the ResponseError to the user
    * (2) user selects retry or cancel
    * (3) if user selected retry the initialize method is sent again.

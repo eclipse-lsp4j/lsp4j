@@ -15,7 +15,7 @@ public class DidChangeConfigurationParams {
   public DidChangeConfigurationParams() {
   }
   
-  public DidChangeConfigurationParams(final Object settings) {
+  public DidChangeConfigurationParams(@NonNull final Object settings) {
     this.settings = settings;
   }
   

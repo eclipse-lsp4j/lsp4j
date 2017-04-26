@@ -20,11 +20,10 @@ public class DidChangeWatchedFilesParams {
   private List<FileEvent> changes;
   
   public DidChangeWatchedFilesParams() {
-    ArrayList<FileEvent> _arrayList = new ArrayList<FileEvent>();
-    this.changes = _arrayList;
+    this(new ArrayList<FileEvent>());
   }
   
-  public DidChangeWatchedFilesParams(final List<FileEvent> changes) {
+  public DidChangeWatchedFilesParams(@NonNull final List<FileEvent> changes) {
     this.changes = changes;
   }
   

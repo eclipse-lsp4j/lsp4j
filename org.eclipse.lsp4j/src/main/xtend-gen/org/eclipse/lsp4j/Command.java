@@ -31,9 +31,13 @@ public class Command {
   public Command() {
   }
   
-  public Command(final String title, final String command, final List<Object> arguments) {
+  public Command(@NonNull final String title, @NonNull final String command) {
     this.title = title;
     this.command = command;
+  }
+  
+  public Command(@NonNull final String title, @NonNull final String command, final List<Object> arguments) {
+    this(title, command);
     this.arguments = arguments;
   }
   

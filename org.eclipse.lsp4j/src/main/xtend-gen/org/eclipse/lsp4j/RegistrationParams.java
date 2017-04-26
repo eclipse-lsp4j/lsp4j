@@ -13,11 +13,10 @@ public class RegistrationParams {
   private List<Registration> registrations;
   
   public RegistrationParams() {
-    ArrayList<Registration> _arrayList = new ArrayList<Registration>();
-    this.registrations = _arrayList;
+    this(new ArrayList<Registration>());
   }
   
-  public RegistrationParams(final List<Registration> registrations) {
+  public RegistrationParams(@NonNull final List<Registration> registrations) {
     this.registrations = registrations;
   }
   

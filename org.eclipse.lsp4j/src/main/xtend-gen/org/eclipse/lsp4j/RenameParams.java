@@ -33,7 +33,7 @@ public class RenameParams {
   public RenameParams() {
   }
   
-  public RenameParams(final TextDocumentIdentifier textDocument, final Position position, final String newName) {
+  public RenameParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position, @NonNull final String newName) {
     this.textDocument = textDocument;
     this.position = position;
     this.newName = newName;
