@@ -9,7 +9,7 @@
 version = '0.2.0-SNAPSHOT'
 
 ext.versions = [
-	'xtext': '[2.11.0,2.12)',
+	'xtext': '[2.11.0,3)',
 	'guava': '[14.0,19)',
 	'gson': '2.7',
 	'gson_orbit': '2.7.0.v20170129-0911',
