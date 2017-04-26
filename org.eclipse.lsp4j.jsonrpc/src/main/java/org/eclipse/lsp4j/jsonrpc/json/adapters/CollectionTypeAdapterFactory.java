@@ -16,6 +16,7 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
@@ -25,7 +26,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
@@ -173,13 +173,20 @@ public class CollectionTypeAdapterFactory implements TypeAdapterFactory {
 	private <T> Map<String, Type> createVariableMapping(Type type, Class<T> rawType, Map<String, Type> oldVarMapping) {
 		if (type instanceof ParameterizedType) {
 			TypeVariable<Class<T>>[] vars = rawType.getTypeParameters();
-			Map<String, Type> newVarMapping = Maps.newHashMapWithExpectedSize(vars.length);
+			Map<String, Type> newVarMapping = new HashMap<>(capacity(vars.length));
 			for (int i = 0; i < vars.length; i++) {
 				newVarMapping.put(vars[i].getName(), getActualTypeParameter(type, i, oldVarMapping));
 			}
 			return newVarMapping;
 		}
 		return Collections.emptyMap();
+	}
+	
+	private static int capacity(int expectedSize) {
+		if (expectedSize < 3)
+			return expectedSize + 1;
+		else
+			return expectedSize + expectedSize / 3;
 	}
 
 	private Type getActualTypeParameter(Type type, int index, Map<String, Type> varMapping) {

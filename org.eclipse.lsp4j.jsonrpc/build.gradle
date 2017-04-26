@@ -10,12 +10,10 @@ ext.title = 'LSP4J JSON-RPC'
 description = 'Generic JSON-RPC implementation'
 
 dependencies {
-	compile "com.google.guava:guava:$versions.guava"
 	compile "com.google.code.gson:gson:$versions.gson"
 	testCompile "junit:junit:$versions.junit"
 }
 
 jar.manifest {
-	instruction 'Import-Package', "com.google.common.*;version=\"$versions.guava\""
 	instruction 'Import-Package', '*'
 }

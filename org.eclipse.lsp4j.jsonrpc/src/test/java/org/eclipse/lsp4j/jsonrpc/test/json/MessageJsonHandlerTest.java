@@ -14,8 +14,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 public class MessageJsonHandlerTest {
 
@@ -29,13 +29,13 @@ public class MessageJsonHandlerTest {
 		public String uri;
 	}
 
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testParseList() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
-		supportedMethods.put("foo", JsonRpcMethod.request("foo", new TypeToken<List<? extends Entry>>() {
-		}.getType(), new TypeToken<List<? extends Entry>>() {
-		}.getType()));
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<List<? extends Entry>>() {}.getType(),
+				new TypeToken<List<? extends Entry>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
 		handler.setMethodProvider((id)->"foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
@@ -54,13 +54,13 @@ public class MessageJsonHandlerTest {
 		}
 	}
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testParseList_02() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
-		supportedMethods.put("foo", JsonRpcMethod.request("foo", new TypeToken<Set<Entry>>() {
-		}.getType(), new TypeToken<Set<Entry>>() {
-		}.getType()));
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Set<Entry>>() {}.getType(),
+				new TypeToken<Set<Entry>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
 		handler.setMethodProvider((id)->"foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
@@ -79,7 +79,7 @@ public class MessageJsonHandlerTest {
 		}
 	}
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_01() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
@@ -108,7 +108,7 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals("name",result.getLeft());
 	}
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_02() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
@@ -126,7 +126,7 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals(MyEnum.B, result.getLeft());
 	}
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_03() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
@@ -180,7 +180,7 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals(MyEnum.B, result.getRight().get(0).getLeft());
 	}
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_04() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
@@ -209,7 +209,7 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals("bar", result.getRight().get(0).getValue());
 	}
 	
-	@SuppressWarnings({ "serial", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_05() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
