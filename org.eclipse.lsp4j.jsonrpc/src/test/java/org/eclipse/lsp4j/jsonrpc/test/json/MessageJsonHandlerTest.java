@@ -289,4 +289,21 @@ public class MessageJsonHandlerTest {
 				+ "}");
 		Assert.assertEquals(JsonObject.class, message.getParams().getClass());
 	}
+	
+	@Test
+	public void testParamsParsing_04() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"method\":\"bar\",\n"
+				+ "\"params\": null\n"
+				+ "}");
+		Assert.assertEquals(null, message.getParams());
+	}
 }
