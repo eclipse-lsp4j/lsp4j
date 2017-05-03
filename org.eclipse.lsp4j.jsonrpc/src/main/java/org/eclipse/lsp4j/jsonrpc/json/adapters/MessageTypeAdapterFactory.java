@@ -22,6 +22,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.TypeAdapter;
@@ -125,6 +126,9 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 			Type parameterType = getParameterType(method);
 			if (params instanceof JsonElement && !isNullOrVoidType(parameterType)) {
 				params = gson.fromJson((JsonElement) params, parameterType);
+			}
+			if (params instanceof JsonNull) {
+				params = null;
 			}
 			return createMessage(jsonrpc, id, method, params, result, error);
 		}
