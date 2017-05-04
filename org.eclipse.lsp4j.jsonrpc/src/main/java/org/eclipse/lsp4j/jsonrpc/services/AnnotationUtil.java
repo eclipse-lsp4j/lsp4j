@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -52,40 +53,64 @@ public final class AnnotationUtil {
 		for (Class<?> interf : clazz.getInterfaces()) {
 			findRpcMethods(interf, visited, acceptor);
 		}
-		JsonSegment jsonSegment = clazz.getAnnotation(JsonSegment.class);
-		String prefix = jsonSegment == null ? "" : jsonSegment.value() + "/";
+		String segment = getSegment(clazz);
 		for (Method method : clazz.getDeclaredMethods()) {
-			if (method.getParameterCount() <= 1) {
-				MethodInfo methodInfo = new MethodInfo();
-				methodInfo.method = method;
-				if (method.getParameterCount() > 0) {
-					methodInfo.parameterType = method.getParameters()[0].getParameterizedType();
-				}
-				JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
-				if (jsonRequest != null) {
-					String value = jsonRequest.value();
-					String name = value != null && value.length() > 0 ? value : method.getName();
-					methodInfo.name = jsonRequest.useSegment() ? prefix + name : name;
-					methodInfo.isNotification = false;
-					acceptor.accept(methodInfo);
-				} else {
-					JsonNotification jsonNotification = method.getAnnotation(JsonNotification.class);
-					if (jsonNotification != null) {
-						String value = jsonNotification.value();
-						String name = value != null && value.length() > 0 ? value : method.getName();
-						methodInfo.name = jsonNotification.useSegment() ? prefix + name : name;
-						methodInfo.isNotification = true;
-						acceptor.accept(methodInfo);
-					}
-				}
+			MethodInfo methodInfo = createMethodInfo(method, segment);
+			if (methodInfo != null) {
+				acceptor.accept(methodInfo);
 			}
 		}
 	}
+
+	protected static String getSegment(Class<?> clazz) {
+		JsonSegment jsonSegment = clazz.getAnnotation(JsonSegment.class);
+		return jsonSegment == null ? "" : jsonSegment.value() + "/";
+	}
+	
+	protected static MethodInfo createMethodInfo(Method method, String segment) {
+		JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
+		if (jsonRequest != null) {
+			return createRequestInfo(method, segment, jsonRequest);
+		}
+		JsonNotification jsonNotification = method.getAnnotation(JsonNotification.class);
+		if (jsonNotification != null) {
+			return createNotificationInfo(method, segment, jsonNotification);
+		}
+		return null;
+	}
+
+	protected static MethodInfo createNotificationInfo(Method method, String segment, JsonNotification jsonNotification) {
+		MethodInfo methodInfo = createMethodInfo(method, jsonNotification.useSegment(), segment, jsonNotification.value());
+		methodInfo.isNotification = true;
+		return methodInfo;
+	}
+	
+	protected static MethodInfo createRequestInfo(Method method, String segment, JsonRequest jsonRequest) {
+		return createMethodInfo(method, jsonRequest.useSegment(), segment, jsonRequest.value());
+	}
+	
+	protected static MethodInfo createMethodInfo(Method method, boolean useSegment, String segment, String value) {
+		MethodInfo methodInfo = new MethodInfo();
+		methodInfo.method = method;
+		methodInfo.parameterTypes = getParameterTypes(method);
+		methodInfo.name = getMethodName(method, useSegment, segment, value);
+		return methodInfo;
+	}
+	
+	protected static String getMethodName(Method method, boolean useSegment, String segment, String value) {
+		String name = value != null && value.length() > 0 ? value : method.getName();
+		return useSegment ? segment + name : name;
+	}
+
+	protected static Type[] getParameterTypes(Method method) {
+		return Arrays.stream(method.getParameters()).map(t -> t.getParameterizedType()).toArray(Type[]::new);
+	}
 	
 	static class MethodInfo {
+		private static Type[] EMPTY_TYPE_ARRAY = {};
 		public String name;
 		public Method method;
-		public Type parameterType = Void.class;
+		public Type[] parameterTypes = EMPTY_TYPE_ARRAY;
 		public boolean isNotification = false;
 	}
 

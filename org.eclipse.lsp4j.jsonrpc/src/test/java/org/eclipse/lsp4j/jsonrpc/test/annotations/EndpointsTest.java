@@ -45,6 +45,24 @@ public class EndpointsTest {
 		@JsonNotification("hubba")
 		public void myNotification(String someArg);
 	}
+	
+	@JsonSegment("bar")
+	public static interface Bar {
+		@JsonRequest
+		public CompletableFuture<String> doStuff(String arg, Integer arg2);
+		
+		@JsonNotification
+		public void myNotification(String someArg, Integer someArg2);
+		
+		@JsonDelegate
+		public BarDelegated getDelegate();
+	}
+	
+	public static interface BarDelegated {
+		
+		@JsonNotification("hubba")
+		public void myNotification(String someArg, Integer someArg2);
+	}
 
 	@Test public void testProxy() throws Exception {
 		Endpoint endpoint = new Endpoint() {
@@ -90,19 +108,44 @@ public class EndpointsTest {
 		assertEquals("result", foo.doStuff("param").get(TIMEOUT, TimeUnit.MILLISECONDS));
 	}
 	
-	@Test public void testRpcMethods() {
+	@Test public void testRpcMethods_01() {
 		Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(Foo.class);
 		
 		assertEquals("foo/doStuff", methods.get("foo/doStuff").getMethodName());
-		assertEquals(String.class, methods.get("foo/doStuff").getParameterType());
+		assertEquals(String.class, methods.get("foo/doStuff").getParameterTypes()[0]);
 		assertFalse(methods.get("foo/doStuff").isNotification());
 		
 		assertEquals("foo/myNotification", methods.get("foo/myNotification").getMethodName());
-		assertEquals(String.class, methods.get("foo/myNotification").getParameterType());
+		assertEquals(String.class, methods.get("foo/myNotification").getParameterTypes()[0]);
 		assertTrue(methods.get("foo/myNotification").isNotification());
 		
 		assertEquals("hubba", methods.get("hubba").getMethodName());
-		assertEquals(String.class, methods.get("hubba").getParameterType());
+		assertEquals(String.class, methods.get("hubba").getParameterTypes()[0]);
 		assertTrue(methods.get("hubba").isNotification());
+	}
+	
+	@Test public void testRpcMethods_02() {
+		Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(Bar.class);
+		
+		final JsonRpcMethod requestMethod = methods.get("bar/doStuff");
+		assertEquals("bar/doStuff", requestMethod.getMethodName());
+		assertEquals(2, requestMethod.getParameterTypes().length);
+		assertEquals(String.class, requestMethod.getParameterTypes()[0]);
+		assertEquals(Integer.class, requestMethod.getParameterTypes()[1]);
+		assertFalse(requestMethod.isNotification());
+		
+		final JsonRpcMethod notificationMethod = methods.get("bar/myNotification");
+		assertEquals("bar/myNotification", notificationMethod.getMethodName());
+		assertEquals(2, notificationMethod.getParameterTypes().length);
+		assertEquals(String.class, notificationMethod.getParameterTypes()[0]);
+		assertEquals(Integer.class, notificationMethod.getParameterTypes()[1]);
+		assertTrue(notificationMethod.isNotification());
+		
+		final JsonRpcMethod delegateMethod = methods.get("hubba");
+		assertEquals("hubba", delegateMethod.getMethodName());
+		assertEquals(2, delegateMethod.getParameterTypes().length);
+		assertEquals(String.class, delegateMethod.getParameterTypes()[0]);
+		assertEquals(Integer.class, delegateMethod.getParameterTypes()[1]);
+		assertTrue(delegateMethod.isNotification());
 	}
 }
