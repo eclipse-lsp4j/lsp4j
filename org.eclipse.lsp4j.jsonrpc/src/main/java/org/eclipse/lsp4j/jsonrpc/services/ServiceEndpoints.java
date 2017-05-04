@@ -62,12 +62,12 @@ public final class ServiceEndpoints {
 		AnnotationUtil.findRpcMethods(type, visitedTypes, (methodInfo) -> {
 			JsonRpcMethod meth;
 			if (methodInfo.isNotification) {
-				meth = JsonRpcMethod.notification(methodInfo.name, methodInfo.parameterType);
+				meth = JsonRpcMethod.notification(methodInfo.name, methodInfo.parameterTypes);
 			} else {
 				Type returnType = methodInfo.method.getGenericReturnType();
 				if (returnType instanceof ParameterizedType) {
 					ParameterizedType rType = (ParameterizedType) returnType;
-					meth = JsonRpcMethod.request(methodInfo.name, methodInfo.parameterType, rType.getActualTypeArguments()[0]);
+					meth = JsonRpcMethod.request(methodInfo.name, rType.getActualTypeArguments()[0], methodInfo.parameterTypes);
 				} else {
 					throw new IllegalStateException("Expecting return type of CompletableFuture but was : "+returnType);
 				}

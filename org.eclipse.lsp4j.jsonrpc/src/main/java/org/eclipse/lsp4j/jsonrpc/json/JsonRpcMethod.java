@@ -15,13 +15,15 @@ import java.lang.reflect.Type;
 public class JsonRpcMethod {
 	
 	private final String methodName;
-	private final Type parameterType;
+	private final Type[] parameterTypes;
 	private final Type returnType;
 	private final boolean isNotification;
 	
-	private JsonRpcMethod(String methodName, Type parameterType, Type returnType, boolean isNotification) {
+	private JsonRpcMethod(String methodName, Type[] parameterTypes, Type returnType, boolean isNotification) {
+		if (methodName == null)
+			throw new NullPointerException("methodName");
 		this.methodName = methodName;
-		this.parameterType = parameterType;
+		this.parameterTypes = parameterTypes;
 		this.returnType = returnType;
 		this.isNotification = isNotification;
 	}
@@ -30,8 +32,8 @@ public class JsonRpcMethod {
 		return methodName;
 	}
 	
-	public Type getParameterType() {
-		return parameterType;
+	public Type[] getParameterTypes() {
+		return parameterTypes;
 	}
 	
 	public Type getReturnType() {
@@ -41,17 +43,13 @@ public class JsonRpcMethod {
 	public boolean isNotification() {
 		return isNotification;
 	}
-
-	public static JsonRpcMethod notification(String name, Type parameterType) {
-		if (name == null)
-			throw new NullPointerException("name");
-		return new JsonRpcMethod(name, parameterType, Void.class, true);
+	
+	public static JsonRpcMethod notification(String name, Type... parameterTypes) {
+		return new JsonRpcMethod(name, parameterTypes, Void.class, true);
 	}
 	
-	public static JsonRpcMethod request(String name, Type parameterType, Type returnType) {
-		if (name == null)
-			throw new NullPointerException("name");
-		return new JsonRpcMethod(name, parameterType, returnType, false);
+	public static JsonRpcMethod request(String name, Type returnType, Type... parameterTypes) {
+		return new JsonRpcMethod(name, parameterTypes, returnType, false);
 	}
 	
 	@Override
@@ -62,26 +60,24 @@ public class JsonRpcMethod {
 		else
 			builder.append("JsonRpcMethod (request) {\n");
 		builder.append("\tmethodName: ").append(methodName).append('\n');
-		if (parameterType != null)
-			builder.append("\tparameterType: ").append(parameterType).append('\n');
+		if (parameterTypes != null)
+			builder.append("\tparameterTypes: ").append(parameterTypes).append('\n');
 		if (returnType != null)
 			builder.append("\treturnType: ").append(returnType).append('\n');
 		builder.append("}");
 		return builder.toString();
 	}
 
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (isNotification ? 1231 : 1237);
 		result = prime * result + ((methodName == null) ? 0 : methodName.hashCode());
-		result = prime * result + ((parameterType == null) ? 0 : parameterType.hashCode());
+		result = prime * result + ((parameterTypes == null) ? 0 : parameterTypes.hashCode());
 		result = prime * result + ((returnType == null) ? 0 : returnType.hashCode());
 		return result;
 	}
 
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -97,10 +93,10 @@ public class JsonRpcMethod {
 				return false;
 		} else if (!methodName.equals(other.methodName))
 			return false;
-		if (parameterType == null) {
-			if (other.parameterType != null)
+		if (parameterTypes == null) {
+			if (other.parameterTypes != null)
 				return false;
-		} else if (!parameterType.equals(other.parameterType))
+		} else if (!parameterTypes.equals(other.parameterTypes))
 			return false;
 		if (returnType == null) {
 			if (other.returnType != null)

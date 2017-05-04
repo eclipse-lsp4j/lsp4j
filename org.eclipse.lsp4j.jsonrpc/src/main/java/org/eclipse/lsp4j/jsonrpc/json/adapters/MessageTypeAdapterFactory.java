@@ -9,6 +9,9 @@ package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
@@ -21,6 +24,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
@@ -37,6 +41,8 @@ import com.google.gson.stream.JsonWriter;
  * {@link ResponseMessage}, and {@link NotificationMessage}.
  */
 public class MessageTypeAdapterFactory implements TypeAdapterFactory {
+	
+	private static Type[] EMPTY_TYPE_ARRAY = {};
 	
 	private final MessageJsonHandler handler;
 	
@@ -71,7 +77,8 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 			
 			in.beginObject();
 			String jsonrpc = null, id = null, method = null;
-			Object params = null, result = null;
+			JsonElement rawParams = null;
+			Object result = null;
 			ResponseError error = null;
 			while (in.hasNext()) {
 				String name = in.nextName();
@@ -89,12 +96,7 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 					break;
 				}
 				case "params": {
-					Type parameterType = getParameterType(method);
-					if (isNullOrVoidType(parameterType)) {
-						params = new JsonParser().parse(in);
-					} else {
-						params = gson.fromJson(in, parameterType);
-					}
+					rawParams = new JsonParser().parse(in);
 					break;
 				}
 				case "result": {
@@ -123,27 +125,62 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				}
 			}
 			in.endObject();
-			Type parameterType = getParameterType(method);
-			if (params instanceof JsonElement && !isNullOrVoidType(parameterType)) {
-				params = gson.fromJson((JsonElement) params, parameterType);
-			}
-			if (params instanceof JsonNull) {
-				params = null;
-			}
+			Object params = parseParams(rawParams, method);
 			return createMessage(jsonrpc, id, method, params, result, error);
 		}
 
-		protected Type getParameterType(String method) {
-			if (method != null) {
-				JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
-				if (jsonRpcMethod != null)
-					return jsonRpcMethod.getParameterType();
+		protected Object parseParams(JsonElement rawParams, String method) {
+			if (isNull(rawParams)) {
+				return null;
 			}
-			return null;
+			Type[] parameterTypes = getParameterTypes(method);
+			if (parameterTypes.length == 1) {
+				return fromJson(rawParams, parameterTypes[0]);
+			}
+			if (parameterTypes.length > 1 && rawParams instanceof JsonArray) {
+				List<Object> parameters = new ArrayList<Object>();
+				int index = 0;
+				Iterator<JsonElement> iterator = ((JsonArray) rawParams).iterator();
+				while (iterator.hasNext()) {
+					Type parameterType = index < parameterTypes.length ? parameterTypes[index] : null;  
+					Object parameter = fromJson(iterator.next(), parameterType);
+					parameters.add(parameter);
+					index++;
+				}
+				return parameters;
+			}
+			return rawParams;
+		}
+
+		protected boolean isNull(Object value) {
+			return value == null || value instanceof JsonNull;
+		}
+		
+		protected Object fromJson(JsonElement element, Type type) {
+			if (isNull(element)) {
+				return null;
+			}
+			if (isNullOrVoidType(type)) {
+				return element;
+			}
+			Object value = gson.fromJson(element, type);
+			if (isNull(value)) {
+				return null;
+			}
+			return value;
 		}
 		
 		protected boolean isNullOrVoidType(Type type) {
-			return type == null || type == Void.class;
+			return type == null || Void.class == type;
+		}
+
+		protected Type[] getParameterTypes(String method) {
+			if (method != null) {
+				JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(method);
+				if (jsonRpcMethod != null)
+					return jsonRpcMethod.getParameterTypes();
+			}
+			return EMPTY_TYPE_ARRAY;
 		}
 		
 		private Message createMessage(String jsonrpc, String id, String method, Object params, Object result, ResponseError error) {
