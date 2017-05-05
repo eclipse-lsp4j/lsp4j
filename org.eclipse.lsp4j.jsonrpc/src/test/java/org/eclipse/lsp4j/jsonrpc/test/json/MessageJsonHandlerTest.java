@@ -309,7 +309,7 @@ public class MessageJsonHandlerTest {
 	}
 	
 	@Test
-	public void testMultiParamsParsing_01() {
+	public void testRawMultiParamsParsing_01() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Void>() {}.getType(),
@@ -332,7 +332,7 @@ public class MessageJsonHandlerTest {
 	}
 	
 	@Test
-	public void testMultiParamsParsing_02() {
+	public void testRawMultiParamsParsing_02() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Void>() {}.getType(),
@@ -348,9 +348,9 @@ public class MessageJsonHandlerTest {
 				+ "}");
 		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof JsonArray);
 	}
-	
+
 	@Test
-	public void testMultiParamsParsing_03() {
+	public void testRawMultiParamsParsing_03() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Void>() {}.getType(),
@@ -372,5 +372,121 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals("[foo, bar]", parameters.get(0).toString());
 		Assert.assertEquals("[1, 2]", parameters.get(1).toString());
 		Assert.assertTrue("" + parameters.get(2).getClass(), parameters.get(2) instanceof Location);
+	}
+
+	@Test
+	public void testRawMultiParamsParsing_04() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<List<String>>() {}.getType(),
+				new TypeToken<List<Integer>>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"method\":\"foo\",\n"
+				+ "\"params\": [[\"foo\", \"bar\"], [1, 2]]\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof List);
+
+		List<?> parameters = (List<?>) message.getParams();
+		Assert.assertEquals(3, parameters.size());
+		Assert.assertEquals("[foo, bar]", parameters.get(0).toString());
+		Assert.assertEquals("[1, 2]", parameters.get(1).toString());
+		Assert.assertNull(parameters.get(2));
+	}
+	
+	@Test
+	public void testMultiParamsParsing_01() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<String>() {}.getType(),
+				new TypeToken<Integer>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": [\"foo\", 2],\n"
+				+ "\"method\":\"foo\"\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof List);
+
+		List<?> parameters = (List<?>) message.getParams();
+		Assert.assertEquals(2, parameters.size());
+		Assert.assertEquals("foo", parameters.get(0));
+		Assert.assertEquals(2, parameters.get(1));
+	}
+	
+	@Test
+	public void testMultiParamsParsing_02() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<String>() {}.getType(),
+				new TypeToken<Integer>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": [\"foo\", 2],\n"
+				+ "\"method\":\"bar\"\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof JsonArray);
+	}
+	
+	@Test
+	public void testMultiParamsParsing_03() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<List<String>>() {}.getType(),
+				new TypeToken<List<Integer>>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": [[\"foo\", \"bar\"], [1, 2], {\"uri\": \"dummy://mymodel.mydsl\"}],\n"
+				+ "\"method\":\"foo\"\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof List);
+
+		List<?> parameters = (List<?>) message.getParams();
+		Assert.assertEquals(3, parameters.size());
+		Assert.assertEquals("[foo, bar]", parameters.get(0).toString());
+		Assert.assertEquals("[1, 2]", parameters.get(1).toString());
+		Assert.assertTrue("" + parameters.get(2).getClass(), parameters.get(2) instanceof Location);
+	}
+	
+	@Test
+	public void testMultiParamsParsing_04() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<List<String>>() {}.getType(),
+				new TypeToken<List<Integer>>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": [[\"foo\", \"bar\"], [1, 2]],\n"
+				+ "\"method\":\"foo\"\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof List);
+
+		List<?> parameters = (List<?>) message.getParams();
+		Assert.assertEquals(3, parameters.size());
+		Assert.assertEquals("[foo, bar]", parameters.get(0).toString());
+		Assert.assertEquals("[1, 2]", parameters.get(1).toString());
+		Assert.assertNull(parameters.get(2));
 	}
 }
