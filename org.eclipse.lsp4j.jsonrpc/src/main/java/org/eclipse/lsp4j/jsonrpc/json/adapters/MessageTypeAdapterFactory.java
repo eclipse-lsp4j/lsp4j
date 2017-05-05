@@ -140,7 +140,7 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				return fromJson(in, parameterTypes[0]);
 			}
 			if (parameterTypes.length > 1 && next == JsonToken.BEGIN_ARRAY) {
-				List<Object> parameters = new ArrayList<Object>();
+				List<Object> parameters = new ArrayList<Object>(parameterTypes.length);
 				in.beginArray();
 				int index = 0;
 				while (in.hasNext() && in.peek() != JsonToken.END_ARRAY) {
@@ -174,9 +174,10 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				return fromJson(rawParams, parameterTypes[0]);
 			}
 			if (parameterTypes.length > 1 && rawParams instanceof JsonArray) {
-				List<Object> parameters = new ArrayList<Object>();
+				JsonArray array = (JsonArray) rawParams;
+				List<Object> parameters = new ArrayList<Object>(Math.max(array.size(), parameterTypes.length));
 				int index = 0;
-				Iterator<JsonElement> iterator = ((JsonArray) rawParams).iterator();
+				Iterator<JsonElement> iterator = array.iterator();
 				while (iterator.hasNext()) {
 					Type parameterType = index < parameterTypes.length ? parameterTypes[index] : null;  
 					Object parameter = fromJson(iterator.next(), parameterType);
