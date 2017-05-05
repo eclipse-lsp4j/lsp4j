@@ -68,42 +68,4 @@ public class JsonRpcMethod {
 		return builder.toString();
 	}
 
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (isNotification ? 1231 : 1237);
-		result = prime * result + ((methodName == null) ? 0 : methodName.hashCode());
-		result = prime * result + ((parameterTypes == null) ? 0 : parameterTypes.hashCode());
-		result = prime * result + ((returnType == null) ? 0 : returnType.hashCode());
-		return result;
-	}
-
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		JsonRpcMethod other = (JsonRpcMethod) obj;
-		if (isNotification != other.isNotification)
-			return false;
-		if (methodName == null) {
-			if (other.methodName != null)
-				return false;
-		} else if (!methodName.equals(other.methodName))
-			return false;
-		if (parameterTypes == null) {
-			if (other.parameterTypes != null)
-				return false;
-		} else if (!parameterTypes.equals(other.parameterTypes))
-			return false;
-		if (returnType == null) {
-			if (other.returnType != null)
-				return false;
-		} else if (!returnType.equals(other.returnType))
-			return false;
-		return true;
-	}
-	
 }
