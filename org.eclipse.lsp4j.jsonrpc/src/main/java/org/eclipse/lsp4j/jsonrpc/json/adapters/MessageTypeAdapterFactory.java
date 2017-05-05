@@ -77,7 +77,7 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 			
 			in.beginObject();
 			String jsonrpc = null, id = null, method = null;
-			JsonElement rawParams = null;
+			Object rawParams = null;
 			Object result = null;
 			ResponseError error = null;
 			while (in.hasNext()) {
@@ -96,7 +96,7 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 					break;
 				}
 				case "params": {
-					rawParams = new JsonParser().parse(in);
+					rawParams = parseParams(in, method);
 					break;
 				}
 				case "result": {
@@ -128,11 +128,47 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 			Object params = parseParams(rawParams, method);
 			return createMessage(jsonrpc, id, method, params, result, error);
 		}
-
-		protected Object parseParams(JsonElement rawParams, String method) {
-			if (isNull(rawParams)) {
+		
+		protected Object parseParams(JsonReader in, String method) throws IOException {
+			JsonToken next = in.peek();
+			if (next == JsonToken.NULL) {
+				in.nextNull();
 				return null;
 			}
+			Type[] parameterTypes = getParameterTypes(method);
+			if (parameterTypes.length == 1) {
+				return fromJson(in, parameterTypes[0]);
+			}
+			if (parameterTypes.length > 1 && next == JsonToken.BEGIN_ARRAY) {
+				List<Object> parameters = new ArrayList<Object>();
+				in.beginArray();
+				int index = 0;
+				while (in.hasNext() && in.peek() != JsonToken.END_ARRAY) {
+					Type parameterType = index < parameterTypes.length ? parameterTypes[index] : null;
+					Object parameter = fromJson(in, parameterType);
+					parameters.add(parameter);
+					index++;
+				}
+				while (index < parameterTypes.length) {
+					parameters.add(null);
+					index++;
+				}
+				if (in.peek() == JsonToken.END_ARRAY) {
+					in.endArray();
+				}
+				return parameters;
+			}
+			return new JsonParser().parse(in);
+		}
+
+		protected Object parseParams(Object params, String method) {
+			if (isNull(params)) {
+				return null;
+			}
+			if (!(params instanceof JsonElement)) {
+				return params;
+			}
+			JsonElement rawParams = (JsonElement) params;
 			Type[] parameterTypes = getParameterTypes(method);
 			if (parameterTypes.length == 1) {
 				return fromJson(rawParams, parameterTypes[0]);
@@ -147,13 +183,20 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 					parameters.add(parameter);
 					index++;
 				}
+				while (index < parameterTypes.length) {
+					parameters.add(null);
+					index++;
+				}
 				return parameters;
 			}
 			return rawParams;
 		}
 
-		protected boolean isNull(Object value) {
-			return value == null || value instanceof JsonNull;
+		protected Object fromJson(JsonReader in, Type type) {
+			if (isNullOrVoidType(type)) {
+				return new JsonParser().parse(in);
+			}
+			return gson.fromJson(in, type);
 		}
 		
 		protected Object fromJson(JsonElement element, Type type) {
@@ -168,6 +211,10 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 				return null;
 			}
 			return value;
+		}
+
+		protected boolean isNull(Object value) {
+			return value == null || value instanceof JsonNull;
 		}
 		
 		protected boolean isNullOrVoidType(Type type) {
