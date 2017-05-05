@@ -141,20 +141,18 @@ public class MessageTypeAdapterFactory implements TypeAdapterFactory {
 			}
 			if (parameterTypes.length > 1 && next == JsonToken.BEGIN_ARRAY) {
 				List<Object> parameters = new ArrayList<Object>(parameterTypes.length);
-				in.beginArray();
 				int index = 0;
-				while (in.hasNext() && in.peek() != JsonToken.END_ARRAY) {
+				in.beginArray();
+				while (in.hasNext()) {
 					Type parameterType = index < parameterTypes.length ? parameterTypes[index] : null;
 					Object parameter = fromJson(in, parameterType);
 					parameters.add(parameter);
 					index++;
 				}
+				in.endArray();
 				while (index < parameterTypes.length) {
 					parameters.add(null);
 					index++;
-				}
-				if (in.peek() == JsonToken.END_ARRAY) {
-					in.endArray();
 				}
 				return parameters;
 			}
