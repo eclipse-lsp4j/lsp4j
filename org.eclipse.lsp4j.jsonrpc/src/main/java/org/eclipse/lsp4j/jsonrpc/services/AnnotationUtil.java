@@ -90,6 +90,8 @@ public final class AnnotationUtil {
 	}
 	
 	protected static MethodInfo createMethodInfo(Method method, boolean useSegment, String segment, String value) {
+		method.setAccessible(true);
+
 		MethodInfo methodInfo = new MethodInfo();
 		methodInfo.method = method;
 		methodInfo.parameterTypes = getParameterTypes(method);

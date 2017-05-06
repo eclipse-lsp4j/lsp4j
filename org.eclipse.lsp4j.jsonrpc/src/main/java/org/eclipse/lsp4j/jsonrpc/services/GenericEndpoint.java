@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -70,14 +71,32 @@ public class GenericEndpoint implements Endpoint {
 	}
 	
 	protected Object[] getArguments(Method method, Object arg) {
-		if (arg == null) {
+		int parameterCount = method.getParameterCount();
+		if (parameterCount == 0) {
+			if (arg != null) {
+				LOG.warning("Unexpected params '" + arg + "' for '" + method + "' is ignored");
+			}
 			return NO_ARGUMENTS;
 		}
-		if (method.getParameterCount() == 0) {
-			LOG.warning("Unexpected params '" + arg + "' for '" + method + "' is ignored");
-			return NO_ARGUMENTS;
+		if (parameterCount == 1) {
+			return new Object[] { arg };
 		}
-		return new Object[] { arg };
+		if (arg instanceof List<?>) {
+			List<?> arguments = (List<?>) arg;
+			int argumentCount = arguments.size(); 
+			if (argumentCount == parameterCount) {
+				return arguments.toArray();
+			}
+			if (argumentCount > parameterCount) {
+				List<?> unexpectedParams = arguments.subList(parameterCount, arguments.size()); 
+				LOG.warning("Unexpected params '" + unexpectedParams + "' for '" + method + "' is ignored");
+				return arguments.subList(0, parameterCount).toArray();
+			}
+			return arguments.toArray(new Object[parameterCount]);
+		}
+		Object[] arguments = new Object[parameterCount];
+		arguments[0] = arg;
+		return arguments;
 	}
 
 	@Override
