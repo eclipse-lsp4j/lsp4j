@@ -64,7 +64,7 @@ public class EndpointsTest {
 		public void myNotification(String someArg, Integer someArg2);
 	}
 
-	@Test public void testProxy() throws Exception {
+	@Test public void testProxy_01() throws Exception {
 		Endpoint endpoint = new Endpoint() {
 			
 			@Override
@@ -83,6 +83,27 @@ public class EndpointsTest {
 		Foo foo = ServiceEndpoints.toServiceObject(endpoint, Foo.class);
 		foo.myNotification("notificationParam");
 		assertEquals("result", foo.doStuff("param").get(TIMEOUT, TimeUnit.MILLISECONDS));
+	}
+	
+	@Test public void testProxy_02() throws Exception {
+		Endpoint endpoint = new Endpoint() {
+			
+			@Override
+			public CompletableFuture<?> request(String method, Object parameter) {
+				assertEquals("bar/doStuff", method);
+				assertEquals("[param, 2]", parameter.toString());
+				return CompletableFuture.completedFuture("result");
+			}
+			
+			@Override
+			public void notify(String method, Object parameter) {
+				assertEquals("bar/myNotification", method);
+				assertEquals("[notificationParam, 1]", parameter.toString());
+			}
+		};
+		Bar bar = ServiceEndpoints.toServiceObject(endpoint, Bar.class);
+		bar.myNotification("notificationParam", 1);
+		assertEquals("result", bar.doStuff("param", 2).get(TIMEOUT, TimeUnit.MILLISECONDS));
 	}
 	
 	@Test public void testBackAndForth() throws Exception {
