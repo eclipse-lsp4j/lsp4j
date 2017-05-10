@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
@@ -54,23 +55,30 @@ public class EndpointProxy implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		args = args == null ? new Object[0] : args;
-		if (args.length <= 1) {
-			MethodInfo methodInfo = this.methodInfos.get(method.getName());
-			if (methodInfo != null) {
-				if (methodInfo.isNotification) {
-					delegate.notify(methodInfo.name, args.length == 0 ? null : args[0]);
-					return null;
-				} else {
-					return delegate.request(methodInfo.name, args.length == 0 ? null : args[0]);
-				}
+		MethodInfo methodInfo = this.methodInfos.get(method.getName());
+		if (methodInfo != null) {
+			Object params = getParams(args, methodInfo);
+			if (methodInfo.isNotification) {
+				delegate.notify(methodInfo.name, params);
+				return null;
 			}
-			DelegateInfo delegateInfo = this.delegatedSegments.get(method.getName());
-			if (delegateInfo != null) {
-				return delegateInfo.delegate;
-			}
+			return delegate.request(methodInfo.name, params);
 		}
-
+		DelegateInfo delegateInfo = this.delegatedSegments.get(method.getName());
+		if (delegateInfo != null) {
+			return delegateInfo.delegate;
+		}
 		return method.invoke(delegate, args);
+	}
+
+	protected Object getParams(Object[] args, MethodInfo methodInfo) {
+		if (args.length == 0) {
+			return null;
+		}
+		if (args.length == 1) {
+			return args[0];
+		}
+		return Arrays.asList(args);
 	}
 
 }
