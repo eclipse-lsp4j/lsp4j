@@ -9,6 +9,8 @@ package org.eclipse.lsp4j.jsonrpc.test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -53,6 +55,12 @@ public class LogMessageAccumulator extends Handler {
 			return null;
 		}
 	}
+	
+	public Optional<LogRecord> match(Predicate<LogRecord> predicate) {
+		synchronized (records) {
+			return records.stream().filter(predicate).findFirst();
+		}
+	} 
 
 	@Override
 	public void publish(LogRecord record) {
@@ -67,6 +75,19 @@ public class LogMessageAccumulator extends Handler {
 
 	@Override
 	public void close() throws SecurityException {
+	}
+
+	public void await(Predicate<LogRecord> predicate) throws InterruptedException {
+		long startTime = System.currentTimeMillis();
+		while (!match(predicate).isPresent()) {
+			Thread.sleep(20);
+			if (System.currentTimeMillis() - startTime > TIMEOUT) {
+				synchronized (records) {
+					String records = this.records.stream().map(r -> r.getLevel() + ": " + r.getMessage()).reduce((a, a2) -> a + '\n' + a2).get();
+					Assert.fail("Timeout elapsed while waiting for logging, logged:\n" + records);
+				}
+			}
+		}
 	}
 	
 	public void await(Level level, String message) throws InterruptedException {

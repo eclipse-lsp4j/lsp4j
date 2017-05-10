@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.jsonrpc.test.annotations.impl;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
@@ -74,6 +75,109 @@ public class GenericEndpointTest {
 		endpoint.notify("myNotification", new Object());
 		Assert.assertEquals(1, foo.calls);
 	}
+	
+	@Test
+	public void testZeroParams_01() throws Exception {
+		testZeroParams("foo", m -> m.contains("Unexpected params 'foo'"));
+	}
+	
+	@Test
+	public void testZeroParams_02() throws Exception {
+		testZeroParams(null);
+	}
+	
+	@Test
+	public void testZeroParams_03() throws Exception {
+		testZeroParams(Arrays.asList("foo"), m -> m.contains("Unexpected params '[foo]'"));
+	}
+	
+	@Test
+	public void testZeroParams_04() throws Exception {
+		testZeroParams(Arrays.asList("foo", "bar"), m -> m.contains("Unexpected params '[foo, bar]'"));
+	}
+	
+	protected void testZeroParams(Object params) throws Exception {
+		testZeroParams(params, null);
+	}
+
+	protected void testZeroParams(Object params, Predicate<String> predicate) throws Exception {
+		LogMessageAccumulator logMessages = null;
+		try {
+			if (predicate != null) {
+				logMessages = new LogMessageAccumulator();
+				logMessages.registerTo(GenericEndpoint.class.getName());
+			}
+			GenericEndpoint endpoint = new GenericEndpoint(new Object() {
+
+				@JsonNotification
+				public void myNotification() {
+				}
+
+			});
+		
+			endpoint.notify("myNotification", params);
+
+			if (predicate != null) {
+				logMessages.await(r -> Level.WARNING == r.getLevel() && predicate.test(r.getMessage()));
+			}
+		} finally {
+			if (logMessages != null) {
+				logMessages.unregister();
+			}
+		}
+	}
+	
+	@Test
+	public void testSingleParams_01() throws Exception {
+		testSingleParams("foo", "foo");
+	}
+	
+	@Test
+	public void testSingleParams_02() throws Exception {
+		testSingleParams(null, null);
+	}
+	
+	@Test
+	public void testSingleParams_03() throws Exception {
+		testSingleParams(Arrays.asList("foo"), "foo");
+	}
+	
+	@Test
+	public void testSingleParams_04() throws Exception {
+		testSingleParams(Arrays.asList("foo", "bar"), "foo", m -> m.contains("Unexpected params 'bar'"));
+	}
+	
+	protected void testSingleParams(Object params, String expectedString) throws Exception {
+		this.testSingleParams(params, expectedString, null);
+	}
+
+	protected void testSingleParams(Object params, String expectedString, Predicate<String> predicate) throws Exception {
+		LogMessageAccumulator logMessages = null;
+		try {
+			if (predicate != null) {
+				logMessages = new LogMessageAccumulator();
+				logMessages.registerTo(GenericEndpoint.class.getName());
+			}
+			GenericEndpoint endpoint = new GenericEndpoint(new Object() {
+
+				@JsonRequest
+				public CompletableFuture<String> getStringValue(String stringValue) {
+					return CompletableFuture.completedFuture(stringValue);
+				}
+
+			});
+
+			Assert.assertEquals(expectedString, endpoint.request("getStringValue", params).get());
+
+			if (predicate != null) {
+				logMessages.await(r -> Level.WARNING == r.getLevel() && predicate.test(r.getMessage()));
+			}
+		} finally {
+			if (logMessages != null) {
+				logMessages.unregister();
+			}
+		}
+	}
 
 	@Test
 	public void testMultiParams_01() throws Exception {
@@ -87,20 +191,25 @@ public class GenericEndpointTest {
 
 	@Test
 	public void testMultiParams_03() throws Exception {
-		testMultiParams(Arrays.asList("foo", 1, "bar", 2), "foo", 1,
-				"Unexpected params '[bar, 2]' for 'public void org.eclipse.lsp4j.jsonrpc.test.annotations.impl.GenericEndpointTest$1.myNotification(java.lang.String,java.lang.Integer)' is ignored");
+		testMultiParams(Arrays.asList("foo", 1, "bar", 2), "foo", 1, m -> m.contains("Unexpected params 'bar', '2'"));
 	}
 
 	@Test
 	public void testMultiParams_04() throws Exception {
 		testMultiParams("foo", "foo", null);
 	}
+	
+	protected void testMultiParams(Object params, String expectedString, Integer expectedInt) throws Exception {
+		testMultiParams(params, expectedString, expectedInt, null);
+	}
 
-	protected void testMultiParams(Object params, String expectedString, Integer expectedInt,
-			String... expectedWarnings) throws Exception {
-		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+	protected void testMultiParams(Object params, String expectedString, Integer expectedInt, Predicate<String> predicate) throws Exception {
+		LogMessageAccumulator logMessages = null;
 		try {
-			logMessages.registerTo(GenericEndpoint.class.getName());
+			if (predicate != null) {
+				logMessages = new LogMessageAccumulator();
+				logMessages.registerTo(GenericEndpoint.class.getName());
+			}
 
 			GenericEndpoint endpoint = new GenericEndpoint(new Object() {
 
@@ -126,14 +235,16 @@ public class GenericEndpointTest {
 			});
 			endpoint.notify("myNotification", params);
 
-			for (String expectedWarning : expectedWarnings) {
-				logMessages.await(Level.WARNING, expectedWarning);
+			if (predicate != null) {
+				logMessages.await(r -> Level.WARNING == r.getLevel() && predicate.test(r.getMessage()));
 			}
 
 			Assert.assertEquals(expectedString, endpoint.request("getStringValue", null).get());
 			Assert.assertEquals(expectedInt, endpoint.request("getIntValue", null).get());
 		} finally {
-			logMessages.unregister();
+			if (logMessages != null) {
+				logMessages.unregister();
+			}
 		}
 	}
 

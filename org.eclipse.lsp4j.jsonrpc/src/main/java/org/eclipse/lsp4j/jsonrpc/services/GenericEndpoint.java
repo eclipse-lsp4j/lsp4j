@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
@@ -78,9 +79,6 @@ public class GenericEndpoint implements Endpoint {
 			}
 			return NO_ARGUMENTS;
 		}
-		if (parameterCount == 1) {
-			return new Object[] { arg };
-		}
 		if (arg instanceof List<?>) {
 			List<?> arguments = (List<?>) arg;
 			int argumentCount = arguments.size(); 
@@ -88,8 +86,9 @@ public class GenericEndpoint implements Endpoint {
 				return arguments.toArray();
 			}
 			if (argumentCount > parameterCount) {
-				List<?> unexpectedParams = arguments.subList(parameterCount, arguments.size()); 
-				LOG.warning("Unexpected params '" + unexpectedParams + "' for '" + method + "' is ignored");
+				Stream<?> unexpectedArguments = arguments.stream().skip(parameterCount);
+				String unexpectedParams = unexpectedArguments.map(a -> "'" + a + "'").reduce((a, a2) -> a + ", " + a2).get();
+				LOG.warning("Unexpected params " + unexpectedParams + " for '" + method + "' is ignored");
 				return arguments.subList(0, parameterCount).toArray();
 			}
 			return arguments.toArray(new Object[parameterCount]);
