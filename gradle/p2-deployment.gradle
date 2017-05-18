@@ -14,21 +14,12 @@ p2gen {
 	zipRepository true
 	feature 'lsp4j-feature'
 	
-	additionalBundle {
-		id 'com.google.gson'
-		version versions.gson_orbit
-	}
-	additionalBundle {
-		id 'com.google.gson.source'
-		version versions.gson_orbit
-	}
-	
 	dependencies {
 		repositoryUrl 'http://download.eclipse.org/releases/luna/201502271000/'
 		bundle 'com.google.guava'
 	}
 	dependencies {
-		repositoryUrl 'http://download.eclipse.org/tools/orbit/S-builds/S20170306214312/repository/'
+		repositoryUrl 'http://download.eclipse.org/tools/orbit/downloads/drops/S20170516192513/repository'
 		bundle {
 			id 'com.google.gson'
 			version versions.gson_orbit
