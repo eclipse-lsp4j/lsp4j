@@ -56,6 +56,7 @@ public interface Launcher<T> {
 			if (trace != null) {
 				result = message -> {
 					trace.println(message);
+					trace.flush();
 					consumer.consume(message);
 				};
 			}
