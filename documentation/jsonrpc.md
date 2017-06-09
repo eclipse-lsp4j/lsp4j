@@ -8,7 +8,7 @@ On the lowest Level JSON RPC just sends messages from a client to a server. Thos
 
 # Endpoint
 
-LSP4J provides the notion of an [Endpoint] (../org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/Endpoint.java) that takes care of the connecting a request messages with responses. The interface defines two methods 
+LSP4J provides the notion of an [Endpoint](../org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/Endpoint.java) that takes care of the connecting a request messages with responses. The interface defines two methods 
 
 ``` java
 /**
