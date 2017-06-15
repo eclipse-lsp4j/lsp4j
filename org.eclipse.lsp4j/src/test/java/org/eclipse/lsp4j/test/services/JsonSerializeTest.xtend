@@ -26,6 +26,8 @@ import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
 import org.eclipse.lsp4j.WorkspaceEdit
+import org.eclipse.lsp4j.InitializeResult
+import org.eclipse.lsp4j.ServerCapabilities
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
@@ -89,6 +91,28 @@ class JsonSerializeTest {
 			}
 		''')
 	}
+
+	@Test
+    def void testInit() {
+        val message = new RequestMessage => [
+            jsonrpc = "2.0"
+            id = "1"
+            method = MessageMethods.DOC_COMPLETION
+            params = new InitializeResult => [
+                capabilities = new ServerCapabilities()
+            ]
+        ]
+        message.assertSerialize('''
+            {
+              "jsonrpc": "2.0",
+              "id": "1",
+              "method": "textDocument/completion",
+              "params": {
+                "capabilities": {}
+              }
+            }
+        ''')
+    }
 	
 	@Test
 	def void testDidChange() {
