@@ -49,7 +49,9 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 
 		@Override
 		public void write(JsonWriter out, Either<L, R> value) throws IOException {
-			if (value.isLeft()) {
+			if (value == null) {
+				out.nullValue();
+			} else if (value.isLeft()) {
 				left.write(out, value.getLeft());
 			} else {
 				right.write(out, value.getRight());

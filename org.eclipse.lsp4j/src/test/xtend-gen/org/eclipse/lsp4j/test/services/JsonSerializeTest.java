@@ -21,10 +21,12 @@ import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.Hover;
+import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MarkedString;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.ServerCapabilities;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
@@ -130,6 +132,48 @@ public class JsonSerializeTest {
     _builder.newLine();
     _builder.append("    ");
     _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    this.assertSerialize(message, _builder);
+  }
+  
+  @Test
+  public void testInit() {
+    RequestMessage _requestMessage = new RequestMessage();
+    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("1");
+      it.setMethod(MessageMethods.DOC_COMPLETION);
+      InitializeResult _initializeResult = new InitializeResult();
+      final Procedure1<InitializeResult> _function_1 = (InitializeResult it_1) -> {
+        ServerCapabilities _serverCapabilities = new ServerCapabilities();
+        it_1.setCapabilities(_serverCapabilities);
+      };
+      InitializeResult _doubleArrow = ObjectExtensions.<InitializeResult>operator_doubleArrow(_initializeResult, _function_1);
+      it.setParams(_doubleArrow);
+    };
+    final RequestMessage message = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"id\": \"1\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"method\": \"textDocument/completion\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"params\": {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"capabilities\": {}");
     _builder.newLine();
     _builder.append("  ");
     _builder.append("}");
