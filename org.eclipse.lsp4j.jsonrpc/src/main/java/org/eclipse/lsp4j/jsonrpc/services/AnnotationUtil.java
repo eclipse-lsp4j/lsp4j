@@ -31,13 +31,15 @@ public final class AnnotationUtil {
 	}
 
 	public static boolean isDelegateMethod(Method method) {
-		JsonDelegate jsonDelegate = method.getAnnotation(JsonDelegate.class);
-		if (jsonDelegate != null) {
-			if (!(method.getParameterCount() == 0 && method.getReturnType().isInterface())) {
-				throw new IllegalStateException(
-						"The method " + method.toString() + " is not a proper @JsonDelegate method.");
+		if (!method.isSynthetic()) {
+			JsonDelegate jsonDelegate = method.getAnnotation(JsonDelegate.class);
+			if (jsonDelegate != null) {
+				if (!(method.getParameterCount() == 0 && method.getReturnType().isInterface())) {
+					throw new IllegalStateException(
+							"The method " + method.toString() + " is not a proper @JsonDelegate method.");
+				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -68,13 +70,15 @@ public final class AnnotationUtil {
 	}
 	
 	protected static MethodInfo createMethodInfo(Method method, String segment) {
-		JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
-		if (jsonRequest != null) {
-			return createRequestInfo(method, segment, jsonRequest);
-		}
-		JsonNotification jsonNotification = method.getAnnotation(JsonNotification.class);
-		if (jsonNotification != null) {
-			return createNotificationInfo(method, segment, jsonNotification);
+		if (!method.isSynthetic()) {
+			JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
+			if (jsonRequest != null) {
+				return createRequestInfo(method, segment, jsonRequest);
+			}
+			JsonNotification jsonNotification = method.getAnnotation(JsonNotification.class);
+			if (jsonNotification != null) {
+				return createNotificationInfo(method, segment, jsonNotification);
+			}
 		}
 		return null;
 	}
