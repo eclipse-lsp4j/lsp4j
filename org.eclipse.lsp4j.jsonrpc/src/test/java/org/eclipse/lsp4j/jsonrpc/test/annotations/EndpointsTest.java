@@ -14,14 +14,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
-import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
+import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.junit.Test;
 
 public class EndpointsTest {
@@ -169,4 +170,21 @@ public class EndpointsTest {
 		assertEquals(Integer.class, delegateMethod.getParameterTypes()[1]);
 		assertTrue(delegateMethod.isNotification());
 	}
+	
+	@JsonSegment("consumer")
+	public static interface StringConsumer extends Consumer<String> {
+		@JsonNotification
+		@Override
+		void accept(String message);
+	}
+	
+	@Test public void testIssue107() {
+		Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(StringConsumer.class);
+		final JsonRpcMethod method = methods.get("consumer/accept");
+		assertEquals("consumer/accept", method.getMethodName());
+		assertEquals(1, method.getParameterTypes().length);
+		assertEquals(String.class, method.getParameterTypes()[0]);
+		assertTrue(method.isNotification());
+	}
+	
 }
