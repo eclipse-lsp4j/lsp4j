@@ -1,123 +1,141 @@
 package org.eclipse.lsp4j;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import org.eclipse.xtext.xbase.lib.Pure;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
+import java.util.Set;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 
 /**
  * Value-object describing what options formatting should use.
  */
 @SuppressWarnings("all")
-public class FormattingOptions {
-  /**
-   * Size of a tab in spaces.
-   */
-  private int tabSize;
+public class FormattingOptions extends LinkedHashMap<String, Object> {
+  private final static String TAB_SIZE = "tabSize";
   
-  /**
-   * Prefer spaces over tabs.
-   */
-  private boolean insertSpaces;
-  
-  /**
-   * Signature for further properties.
-   */
-  private Map<String, String> properties;
+  private final static String INSERT_SPACES = "insertSpaces";
   
   public FormattingOptions() {
   }
   
+  public FormattingOptions(final int tabSize, final boolean insertSpaces) {
+    this.setTabSize(tabSize);
+    this.setInsertSpaces(insertSpaces);
+  }
+  
+  /**
+   * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+   */
+  @Deprecated
   public FormattingOptions(final int tabSize, final boolean insertSpaces, final Map<String, String> properties) {
-    this.tabSize = tabSize;
-    this.insertSpaces = insertSpaces;
-    this.properties = properties;
+    this(tabSize, insertSpaces);
+    this.putAll(properties);
+  }
+  
+  /**
+   * Only {@code boolean | number | string} are accepted by formatting options.
+   */
+  @Override
+  public Object put(final String key, final Object value) {
+    if (key != null) {
+      switch (key) {
+        case FormattingOptions.TAB_SIZE:
+          if ((value instanceof Integer)) {
+            return super.put(key, value);
+          } else {
+            if ((value instanceof Number)) {
+              return super.put(key, Integer.valueOf(((Number)value).intValue()));
+            } else {
+              if ((value instanceof String)) {
+                try {
+                  return super.put(key, Integer.valueOf(((String)value)));
+                } catch (final Throwable _t) {
+                  if (_t instanceof NumberFormatException) {
+                    final NumberFormatException e = (NumberFormatException)_t;
+                  } else {
+                    throw Exceptions.sneakyThrow(_t);
+                  }
+                }
+              }
+            }
+          }
+          break;
+        case FormattingOptions.INSERT_SPACES:
+          if ((value instanceof Boolean)) {
+            return super.put(key, value);
+          } else {
+            if ((value instanceof String)) {
+              return super.put(key, Boolean.valueOf(((String)value)));
+            }
+          }
+          break;
+        default:
+          if ((((value instanceof Boolean) || (value instanceof Number)) || (value instanceof String))) {
+            return super.put(key, value);
+          } else {
+            return super.put(key, value.toString());
+          }
+      }
+    } else {
+      if ((((value instanceof Boolean) || (value instanceof Number)) || (value instanceof String))) {
+        return super.put(key, value);
+      } else {
+        return super.put(key, value.toString());
+      }
+    }
+    return null;
   }
   
   /**
    * Size of a tab in spaces.
    */
-  @Pure
   public int getTabSize() {
-    return this.tabSize;
+    final Object value = this.get(FormattingOptions.TAB_SIZE);
+    if ((value instanceof Number)) {
+      return ((Number)value).intValue();
+    } else {
+      throw new AssertionError((("Property \'" + FormattingOptions.TAB_SIZE) + "\' must be a number"));
+    }
   }
   
-  /**
-   * Size of a tab in spaces.
-   */
   public void setTabSize(final int tabSize) {
-    this.tabSize = tabSize;
+    this.put(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
   }
   
   /**
    * Prefer spaces over tabs.
    */
-  @Pure
   public boolean isInsertSpaces() {
-    return this.insertSpaces;
+    final Object value = this.get(FormattingOptions.INSERT_SPACES);
+    if ((value instanceof Boolean)) {
+      return ((Boolean) value).booleanValue();
+    } else {
+      throw new AssertionError((("Property \'" + FormattingOptions.INSERT_SPACES) + "\' must be a Boolean"));
+    }
   }
   
-  /**
-   * Prefer spaces over tabs.
-   */
   public void setInsertSpaces(final boolean insertSpaces) {
-    this.insertSpaces = insertSpaces;
+    this.put(FormattingOptions.INSERT_SPACES, Boolean.valueOf(insertSpaces));
   }
   
   /**
-   * Signature for further properties.
+   * @deprecated See https://github.com/eclipse/lsp4j/issues/99
    */
-  @Pure
+  @Deprecated
   public Map<String, String> getProperties() {
-    return this.properties;
+    final LinkedHashMap<String, String> result = CollectionLiterals.<String, String>newLinkedHashMap();
+    Set<Map.Entry<String, Object>> _entrySet = this.entrySet();
+    for (final Map.Entry<String, Object> entry : _entrySet) {
+      result.put(entry.getKey(), entry.getValue().toString());
+    }
+    return result;
   }
   
   /**
-   * Signature for further properties.
+   * @deprecated See https://github.com/eclipse/lsp4j/issues/99
    */
+  @Deprecated
   public void setProperties(final Map<String, String> properties) {
-    this.properties = properties;
-  }
-  
-  @Override
-  @Pure
-  public String toString() {
-    ToStringBuilder b = new ToStringBuilder(this);
-    b.add("tabSize", this.tabSize);
-    b.add("insertSpaces", this.insertSpaces);
-    b.add("properties", this.properties);
-    return b.toString();
-  }
-  
-  @Override
-  @Pure
-  public boolean equals(final Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    FormattingOptions other = (FormattingOptions) obj;
-    if (other.tabSize != this.tabSize)
-      return false;
-    if (other.insertSpaces != this.insertSpaces)
-      return false;
-    if (this.properties == null) {
-      if (other.properties != null)
-        return false;
-    } else if (!this.properties.equals(other.properties))
-      return false;
-    return true;
-  }
-  
-  @Override
-  @Pure
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + this.tabSize;
-    result = prime * result + (this.insertSpaces ? 1231 : 1237);
-    result = prime * result + ((this.properties== null) ? 0 : this.properties.hashCode());
-    return result;
+    this.putAll(properties);
   }
 }

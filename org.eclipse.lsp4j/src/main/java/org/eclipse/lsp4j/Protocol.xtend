@@ -1289,31 +1289,109 @@ class FileEvent {
 /**
  * Value-object describing what options formatting should use.
  */
-@JsonRpcData
-class FormattingOptions {
-	/**
-	 * Size of a tab in spaces.
-	 */
-	int tabSize
+class FormattingOptions extends LinkedHashMap<String, Object> {
 
-	/**
-	 * Prefer spaces over tabs.
-	 */
-	boolean insertSpaces
+	static val TAB_SIZE = 'tabSize'
+	static val INSERT_SPACES = 'insertSpaces'
 
-	/**
-	 * Signature for further properties.
-	 */
-	Map<String, String> properties
-    
     new() {
     }
     
-    new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
+    new(int tabSize, boolean insertSpaces) {
     	this.tabSize = tabSize
     	this.insertSpaces = insertSpaces
-    	this.properties = properties
     }
+    
+    /**
+     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+     */
+    @Deprecated
+    new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
+    	this(tabSize, insertSpaces)
+    	putAll(properties)
+    }
+    
+    /**
+     * Only {@code boolean | number | string} are accepted by formatting options.
+     */
+	override put(String key, Object value) {
+		switch key {
+			case TAB_SIZE: {
+				if (value instanceof Integer)
+		    		return super.put(key, value)
+		    	else if (value instanceof Number)
+		    		return super.put(key, value.intValue)
+		    	else if (value instanceof String)
+		    		try {
+		    			return super.put(key, Integer.valueOf(value))
+					} catch (NumberFormatException e) {}
+			}
+			case INSERT_SPACES: {
+				if (value instanceof Boolean)
+		    		return super.put(key, value)
+		    	else if (value instanceof String)
+		    		return super.put(key, Boolean.valueOf(value))
+			}
+			default: {
+				if (value instanceof Boolean || value instanceof Number || value instanceof String)
+					return super.put(key, value)
+				else
+					return super.put(key, value.toString)
+			}
+		}
+		return null
+	}
+    
+	/**
+	 * Size of a tab in spaces.
+	 */
+    def int getTabSize() {
+    	val value = get(TAB_SIZE)
+    	if (value instanceof Number)
+    		return value.intValue
+    	else
+    		throw new AssertionError("Property '" + TAB_SIZE + "' must be a number")
+    }
+    
+    def void setTabSize(int tabSize) {
+    	put(TAB_SIZE, tabSize)
+    }
+    
+ 	/**
+	 * Prefer spaces over tabs.
+	 */
+    def boolean isInsertSpaces() {
+       	val value = get(INSERT_SPACES)
+    	if (value instanceof Boolean)
+    		return value
+    	else
+    		throw new AssertionError("Property '" + INSERT_SPACES + "' must be a Boolean")
+    }
+    
+    def void setInsertSpaces(boolean insertSpaces) {
+    	put(INSERT_SPACES, insertSpaces)
+    }
+    
+    /**
+     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+     */
+    @Deprecated
+    def Map<String, String> getProperties() {
+    	val result = newLinkedHashMap
+    	for (entry : entrySet) {
+    		result.put(entry.key, entry.value.toString)
+    	}
+    	return result
+    }
+    
+    /**
+     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+     */
+    @Deprecated
+    def void setProperties(Map<String, String> properties) {
+    	putAll(properties)
+    }
+    
 }
 
 /**
