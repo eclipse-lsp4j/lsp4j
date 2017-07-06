@@ -2,9 +2,9 @@ package org.eclipse.lsp4j;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Exceptions;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.MapExtensions;
 
 /**
  * Value-object describing what options formatting should use.
@@ -73,14 +73,19 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
           if ((((value instanceof Boolean) || (value instanceof Number)) || (value instanceof String))) {
             return super.put(key, value);
           } else {
-            return super.put(key, value.toString());
+            if ((value != null)) {
+              return super.put(key, value.toString());
+            }
           }
+          break;
       }
     } else {
       if ((((value instanceof Boolean) || (value instanceof Number)) || (value instanceof String))) {
         return super.put(key, value);
       } else {
-        return super.put(key, value.toString());
+        if ((value != null)) {
+          return super.put(key, value.toString());
+        }
       }
     }
     return null;
@@ -94,7 +99,11 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
     if ((value instanceof Number)) {
       return ((Number)value).intValue();
     } else {
-      throw new AssertionError((("Property \'" + FormattingOptions.TAB_SIZE) + "\' must be a number"));
+      if ((value == null)) {
+        return 0;
+      } else {
+        throw new AssertionError((("Property \'" + FormattingOptions.TAB_SIZE) + "\' must be a number"));
+      }
     }
   }
   
@@ -110,7 +119,11 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
     if ((value instanceof Boolean)) {
       return ((Boolean) value).booleanValue();
     } else {
-      throw new AssertionError((("Property \'" + FormattingOptions.INSERT_SPACES) + "\' must be a Boolean"));
+      if ((value == null)) {
+        return false;
+      } else {
+        throw new AssertionError((("Property \'" + FormattingOptions.INSERT_SPACES) + "\' must be a Boolean"));
+      }
     }
   }
   
@@ -123,12 +136,10 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
    */
   @Deprecated
   public Map<String, String> getProperties() {
-    final LinkedHashMap<String, String> result = CollectionLiterals.<String, String>newLinkedHashMap();
-    Set<Map.Entry<String, Object>> _entrySet = this.entrySet();
-    for (final Map.Entry<String, Object> entry : _entrySet) {
-      result.put(entry.getKey(), entry.getValue().toString());
-    }
-    return result;
+    final Function1<Object, String> _function = (Object it) -> {
+      return it.toString();
+    };
+    return MapExtensions.<String, Object, String>mapValues(this, _function);
   }
   
   /**

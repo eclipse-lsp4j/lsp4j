@@ -1335,7 +1335,7 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
 			default: {
 				if (value instanceof Boolean || value instanceof Number || value instanceof String)
 					return super.put(key, value)
-				else
+				else if (value !== null)
 					return super.put(key, value.toString)
 			}
 		}
@@ -1349,6 +1349,8 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
     	val value = get(TAB_SIZE)
     	if (value instanceof Number)
     		return value.intValue
+    	else if (value === null)
+    		return 0
     	else
     		throw new AssertionError("Property '" + TAB_SIZE + "' must be a number")
     }
@@ -1364,6 +1366,8 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
        	val value = get(INSERT_SPACES)
     	if (value instanceof Boolean)
     		return value
+    	else if (value === null)
+    		return false
     	else
     		throw new AssertionError("Property '" + INSERT_SPACES + "' must be a Boolean")
     }
@@ -1377,11 +1381,7 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
      */
     @Deprecated
     def Map<String, String> getProperties() {
-    	val result = newLinkedHashMap
-    	for (entry : entrySet) {
-    		result.put(entry.key, entry.value.toString)
-    	}
-    	return result
+    	mapValues[toString]
     }
     
     /**
