@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -12,11 +13,20 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 public class LauncherTest {
 	
 	private static final long TIMEOUT = 2000;
 	
 	static class Param {
+		Param() {
+		}
+		Param(String message) {
+			this.message = message;
+		}
 		public String message;
 	}
 	
@@ -59,4 +69,36 @@ public class LauncherTest {
 		Assert.assertTrue(startListening.isDone());
 		Assert.assertTrue(startListening.isCancelled());
 	}
+	
+	@Test public void testCustomGson() throws Exception {
+		A a = new A() {
+			@Override
+			public void say(Param p) {
+			}
+		};
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		TypeAdapter<Param> typeAdapter = new TypeAdapter<Param>() {
+			@Override
+			public void write(JsonWriter out, Param value) throws IOException {
+				out.beginObject();
+				out.name("message");
+				out.value("bar");
+				out.endObject();
+			}
+			@Override
+			public Param read(JsonReader in) throws IOException {
+				return null;
+			}
+		};
+		Launcher<A> launcher = Launcher.createIoLauncher(a, A.class, new ByteArrayInputStream("".getBytes()), out,
+				Executors.newCachedThreadPool(), c -> c,
+				gsonBuilder -> {gsonBuilder.registerTypeAdapter(Param.class, typeAdapter);});
+		A remoteProxy = launcher.getRemoteProxy();
+		
+		remoteProxy.say(new Param("foo"));
+		Assert.assertEquals("Content-Length: 59\r\n\r\n"
+				+ "{\"jsonrpc\":\"2.0\",\"method\":\"say\",\"params\":{\"message\":\"bar\"}}",
+				out.toString());
+	}
+	
 }

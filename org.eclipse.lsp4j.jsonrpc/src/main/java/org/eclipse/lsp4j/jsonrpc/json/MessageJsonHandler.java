@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
@@ -39,6 +40,13 @@ public class MessageJsonHandler {
 	public MessageJsonHandler(Map<String, JsonRpcMethod> supportedMethods) {
 		this.supportedMethods = supportedMethods;
 		this.gson = getDefaultGsonBuilder().create();
+	}
+	
+	public MessageJsonHandler(Map<String, JsonRpcMethod> supportedMethods, Consumer<GsonBuilder> configureGson) {
+		this.supportedMethods = supportedMethods;
+		GsonBuilder gsonBuilder = getDefaultGsonBuilder();
+		configureGson.accept(gsonBuilder);
+		this.gson = gsonBuilder.create();
 	}
     
 	public GsonBuilder getDefaultGsonBuilder() {
