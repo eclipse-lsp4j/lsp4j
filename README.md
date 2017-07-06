@@ -23,6 +23,11 @@ The snapshots are regularly deployed to:
 Also, you can get them directly from the TypeFox Jenkins server:
  * http://services.typefox.io/open-source/jenkins/job/lsp4j/job/master/lastSuccessfulBuild/artifact/build/maven-repository/
 
+### Supported LSP Versions
+
+ * LSP4J 0.2.x &rarr; LSP 3.x
+ * LSP4J 0.1.x &rarr; LSP 2.x
+
 ### Licenses
 
 LSP4J is published under two licenses:
