@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor;
@@ -26,31 +27,39 @@ import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator;
 
+import com.google.gson.GsonBuilder;
+
+/**
+ * This is the entry point for applications that use LSP4J. A Launcher does all the wiring that is necessary to connect
+ * your endpoint via an input stream and an output stream.
+ */
 public interface Launcher<T> {
 	
 	/**
+	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
 	 * 
-	 * @param localService
-	 * @param remoteInterface
-	 * @param in
-	 * @param out
-	 * @return
+	 * @param localService - an object on which classes RPC methods are looked up
+	 * @param remoteInterface - an interface on which RPC methods are looked up
+	 * @param in - inputstream to listen for incoming messages
+	 * @param out - outputstream to send outgoing messages
 	 */
 	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out) {
 		return createLauncher(localService, remoteInterface, in, out, false, null);
 	}
 	
 	/**
+	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream,
+	 * and set up message validation and tracing.
 	 * 
-	 * @param localService
-	 * @param remoteInterface
-	 * @param in
-	 * @param out
-	 * @param validate
-	 * @param trace
-	 * @return
+	 * @param localService - an object on which classes RPC methods are looked up
+	 * @param remoteInterface - an interface on which RPC methods are looked up
+	 * @param in - inputstream to listen for incoming messages
+	 * @param out - outputstream to send outgoing messages
+	 * @param validate - whether messages should be validated with the {@link ReflectiveMessageValidator}
+	 * @param trace - a writer to which incoming and outgoing messages are traced, or {@code null} to disable tracing
 	 */
-	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, boolean validate, PrintWriter trace) {
+	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out,
+			boolean validate, PrintWriter trace) {
 		Function<MessageConsumer, MessageConsumer> wrapper = consumer -> {
 			MessageConsumer result = consumer;
 			if (trace != null) {
@@ -70,17 +79,56 @@ public interface Launcher<T> {
 	
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
+	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
+	 * outgoing message streams so additional message handling such as validation and tracing can be included.
 	 * 
 	 * @param localService - an object on which classes RPC methods are looked up
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - inputstream to listen for incoming messages
 	 * @param out - outputstream to send outgoing messages
+	 * @param executorService - the executor service used to start threads
+	 * @param wrapper - a function for plugging in additional message consumers
 	 */
-	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
+	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out,
+			ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper);
 	}
 	
-	static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
+	/**
+	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
+	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
+	 * outgoing message streams so additional message handling such as validation and tracing can be included.
+	 * 
+	 * @param localService - an object on which classes RPC methods are looked up
+	 * @param remoteInterface - an interface on which RPC methods are looked up
+	 * @param in - inputstream to listen for incoming messages
+	 * @param out - outputstream to send outgoing messages
+	 * @param executorService - the executor service used to start threads
+	 * @param wrapper - a function for plugging in additional message consumers
+	 */
+	static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out,
+			ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
+		Consumer<GsonBuilder> configureGson = gsonBuilder -> {};
+		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper, configureGson);
+	}
+	
+	/**
+	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
+	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
+	 * outgoing message streams so additional message handling such as validation and tracing can be included.
+	 * The {@code configureGson} function can be used to register additional type adapters in the {@link GsonBuilder}
+	 * in order to support protocol classes that cannot be handled by Gson's reflective capabilities.
+	 * 
+	 * @param localService - an object on which classes RPC methods are looked up
+	 * @param remoteInterface - an interface on which RPC methods are looked up
+	 * @param in - inputstream to listen for incoming messages
+	 * @param out - outputstream to send outgoing messages
+	 * @param executorService - the executor service used to start threads
+	 * @param wrapper - a function for plugging in additional message consumers
+	 * @param configureGson - a function for Gson configuration
+	 */
+	static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out,
+			ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper, Consumer<GsonBuilder> configureGson) {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<String, JsonRpcMethod>();
 		supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(remoteInterface));
 		
@@ -91,7 +139,7 @@ public interface Launcher<T> {
 			supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(localService.getClass()));
 		}
 		
-		MessageJsonHandler jsonHandler = new MessageJsonHandler(supportedMethods);
+		MessageJsonHandler jsonHandler = new MessageJsonHandler(supportedMethods, configureGson);
 		MessageConsumer outGoingMessageStream = new StreamMessageConsumer(out, jsonHandler);
 		outGoingMessageStream = wrapper.apply(outGoingMessageStream);
 		RemoteEndpoint serverEndpoint = new RemoteEndpoint(outGoingMessageStream, ServiceEndpoints.toEndpoint(localService));
