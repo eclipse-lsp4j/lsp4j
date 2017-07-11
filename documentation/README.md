@@ -4,9 +4,9 @@ A brief description for using LSP4j to develop a language server.
 
 # Implement your language server
 
-The first thing you should do is to implement your language server. To do so just implement the interface `org.eclipse.lsp4j.LanguageServer`.
+The first thing you should do is to implement your language server. To do so just implement the interface `org.eclipse.lsp4j.services.LanguageServer`.
 
-If you are implementing a client (e.g. an editor) you simply need to implement `org.eclipse.lsp4j.LanguageClient` instead.
+If you are implementing a client (e.g. an editor) you simply need to implement `org.eclipse.lsp4j.services.LanguageClient` instead.
 
 # Launch and connect with a `LanguageClient`
 
