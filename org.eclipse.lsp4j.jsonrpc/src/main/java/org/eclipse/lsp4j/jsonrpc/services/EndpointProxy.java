@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -23,6 +24,10 @@ import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.MethodInfo;
  * methods.
  */
 public class EndpointProxy implements InvocationHandler {
+	
+	private final Method object_equals;
+	private final Method object_hashCode;
+	private final Method object_toString;
 
 	private final Endpoint delegate;
 	private final LinkedHashMap<String, MethodInfo> methodInfos;
@@ -34,6 +39,13 @@ public class EndpointProxy implements InvocationHandler {
 		if (interf == null)
 			throw new NullPointerException("interf");
 		this.delegate = delegate;
+		try {
+			object_equals = Object.class.getDeclaredMethod("equals", Object.class);
+			object_hashCode = Object.class.getDeclaredMethod("hashCode");
+			object_toString = Object.class.getDeclaredMethod("toString");
+		} catch (NoSuchMethodException | SecurityException exception) {
+			throw new RuntimeException(exception);
+		}
 		methodInfos = new LinkedHashMap<>();
 		AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
 			if (methodInfos.put(methodInfo.method.getName(), methodInfo) != null) {
@@ -68,6 +80,19 @@ public class EndpointProxy implements InvocationHandler {
 		if (delegateInfo != null) {
 			return delegateInfo.delegate;
 		}
+		if (object_equals.equals(method) && args.length == 1) {
+			try {
+				return this.equals(Proxy.getInvocationHandler(args[0]));
+			} catch (IllegalArgumentException exception) {
+				return this.equals(args[0]);
+			}
+		}
+		if (object_hashCode.equals(method)) {
+			return this.hashCode();
+		}
+		if (object_toString.equals(method)) {
+			return this.toString();
+		}
 		return method.invoke(delegate, args);
 	}
 
@@ -79,6 +104,11 @@ public class EndpointProxy implements InvocationHandler {
 			return args[0];
 		}
 		return Arrays.asList(args);
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " for " + delegate.toString();
 	}
 
 }

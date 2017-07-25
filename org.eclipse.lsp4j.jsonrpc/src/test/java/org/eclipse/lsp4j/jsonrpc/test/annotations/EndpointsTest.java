@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
+import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -176,6 +177,11 @@ public class EndpointsTest {
 		@JsonNotification
 		@Override
 		void accept(String message);
+	}
+	
+	@Test public void testIssue106() {
+		Foo foo = ServiceEndpoints.toServiceObject(new GenericEndpoint(new Object()), Foo.class);
+		assertEquals(foo, foo);
 	}
 	
 	@Test public void testIssue107() {
