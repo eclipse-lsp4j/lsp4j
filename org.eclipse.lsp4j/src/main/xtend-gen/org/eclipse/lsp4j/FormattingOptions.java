@@ -1,6 +1,5 @@
 package org.eclipse.lsp4j;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
  * Value-object describing what options formatting should use.
  */
 @SuppressWarnings("all")
-public class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Number, Boolean>>> {
+public class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Integer, Boolean>>> {
   private final static String TAB_SIZE = "tabSize";
   
   private final static String INSERT_SPACES = "insertSpaces";
@@ -35,28 +34,41 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
   }
   
   public String getString(final String key) {
-    return this.get(key).getLeft();
+    Either<String, Either<Integer, Boolean>> _get = this.get(key);
+    String _left = null;
+    if (_get!=null) {
+      _left=_get.getLeft();
+    }
+    return _left;
   }
   
   public void putString(final String key, final String value) {
-    this.put(key, Either.<String, Either<Number, Boolean>>forLeft(value));
+    this.put(key, Either.<String, Either<Integer, Boolean>>forLeft(value));
   }
   
-  public Number getNumber(final String key) {
-    Either<Number, Boolean> _right = this.get(key).getRight();
-    Number _left = null;
+  public Integer getInteger(final String key) {
+    Either<String, Either<Integer, Boolean>> _get = this.get(key);
+    Either<Integer, Boolean> _right = null;
+    if (_get!=null) {
+      _right=_get.getRight();
+    }
+    Integer _left = null;
     if (_right!=null) {
       _left=_right.getLeft();
     }
     return _left;
   }
   
-  public void putNumber(final String key, final Number value) {
-    this.put(key, Either.<String, Either<Number, Boolean>>forRight(Either.<Number, Boolean>forLeft(value)));
+  public void putInteger(final String key, final Integer value) {
+    this.put(key, Either.<String, Either<Integer, Boolean>>forRight(Either.<Integer, Boolean>forLeft(value)));
   }
   
   public Boolean getBoolean(final String key) {
-    Either<Number, Boolean> _right = this.get(key).getRight();
+    Either<String, Either<Integer, Boolean>> _get = this.get(key);
+    Either<Integer, Boolean> _right = null;
+    if (_get!=null) {
+      _right=_get.getRight();
+    }
     Boolean _right_1 = null;
     if (_right!=null) {
       _right_1=_right.getRight();
@@ -65,14 +77,14 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
   }
   
   public void putBoolean(final String key, final Boolean value) {
-    this.put(key, Either.<String, Either<Number, Boolean>>forRight(Either.<Number, Boolean>forRight(value)));
+    this.put(key, Either.<String, Either<Integer, Boolean>>forRight(Either.<Integer, Boolean>forRight(value)));
   }
   
   /**
    * Size of a tab in spaces.
    */
   public int getTabSize() {
-    final Number value = this.getNumber(FormattingOptions.TAB_SIZE);
+    final Integer value = this.getInteger(FormattingOptions.TAB_SIZE);
     if ((value != null)) {
       return value.intValue();
     } else {
@@ -81,7 +93,7 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
   }
   
   public void setTabSize(final int tabSize) {
-    this.putNumber(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
+    this.putInteger(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
   }
   
   /**
@@ -106,15 +118,15 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
   @Deprecated
   public Map<String, String> getProperties() {
     final LinkedHashMap<String, String> properties = CollectionLiterals.<String, String>newLinkedHashMap();
-    Set<Map.Entry<String, Either<String, Either<Number, Boolean>>>> _entrySet = this.entrySet();
-    for (final Map.Entry<String, Either<String, Either<Number, Boolean>>> entry : _entrySet) {
+    Set<Map.Entry<String, Either<String, Either<Integer, Boolean>>>> _entrySet = this.entrySet();
+    for (final Map.Entry<String, Either<String, Either<Integer, Boolean>>> entry : _entrySet) {
       {
-        Serializable _xifexpression = null;
+        Object _xifexpression = null;
         boolean _isLeft = entry.getValue().isLeft();
         if (_isLeft) {
           _xifexpression = entry.getValue().getLeft();
         } else {
-          Serializable _xifexpression_1 = null;
+          Object _xifexpression_1 = null;
           if ((entry.getValue().isRight() && entry.getValue().getRight().isLeft())) {
             _xifexpression_1 = entry.getValue().getRight().getLeft();
           } else {
@@ -124,9 +136,9 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
             }
             _xifexpression_1 = _xifexpression_2;
           }
-          _xifexpression = _xifexpression_1;
+          _xifexpression = ((Object)_xifexpression_1);
         }
-        final Serializable value = _xifexpression;
+        final Object value = ((Object)_xifexpression);
         if ((value != null)) {
           properties.put(entry.getKey(), value.toString());
         }
