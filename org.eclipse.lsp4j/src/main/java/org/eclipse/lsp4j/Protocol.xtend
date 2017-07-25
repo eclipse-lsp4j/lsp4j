@@ -1289,31 +1289,112 @@ class FileEvent {
 /**
  * Value-object describing what options formatting should use.
  */
-@JsonRpcData
-class FormattingOptions {
-	/**
-	 * Size of a tab in spaces.
-	 */
-	int tabSize
+class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Integer, Boolean>>> {
 
-	/**
-	 * Prefer spaces over tabs.
-	 */
-	boolean insertSpaces
+	static val TAB_SIZE = 'tabSize'
+	static val INSERT_SPACES = 'insertSpaces'
 
-	/**
-	 * Signature for further properties.
-	 */
-	Map<String, String> properties
-    
     new() {
     }
     
-    new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
+    new(int tabSize, boolean insertSpaces) {
     	this.tabSize = tabSize
     	this.insertSpaces = insertSpaces
-    	this.properties = properties
     }
+    
+    /**
+     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+     */
+    @Deprecated
+    new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
+    	this(tabSize, insertSpaces)
+    	setProperties(properties)
+    }
+    
+    def String getString(String key) {
+    	get(key)?.getLeft
+    }
+    
+    def void putString(String key, String value) {
+    	put(key, Either.forLeft(value))
+    }
+    
+    def Integer getInteger(String key) {
+    	get(key)?.getRight?.getLeft
+    }
+    
+    def void putInteger(String key, Integer value) {
+    	put(key, Either.forRight(Either.forLeft(value)))
+    }
+    
+    def Boolean getBoolean(String key) {
+    	get(key)?.getRight?.getRight
+    }
+    
+    def void putBoolean(String key, Boolean value) {
+    	put(key, Either.forRight(Either.forRight(value)))
+    }
+    
+	/**
+	 * Size of a tab in spaces.
+	 */
+    def int getTabSize() {
+    	val value = getInteger(TAB_SIZE)
+    	if (value !== null)
+    		return value.intValue
+    	else
+    		return 0
+    }
+    
+    def void setTabSize(int tabSize) {
+    	putInteger(TAB_SIZE, tabSize)
+    }
+    
+ 	/**
+	 * Prefer spaces over tabs.
+	 */
+    def boolean isInsertSpaces() {
+       	val value = getBoolean(INSERT_SPACES)
+    	if (value !== null)
+    		return value
+    	else
+    		return false
+    }
+    
+    def void setInsertSpaces(boolean insertSpaces) {
+    	putBoolean(INSERT_SPACES, insertSpaces)
+    }
+    
+    /**
+     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+     */
+    @Deprecated
+    def Map<String, String> getProperties() {
+    	val properties = newLinkedHashMap
+    	for (entry : entrySet) {
+    		val value =
+    			if (entry.value.isLeft)
+    				entry.value.getLeft
+    			else if (entry.value.isRight && entry.value.getRight.isLeft)
+    				entry.value.getRight.getLeft
+    			else if (entry.value.isRight && entry.value.getRight.isRight)
+    				entry.value.getRight.getRight
+    		if (value !== null)
+    			properties.put(entry.key, value.toString)
+    	}
+    	return properties.unmodifiableView
+    }
+    
+    /**
+     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+     */
+    @Deprecated
+    def void setProperties(Map<String, String> properties) {
+    	for (entry : properties.entrySet) {
+    		putString(entry.key, entry.value)
+    	}
+    }
+    
 }
 
 /**

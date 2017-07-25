@@ -12,6 +12,8 @@ import java.util.HashMap
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
+import org.eclipse.lsp4j.DocumentFormattingParams
+import org.eclipse.lsp4j.FormattingOptions
 import org.eclipse.lsp4j.Hover
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.PublishDiagnosticsParams
@@ -23,6 +25,7 @@ import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
 import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
+import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
@@ -36,7 +39,6 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
-import org.eclipse.lsp4j.jsonrpc.messages.Either
 
 class JsonParseTest {
 	
@@ -341,5 +343,36 @@ class JsonParseTest {
             ]
         ])
     }
+    
+	@Test
+	def void testDocumentFormatting() {
+		'''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "method": "textDocument/formatting",
+			  "params": {
+			    "textDocument": {
+			      "uri": "file:///tmp/foo"
+			    },
+			    "options": {
+			      "tabSize": 4,
+			      "insertSpaces": false
+			    }
+			  }
+			}
+		'''.assertParse(new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			method = MessageMethods.DOC_FORMATTING
+			params = new DocumentFormattingParams => [
+				textDocument = new TextDocumentIdentifier("file:///tmp/foo")
+				options = new FormattingOptions => [
+					tabSize = 4
+					insertSpaces = false
+				]
+			]
+		])
+	}
     
 }

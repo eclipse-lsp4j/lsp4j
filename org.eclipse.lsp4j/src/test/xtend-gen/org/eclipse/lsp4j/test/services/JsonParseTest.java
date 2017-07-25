@@ -14,6 +14,8 @@ import java.util.Map;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
+import org.eclipse.lsp4j.DocumentFormattingParams;
+import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.MarkedString;
 import org.eclipse.lsp4j.Position;
@@ -716,6 +718,73 @@ public class JsonParseTest {
       it.setResult(_doubleArrow);
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testDocumentFormatting() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"method\": \"textDocument/formatting\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"params\": {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"textDocument\": {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("\"uri\": \"file:///tmp/foo\"");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"options\": {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("\"tabSize\": 4,");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("\"insertSpaces\": false");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    RequestMessage _requestMessage = new RequestMessage();
+    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      it.setMethod(MessageMethods.DOC_FORMATTING);
+      DocumentFormattingParams _documentFormattingParams = new DocumentFormattingParams();
+      final Procedure1<DocumentFormattingParams> _function_1 = (DocumentFormattingParams it_1) -> {
+        TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier("file:///tmp/foo");
+        it_1.setTextDocument(_textDocumentIdentifier);
+        FormattingOptions _formattingOptions = new FormattingOptions();
+        final Procedure1<FormattingOptions> _function_2 = (FormattingOptions it_2) -> {
+          it_2.setTabSize(4);
+          it_2.setInsertSpaces(false);
+        };
+        FormattingOptions _doubleArrow = ObjectExtensions.<FormattingOptions>operator_doubleArrow(_formattingOptions, _function_2);
+        it_1.setOptions(_doubleArrow);
+      };
+      DocumentFormattingParams _doubleArrow = ObjectExtensions.<DocumentFormattingParams>operator_doubleArrow(_documentFormattingParams, _function_1);
+      it.setParams(_doubleArrow);
+    };
+    RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     this.assertParse(_builder, _doubleArrow);
   }
 }
