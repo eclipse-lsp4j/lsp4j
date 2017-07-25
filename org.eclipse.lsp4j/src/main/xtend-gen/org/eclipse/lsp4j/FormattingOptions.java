@@ -1,16 +1,18 @@
 package org.eclipse.lsp4j;
 
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.MapExtensions;
+import java.util.Set;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
 /**
  * Value-object describing what options formatting should use.
  */
 @SuppressWarnings("all")
-public class FormattingOptions extends LinkedHashMap<String, Object> {
+public class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Number, Boolean>>> {
   private final static String TAB_SIZE = "tabSize";
   
   private final static String INSERT_SPACES = "insertSpaces";
@@ -29,106 +31,73 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
   @Deprecated
   public FormattingOptions(final int tabSize, final boolean insertSpaces, final Map<String, String> properties) {
     this(tabSize, insertSpaces);
-    this.putAll(properties);
+    this.setProperties(properties);
   }
   
-  /**
-   * Only {@code boolean | number | string} are accepted by formatting options.
-   */
-  @Override
-  public Object put(final String key, final Object value) {
-    if (key != null) {
-      switch (key) {
-        case FormattingOptions.TAB_SIZE:
-          if ((value instanceof Integer)) {
-            return super.put(key, value);
-          } else {
-            if ((value instanceof Number)) {
-              return super.put(key, Integer.valueOf(((Number)value).intValue()));
-            } else {
-              if ((value instanceof String)) {
-                try {
-                  return super.put(key, Integer.valueOf(((String)value)));
-                } catch (final Throwable _t) {
-                  if (_t instanceof NumberFormatException) {
-                    final NumberFormatException e = (NumberFormatException)_t;
-                  } else {
-                    throw Exceptions.sneakyThrow(_t);
-                  }
-                }
-              }
-            }
-          }
-          break;
-        case FormattingOptions.INSERT_SPACES:
-          if ((value instanceof Boolean)) {
-            return super.put(key, value);
-          } else {
-            if ((value instanceof String)) {
-              return super.put(key, Boolean.valueOf(((String)value)));
-            }
-          }
-          break;
-        default:
-          if ((((value instanceof Boolean) || (value instanceof Number)) || (value instanceof String))) {
-            return super.put(key, value);
-          } else {
-            if ((value != null)) {
-              return super.put(key, value.toString());
-            }
-          }
-          break;
-      }
-    } else {
-      if ((((value instanceof Boolean) || (value instanceof Number)) || (value instanceof String))) {
-        return super.put(key, value);
-      } else {
-        if ((value != null)) {
-          return super.put(key, value.toString());
-        }
-      }
+  public String getString(final String key) {
+    return this.get(key).getLeft();
+  }
+  
+  public void putString(final String key, final String value) {
+    this.put(key, Either.<String, Either<Number, Boolean>>forLeft(value));
+  }
+  
+  public Number getNumber(final String key) {
+    Either<Number, Boolean> _right = this.get(key).getRight();
+    Number _left = null;
+    if (_right!=null) {
+      _left=_right.getLeft();
     }
-    return null;
+    return _left;
+  }
+  
+  public void putNumber(final String key, final Number value) {
+    this.put(key, Either.<String, Either<Number, Boolean>>forRight(Either.<Number, Boolean>forLeft(value)));
+  }
+  
+  public Boolean getBoolean(final String key) {
+    Either<Number, Boolean> _right = this.get(key).getRight();
+    Boolean _right_1 = null;
+    if (_right!=null) {
+      _right_1=_right.getRight();
+    }
+    return _right_1;
+  }
+  
+  public void putBoolean(final String key, final Boolean value) {
+    this.put(key, Either.<String, Either<Number, Boolean>>forRight(Either.<Number, Boolean>forRight(value)));
   }
   
   /**
    * Size of a tab in spaces.
    */
   public int getTabSize() {
-    final Object value = this.get(FormattingOptions.TAB_SIZE);
-    if ((value instanceof Number)) {
-      return ((Number)value).intValue();
+    final Number value = this.getNumber(FormattingOptions.TAB_SIZE);
+    if ((value != null)) {
+      return value.intValue();
     } else {
-      if ((value == null)) {
-        return 0;
-      } else {
-        throw new AssertionError((("Property \'" + FormattingOptions.TAB_SIZE) + "\' must be a number"));
-      }
+      return 0;
     }
   }
   
   public void setTabSize(final int tabSize) {
-    this.put(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
+    this.putNumber(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
   }
   
   /**
    * Prefer spaces over tabs.
    */
   public boolean isInsertSpaces() {
-    final Object value = this.get(FormattingOptions.INSERT_SPACES);
-    if ((value instanceof Boolean)) {
-      return ((Boolean) value).booleanValue();
+    final Boolean value = this.getBoolean(FormattingOptions.INSERT_SPACES);
+    if ((value != null)) {
+      return (value).booleanValue();
     } else {
-      if ((value == null)) {
-        return false;
-      } else {
-        throw new AssertionError((("Property \'" + FormattingOptions.INSERT_SPACES) + "\' must be a Boolean"));
-      }
+      return false;
     }
   }
   
   public void setInsertSpaces(final boolean insertSpaces) {
-    this.put(FormattingOptions.INSERT_SPACES, Boolean.valueOf(insertSpaces));
+    this.putBoolean(FormattingOptions.INSERT_SPACES, Boolean.valueOf(insertSpaces));
   }
   
   /**
@@ -136,10 +105,34 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
    */
   @Deprecated
   public Map<String, String> getProperties() {
-    final Function1<Object, String> _function = (Object it) -> {
-      return it.toString();
-    };
-    return MapExtensions.<String, Object, String>mapValues(this, _function);
+    final LinkedHashMap<String, String> properties = CollectionLiterals.<String, String>newLinkedHashMap();
+    Set<Map.Entry<String, Either<String, Either<Number, Boolean>>>> _entrySet = this.entrySet();
+    for (final Map.Entry<String, Either<String, Either<Number, Boolean>>> entry : _entrySet) {
+      {
+        Serializable _xifexpression = null;
+        boolean _isLeft = entry.getValue().isLeft();
+        if (_isLeft) {
+          _xifexpression = entry.getValue().getLeft();
+        } else {
+          Serializable _xifexpression_1 = null;
+          if ((entry.getValue().isRight() && entry.getValue().getRight().isLeft())) {
+            _xifexpression_1 = entry.getValue().getRight().getLeft();
+          } else {
+            Boolean _xifexpression_2 = null;
+            if ((entry.getValue().isRight() && entry.getValue().getRight().isRight())) {
+              _xifexpression_2 = entry.getValue().getRight().getRight();
+            }
+            _xifexpression_1 = _xifexpression_2;
+          }
+          _xifexpression = _xifexpression_1;
+        }
+        final Serializable value = _xifexpression;
+        if ((value != null)) {
+          properties.put(entry.getKey(), value.toString());
+        }
+      }
+    }
+    return Collections.<String, String>unmodifiableMap(properties);
   }
   
   /**
@@ -147,6 +140,9 @@ public class FormattingOptions extends LinkedHashMap<String, Object> {
    */
   @Deprecated
   public void setProperties(final Map<String, String> properties) {
-    this.putAll(properties);
+    Set<Map.Entry<String, String>> _entrySet = properties.entrySet();
+    for (final Map.Entry<String, String> entry : _entrySet) {
+      this.putString(entry.getKey(), entry.getValue());
+    }
   }
 }

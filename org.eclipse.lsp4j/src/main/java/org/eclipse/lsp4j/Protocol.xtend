@@ -1289,7 +1289,7 @@ class FileEvent {
 /**
  * Value-object describing what options formatting should use.
  */
-class FormattingOptions extends LinkedHashMap<String, Object> {
+class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Number, Boolean>>> {
 
 	static val TAB_SIZE = 'tabSize'
 	static val INSERT_SPACES = 'insertSpaces'
@@ -1308,72 +1308,61 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
     @Deprecated
     new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
     	this(tabSize, insertSpaces)
-    	putAll(properties)
+    	setProperties(properties)
     }
     
-    /**
-     * Only {@code boolean | number | string} are accepted by formatting options.
-     */
-	override put(String key, Object value) {
-		switch key {
-			case TAB_SIZE: {
-				if (value instanceof Integer)
-		    		return super.put(key, value)
-		    	else if (value instanceof Number)
-		    		return super.put(key, value.intValue)
-		    	else if (value instanceof String)
-		    		try {
-		    			return super.put(key, Integer.valueOf(value))
-					} catch (NumberFormatException e) {}
-			}
-			case INSERT_SPACES: {
-				if (value instanceof Boolean)
-		    		return super.put(key, value)
-		    	else if (value instanceof String)
-		    		return super.put(key, Boolean.valueOf(value))
-			}
-			default: {
-				if (value instanceof Boolean || value instanceof Number || value instanceof String)
-					return super.put(key, value)
-				else if (value !== null)
-					return super.put(key, value.toString)
-			}
-		}
-		return null
-	}
+    def String getString(String key) {
+    	get(key).getLeft
+    }
+    
+    def void putString(String key, String value) {
+    	put(key, Either.forLeft(value))
+    }
+    
+    def Number getNumber(String key) {
+    	get(key).getRight?.getLeft
+    }
+    
+    def void putNumber(String key, Number value) {
+    	put(key, Either.forRight(Either.forLeft(value)))
+    }
+    
+    def Boolean getBoolean(String key) {
+    	get(key).getRight?.getRight
+    }
+    
+    def void putBoolean(String key, Boolean value) {
+    	put(key, Either.forRight(Either.forRight(value)))
+    }
     
 	/**
 	 * Size of a tab in spaces.
 	 */
     def int getTabSize() {
-    	val value = get(TAB_SIZE)
-    	if (value instanceof Number)
+    	val value = getNumber(TAB_SIZE)
+    	if (value !== null)
     		return value.intValue
-    	else if (value === null)
-    		return 0
     	else
-    		throw new AssertionError("Property '" + TAB_SIZE + "' must be a number")
+    		return 0
     }
     
     def void setTabSize(int tabSize) {
-    	put(TAB_SIZE, tabSize)
+    	putNumber(TAB_SIZE, tabSize)
     }
     
  	/**
 	 * Prefer spaces over tabs.
 	 */
     def boolean isInsertSpaces() {
-       	val value = get(INSERT_SPACES)
-    	if (value instanceof Boolean)
+       	val value = getBoolean(INSERT_SPACES)
+    	if (value !== null)
     		return value
-    	else if (value === null)
-    		return false
     	else
-    		throw new AssertionError("Property '" + INSERT_SPACES + "' must be a Boolean")
+    		return false
     }
     
     def void setInsertSpaces(boolean insertSpaces) {
-    	put(INSERT_SPACES, insertSpaces)
+    	putBoolean(INSERT_SPACES, insertSpaces)
     }
     
     /**
@@ -1381,7 +1370,19 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
      */
     @Deprecated
     def Map<String, String> getProperties() {
-    	mapValues[toString]
+    	val properties = newLinkedHashMap
+    	for (entry : entrySet) {
+    		val value =
+    			if (entry.value.isLeft)
+    				entry.value.getLeft
+    			else if (entry.value.isRight && entry.value.getRight.isLeft)
+    				entry.value.getRight.getLeft
+    			else if (entry.value.isRight && entry.value.getRight.isRight)
+    				entry.value.getRight.getRight
+    		if (value !== null)
+    			properties.put(entry.key, value.toString)
+    	}
+    	return properties.unmodifiableView
     }
     
     /**
@@ -1389,7 +1390,9 @@ class FormattingOptions extends LinkedHashMap<String, Object> {
      */
     @Deprecated
     def void setProperties(Map<String, String> properties) {
-    	putAll(properties)
+    	for (entry : properties.entrySet) {
+    		putString(entry.key, entry.value)
+    	}
     }
     
 }
