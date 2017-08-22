@@ -212,7 +212,7 @@ class JsonSerializeTest {
 	}
 	
     @Test
-    def void testRename() {
+    def void testRenameResponse() {
         val message = new ResponseMessage => [
             jsonrpc = "2.0"
             id = "12"
@@ -340,7 +340,7 @@ class JsonSerializeTest {
     }
         
 	@Test
-	def void testBuildCompletionList() {
+	def void testCompletionResponse() {
 		val message = new ResponseMessage => [
 			jsonrpc = "2.0"
 			id = "12"
@@ -370,7 +370,7 @@ class JsonSerializeTest {
 	}
 	
 	@Test
-	def void testBuildDocumentFormattingParams() {
+	def void testDocumentFormatting() {
 		val message = new RequestMessage => [
 			jsonrpc = "2.0"
 			id = "12"
@@ -381,6 +381,7 @@ class JsonSerializeTest {
 					tabSize = 4
 					insertSpaces = false
 				]
+				options.putInteger('customProperty', -7)
 			]
 		]
 		message.assertSerialize('''
@@ -394,7 +395,8 @@ class JsonSerializeTest {
 			    },
 			    "options": {
 			      "tabSize": 4,
-			      "insertSpaces": false
+			      "insertSpaces": false,
+			      "customProperty": -7
 			    }
 			  }
 			}

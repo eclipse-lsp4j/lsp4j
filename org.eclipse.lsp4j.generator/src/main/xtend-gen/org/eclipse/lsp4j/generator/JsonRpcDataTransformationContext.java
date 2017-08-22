@@ -160,108 +160,76 @@ public class JsonRpcDataTransformationContext implements TransformationContext {
     throw new IllegalStateException(("Unexpected type reference: " + type));
   }
   
-  public boolean isSource(final Element arg0) {
-    return this.delegate.isSource(arg0);
+  public Element getPrimaryGeneratedJavaElement(final Element source) {
+    return this.delegate.getPrimaryGeneratedJavaElement(source);
   }
   
-  public boolean isGenerated(final Element arg0) {
-    return this.delegate.isGenerated(arg0);
+  public Element getPrimarySourceElement(final Element target) {
+    return this.delegate.getPrimarySourceElement(target);
   }
   
-  public boolean isExternal(final Element arg0) {
-    return this.delegate.isExternal(arg0);
+  public boolean isExternal(final Element element) {
+    return this.delegate.isExternal(element);
   }
   
-  public Element getPrimaryGeneratedJavaElement(final Element arg0) {
-    return this.delegate.getPrimaryGeneratedJavaElement(arg0);
+  public boolean isGenerated(final Element element) {
+    return this.delegate.isGenerated(element);
   }
   
-  public boolean isThePrimaryGeneratedJavaElement(final Element arg0) {
-    return this.delegate.isThePrimaryGeneratedJavaElement(arg0);
+  public boolean isSource(final Element element) {
+    return this.delegate.isSource(element);
   }
   
-  public Element getPrimarySourceElement(final Element arg0) {
-    return this.delegate.getPrimarySourceElement(arg0);
+  public boolean isThePrimaryGeneratedJavaElement(final Element target) {
+    return this.delegate.isThePrimaryGeneratedJavaElement(target);
   }
   
-  public List<? extends Problem> getProblems(final Element arg0) {
-    return this.delegate.getProblems(arg0);
+  public void addError(final Element element, final String message) {
+    this.delegate.addError(element, message);
   }
   
-  public void addError(final Element arg0, final String arg1) {
-    this.delegate.addError(arg0, arg1);
+  public void addWarning(final Element element, final String message) {
+    this.delegate.addWarning(element, message);
   }
   
-  public void addWarning(final Element arg0, final String arg1) {
-    this.delegate.addWarning(arg0, arg1);
+  public List<? extends Problem> getProblems(final Element element) {
+    return this.delegate.getProblems(element);
   }
   
-  public void validateLater(final Procedure0 arg0) {
-    this.delegate.validateLater(arg0);
-  }
-  
-  public TypeReference newArrayTypeReference(final TypeReference arg0) {
-    return this.delegate.newArrayTypeReference(arg0);
-  }
-  
-  public TypeReference newTypeReference(final String arg0, final TypeReference... arg1) {
-    return this.delegate.newTypeReference(arg0, arg1);
-  }
-  
-  public TypeReference newTypeReference(final Type arg0, final TypeReference... arg1) {
-    return this.delegate.newTypeReference(arg0, arg1);
-  }
-  
-  public TypeReference newSelfTypeReference(final Type arg0) {
-    return this.delegate.newSelfTypeReference(arg0);
-  }
-  
-  public TypeReference newTypeReference(final Class<?> arg0, final TypeReference... arg1) {
-    return this.delegate.newTypeReference(arg0, arg1);
-  }
-  
-  public TypeReference newWildcardTypeReference() {
-    return this.delegate.newWildcardTypeReference();
-  }
-  
-  public TypeReference newWildcardTypeReference(final TypeReference arg0) {
-    return this.delegate.newWildcardTypeReference(arg0);
-  }
-  
-  public TypeReference newWildcardTypeReferenceWithLowerBound(final TypeReference arg0) {
-    return this.delegate.newWildcardTypeReferenceWithLowerBound(arg0);
-  }
-  
-  public TypeReference getObject() {
-    return this.delegate.getObject();
-  }
-  
-  public TypeReference getString() {
-    return this.delegate.getString();
-  }
-  
-  public TypeReference getList(final TypeReference arg0) {
-    return this.delegate.getList(arg0);
-  }
-  
-  public TypeReference getSet(final TypeReference arg0) {
-    return this.delegate.getSet(arg0);
+  public void validateLater(final Procedure0 validationCallback) {
+    this.delegate.validateLater(validationCallback);
   }
   
   public TypeReference getAnyType() {
     return this.delegate.getAnyType();
   }
   
-  public TypeReference getPrimitiveVoid() {
-    return this.delegate.getPrimitiveVoid();
+  public TypeReference getList(final TypeReference param) {
+    return this.delegate.getList(param);
+  }
+  
+  public TypeReference getObject() {
+    return this.delegate.getObject();
   }
   
   public TypeReference getPrimitiveBoolean() {
     return this.delegate.getPrimitiveBoolean();
   }
   
-  public TypeReference getPrimitiveShort() {
-    return this.delegate.getPrimitiveShort();
+  public TypeReference getPrimitiveByte() {
+    return this.delegate.getPrimitiveByte();
+  }
+  
+  public TypeReference getPrimitiveChar() {
+    return this.delegate.getPrimitiveChar();
+  }
+  
+  public TypeReference getPrimitiveDouble() {
+    return this.delegate.getPrimitiveDouble();
+  }
+  
+  public TypeReference getPrimitiveFloat() {
+    return this.delegate.getPrimitiveFloat();
   }
   
   public TypeReference getPrimitiveInt() {
@@ -272,132 +240,164 @@ public class JsonRpcDataTransformationContext implements TransformationContext {
     return this.delegate.getPrimitiveLong();
   }
   
-  public TypeReference getPrimitiveFloat() {
-    return this.delegate.getPrimitiveFloat();
+  public TypeReference getPrimitiveShort() {
+    return this.delegate.getPrimitiveShort();
   }
   
-  public TypeReference getPrimitiveDouble() {
-    return this.delegate.getPrimitiveDouble();
+  public TypeReference getPrimitiveVoid() {
+    return this.delegate.getPrimitiveVoid();
   }
   
-  public TypeReference getPrimitiveChar() {
-    return this.delegate.getPrimitiveChar();
+  public TypeReference getSet(final TypeReference param) {
+    return this.delegate.getSet(param);
   }
   
-  public TypeReference getPrimitiveByte() {
-    return this.delegate.getPrimitiveByte();
+  public TypeReference getString() {
+    return this.delegate.getString();
   }
   
-  public MutableClassDeclaration findClass(final String arg0) {
-    return this.delegate.findClass(arg0);
+  public TypeReference newArrayTypeReference(final TypeReference componentType) {
+    return this.delegate.newArrayTypeReference(componentType);
   }
   
-  public MutableInterfaceDeclaration findInterface(final String arg0) {
-    return this.delegate.findInterface(arg0);
+  public TypeReference newSelfTypeReference(final Type typeDeclaration) {
+    return this.delegate.newSelfTypeReference(typeDeclaration);
   }
   
-  public MutableEnumerationTypeDeclaration findEnumerationType(final String arg0) {
-    return this.delegate.findEnumerationType(arg0);
+  public TypeReference newTypeReference(final String typeName, final TypeReference... typeArguments) {
+    return this.delegate.newTypeReference(typeName, typeArguments);
   }
   
-  public MutableAnnotationTypeDeclaration findAnnotationType(final String arg0) {
-    return this.delegate.findAnnotationType(arg0);
+  public TypeReference newTypeReference(final Type typeDeclaration, final TypeReference... typeArguments) {
+    return this.delegate.newTypeReference(typeDeclaration, typeArguments);
   }
   
-  public Type findTypeGlobally(final Class<?> arg0) {
-    return this.delegate.findTypeGlobally(arg0);
+  public TypeReference newTypeReference(final Class<?> clazz, final TypeReference... typeArguments) {
+    return this.delegate.newTypeReference(clazz, typeArguments);
   }
   
-  public Type findTypeGlobally(final String arg0) {
-    return this.delegate.findTypeGlobally(arg0);
+  public TypeReference newWildcardTypeReference() {
+    return this.delegate.newWildcardTypeReference();
   }
   
-  public Iterable<? extends Path> getChildren(final Path arg0) {
-    return this.delegate.getChildren(arg0);
+  public TypeReference newWildcardTypeReference(final TypeReference upperBound) {
+    return this.delegate.newWildcardTypeReference(upperBound);
   }
   
-  public boolean exists(final Path arg0) {
-    return this.delegate.exists(arg0);
+  public TypeReference newWildcardTypeReferenceWithLowerBound(final TypeReference lowerBound) {
+    return this.delegate.newWildcardTypeReferenceWithLowerBound(lowerBound);
   }
   
-  public boolean isFolder(final Path arg0) {
-    return this.delegate.isFolder(arg0);
+  public MutableAnnotationTypeDeclaration findAnnotationType(final String qualifiedName) {
+    return this.delegate.findAnnotationType(qualifiedName);
   }
   
-  public boolean isFile(final Path arg0) {
-    return this.delegate.isFile(arg0);
+  public MutableClassDeclaration findClass(final String qualifiedName) {
+    return this.delegate.findClass(qualifiedName);
   }
   
-  public long getLastModification(final Path arg0) {
-    return this.delegate.getLastModification(arg0);
+  public MutableEnumerationTypeDeclaration findEnumerationType(final String qualifiedName) {
+    return this.delegate.findEnumerationType(qualifiedName);
   }
   
-  public String getCharset(final Path arg0) {
-    return this.delegate.getCharset(arg0);
+  public MutableInterfaceDeclaration findInterface(final String qualifiedName) {
+    return this.delegate.findInterface(qualifiedName);
   }
   
-  public CharSequence getContents(final Path arg0) {
-    return this.delegate.getContents(arg0);
+  public Type findTypeGlobally(final Class<?> clazz) {
+    return this.delegate.findTypeGlobally(clazz);
   }
   
-  public InputStream getContentsAsStream(final Path arg0) {
-    return this.delegate.getContentsAsStream(arg0);
+  public Type findTypeGlobally(final String typeName) {
+    return this.delegate.findTypeGlobally(typeName);
   }
   
-  public URI toURI(final Path arg0) {
-    return this.delegate.toURI(arg0);
+  public boolean exists(final Path path) {
+    return this.delegate.exists(path);
   }
   
-  public Path getSourceFolder(final Path arg0) {
-    return this.delegate.getSourceFolder(arg0);
+  public String getCharset(final Path path) {
+    return this.delegate.getCharset(path);
   }
   
-  public Path getTargetFolder(final Path arg0) {
-    return this.delegate.getTargetFolder(arg0);
+  public Iterable<? extends Path> getChildren(final Path path) {
+    return this.delegate.getChildren(path);
   }
   
-  public Path getProjectFolder(final Path arg0) {
-    return this.delegate.getProjectFolder(arg0);
+  public CharSequence getContents(final Path path) {
+    return this.delegate.getContents(path);
   }
   
-  public Set<Path> getProjectSourceFolders(final Path arg0) {
-    return this.delegate.getProjectSourceFolders(arg0);
+  public InputStream getContentsAsStream(final Path path) {
+    return this.delegate.getContentsAsStream(path);
   }
   
-  public AnnotationReference newAnnotationReference(final String arg0) {
-    return this.delegate.newAnnotationReference(arg0);
+  public long getLastModification(final Path path) {
+    return this.delegate.getLastModification(path);
   }
   
-  public AnnotationReference newAnnotationReference(final Type arg0) {
-    return this.delegate.newAnnotationReference(arg0);
+  public boolean isFile(final Path path) {
+    return this.delegate.isFile(path);
   }
   
-  public AnnotationReference newAnnotationReference(final Class<?> arg0) {
-    return this.delegate.newAnnotationReference(arg0);
+  public boolean isFolder(final Path path) {
+    return this.delegate.isFolder(path);
   }
   
-  public AnnotationReference newAnnotationReference(final AnnotationReference arg0) {
-    return this.delegate.newAnnotationReference(arg0);
+  public URI toURI(final Path path) {
+    return this.delegate.toURI(path);
   }
   
-  public AnnotationReference newAnnotationReference(final String arg0, final Procedure1<AnnotationReferenceBuildContext> arg1) {
-    return this.delegate.newAnnotationReference(arg0, arg1);
+  public Path getProjectFolder(final Path path) {
+    return this.delegate.getProjectFolder(path);
   }
   
-  public AnnotationReference newAnnotationReference(final Type arg0, final Procedure1<AnnotationReferenceBuildContext> arg1) {
-    return this.delegate.newAnnotationReference(arg0, arg1);
+  public Set<Path> getProjectSourceFolders(final Path path) {
+    return this.delegate.getProjectSourceFolders(path);
   }
   
-  public AnnotationReference newAnnotationReference(final Class<?> arg0, final Procedure1<AnnotationReferenceBuildContext> arg1) {
-    return this.delegate.newAnnotationReference(arg0, arg1);
+  public Path getSourceFolder(final Path path) {
+    return this.delegate.getSourceFolder(path);
   }
   
-  public AnnotationReference newAnnotationReference(final AnnotationReference arg0, final Procedure1<AnnotationReferenceBuildContext> arg1) {
-    return this.delegate.newAnnotationReference(arg0, arg1);
+  public Path getTargetFolder(final Path sourceFolder) {
+    return this.delegate.getTargetFolder(sourceFolder);
   }
   
-  public void setPrimarySourceElement(final MutableElement arg0, final Element arg1) {
-    this.delegate.setPrimarySourceElement(arg0, arg1);
+  public AnnotationReference newAnnotationReference(final String annotationTypeName) {
+    return this.delegate.newAnnotationReference(annotationTypeName);
+  }
+  
+  public AnnotationReference newAnnotationReference(final Type annotationTypeDelcaration) {
+    return this.delegate.newAnnotationReference(annotationTypeDelcaration);
+  }
+  
+  public AnnotationReference newAnnotationReference(final Class<?> annotationClass) {
+    return this.delegate.newAnnotationReference(annotationClass);
+  }
+  
+  public AnnotationReference newAnnotationReference(final AnnotationReference annotationReference) {
+    return this.delegate.newAnnotationReference(annotationReference);
+  }
+  
+  public AnnotationReference newAnnotationReference(final String annotationTypeName, final Procedure1<AnnotationReferenceBuildContext> initializer) {
+    return this.delegate.newAnnotationReference(annotationTypeName, initializer);
+  }
+  
+  public AnnotationReference newAnnotationReference(final Type annotationTypeDelcaration, final Procedure1<AnnotationReferenceBuildContext> initializer) {
+    return this.delegate.newAnnotationReference(annotationTypeDelcaration, initializer);
+  }
+  
+  public AnnotationReference newAnnotationReference(final Class<?> annotationClass, final Procedure1<AnnotationReferenceBuildContext> initializer) {
+    return this.delegate.newAnnotationReference(annotationClass, initializer);
+  }
+  
+  public AnnotationReference newAnnotationReference(final AnnotationReference annotationReference, final Procedure1<AnnotationReferenceBuildContext> initializer) {
+    return this.delegate.newAnnotationReference(annotationReference, initializer);
+  }
+  
+  public void setPrimarySourceElement(final MutableElement javaElement, final Element sourceElement) {
+    this.delegate.setPrimarySourceElement(javaElement, sourceElement);
   }
   
   @Pure

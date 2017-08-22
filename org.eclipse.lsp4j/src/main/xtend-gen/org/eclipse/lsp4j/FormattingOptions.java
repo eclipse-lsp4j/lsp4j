@@ -4,14 +4,14 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
 /**
  * Value-object describing what options formatting should use.
  */
 @SuppressWarnings("all")
-public class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Integer, Boolean>>> {
+public class FormattingOptions extends LinkedHashMap<String, Either3<String, Integer, Boolean>> {
   private final static String TAB_SIZE = "tabSize";
   
   private final static String INSERT_SPACES = "insertSpaces";
@@ -34,50 +34,42 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
   }
   
   public String getString(final String key) {
-    Either<String, Either<Integer, Boolean>> _get = this.get(key);
-    String _left = null;
+    Either3<String, Integer, Boolean> _get = this.get(key);
+    String _first = null;
     if (_get!=null) {
-      _left=_get.getLeft();
+      _first=_get.getFirst();
     }
-    return _left;
+    return _first;
   }
   
   public void putString(final String key, final String value) {
-    this.put(key, Either.<String, Either<Integer, Boolean>>forLeft(value));
+    this.put(key, Either3.<String, Integer, Boolean>forFirst(value));
   }
   
   public Integer getInteger(final String key) {
-    Either<String, Either<Integer, Boolean>> _get = this.get(key);
-    Either<Integer, Boolean> _right = null;
+    Either3<String, Integer, Boolean> _get = this.get(key);
+    Integer _second = null;
     if (_get!=null) {
-      _right=_get.getRight();
+      _second=_get.getSecond();
     }
-    Integer _left = null;
-    if (_right!=null) {
-      _left=_right.getLeft();
-    }
-    return _left;
+    return _second;
   }
   
   public void putInteger(final String key, final Integer value) {
-    this.put(key, Either.<String, Either<Integer, Boolean>>forRight(Either.<Integer, Boolean>forLeft(value)));
+    this.put(key, Either3.<String, Integer, Boolean>forSecond(value));
   }
   
   public Boolean getBoolean(final String key) {
-    Either<String, Either<Integer, Boolean>> _get = this.get(key);
-    Either<Integer, Boolean> _right = null;
+    Either3<String, Integer, Boolean> _get = this.get(key);
+    Boolean _third = null;
     if (_get!=null) {
-      _right=_get.getRight();
+      _third=_get.getThird();
     }
-    Boolean _right_1 = null;
-    if (_right!=null) {
-      _right_1=_right.getRight();
-    }
-    return _right_1;
+    return _third;
   }
   
   public void putBoolean(final String key, final Boolean value) {
-    this.put(key, Either.<String, Either<Integer, Boolean>>forRight(Either.<Integer, Boolean>forRight(value)));
+    this.put(key, Either3.<String, Integer, Boolean>forThird(value));
   }
   
   /**
@@ -118,27 +110,33 @@ public class FormattingOptions extends LinkedHashMap<String, Either<String, Eith
   @Deprecated
   public Map<String, String> getProperties() {
     final LinkedHashMap<String, String> properties = CollectionLiterals.<String, String>newLinkedHashMap();
-    Set<Map.Entry<String, Either<String, Either<Integer, Boolean>>>> _entrySet = this.entrySet();
-    for (final Map.Entry<String, Either<String, Either<Integer, Boolean>>> entry : _entrySet) {
+    Set<Map.Entry<String, Either3<String, Integer, Boolean>>> _entrySet = this.entrySet();
+    for (final Map.Entry<String, Either3<String, Integer, Boolean>> entry : _entrySet) {
       {
-        Object _xifexpression = null;
-        boolean _isLeft = entry.getValue().isLeft();
-        if (_isLeft) {
-          _xifexpression = entry.getValue().getLeft();
-        } else {
-          Object _xifexpression_1 = null;
-          if ((entry.getValue().isRight() && entry.getValue().getRight().isLeft())) {
-            _xifexpression_1 = entry.getValue().getRight().getLeft();
-          } else {
-            Boolean _xifexpression_2 = null;
-            if ((entry.getValue().isRight() && entry.getValue().getRight().isRight())) {
-              _xifexpression_2 = entry.getValue().getRight().getRight();
-            }
-            _xifexpression_1 = _xifexpression_2;
-          }
-          _xifexpression = ((Object)_xifexpression_1);
+        Object _switchResult = null;
+        Either3<String, Integer, Boolean> _value = entry.getValue();
+        final Either3<String, Integer, Boolean> it = _value;
+        boolean _matched = false;
+        boolean _isFirst = it.isFirst();
+        if (_isFirst) {
+          _matched=true;
+          _switchResult = it.getFirst();
         }
-        final Object value = ((Object)_xifexpression);
+        if (!_matched) {
+          boolean _isSecond = it.isSecond();
+          if (_isSecond) {
+            _matched=true;
+            _switchResult = it.getSecond();
+          }
+        }
+        if (!_matched) {
+          boolean _isThird = it.isThird();
+          if (_isThird) {
+            _matched=true;
+            _switchResult = it.getThird();
+          }
+        }
+        final Object value = ((Object)_switchResult);
         if ((value != null)) {
           properties.put(entry.getKey(), value.toString());
         }

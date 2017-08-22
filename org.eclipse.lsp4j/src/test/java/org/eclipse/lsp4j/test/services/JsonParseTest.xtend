@@ -357,7 +357,8 @@ class JsonParseTest {
 			    },
 			    "options": {
 			      "tabSize": 4,
-			      "insertSpaces": false
+			      "insertSpaces": false,
+			      "customProperty": -7
 			    }
 			  }
 			}
@@ -371,6 +372,7 @@ class JsonParseTest {
 					tabSize = 4
 					insertSpaces = false
 				]
+				options.putInteger('customProperty', -7)
 			]
 		])
 	}
