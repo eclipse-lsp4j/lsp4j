@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -23,13 +23,15 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+/**
+ * Type adapter factory for {@link Either} and {@link Either3}.
+ */
 public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
-		final Type type = typeToken.getType();
-		if (!Either.isEither(type)) {
+		if (!Either.isEither(typeToken.getType())) {
 			return null;
 		}
 		return new Adapter(gson, typeToken);
@@ -37,14 +39,15 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 
 	protected static class Adapter<L, R> extends TypeAdapter<Either<L, R>> {
 
+		protected final TypeToken<Either<L, R>> typeToken;
 		protected final EitherTypeArgument<L> left;
 		protected final EitherTypeArgument<R> right;
 
 		public Adapter(Gson gson, TypeToken<Either<L, R>> typeToken) {
-			Type left = Either.getLeftDisjointType(typeToken.getType());
-			Type right = Either.getRightDisjointType(typeToken.getType());
-			this.left = new EitherTypeArgument<L>(gson, left);
-			this.right = new EitherTypeArgument<R>(gson, right);
+			this.typeToken = typeToken;
+			Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Either.class);
+			this.left = new EitherTypeArgument<L>(gson, elementTypes[0]);
+			this.right = new EitherTypeArgument<R>(gson, elementTypes[1]);
 		}
 
 		@Override
@@ -64,15 +67,29 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 			if (next == JsonToken.NULL) {
 				return null;
 			}
-			if (left.isAssignable(next)) {
-				return Either.forLeft(left.read(in));
-			}
-			if (right.isAssignable(next)) {
-				return Either.forRight(right.read(in));
-			}
-			throw new IOException("Unexpected token " + next + ", expected " + left + " | " + right + " tokens.");
+			Either<L, R> result = create(next, in);
+			if (result == null)
+				throw new IOException("Unexpected token " + next + ", expected " + left + " | " + right + " tokens.");
+			return result;
 		}
-
+		
+		@SuppressWarnings("unchecked")
+		protected Either<L, R> create(JsonToken nextToken, JsonReader in) throws IOException {
+			if (left.isAssignable(nextToken)) {
+				if (Either3.class.isAssignableFrom(typeToken.getRawType()))
+					return (Either<L, R>) Either3.forLeft3(left.read(in));
+				else
+					return Either.forLeft(left.read(in));
+			}
+			if (right.isAssignable(nextToken)) {
+				if (Either3.class.isAssignableFrom(typeToken.getRawType()))
+					return (Either<L, R>) Either3.forRight3((Either<?, ?>) right.read(in));
+				else
+					return Either.forRight(right.read(in));
+			}
+			return null;
+		}
+		
 	}
 
 	protected static class EitherTypeArgument<T> {
@@ -94,7 +111,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 		}
 
 		protected JsonToken getExpectedToken(Class<?> rawType) {
-			if (rawType.isArray() || List.class.isAssignableFrom(rawType)) {
+			if (rawType.isArray() || Collection.class.isAssignableFrom(rawType)) {
 				return JsonToken.BEGIN_ARRAY;
 			}
 			if (Boolean.class.isAssignableFrom(rawType)) {

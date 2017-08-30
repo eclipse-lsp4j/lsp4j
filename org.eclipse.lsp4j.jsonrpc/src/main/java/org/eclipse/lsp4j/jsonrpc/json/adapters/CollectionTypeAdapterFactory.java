@@ -9,17 +9,12 @@ package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
@@ -45,20 +40,22 @@ public class CollectionTypeAdapterFactory implements TypeAdapterFactory {
 		if (!Collection.class.isAssignableFrom(typeToken.getRawType()))
 			return null;
 
-		Type elementType = getCollectionElementType(typeToken.getType(), typeToken.getRawType());
-		TypeAdapter<?> elementTypeAdapter = gson.getAdapter(TypeToken.get(elementType));
+		Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Collection.class);
+		if (elementTypes.length != 1)
+			return null;
+		TypeAdapter<?> elementTypeAdapter = gson.getAdapter(TypeToken.get(elementTypes[0]));
 		Supplier<Collection<Object>> constructor = getConstructor((Class<Collection<Object>>) typeToken.getRawType());
-		return new Adapter(gson, elementType, elementTypeAdapter, constructor);
+		return new Adapter(gson, elementTypes[0], elementTypeAdapter, constructor);
 	}
 
-	private static class Adapter<E> extends TypeAdapter<Collection<E>> {
+	protected static class Adapter<E> extends TypeAdapter<Collection<E>> {
 
 		private final Gson gson;
 		private final Type elementType;
 		private final TypeAdapter<E> elementTypeAdapter;
 		private final Supplier<Collection<E>> constructor;
 
-		Adapter(Gson gson, Type elementType, TypeAdapter<E> elementTypeAdapter, Supplier<Collection<E>> constructor) {
+		public Adapter(Gson gson, Type elementType, TypeAdapter<E> elementTypeAdapter, Supplier<Collection<E>> constructor) {
 			this.gson = gson;
 			this.elementType = elementType;
 			this.elementTypeAdapter = elementTypeAdapter;
@@ -140,72 +137,6 @@ public class CollectionTypeAdapterFactory implements TypeAdapterFactory {
 				};
 			}
 		}
-	}
-
-	private Type getCollectionElementType(Type type, Class<?> rawType) {
-		Map<String, Type> varMapping = createVariableMapping(type, rawType, Collections.emptyMap());
-		return getCollectionElementType(type, rawType, varMapping);
-	}
-	
-	private Type getCollectionElementType(Type type, Class<?> rawType, Map<String, Type> varMapping) {
-		if (rawType == Collection.class) {
-			return getActualTypeParameter(type, 0, varMapping);
-		}
-		Class<?>[] interfaces = rawType.getInterfaces();
-		for (int i = 0; i < interfaces.length; i++) {
-			if (Collection.class.isAssignableFrom(interfaces[i])) {
-				Type genericInterface = rawType.getGenericInterfaces()[i];
-				Map<String, Type> newVarMapping = createVariableMapping(genericInterface, interfaces[i], varMapping);
-				return getCollectionElementType(genericInterface, interfaces[i], newVarMapping);
-			}
-		}
-		if (!rawType.isInterface()) {
-			Class<?> rawSupertype = rawType.getSuperclass();
-			if (Collection.class.isAssignableFrom(rawSupertype)) {
-				Type genericSuperclass = rawType.getGenericSuperclass();
-				Map<String, Type> newVarMapping = createVariableMapping(genericSuperclass, rawSupertype, varMapping);
-				return getCollectionElementType(genericSuperclass, rawSupertype, newVarMapping);
-			}
-		}
-		return Object.class;
-	}
-	
-	private <T> Map<String, Type> createVariableMapping(Type type, Class<T> rawType, Map<String, Type> oldVarMapping) {
-		if (type instanceof ParameterizedType) {
-			TypeVariable<Class<T>>[] vars = rawType.getTypeParameters();
-			Map<String, Type> newVarMapping = new HashMap<>(capacity(vars.length));
-			for (int i = 0; i < vars.length; i++) {
-				newVarMapping.put(vars[i].getName(), getActualTypeParameter(type, i, oldVarMapping));
-			}
-			return newVarMapping;
-		}
-		return Collections.emptyMap();
-	}
-	
-	private static int capacity(int expectedSize) {
-		if (expectedSize < 3)
-			return expectedSize + 1;
-		else
-			return expectedSize + expectedSize / 3;
-	}
-
-	private Type getActualTypeParameter(Type type, int index, Map<String, Type> varMapping) {
-		if (type instanceof ParameterizedType) {
-			Type[] args = ((ParameterizedType) type).getActualTypeArguments();
-			if (index < args.length) {
-				Type arg = args[index];
-				if (arg instanceof WildcardType)
-					arg = ((WildcardType) arg).getUpperBounds()[0];
-				if (arg instanceof TypeVariable) {
-					String name = ((TypeVariable<?>) arg).getName();
-					if (varMapping.containsKey(name))
-						return varMapping.get(name);
-				} else {
-					return arg;
-				}
-			}
-		}
-		return Object.class;
 	}
 
 }

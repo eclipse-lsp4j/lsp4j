@@ -6,6 +6,7 @@ import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.messages.Either
+import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 @JsonRpcData
@@ -1289,7 +1290,7 @@ class FileEvent {
 /**
  * Value-object describing what options formatting should use.
  */
-class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Integer, Boolean>>> {
+class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Boolean>> {
 
 	static val TAB_SIZE = 'tabSize'
 	static val INSERT_SPACES = 'insertSpaces'
@@ -1312,34 +1313,34 @@ class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Inte
     }
     
     def String getString(String key) {
-    	get(key)?.getLeft
+    	get(key)?.getFirst
     }
     
     def void putString(String key, String value) {
-    	put(key, Either.forLeft(value))
+    	put(key, Either3.forFirst(value))
     }
     
-    def Integer getInteger(String key) {
-    	get(key)?.getRight?.getLeft
+    def Number getNumber(String key) {
+    	get(key)?.getSecond
     }
     
-    def void putInteger(String key, Integer value) {
-    	put(key, Either.forRight(Either.forLeft(value)))
+    def void putNumber(String key, Number value) {
+    	put(key, Either3.forSecond(value))
     }
     
     def Boolean getBoolean(String key) {
-    	get(key)?.getRight?.getRight
+    	get(key)?.getThird
     }
     
     def void putBoolean(String key, Boolean value) {
-    	put(key, Either.forRight(Either.forRight(value)))
+    	put(key, Either3.forThird(value))
     }
     
 	/**
 	 * Size of a tab in spaces.
 	 */
     def int getTabSize() {
-    	val value = getInteger(TAB_SIZE)
+    	val value = getNumber(TAB_SIZE)
     	if (value !== null)
     		return value.intValue
     	else
@@ -1347,7 +1348,7 @@ class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Inte
     }
     
     def void setTabSize(int tabSize) {
-    	putInteger(TAB_SIZE, tabSize)
+    	putNumber(TAB_SIZE, tabSize)
     }
     
  	/**
@@ -1372,13 +1373,11 @@ class FormattingOptions extends LinkedHashMap<String, Either<String, Either<Inte
     def Map<String, String> getProperties() {
     	val properties = newLinkedHashMap
     	for (entry : entrySet) {
-    		val value =
-    			if (entry.value.isLeft)
-    				entry.value.getLeft
-    			else if (entry.value.isRight && entry.value.getRight.isLeft)
-    				entry.value.getRight.getLeft
-    			else if (entry.value.isRight && entry.value.getRight.isRight)
-    				entry.value.getRight.getRight
+    		val value = switch it: entry.value {
+    			case isFirst: getFirst
+    			case isSecond: getSecond
+    			case isThird: getThird
+    		}
     		if (value !== null)
     			properties.put(entry.key, value.toString)
     	}

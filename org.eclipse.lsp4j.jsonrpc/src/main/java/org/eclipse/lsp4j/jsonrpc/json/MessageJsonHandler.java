@@ -99,12 +99,9 @@ public class MessageJsonHandler {
 	 */
 	public static String toString(Object object) {
 		if (toStringInstance == null) {
-			toStringInstance = new MessageJsonHandler(Collections.emptyMap()) {
-				@Override
-				public GsonBuilder getDefaultGsonBuilder() {
-					return super.getDefaultGsonBuilder().setPrettyPrinting();
-				}
-			};
+			toStringInstance = new MessageJsonHandler(Collections.emptyMap(), gsonBuilder -> {
+				gsonBuilder.setPrettyPrinting();
+			});
 		}
 		return toStringInstance.gson.toJson(object);
 	}

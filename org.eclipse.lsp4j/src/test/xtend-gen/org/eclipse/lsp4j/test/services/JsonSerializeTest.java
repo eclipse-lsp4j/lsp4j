@@ -410,7 +410,7 @@ public class JsonSerializeTest {
   }
   
   @Test
-  public void testRename() {
+  public void testRenameResponse() {
     ResponseMessage _responseMessage = new ResponseMessage();
     final Procedure1<ResponseMessage> _function = (ResponseMessage it) -> {
       it.setJsonrpc("2.0");
@@ -695,7 +695,7 @@ public class JsonSerializeTest {
   }
   
   @Test
-  public void testBuildCompletionList() {
+  public void testCompletionResponse() {
     ResponseMessage _responseMessage = new ResponseMessage();
     final Procedure1<ResponseMessage> _function = (ResponseMessage it) -> {
       it.setJsonrpc("2.0");
@@ -753,7 +753,7 @@ public class JsonSerializeTest {
   }
   
   @Test
-  public void testBuildDocumentFormattingParams() {
+  public void testDocumentFormatting() {
     RequestMessage _requestMessage = new RequestMessage();
     final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
       it.setJsonrpc("2.0");
@@ -770,6 +770,7 @@ public class JsonSerializeTest {
         };
         FormattingOptions _doubleArrow = ObjectExtensions.<FormattingOptions>operator_doubleArrow(_formattingOptions, _function_2);
         it_1.setOptions(_doubleArrow);
+        it_1.getOptions().putNumber("customProperty", Integer.valueOf((-7)));
       };
       DocumentFormattingParams _doubleArrow = ObjectExtensions.<DocumentFormattingParams>operator_doubleArrow(_documentFormattingParams, _function_1);
       it.setParams(_doubleArrow);
@@ -806,7 +807,10 @@ public class JsonSerializeTest {
     _builder.append("\"tabSize\": 4,");
     _builder.newLine();
     _builder.append("      ");
-    _builder.append("\"insertSpaces\": false");
+    _builder.append("\"insertSpaces\": false,");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("\"customProperty\": -7");
     _builder.newLine();
     _builder.append("    ");
     _builder.append("}");
