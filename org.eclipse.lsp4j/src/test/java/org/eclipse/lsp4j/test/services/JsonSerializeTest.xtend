@@ -381,7 +381,7 @@ class JsonSerializeTest {
 					tabSize = 4
 					insertSpaces = false
 				]
-				options.putInteger('customProperty', -7)
+				options.putNumber('customProperty', -7)
 			]
 		]
 		message.assertSerialize('''

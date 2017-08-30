@@ -1290,7 +1290,7 @@ class FileEvent {
 /**
  * Value-object describing what options formatting should use.
  */
-class FormattingOptions extends LinkedHashMap<String, Either3<String, Integer, Boolean>> {
+class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Boolean>> {
 
 	static val TAB_SIZE = 'tabSize'
 	static val INSERT_SPACES = 'insertSpaces'
@@ -1320,11 +1320,11 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Integer, B
     	put(key, Either3.forFirst(value))
     }
     
-    def Integer getInteger(String key) {
+    def Number getNumber(String key) {
     	get(key)?.getSecond
     }
     
-    def void putInteger(String key, Integer value) {
+    def void putNumber(String key, Number value) {
     	put(key, Either3.forSecond(value))
     }
     
@@ -1340,7 +1340,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Integer, B
 	 * Size of a tab in spaces.
 	 */
     def int getTabSize() {
-    	val value = getInteger(TAB_SIZE)
+    	val value = getNumber(TAB_SIZE)
     	if (value !== null)
     		return value.intValue
     	else
@@ -1348,7 +1348,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Integer, B
     }
     
     def void setTabSize(int tabSize) {
-    	putInteger(TAB_SIZE, tabSize)
+    	putNumber(TAB_SIZE, tabSize)
     }
     
  	/**

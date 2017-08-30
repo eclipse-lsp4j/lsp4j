@@ -783,7 +783,7 @@ public class JsonParseTest {
         };
         FormattingOptions _doubleArrow = ObjectExtensions.<FormattingOptions>operator_doubleArrow(_formattingOptions, _function_2);
         it_1.setOptions(_doubleArrow);
-        it_1.getOptions().putInteger("customProperty", Integer.valueOf((-7)));
+        it_1.getOptions().putNumber("customProperty", Integer.valueOf((-7)));
       };
       DocumentFormattingParams _doubleArrow = ObjectExtensions.<DocumentFormattingParams>operator_doubleArrow(_documentFormattingParams, _function_1);
       it.setParams(_doubleArrow);

@@ -1,5 +1,6 @@
 package org.eclipse.lsp4j;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
  * Value-object describing what options formatting should use.
  */
 @SuppressWarnings("all")
-public class FormattingOptions extends LinkedHashMap<String, Either3<String, Integer, Boolean>> {
+public class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Boolean>> {
   private final static String TAB_SIZE = "tabSize";
   
   private final static String INSERT_SPACES = "insertSpaces";
@@ -34,7 +35,7 @@ public class FormattingOptions extends LinkedHashMap<String, Either3<String, Int
   }
   
   public String getString(final String key) {
-    Either3<String, Integer, Boolean> _get = this.get(key);
+    Either3<String, Number, Boolean> _get = this.get(key);
     String _first = null;
     if (_get!=null) {
       _first=_get.getFirst();
@@ -43,24 +44,24 @@ public class FormattingOptions extends LinkedHashMap<String, Either3<String, Int
   }
   
   public void putString(final String key, final String value) {
-    this.put(key, Either3.<String, Integer, Boolean>forFirst(value));
+    this.put(key, Either3.<String, Number, Boolean>forFirst(value));
   }
   
-  public Integer getInteger(final String key) {
-    Either3<String, Integer, Boolean> _get = this.get(key);
-    Integer _second = null;
+  public Number getNumber(final String key) {
+    Either3<String, Number, Boolean> _get = this.get(key);
+    Number _second = null;
     if (_get!=null) {
       _second=_get.getSecond();
     }
     return _second;
   }
   
-  public void putInteger(final String key, final Integer value) {
-    this.put(key, Either3.<String, Integer, Boolean>forSecond(value));
+  public void putNumber(final String key, final Number value) {
+    this.put(key, Either3.<String, Number, Boolean>forSecond(value));
   }
   
   public Boolean getBoolean(final String key) {
-    Either3<String, Integer, Boolean> _get = this.get(key);
+    Either3<String, Number, Boolean> _get = this.get(key);
     Boolean _third = null;
     if (_get!=null) {
       _third=_get.getThird();
@@ -69,14 +70,14 @@ public class FormattingOptions extends LinkedHashMap<String, Either3<String, Int
   }
   
   public void putBoolean(final String key, final Boolean value) {
-    this.put(key, Either3.<String, Integer, Boolean>forThird(value));
+    this.put(key, Either3.<String, Number, Boolean>forThird(value));
   }
   
   /**
    * Size of a tab in spaces.
    */
   public int getTabSize() {
-    final Integer value = this.getInteger(FormattingOptions.TAB_SIZE);
+    final Number value = this.getNumber(FormattingOptions.TAB_SIZE);
     if ((value != null)) {
       return value.intValue();
     } else {
@@ -85,7 +86,7 @@ public class FormattingOptions extends LinkedHashMap<String, Either3<String, Int
   }
   
   public void setTabSize(final int tabSize) {
-    this.putInteger(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
+    this.putNumber(FormattingOptions.TAB_SIZE, Integer.valueOf(tabSize));
   }
   
   /**
@@ -110,12 +111,12 @@ public class FormattingOptions extends LinkedHashMap<String, Either3<String, Int
   @Deprecated
   public Map<String, String> getProperties() {
     final LinkedHashMap<String, String> properties = CollectionLiterals.<String, String>newLinkedHashMap();
-    Set<Map.Entry<String, Either3<String, Integer, Boolean>>> _entrySet = this.entrySet();
-    for (final Map.Entry<String, Either3<String, Integer, Boolean>> entry : _entrySet) {
+    Set<Map.Entry<String, Either3<String, Number, Boolean>>> _entrySet = this.entrySet();
+    for (final Map.Entry<String, Either3<String, Number, Boolean>> entry : _entrySet) {
       {
-        Object _switchResult = null;
-        Either3<String, Integer, Boolean> _value = entry.getValue();
-        final Either3<String, Integer, Boolean> it = _value;
+        Serializable _switchResult = null;
+        Either3<String, Number, Boolean> _value = entry.getValue();
+        final Either3<String, Number, Boolean> it = _value;
         boolean _matched = false;
         boolean _isFirst = it.isFirst();
         if (_isFirst) {
@@ -136,7 +137,7 @@ public class FormattingOptions extends LinkedHashMap<String, Either3<String, Int
             _switchResult = it.getThird();
           }
         }
-        final Object value = ((Object)_switchResult);
+        final Serializable value = _switchResult;
         if ((value != null)) {
           properties.put(entry.getKey(), value.toString());
         }
