@@ -10,7 +10,7 @@ xtext.version = versions.xtext
 
 xtend {
 	debugger {
-		sourceInstaller = 'PRIMARY'
+		sourceInstaller = 'NONE'
 		hideSyntheticVariables = false
 	}
 }
