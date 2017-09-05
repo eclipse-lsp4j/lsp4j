@@ -11,18 +11,21 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
+
 import com.google.gson.reflect.TypeToken;
 
 /**
  * Utilities for handling types in the JSON parser / serializer.
  */
-public class TypeUtils {
+public final class TypeUtils {
 	
 	private TypeUtils() {}
 	
@@ -174,6 +177,48 @@ public class TypeUtils {
 				return String.valueOf(type);
 		}
 		
+	}
+	
+	/**
+	 * Return all possible types that can be expected when an element of the given type is parsed.
+	 * If the type satisfies {@link #isEither(Type)}, a list of the corresponding type arguments is returned,
+	 * otherwise a list containg the type itself is returned. Type parameters are <em>not</em> resolved
+	 * by this method (use {@link #getElementTypes(TypeToken, Class)} to get resolved parameters).
+	 */
+	public static Collection<Type> getExpectedTypes(Type type) {
+		Collection<Type> result = new ArrayList<>();
+		collectExpectedTypes(type, result);
+		return result;
+	}
+
+	private static void collectExpectedTypes(Type type, Collection<Type> types) {
+		if (isEither(type)) {
+			if (type instanceof ParameterizedType) {
+				for (Type typeArgument : ((ParameterizedType) type).getActualTypeArguments()) {
+					collectExpectedTypes(typeArgument, types);
+				}
+			}
+			if (type instanceof Class) {
+				for (Type typeParameter : ((Class<?>) type).getTypeParameters()) {
+					collectExpectedTypes(typeParameter, types);
+				}
+			}
+		} else {
+			types.add(type);
+		}
+	}
+
+	/**
+	 * Test whether the given type is Either.
+	 */
+	public static boolean isEither(Type type) {
+		if (type instanceof ParameterizedType) {
+			return isEither(((ParameterizedType) type).getRawType());
+		}
+		if (type instanceof Class) {
+			return Either.class.isAssignableFrom((Class<?>) type);
+		}
+		return false;
 	}
 
 }

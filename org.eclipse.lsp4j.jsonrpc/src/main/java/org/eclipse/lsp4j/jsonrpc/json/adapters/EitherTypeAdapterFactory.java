@@ -9,8 +9,8 @@ package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
@@ -31,7 +31,7 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
-		if (!Either.isEither(typeToken.getType())) {
+		if (!TypeUtils.isEither(typeToken.getType())) {
 			return null;
 		}
 		return new Adapter(gson, typeToken);
@@ -102,9 +102,9 @@ public class EitherTypeAdapterFactory implements TypeAdapterFactory {
 		public EitherTypeArgument(Gson gson, Type type) {
 			this.token = (TypeToken<T>) TypeToken.get(type);
 			this.adapter = gson.getAdapter(this.token);
-			this.expectedTokens = new ArrayList<>();
-			for (Type disjoinType : Either.getAllDisjoinTypes(type)) {
-				Class<?> rawType = TypeToken.get(disjoinType).getRawType();
+			this.expectedTokens = new HashSet<>();
+			for (Type expectedType : TypeUtils.getExpectedTypes(type)) {
+				Class<?> rawType = TypeToken.get(expectedType).getRawType();
 				JsonToken expectedToken = getExpectedToken(rawType);
 				expectedTokens.add(expectedToken);
 			}
