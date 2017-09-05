@@ -33,3 +33,9 @@ configurations.all {
 		force "com.google.guava:guava:18.0"
 	}
 }
+
+if (findProperty('ignoreTestFailures') == 'true') {
+	tasks.withType(Test) {
+		ignoreFailures = true
+	}
+}
