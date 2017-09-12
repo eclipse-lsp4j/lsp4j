@@ -105,7 +105,7 @@ public class GenericEndpointTest {
 		try {
 			if (predicate != null) {
 				logMessages = new LogMessageAccumulator();
-				logMessages.registerTo(GenericEndpoint.class.getName());
+				logMessages.registerTo(GenericEndpoint.class);
 			}
 			GenericEndpoint endpoint = new GenericEndpoint(new Object() {
 
@@ -156,7 +156,7 @@ public class GenericEndpointTest {
 		try {
 			if (predicate != null) {
 				logMessages = new LogMessageAccumulator();
-				logMessages.registerTo(GenericEndpoint.class.getName());
+				logMessages.registerTo(GenericEndpoint.class);
 			}
 			GenericEndpoint endpoint = new GenericEndpoint(new Object() {
 
@@ -208,7 +208,7 @@ public class GenericEndpointTest {
 		try {
 			if (predicate != null) {
 				logMessages = new LogMessageAccumulator();
-				logMessages.registerTo(GenericEndpoint.class.getName());
+				logMessages.registerTo(GenericEndpoint.class);
 			}
 
 			GenericEndpoint endpoint = new GenericEndpoint(new Object() {

@@ -261,7 +261,7 @@ public class IntegrationTest {
 		// intercept log messages
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
-			logMessages.registerTo(GenericEndpoint.class.getName());
+			logMessages.registerTo(GenericEndpoint.class);
 			
 			// create client messages
 			String clientMessage1 = "{\"jsonrpc\":\"2.0\","
@@ -304,7 +304,7 @@ public class IntegrationTest {
 		// intercept log messages
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
-			logMessages.registerTo(GenericEndpoint.class.getName());
+			logMessages.registerTo(GenericEndpoint.class);
 			
 			// create client messages
 			String clientMessage1 = "{\"jsonrpc\":\"2.0\","
@@ -352,7 +352,7 @@ public class IntegrationTest {
 		// intercept log messages
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
-			logMessages.registerTo(GenericEndpoint.class.getName());
+			logMessages.registerTo(GenericEndpoint.class);
 			
 			// create client messages
 			String notificationMessage = "{\"jsonrpc\":\"2.0\","
