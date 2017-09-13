@@ -117,7 +117,38 @@ public class RemoteEndpointTest {
 		assertNotNull(error);
 		assertEquals(error.getCode(), ResponseErrorCode.RequestCancelled.getValue());
 		assertEquals(error.getMessage(), "The request (id: 1, method: 'foo') has been cancelled");
-
+	}
+	
+	@Test public void testException() {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			// Don't show the exception in the test execution log
+			logMessages.registerTo(RemoteEndpoint.class);
+			
+			TestEndpoint endp = new TestEndpoint() {
+				@Override
+				public CompletableFuture<Object> request(String method, Object parameter) {
+					throw new RuntimeException("BAAZ");
+				}
+			};
+			TestMessageConsumer consumer = new TestMessageConsumer();
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+			
+			endpoint.consume(new RequestMessage() {{
+				setId("1");
+				setMethod("foo");
+				setParams("myparam");
+			}});
+			
+			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
+			assertEquals("Internal error.", response.getError().getMessage());
+			assertEquals(ResponseErrorCode.InternalError.getValue(), response.getError().getCode());
+			String exception = (String) response.getError().getData();
+			String expected = "java.lang.RuntimeException: BAAZ\n\tat org.eclipse.lsp4j.jsonrpc.test.RemoteEndpointTest";
+			assertEquals(expected, exception.substring(0, expected.length()));
+		} finally {
+			logMessages.unregister();
+		}
 	}
 	
 }

@@ -26,6 +26,10 @@ public class LogMessageAccumulator extends Handler {
 	
 	private final List<Logger> registeredLoggers = new ArrayList<>();
 	
+	public Logger registerTo(Class<?> clazz) {
+		return registerTo(clazz.getName());
+	}
+	
 	public Logger registerTo(String name) {
 		Logger logger = Logger.getLogger(name);
 		logger.setUseParentHandlers(false);

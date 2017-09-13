@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,8 +49,13 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		} else {
 			LOG.log(Level.SEVERE, "Internal error: " + throwable.getMessage(), throwable);
 			ResponseError error = new ResponseError();
-			error.setMessage("Internal error, please look at the server's logs.");
+			error.setMessage("Internal error.");
 			error.setCode(ResponseErrorCode.InternalError);
+			ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
+			PrintWriter stackTraceWriter = new PrintWriter(stackTrace);
+			throwable.printStackTrace(stackTraceWriter);
+			stackTraceWriter.flush();
+			error.setData(stackTrace.toString());
 			return error;
 		}
 	};
