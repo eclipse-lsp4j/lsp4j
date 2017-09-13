@@ -19,7 +19,7 @@ p2gen {
 		bundle 'com.google.guava'
 	}
 	dependencies {
-		repositoryUrl 'http://download.eclipse.org/tools/orbit/downloads/drops/S20170516192513/repository'
+		repositoryUrl 'http://download.eclipse.org/tools/orbit/downloads/drops/R20170818183741/repository'
 		bundle {
 			id 'com.google.gson'
 			version versions.gson_orbit
