@@ -7,6 +7,7 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -499,6 +500,26 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals("[foo, bar]", parameters.get(0).toString());
 		Assert.assertEquals("[1, 2]", parameters.get(1).toString());
 		Assert.assertNull(parameters.get(2));
+	}
+
+	@Test
+	public void testEnumParam() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<List<MyEnum>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": [1, 2, 3],\n"
+				+ "\"method\":\"foo\"\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof List);
+
+		List<?> parameters = (List<?>) message.getParams();
+		Assert.assertEquals(Arrays.asList(MyEnum.A, MyEnum.B, MyEnum.C),
+				parameters);
 	}
 
 	public static final <T> void swap(T[] a, int i, int j) {

@@ -80,7 +80,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		in.beginObject();
 		String jsonrpc = null, id = null, method = null;
 		Object rawParams = null;
-		Object result = null;
+		Object rawResult = null;
 		ResponseError error = null;
 		while (in.hasNext()) {
 			String name = in.nextName();
@@ -102,20 +102,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				break;
 			}
 			case "result": {
-				Type type = null;
-				MethodProvider methodProvider = handler.getMethodProvider();
-				if (methodProvider != null && id != null) {
-					String resolvedMethod = methodProvider.resolveMethod(id);
-					if (resolvedMethod != null) {
-						JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-						if (jsonRpcMethod != null)
-							type = jsonRpcMethod.getReturnType();
-					}
-				}
-				if (type == null)
-					result = new JsonParser().parse(in);
-				else
-					result = gson.fromJson(in, type);
+				rawResult = parseResult(in, id);
 				break;
 			}
 			case "error": {
@@ -128,9 +115,89 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		in.endObject();
 		Object params = parseParams(rawParams, method);
+		Object result = parseResult(rawResult, method);
 		return createMessage(jsonrpc, id, method, params, result, error);
 	}
-	
+
+	/**
+	 * Convert the json input into the result object corresponding to the call made
+	 * by id.
+	 *
+	 * If the id is not known until after parsing, call
+	 * {@link #parseResult(Object, String)} on the return value of this call for a
+	 * second chance conversion.
+	 *
+	 * @param in
+	 *            json input to read from
+	 * @param id
+	 *            id of request message this is in response to
+	 * @return correctly typed object if the correct expected type can be
+	 *         determined, or a JsonElement representing the result
+	 */
+	protected Object parseResult(JsonReader in, String id) {
+		Object result;
+		Type type = null;
+		MethodProvider methodProvider = handler.getMethodProvider();
+		if (methodProvider != null && id != null) {
+			String resolvedMethod = methodProvider.resolveMethod(id);
+			if (resolvedMethod != null) {
+				JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
+				if (jsonRpcMethod != null)
+					type = jsonRpcMethod.getReturnType();
+			}
+		}
+		if (type == null)
+			result = new JsonParser().parse(in);
+		else
+			result = gson.fromJson(in, type);
+		return result;
+	}
+
+	/**
+	 * Convert the JsonElement into the result object corresponding to the call made
+	 * by id. If the result is already converted, does nothing.
+	 *
+	 * @param result
+	 *            json element to read from
+	 * @param id
+	 *            id of request message this is in response to
+	 * @return correctly typed object if the correct expected type can be
+	 *         determined, or result unmodified if no conversion can be done.
+	 */
+	protected Object parseResult(Object result, String id) {
+		if (isNull(result)) {
+			return null;
+		}
+		if (result instanceof JsonElement) {
+			// Type of result could not be resolved - try again with the parsed JSON tree
+			MethodProvider methodProvider = handler.getMethodProvider();
+			if (methodProvider != null) {
+				String resolvedMethod = methodProvider.resolveMethod(id);
+				if (resolvedMethod != null) {
+					JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
+					if (jsonRpcMethod != null)
+						result = gson.fromJson((JsonElement) result, jsonRpcMethod.getReturnType());
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Convert the json input into the parameters object corresponding to the call
+	 * made by method.
+	 *
+	 * If the method is not known until after parsing, call
+	 * {@link #parseParams(Object, String)} on the return value of this call for a
+	 * second chance conversion.
+	 *
+	 * @param in
+	 *            json input to read from
+	 * @param method
+	 *            method name of request
+	 * @return correctly typed object if the correct expected type can be
+	 *         determined, or a JsonElement representing the parameters
+	 */
 	protected Object parseParams(JsonReader in, String method) throws IOException {
 		JsonToken next = in.peek();
 		if (next == JsonToken.NULL) {
@@ -161,6 +228,17 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		return new JsonParser().parse(in);
 	}
 
+	/**
+	 * Convert the JsonElement into the parameters object corresponding to the call made
+	 * by method. If the result is already converted, does nothing.
+	 *
+	 * @param params
+	 *            json element to read from
+	 * @param method
+	 *            method name of request
+	 * @return correctly typed object if the correct expected type can be
+	 *         determined, or params unmodified if no conversion can be done.
+	 */
 	protected Object parseParams(Object params, String method) {
 		if (isNull(params)) {
 			return null;
@@ -246,18 +324,6 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			if (error != null) {
 				message.setError(error);
 			} else {
-				if (result instanceof JsonElement) {
-					// Type of result could not be resolved - try again with the parsed JSON tree
-					MethodProvider methodProvider = handler.getMethodProvider();
-					if (methodProvider != null) {
-						String resolvedMethod = methodProvider.resolveMethod(id);
-						if (resolvedMethod != null) {
-							JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-							if (jsonRpcMethod != null)
-								result = gson.fromJson((JsonElement) result, jsonRpcMethod.getReturnType());
-						}
-					}
-				}
 				message.setResult(result);
 			}
 			return message;
