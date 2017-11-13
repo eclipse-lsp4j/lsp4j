@@ -101,7 +101,8 @@ public class IntegrationTest {
 		
 		in.connect(out2);
 		out.connect(in2);
-		
+
+		boolean[] inComputeAsync = new boolean[1];
 		boolean[] cancellationHappened = new boolean[1];
 		
 		MyClient client = new MyClient() {
@@ -110,6 +111,7 @@ public class IntegrationTest {
 				return CompletableFutures.computeAsync(cancelToken -> {
 					try {
 						long startTime = System.currentTimeMillis();
+						inComputeAsync[0] = true;
 						do {
 							cancelToken.checkCanceled();
 							Thread.sleep(50);
@@ -138,8 +140,16 @@ public class IntegrationTest {
 		serverSideLauncher.startListening();
 		
 		CompletableFuture<MyParam> future = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
-		future.cancel(true);
+
 		long startTime = System.currentTimeMillis();
+		while (!inComputeAsync[0]) {
+			Thread.sleep(50);
+			if (System.currentTimeMillis() - startTime > TIMEOUT)
+				Assert.fail("Timeout waiting for client to start computing.");
+		}
+		future.cancel(true);
+
+		startTime = System.currentTimeMillis();
 		while (!cancellationHappened[0]) {
 			Thread.sleep(50);
 			if (System.currentTimeMillis() - startTime > TIMEOUT)
