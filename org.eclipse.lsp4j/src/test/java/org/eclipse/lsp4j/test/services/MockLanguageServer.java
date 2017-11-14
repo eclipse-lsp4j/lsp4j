@@ -19,6 +19,7 @@ import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
+import org.eclipse.lsp4j.DidChangeWorkspaceFoldersParams;
 import org.eclipse.lsp4j.DidCloseTextDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
@@ -154,12 +155,12 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	public CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public CompletableFuture<DocumentLink> documentLinkResolve(DocumentLink params) {
 		throw new UnsupportedOperationException();
@@ -187,6 +188,11 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 
 	@Override
 	public void didSave(DidSaveTextDocumentParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void didChangeWorkspaceFolders(DidChangeWorkspaceFoldersParams params) {
 		throw new UnsupportedOperationException();
 	}
 

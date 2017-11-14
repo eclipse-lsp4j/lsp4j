@@ -15,6 +15,7 @@ import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import com.google.common.annotations.Beta
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -121,6 +122,13 @@ class WorkspaceClientCapabilities {
      * Capabilities specific to the `workspace/executeCommand` request.
      */
     ExecuteCommandCapabilities executeCommand
+    
+    /**
+     * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+     * 
+     * This API is a <b>proposal</b> from LSP and may change.
+     */
+    @Beta Boolean workspaceFolders
 }
 
 @JsonRpcData
@@ -1901,6 +1909,30 @@ class ServerCapabilities {
      * Experimental server capabilities.
      */
     Object experimental
+
+    /**
+     * Capabilities of the server regarding workspace.
+     * 
+     * This is an LSP <b>proposal</b>.
+     */
+    @Beta WorkspaceServerCapabilities workspace
+
+}
+
+/**
+ * Capabilities of the server regarding workspace.
+ * 
+ * This is an LSP <b>proposal</b>.
+ */
+@Beta
+@JsonRpcData
+class WorkspaceServerCapabilities {
+	  /**
+     * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+     * 
+     * This is an LSP <b>proposal</b>.
+     */
+    @Beta WorkspaceFoldersOptions workspaceFolders
 }
 
 /**
@@ -2673,4 +2705,64 @@ class ApplyWorkspaceEditResponse {
     new(Boolean applied) {
     	this.applied = applied
     }
+}
+
+@Beta
+@JsonRpcData
+class WorkspaceFoldersOptions {
+	/**
+	 * The server has support for workspace folders
+	 */
+	Boolean supported
+	
+	/**
+	 * Whether the server wants to receive workspace folder
+	 * change notifications.
+	 *
+	 * If a strings is provided the string is treated as a ID
+	 * under which the notification is registed on the client
+	 * side. The ID can be used to unregister for these events
+	 * using the `client/unregisterCapability` request.
+	 */
+	Either<String, Boolean> changeNotifications;
+}
+
+@Beta
+@JsonRpcData
+class WorkspaceFolder {
+	/**
+	 * The associated URI for this workspace folder.
+	 */
+	@NonNull String uri
+
+	/**
+	 * The name of the workspace folder. Defaults to the uri's basename.
+	 */
+	String name
+}
+
+@Beta
+@JsonRpcData
+class WorkspaceFoldersChangeEvent {
+	/**
+	 * The array of added workspace folders
+	 */
+	@NonNull
+	List<WorkspaceFolder> added = new ArrayList
+
+	/**
+	 * The array of the removed workspace folders
+	 */
+	@NonNull
+	List<WorkspaceFolder> removed = new ArrayList
+}
+
+@Beta
+@JsonRpcData
+class DidChangeWorkspaceFoldersParams {
+	/**
+	 * The actual workspace folder change event.
+	 */
+	@NonNull
+	WorkspaceFoldersChangeEvent event
 }

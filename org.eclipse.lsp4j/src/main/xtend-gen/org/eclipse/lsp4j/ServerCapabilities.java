@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CodeLensOptions;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentLinkOptions;
@@ -15,6 +16,7 @@ import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.TextDocumentSyncOptions;
+import org.eclipse.lsp4j.WorkspaceServerCapabilities;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -111,6 +113,14 @@ public class ServerCapabilities {
    * Experimental server capabilities.
    */
   private Object experimental;
+  
+  /**
+   * Capabilities of the server regarding workspace.
+   * 
+   * This is an LSP <b>proposal</b>.
+   */
+  @Beta
+  private WorkspaceServerCapabilities workspace;
   
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
@@ -392,6 +402,25 @@ public class ServerCapabilities {
     this.experimental = experimental;
   }
   
+  /**
+   * Capabilities of the server regarding workspace.
+   * 
+   * This is an LSP <b>proposal</b>.
+   */
+  @Pure
+  public WorkspaceServerCapabilities getWorkspace() {
+    return this.workspace;
+  }
+  
+  /**
+   * Capabilities of the server regarding workspace.
+   * 
+   * This is an LSP <b>proposal</b>.
+   */
+  public void setWorkspace(final WorkspaceServerCapabilities workspace) {
+    this.workspace = workspace;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -414,6 +443,7 @@ public class ServerCapabilities {
     b.add("documentLinkProvider", this.documentLinkProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("experimental", this.experimental);
+    b.add("workspace", this.workspace);
     return b.toString();
   }
   
@@ -517,6 +547,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.experimental.equals(other.experimental))
       return false;
+    if (this.workspace == null) {
+      if (other.workspace != null)
+        return false;
+    } else if (!this.workspace.equals(other.workspace))
+      return false;
     return true;
   }
   
@@ -543,6 +578,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.documentLinkProvider== null) ? 0 : this.documentLinkProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
+    result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     return result;
   }
 }
