@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.services;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
@@ -17,10 +19,13 @@ import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.RegistrationParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.UnregistrationParams;
+import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
-public interface LanguageClient {	
+import com.google.common.annotations.Beta;
+
+public interface LanguageClient {
 	/**
 	 * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
 	 */
@@ -39,9 +44,9 @@ public interface LanguageClient {
 	default CompletableFuture<Void> registerCapability(RegistrationParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
-	 * The client/unregisterCapability request is sent from the server to the client 
+	 * The client/unregisterCapability request is sent from the server to the client
 	 * to unregister a previously register capability.
 	 */
 	@JsonRequest("client/unregisterCapability")
@@ -85,4 +90,20 @@ public interface LanguageClient {
 	 */
 	@JsonNotification("window/logMessage")
 	void logMessage(MessageParams message);
+
+	/**
+	 * The workspace/workspaceFolders request is sent from the server to the client
+	 * to fetch the current open list of workspace folders.
+	 *
+	 * This API is a <b>proposal</b> from LSP and may change.
+	 *
+	 * @return null in the response if only a single file is open in the tool,
+	 *         an empty array if a workspace is open but no folders are configured,
+	 *         the workspace folders otherwise.
+	 */
+	@Beta
+	@JsonRequest("workspace/workspaceFolders")
+	default CompletableFuture<List<WorkspaceFolder>> workspaceFolders() {
+		return CompletableFuture.completedFuture(Collections.emptyList());
+	}
 }
