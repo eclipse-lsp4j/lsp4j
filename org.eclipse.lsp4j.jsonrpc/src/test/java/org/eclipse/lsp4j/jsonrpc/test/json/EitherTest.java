@@ -7,7 +7,7 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
-import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ import com.google.gson.GsonBuilder;
 public class EitherTest {
 	
 	protected Gson createGson() {
-		return new GsonBuilder().registerTypeAdapterFactory(new EitherTypeAdapterFactory()).create();
+		return new GsonBuilder().registerTypeAdapterFactory(new EitherTypeAdapter.Factory()).create();
 	}
 	
 	protected void assertSerialize(Object object, String expected) {

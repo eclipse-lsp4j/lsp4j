@@ -13,10 +13,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapterFactory;
-import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapterFactory;
-import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapterFactory;
-import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapterFactory;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
@@ -51,10 +51,10 @@ public class MessageJsonHandler {
     
 	public GsonBuilder getDefaultGsonBuilder() {
 	    return new GsonBuilder()
-	    	.registerTypeAdapterFactory(new CollectionTypeAdapterFactory())
-	    	.registerTypeAdapterFactory(new EitherTypeAdapterFactory())
-            .registerTypeAdapterFactory(new EnumTypeAdapterFactory())
-            .registerTypeAdapterFactory(new MessageTypeAdapterFactory(this));
+	    	.registerTypeAdapterFactory(new CollectionTypeAdapter.Factory())
+	    	.registerTypeAdapterFactory(new EitherTypeAdapter.Factory())
+            .registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
+            .registerTypeAdapterFactory(new MessageTypeAdapter.Factory(this));
 	}
 	
 	public JsonRpcMethod getJsonRpcMethod(String name) {
