@@ -47,19 +47,23 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 				&& throwable.getCause() instanceof ResponseErrorException) {
 			return ((ResponseErrorException) throwable.getCause()).getResponseError();
 		} else {
-			LOG.log(Level.SEVERE, "Internal error: " + throwable.getMessage(), throwable);
-			ResponseError error = new ResponseError();
-			error.setMessage("Internal error.");
-			error.setCode(ResponseErrorCode.InternalError);
-			ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
-			PrintWriter stackTraceWriter = new PrintWriter(stackTrace);
-			throwable.printStackTrace(stackTraceWriter);
-			stackTraceWriter.flush();
-			error.setData(stackTrace.toString());
-			return error;
+			return fallbackResponseError("Internal error", throwable);
 		}
 	};
-	
+
+	private static ResponseError fallbackResponseError(String header, Throwable throwable) {
+		LOG.log(Level.SEVERE, header + ": " + throwable.getMessage(), throwable);
+		ResponseError error = new ResponseError();
+		error.setMessage(header + ".");
+		error.setCode(ResponseErrorCode.InternalError);
+		ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
+		PrintWriter stackTraceWriter = new PrintWriter(stackTrace);
+		throwable.printStackTrace(stackTraceWriter);
+		stackTraceWriter.flush();
+		error.setData(stackTrace.toString());
+		return error;
+	}
+
 	private final MessageConsumer out;
 	private final Endpoint localEndpoint;
 	private final Function<Throwable, ResponseError> exceptionHandler;
@@ -76,7 +80,10 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		RequestMessage requestMessage;
 		Consumer<ResponseMessage> responseHandler;
 	}
-	
+
+	/**
+	 * @param exceptionHandler An exception handler that should never return null.
+	 */
 	public RemoteEndpoint(MessageConsumer out, Endpoint localEndpoint, Function<Throwable, ResponseError> exceptionHandler) {
 		if (out == null)
 			throw new NullPointerException("out");
@@ -217,10 +224,11 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			future = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
 		} catch (Throwable e) {
 			ResponseError errorObject = exceptionHandler.apply(e);
-			if (errorObject != null) {
-				ResponseMessage responseMessage = createErrorResponseMessage(requestMessage, errorObject);
-				out.consume(responseMessage);
+			if (errorObject == null) {
+				errorObject = fallbackResponseError("Internal error. Exception handler provided no error object", e);
 			}
+			ResponseMessage responseMessage = createErrorResponseMessage(requestMessage, errorObject);
+			out.consume(responseMessage);
 			return;
 		}
 		synchronized (receivedRequestMap) {
@@ -237,11 +245,10 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 				responseMessage = createErrorResponseMessage(requestMessage, errorObject);
 			} else {
 				ResponseError errorObject = exceptionHandler.apply(t);
-				if (errorObject != null) {
-					responseMessage = createErrorResponseMessage(requestMessage, errorObject);
-				} else {
-					responseMessage = createResponseMessage(requestMessage);
+				if (errorObject == null) {
+					errorObject = fallbackResponseError("Internal error. Exception handler provided no error object", t);
 				}
+				responseMessage = createErrorResponseMessage(requestMessage, errorObject);
 			}
 			out.consume(responseMessage);
 			return null;
