@@ -7,15 +7,19 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Assert;
@@ -495,5 +499,165 @@ public class MessageJsonHandlerTest {
 		Assert.assertEquals("[foo, bar]", parameters.get(0).toString());
 		Assert.assertEquals("[1, 2]", parameters.get(1).toString());
 		Assert.assertNull(parameters.get(2));
+	}
+
+	public static final <T> void swap(T[] a, int i, int j) {
+		T t = a[i];
+		a[i] = a[j];
+		a[j] = t;
+	}
+
+	public <T> void testAllPermutationsInner(T[] array, int i, int n, Consumer<T[]> test) {
+		int j;
+		if (i == n) {
+			test.accept(array);
+		} else {
+			for (j = i; j <= n; j++) {
+				swap(array, i, j);
+				testAllPermutationsInner(array, i + 1, n, test);
+				swap(array, i, j);
+			}
+		}
+	}
+
+	public <T> void testAllPermutationsStart(T[] array, Consumer<T[]> test) {
+		testAllPermutationsInner(array, 0, array.length - 1, test);
+	}
+
+	public void testAllPermutations(String[] properties, Consumer<String> test) {
+		testAllPermutationsStart(properties, mutatedProperties -> {
+			StringBuilder json = new StringBuilder();
+			json.append("{");
+			for (int k = 0; k < mutatedProperties.length; k++) {
+				json.append(mutatedProperties[k]);
+				if (k != mutatedProperties.length - 1) {
+					json.append(",");
+				}
+
+			}
+			json.append("}");
+			String jsonString = json.toString();
+			try {
+				test.accept(jsonString);
+			} catch (Exception | AssertionError e) {
+				// To make it easier to debug a failing test, add another exception
+				// layer that shows the version of the json used -- you may
+				// need to turn off "Filter Stack Trace" in JUnit view in Eclipse
+				// to see the underlying error.
+				throw new AssertionError("Failed with this input json: " + jsonString, e);
+			}
+		});
+	}
+
+	@Test
+	public void testThePermutationsTest() {
+		// make sure that the testAllPermutations works as expected
+		Set<String> collectedPermutations = new HashSet<>();
+		Set<String> expectedPermutations = new HashSet<>();
+		expectedPermutations.add("{a,b,c}");
+		expectedPermutations.add("{a,c,b}");
+		expectedPermutations.add("{b,a,c}");
+		expectedPermutations.add("{b,c,a}");
+		expectedPermutations.add("{c,a,b}");
+		expectedPermutations.add("{c,b,a}");
+		testAllPermutations(new String[] {"a", "b", "c"}, perm -> collectedPermutations.add(perm));
+		Assert.assertEquals(expectedPermutations, collectedPermutations);
+	}
+
+	@Test
+	public void testRequest_AllOrders() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<Location>() {
+				}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String[] properties = new String[] {
+				"\"jsonrpc\":\"2.0\"",
+				"\"id\":2",
+				"\"method\":\"foo\"",
+				"\"params\": {\"uri\": \"dummy://mymodel.mydsl\"}"
+				};
+		testAllPermutations(properties, json -> {
+			RequestMessage message = (RequestMessage) handler.parseMessage(json);
+			Object params = message.getParams();
+			Class<? extends Object> class1 = params.getClass();
+			Assert.assertEquals(Location.class, class1);
+			Assert.assertEquals("dummy://mymodel.mydsl", ((Location)params).uri);
+		});
+	}
+
+	@Test
+	public void testNormalResponse_AllOrders() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {
+				}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String[] properties = new String[] {
+				"\"jsonrpc\":\"2.0\"",
+				"\"id\":2",
+				"\"result\": {\"uri\": \"dummy://mymodel.mydsl\"}"
+				};
+		testAllPermutations(properties, json -> {
+			ResponseMessage message = (ResponseMessage) handler.parseMessage(json);
+			Object result = message.getResult();
+			Class<? extends Object> class1 = result.getClass();
+			Assert.assertEquals(Location.class, class1);
+			Assert.assertEquals("dummy://mymodel.mydsl", ((Location)result).uri);
+			Assert.assertNull(message.getError());
+		});
+	}
+
+	@Test
+	public void testErrorResponse_AllOrders() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {
+				}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String[] properties = new String[] {
+				"\"jsonrpc\":\"2.0\"",
+				"\"id\":2",
+				"\"message\": \"failed\"",
+				"\"error\": {\"code\": 123456, \"message\": \"failed\", \"data\": {\"uri\": \"failed\"}}"
+				};
+		testAllPermutations(properties, json -> {
+			ResponseMessage message = (ResponseMessage) handler.parseMessage(json);
+			Assert.assertEquals("failed", message.getError().getMessage());
+			Object data = message.getError().getData();
+			Map<String, String> expected = new HashMap<>();
+			expected.put("uri", "failed");
+			Assert.assertEquals(expected, data);
+			Assert.assertNull(message.getResult());
+		});
+	}
+
+	@Test
+	public void testNotification_AllOrders() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<Location>() {
+				}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String[] properties = new String[] {
+				"\"jsonrpc\":\"2.0\"",
+				"\"method\":\"foo\"",
+				"\"params\": {\"uri\": \"dummy://mymodel.mydsl\"}"
+				};
+		testAllPermutations(properties, json -> {
+			NotificationMessage message = (NotificationMessage) handler.parseMessage(json);
+			Object params = message.getParams();
+			Class<? extends Object> class1 = params.getClass();
+			Assert.assertEquals(Location.class, class1);
+			Assert.assertEquals("dummy://mymodel.mydsl", ((Location)params).uri);
+		});
 	}
 }
