@@ -344,8 +344,8 @@ public class IntegrationTest {
 			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
 			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
 			
-			Assert.assertEquals("Content-Length: 26" + CRLF + CRLF
-					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\"}",
+			Assert.assertEquals("Content-Length: 40" + CRLF + CRLF
+					+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":null}",
 					out.toString());
 		} finally {
 			logMessages.unregister();

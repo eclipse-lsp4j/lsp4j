@@ -287,7 +287,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			out.name("params");
 			Object params = requestMessage.getParams();
 			if (params == null)
-				out.nullValue();
+				writeNullValue(out);
 			else
 				gson.toJson(params, params.getClass(), out);
 		} else if (message instanceof ResponseMessage) {
@@ -301,7 +301,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				out.name("result");
 				Object result = responseMessage.getResult();
 				if (result == null)
-					out.nullValue();
+					writeNullValue(out);
 				else
 					gson.toJson(result, result.getClass(), out);
 			}
@@ -312,12 +312,22 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			out.name("params");
 			Object params = notificationMessage.getParams();
 			if (params == null)
-				out.nullValue();
+				writeNullValue(out);
 			else
 				gson.toJson(params, params.getClass(), out);
 		}
 		
 		out.endObject();
+	}
+	
+	/**
+	 * Use this method to write a {@code null} value even if the JSON writer is set to not serialize {@code null}.
+	 */
+	protected void writeNullValue(JsonWriter out) throws IOException {
+		boolean previousSerializeNulls = out.getSerializeNulls();
+		out.setSerializeNulls(true);
+		out.nullValue();
+		out.setSerializeNulls(previousSerializeNulls);
 	}
 	
 }
