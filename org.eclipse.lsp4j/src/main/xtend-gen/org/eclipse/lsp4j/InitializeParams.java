@@ -24,7 +24,7 @@ public class InitializeParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecared in favour of rootUri.
+   * @deprecated in favour of rootUri.
    */
   @Deprecated
   private String rootPath;
@@ -76,7 +76,7 @@ public class InitializeParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecared in favour of rootUri.
+   * @deprecated in favour of rootUri.
    */
   @Pure
   @Deprecated
@@ -87,7 +87,7 @@ public class InitializeParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecared in favour of rootUri.
+   * @deprecated in favour of rootUri.
    */
   @Deprecated
   public void setRootPath(final String rootPath) {

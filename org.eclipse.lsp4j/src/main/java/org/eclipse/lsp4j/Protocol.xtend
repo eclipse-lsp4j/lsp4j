@@ -1515,7 +1515,7 @@ class InitializeParams {
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
 	 * 
-	 * @deprecared in favour of rootUri.
+	 * @deprecated in favour of rootUri.
 	 */
 	@Deprecated
 	String rootPath
