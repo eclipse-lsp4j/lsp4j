@@ -344,8 +344,8 @@ public class DebugIntegrationTest {
 			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
 			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
 
-			Assert.assertEquals("Content-Length: 62\r\n\r\n" +
-					"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"$/foo2\"}",
+			Assert.assertEquals("Content-Length: 74\r\n\r\n" +
+					"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"$/foo2\",\"body\":null}",
 					out.toString());
 		} finally {
 			logMessages.unregister();
