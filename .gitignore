@@ -4,6 +4,7 @@ target/
 build/
 .gradle/
 META-INF/
+org.eclipse.buildship.core.prefs
 org.eclipse.jdt.core.prefs
 org.eclipse.xtext.java.Java.prefs
 org.eclipse.xtend.core.Xtend.prefs
