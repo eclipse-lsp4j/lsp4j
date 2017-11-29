@@ -48,4 +48,37 @@ public class DebugResponseMessage extends ResponseMessage {
 		this.method = method;
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		if (!super.equals(obj))
+			return false;
+		DebugResponseMessage other = (DebugResponseMessage) obj;
+		if (this.responseId == null) {
+			if (other.responseId != null)
+				return false;
+		} else if (!this.responseId.equals(other.responseId))
+			return false;
+		if (this.method == null) {
+			if (other.method != null)
+				return false;
+		} else if (!this.method.equals(other.method))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.responseId == null) ? 0 : this.responseId.hashCode());
+		result = prime * result + ((this.method == null) ? 0 : this.method.hashCode());
+		return result;
+	}
+
 }

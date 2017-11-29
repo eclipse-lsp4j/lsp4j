@@ -16,7 +16,7 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
  * uses "2.0" as the jsonrpc version.
  */
 public abstract class Message {
-	
+
 	@NonNull
 	private String jsonrpc = MessageConstants.JSONRPC_VERSION;
 
@@ -27,10 +27,35 @@ public abstract class Message {
 	public void setJsonrpc(String jsonrpc) {
 		this.jsonrpc = jsonrpc;
 	}
-	
+
 	@Override
 	public String toString() {
 		return MessageJsonHandler.toString(this);
 	}
-	
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Message other = (Message) obj;
+		if (this.jsonrpc == null) {
+			if (other.jsonrpc != null)
+				return false;
+		} else if (!this.jsonrpc.equals(other.jsonrpc))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.jsonrpc == null) ? 0 : this.jsonrpc.hashCode());
+		return result;
+	}
+
 }
