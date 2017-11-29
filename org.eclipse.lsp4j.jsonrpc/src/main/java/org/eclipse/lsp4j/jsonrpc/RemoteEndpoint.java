@@ -47,19 +47,23 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 				&& throwable.getCause() instanceof ResponseErrorException) {
 			return ((ResponseErrorException) throwable.getCause()).getResponseError();
 		} else {
-			LOG.log(Level.SEVERE, "Internal error: " + throwable.getMessage(), throwable);
-			ResponseError error = new ResponseError();
-			error.setMessage("Internal error.");
-			error.setCode(ResponseErrorCode.InternalError);
-			ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
-			PrintWriter stackTraceWriter = new PrintWriter(stackTrace);
-			throwable.printStackTrace(stackTraceWriter);
-			stackTraceWriter.flush();
-			error.setData(stackTrace.toString());
-			return error;
+			return fallbackResponseError("Internal error", throwable);
 		}
 	};
-	
+
+	private static ResponseError fallbackResponseError(String header, Throwable throwable) {
+		LOG.log(Level.SEVERE, header + ": " + throwable.getMessage(), throwable);
+		ResponseError error = new ResponseError();
+		error.setMessage(header + ".");
+		error.setCode(ResponseErrorCode.InternalError);
+		ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
+		PrintWriter stackTraceWriter = new PrintWriter(stackTrace);
+		throwable.printStackTrace(stackTraceWriter);
+		stackTraceWriter.flush();
+		error.setData(stackTrace.toString());
+		return error;
+	}
+
 	private final MessageConsumer out;
 	private final Endpoint localEndpoint;
 	private final Function<Throwable, ResponseError> exceptionHandler;
@@ -76,7 +80,10 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		RequestMessage requestMessage;
 		Consumer<ResponseMessage> responseHandler;
 	}
-	
+
+	/**
+	 * @param exceptionHandler An exception handler that should never return null.
+	 */
 	public RemoteEndpoint(MessageConsumer out, Endpoint localEndpoint, Function<Throwable, ResponseError> exceptionHandler) {
 		if (out == null)
 			throw new NullPointerException("out");
@@ -95,20 +102,22 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 
 	@Override
 	public void notify(String method, Object parameter) {
+		NotificationMessage notificationMessage = createNotificationMessage(method, parameter);
+		out.consume(notificationMessage);
+	}
+
+	protected NotificationMessage createNotificationMessage(String method, Object parameter) {
 		NotificationMessage notificationMessage = new NotificationMessage();
 		notificationMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
 		notificationMessage.setMethod(method);
 		notificationMessage.setParams(parameter);
-		out.consume(notificationMessage);
+		return notificationMessage;
 	}
 
 	@Override
 	public CompletableFuture<Object> request(String method, Object parameter) {
-		RequestMessage requestMessage = new RequestMessage();
-		final String id = String.valueOf(nextRequestId.incrementAndGet());
-		requestMessage.setId(id);
-		requestMessage.setMethod(method);
-		requestMessage.setParams(parameter);
+		RequestMessage requestMessage = createRequestMessage(method, parameter);
+		final String id = requestMessage.getId();
 		final CompletableFuture<Object> result = new CompletableFuture<Object>() {
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning) {
@@ -128,6 +137,14 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		}
 		out.consume(requestMessage);
 		return result;
+	}
+
+	protected RequestMessage createRequestMessage(String method, Object parameter) {
+		RequestMessage requestMessage = new RequestMessage();
+		requestMessage.setId(String.valueOf(nextRequestId.incrementAndGet()));
+		requestMessage.setMethod(method);
+		requestMessage.setParams(parameter);
+		return requestMessage;
 	}
 
 	protected void sendCancelNotification(String id) {
@@ -202,36 +219,36 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 	
 	protected void handleRequest(RequestMessage requestMessage) {
-		final ResponseMessage responseMessage = new ResponseMessage();
-		responseMessage.setId(requestMessage.getId());
-		responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
-		CompletableFuture<?> future; 
+		CompletableFuture<?> future;
 		try {
 			future = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
 		} catch (Throwable e) {
 			ResponseError errorObject = exceptionHandler.apply(e);
-			if (errorObject != null) {
-				responseMessage.setError(errorObject);
-				out.consume(responseMessage);
+			if (errorObject == null) {
+				errorObject = fallbackResponseError("Internal error. Exception handler provided no error object", e);
 			}
+			ResponseMessage responseMessage = createErrorResponseMessage(requestMessage, errorObject);
+			out.consume(responseMessage);
 			return;
 		}
 		synchronized (receivedRequestMap) {
 			receivedRequestMap.put(requestMessage.getId(), future);
 		}
 		future.thenAccept((result) -> {
-			responseMessage.setResult(result);
+			ResponseMessage responseMessage = createResultResponseMessage(requestMessage, result);
 			out.consume(responseMessage);
 		}).exceptionally((Throwable t) -> {
+			ResponseMessage responseMessage;
 			if (isCancellation(t)) {
 				String message = "The request (id: " + requestMessage.getId() + ", method: '" + requestMessage.getMethod()  + "') has been cancelled";
 				ResponseError errorObject = new ResponseError(ResponseErrorCode.RequestCancelled, message, null);
-				responseMessage.setError(errorObject);
+				responseMessage = createErrorResponseMessage(requestMessage, errorObject);
 			} else {
 				ResponseError errorObject = exceptionHandler.apply(t);
-				if (errorObject != null) {
-					responseMessage.setError(errorObject);
+				if (errorObject == null) {
+					errorObject = fallbackResponseError("Internal error. Exception handler provided no error object", t);
 				}
+				responseMessage = createErrorResponseMessage(requestMessage, errorObject);
 			}
 			out.consume(responseMessage);
 			return null;
@@ -241,6 +258,25 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			}
 			return null;
 		});
+	}
+
+	protected ResponseMessage createResponseMessage(RequestMessage requestMessage) {
+		ResponseMessage responseMessage = new ResponseMessage();
+		responseMessage.setId(requestMessage.getId());
+		responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
+		return responseMessage;
+	}
+
+	protected ResponseMessage createResultResponseMessage(RequestMessage requestMessage, Object result) {
+		ResponseMessage responseMessage = createResponseMessage(requestMessage);
+		responseMessage.setResult(result);
+		return responseMessage;
+	}
+
+	protected ResponseMessage createErrorResponseMessage(RequestMessage requestMessage, ResponseError errorObject) {
+		ResponseMessage responseMessage = createResponseMessage(requestMessage);
+		responseMessage.setError(errorObject);
+		return responseMessage;
 	}
 
 	protected boolean isCancellation(Throwable t) {

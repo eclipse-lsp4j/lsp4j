@@ -1,0 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
+ext.title = 'LSP4J JSON-RPC Debug'
+description = 'Debug Protocol JSON-RPC implementation'
+
+dependencies {
+	compile project(":org.eclipse.lsp4j.jsonrpc")
+	compile "com.google.code.gson:gson:$versions.gson"
+	testCompile "junit:junit:$versions.junit"
+}
+
+jar.manifest {
+	instruction 'Import-Package', '*'
+}

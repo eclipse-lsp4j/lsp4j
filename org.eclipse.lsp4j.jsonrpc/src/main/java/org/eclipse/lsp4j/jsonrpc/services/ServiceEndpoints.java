@@ -25,7 +25,7 @@ public final class ServiceEndpoints {
 	 * Wraps a given {@link Endpoint} in the given service interface.
 	 * @param endpoint
 	 * @param interface_
-	 * @return
+	 * @return the wrapped service object
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T toServiceObject(Endpoint endpoint, Class<T> interface_) {
@@ -37,7 +37,7 @@ public final class ServiceEndpoints {
 	 * Wraps a given object with service annotations behind an {@link Endpoint} interface.
 	 * 
 	 * @param serviceObject
-	 * @return
+	 * @return the wrapped service endpoint
 	 */
 	public static Endpoint toEndpoint(Object serviceObject) {
 		return new GenericEndpoint(serviceObject);
@@ -47,7 +47,7 @@ public final class ServiceEndpoints {
 	 * Finds all Json RPC methods on a given class
 	 * 
 	 * @param type
-	 * @return
+	 * @return the suppoerd JsonRpcMethods
 	 */
 	public static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type) {
 		Set<Class<?>> visitedTypes = new HashSet<>();

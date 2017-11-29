@@ -35,7 +35,7 @@ public final class CompletableFutures {
 	/**
 	 * A utility method to create a {@link CompletableFuture} with cancellation support.
 	 * 
-	 * @param code a function that accepts a {@link CancelIndicator} and returns the to be computed value
+	 * @param code a function that accepts a {@link CancelChecker} and returns the to be computed value
 	 * @return a future
 	 */
 	public static <R> CompletableFuture<R> computeAsync(Executor executor, Function<CancelChecker, R> code) {

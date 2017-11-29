@@ -150,5 +150,82 @@ public class RemoteEndpointTest {
 			logMessages.unregister();
 		}
 	}
-	
+
+	@Test public void testExceptionHandlerMisbehaving01() {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			// Don't show the exception in the test execution log
+			logMessages.registerTo(RemoteEndpoint.class);
+
+			TestEndpoint endp = new TestEndpoint() {
+				@Override
+				public CompletableFuture<Object> request(String method, Object parameter) {
+					throw new RuntimeException("BAAZ");
+				}
+			};
+			TestMessageConsumer consumer = new TestMessageConsumer();
+			// Misbehaving exception handler that returns null
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, (e) -> null);
+
+			endpoint.consume(new RequestMessage() {{
+				setId("1");
+				setMethod("foo");
+				setParams("myparam");
+			}});
+
+			assertEquals("Check some response received", 1, consumer.messages.size());
+			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
+			assertEquals(ResponseErrorCode.InternalError.getValue(), response.getError().getCode());
+		} finally {
+			logMessages.unregister();
+		}
+	}
+
+	static class TestMessageConsumer2 implements MessageConsumer {
+
+		boolean sentException = false;
+		List<Message> messages = new ArrayList<>();
+
+		@Override
+		public void consume(Message message) {
+			if (sentException) {
+				messages.add(message);
+			} else {
+				// throw an exception only for the first message
+				sentException = true;
+				throw new RuntimeException("Exception in consumer");
+			}
+		}
+
+	}
+	@Test public void testExceptionHandlerMisbehaving02() {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			// Don't show the exception in the test execution log
+			logMessages.registerTo(RemoteEndpoint.class);
+
+			TestEndpoint endp = new TestEndpoint() {
+				@Override
+				public CompletableFuture<Object> request(String method, Object parameter) {
+					return CompletableFuture.supplyAsync(() -> "baz");
+				}
+			};
+			TestMessageConsumer2 consumer = new TestMessageConsumer2();
+			// Misbehaving exception handler that returns null
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, (e) -> null);
+
+			endpoint.consume(new RequestMessage() {{
+				setId("1");
+				setMethod("foo");
+				setParams("myparam");
+			}});
+
+			assertEquals("Check some response received", 1, consumer.messages.size());
+			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
+			assertNotNull("Check response has error", response.getError());
+			assertEquals(ResponseErrorCode.InternalError.getValue(), response.getError().getCode());
+		} finally {
+			logMessages.unregister();
+		}
+	}
 }
