@@ -47,7 +47,7 @@ public class NullResponseTest implements LanguageServer {
 		request.setId("1");
 		request.setMethod("shutdown");
 		re.consume(request);
-		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"id\":\"1\"}", handler.serialize(msgs.get(0)));
+		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":null}", handler.serialize(msgs.get(0)));
 		msgs.clear();
 		shutdownReturn = new Object();
 		re.consume(request);
