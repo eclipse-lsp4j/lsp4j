@@ -370,7 +370,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.name("arguments");
 			Object params = requestMessage.getParams();
 			if (params == null)
-				out.nullValue();
+				writeNullValue(out);
 			else
 				gson.toJson(params, params.getClass(), out);
 		} else if (message instanceof DebugResponseMessage) {
@@ -390,7 +390,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				String errorMessage = error.getMessage();
 				out.name("message");
 				if (errorMessage == null)
-					out.nullValue();
+					writeNullValue(out);
 				else
 					gson.toJson(errorMessage, errorMessage.getClass(), out);
 
@@ -403,7 +403,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				out.name("body");
 				Object result = responseMessage.getResult();
 				if (result == null)
-					out.nullValue();
+					writeNullValue(out);
 				else
 					gson.toJson(result, result.getClass(), out);
 			}
@@ -422,7 +422,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.name("body");
 			Object params = notificationMessage.getParams();
 			if (params == null)
-				out.nullValue();
+				writeNullValue(out);
 			else
 				gson.toJson(params, params.getClass(), out);
 		}
