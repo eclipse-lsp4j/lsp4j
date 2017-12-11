@@ -431,13 +431,6 @@ public enum RunInTerminalRequestArgumentsKind {
 }
 
 /**
- * Response to 'initialize' request.
- */
-@JsonRpcData
-class InitializeResponse {
-}
-
-/**
  * Arguments for 'initialize' request.
  */
 @JsonRpcData

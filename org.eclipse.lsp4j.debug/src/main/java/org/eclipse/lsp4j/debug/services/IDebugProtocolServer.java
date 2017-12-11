@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.debug.AttachRequestArguments;
+import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CompletionsArguments;
 import org.eclipse.lsp4j.debug.CompletionsResponse;
 import org.eclipse.lsp4j.debug.ConfigurationDoneArguments;
@@ -26,7 +27,6 @@ import org.eclipse.lsp4j.debug.GotoArguments;
 import org.eclipse.lsp4j.debug.GotoTargetsArguments;
 import org.eclipse.lsp4j.debug.GotoTargetsResponse;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
-import org.eclipse.lsp4j.debug.InitializeResponse;
 import org.eclipse.lsp4j.debug.LoadedSourcesArguments;
 import org.eclipse.lsp4j.debug.LoadedSourcesResponse;
 import org.eclipse.lsp4j.debug.ModulesArguments;
@@ -85,7 +85,7 @@ public interface IDebugProtocolServer {
 	 * Initialize request; value of command field is 'initialize'.
 	 */
 	@JsonRequest
-	CompletableFuture<InitializeResponse> initialize(InitializeRequestArguments args);
+	CompletableFuture<Capabilities> initialize(InitializeRequestArguments args);
 
 	/**
 	 * ConfigurationDone request; value of command field is 'configurationDone'.
