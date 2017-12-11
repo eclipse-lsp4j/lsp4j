@@ -43,7 +43,7 @@ public class RunInTerminalRequestArguments {
   private String[] args;
   
   /**
-   * Environment key-value pairs that are added to the default environment.
+   * Environment key-value pairs that are added to or removed from the default environment.
    * <p>
    * This is an optional property.
    */
@@ -118,7 +118,7 @@ public class RunInTerminalRequestArguments {
   }
   
   /**
-   * Environment key-value pairs that are added to the default environment.
+   * Environment key-value pairs that are added to or removed from the default environment.
    * <p>
    * This is an optional property.
    */
@@ -128,7 +128,7 @@ public class RunInTerminalRequestArguments {
   }
   
   /**
-   * Environment key-value pairs that are added to the default environment.
+   * Environment key-value pairs that are added to or removed from the default environment.
    * <p>
    * This is an optional property.
    */

@@ -16,13 +16,13 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either
 /**
  * Declaration of parameters, response bodies, and event bodies.
  * <p>
- * Auto-generated from debugProtocol.json schema version 1.24.0. Do not edit manually.
+ * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit manually.
  */
 class DebugProtcol {
 	/**
 	 * Version of debugProtocol.json this class was derived from.
 	 */
-	public static final String SCHEMA_VERSION = "1.24.0";
+	public static final String SCHEMA_VERSION = "1.25.0";
 }
 
 /**
@@ -415,7 +415,7 @@ class RunInTerminalRequestArguments {
 	 */
 	String[] args;
 	/**
-	 * Environment key-value pairs that are added to the default environment.
+	 * Environment key-value pairs that are added to or removed from the default environment.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1982,15 +1982,47 @@ class VariablePresentationHint {
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintKind}
  */
 public interface VariablePresentationHintKind {
+	/**
+	 * Indicates that the object is a property.
+	 */
 	public static final String PROPERTY = "property";
+	/**
+	 * Indicates that the object is a method.
+	 */
 	public static final String METHOD = "method";
+	/**
+	 * Indicates that the object is a class.
+	 */
 	public static final String CLASS = "class";
+	/**
+	 * Indicates that the object is data.
+	 */
 	public static final String DATA = "data";
+	/**
+	 * Indicates that the object is an event.
+	 */
 	public static final String EVENT = "event";
+	/**
+	 * Indicates that the object is a base class.
+	 */
 	public static final String BASE_CLASS = "baseClass";
+	/**
+	 * Indicates that the object is an inner class.
+	 */
 	public static final String INNER_CLASS = "innerClass";
+	/**
+	 * Indicates that the object is an interface.
+	 */
 	public static final String INTERFACE = "interface";
+	/**
+	 * Indicates that the object is the most derived class.
+	 */
 	public static final String MOST_DERIVED_CLASS = "mostDerivedClass";
+	/**
+	 * Indicates that the object is virtual, that means it is a synthetic object introduced by the adapter for
+	 * rendering purposes, e.g. an index range for large arrays.
+	 */
+	public static final String VIRTUAL = "virtual";
 }
 
 /**

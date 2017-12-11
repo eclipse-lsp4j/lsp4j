@@ -23,14 +23,14 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 /**
  * Declaration of client notifications.
  * <p>
- * Auto-generated from debugProtocol.json schema version 1.24.0. Do not edit
+ * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit
  * manually.
  */
 public interface IDebugProtocolClient {
 	/**
 	 * Version of debugProtocol.json this class was derived from.
 	 */
-	public static final String SCHEMA_VERSION = "1.24.0";
+	public static final String SCHEMA_VERSION = "1.25.0";
 
 	/**
 	 * Event message for 'initialized' event type.

@@ -64,14 +64,14 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 /**
  * Declaration of server requests.
  * <p>
- * Auto-generated from debugProtocol.json schema version 1.24.0. Do not edit
+ * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit
  * manually.
  */
 public interface IDebugProtocolServer {
 	/**
 	 * Version of debugProtocol.json this class was derived from.
 	 */
-	public static final String SCHEMA_VERSION = "1.24.0";
+	public static final String SCHEMA_VERSION = "1.25.0";
 
 	/**
 	 * runInTerminal request; value of command field is 'runInTerminal'.

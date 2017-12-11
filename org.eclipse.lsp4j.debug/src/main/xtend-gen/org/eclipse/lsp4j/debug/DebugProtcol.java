@@ -10,12 +10,12 @@ package org.eclipse.lsp4j.debug;
 /**
  * Declaration of parameters, response bodies, and event bodies.
  * <p>
- * Auto-generated from debugProtocol.json schema version 1.24.0. Do not edit manually.
+ * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit manually.
  */
 @SuppressWarnings("all")
 public class DebugProtcol {
   /**
    * Version of debugProtocol.json this class was derived from.
    */
-  public final static String SCHEMA_VERSION = "1.24.0";
+  public final static String SCHEMA_VERSION = "1.25.0";
 }
