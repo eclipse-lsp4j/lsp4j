@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,16 +21,19 @@ public class GotoTarget {
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
+  @NonNull
   private Integer id;
   
   /**
    * The name of the goto target (shown in the UI).
    */
+  @NonNull
   private String label;
   
   /**
    * The line of the goto target.
    */
+  @NonNull
   private Integer line;
   
   /**
@@ -57,6 +61,7 @@ public class GotoTarget {
    * Unique identifier for a goto target. This is used in the goto request.
    */
   @Pure
+  @NonNull
   public Integer getId() {
     return this.id;
   }
@@ -64,7 +69,7 @@ public class GotoTarget {
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
-  public void setId(final Integer id) {
+  public void setId(@NonNull final Integer id) {
     this.id = id;
   }
   
@@ -72,6 +77,7 @@ public class GotoTarget {
    * The name of the goto target (shown in the UI).
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -79,7 +85,7 @@ public class GotoTarget {
   /**
    * The name of the goto target (shown in the UI).
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   
@@ -87,6 +93,7 @@ public class GotoTarget {
    * The line of the goto target.
    */
   @Pure
+  @NonNull
   public Integer getLine() {
     return this.line;
   }
@@ -94,7 +101,7 @@ public class GotoTarget {
   /**
    * The line of the goto target.
    */
-  public void setLine(final Integer line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = line;
   }
   

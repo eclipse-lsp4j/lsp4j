@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -29,6 +30,7 @@ public class ExceptionPathSegment {
   /**
    * Depending on the value of 'negate' the names that should match or not match.
    */
+  @NonNull
   private String[] names;
   
   /**
@@ -56,6 +58,7 @@ public class ExceptionPathSegment {
    * Depending on the value of 'negate' the names that should match or not match.
    */
   @Pure
+  @NonNull
   public String[] getNames() {
     return this.names;
   }
@@ -63,7 +66,7 @@ public class ExceptionPathSegment {
   /**
    * Depending on the value of 'negate' the names that should match or not match.
    */
-  public void setNames(final String[] names) {
+  public void setNames(@NonNull final String[] names) {
     this.names = names;
   }
   

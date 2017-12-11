@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class LoadedSourcesResponse {
   /**
    * Set of loaded sources.
    */
+  @NonNull
   private Source[] sources;
   
   /**
    * Set of loaded sources.
    */
   @Pure
+  @NonNull
   public Source[] getSources() {
     return this.sources;
   }
@@ -33,7 +36,7 @@ public class LoadedSourcesResponse {
   /**
    * Set of loaded sources.
    */
-  public void setSources(final Source[] sources) {
+  public void setSources(@NonNull final Source[] sources) {
     this.sources = sources;
   }
   

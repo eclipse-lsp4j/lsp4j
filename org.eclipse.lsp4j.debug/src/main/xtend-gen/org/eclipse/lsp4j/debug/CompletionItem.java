@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.CompletionItemType;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,6 +21,7 @@ public class CompletionItem {
    * The label of this completion item. By default this is also the text that is inserted when selecting this
    * completion.
    */
+  @NonNull
   private String label;
   
   /**
@@ -60,6 +62,7 @@ public class CompletionItem {
    * completion.
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -68,7 +71,7 @@ public class CompletionItem {
    * The label of this completion item. By default this is also the text that is inserted when selecting this
    * completion.
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   

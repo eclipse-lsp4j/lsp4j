@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.debug;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.StackFramePresentationHint;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,11 +23,13 @@ public class StackFrame {
    * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
+  @NonNull
   private Integer id;
   
   /**
    * The name of the stack frame, typically a method name.
    */
+  @NonNull
   private String name;
   
   /**
@@ -39,11 +42,13 @@ public class StackFrame {
   /**
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
+  @NonNull
   private Integer line;
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
+  @NonNull
   private Integer column;
   
   /**
@@ -81,6 +86,7 @@ public class StackFrame {
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
   @Pure
+  @NonNull
   public Integer getId() {
     return this.id;
   }
@@ -89,7 +95,7 @@ public class StackFrame {
    * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
-  public void setId(final Integer id) {
+  public void setId(@NonNull final Integer id) {
     this.id = id;
   }
   
@@ -97,6 +103,7 @@ public class StackFrame {
    * The name of the stack frame, typically a method name.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -104,7 +111,7 @@ public class StackFrame {
   /**
    * The name of the stack frame, typically a method name.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -131,6 +138,7 @@ public class StackFrame {
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
   @Pure
+  @NonNull
   public Integer getLine() {
     return this.line;
   }
@@ -138,7 +146,7 @@ public class StackFrame {
   /**
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
-  public void setLine(final Integer line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = line;
   }
   
@@ -146,6 +154,7 @@ public class StackFrame {
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
   @Pure
+  @NonNull
   public Integer getColumn() {
     return this.column;
   }
@@ -153,7 +162,7 @@ public class StackFrame {
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(@NonNull final Integer column) {
     this.column = column;
   }
   

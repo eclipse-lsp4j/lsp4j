@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.debug;
 import java.util.Arrays;
 import java.util.Map;
 import org.eclipse.lsp4j.debug.RunInTerminalRequestArgumentsKind;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -35,11 +36,13 @@ public class RunInTerminalRequestArguments {
   /**
    * Working directory of the command.
    */
+  @NonNull
   private String cwd;
   
   /**
    * List of arguments. The first argument is the command to run.
    */
+  @NonNull
   private String[] args;
   
   /**
@@ -91,6 +94,7 @@ public class RunInTerminalRequestArguments {
    * Working directory of the command.
    */
   @Pure
+  @NonNull
   public String getCwd() {
     return this.cwd;
   }
@@ -98,7 +102,7 @@ public class RunInTerminalRequestArguments {
   /**
    * Working directory of the command.
    */
-  public void setCwd(final String cwd) {
+  public void setCwd(@NonNull final String cwd) {
     this.cwd = cwd;
   }
   
@@ -106,6 +110,7 @@ public class RunInTerminalRequestArguments {
    * List of arguments. The first argument is the command to run.
    */
   @Pure
+  @NonNull
   public String[] getArgs() {
     return this.args;
   }
@@ -113,7 +118,7 @@ public class RunInTerminalRequestArguments {
   /**
    * List of arguments. The first argument is the command to run.
    */
-  public void setArgs(final String[] args) {
+  public void setArgs(@NonNull final String[] args) {
     this.args = args;
   }
   

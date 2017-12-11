@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -25,6 +26,7 @@ public class ContinuedEventArguments {
   /**
    * The thread which was continued.
    */
+  @NonNull
   private Integer threadId;
   
   /**
@@ -38,6 +40,7 @@ public class ContinuedEventArguments {
    * The thread which was continued.
    */
   @Pure
+  @NonNull
   public Integer getThreadId() {
     return this.threadId;
   }
@@ -45,7 +48,7 @@ public class ContinuedEventArguments {
   /**
    * The thread which was continued.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = threadId;
   }
   

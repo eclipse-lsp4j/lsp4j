@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.CompletionItem;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class CompletionsResponse {
   /**
    * The possible completions for .
    */
+  @NonNull
   private CompletionItem[] targets;
   
   /**
    * The possible completions for .
    */
   @Pure
+  @NonNull
   public CompletionItem[] getTargets() {
     return this.targets;
   }
@@ -33,7 +36,7 @@ public class CompletionsResponse {
   /**
    * The possible completions for .
    */
-  public void setTargets(final CompletionItem[] targets) {
+  public void setTargets(@NonNull final CompletionItem[] targets) {
     this.targets = targets;
   }
   

@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class ExitedEventArguments {
   /**
    * The exit code returned from the debuggee.
    */
+  @NonNull
   private Integer exitCode;
   
   /**
    * The exit code returned from the debuggee.
    */
   @Pure
+  @NonNull
   public Integer getExitCode() {
     return this.exitCode;
   }
@@ -33,7 +36,7 @@ public class ExitedEventArguments {
   /**
    * The exit code returned from the debuggee.
    */
-  public void setExitCode(final Integer exitCode) {
+  public void setExitCode(@NonNull final Integer exitCode) {
     this.exitCode = exitCode;
   }
   

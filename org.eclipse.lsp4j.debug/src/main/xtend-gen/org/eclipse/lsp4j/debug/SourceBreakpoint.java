@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,6 +19,7 @@ public class SourceBreakpoint {
   /**
    * The source line of the breakpoint.
    */
+  @NonNull
   private Integer line;
   
   /**
@@ -46,6 +48,7 @@ public class SourceBreakpoint {
    * The source line of the breakpoint.
    */
   @Pure
+  @NonNull
   public Integer getLine() {
     return this.line;
   }
@@ -53,7 +56,7 @@ public class SourceBreakpoint {
   /**
    * The source line of the breakpoint.
    */
-  public void setLine(final Integer line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = line;
   }
   

@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Scope;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class ScopesResponse {
   /**
    * The scopes of the stackframe. If the array has length zero, there are no scopes available.
    */
+  @NonNull
   private Scope[] scopes;
   
   /**
    * The scopes of the stackframe. If the array has length zero, there are no scopes available.
    */
   @Pure
+  @NonNull
   public Scope[] getScopes() {
     return this.scopes;
   }
@@ -33,7 +36,7 @@ public class ScopesResponse {
   /**
    * The scopes of the stackframe. If the array has length zero, there are no scopes available.
    */
-  public void setScopes(final Scope[] scopes) {
+  public void setScopes(@NonNull final Scope[] scopes) {
     this.scopes = scopes;
   }
   

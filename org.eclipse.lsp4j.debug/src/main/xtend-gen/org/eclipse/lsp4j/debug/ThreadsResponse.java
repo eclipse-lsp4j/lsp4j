@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,12 +20,14 @@ public class ThreadsResponse {
   /**
    * All threads.
    */
+  @NonNull
   private org.eclipse.lsp4j.debug.Thread[] threads;
   
   /**
    * All threads.
    */
   @Pure
+  @NonNull
   public org.eclipse.lsp4j.debug.Thread[] getThreads() {
     return this.threads;
   }
@@ -32,7 +35,7 @@ public class ThreadsResponse {
   /**
    * All threads.
    */
-  public void setThreads(final org.eclipse.lsp4j.debug.Thread[] threads) {
+  public void setThreads(@NonNull final org.eclipse.lsp4j.debug.Thread[] threads) {
     this.threads = threads;
   }
   

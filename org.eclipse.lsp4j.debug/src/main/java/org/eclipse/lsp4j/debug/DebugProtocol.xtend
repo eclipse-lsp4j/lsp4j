@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.Map
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.messages.Either
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
  * Declaration of parameters, response bodies, and event bodies.
@@ -43,6 +44,7 @@ class StoppedEventArguments {
 	 * <p>
 	 * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
 	 */
+	@NonNull
 	String reason;
 	/**
 	 * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is.
@@ -107,6 +109,7 @@ class ContinuedEventArguments {
 	/**
 	 * The thread which was continued.
 	 */
+	@NonNull
 	Integer threadId;
 	/**
 	 * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
@@ -126,6 +129,7 @@ class ExitedEventArguments {
 	/**
 	 * The exit code returned from the debuggee.
 	 */
+	@NonNull
 	Integer exitCode;
 }
 
@@ -160,10 +164,12 @@ class ThreadEventArguments {
 	 * <p>
 	 * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
 	 */
+	@NonNull
 	String reason;
 	/**
 	 * The identifier of the thread.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -195,6 +201,7 @@ class OutputEventArguments {
 	/**
 	 * The output to report.
 	 */
+	@NonNull
 	String output;
 	/**
 	 * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
@@ -254,10 +261,12 @@ class BreakpointEventArguments {
 	 * <p>
 	 * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
 	 */
+	@NonNull
 	String reason;
 	/**
 	 * The breakpoint.
 	 */
+	@NonNull
 	Breakpoint breakpoint;
 }
 
@@ -282,10 +291,12 @@ class ModuleEventArguments {
 	/**
 	 * The reason for the event.
 	 */
+	@NonNull
 	ModuleEventArgumentsReason reason;
 	/**
 	 * The new, changed, or removed module. In case of 'removed' only the module id is used.
 	 */
+	@NonNull
 	Module module;
 }
 
@@ -308,10 +319,12 @@ class LoadedSourceEventArguments {
 	/**
 	 * The reason for the event.
 	 */
+	@NonNull
 	LoadedSourceEventArgumentsReason reason;
 	/**
 	 * The new, changed, or removed source.
 	 */
+	@NonNull
 	Source source;
 }
 
@@ -336,6 +349,7 @@ class ProcessEventArguments {
 	 * The logical name of the process. This is usually the full path to process's executable file. Example:
 	 * /home/example/myproj/program.js.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * The system process id of the debugged process. This property will be missing for non-system processes.
@@ -409,10 +423,12 @@ class RunInTerminalRequestArguments {
 	/**
 	 * Working directory of the command.
 	 */
+	@NonNull
 	String cwd;
 	/**
 	 * List of arguments. The first argument is the command to run.
 	 */
+	@NonNull
 	String[] args;
 	/**
 	 * Environment key-value pairs that are added to or removed from the default environment.
@@ -444,6 +460,7 @@ class InitializeRequestArguments {
 	/**
 	 * The ID of the debug adapter.
 	 */
+	@NonNull
 	String adapterID;
 	/**
 	 * The ISO-639 locale of the (frontend) client using this adapter, e.g. en-US or de-CH.
@@ -576,6 +593,7 @@ class SetBreakpointsResponse {
 	 * Information about the breakpoints. The array elements are in the same order as the elements of the
 	 * 'breakpoints' (or the deprecated 'lines') in the SetBreakpointsArguments.
 	 */
+	@NonNull
 	Breakpoint[] breakpoints;
 }
 
@@ -587,6 +605,7 @@ class SetBreakpointsArguments {
 	/**
 	 * The source location of the breakpoints; either source.path or source.reference must be specified.
 	 */
+	@NonNull
 	Source source;
 	/**
 	 * The code locations of the breakpoints.
@@ -619,6 +638,7 @@ class SetFunctionBreakpointsResponse {
 	/**
 	 * Information about the breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
 	 */
+	@NonNull
 	Breakpoint[] breakpoints;
 }
 
@@ -630,6 +650,7 @@ class SetFunctionBreakpointsArguments {
 	/**
 	 * The function names of the breakpoints.
 	 */
+	@NonNull
 	FunctionBreakpoint[] breakpoints;
 }
 
@@ -641,6 +662,7 @@ class SetExceptionBreakpointsArguments {
 	/**
 	 * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
 	 */
+	@NonNull
 	String[] filters;
 	/**
 	 * Configuration options for selected exceptions.
@@ -673,6 +695,7 @@ class ContinueArguments {
 	 * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
 	 * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -684,6 +707,7 @@ class NextArguments {
 	/**
 	 * Execute 'next' for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -695,6 +719,7 @@ class StepInArguments {
 	/**
 	 * Execute 'stepIn' for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 	/**
 	 * Optional id of the target to step into.
@@ -712,6 +737,7 @@ class StepOutArguments {
 	/**
 	 * Execute 'stepOut' for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -723,6 +749,7 @@ class StepBackArguments {
 	/**
 	 * Exceute 'stepBack' for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -734,6 +761,7 @@ class ReverseContinueArguments {
 	/**
 	 * Exceute 'reverseContinue' for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -745,6 +773,7 @@ class RestartFrameArguments {
 	/**
 	 * Restart this stackframe.
 	 */
+	@NonNull
 	Integer frameId;
 }
 
@@ -756,10 +785,12 @@ class GotoArguments {
 	/**
 	 * Set the goto target for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 	/**
 	 * The location where the debuggee will continue to run.
 	 */
+	@NonNull
 	Integer targetId;
 }
 
@@ -771,6 +802,7 @@ class PauseArguments {
 	/**
 	 * Pause execution for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -784,6 +816,7 @@ class StackTraceResponse {
 	 * <p>
 	 * This means that there is no location information available.
 	 */
+	@NonNull
 	StackFrame[] stackFrames;
 	/**
 	 * The total number of frames available.
@@ -801,6 +834,7 @@ class StackTraceArguments {
 	/**
 	 * Retrieve the stacktrace for this thread.
 	 */
+	@NonNull
 	Integer threadId;
 	/**
 	 * The index of the first frame to return; if omitted frames start at 0.
@@ -830,6 +864,7 @@ class ScopesResponse {
 	/**
 	 * The scopes of the stackframe. If the array has length zero, there are no scopes available.
 	 */
+	@NonNull
 	Scope[] scopes;
 }
 
@@ -841,6 +876,7 @@ class ScopesArguments {
 	/**
 	 * Retrieve the scopes for this stackframe.
 	 */
+	@NonNull
 	Integer frameId;
 }
 
@@ -852,6 +888,7 @@ class VariablesResponse {
 	/**
 	 * All (or a range) of variables for the given variable reference.
 	 */
+	@NonNull
 	Variable[] variables;
 }
 
@@ -863,6 +900,7 @@ class VariablesArguments {
 	/**
 	 * The Variable reference.
 	 */
+	@NonNull
 	Integer variablesReference;
 	/**
 	 * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
@@ -906,6 +944,7 @@ class SetVariableResponse {
 	/**
 	 * The new value of the variable.
 	 */
+	@NonNull
 	String value;
 	/**
 	 * The type of the new value. Typically shown in the UI when hovering over the value.
@@ -946,14 +985,17 @@ class SetVariableArguments {
 	/**
 	 * The reference of the variable container.
 	 */
+	@NonNull
 	Integer variablesReference;
 	/**
 	 * The name of the variable.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * The value of the variable.
 	 */
+	@NonNull
 	String value;
 	/**
 	 * Specifies details on how to format the response value.
@@ -971,6 +1013,7 @@ class SourceResponse {
 	/**
 	 * Content of the source reference.
 	 */
+	@NonNull
 	String content;
 	/**
 	 * Optional content type (mime type) of the source.
@@ -995,6 +1038,7 @@ class SourceArguments {
 	 * The reference to the source. This is the same as source.sourceReference. This is provided for backward
 	 * compatibility since old backends do not understand the 'source' attribute.
 	 */
+	@NonNull
 	Integer sourceReference;
 }
 
@@ -1006,6 +1050,7 @@ class ThreadsResponse {
 	/**
 	 * All threads.
 	 */
+	@NonNull
 	Thread[] threads;
 }
 
@@ -1017,6 +1062,7 @@ class ModulesResponse {
 	/**
 	 * All modules or range of modules.
 	 */
+	@NonNull
 	Module[] modules;
 	/**
 	 * The total number of modules available.
@@ -1053,6 +1099,7 @@ class LoadedSourcesResponse {
 	/**
 	 * Set of loaded sources.
 	 */
+	@NonNull
 	Source[] sources;
 }
 
@@ -1073,6 +1120,7 @@ class EvaluateResponse {
 	/**
 	 * The result of the evaluate request.
 	 */
+	@NonNull
 	String result;
 	/**
 	 * The optional type of the evaluate result.
@@ -1090,6 +1138,7 @@ class EvaluateResponse {
 	 * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 */
+	@NonNull
 	Integer variablesReference;
 	/**
 	 * The number of named child variables.
@@ -1117,6 +1166,7 @@ class EvaluateArguments {
 	/**
 	 * The expression to evaluate.
 	 */
+	@NonNull
 	String expression;
 	/**
 	 * Evaluate the expression in the scope of this stack frame. If not specified, the expression is evaluated in the
@@ -1169,6 +1219,7 @@ class StepInTargetsResponse {
 	/**
 	 * The possible stepIn targets of the specified source location.
 	 */
+	@NonNull
 	StepInTarget[] targets;
 }
 
@@ -1180,6 +1231,7 @@ class StepInTargetsArguments {
 	/**
 	 * The stack frame for which to retrieve the possible stepIn targets.
 	 */
+	@NonNull
 	Integer frameId;
 }
 
@@ -1191,6 +1243,7 @@ class GotoTargetsResponse {
 	/**
 	 * The possible goto targets of the specified location.
 	 */
+	@NonNull
 	GotoTarget[] targets;
 }
 
@@ -1202,10 +1255,12 @@ class GotoTargetsArguments {
 	/**
 	 * The source location for which the goto targets are determined.
 	 */
+	@NonNull
 	Source source;
 	/**
 	 * The line location for which the goto targets are determined.
 	 */
+	@NonNull
 	Integer line;
 	/**
 	 * An optional column location for which the goto targets are determined.
@@ -1223,6 +1278,7 @@ class CompletionsResponse {
 	/**
 	 * The possible completions for .
 	 */
+	@NonNull
 	CompletionItem[] targets;
 }
 
@@ -1242,10 +1298,12 @@ class CompletionsArguments {
 	 * One or more source lines. Typically this is the text a user has typed into the debug console before he asked
 	 * for completion.
 	 */
+	@NonNull
 	String text;
 	/**
 	 * The character position for which to determine the completion proposals.
 	 */
+	@NonNull
 	Integer column;
 	/**
 	 * An optional line for which to determine the completion proposals. If missing the first line of the text is
@@ -1264,6 +1322,7 @@ class ExceptionInfoResponse {
 	/**
 	 * ID of the exception that was thrown.
 	 */
+	@NonNull
 	String exceptionId;
 	/**
 	 * Descriptive text for the exception provided by the debug adapter.
@@ -1274,6 +1333,7 @@ class ExceptionInfoResponse {
 	/**
 	 * Mode that caused the exception notification to be raised.
 	 */
+	@NonNull
 	ExceptionBreakMode breakMode;
 	/**
 	 * Detailed information about the exception.
@@ -1291,6 +1351,7 @@ class ExceptionInfoArguments {
 	/**
 	 * Thread for which exception information should be retrieved.
 	 */
+	@NonNull
 	Integer threadId;
 }
 
@@ -1444,10 +1505,12 @@ class ExceptionBreakpointsFilter {
 	/**
 	 * The internal ID of the filter. This value is passed to the setExceptionBreakpoints request.
 	 */
+	@NonNull
 	String filter;
 	/**
 	 * The name of the filter. This will be shown in the UI.
 	 */
+	@NonNull
 	String label;
 	/**
 	 * Initial value of the filter. If not specified a value 'false' is assumed.
@@ -1466,6 +1529,7 @@ class Message {
 	/**
 	 * Unique identifier for the message.
 	 */
+	@NonNull
 	Integer id;
 	/**
 	 * A format string for the message. Embedded variables have the form '{name}'.
@@ -1473,6 +1537,7 @@ class Message {
 	 * If variable name starts with an underscore character, the variable does not contain user data (PII) and can be
 	 * safely used for telemetry purposes.
 	 */
+	@NonNull
 	String format;
 	/**
 	 * An object used as a dictionary for looking up the variables in the format string.
@@ -1531,10 +1596,12 @@ class Module {
 	/**
 	 * Unique identifier for the module.
 	 */
+	@NonNull
 	Either<Integer, String> id;
 	/**
 	 * A name of the module.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * optional but recommended attributes.
@@ -1605,10 +1672,12 @@ class ColumnDescriptor {
 	/**
 	 * Name of the attribute rendered in this column.
 	 */
+	@NonNull
 	String attributeName;
 	/**
 	 * Header UI label of column.
 	 */
+	@NonNull
 	String label;
 	/**
 	 * Format to use for the rendered values in this column. TBD how the format strings looks like.
@@ -1651,6 +1720,7 @@ class ModulesViewDescriptor {
 	/**
 
 	 */
+	@NonNull
 	ColumnDescriptor[] columns;
 }
 
@@ -1662,10 +1732,12 @@ class Thread {
 	/**
 	 * Unique identifier for the thread.
 	 */
+	@NonNull
 	Integer id;
 	/**
 	 * A name of the thread.
 	 */
+	@NonNull
 	String name;
 }
 
@@ -1751,10 +1823,12 @@ class StackFrame {
 	 * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
 	 * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
 	 */
+	@NonNull
 	Integer id;
 	/**
 	 * The name of the stack frame, typically a method name.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * The optional source of the frame.
@@ -1765,10 +1839,12 @@ class StackFrame {
 	/**
 	 * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
 	 */
+	@NonNull
 	Integer line;
 	/**
 	 * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
 	 */
+	@NonNull
 	Integer column;
 	/**
 	 * An optional end line of the range covered by the stack frame.
@@ -1817,11 +1893,13 @@ class Scope {
 	/**
 	 * Name of the scope such as 'Arguments', 'Locals'.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * The variables of this scope can be retrieved by passing the value of variablesReference to the
 	 * VariablesRequest.
 	 */
+	@NonNull
 	Integer variablesReference;
 	/**
 	 * The number of named variables in this scope.
@@ -1842,6 +1920,7 @@ class Scope {
 	/**
 	 * If true, the number of variables in this scope is large or expensive to retrieve.
 	 */
+	@NonNull
 	Boolean expensive;
 	/**
 	 * Optional source for this scope.
@@ -1897,10 +1976,12 @@ class Variable {
 	/**
 	 * The variable's name.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
 	 */
+	@NonNull
 	String value;
 	/**
 	 * The type of the variable's value. Typically shown in the UI when hovering over the value.
@@ -1925,6 +2006,7 @@ class Variable {
 	 * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 */
+	@NonNull
 	Integer variablesReference;
 	/**
 	 * The number of named child variables.
@@ -2082,6 +2164,7 @@ class SourceBreakpoint {
 	/**
 	 * The source line of the breakpoint.
 	 */
+	@NonNull
 	Integer line;
 	/**
 	 * An optional source column of the breakpoint.
@@ -2112,6 +2195,7 @@ class FunctionBreakpoint {
 	/**
 	 * The name of the function.
 	 */
+	@NonNull
 	String name;
 	/**
 	 * An optional expression for conditional breakpoints.
@@ -2142,6 +2226,7 @@ class Breakpoint {
 	/**
 	 * If true breakpoint could be set (but not necessarily at the desired location).
 	 */
+	@NonNull
 	Boolean verified;
 	/**
 	 * An optional message about the state of the breakpoint. This is shown to the user and can be used to explain why
@@ -2192,10 +2277,12 @@ class StepInTarget {
 	/**
 	 * Unique identifier for a stepIn target.
 	 */
+	@NonNull
 	Integer id;
 	/**
 	 * The name of the stepIn target (shown in the UI).
 	 */
+	@NonNull
 	String label;
 }
 
@@ -2209,14 +2296,17 @@ class GotoTarget {
 	/**
 	 * Unique identifier for a goto target. This is used in the goto request.
 	 */
+	@NonNull
 	Integer id;
 	/**
 	 * The name of the goto target (shown in the UI).
 	 */
+	@NonNull
 	String label;
 	/**
 	 * The line of the goto target.
 	 */
+	@NonNull
 	Integer line;
 	/**
 	 * An optional column of the goto target.
@@ -2247,6 +2337,7 @@ class CompletionItem {
 	 * The label of this completion item. By default this is also the text that is inserted when selecting this
 	 * completion.
 	 */
+	@NonNull
 	String label;
 	/**
 	 * If text is not falsy then it is inserted instead of the label.
@@ -2326,10 +2417,12 @@ class Checksum {
 	/**
 	 * The algorithm used to calculate this checksum.
 	 */
+	@NonNull
 	ChecksumAlgorithm algorithm;
 	/**
 	 * Value of the checksum.
 	 */
+	@NonNull
 	String checksum;
 }
 
@@ -2410,6 +2503,7 @@ class ExceptionOptions {
 	/**
 	 * Condition when a thrown exception should result in a break.
 	 */
+	@NonNull
 	ExceptionBreakMode breakMode;
 }
 
@@ -2448,6 +2542,7 @@ class ExceptionPathSegment {
 	/**
 	 * Depending on the value of 'negate' the names that should match or not match.
 	 */
+	@NonNull
 	String[] names;
 }
 

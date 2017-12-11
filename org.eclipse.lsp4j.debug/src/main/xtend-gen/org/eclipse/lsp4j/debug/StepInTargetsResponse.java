@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.StepInTarget;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class StepInTargetsResponse {
   /**
    * The possible stepIn targets of the specified source location.
    */
+  @NonNull
   private StepInTarget[] targets;
   
   /**
    * The possible stepIn targets of the specified source location.
    */
   @Pure
+  @NonNull
   public StepInTarget[] getTargets() {
     return this.targets;
   }
@@ -33,7 +36,7 @@ public class StepInTargetsResponse {
   /**
    * The possible stepIn targets of the specified source location.
    */
-  public void setTargets(final StepInTarget[] targets) {
+  public void setTargets(@NonNull final StepInTarget[] targets) {
     this.targets = targets;
   }
   

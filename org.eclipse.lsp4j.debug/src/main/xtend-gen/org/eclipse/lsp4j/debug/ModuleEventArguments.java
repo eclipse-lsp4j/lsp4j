@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Module;
 import org.eclipse.lsp4j.debug.ModuleEventArgumentsReason;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,17 +23,20 @@ public class ModuleEventArguments {
   /**
    * The reason for the event.
    */
+  @NonNull
   private ModuleEventArgumentsReason reason;
   
   /**
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
+  @NonNull
   private Module module;
   
   /**
    * The reason for the event.
    */
   @Pure
+  @NonNull
   public ModuleEventArgumentsReason getReason() {
     return this.reason;
   }
@@ -40,7 +44,7 @@ public class ModuleEventArguments {
   /**
    * The reason for the event.
    */
-  public void setReason(final ModuleEventArgumentsReason reason) {
+  public void setReason(@NonNull final ModuleEventArgumentsReason reason) {
     this.reason = reason;
   }
   
@@ -48,6 +52,7 @@ public class ModuleEventArguments {
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
   @Pure
+  @NonNull
   public Module getModule() {
     return this.module;
   }
@@ -55,7 +60,7 @@ public class ModuleEventArguments {
   /**
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
-  public void setModule(final Module module) {
+  public void setModule(@NonNull final Module module) {
     this.module = module;
   }
   

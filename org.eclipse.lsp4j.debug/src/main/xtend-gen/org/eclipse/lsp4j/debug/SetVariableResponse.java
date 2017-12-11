@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,6 +19,7 @@ public class SetVariableResponse {
   /**
    * The new value of the variable.
    */
+  @NonNull
   private String value;
   
   /**
@@ -57,6 +59,7 @@ public class SetVariableResponse {
    * The new value of the variable.
    */
   @Pure
+  @NonNull
   public String getValue() {
     return this.value;
   }
@@ -64,7 +67,7 @@ public class SetVariableResponse {
   /**
    * The new value of the variable.
    */
-  public void setValue(final String value) {
+  public void setValue(@NonNull final String value) {
     this.value = value;
   }
   

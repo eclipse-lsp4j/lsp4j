@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -27,11 +28,13 @@ public class CompletionsArguments {
    * One or more source lines. Typically this is the text a user has typed into the debug console before he asked
    * for completion.
    */
+  @NonNull
   private String text;
   
   /**
    * The character position for which to determine the completion proposals.
    */
+  @NonNull
   private Integer column;
   
   /**
@@ -68,6 +71,7 @@ public class CompletionsArguments {
    * for completion.
    */
   @Pure
+  @NonNull
   public String getText() {
     return this.text;
   }
@@ -76,7 +80,7 @@ public class CompletionsArguments {
    * One or more source lines. Typically this is the text a user has typed into the debug console before he asked
    * for completion.
    */
-  public void setText(final String text) {
+  public void setText(@NonNull final String text) {
     this.text = text;
   }
   
@@ -84,6 +88,7 @@ public class CompletionsArguments {
    * The character position for which to determine the completion proposals.
    */
   @Pure
+  @NonNull
   public Integer getColumn() {
     return this.column;
   }
@@ -91,7 +96,7 @@ public class CompletionsArguments {
   /**
    * The character position for which to determine the completion proposals.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(@NonNull final Integer column) {
     this.column = column;
   }
   

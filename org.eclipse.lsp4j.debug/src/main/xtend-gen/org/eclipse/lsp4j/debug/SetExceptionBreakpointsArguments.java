@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.ExceptionOptions;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,6 +21,7 @@ public class SetExceptionBreakpointsArguments {
   /**
    * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
    */
+  @NonNull
   private String[] filters;
   
   /**
@@ -33,6 +35,7 @@ public class SetExceptionBreakpointsArguments {
    * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
    */
   @Pure
+  @NonNull
   public String[] getFilters() {
     return this.filters;
   }
@@ -40,7 +43,7 @@ public class SetExceptionBreakpointsArguments {
   /**
    * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
    */
-  public void setFilters(final String[] filters) {
+  public void setFilters(@NonNull final String[] filters) {
     this.filters = filters;
   }
   

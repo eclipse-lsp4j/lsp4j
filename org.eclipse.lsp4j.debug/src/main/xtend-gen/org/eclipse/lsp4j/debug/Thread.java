@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,17 +19,20 @@ public class Thread {
   /**
    * Unique identifier for the thread.
    */
+  @NonNull
   private Integer id;
   
   /**
    * A name of the thread.
    */
+  @NonNull
   private String name;
   
   /**
    * Unique identifier for the thread.
    */
   @Pure
+  @NonNull
   public Integer getId() {
     return this.id;
   }
@@ -36,7 +40,7 @@ public class Thread {
   /**
    * Unique identifier for the thread.
    */
-  public void setId(final Integer id) {
+  public void setId(@NonNull final Integer id) {
     this.id = id;
   }
   
@@ -44,6 +48,7 @@ public class Thread {
    * A name of the thread.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -51,7 +56,7 @@ public class Thread {
   /**
    * A name of the thread.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   

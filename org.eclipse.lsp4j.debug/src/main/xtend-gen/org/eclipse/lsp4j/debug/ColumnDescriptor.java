@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ColumnDescriptorType;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,11 +23,13 @@ public class ColumnDescriptor {
   /**
    * Name of the attribute rendered in this column.
    */
+  @NonNull
   private String attributeName;
   
   /**
    * Header UI label of column.
    */
+  @NonNull
   private String label;
   
   /**
@@ -54,6 +57,7 @@ public class ColumnDescriptor {
    * Name of the attribute rendered in this column.
    */
   @Pure
+  @NonNull
   public String getAttributeName() {
     return this.attributeName;
   }
@@ -61,7 +65,7 @@ public class ColumnDescriptor {
   /**
    * Name of the attribute rendered in this column.
    */
-  public void setAttributeName(final String attributeName) {
+  public void setAttributeName(@NonNull final String attributeName) {
     this.attributeName = attributeName;
   }
   
@@ -69,6 +73,7 @@ public class ColumnDescriptor {
    * Header UI label of column.
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -76,7 +81,7 @@ public class ColumnDescriptor {
   /**
    * Header UI label of column.
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   

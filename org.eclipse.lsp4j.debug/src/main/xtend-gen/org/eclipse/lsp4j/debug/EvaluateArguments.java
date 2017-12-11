@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,6 +20,7 @@ public class EvaluateArguments {
   /**
    * The expression to evaluate.
    */
+  @NonNull
   private String expression;
   
   /**
@@ -49,6 +51,7 @@ public class EvaluateArguments {
    * The expression to evaluate.
    */
   @Pure
+  @NonNull
   public String getExpression() {
     return this.expression;
   }
@@ -56,7 +59,7 @@ public class EvaluateArguments {
   /**
    * The expression to evaluate.
    */
-  public void setExpression(final String expression) {
+  public void setExpression(@NonNull final String expression) {
     this.expression = expression;
   }
   

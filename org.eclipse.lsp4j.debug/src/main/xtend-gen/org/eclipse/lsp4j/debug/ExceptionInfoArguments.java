@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,12 +19,14 @@ public class ExceptionInfoArguments {
   /**
    * Thread for which exception information should be retrieved.
    */
+  @NonNull
   private Integer threadId;
   
   /**
    * Thread for which exception information should be retrieved.
    */
   @Pure
+  @NonNull
   public Integer getThreadId() {
     return this.threadId;
   }
@@ -31,7 +34,7 @@ public class ExceptionInfoArguments {
   /**
    * Thread for which exception information should be retrieved.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = threadId;
   }
   

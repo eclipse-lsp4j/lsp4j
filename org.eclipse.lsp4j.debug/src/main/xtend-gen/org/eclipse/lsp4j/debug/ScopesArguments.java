@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,12 +19,14 @@ public class ScopesArguments {
   /**
    * Retrieve the scopes for this stackframe.
    */
+  @NonNull
   private Integer frameId;
   
   /**
    * Retrieve the scopes for this stackframe.
    */
   @Pure
+  @NonNull
   public Integer getFrameId() {
     return this.frameId;
   }
@@ -31,7 +34,7 @@ public class ScopesArguments {
   /**
    * Retrieve the scopes for this stackframe.
    */
-  public void setFrameId(final Integer frameId) {
+  public void setFrameId(@NonNull final Integer frameId) {
     this.frameId = frameId;
   }
   

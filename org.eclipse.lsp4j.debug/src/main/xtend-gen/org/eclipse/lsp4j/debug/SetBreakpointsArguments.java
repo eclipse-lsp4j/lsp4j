@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.debug;
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.SourceBreakpoint;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -21,6 +22,7 @@ public class SetBreakpointsArguments {
   /**
    * The source location of the breakpoints; either source.path or source.reference must be specified.
    */
+  @NonNull
   private Source source;
   
   /**
@@ -49,6 +51,7 @@ public class SetBreakpointsArguments {
    * The source location of the breakpoints; either source.path or source.reference must be specified.
    */
   @Pure
+  @NonNull
   public Source getSource() {
     return this.source;
   }
@@ -56,7 +59,7 @@ public class SetBreakpointsArguments {
   /**
    * The source location of the breakpoints; either source.path or source.reference must be specified.
    */
-  public void setSource(final Source source) {
+  public void setSource(@NonNull final Source source) {
     this.source = source;
   }
   

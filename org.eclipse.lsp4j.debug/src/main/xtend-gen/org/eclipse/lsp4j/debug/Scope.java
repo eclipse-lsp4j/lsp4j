@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,12 +20,14 @@ public class Scope {
   /**
    * Name of the scope such as 'Arguments', 'Locals'.
    */
+  @NonNull
   private String name;
   
   /**
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
    * VariablesRequest.
    */
+  @NonNull
   private Integer variablesReference;
   
   /**
@@ -48,6 +51,7 @@ public class Scope {
   /**
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
+  @NonNull
   private Boolean expensive;
   
   /**
@@ -89,6 +93,7 @@ public class Scope {
    * Name of the scope such as 'Arguments', 'Locals'.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -96,7 +101,7 @@ public class Scope {
   /**
    * Name of the scope such as 'Arguments', 'Locals'.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -105,6 +110,7 @@ public class Scope {
    * VariablesRequest.
    */
   @Pure
+  @NonNull
   public Integer getVariablesReference() {
     return this.variablesReference;
   }
@@ -113,7 +119,7 @@ public class Scope {
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
    * VariablesRequest.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Integer variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -167,6 +173,7 @@ public class Scope {
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
   @Pure
+  @NonNull
   public Boolean getExpensive() {
     return this.expensive;
   }
@@ -174,7 +181,7 @@ public class Scope {
   /**
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
-  public void setExpensive(final Boolean expensive) {
+  public void setExpensive(@NonNull final Boolean expensive) {
     this.expensive = expensive;
   }
   

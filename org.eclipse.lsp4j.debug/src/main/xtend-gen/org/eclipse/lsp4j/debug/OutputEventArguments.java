@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -30,6 +31,7 @@ public class OutputEventArguments {
   /**
    * The output to report.
    */
+  @NonNull
   private String output;
   
   /**
@@ -96,6 +98,7 @@ public class OutputEventArguments {
    * The output to report.
    */
   @Pure
+  @NonNull
   public String getOutput() {
     return this.output;
   }
@@ -103,7 +106,7 @@ public class OutputEventArguments {
   /**
    * The output to report.
    */
-  public void setOutput(final String output) {
+  public void setOutput(@NonNull final String output) {
     this.output = output;
   }
   

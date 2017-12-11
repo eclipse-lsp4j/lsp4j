@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Map;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,6 +20,7 @@ public class Message {
   /**
    * Unique identifier for the message.
    */
+  @NonNull
   private Integer id;
   
   /**
@@ -27,6 +29,7 @@ public class Message {
    * If variable name starts with an underscore character, the variable does not contain user data (PII) and can be
    * safely used for telemetry purposes.
    */
+  @NonNull
   private String format;
   
   /**
@@ -68,6 +71,7 @@ public class Message {
    * Unique identifier for the message.
    */
   @Pure
+  @NonNull
   public Integer getId() {
     return this.id;
   }
@@ -75,7 +79,7 @@ public class Message {
   /**
    * Unique identifier for the message.
    */
-  public void setId(final Integer id) {
+  public void setId(@NonNull final Integer id) {
     this.id = id;
   }
   
@@ -86,6 +90,7 @@ public class Message {
    * safely used for telemetry purposes.
    */
   @Pure
+  @NonNull
   public String getFormat() {
     return this.format;
   }
@@ -96,7 +101,7 @@ public class Message {
    * If variable name starts with an underscore character, the variable does not contain user data (PII) and can be
    * safely used for telemetry purposes.
    */
-  public void setFormat(final String format) {
+  public void setFormat(@NonNull final String format) {
     this.format = format;
   }
   

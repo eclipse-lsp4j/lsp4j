@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.StackFrame;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,6 +23,7 @@ public class StackTraceResponse {
    * <p>
    * This means that there is no location information available.
    */
+  @NonNull
   private StackFrame[] stackFrames;
   
   /**
@@ -37,6 +39,7 @@ public class StackTraceResponse {
    * This means that there is no location information available.
    */
   @Pure
+  @NonNull
   public StackFrame[] getStackFrames() {
     return this.stackFrames;
   }
@@ -46,7 +49,7 @@ public class StackTraceResponse {
    * <p>
    * This means that there is no location information available.
    */
-  public void setStackFrames(final StackFrame[] stackFrames) {
+  public void setStackFrames(@NonNull final StackFrame[] stackFrames) {
     this.stackFrames = stackFrames;
   }
   

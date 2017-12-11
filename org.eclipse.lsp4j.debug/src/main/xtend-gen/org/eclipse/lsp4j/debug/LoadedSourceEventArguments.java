@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.LoadedSourceEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,17 +23,20 @@ public class LoadedSourceEventArguments {
   /**
    * The reason for the event.
    */
+  @NonNull
   private LoadedSourceEventArgumentsReason reason;
   
   /**
    * The new, changed, or removed source.
    */
+  @NonNull
   private Source source;
   
   /**
    * The reason for the event.
    */
   @Pure
+  @NonNull
   public LoadedSourceEventArgumentsReason getReason() {
     return this.reason;
   }
@@ -40,7 +44,7 @@ public class LoadedSourceEventArguments {
   /**
    * The reason for the event.
    */
-  public void setReason(final LoadedSourceEventArgumentsReason reason) {
+  public void setReason(@NonNull final LoadedSourceEventArgumentsReason reason) {
     this.reason = reason;
   }
   
@@ -48,6 +52,7 @@ public class LoadedSourceEventArguments {
    * The new, changed, or removed source.
    */
   @Pure
+  @NonNull
   public Source getSource() {
     return this.source;
   }
@@ -55,7 +60,7 @@ public class LoadedSourceEventArguments {
   /**
    * The new, changed, or removed source.
    */
-  public void setSource(final Source source) {
+  public void setSource(@NonNull final Source source) {
     this.source = source;
   }
   

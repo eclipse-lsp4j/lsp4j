@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Breakpoint;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -29,6 +30,7 @@ public class SetBreakpointsResponse {
    * Information about the breakpoints. The array elements are in the same order as the elements of the
    * 'breakpoints' (or the deprecated 'lines') in the SetBreakpointsArguments.
    */
+  @NonNull
   private Breakpoint[] breakpoints;
   
   /**
@@ -36,6 +38,7 @@ public class SetBreakpointsResponse {
    * 'breakpoints' (or the deprecated 'lines') in the SetBreakpointsArguments.
    */
   @Pure
+  @NonNull
   public Breakpoint[] getBreakpoints() {
     return this.breakpoints;
   }
@@ -44,7 +47,7 @@ public class SetBreakpointsResponse {
    * Information about the breakpoints. The array elements are in the same order as the elements of the
    * 'breakpoints' (or the deprecated 'lines') in the SetBreakpointsArguments.
    */
-  public void setBreakpoints(final Breakpoint[] breakpoints) {
+  public void setBreakpoints(@NonNull final Breakpoint[] breakpoints) {
     this.breakpoints = breakpoints;
   }
   

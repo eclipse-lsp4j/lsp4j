@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,6 +19,7 @@ public class SourceResponse {
   /**
    * Content of the source reference.
    */
+  @NonNull
   private String content;
   
   /**
@@ -31,6 +33,7 @@ public class SourceResponse {
    * Content of the source reference.
    */
   @Pure
+  @NonNull
   public String getContent() {
     return this.content;
   }
@@ -38,7 +41,7 @@ public class SourceResponse {
   /**
    * Content of the source reference.
    */
-  public void setContent(final String content) {
+  public void setContent(@NonNull final String content) {
     this.content = content;
   }
   

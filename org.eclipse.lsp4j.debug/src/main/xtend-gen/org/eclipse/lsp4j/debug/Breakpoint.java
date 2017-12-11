@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -26,6 +27,7 @@ public class Breakpoint {
   /**
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
+  @NonNull
   private Boolean verified;
   
   /**
@@ -95,6 +97,7 @@ public class Breakpoint {
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
   @Pure
+  @NonNull
   public Boolean getVerified() {
     return this.verified;
   }
@@ -102,7 +105,7 @@ public class Breakpoint {
   /**
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
-  public void setVerified(final Boolean verified) {
+  public void setVerified(@NonNull final Boolean verified) {
     this.verified = verified;
   }
   

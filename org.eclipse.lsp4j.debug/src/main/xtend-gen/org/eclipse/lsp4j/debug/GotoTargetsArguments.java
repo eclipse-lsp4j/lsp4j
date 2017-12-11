@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,11 +20,13 @@ public class GotoTargetsArguments {
   /**
    * The source location for which the goto targets are determined.
    */
+  @NonNull
   private Source source;
   
   /**
    * The line location for which the goto targets are determined.
    */
+  @NonNull
   private Integer line;
   
   /**
@@ -37,6 +40,7 @@ public class GotoTargetsArguments {
    * The source location for which the goto targets are determined.
    */
   @Pure
+  @NonNull
   public Source getSource() {
     return this.source;
   }
@@ -44,7 +48,7 @@ public class GotoTargetsArguments {
   /**
    * The source location for which the goto targets are determined.
    */
-  public void setSource(final Source source) {
+  public void setSource(@NonNull final Source source) {
     this.source = source;
   }
   
@@ -52,6 +56,7 @@ public class GotoTargetsArguments {
    * The line location for which the goto targets are determined.
    */
   @Pure
+  @NonNull
   public Integer getLine() {
     return this.line;
   }
@@ -59,7 +64,7 @@ public class GotoTargetsArguments {
   /**
    * The line location for which the goto targets are determined.
    */
-  public void setLine(final Integer line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = line;
   }
   

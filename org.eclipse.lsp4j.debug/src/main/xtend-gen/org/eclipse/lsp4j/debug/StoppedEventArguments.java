@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -28,6 +29,7 @@ public class StoppedEventArguments {
    * <p>
    * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
    */
+  @NonNull
   private String reason;
   
   /**
@@ -73,6 +75,7 @@ public class StoppedEventArguments {
    * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
    */
   @Pure
+  @NonNull
   public String getReason() {
     return this.reason;
   }
@@ -85,7 +88,7 @@ public class StoppedEventArguments {
    * <p>
    * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
    */
-  public void setReason(final String reason) {
+  public void setReason(@NonNull final String reason) {
     this.reason = reason;
   }
   
