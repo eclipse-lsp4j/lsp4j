@@ -29,7 +29,7 @@ public class EvaluateArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer frameId;
+  private Long frameId;
   
   /**
    * The context in which the evaluate request is run.
@@ -70,7 +70,7 @@ public class EvaluateArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getFrameId() {
+  public Long getFrameId() {
     return this.frameId;
   }
   
@@ -80,7 +80,7 @@ public class EvaluateArguments {
    * <p>
    * This is an optional property.
    */
-  public void setFrameId(final Integer frameId) {
+  public void setFrameId(final Long frameId) {
     this.frameId = frameId;
   }
   

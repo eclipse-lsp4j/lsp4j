@@ -20,21 +20,21 @@ public class ReverseContinueArguments {
    * Exceute 'reverseContinue' for this thread.
    */
   @NonNull
-  private Integer threadId;
+  private Long threadId;
   
   /**
    * Exceute 'reverseContinue' for this thread.
    */
   @Pure
   @NonNull
-  public Integer getThreadId() {
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * Exceute 'reverseContinue' for this thread.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

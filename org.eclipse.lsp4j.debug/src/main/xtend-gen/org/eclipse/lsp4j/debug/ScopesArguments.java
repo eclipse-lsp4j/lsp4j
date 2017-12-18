@@ -20,21 +20,21 @@ public class ScopesArguments {
    * Retrieve the scopes for this stackframe.
    */
   @NonNull
-  private Integer frameId;
+  private Long frameId;
   
   /**
    * Retrieve the scopes for this stackframe.
    */
   @Pure
   @NonNull
-  public Integer getFrameId() {
+  public Long getFrameId() {
     return this.frameId;
   }
   
   /**
    * Retrieve the scopes for this stackframe.
    */
-  public void setFrameId(@NonNull final Integer frameId) {
+  public void setFrameId(@NonNull final Long frameId) {
     this.frameId = frameId;
   }
   

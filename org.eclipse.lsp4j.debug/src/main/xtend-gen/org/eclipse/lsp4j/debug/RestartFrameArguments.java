@@ -20,21 +20,21 @@ public class RestartFrameArguments {
    * Restart this stackframe.
    */
   @NonNull
-  private Integer frameId;
+  private Long frameId;
   
   /**
    * Restart this stackframe.
    */
   @Pure
   @NonNull
-  public Integer getFrameId() {
+  public Long getFrameId() {
     return this.frameId;
   }
   
   /**
    * Restart this stackframe.
    */
-  public void setFrameId(@NonNull final Integer frameId) {
+  public void setFrameId(@NonNull final Long frameId) {
     this.frameId = frameId;
   }
   

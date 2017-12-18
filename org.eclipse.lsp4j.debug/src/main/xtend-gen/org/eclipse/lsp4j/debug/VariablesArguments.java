@@ -22,7 +22,7 @@ public class VariablesArguments {
    * The Variable reference.
    */
   @NonNull
-  private Integer variablesReference;
+  private Long variablesReference;
   
   /**
    * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
@@ -36,14 +36,14 @@ public class VariablesArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer start;
+  private Long start;
   
   /**
    * The number of variables to return. If count is missing or 0, all variables are returned.
    * <p>
    * This is an optional property.
    */
-  private Integer count;
+  private Long count;
   
   /**
    * Specifies details on how to format the Variable values.
@@ -57,14 +57,14 @@ public class VariablesArguments {
    */
   @Pure
   @NonNull
-  public Integer getVariablesReference() {
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * The Variable reference.
    */
-  public void setVariablesReference(@NonNull final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -93,7 +93,7 @@ public class VariablesArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getStart() {
+  public Long getStart() {
     return this.start;
   }
   
@@ -102,7 +102,7 @@ public class VariablesArguments {
    * <p>
    * This is an optional property.
    */
-  public void setStart(final Integer start) {
+  public void setStart(final Long start) {
     this.start = start;
   }
   
@@ -112,7 +112,7 @@ public class VariablesArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getCount() {
+  public Long getCount() {
     return this.count;
   }
   
@@ -121,7 +121,7 @@ public class VariablesArguments {
    * <p>
    * This is an optional property.
    */
-  public void setCount(final Integer count) {
+  public void setCount(final Long count) {
     this.count = count;
   }
   

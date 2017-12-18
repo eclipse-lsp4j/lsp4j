@@ -21,7 +21,7 @@ public class SetVariableArguments {
    * The reference of the variable container.
    */
   @NonNull
-  private Integer variablesReference;
+  private Long variablesReference;
   
   /**
    * The name of the variable.
@@ -47,14 +47,14 @@ public class SetVariableArguments {
    */
   @Pure
   @NonNull
-  public Integer getVariablesReference() {
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * The reference of the variable container.
    */
-  public void setVariablesReference(@NonNull final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   

@@ -38,7 +38,7 @@ public class Module {
    * Unique identifier for the module.
    */
   @NonNull
-  private Either<Integer, String> id;
+  private Either<Long, String> id;
   
   /**
    * A name of the module.
@@ -115,18 +115,18 @@ public class Module {
    */
   @Pure
   @NonNull
-  public Either<Integer, String> getId() {
+  public Either<Long, String> getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the module.
    */
-  public void setId(@NonNull final Either<Integer, String> id) {
+  public void setId(@NonNull final Either<Long, String> id) {
     this.id = id;
   }
   
-  public void setId(final Integer id) {
+  public void setId(final Long id) {
     this.id = Either.forLeft(id);
   }
   

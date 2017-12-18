@@ -27,7 +27,7 @@ public class ContinuedEventArguments {
    * The thread which was continued.
    */
   @NonNull
-  private Integer threadId;
+  private Long threadId;
   
   /**
    * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
@@ -41,14 +41,14 @@ public class ContinuedEventArguments {
    */
   @Pure
   @NonNull
-  public Integer getThreadId() {
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * The thread which was continued.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

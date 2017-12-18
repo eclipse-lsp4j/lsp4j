@@ -24,7 +24,7 @@ public class StackFrame {
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
   @NonNull
-  private Integer id;
+  private Long id;
   
   /**
    * The name of the stack frame, typically a method name.
@@ -43,34 +43,34 @@ public class StackFrame {
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
   @NonNull
-  private Integer line;
+  private Long line;
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
   @NonNull
-  private Integer column;
+  private Long column;
   
   /**
    * An optional end line of the range covered by the stack frame.
    * <p>
    * This is an optional property.
    */
-  private Integer endLine;
+  private Long endLine;
   
   /**
    * An optional end column of the range covered by the stack frame.
    * <p>
    * This is an optional property.
    */
-  private Integer endColumn;
+  private Long endColumn;
   
   /**
    * The module associated with this frame, if any.
    * <p>
    * This is an optional property.
    */
-  private Either<Integer, String> moduleId;
+  private Either<Long, String> moduleId;
   
   /**
    * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
@@ -87,7 +87,7 @@ public class StackFrame {
    */
   @Pure
   @NonNull
-  public Integer getId() {
+  public Long getId() {
     return this.id;
   }
   
@@ -95,7 +95,7 @@ public class StackFrame {
    * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
-  public void setId(@NonNull final Integer id) {
+  public void setId(@NonNull final Long id) {
     this.id = id;
   }
   
@@ -139,14 +139,14 @@ public class StackFrame {
    */
   @Pure
   @NonNull
-  public Integer getLine() {
+  public Long getLine() {
     return this.line;
   }
   
   /**
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
-  public void setLine(@NonNull final Integer line) {
+  public void setLine(@NonNull final Long line) {
     this.line = line;
   }
   
@@ -155,14 +155,14 @@ public class StackFrame {
    */
   @Pure
   @NonNull
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
-  public void setColumn(@NonNull final Integer column) {
+  public void setColumn(@NonNull final Long column) {
     this.column = column;
   }
   
@@ -172,7 +172,7 @@ public class StackFrame {
    * This is an optional property.
    */
   @Pure
-  public Integer getEndLine() {
+  public Long getEndLine() {
     return this.endLine;
   }
   
@@ -181,7 +181,7 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Integer endLine) {
+  public void setEndLine(final Long endLine) {
     this.endLine = endLine;
   }
   
@@ -191,7 +191,7 @@ public class StackFrame {
    * This is an optional property.
    */
   @Pure
-  public Integer getEndColumn() {
+  public Long getEndColumn() {
     return this.endColumn;
   }
   
@@ -200,7 +200,7 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Integer endColumn) {
+  public void setEndColumn(final Long endColumn) {
     this.endColumn = endColumn;
   }
   
@@ -210,7 +210,7 @@ public class StackFrame {
    * This is an optional property.
    */
   @Pure
-  public Either<Integer, String> getModuleId() {
+  public Either<Long, String> getModuleId() {
     return this.moduleId;
   }
   
@@ -219,11 +219,11 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  public void setModuleId(final Either<Integer, String> moduleId) {
+  public void setModuleId(final Either<Long, String> moduleId) {
     this.moduleId = moduleId;
   }
   
-  public void setModuleId(final Integer moduleId) {
+  public void setModuleId(final Long moduleId) {
     this.moduleId = Either.forLeft(moduleId);
   }
   

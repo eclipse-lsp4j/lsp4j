@@ -20,7 +20,7 @@ public class Thread {
    * Unique identifier for the thread.
    */
   @NonNull
-  private Integer id;
+  private Long id;
   
   /**
    * A name of the thread.
@@ -33,14 +33,14 @@ public class Thread {
    */
   @Pure
   @NonNull
-  public Integer getId() {
+  public Long getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the thread.
    */
-  public void setId(@NonNull final Integer id) {
+  public void setId(@NonNull final Long id) {
     this.id = id;
   }
   

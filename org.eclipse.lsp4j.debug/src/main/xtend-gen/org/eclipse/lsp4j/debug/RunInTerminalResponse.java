@@ -20,7 +20,7 @@ public class RunInTerminalResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer processId;
+  private Long processId;
   
   /**
    * The process ID.
@@ -28,7 +28,7 @@ public class RunInTerminalResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getProcessId() {
+  public Long getProcessId() {
     return this.processId;
   }
   
@@ -37,7 +37,7 @@ public class RunInTerminalResponse {
    * <p>
    * This is an optional property.
    */
-  public void setProcessId(final Integer processId) {
+  public void setProcessId(final Long processId) {
     this.processId = processId;
   }
   

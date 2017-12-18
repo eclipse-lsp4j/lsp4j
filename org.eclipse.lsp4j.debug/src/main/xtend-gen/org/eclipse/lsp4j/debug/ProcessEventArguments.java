@@ -32,7 +32,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer systemProcessId;
+  private Long systemProcessId;
   
   /**
    * If true, the process is running on the same computer as the debug adapter.
@@ -72,7 +72,7 @@ public class ProcessEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getSystemProcessId() {
+  public Long getSystemProcessId() {
     return this.systemProcessId;
   }
   
@@ -81,7 +81,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setSystemProcessId(final Integer systemProcessId) {
+  public void setSystemProcessId(final Long systemProcessId) {
     this.systemProcessId = systemProcessId;
   }
   

@@ -37,7 +37,7 @@ public class SetBreakpointsArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer[] lines;
+  private Long[] lines;
   
   /**
    * A value of true indicates that the underlying source has been modified which results in new breakpoint
@@ -88,7 +88,7 @@ public class SetBreakpointsArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer[] getLines() {
+  public Long[] getLines() {
     return this.lines;
   }
   
@@ -97,7 +97,7 @@ public class SetBreakpointsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setLines(final Integer[] lines) {
+  public void setLines(final Long[] lines) {
     this.lines = lines;
   }
   

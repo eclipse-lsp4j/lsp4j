@@ -57,7 +57,7 @@ class StoppedEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer threadId;
+	Long threadId;
 	/**
 	 * Additional information. E.g. if reason is 'exception', text contains the exception name. This string is shown
 	 * in the UI.
@@ -110,7 +110,7 @@ class ContinuedEventArguments {
 	 * The thread which was continued.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 	/**
 	 * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
 	 * <p>
@@ -130,7 +130,7 @@ class ExitedEventArguments {
 	 * The exit code returned from the debuggee.
 	 */
 	@NonNull
-	Integer exitCode;
+	Long exitCode;
 }
 
 /**
@@ -170,7 +170,7 @@ class ThreadEventArguments {
 	 * The identifier of the thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -209,7 +209,7 @@ class OutputEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * An optional source location where the output was produced.
 	 * <p>
@@ -221,13 +221,13 @@ class OutputEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * An optional source location column where the output was produced.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * Optional data to report. For the 'telemetry' category the data will be sent to telemetry, for the other
 	 * categories the data is shown in JSON format.
@@ -356,7 +356,7 @@ class ProcessEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer systemProcessId;
+	Long systemProcessId;
 	/**
 	 * If true, the process is running on the same computer as the debug adapter.
 	 * <p>
@@ -400,7 +400,7 @@ class RunInTerminalResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer processId;
+	Long processId;
 }
 
 /**
@@ -618,7 +618,7 @@ class SetBreakpointsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer[] lines;
+	Long[] lines;
 	/**
 	 * A value of true indicates that the underlying source has been modified which results in new breakpoint
 	 * locations.
@@ -696,7 +696,7 @@ class ContinueArguments {
 	 * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -708,7 +708,7 @@ class NextArguments {
 	 * Execute 'next' for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -720,13 +720,13 @@ class StepInArguments {
 	 * Execute 'stepIn' for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 	/**
 	 * Optional id of the target to step into.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer targetId;
+	Long targetId;
 }
 
 /**
@@ -738,7 +738,7 @@ class StepOutArguments {
 	 * Execute 'stepOut' for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -750,7 +750,7 @@ class StepBackArguments {
 	 * Exceute 'stepBack' for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -762,7 +762,7 @@ class ReverseContinueArguments {
 	 * Exceute 'reverseContinue' for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -774,7 +774,7 @@ class RestartFrameArguments {
 	 * Restart this stackframe.
 	 */
 	@NonNull
-	Integer frameId;
+	Long frameId;
 }
 
 /**
@@ -786,12 +786,12 @@ class GotoArguments {
 	 * Set the goto target for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 	/**
 	 * The location where the debuggee will continue to run.
 	 */
 	@NonNull
-	Integer targetId;
+	Long targetId;
 }
 
 /**
@@ -803,7 +803,7 @@ class PauseArguments {
 	 * Pause execution for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -823,7 +823,7 @@ class StackTraceResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer totalFrames;
+	Long totalFrames;
 }
 
 /**
@@ -835,19 +835,19 @@ class StackTraceArguments {
 	 * Retrieve the stacktrace for this thread.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 	/**
 	 * The index of the first frame to return; if omitted frames start at 0.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer startFrame;
+	Long startFrame;
 	/**
 	 * The maximum number of frames to return. If levels is not specified or 0, all frames are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer levels;
+	Long levels;
 	/**
 	 * Specifies details on how to format the stack frames.
 	 * <p>
@@ -877,7 +877,7 @@ class ScopesArguments {
 	 * Retrieve the scopes for this stackframe.
 	 */
 	@NonNull
-	Integer frameId;
+	Long frameId;
 }
 
 /**
@@ -901,7 +901,7 @@ class VariablesArguments {
 	 * The Variable reference.
 	 */
 	@NonNull
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
 	 * <p>
@@ -913,13 +913,13 @@ class VariablesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer start;
+	Long start;
 	/**
 	 * The number of variables to return. If count is missing or 0, all variables are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer count;
+	Long count;
 	/**
 	 * Specifies details on how to format the Variable values.
 	 * <p>
@@ -958,7 +958,7 @@ class SetVariableResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
@@ -966,7 +966,7 @@ class SetVariableResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer namedVariables;
+	Long namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
@@ -974,7 +974,7 @@ class SetVariableResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer indexedVariables;
+	Long indexedVariables;
 }
 
 /**
@@ -986,7 +986,7 @@ class SetVariableArguments {
 	 * The reference of the variable container.
 	 */
 	@NonNull
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * The name of the variable.
 	 */
@@ -1039,7 +1039,7 @@ class SourceArguments {
 	 * compatibility since old backends do not understand the 'source' attribute.
 	 */
 	@NonNull
-	Integer sourceReference;
+	Long sourceReference;
 }
 
 /**
@@ -1069,7 +1069,7 @@ class ModulesResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer totalModules;
+	Long totalModules;
 }
 
 /**
@@ -1082,13 +1082,13 @@ class ModulesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer startModule;
+	Long startModule;
 	/**
 	 * The number of modules to return. If moduleCount is not specified or 0, all modules are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer moduleCount;
+	Long moduleCount;
 }
 
 /**
@@ -1139,7 +1139,7 @@ class EvaluateResponse {
 	 * variablesReference to the VariablesRequest.
 	 */
 	@NonNull
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
@@ -1147,7 +1147,7 @@ class EvaluateResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer namedVariables;
+	Long namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
@@ -1155,7 +1155,7 @@ class EvaluateResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer indexedVariables;
+	Long indexedVariables;
 }
 
 /**
@@ -1174,7 +1174,7 @@ class EvaluateArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer frameId;
+	Long frameId;
 	/**
 	 * The context in which the evaluate request is run.
 	 * <p>
@@ -1232,7 +1232,7 @@ class StepInTargetsArguments {
 	 * The stack frame for which to retrieve the possible stepIn targets.
 	 */
 	@NonNull
-	Integer frameId;
+	Long frameId;
 }
 
 /**
@@ -1261,13 +1261,13 @@ class GotoTargetsArguments {
 	 * The line location for which the goto targets are determined.
 	 */
 	@NonNull
-	Integer line;
+	Long line;
 	/**
 	 * An optional column location for which the goto targets are determined.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 }
 
 /**
@@ -1293,7 +1293,7 @@ class CompletionsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer frameId;
+	Long frameId;
 	/**
 	 * One or more source lines. Typically this is the text a user has typed into the debug console before he asked
 	 * for completion.
@@ -1304,14 +1304,14 @@ class CompletionsArguments {
 	 * The character position for which to determine the completion proposals.
 	 */
 	@NonNull
-	Integer column;
+	Long column;
 	/**
 	 * An optional line for which to determine the completion proposals. If missing the first line of the text is
 	 * assumed.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 }
 
 /**
@@ -1352,7 +1352,7 @@ class ExceptionInfoArguments {
 	 * Thread for which exception information should be retrieved.
 	 */
 	@NonNull
-	Integer threadId;
+	Long threadId;
 }
 
 /**
@@ -1530,7 +1530,7 @@ class Message {
 	 * Unique identifier for the message.
 	 */
 	@NonNull
-	Integer id;
+	Long id;
 	/**
 	 * A format string for the message. Embedded variables have the form '{name}'.
 	 * <p>
@@ -1597,7 +1597,7 @@ class Module {
 	 * Unique identifier for the module.
 	 */
 	@NonNull
-	Either<Integer, String> id;
+	Either<Long, String> id;
 	/**
 	 * A name of the module.
 	 */
@@ -1696,7 +1696,7 @@ class ColumnDescriptor {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer width;
+	Long width;
 }
 
 /**
@@ -1733,7 +1733,7 @@ class Thread {
 	 * Unique identifier for the thread.
 	 */
 	@NonNull
-	Integer id;
+	Long id;
 	/**
 	 * A name of the thread.
 	 */
@@ -1767,7 +1767,7 @@ class Source {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer sourceReference;
+	Long sourceReference;
 	/**
 	 * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
 	 * the source is not available or that it is skipped on stepping.
@@ -1824,7 +1824,7 @@ class StackFrame {
 	 * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
 	 */
 	@NonNull
-	Integer id;
+	Long id;
 	/**
 	 * The name of the stack frame, typically a method name.
 	 */
@@ -1840,30 +1840,30 @@ class StackFrame {
 	 * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
 	 */
 	@NonNull
-	Integer line;
+	Long line;
 	/**
 	 * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
 	 */
 	@NonNull
-	Integer column;
+	Long column;
 	/**
 	 * An optional end line of the range covered by the stack frame.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * An optional end column of the range covered by the stack frame.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 	/**
 	 * The module associated with this frame, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Either<Integer, String> moduleId;
+	Either<Long, String> moduleId;
 	/**
 	 * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
 	 * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
@@ -1900,7 +1900,7 @@ class Scope {
 	 * VariablesRequest.
 	 */
 	@NonNull
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * The number of named variables in this scope.
 	 * <p>
@@ -1908,7 +1908,7 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer namedVariables;
+	Long namedVariables;
 	/**
 	 * The number of indexed variables in this scope.
 	 * <p>
@@ -1916,7 +1916,7 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer indexedVariables;
+	Long indexedVariables;
 	/**
 	 * If true, the number of variables in this scope is large or expensive to retrieve.
 	 */
@@ -1933,25 +1933,25 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * Optional start column of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * Optional end line of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * Optional end column of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -2007,7 +2007,7 @@ class Variable {
 	 * variablesReference to the VariablesRequest.
 	 */
 	@NonNull
-	Integer variablesReference;
+	Long variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
@@ -2015,7 +2015,7 @@ class Variable {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer namedVariables;
+	Long namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
@@ -2023,7 +2023,7 @@ class Variable {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer indexedVariables;
+	Long indexedVariables;
 }
 
 /**
@@ -2165,13 +2165,13 @@ class SourceBreakpoint {
 	 * The source line of the breakpoint.
 	 */
 	@NonNull
-	Integer line;
+	Long line;
 	/**
 	 * An optional source column of the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * An optional expression for conditional breakpoints.
 	 * <p>
@@ -2222,7 +2222,7 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer id;
+	Long id;
 	/**
 	 * If true breakpoint could be set (but not necessarily at the desired location).
 	 */
@@ -2246,26 +2246,26 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * An optional start column of the actual range covered by the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * An optional end line of the actual range covered by the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * An optional end column of the actual range covered by the breakpoint. If no end line is given, then the end
 	 * column is assumed to be in the start line.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -2278,7 +2278,7 @@ class StepInTarget {
 	 * Unique identifier for a stepIn target.
 	 */
 	@NonNull
-	Integer id;
+	Long id;
 	/**
 	 * The name of the stepIn target (shown in the UI).
 	 */
@@ -2297,7 +2297,7 @@ class GotoTarget {
 	 * Unique identifier for a goto target. This is used in the goto request.
 	 */
 	@NonNull
-	Integer id;
+	Long id;
 	/**
 	 * The name of the goto target (shown in the UI).
 	 */
@@ -2307,25 +2307,25 @@ class GotoTarget {
 	 * The line of the goto target.
 	 */
 	@NonNull
-	Integer line;
+	Long line;
 	/**
 	 * An optional column of the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * An optional end line of the range covered by the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * An optional end column of the range covered by the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -2359,7 +2359,7 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer start;
+	Long start;
 	/**
 	 * This value determines how many characters are overwritten by the completion text.
 	 * <p>
@@ -2367,7 +2367,7 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer length;
+	Long length;
 }
 
 /**

@@ -20,21 +20,21 @@ public class StepOutArguments {
    * Execute 'stepOut' for this thread.
    */
   @NonNull
-  private Integer threadId;
+  private Long threadId;
   
   /**
    * Execute 'stepOut' for this thread.
    */
   @Pure
   @NonNull
-  public Integer getThreadId() {
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * Execute 'stepOut' for this thread.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

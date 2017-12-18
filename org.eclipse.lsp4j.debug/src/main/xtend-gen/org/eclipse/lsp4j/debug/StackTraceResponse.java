@@ -31,7 +31,7 @@ public class StackTraceResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer totalFrames;
+  private Long totalFrames;
   
   /**
    * The frames of the stackframe. If the array has length zero, there are no stackframes available.
@@ -59,7 +59,7 @@ public class StackTraceResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getTotalFrames() {
+  public Long getTotalFrames() {
     return this.totalFrames;
   }
   
@@ -68,7 +68,7 @@ public class StackTraceResponse {
    * <p>
    * This is an optional property.
    */
-  public void setTotalFrames(final Integer totalFrames) {
+  public void setTotalFrames(final Long totalFrames) {
     this.totalFrames = totalFrames;
   }
   

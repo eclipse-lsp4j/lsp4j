@@ -27,14 +27,14 @@ public class GotoTargetsArguments {
    * The line location for which the goto targets are determined.
    */
   @NonNull
-  private Integer line;
+  private Long line;
   
   /**
    * An optional column location for which the goto targets are determined.
    * <p>
    * This is an optional property.
    */
-  private Integer column;
+  private Long column;
   
   /**
    * The source location for which the goto targets are determined.
@@ -57,14 +57,14 @@ public class GotoTargetsArguments {
    */
   @Pure
   @NonNull
-  public Integer getLine() {
+  public Long getLine() {
     return this.line;
   }
   
   /**
    * The line location for which the goto targets are determined.
    */
-  public void setLine(@NonNull final Integer line) {
+  public void setLine(@NonNull final Long line) {
     this.line = line;
   }
   
@@ -74,7 +74,7 @@ public class GotoTargetsArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
@@ -83,7 +83,7 @@ public class GotoTargetsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(final Long column) {
     this.column = column;
   }
   

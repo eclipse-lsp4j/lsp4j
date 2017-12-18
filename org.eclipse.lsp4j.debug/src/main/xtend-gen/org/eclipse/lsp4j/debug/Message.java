@@ -21,7 +21,7 @@ public class Message {
    * Unique identifier for the message.
    */
   @NonNull
-  private Integer id;
+  private Long id;
   
   /**
    * A format string for the message. Embedded variables have the form '{name}'.
@@ -72,14 +72,14 @@ public class Message {
    */
   @Pure
   @NonNull
-  public Integer getId() {
+  public Long getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the message.
    */
-  public void setId(@NonNull final Integer id) {
+  public void setId(@NonNull final Long id) {
     this.id = id;
   }
   

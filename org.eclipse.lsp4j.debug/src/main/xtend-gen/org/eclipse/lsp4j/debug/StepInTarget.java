@@ -21,7 +21,7 @@ public class StepInTarget {
    * Unique identifier for a stepIn target.
    */
   @NonNull
-  private Integer id;
+  private Long id;
   
   /**
    * The name of the stepIn target (shown in the UI).
@@ -34,14 +34,14 @@ public class StepInTarget {
    */
   @Pure
   @NonNull
-  public Integer getId() {
+  public Long getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a stepIn target.
    */
-  public void setId(@NonNull final Integer id) {
+  public void setId(@NonNull final Long id) {
     this.id = id;
   }
   

@@ -20,21 +20,21 @@ public class ExceptionInfoArguments {
    * Thread for which exception information should be retrieved.
    */
   @NonNull
-  private Integer threadId;
+  private Long threadId;
   
   /**
    * Thread for which exception information should be retrieved.
    */
   @Pure
   @NonNull
-  public Integer getThreadId() {
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * Thread for which exception information should be retrieved.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

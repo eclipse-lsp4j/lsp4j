@@ -22,7 +22,7 @@ public class CompletionsArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer frameId;
+  private Long frameId;
   
   /**
    * One or more source lines. Typically this is the text a user has typed into the debug console before he asked
@@ -35,7 +35,7 @@ public class CompletionsArguments {
    * The character position for which to determine the completion proposals.
    */
   @NonNull
-  private Integer column;
+  private Long column;
   
   /**
    * An optional line for which to determine the completion proposals. If missing the first line of the text is
@@ -43,7 +43,7 @@ public class CompletionsArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer line;
+  private Long line;
   
   /**
    * Returns completions in the scope of this stack frame. If not specified, the completions are returned for the
@@ -52,7 +52,7 @@ public class CompletionsArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getFrameId() {
+  public Long getFrameId() {
     return this.frameId;
   }
   
@@ -62,7 +62,7 @@ public class CompletionsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setFrameId(final Integer frameId) {
+  public void setFrameId(final Long frameId) {
     this.frameId = frameId;
   }
   
@@ -89,14 +89,14 @@ public class CompletionsArguments {
    */
   @Pure
   @NonNull
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
   /**
    * The character position for which to determine the completion proposals.
    */
-  public void setColumn(@NonNull final Integer column) {
+  public void setColumn(@NonNull final Long column) {
     this.column = column;
   }
   
@@ -107,7 +107,7 @@ public class CompletionsArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getLine() {
+  public Long getLine() {
     return this.line;
   }
   
@@ -117,7 +117,7 @@ public class CompletionsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Integer line) {
+  public void setLine(final Long line) {
     this.line = line;
   }
   

@@ -22,21 +22,21 @@ public class ExitedEventArguments {
    * The exit code returned from the debuggee.
    */
   @NonNull
-  private Integer exitCode;
+  private Long exitCode;
   
   /**
    * The exit code returned from the debuggee.
    */
   @Pure
   @NonNull
-  public Integer getExitCode() {
+  public Long getExitCode() {
     return this.exitCode;
   }
   
   /**
    * The exit code returned from the debuggee.
    */
-  public void setExitCode(@NonNull final Integer exitCode) {
+  public void setExitCode(@NonNull final Long exitCode) {
     this.exitCode = exitCode;
   }
   

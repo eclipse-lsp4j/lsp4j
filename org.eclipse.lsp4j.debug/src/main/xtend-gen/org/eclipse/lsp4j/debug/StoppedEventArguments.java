@@ -44,7 +44,7 @@ public class StoppedEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer threadId;
+  private Long threadId;
   
   /**
    * Additional information. E.g. if reason is 'exception', text contains the exception name. This string is shown
@@ -117,7 +117,7 @@ public class StoppedEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getThreadId() {
+  public Long getThreadId() {
     return this.threadId;
   }
   
@@ -126,7 +126,7 @@ public class StoppedEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(final Long threadId) {
     this.threadId = threadId;
   }
   
