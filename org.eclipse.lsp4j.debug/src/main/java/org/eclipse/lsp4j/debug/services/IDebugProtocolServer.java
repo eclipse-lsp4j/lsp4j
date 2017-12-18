@@ -11,7 +11,6 @@ package org.eclipse.lsp4j.debug.services;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.lsp4j.debug.AttachRequestArguments;
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CompletionsArguments;
 import org.eclipse.lsp4j.debug.CompletionsResponse;
@@ -107,7 +106,7 @@ public interface IDebugProtocolServer {
 	 * Attach request; value of command field is 'attach'.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> attach(AttachRequestArguments args);
+	CompletableFuture<Void> attach(Map<String, Object> args);
 
 	/**
 	 * Restart request; value of command field is 'restart'.

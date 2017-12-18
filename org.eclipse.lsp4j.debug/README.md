@@ -5,7 +5,7 @@
 
 ```
 $ git clone git@github.com:jonahkichwacoders/vscode-debugadapter-node.git
-$ git checkout 921a0091c504397e6fc4cae3acce1c73e50152e0 # (on dsp branch)
+$ git checkout 4a48e598b114a5afeafbacb824d0786aebc7b164 # (on dsp branch)
 $ npm install
 $ npm run compile
 $ # generate java and xtend files to default location
