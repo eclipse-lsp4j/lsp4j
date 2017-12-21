@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,20 +19,22 @@ public class RestartFrameArguments {
   /**
    * Restart this stackframe.
    */
-  private Integer frameId;
+  @NonNull
+  private Long frameId;
   
   /**
    * Restart this stackframe.
    */
   @Pure
-  public Integer getFrameId() {
+  @NonNull
+  public Long getFrameId() {
     return this.frameId;
   }
   
   /**
    * Restart this stackframe.
    */
-  public void setFrameId(final Integer frameId) {
+  public void setFrameId(@NonNull final Long frameId) {
     this.frameId = frameId;
   }
   

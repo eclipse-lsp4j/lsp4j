@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -25,6 +26,7 @@ public class InitializeRequestArguments {
   /**
    * The ID of the debug adapter.
    */
+  @NonNull
   private String adapterID;
   
   /**
@@ -101,6 +103,7 @@ public class InitializeRequestArguments {
    * The ID of the debug adapter.
    */
   @Pure
+  @NonNull
   public String getAdapterID() {
     return this.adapterID;
   }
@@ -108,7 +111,7 @@ public class InitializeRequestArguments {
   /**
    * The ID of the debug adapter.
    */
-  public void setAdapterID(final String adapterID) {
+  public void setAdapterID(@NonNull final String adapterID) {
     this.adapterID = adapterID;
   }
   

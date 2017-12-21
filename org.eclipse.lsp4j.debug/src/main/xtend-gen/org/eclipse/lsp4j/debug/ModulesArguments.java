@@ -20,14 +20,14 @@ public class ModulesArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer startModule;
+  private Long startModule;
   
   /**
    * The number of modules to return. If moduleCount is not specified or 0, all modules are returned.
    * <p>
    * This is an optional property.
    */
-  private Integer moduleCount;
+  private Long moduleCount;
   
   /**
    * The index of the first module to return; if omitted modules start at 0.
@@ -35,7 +35,7 @@ public class ModulesArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getStartModule() {
+  public Long getStartModule() {
     return this.startModule;
   }
   
@@ -44,7 +44,7 @@ public class ModulesArguments {
    * <p>
    * This is an optional property.
    */
-  public void setStartModule(final Integer startModule) {
+  public void setStartModule(final Long startModule) {
     this.startModule = startModule;
   }
   
@@ -54,7 +54,7 @@ public class ModulesArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getModuleCount() {
+  public Long getModuleCount() {
     return this.moduleCount;
   }
   
@@ -63,7 +63,7 @@ public class ModulesArguments {
    * <p>
    * This is an optional property.
    */
-  public void setModuleCount(final Integer moduleCount) {
+  public void setModuleCount(final Long moduleCount) {
     this.moduleCount = moduleCount;
   }
   

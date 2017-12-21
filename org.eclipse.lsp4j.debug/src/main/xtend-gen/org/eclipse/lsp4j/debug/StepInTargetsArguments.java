@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,20 +19,22 @@ public class StepInTargetsArguments {
   /**
    * The stack frame for which to retrieve the possible stepIn targets.
    */
-  private Integer frameId;
+  @NonNull
+  private Long frameId;
   
   /**
    * The stack frame for which to retrieve the possible stepIn targets.
    */
   @Pure
-  public Integer getFrameId() {
+  @NonNull
+  public Long getFrameId() {
     return this.frameId;
   }
   
   /**
    * The stack frame for which to retrieve the possible stepIn targets.
    */
-  public void setFrameId(final Integer frameId) {
+  public void setFrameId(@NonNull final Long frameId) {
     this.frameId = frameId;
   }
   

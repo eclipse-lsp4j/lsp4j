@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,13 +20,15 @@ public class Scope {
   /**
    * Name of the scope such as 'Arguments', 'Locals'.
    */
+  @NonNull
   private String name;
   
   /**
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
    * VariablesRequest.
    */
-  private Integer variablesReference;
+  @NonNull
+  private Long variablesReference;
   
   /**
    * The number of named variables in this scope.
@@ -34,7 +37,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  private Integer namedVariables;
+  private Long namedVariables;
   
   /**
    * The number of indexed variables in this scope.
@@ -43,11 +46,12 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  private Integer indexedVariables;
+  private Long indexedVariables;
   
   /**
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
+  @NonNull
   private Boolean expensive;
   
   /**
@@ -62,33 +66,34 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  private Integer line;
+  private Long line;
   
   /**
    * Optional start column of the range covered by this scope.
    * <p>
    * This is an optional property.
    */
-  private Integer column;
+  private Long column;
   
   /**
    * Optional end line of the range covered by this scope.
    * <p>
    * This is an optional property.
    */
-  private Integer endLine;
+  private Long endLine;
   
   /**
    * Optional end column of the range covered by this scope.
    * <p>
    * This is an optional property.
    */
-  private Integer endColumn;
+  private Long endColumn;
   
   /**
    * Name of the scope such as 'Arguments', 'Locals'.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -96,7 +101,7 @@ public class Scope {
   /**
    * Name of the scope such as 'Arguments', 'Locals'.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -105,7 +110,8 @@ public class Scope {
    * VariablesRequest.
    */
   @Pure
-  public Integer getVariablesReference() {
+  @NonNull
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -113,7 +119,7 @@ public class Scope {
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
    * VariablesRequest.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -125,7 +131,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Integer getNamedVariables() {
+  public Long getNamedVariables() {
     return this.namedVariables;
   }
   
@@ -136,7 +142,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setNamedVariables(final Integer namedVariables) {
+  public void setNamedVariables(final Long namedVariables) {
     this.namedVariables = namedVariables;
   }
   
@@ -148,7 +154,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Integer getIndexedVariables() {
+  public Long getIndexedVariables() {
     return this.indexedVariables;
   }
   
@@ -159,7 +165,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setIndexedVariables(final Integer indexedVariables) {
+  public void setIndexedVariables(final Long indexedVariables) {
     this.indexedVariables = indexedVariables;
   }
   
@@ -167,6 +173,7 @@ public class Scope {
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
   @Pure
+  @NonNull
   public Boolean getExpensive() {
     return this.expensive;
   }
@@ -174,7 +181,7 @@ public class Scope {
   /**
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
-  public void setExpensive(final Boolean expensive) {
+  public void setExpensive(@NonNull final Boolean expensive) {
     this.expensive = expensive;
   }
   
@@ -203,7 +210,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Integer getLine() {
+  public Long getLine() {
     return this.line;
   }
   
@@ -212,7 +219,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Integer line) {
+  public void setLine(final Long line) {
     this.line = line;
   }
   
@@ -222,7 +229,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
@@ -231,7 +238,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(final Long column) {
     this.column = column;
   }
   
@@ -241,7 +248,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Integer getEndLine() {
+  public Long getEndLine() {
     return this.endLine;
   }
   
@@ -250,7 +257,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Integer endLine) {
+  public void setEndLine(final Long endLine) {
     this.endLine = endLine;
   }
   
@@ -260,7 +267,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Integer getEndColumn() {
+  public Long getEndColumn() {
     return this.endColumn;
   }
   
@@ -269,7 +276,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Integer endColumn) {
+  public void setEndColumn(final Long endColumn) {
     this.endColumn = endColumn;
   }
   

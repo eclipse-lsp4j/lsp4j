@@ -41,7 +41,7 @@ public class Source {
    * <p>
    * This is an optional property.
    */
-  private Integer sourceReference;
+  private Long sourceReference;
   
   /**
    * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
@@ -131,7 +131,7 @@ public class Source {
    * This is an optional property.
    */
   @Pure
-  public Integer getSourceReference() {
+  public Long getSourceReference() {
     return this.sourceReference;
   }
   
@@ -141,7 +141,7 @@ public class Source {
    * <p>
    * This is an optional property.
    */
-  public void setSourceReference(final Integer sourceReference) {
+  public void setSourceReference(final Long sourceReference) {
     this.sourceReference = sourceReference;
   }
   

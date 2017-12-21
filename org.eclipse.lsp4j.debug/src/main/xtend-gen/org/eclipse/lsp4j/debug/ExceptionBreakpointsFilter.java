@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import com.google.gson.annotations.SerializedName;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,11 +20,13 @@ public class ExceptionBreakpointsFilter {
   /**
    * The internal ID of the filter. This value is passed to the setExceptionBreakpoints request.
    */
+  @NonNull
   private String filter;
   
   /**
    * The name of the filter. This will be shown in the UI.
    */
+  @NonNull
   private String label;
   
   /**
@@ -38,6 +41,7 @@ public class ExceptionBreakpointsFilter {
    * The internal ID of the filter. This value is passed to the setExceptionBreakpoints request.
    */
   @Pure
+  @NonNull
   public String getFilter() {
     return this.filter;
   }
@@ -45,7 +49,7 @@ public class ExceptionBreakpointsFilter {
   /**
    * The internal ID of the filter. This value is passed to the setExceptionBreakpoints request.
    */
-  public void setFilter(final String filter) {
+  public void setFilter(@NonNull final String filter) {
     this.filter = filter;
   }
   
@@ -53,6 +57,7 @@ public class ExceptionBreakpointsFilter {
    * The name of the filter. This will be shown in the UI.
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -60,7 +65,7 @@ public class ExceptionBreakpointsFilter {
   /**
    * The name of the filter. This will be shown in the UI.
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   

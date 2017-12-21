@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,12 +23,14 @@ public class ThreadEventArguments {
    * <p>
    * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
    */
+  @NonNull
   private String reason;
   
   /**
    * The identifier of the thread.
    */
-  private Integer threadId;
+  @NonNull
+  private Long threadId;
   
   /**
    * The reason for the event.
@@ -35,6 +38,7 @@ public class ThreadEventArguments {
    * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
    */
   @Pure
+  @NonNull
   public String getReason() {
     return this.reason;
   }
@@ -44,7 +48,7 @@ public class ThreadEventArguments {
    * <p>
    * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
    */
-  public void setReason(final String reason) {
+  public void setReason(@NonNull final String reason) {
     this.reason = reason;
   }
   
@@ -52,14 +56,15 @@ public class ThreadEventArguments {
    * The identifier of the thread.
    */
   @Pure
-  public Integer getThreadId() {
+  @NonNull
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * The identifier of the thread.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

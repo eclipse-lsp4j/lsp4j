@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,6 +19,7 @@ public class FunctionBreakpoint {
   /**
    * The name of the function.
    */
+  @NonNull
   private String name;
   
   /**
@@ -39,6 +41,7 @@ public class FunctionBreakpoint {
    * The name of the function.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -46,7 +49,7 @@ public class FunctionBreakpoint {
   /**
    * The name of the function.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   

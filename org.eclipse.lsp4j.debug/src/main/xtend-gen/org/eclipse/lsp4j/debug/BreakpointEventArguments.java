@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Breakpoint;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -23,11 +24,13 @@ public class BreakpointEventArguments {
    * <p>
    * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
    */
+  @NonNull
   private String reason;
   
   /**
    * The breakpoint.
    */
+  @NonNull
   private Breakpoint breakpoint;
   
   /**
@@ -36,6 +39,7 @@ public class BreakpointEventArguments {
    * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
    */
   @Pure
+  @NonNull
   public String getReason() {
     return this.reason;
   }
@@ -45,7 +49,7 @@ public class BreakpointEventArguments {
    * <p>
    * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
    */
-  public void setReason(final String reason) {
+  public void setReason(@NonNull final String reason) {
     this.reason = reason;
   }
   
@@ -53,6 +57,7 @@ public class BreakpointEventArguments {
    * The breakpoint.
    */
   @Pure
+  @NonNull
   public Breakpoint getBreakpoint() {
     return this.breakpoint;
   }
@@ -60,7 +65,7 @@ public class BreakpointEventArguments {
   /**
    * The breakpoint.
    */
-  public void setBreakpoint(final Breakpoint breakpoint) {
+  public void setBreakpoint(@NonNull final Breakpoint breakpoint) {
     this.breakpoint = breakpoint;
   }
   

@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.VariablePresentationHint;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -33,11 +34,13 @@ public class Variable {
   /**
    * The variable's name.
    */
+  @NonNull
   private String name;
   
   /**
    * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
    */
+  @NonNull
   private String value;
   
   /**
@@ -66,7 +69,8 @@ public class Variable {
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
-  private Integer variablesReference;
+  @NonNull
+  private Long variablesReference;
   
   /**
    * The number of named child variables.
@@ -75,7 +79,7 @@ public class Variable {
    * <p>
    * This is an optional property.
    */
-  private Integer namedVariables;
+  private Long namedVariables;
   
   /**
    * The number of indexed child variables.
@@ -84,12 +88,13 @@ public class Variable {
    * <p>
    * This is an optional property.
    */
-  private Integer indexedVariables;
+  private Long indexedVariables;
   
   /**
    * The variable's name.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -97,7 +102,7 @@ public class Variable {
   /**
    * The variable's name.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -105,6 +110,7 @@ public class Variable {
    * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
    */
   @Pure
+  @NonNull
   public String getValue() {
     return this.value;
   }
@@ -112,7 +118,7 @@ public class Variable {
   /**
    * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
    */
-  public void setValue(final String value) {
+  public void setValue(@NonNull final String value) {
     this.value = value;
   }
   
@@ -180,7 +186,8 @@ public class Variable {
    * variablesReference to the VariablesRequest.
    */
   @Pure
-  public Integer getVariablesReference() {
+  @NonNull
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -188,7 +195,7 @@ public class Variable {
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -200,7 +207,7 @@ public class Variable {
    * This is an optional property.
    */
   @Pure
-  public Integer getNamedVariables() {
+  public Long getNamedVariables() {
     return this.namedVariables;
   }
   
@@ -211,7 +218,7 @@ public class Variable {
    * <p>
    * This is an optional property.
    */
-  public void setNamedVariables(final Integer namedVariables) {
+  public void setNamedVariables(final Long namedVariables) {
     this.namedVariables = namedVariables;
   }
   
@@ -223,7 +230,7 @@ public class Variable {
    * This is an optional property.
    */
   @Pure
-  public Integer getIndexedVariables() {
+  public Long getIndexedVariables() {
     return this.indexedVariables;
   }
   
@@ -234,7 +241,7 @@ public class Variable {
    * <p>
    * This is an optional property.
    */
-  public void setIndexedVariables(final Integer indexedVariables) {
+  public void setIndexedVariables(final Long indexedVariables) {
     this.indexedVariables = indexedVariables;
   }
   

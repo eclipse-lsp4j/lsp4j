@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -25,7 +26,8 @@ public class ContinuedEventArguments {
   /**
    * The thread which was continued.
    */
-  private Integer threadId;
+  @NonNull
+  private Long threadId;
   
   /**
    * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
@@ -38,14 +40,15 @@ public class ContinuedEventArguments {
    * The thread which was continued.
    */
   @Pure
-  public Integer getThreadId() {
+  @NonNull
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * The thread which was continued.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.StackFrame;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,6 +23,7 @@ public class StackTraceResponse {
    * <p>
    * This means that there is no location information available.
    */
+  @NonNull
   private StackFrame[] stackFrames;
   
   /**
@@ -29,7 +31,7 @@ public class StackTraceResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer totalFrames;
+  private Long totalFrames;
   
   /**
    * The frames of the stackframe. If the array has length zero, there are no stackframes available.
@@ -37,6 +39,7 @@ public class StackTraceResponse {
    * This means that there is no location information available.
    */
   @Pure
+  @NonNull
   public StackFrame[] getStackFrames() {
     return this.stackFrames;
   }
@@ -46,7 +49,7 @@ public class StackTraceResponse {
    * <p>
    * This means that there is no location information available.
    */
-  public void setStackFrames(final StackFrame[] stackFrames) {
+  public void setStackFrames(@NonNull final StackFrame[] stackFrames) {
     this.stackFrames = stackFrames;
   }
   
@@ -56,7 +59,7 @@ public class StackTraceResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getTotalFrames() {
+  public Long getTotalFrames() {
     return this.totalFrames;
   }
   
@@ -65,7 +68,7 @@ public class StackTraceResponse {
    * <p>
    * This is an optional property.
    */
-  public void setTotalFrames(final Integer totalFrames) {
+  public void setTotalFrames(final Long totalFrames) {
     this.totalFrames = totalFrames;
   }
   

@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -27,7 +28,8 @@ public class SourceArguments {
    * The reference to the source. This is the same as source.sourceReference. This is provided for backward
    * compatibility since old backends do not understand the 'source' attribute.
    */
-  private Integer sourceReference;
+  @NonNull
+  private Long sourceReference;
   
   /**
    * Specifies the source content to load. Either source.path or source.sourceReference must be specified.
@@ -53,7 +55,8 @@ public class SourceArguments {
    * compatibility since old backends do not understand the 'source' attribute.
    */
   @Pure
-  public Integer getSourceReference() {
+  @NonNull
+  public Long getSourceReference() {
     return this.sourceReference;
   }
   
@@ -61,7 +64,7 @@ public class SourceArguments {
    * The reference to the source. This is the same as source.sourceReference. This is provided for backward
    * compatibility since old backends do not understand the 'source' attribute.
    */
-  public void setSourceReference(final Integer sourceReference) {
+  public void setSourceReference(@NonNull final Long sourceReference) {
     this.sourceReference = sourceReference;
   }
   

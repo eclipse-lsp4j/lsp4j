@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.ColumnDescriptor;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,14 +20,16 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class ModulesViewDescriptor {
+  @NonNull
   private ColumnDescriptor[] columns;
   
   @Pure
+  @NonNull
   public ColumnDescriptor[] getColumns() {
     return this.columns;
   }
   
-  public void setColumns(final ColumnDescriptor[] columns) {
+  public void setColumns(@NonNull final ColumnDescriptor[] columns) {
     this.columns = columns;
   }
   

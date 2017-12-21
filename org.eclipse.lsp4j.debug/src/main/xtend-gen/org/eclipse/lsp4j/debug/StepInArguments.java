@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,27 +19,29 @@ public class StepInArguments {
   /**
    * Execute 'stepIn' for this thread.
    */
-  private Integer threadId;
+  @NonNull
+  private Long threadId;
   
   /**
    * Optional id of the target to step into.
    * <p>
    * This is an optional property.
    */
-  private Integer targetId;
+  private Long targetId;
   
   /**
    * Execute 'stepIn' for this thread.
    */
   @Pure
-  public Integer getThreadId() {
+  @NonNull
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * Execute 'stepIn' for this thread.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   
@@ -48,7 +51,7 @@ public class StepInArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getTargetId() {
+  public Long getTargetId() {
     return this.targetId;
   }
   
@@ -57,7 +60,7 @@ public class StepInArguments {
    * <p>
    * This is an optional property.
    */
-  public void setTargetId(final Integer targetId) {
+  public void setTargetId(final Long targetId) {
     this.targetId = targetId;
   }
   

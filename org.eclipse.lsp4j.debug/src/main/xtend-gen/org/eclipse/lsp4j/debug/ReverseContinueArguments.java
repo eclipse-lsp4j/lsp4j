@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,20 +19,22 @@ public class ReverseContinueArguments {
   /**
    * Exceute 'reverseContinue' for this thread.
    */
-  private Integer threadId;
+  @NonNull
+  private Long threadId;
   
   /**
    * Exceute 'reverseContinue' for this thread.
    */
   @Pure
-  public Integer getThreadId() {
+  @NonNull
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * Exceute 'reverseContinue' for this thread.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

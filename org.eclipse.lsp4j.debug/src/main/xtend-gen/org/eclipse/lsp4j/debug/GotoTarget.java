@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,51 +21,55 @@ public class GotoTarget {
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
-  private Integer id;
+  @NonNull
+  private Long id;
   
   /**
    * The name of the goto target (shown in the UI).
    */
+  @NonNull
   private String label;
   
   /**
    * The line of the goto target.
    */
-  private Integer line;
+  @NonNull
+  private Long line;
   
   /**
    * An optional column of the goto target.
    * <p>
    * This is an optional property.
    */
-  private Integer column;
+  private Long column;
   
   /**
    * An optional end line of the range covered by the goto target.
    * <p>
    * This is an optional property.
    */
-  private Integer endLine;
+  private Long endLine;
   
   /**
    * An optional end column of the range covered by the goto target.
    * <p>
    * This is an optional property.
    */
-  private Integer endColumn;
+  private Long endColumn;
   
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
   @Pure
-  public Integer getId() {
+  @NonNull
+  public Long getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
-  public void setId(final Integer id) {
+  public void setId(@NonNull final Long id) {
     this.id = id;
   }
   
@@ -72,6 +77,7 @@ public class GotoTarget {
    * The name of the goto target (shown in the UI).
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -79,7 +85,7 @@ public class GotoTarget {
   /**
    * The name of the goto target (shown in the UI).
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   
@@ -87,14 +93,15 @@ public class GotoTarget {
    * The line of the goto target.
    */
   @Pure
-  public Integer getLine() {
+  @NonNull
+  public Long getLine() {
     return this.line;
   }
   
   /**
    * The line of the goto target.
    */
-  public void setLine(final Integer line) {
+  public void setLine(@NonNull final Long line) {
     this.line = line;
   }
   
@@ -104,7 +111,7 @@ public class GotoTarget {
    * This is an optional property.
    */
   @Pure
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
@@ -113,7 +120,7 @@ public class GotoTarget {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(final Long column) {
     this.column = column;
   }
   
@@ -123,7 +130,7 @@ public class GotoTarget {
    * This is an optional property.
    */
   @Pure
-  public Integer getEndLine() {
+  public Long getEndLine() {
     return this.endLine;
   }
   
@@ -132,7 +139,7 @@ public class GotoTarget {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Integer endLine) {
+  public void setEndLine(final Long endLine) {
     this.endLine = endLine;
   }
   
@@ -142,7 +149,7 @@ public class GotoTarget {
    * This is an optional property.
    */
   @Pure
-  public Integer getEndColumn() {
+  public Long getEndColumn() {
     return this.endColumn;
   }
   
@@ -151,7 +158,7 @@ public class GotoTarget {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Integer endColumn) {
+  public void setEndColumn(final Long endColumn) {
     this.endColumn = endColumn;
   }
   

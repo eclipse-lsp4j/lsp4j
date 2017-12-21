@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,6 +19,7 @@ public class SetVariableResponse {
   /**
    * The new value of the variable.
    */
+  @NonNull
   private String value;
   
   /**
@@ -33,7 +35,7 @@ public class SetVariableResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer variablesReference;
+  private Long variablesReference;
   
   /**
    * The number of named child variables.
@@ -42,7 +44,7 @@ public class SetVariableResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer namedVariables;
+  private Long namedVariables;
   
   /**
    * The number of indexed child variables.
@@ -51,12 +53,13 @@ public class SetVariableResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer indexedVariables;
+  private Long indexedVariables;
   
   /**
    * The new value of the variable.
    */
   @Pure
+  @NonNull
   public String getValue() {
     return this.value;
   }
@@ -64,7 +67,7 @@ public class SetVariableResponse {
   /**
    * The new value of the variable.
    */
-  public void setValue(final String value) {
+  public void setValue(@NonNull final String value) {
     this.value = value;
   }
   
@@ -94,7 +97,7 @@ public class SetVariableResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getVariablesReference() {
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -104,7 +107,7 @@ public class SetVariableResponse {
    * <p>
    * This is an optional property.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -116,7 +119,7 @@ public class SetVariableResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getNamedVariables() {
+  public Long getNamedVariables() {
     return this.namedVariables;
   }
   
@@ -127,7 +130,7 @@ public class SetVariableResponse {
    * <p>
    * This is an optional property.
    */
-  public void setNamedVariables(final Integer namedVariables) {
+  public void setNamedVariables(final Long namedVariables) {
     this.namedVariables = namedVariables;
   }
   
@@ -139,7 +142,7 @@ public class SetVariableResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getIndexedVariables() {
+  public Long getIndexedVariables() {
     return this.indexedVariables;
   }
   
@@ -150,7 +153,7 @@ public class SetVariableResponse {
    * <p>
    * This is an optional property.
    */
-  public void setIndexedVariables(final Integer indexedVariables) {
+  public void setIndexedVariables(final Long indexedVariables) {
     this.indexedVariables = indexedVariables;
   }
   

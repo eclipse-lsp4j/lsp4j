@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -30,6 +31,7 @@ public class OutputEventArguments {
   /**
    * The output to report.
    */
+  @NonNull
   private String output;
   
   /**
@@ -38,7 +40,7 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer variablesReference;
+  private Long variablesReference;
   
   /**
    * An optional source location where the output was produced.
@@ -52,14 +54,14 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer line;
+  private Long line;
   
   /**
    * An optional source location column where the output was produced.
    * <p>
    * This is an optional property.
    */
-  private Integer column;
+  private Long column;
   
   /**
    * Optional data to report. For the 'telemetry' category the data will be sent to telemetry, for the other
@@ -96,6 +98,7 @@ public class OutputEventArguments {
    * The output to report.
    */
   @Pure
+  @NonNull
   public String getOutput() {
     return this.output;
   }
@@ -103,7 +106,7 @@ public class OutputEventArguments {
   /**
    * The output to report.
    */
-  public void setOutput(final String output) {
+  public void setOutput(@NonNull final String output) {
     this.output = output;
   }
   
@@ -114,7 +117,7 @@ public class OutputEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getVariablesReference() {
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -124,7 +127,7 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -153,7 +156,7 @@ public class OutputEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getLine() {
+  public Long getLine() {
     return this.line;
   }
   
@@ -162,7 +165,7 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Integer line) {
+  public void setLine(final Long line) {
     this.line = line;
   }
   
@@ -172,7 +175,7 @@ public class OutputEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
@@ -181,7 +184,7 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(final Long column) {
     this.column = column;
   }
   

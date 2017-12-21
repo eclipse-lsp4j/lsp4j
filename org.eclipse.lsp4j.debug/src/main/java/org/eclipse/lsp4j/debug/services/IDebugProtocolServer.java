@@ -11,7 +11,7 @@ package org.eclipse.lsp4j.debug.services;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.lsp4j.debug.AttachRequestArguments;
+import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CompletionsArguments;
 import org.eclipse.lsp4j.debug.CompletionsResponse;
 import org.eclipse.lsp4j.debug.ConfigurationDoneArguments;
@@ -26,7 +26,6 @@ import org.eclipse.lsp4j.debug.GotoArguments;
 import org.eclipse.lsp4j.debug.GotoTargetsArguments;
 import org.eclipse.lsp4j.debug.GotoTargetsResponse;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
-import org.eclipse.lsp4j.debug.InitializeResponse;
 import org.eclipse.lsp4j.debug.LoadedSourcesArguments;
 import org.eclipse.lsp4j.debug.LoadedSourcesResponse;
 import org.eclipse.lsp4j.debug.ModulesArguments;
@@ -64,14 +63,14 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 /**
  * Declaration of server requests.
  * <p>
- * Auto-generated from debugProtocol.json schema version 1.24.0. Do not edit
+ * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit
  * manually.
  */
 public interface IDebugProtocolServer {
 	/**
 	 * Version of debugProtocol.json this class was derived from.
 	 */
-	public static final String SCHEMA_VERSION = "1.24.0";
+	public static final String SCHEMA_VERSION = "1.25.0";
 
 	/**
 	 * runInTerminal request; value of command field is 'runInTerminal'.
@@ -85,7 +84,7 @@ public interface IDebugProtocolServer {
 	 * Initialize request; value of command field is 'initialize'.
 	 */
 	@JsonRequest
-	CompletableFuture<InitializeResponse> initialize(InitializeRequestArguments args);
+	CompletableFuture<Capabilities> initialize(InitializeRequestArguments args);
 
 	/**
 	 * ConfigurationDone request; value of command field is 'configurationDone'.
@@ -107,7 +106,7 @@ public interface IDebugProtocolServer {
 	 * Attach request; value of command field is 'attach'.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> attach(AttachRequestArguments args);
+	CompletableFuture<Void> attach(Map<String, Object> args);
 
 	/**
 	 * Restart request; value of command field is 'restart'.

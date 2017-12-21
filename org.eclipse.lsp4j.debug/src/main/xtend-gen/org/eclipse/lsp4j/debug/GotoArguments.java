@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,25 +19,28 @@ public class GotoArguments {
   /**
    * Set the goto target for this thread.
    */
-  private Integer threadId;
+  @NonNull
+  private Long threadId;
   
   /**
    * The location where the debuggee will continue to run.
    */
-  private Integer targetId;
+  @NonNull
+  private Long targetId;
   
   /**
    * Set the goto target for this thread.
    */
   @Pure
-  public Integer getThreadId() {
+  @NonNull
+  public Long getThreadId() {
     return this.threadId;
   }
   
   /**
    * Set the goto target for this thread.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   
@@ -44,14 +48,15 @@ public class GotoArguments {
    * The location where the debuggee will continue to run.
    */
   @Pure
-  public Integer getTargetId() {
+  @NonNull
+  public Long getTargetId() {
     return this.targetId;
   }
   
   /**
    * The location where the debuggee will continue to run.
    */
-  public void setTargetId(final Integer targetId) {
+  public void setTargetId(@NonNull final Long targetId) {
     this.targetId = targetId;
   }
   

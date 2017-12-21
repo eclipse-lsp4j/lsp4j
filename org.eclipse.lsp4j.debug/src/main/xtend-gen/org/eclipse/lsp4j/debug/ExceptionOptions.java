@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.debug;
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.ExceptionBreakMode;
 import org.eclipse.lsp4j.debug.ExceptionPathSegment;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -29,6 +30,7 @@ public class ExceptionOptions {
   /**
    * Condition when a thrown exception should result in a break.
    */
+  @NonNull
   private ExceptionBreakMode breakMode;
   
   /**
@@ -56,6 +58,7 @@ public class ExceptionOptions {
    * Condition when a thrown exception should result in a break.
    */
   @Pure
+  @NonNull
   public ExceptionBreakMode getBreakMode() {
     return this.breakMode;
   }
@@ -63,7 +66,7 @@ public class ExceptionOptions {
   /**
    * Condition when a thrown exception should result in a break.
    */
-  public void setBreakMode(final ExceptionBreakMode breakMode) {
+  public void setBreakMode(@NonNull final ExceptionBreakMode breakMode) {
     this.breakMode = breakMode;
   }
   

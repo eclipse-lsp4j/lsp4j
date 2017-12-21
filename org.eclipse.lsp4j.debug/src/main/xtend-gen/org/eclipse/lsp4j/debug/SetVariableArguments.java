@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,16 +20,19 @@ public class SetVariableArguments {
   /**
    * The reference of the variable container.
    */
-  private Integer variablesReference;
+  @NonNull
+  private Long variablesReference;
   
   /**
    * The name of the variable.
    */
+  @NonNull
   private String name;
   
   /**
    * The value of the variable.
    */
+  @NonNull
   private String value;
   
   /**
@@ -42,14 +46,15 @@ public class SetVariableArguments {
    * The reference of the variable container.
    */
   @Pure
-  public Integer getVariablesReference() {
+  @NonNull
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * The reference of the variable container.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -57,6 +62,7 @@ public class SetVariableArguments {
    * The name of the variable.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -64,7 +70,7 @@ public class SetVariableArguments {
   /**
    * The name of the variable.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -72,6 +78,7 @@ public class SetVariableArguments {
    * The value of the variable.
    */
   @Pure
+  @NonNull
   public String getValue() {
     return this.value;
   }
@@ -79,7 +86,7 @@ public class SetVariableArguments {
   /**
    * The value of the variable.
    */
-  public void setValue(final String value) {
+  public void setValue(@NonNull final String value) {
     this.value = value;
   }
   

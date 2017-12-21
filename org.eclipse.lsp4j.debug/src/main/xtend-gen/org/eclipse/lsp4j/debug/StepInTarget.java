@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,25 +20,28 @@ public class StepInTarget {
   /**
    * Unique identifier for a stepIn target.
    */
-  private Integer id;
+  @NonNull
+  private Long id;
   
   /**
    * The name of the stepIn target (shown in the UI).
    */
+  @NonNull
   private String label;
   
   /**
    * Unique identifier for a stepIn target.
    */
   @Pure
-  public Integer getId() {
+  @NonNull
+  public Long getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a stepIn target.
    */
-  public void setId(final Integer id) {
+  public void setId(@NonNull final Long id) {
     this.id = id;
   }
   
@@ -45,6 +49,7 @@ public class StepInTarget {
    * The name of the stepIn target (shown in the UI).
    */
   @Pure
+  @NonNull
   public String getLabel() {
     return this.label;
   }
@@ -52,7 +57,7 @@ public class StepInTarget {
   /**
    * The name of the stepIn target (shown in the UI).
    */
-  public void setLabel(final String label) {
+  public void setLabel(@NonNull final String label) {
     this.label = label;
   }
   

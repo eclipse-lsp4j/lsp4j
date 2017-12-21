@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,14 +20,16 @@ public class ContinueArguments {
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
    * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
    */
-  private Integer threadId;
+  @NonNull
+  private Long threadId;
   
   /**
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
    * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
    */
   @Pure
-  public Integer getThreadId() {
+  @NonNull
+  public Long getThreadId() {
     return this.threadId;
   }
   
@@ -34,7 +37,7 @@ public class ContinueArguments {
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
    * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
    */
-  public void setThreadId(final Integer threadId) {
+  public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;
   }
   

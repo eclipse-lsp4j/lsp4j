@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Variable;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class VariablesResponse {
   /**
    * All (or a range) of variables for the given variable reference.
    */
+  @NonNull
   private Variable[] variables;
   
   /**
    * All (or a range) of variables for the given variable reference.
    */
   @Pure
+  @NonNull
   public Variable[] getVariables() {
     return this.variables;
   }
@@ -33,7 +36,7 @@ public class VariablesResponse {
   /**
    * All (or a range) of variables for the given variable reference.
    */
-  public void setVariables(final Variable[] variables) {
+  public void setVariables(@NonNull final Variable[] variables) {
     this.variables = variables;
   }
   

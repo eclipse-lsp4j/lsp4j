@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Module;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,6 +21,7 @@ public class ModulesResponse {
   /**
    * All modules or range of modules.
    */
+  @NonNull
   private Module[] modules;
   
   /**
@@ -27,12 +29,13 @@ public class ModulesResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer totalModules;
+  private Long totalModules;
   
   /**
    * All modules or range of modules.
    */
   @Pure
+  @NonNull
   public Module[] getModules() {
     return this.modules;
   }
@@ -40,7 +43,7 @@ public class ModulesResponse {
   /**
    * All modules or range of modules.
    */
-  public void setModules(final Module[] modules) {
+  public void setModules(@NonNull final Module[] modules) {
     this.modules = modules;
   }
   
@@ -50,7 +53,7 @@ public class ModulesResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getTotalModules() {
+  public Long getTotalModules() {
     return this.totalModules;
   }
   
@@ -59,7 +62,7 @@ public class ModulesResponse {
    * <p>
    * This is an optional property.
    */
-  public void setTotalModules(final Integer totalModules) {
+  public void setTotalModules(final Long totalModules) {
     this.totalModules = totalModules;
   }
   

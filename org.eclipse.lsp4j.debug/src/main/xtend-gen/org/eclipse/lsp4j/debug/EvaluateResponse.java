@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.VariablePresentationHint;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,6 +20,7 @@ public class EvaluateResponse {
   /**
    * The result of the evaluate request.
    */
+  @NonNull
   private String result;
   
   /**
@@ -39,7 +41,8 @@ public class EvaluateResponse {
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
-  private Integer variablesReference;
+  @NonNull
+  private Long variablesReference;
   
   /**
    * The number of named child variables.
@@ -48,7 +51,7 @@ public class EvaluateResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer namedVariables;
+  private Long namedVariables;
   
   /**
    * The number of indexed child variables.
@@ -57,12 +60,13 @@ public class EvaluateResponse {
    * <p>
    * This is an optional property.
    */
-  private Integer indexedVariables;
+  private Long indexedVariables;
   
   /**
    * The result of the evaluate request.
    */
   @Pure
+  @NonNull
   public String getResult() {
     return this.result;
   }
@@ -70,7 +74,7 @@ public class EvaluateResponse {
   /**
    * The result of the evaluate request.
    */
-  public void setResult(final String result) {
+  public void setResult(@NonNull final String result) {
     this.result = result;
   }
   
@@ -117,7 +121,8 @@ public class EvaluateResponse {
    * variablesReference to the VariablesRequest.
    */
   @Pure
-  public Integer getVariablesReference() {
+  @NonNull
+  public Long getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -125,7 +130,7 @@ public class EvaluateResponse {
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
-  public void setVariablesReference(final Integer variablesReference) {
+  public void setVariablesReference(@NonNull final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
@@ -137,7 +142,7 @@ public class EvaluateResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getNamedVariables() {
+  public Long getNamedVariables() {
     return this.namedVariables;
   }
   
@@ -148,7 +153,7 @@ public class EvaluateResponse {
    * <p>
    * This is an optional property.
    */
-  public void setNamedVariables(final Integer namedVariables) {
+  public void setNamedVariables(final Long namedVariables) {
     this.namedVariables = namedVariables;
   }
   
@@ -160,7 +165,7 @@ public class EvaluateResponse {
    * This is an optional property.
    */
   @Pure
-  public Integer getIndexedVariables() {
+  public Long getIndexedVariables() {
     return this.indexedVariables;
   }
   
@@ -171,7 +176,7 @@ public class EvaluateResponse {
    * <p>
    * This is an optional property.
    */
-  public void setIndexedVariables(final Integer indexedVariables) {
+  public void setIndexedVariables(final Long indexedVariables) {
     this.indexedVariables = indexedVariables;
   }
   

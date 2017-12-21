@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,14 +19,15 @@ public class SourceBreakpoint {
   /**
    * The source line of the breakpoint.
    */
-  private Integer line;
+  @NonNull
+  private Long line;
   
   /**
    * An optional source column of the breakpoint.
    * <p>
    * This is an optional property.
    */
-  private Integer column;
+  private Long column;
   
   /**
    * An optional expression for conditional breakpoints.
@@ -46,14 +48,15 @@ public class SourceBreakpoint {
    * The source line of the breakpoint.
    */
   @Pure
-  public Integer getLine() {
+  @NonNull
+  public Long getLine() {
     return this.line;
   }
   
   /**
    * The source line of the breakpoint.
    */
-  public void setLine(final Integer line) {
+  public void setLine(@NonNull final Long line) {
     this.line = line;
   }
   
@@ -63,7 +66,7 @@ public class SourceBreakpoint {
    * This is an optional property.
    */
   @Pure
-  public Integer getColumn() {
+  public Long getColumn() {
     return this.column;
   }
   
@@ -72,7 +75,7 @@ public class SourceBreakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Integer column) {
+  public void setColumn(final Long column) {
     this.column = column;
   }
   

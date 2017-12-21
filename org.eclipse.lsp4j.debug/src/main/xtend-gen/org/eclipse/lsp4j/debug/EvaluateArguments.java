@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,6 +20,7 @@ public class EvaluateArguments {
   /**
    * The expression to evaluate.
    */
+  @NonNull
   private String expression;
   
   /**
@@ -27,7 +29,7 @@ public class EvaluateArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer frameId;
+  private Long frameId;
   
   /**
    * The context in which the evaluate request is run.
@@ -49,6 +51,7 @@ public class EvaluateArguments {
    * The expression to evaluate.
    */
   @Pure
+  @NonNull
   public String getExpression() {
     return this.expression;
   }
@@ -56,7 +59,7 @@ public class EvaluateArguments {
   /**
    * The expression to evaluate.
    */
-  public void setExpression(final String expression) {
+  public void setExpression(@NonNull final String expression) {
     this.expression = expression;
   }
   
@@ -67,7 +70,7 @@ public class EvaluateArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getFrameId() {
+  public Long getFrameId() {
     return this.frameId;
   }
   
@@ -77,7 +80,7 @@ public class EvaluateArguments {
    * <p>
    * This is an optional property.
    */
-  public void setFrameId(final Integer frameId) {
+  public void setFrameId(final Long frameId) {
     this.frameId = frameId;
   }
   

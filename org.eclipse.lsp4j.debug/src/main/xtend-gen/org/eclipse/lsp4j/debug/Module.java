@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -36,11 +37,13 @@ public class Module {
   /**
    * Unique identifier for the module.
    */
-  private Either<Integer, String> id;
+  @NonNull
+  private Either<Long, String> id;
   
   /**
    * A name of the module.
    */
+  @NonNull
   private String name;
   
   /**
@@ -111,18 +114,19 @@ public class Module {
    * Unique identifier for the module.
    */
   @Pure
-  public Either<Integer, String> getId() {
+  @NonNull
+  public Either<Long, String> getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the module.
    */
-  public void setId(final Either<Integer, String> id) {
+  public void setId(@NonNull final Either<Long, String> id) {
     this.id = id;
   }
   
-  public void setId(final Integer id) {
+  public void setId(final Long id) {
     this.id = Either.forLeft(id);
   }
   
@@ -134,6 +138,7 @@ public class Module {
    * A name of the module.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -141,7 +146,7 @@ public class Module {
   /**
    * A name of the module.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   

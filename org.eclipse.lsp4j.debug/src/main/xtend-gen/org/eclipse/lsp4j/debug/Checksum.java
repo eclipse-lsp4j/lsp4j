@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ChecksumAlgorithm;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,17 +20,20 @@ public class Checksum {
   /**
    * The algorithm used to calculate this checksum.
    */
+  @NonNull
   private ChecksumAlgorithm algorithm;
   
   /**
    * Value of the checksum.
    */
+  @NonNull
   private String checksum;
   
   /**
    * The algorithm used to calculate this checksum.
    */
   @Pure
+  @NonNull
   public ChecksumAlgorithm getAlgorithm() {
     return this.algorithm;
   }
@@ -37,7 +41,7 @@ public class Checksum {
   /**
    * The algorithm used to calculate this checksum.
    */
-  public void setAlgorithm(final ChecksumAlgorithm algorithm) {
+  public void setAlgorithm(@NonNull final ChecksumAlgorithm algorithm) {
     this.algorithm = algorithm;
   }
   
@@ -45,6 +49,7 @@ public class Checksum {
    * Value of the checksum.
    */
   @Pure
+  @NonNull
   public String getChecksum() {
     return this.checksum;
   }
@@ -52,7 +57,7 @@ public class Checksum {
   /**
    * Value of the checksum.
    */
-  public void setChecksum(final String checksum) {
+  public void setChecksum(@NonNull final String checksum) {
     this.checksum = checksum;
   }
   

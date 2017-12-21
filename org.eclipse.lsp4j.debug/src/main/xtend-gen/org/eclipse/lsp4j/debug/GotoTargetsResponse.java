@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.GotoTarget;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -20,12 +21,14 @@ public class GotoTargetsResponse {
   /**
    * The possible goto targets of the specified location.
    */
+  @NonNull
   private GotoTarget[] targets;
   
   /**
    * The possible goto targets of the specified location.
    */
   @Pure
+  @NonNull
   public GotoTarget[] getTargets() {
     return this.targets;
   }
@@ -33,7 +36,7 @@ public class GotoTargetsResponse {
   /**
    * The possible goto targets of the specified location.
    */
-  public void setTargets(final GotoTarget[] targets) {
+  public void setTargets(@NonNull final GotoTarget[] targets) {
     this.targets = targets;
   }
   

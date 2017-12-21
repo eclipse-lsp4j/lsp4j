@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ProcessEventArgumentsStartMethod;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -23,6 +24,7 @@ public class ProcessEventArguments {
    * The logical name of the process. This is usually the full path to process's executable file. Example:
    * /home/example/myproj/program.js.
    */
+  @NonNull
   private String name;
   
   /**
@@ -30,7 +32,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer systemProcessId;
+  private Long systemProcessId;
   
   /**
    * If true, the process is running on the same computer as the debug adapter.
@@ -51,6 +53,7 @@ public class ProcessEventArguments {
    * /home/example/myproj/program.js.
    */
   @Pure
+  @NonNull
   public String getName() {
     return this.name;
   }
@@ -59,7 +62,7 @@ public class ProcessEventArguments {
    * The logical name of the process. This is usually the full path to process's executable file. Example:
    * /home/example/myproj/program.js.
    */
-  public void setName(final String name) {
+  public void setName(@NonNull final String name) {
     this.name = name;
   }
   
@@ -69,7 +72,7 @@ public class ProcessEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer getSystemProcessId() {
+  public Long getSystemProcessId() {
     return this.systemProcessId;
   }
   
@@ -78,7 +81,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setSystemProcessId(final Integer systemProcessId) {
+  public void setSystemProcessId(final Long systemProcessId) {
     this.systemProcessId = systemProcessId;
   }
   

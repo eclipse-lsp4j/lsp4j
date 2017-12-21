@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Breakpoint;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,12 +23,14 @@ public class SetFunctionBreakpointsResponse {
   /**
    * Information about the breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
    */
+  @NonNull
   private Breakpoint[] breakpoints;
   
   /**
    * Information about the breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
    */
   @Pure
+  @NonNull
   public Breakpoint[] getBreakpoints() {
     return this.breakpoints;
   }
@@ -35,7 +38,7 @@ public class SetFunctionBreakpointsResponse {
   /**
    * Information about the breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
    */
-  public void setBreakpoints(final Breakpoint[] breakpoints) {
+  public void setBreakpoints(@NonNull final Breakpoint[] breakpoints) {
     this.breakpoints = breakpoints;
   }
   
