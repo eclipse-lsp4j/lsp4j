@@ -41,5 +41,38 @@ public class NotificationMessage extends Message {
 	public void setParams(Object params) {
 		this.params = params;
 	}
-	
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		if (!super.equals(obj))
+			return false;
+		NotificationMessage other = (NotificationMessage) obj;
+		if (this.method == null) {
+			if (other.method != null)
+				return false;
+		} else if (!this.method.equals(other.method))
+			return false;
+		if (this.params == null) {
+			if (other.params != null)
+				return false;
+		} else if (!this.params.equals(other.params))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.method == null) ? 0 : this.method.hashCode());
+		result = prime * result + ((this.params == null) ? 0 : this.params.hashCode());
+		return result;
+	}
+
 }

@@ -32,4 +32,31 @@ public class DebugNotificationMessage extends NotificationMessage {
 		this.id = id;
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		if (!super.equals(obj))
+			return false;
+		DebugNotificationMessage other = (DebugNotificationMessage) obj;
+		if (this.id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!this.id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		return result;
+	}
+
 }
