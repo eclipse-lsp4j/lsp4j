@@ -48,13 +48,13 @@ public class MessageJsonHandler {
 		configureGson.accept(gsonBuilder);
 		this.gson = gsonBuilder.create();
 	}
-    
+	
 	public GsonBuilder getDefaultGsonBuilder() {
-	    return new GsonBuilder()
-	    	.registerTypeAdapterFactory(new CollectionTypeAdapter.Factory())
-	    	.registerTypeAdapterFactory(new EitherTypeAdapter.Factory())
-            .registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
-            .registerTypeAdapterFactory(new MessageTypeAdapter.Factory(this));
+		return new GsonBuilder()
+			.registerTypeAdapterFactory(new CollectionTypeAdapter.Factory())
+			.registerTypeAdapterFactory(new EitherTypeAdapter.Factory())
+			.registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
+			.registerTypeAdapterFactory(new MessageTypeAdapter.Factory(this));
 	}
 	
 	public JsonRpcMethod getJsonRpcMethod(String name) {

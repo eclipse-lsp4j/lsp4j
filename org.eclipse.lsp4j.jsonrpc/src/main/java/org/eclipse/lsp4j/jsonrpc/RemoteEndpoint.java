@@ -178,7 +178,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			try {
 				pendingRequestInfo.responseHandler.accept(responseMessage);
 			} catch (RuntimeException e) {
-				LOG.log(Level.WARNING, "Handling repsonse threw an exception: " + responseMessage, e);
+				LOG.log(Level.WARNING, "Handling response threw an exception: " + responseMessage, e);
 			}
 		}
 	}
