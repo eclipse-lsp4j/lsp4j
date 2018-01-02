@@ -73,7 +73,7 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
         StringBuilder headerBuilder = new StringBuilder();
         appendHeader(headerBuilder, CONTENT_LENGTH_HEADER, contentLength).append(CRLF);
         if (!StandardCharsets.UTF_8.name().equals(encoding)) {
-        	appendHeader(headerBuilder, CONTENT_TYPE_HEADER, JSON_MIME_TYPE);
+            appendHeader(headerBuilder, CONTENT_TYPE_HEADER, JSON_MIME_TYPE);
             headerBuilder.append("; charset=").append(encoding).append(CRLF);
         }
         headerBuilder.append(CRLF);
