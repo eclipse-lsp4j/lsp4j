@@ -7,6 +7,8 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -16,7 +18,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class DidChangeConfigurationParams {
+  /**
+   * The actual changed settings.
+   */
   @NonNull
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object settings;
   
   public DidChangeConfigurationParams() {
@@ -26,12 +32,18 @@ public class DidChangeConfigurationParams {
     this.settings = settings;
   }
   
+  /**
+   * The actual changed settings.
+   */
   @Pure
   @NonNull
   public Object getSettings() {
     return this.settings;
   }
   
+  /**
+   * The actual changed settings.
+   */
   public void setSettings(@NonNull final Object settings) {
     this.settings = settings;
   }

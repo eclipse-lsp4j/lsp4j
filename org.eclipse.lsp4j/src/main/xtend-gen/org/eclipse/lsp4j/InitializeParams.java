@@ -7,7 +7,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -37,6 +39,7 @@ public class InitializeParams {
   /**
    * User provided initialization options.
    */
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object initializationOptions;
   
   /**

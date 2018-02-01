@@ -7,8 +7,10 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -36,6 +38,7 @@ public class CodeLens {
   /**
    * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object data;
   
   public CodeLens() {

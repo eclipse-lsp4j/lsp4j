@@ -7,15 +7,17 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
+import com.google.common.annotations.Beta
+import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
 import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.generator.JsonRpcData
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
-import com.google.common.annotations.Beta
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -444,6 +446,7 @@ class ClientCapabilities {
     /**
      * Experimental client capabilities.
      */
+    @JsonAdapter(JsonElementTypeAdapter.Factory)
     Object experimental
     
     new() {
@@ -534,6 +537,7 @@ class CodeLens {
 	/**
 	 * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
 	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
     
     new() {
@@ -700,6 +704,7 @@ class CompletionItem {
 	/**
 	 * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
 	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 	
 	new() {
@@ -822,7 +827,11 @@ class Diagnostic {
  */
 @JsonRpcData
 class DidChangeConfigurationParams {
+	/**
+	 * The actual changed settings.
+	 */
 	@NonNull
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object settings
     
     new() {
@@ -1528,6 +1537,7 @@ class InitializeParams {
 	/**
 	 * User provided initialization options.
 	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object initializationOptions
 
 	/**
@@ -1908,6 +1918,7 @@ class ServerCapabilities {
     /**
      * Experimental server capabilities.
      */
+    @JsonAdapter(JsonElementTypeAdapter.Factory)
     Object experimental
 
     /**
@@ -2387,6 +2398,7 @@ class Registration {
 	/**
      * Options necessary for the registration.
      */
+    @JsonAdapter(JsonElementTypeAdapter.Factory)
     Object registerOptions
     
     new() {
