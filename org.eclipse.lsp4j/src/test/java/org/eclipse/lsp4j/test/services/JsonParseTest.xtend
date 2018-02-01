@@ -77,7 +77,7 @@ class JsonParseTest {
 			}
 		'''.assertParse(new RequestMessage => [
 			jsonrpc = "2.0"
-			id = "1"
+			id = 1
 			method = MessageMethods.DOC_COMPLETION
 			params = new TextDocumentPositionParams => [
 				textDocument = new TextDocumentIdentifier => [

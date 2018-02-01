@@ -115,7 +115,7 @@ public class JsonParseTest {
     RequestMessage _requestMessage = new RequestMessage();
     final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
       it.setJsonrpc("2.0");
-      it.setId("1");
+      it.setId(1);
       it.setMethod(MessageMethods.DOC_COMPLETION);
       TextDocumentPositionParams _textDocumentPositionParams = new TextDocumentPositionParams();
       final Procedure1<TextDocumentPositionParams> _function_1 = (TextDocumentPositionParams it_1) -> {

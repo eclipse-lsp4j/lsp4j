@@ -58,6 +58,13 @@ public class Either3<T1, T2, T3> extends Either<T1, Either<T2, T3>> {
 			return right.getRight();
 	}
 	
+	@Override
+	public Object get() {
+		if (isRight())
+			return getRight().get();
+		return super.get();
+	}
+	
 	public boolean isFirst() {
 		return isLeft();
 	}

@@ -19,13 +19,31 @@ public class CancelParams {
 	 * The request id to cancel.
 	 */
 	@NonNull
-	private String id;
-	
+	private Either<String, Integer> id;
+
 	public String getId() {
-		return this.id;
+		if (id == null)
+			return null;
+		if (id.isLeft())
+			return id.getLeft();
+		if (id.isRight())
+			return id.getRight().toString();
+		return null;
 	}
 	
+	public Either<String, Integer> getRawId() {
+		return id;
+	}
+
 	public void setId(String id) {
+		this.id = Either.forLeft(id);
+	}
+	
+	public void setId(int id) {
+		this.id = Either.forRight(id);
+	}
+	
+	public void setRawId(Either<String, Integer> id) {
 		this.id = id;
 	}
 	

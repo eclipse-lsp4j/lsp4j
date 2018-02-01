@@ -17,6 +17,7 @@ import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -78,7 +79,8 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		
 		in.beginObject();
-		String jsonrpc = null, id = null, method = null;
+		String jsonrpc = null, method = null;
+		Either<String, Integer> id = null;
 		Object rawParams = null;
 		Object rawResult = null;
 		ResponseError error = null;
@@ -90,7 +92,10 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				break;
 			}
 			case "id": {
-				id = in.nextString();
+				if (in.peek() == JsonToken.NUMBER)
+					id = Either.forRight(in.nextInt());
+				else
+					id = Either.forLeft(in.nextString());
 				break;
 			}
 			case "method": {
@@ -102,7 +107,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				break;
 			}
 			case "result": {
-				rawResult = parseResult(in, id);
+				rawResult = parseResult(in, id != null ? id.get().toString() : null);
 				break;
 			}
 			case "error": {
@@ -115,7 +120,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		in.endObject();
 		Object params = parseParams(rawParams, method);
-		Object result = parseResult(rawResult, method);
+		Object result = parseResult(rawResult, id != null ? id.get().toString() : null);
 		return createMessage(jsonrpc, id, method, params, result, error);
 	}
 
@@ -309,18 +314,18 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		return EMPTY_TYPE_ARRAY;
 	}
 	
-	protected Message createMessage(String jsonrpc, String id, String method, Object params, Object result, ResponseError error) {
+	protected Message createMessage(String jsonrpc, Either<String, Integer> id, String method, Object params, Object result, ResponseError error) {
 		if (id != null && method != null) {
 			RequestMessage message = new RequestMessage();
 			message.setJsonrpc(jsonrpc);
-			message.setId(id);
+			message.setRawId(id);
 			message.setMethod(method);
 			message.setParams(params);
 			return message;
 		} else if (id != null) {
 			ResponseMessage message = new ResponseMessage();
 			message.setJsonrpc(jsonrpc);
-			message.setId(id);
+			message.setRawId(id);
 			if (error != null) {
 				message.setError(error);
 			} else {
@@ -347,7 +352,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		if (message instanceof RequestMessage) {
 			RequestMessage requestMessage = (RequestMessage) message;
 			out.name("id");
-			out.value(requestMessage.getId());
+			writeId(out, requestMessage.getRawId());
 			out.name("method");
 			out.value(requestMessage.getMethod());
 			out.name("params");
@@ -359,7 +364,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		} else if (message instanceof ResponseMessage) {
 			ResponseMessage responseMessage = (ResponseMessage) message;
 			out.name("id");
-			out.value(responseMessage.getId());
+			writeId(out, responseMessage.getRawId());
 			if (responseMessage.getError() != null) {
 				out.name("error");
 				gson.toJson(responseMessage.getError(), ResponseError.class, out);
@@ -384,6 +389,15 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		
 		out.endObject();
+	}
+	
+	protected void writeId(JsonWriter out, Either<String, Integer> id) throws IOException {
+		if (id == null)
+			writeNullValue(out);
+		else if (id.isLeft())
+			out.value(id.getLeft());
+		else if (id.isRight())
+			out.value(id.getRight());
 	}
 	
 	/**

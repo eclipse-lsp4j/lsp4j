@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
@@ -181,7 +182,8 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		}
 
 		in.beginObject();
-		String messageType = null, id = null, seq = null, request_seq = null, method = null, message = null;
+		String messageType = null, method = null, message = null;
+		int seq = 0, request_seq = 0;
 		Boolean rawSuccess = null;
 		Object rawParams = null;
 		Object rawBody = null;
@@ -189,12 +191,12 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			String name = in.nextName();
 			switch (name) {
 			case "seq": {
-				seq = in.nextString();
+				seq = in.nextInt();
 				break;
 			}
 			case "request_seq": {
 				// on responses we treat the request_seq as the id
-				request_seq = in.nextString();
+				request_seq = in.nextInt();
 				break;
 			}
 			case "type": {
@@ -229,12 +231,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				in.skipValue();
 			}
 		}
-		id = request_seq != null ? request_seq : seq;
 		in.endObject();
 		boolean success = rawSuccess != null ? rawSuccess : true;
 		Object params = parseParams(rawParams, method);
 		Object body = parseBody(rawBody, messageType, request_seq, method, success);
-		return createMessage(messageType, id, method, success, message, params, body);
+		return createMessage(messageType, seq, request_seq, method, success, message, params, body);
 	}
 
 	/**
@@ -258,12 +259,12 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 	 * @return correctly typed object if the correct expected type can be
 	 *         determined, or a JsonElement representing the body
 	 */
-	protected Object parseBody(JsonReader in, String messageType, String request_seq, String method, Boolean success)
+	protected Object parseBody(JsonReader in, String messageType, int request_seq, String method, Boolean success)
 			throws IOException {
 		if ("event".equals(messageType)) {
 			return parseParams(in, method);
 		} else if ("response".equals(messageType) && success != null && success) {
-			return super.parseResult(in, request_seq);
+			return super.parseResult(in, Integer.toString(request_seq));
 		} else {
 			return new JsonParser().parse(in);
 		}
@@ -286,12 +287,12 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 	 * @return correctly typed object if the correct expected type can be
 	 *         determined, or rawBody unmodified if no conversion can be done.
 	 */
-	protected Object parseBody(Object rawBody, String messageType, String request_seq, String method, Boolean success) {
+	protected Object parseBody(Object rawBody, String messageType, int request_seq, String method, Boolean success) {
 		if ("event".equals(messageType)) {
 			return parseParams(rawBody, method);
 		} else if ("response".equals(messageType)) {
 			if (success != null && success) {
-				return super.parseResult(rawBody, request_seq);
+				return super.parseResult(rawBody, Integer.toString(request_seq));
 			}
 			if (isNull(rawBody)) {
 				return null;
@@ -305,29 +306,30 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		return rawBody;
 	}
 
-	private Message createMessage(String messageType, String id, String method, boolean success, String errorMessage,
-			Object params, Object body) {
+	private Message createMessage(String messageType, int seq, int request_seq, String method, boolean success,
+			String errorMessage, Object params, Object body) {
 		if (messageType == null) {
 			throw new JsonParseException("Unable to identify the input message. Missing 'type' field.");
 		}
 		switch (messageType) {
 		case "request": {
 			RequestMessage message = new RequestMessage();
-			message.setId(id);
+			message.setId(seq);
 			message.setMethod(method);
 			message.setParams(params);
 			return message;
 		}
 		case "event": {
 			DebugNotificationMessage message = new DebugNotificationMessage();
-			message.setId(id);
+			message.setId(seq);
 			message.setMethod(method);
 			message.setParams(body);
 			return message;
 		}
 		case "response": {
 			DebugResponseMessage message = new DebugResponseMessage();
-			message.setId(id);
+			message.setId(request_seq);
+			message.setResponseId(seq);
 			if (!success) {
 				ResponseError error = new ResponseError();
 				error.setCode(ResponseErrorCode.UnknownErrorCode);
@@ -339,7 +341,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					// Type of result could not be resolved - try again with the parsed JSON tree
 					MethodProvider methodProvider = handler.getMethodProvider();
 					if (methodProvider != null) {
-						String resolvedMethod = methodProvider.resolveMethod(id);
+						String resolvedMethod = methodProvider.resolveMethod(Integer.toString(request_seq));
 						if (resolvedMethod != null) {
 							JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
 							if (jsonRpcMethod != null)
@@ -364,7 +366,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.name("type");
 			out.value("request");
 			out.name("seq");
-			out.value(Integer.parseInt(requestMessage.getId()));
+			writeIntId(out, requestMessage.getRawId());
 			out.name("command");
 			out.value(requestMessage.getMethod());
 			out.name("arguments");
@@ -378,9 +380,9 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.name("type");
 			out.value("response");
 			out.name("seq");
-			out.value(Integer.parseInt(responseMessage.getResponseId()));
+			writeIntId(out, responseMessage.getRawResponseId());
 			out.name("request_seq");
-			out.value(Integer.parseInt(responseMessage.getId()));
+			writeIntId(out, responseMessage.getRawId());
 			out.name("command");
 			out.value(responseMessage.getMethod());
 			ResponseError error = responseMessage.getError();
@@ -412,11 +414,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.name("type");
 			out.value("event");
 			out.name("seq");
-			if (notificationMessage.getId() != null) {
-				out.value(Integer.parseInt(notificationMessage.getId()));
-			} else {
-				out.value(0);
-			}
+			writeIntId(out, notificationMessage.getRawId());
 			out.name("command");
 			out.value(notificationMessage.getMethod());
 			out.name("body");
@@ -428,5 +426,14 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		}
 
 		out.endObject();
+	}
+	
+	private void writeIntId(JsonWriter out, Either<String, Integer> id) throws IOException {
+		if (id == null)
+			writeNullValue(out);
+		else if (id.isLeft())
+			out.value(Integer.parseInt(id.getLeft()));
+		else if (id.isRight())
+			out.value(id.getRight());
 	}
 }

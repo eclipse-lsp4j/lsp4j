@@ -25,6 +25,7 @@ import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -116,12 +117,11 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 
 	@Override
 	public CompletableFuture<Object> request(String method, Object parameter) {
-		RequestMessage requestMessage = createRequestMessage(method, parameter);
-		final String id = requestMessage.getId();
+		final RequestMessage requestMessage = createRequestMessage(method, parameter);
 		final CompletableFuture<Object> result = new CompletableFuture<Object>() {
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning) {
-				sendCancelNotification(id);
+				sendCancelNotification(requestMessage.getRawId());
 				return super.cancel(mayInterruptIfRunning);
 			}
 		};
@@ -133,7 +133,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			}
 		};
 		synchronized(sentRequestMap) {
-			sentRequestMap.put(id, new PendingRequestInfo(requestMessage, responseHandler));
+			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, responseHandler));
 		}
 		out.consume(requestMessage);
 		return result;
@@ -147,9 +147,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		return requestMessage;
 	}
 
-	protected void sendCancelNotification(String id) {
+	protected void sendCancelNotification(Either<String, Integer> id) {
 		CancelParams cancelParams = new CancelParams();
-		cancelParams.setId(id);
+		cancelParams.setRawId(id);
 		notify(MessageJsonHandler.CANCEL_METHOD.getMethodName(), cancelParams);
 	}
 
@@ -231,8 +231,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			out.consume(responseMessage);
 			return;
 		}
+		final String messageId = requestMessage.getId();
 		synchronized (receivedRequestMap) {
-			receivedRequestMap.put(requestMessage.getId(), future);
+			receivedRequestMap.put(messageId, future);
 		}
 		future.thenAccept((result) -> {
 			ResponseMessage responseMessage = createResultResponseMessage(requestMessage, result);
@@ -240,7 +241,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		}).exceptionally((Throwable t) -> {
 			ResponseMessage responseMessage;
 			if (isCancellation(t)) {
-				String message = "The request (id: " + requestMessage.getId() + ", method: '" + requestMessage.getMethod()  + "') has been cancelled";
+				String message = "The request (id: " + messageId + ", method: '" + requestMessage.getMethod()  + "') has been cancelled";
 				ResponseError errorObject = new ResponseError(ResponseErrorCode.RequestCancelled, message, null);
 				responseMessage = createErrorResponseMessage(requestMessage, errorObject);
 			} else {
@@ -254,7 +255,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			return null;
 		}).thenApply((obj) -> {
 			synchronized (receivedRequestMap) {
-				receivedRequestMap.remove(requestMessage.getId());
+				receivedRequestMap.remove(messageId);
 			}
 			return null;
 		});
@@ -262,7 +263,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 
 	protected ResponseMessage createResponseMessage(RequestMessage requestMessage) {
 		ResponseMessage responseMessage = new ResponseMessage();
-		responseMessage.setId(requestMessage.getId());
+		responseMessage.setRawId(requestMessage.getRawId());
 		responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
 		return responseMessage;
 	}
