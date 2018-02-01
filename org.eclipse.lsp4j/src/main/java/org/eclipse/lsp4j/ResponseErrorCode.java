@@ -9,7 +9,10 @@ package org.eclipse.lsp4j;
 
 /**
  * A number indicating the error type that occured.
+ * 
+ * @deprecated Use {@link org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode} instead
  */
+@Deprecated
 public enum ResponseErrorCode {
 	
 	ParseError(-32700),
