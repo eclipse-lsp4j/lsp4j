@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.jsonrpc.services;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,20 +24,32 @@ public final class ServiceEndpoints {
 	
 	/**
 	 * Wraps a given {@link Endpoint} in the given service interface.
-	 * @param endpoint
-	 * @param interface_
+	 * 
 	 * @return the wrapped service object
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T toServiceObject(Endpoint endpoint, Class<T> interface_) {
-		Object newProxyInstance = Proxy.newProxyInstance(interface_.getClassLoader(), new Class[]{interface_, Endpoint.class}, new EndpointProxy(endpoint, interface_));
-		return (T) newProxyInstance;
+		Class<?>[] interfArray = new Class[]{interface_, Endpoint.class};
+		EndpointProxy invocationHandler = new EndpointProxy(endpoint, interface_);
+		return (T) Proxy.newProxyInstance(interface_.getClassLoader(), interfArray, invocationHandler);
+	}
+	
+	/**
+	 * Wraps a given {@link Endpoint} in the given service interfaces.
+	 * 
+	 * @return the wrapped service object
+	 */
+	public static Object toServiceObject(Endpoint endpoint, Collection<Class<?>> interfaces, ClassLoader classLoader) {
+		Class<?>[] interfArray = new Class[interfaces.size() + 1];
+		interfaces.toArray(interfArray);
+		interfArray[interfArray.length - 1] = Endpoint.class;
+		EndpointProxy invocationHandler = new EndpointProxy(endpoint, interfaces);
+		return Proxy.newProxyInstance(classLoader, interfArray, invocationHandler);
 	}
 	
 	/**
 	 * Wraps a given object with service annotations behind an {@link Endpoint} interface.
 	 * 
-	 * @param serviceObject
 	 * @return the wrapped service endpoint
 	 */
 	public static Endpoint toEndpoint(Object serviceObject) {
@@ -44,10 +57,18 @@ public final class ServiceEndpoints {
 	}
 	
 	/**
-	 * Finds all Json RPC methods on a given class
+	 * Wraps a collection of objects with service annotations behind an {@link Endpoint} interface.
 	 * 
-	 * @param type
-	 * @return the suppoerd JsonRpcMethods
+	 * @return the wrapped service endpoint
+	 */
+	public static Endpoint toEndpoint(Collection<Object> serviceObjects) {
+		return new GenericEndpoint(serviceObjects);
+	}
+	
+	/**
+	 * Finds all Json RPC methods on a given class.
+	 * 
+	 * @return the supported JsonRpcMethods
 	 */
 	public static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type) {
 		Set<Class<?>> visitedTypes = new HashSet<>();

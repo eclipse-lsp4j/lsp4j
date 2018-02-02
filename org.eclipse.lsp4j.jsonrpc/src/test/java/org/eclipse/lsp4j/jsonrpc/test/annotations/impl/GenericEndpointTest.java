@@ -38,6 +38,17 @@ public class GenericEndpointTest {
 		}
 
 	}
+	
+	public static class Bar {
+		
+		public int calls = 0;
+		
+		@JsonNotification
+		public void barrr() {
+			calls++;
+		}
+		
+	}
 
 	public static interface MyIf {
 
@@ -57,13 +68,25 @@ public class GenericEndpointTest {
 
 	@Test
 	public void testSimple() {
-
 		Foo foo = new Foo();
 		GenericEndpoint endpoint = new GenericEndpoint(foo);
 		endpoint.notify("myNotification", null);
 		endpoint.notify("other/myNotification", null);
 
 		Assert.assertEquals(2, foo.calls);
+	}
+	
+	@Test
+	public void testMultiServices() {
+		Foo foo = new Foo();
+		Bar bar = new Bar();
+		GenericEndpoint endpoint = new GenericEndpoint(Arrays.asList(foo, bar));
+		endpoint.notify("myNotification", null);
+		endpoint.notify("barrr", null);
+		endpoint.notify("other/myNotification", null);
+		
+		Assert.assertEquals(2, foo.calls);
+		Assert.assertEquals(1, bar.calls);
 	}
 
 	@Test

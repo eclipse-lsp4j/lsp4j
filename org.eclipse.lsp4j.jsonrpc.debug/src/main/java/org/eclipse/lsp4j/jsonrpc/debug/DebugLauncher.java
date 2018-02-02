@@ -188,16 +188,16 @@ public interface DebugLauncher<T> extends Launcher<T> {
 		}
 
 		MessageJsonHandler jsonHandler = new DebugMessageJsonHandler(supportedMethods, configureGson);
-		MessageConsumer outGoingMessageStream = new StreamMessageConsumer(out, jsonHandler);
-		outGoingMessageStream = wrapper.apply(outGoingMessageStream);
-		RemoteEndpoint serverEndpoint = new DebugRemoteEndpoint(outGoingMessageStream,
+		MessageConsumer outgoingMessageStream = new StreamMessageConsumer(out, jsonHandler);
+		outgoingMessageStream = wrapper.apply(outgoingMessageStream);
+		RemoteEndpoint remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream,
 				ServiceEndpoints.toEndpoint(localService));
-		jsonHandler.setMethodProvider(serverEndpoint);
+		jsonHandler.setMethodProvider(remoteEndpoint);
 		// wrap incoming message stream
-		MessageConsumer messageConsumer = wrapper.apply(serverEndpoint);
+		MessageConsumer messageConsumer = wrapper.apply(remoteEndpoint);
 		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler);
 
-		T remoteProxy = ServiceEndpoints.toServiceObject(serverEndpoint, remoteInterface);
+		T remoteProxy = ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterface);
 
 		return new DebugLauncher<T>() {
 
@@ -209,6 +209,11 @@ public interface DebugLauncher<T> extends Launcher<T> {
 			@Override
 			public T getRemoteProxy() {
 				return remoteProxy;
+			}
+
+			@Override
+			public RemoteEndpoint getRemoteEndpoint() {
+				return remoteEndpoint;
 			}
 
 		};

@@ -9,6 +9,9 @@ package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 
 /**
  * An endpoint that reflectively delegates to {@link JsonNotification} and
- * {@link JsonRequest} methods of a given delegate object.
+ * {@link JsonRequest} methods of one or more given delegate objects.
  */
 public class GenericEndpoint implements Endpoint {
 	
@@ -34,11 +37,18 @@ public class GenericEndpoint implements Endpoint {
 	private static final Object[] NO_ARGUMENTS = {};
 
 	private final LinkedHashMap<String, Function<Object, CompletableFuture<Object>>> methodHandlers = new LinkedHashMap<>();
-	private final Object delegate;
+	private final List<Object> delegates;
 
 	public GenericEndpoint(Object delegate) {
-		this.delegate = delegate;
+		this.delegates = Collections.singletonList(delegate);
 		recursiveFindRpcMethods(delegate, new HashSet<>(), new HashSet<>());
+	}
+	
+	public GenericEndpoint(Collection<Object> delegates) {
+		this.delegates = new ArrayList<>(delegates);
+		for (Object delegate : this.delegates) {
+			recursiveFindRpcMethods(delegate, new HashSet<>(), new HashSet<>());
+		}
 	}
 
 	protected void recursiveFindRpcMethods(Object current, Set<Class<?>> visited, Set<Class<?>> visitedForDelegate) {
@@ -100,13 +110,24 @@ public class GenericEndpoint implements Endpoint {
 
 	@Override
 	public CompletableFuture<?> request(String method, Object parameter) {
+		// Check the registered method handlers
 		Function<Object, CompletableFuture<Object>> handler = methodHandlers.get(method);
 		if (handler != null) {
 			return handler.apply(parameter);
 		}
-		if (delegate instanceof Endpoint) {
-			return ((Endpoint) delegate).request(method, parameter);
+		
+		// Ask the delegate objects whether they can handle the request generically
+		List<CompletableFuture<?>> futures = new ArrayList<>(delegates.size());
+		for (Object delegate : delegates) {
+			if (delegate instanceof Endpoint) {
+				futures.add(((Endpoint) delegate).request(method, parameter));
+			}
 		}
+		if (!futures.isEmpty()) {
+			return CompletableFuture.anyOf(futures.toArray(new CompletableFuture[futures.size()]));
+		}
+		
+		// Create a log message about the unsupported method
 		String message = "Unsupported request method: " + method;
 		if (isOptionalMethod(method)) {
 			LOG.log(Level.INFO, message);
@@ -121,20 +142,30 @@ public class GenericEndpoint implements Endpoint {
 
 	@Override
 	public void notify(String method, Object parameter) {
+		// Check the registered method handlers
 		Function<Object, CompletableFuture<Object>> handler = methodHandlers.get(method);
 		if (handler != null) {
 			handler.apply(parameter);
 			return;
 		}
-		if (delegate instanceof Endpoint) {
-			((Endpoint) delegate).notify(method, parameter);
-			return;
+		
+		// Ask the delegate objects whether they can handle the notification generically
+		int notifiedDelegates = 0;
+		for (Object delegate : delegates) {
+			if (delegate instanceof Endpoint) {
+				((Endpoint) delegate).notify(method, parameter);
+				notifiedDelegates++;
+			}
 		}
-		String message = "Unsupported notification method: " + method;
-		if (isOptionalMethod(method)) {
-			LOG.log(Level.INFO, message);
-		} else {
-			LOG.log(Level.WARNING, message);
+		
+		if (notifiedDelegates == 0) {
+			// Create a log message about the unsupported method
+			String message = "Unsupported notification method: " + method;
+			if (isOptionalMethod(method)) {
+				LOG.log(Level.INFO, message);
+			} else {
+				LOG.log(Level.WARNING, message);
+			}
 		}
 	}
 	
