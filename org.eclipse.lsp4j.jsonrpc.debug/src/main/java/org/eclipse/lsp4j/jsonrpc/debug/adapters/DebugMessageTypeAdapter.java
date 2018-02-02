@@ -428,7 +428,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		out.endObject();
 	}
 	
-	private void writeIntId(JsonWriter out, Either<String, Integer> id) throws IOException {
+	private void writeIntId(JsonWriter out, Either<String, Number> id) throws IOException {
 		if (id == null)
 			writeNullValue(out);
 		else if (id.isLeft())

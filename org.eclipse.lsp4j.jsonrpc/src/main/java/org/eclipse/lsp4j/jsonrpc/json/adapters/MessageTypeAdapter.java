@@ -80,7 +80,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		
 		in.beginObject();
 		String jsonrpc = null, method = null;
-		Either<String, Integer> id = null;
+		Either<String, Number> id = null;
 		Object rawParams = null;
 		Object rawResult = null;
 		ResponseError error = null;
@@ -314,7 +314,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		return EMPTY_TYPE_ARRAY;
 	}
 	
-	protected Message createMessage(String jsonrpc, Either<String, Integer> id, String method, Object params, Object result, ResponseError error) {
+	protected Message createMessage(String jsonrpc, Either<String, Number> id, String method, Object params, Object result, ResponseError error) {
 		if (id != null && method != null) {
 			RequestMessage message = new RequestMessage();
 			message.setJsonrpc(jsonrpc);
@@ -391,7 +391,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		out.endObject();
 	}
 	
-	protected void writeId(JsonWriter out, Either<String, Integer> id) throws IOException {
+	protected void writeId(JsonWriter out, Either<String, Number> id) throws IOException {
 		if (id == null)
 			writeNullValue(out);
 		else if (id.isLeft())

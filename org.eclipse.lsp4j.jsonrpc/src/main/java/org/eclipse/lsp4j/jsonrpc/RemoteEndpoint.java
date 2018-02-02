@@ -147,7 +147,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 		return requestMessage;
 	}
 
-	protected void sendCancelNotification(Either<String, Integer> id) {
+	protected void sendCancelNotification(Either<String, Number> id) {
 		CancelParams cancelParams = new CancelParams();
 		cancelParams.setRawId(id);
 		notify(MessageJsonHandler.CANCEL_METHOD.getMethodName(), cancelParams);

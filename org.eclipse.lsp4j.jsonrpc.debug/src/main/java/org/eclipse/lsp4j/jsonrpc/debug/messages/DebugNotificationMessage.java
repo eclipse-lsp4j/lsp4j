@@ -23,7 +23,7 @@ public class DebugNotificationMessage extends NotificationMessage {
 	 * The notification id.
 	 */
 	@NonNull
-	private Either<String, Integer> id;
+	private Either<String, Number> id;
 
 	public String getId() {
 		if (id == null)
@@ -35,7 +35,7 @@ public class DebugNotificationMessage extends NotificationMessage {
 		return null;
 	}
 	
-	public Either<String, Integer> getRawId() {
+	public Either<String, Number> getRawId() {
 		return id;
 	}
 
@@ -47,7 +47,7 @@ public class DebugNotificationMessage extends NotificationMessage {
 		this.id = Either.forRight(id);
 	}
 	
-	public void setRawId(Either<String, Integer> id) {
+	public void setRawId(Either<String, Number> id) {
 		this.id = id;
 	}
 

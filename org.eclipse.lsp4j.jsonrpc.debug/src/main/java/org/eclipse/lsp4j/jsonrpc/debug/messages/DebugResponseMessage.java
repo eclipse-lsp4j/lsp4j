@@ -25,7 +25,7 @@ public class DebugResponseMessage extends ResponseMessage {
 	 * The {@link #getId()} field is the id of the message being replied to.
 	 */
 	@NonNull
-	private Either<String, Integer> responseId;
+	private Either<String, Number> responseId;
 
 	public String getResponseId() {
 		if (responseId == null)
@@ -37,7 +37,7 @@ public class DebugResponseMessage extends ResponseMessage {
 		return null;
 	}
 	
-	public Either<String, Integer> getRawResponseId() {
+	public Either<String, Number> getRawResponseId() {
 		return responseId;
 	}
 
@@ -49,7 +49,7 @@ public class DebugResponseMessage extends ResponseMessage {
 		this.responseId = Either.forRight(id);
 	}
 	
-	public void setRawResponseId(Either<String, Integer> id) {
+	public void setRawResponseId(Either<String, Number> id) {
 		this.responseId = id;
 	}
 

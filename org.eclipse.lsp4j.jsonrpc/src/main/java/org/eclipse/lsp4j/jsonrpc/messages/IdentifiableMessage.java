@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
+ * Copyright (c) 2018 TypeFox GmbH (http://www.typefox.io) and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,16 +7,15 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
-import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
 /**
- * To cancel a request a notification message with the following properties is sent.
+ * A message with an {@code id} property.
  */
-public class CancelParams {
+public abstract class IdentifiableMessage extends Message {
 	
 	/**
-	 * The request id to cancel.
+	 * The message identifier.
 	 */
 	@NonNull
 	private Either<String, Number> id;
@@ -46,11 +45,6 @@ public class CancelParams {
 	public void setRawId(Either<String, Number> id) {
 		this.id = id;
 	}
-	
-	@Override
-	public String toString() {
-		return MessageJsonHandler.toString(this);
-	}
 
 	@Override
 	public boolean equals(final Object obj) {
@@ -60,7 +54,9 @@ public class CancelParams {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CancelParams other = (CancelParams) obj;
+		if (!super.equals(obj))
+			return false;
+		IdentifiableMessage other = (IdentifiableMessage) obj;
 		if (this.id == null) {
 			if (other.id != null)
 				return false;
@@ -72,7 +68,7 @@ public class CancelParams {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
 		return result;
 	}
