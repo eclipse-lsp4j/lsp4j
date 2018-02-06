@@ -9,13 +9,18 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
  * [Getting Started](documentation/README.md)
  * [Core Concepts](documentation/jsonrpc.md)
 
-### p2 Update Sites
+#### Maven Repositories
+
+ * [Maven Central](https://repo.maven.apache.org/maven2/org/eclipse/lsp4j/): https://repo.maven.apache.org/maven2/
+ * [Bintray](https://bintray.com/bintray/jcenter/org.eclipse.lsp4j%3Aorg.eclipse.lsp4j/): https://jcenter.bintray.com/
+
+#### p2 Update Sites
 
  * Releases: http://download.eclipse.org/lsp4j/updates/releases/
  * Milestones: http://download.eclipse.org/lsp4j/updates/milestones/
  * Nightly: http://services.typefox.io/open-source/jenkins/job/lsp4j/job/master/lastStableBuild/artifact/build/p2-repository/
 
-### Snapshots
+#### Snapshots
 
 The snapshots are regularly deployed to:
  * https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/lsp4j/
