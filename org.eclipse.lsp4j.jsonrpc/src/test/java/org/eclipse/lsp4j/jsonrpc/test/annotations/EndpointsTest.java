@@ -11,6 +11,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +26,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EndpointsTest {
@@ -51,13 +54,13 @@ public class EndpointsTest {
 	@JsonSegment("bar")
 	public static interface Bar {
 		@JsonRequest
-		public CompletableFuture<String> doStuff(String arg, Integer arg2);
+		public CompletableFuture<String> doStuff2(String arg, Integer arg2);
 		
 		@JsonNotification
-		public void myNotification(String someArg, Integer someArg2);
+		public void myNotification2(String someArg, Integer someArg2);
 		
 		@JsonDelegate
-		public BarDelegated getDelegate();
+		public BarDelegated getDelegate2();
 	}
 	
 	public static interface BarDelegated {
@@ -92,25 +95,24 @@ public class EndpointsTest {
 			
 			@Override
 			public CompletableFuture<?> request(String method, Object parameter) {
-				assertEquals("bar/doStuff", method);
+				assertEquals("bar/doStuff2", method);
 				assertEquals("[param, 2]", parameter.toString());
 				return CompletableFuture.completedFuture("result");
 			}
 			
 			@Override
 			public void notify(String method, Object parameter) {
-				assertEquals("bar/myNotification", method);
+				assertEquals("bar/myNotification2", method);
 				assertEquals("[notificationParam, 1]", parameter.toString());
 			}
 		};
 		Bar bar = ServiceEndpoints.toServiceObject(endpoint, Bar.class);
-		bar.myNotification("notificationParam", 1);
-		assertEquals("result", bar.doStuff("param", 2).get(TIMEOUT, TimeUnit.MILLISECONDS));
+		bar.myNotification2("notificationParam", 1);
+		assertEquals("result", bar.doStuff2("param", 2).get(TIMEOUT, TimeUnit.MILLISECONDS));
 	}
 	
 	@Test public void testBackAndForth() throws Exception {
 		Endpoint endpoint = new Endpoint() {
-			
 			@Override
 			public CompletableFuture<?> request(String method, Object parameter) {
 				assertEquals("foo/doStuff", method);
@@ -129,6 +131,46 @@ public class EndpointsTest {
 		Foo foo = ServiceEndpoints.toServiceObject(secondEndpoint, Foo.class);
 		foo.myNotification("notificationParam");
 		assertEquals("result", foo.doStuff("param").get(TIMEOUT, TimeUnit.MILLISECONDS));
+	}
+	
+	@Test public void testMultipleInterfaces() throws Exception {
+		final Map<String, Object> requests = new HashMap<>();
+		final Map<String, Object> notifications = new HashMap<>();
+		Endpoint endpoint = new Endpoint() {
+			@Override
+			public CompletableFuture<?> request(String method, Object parameter) {
+				requests.put(method, parameter);
+				switch (method) {
+				case "foo/doStuff":
+					assertEquals("paramFoo", parameter);
+					return CompletableFuture.completedFuture("resultFoo");
+				case "bar/doStuff2":
+					assertEquals(Arrays.asList("paramBar", 77), parameter);
+					return CompletableFuture.completedFuture("resultBar");
+				default:
+					Assert.fail("Unexpected method: " + method);
+					return null;
+				}
+			}
+			
+			@Override
+			public void notify(String method, Object parameter) {
+				notifications.put(method, parameter);
+			}
+		};
+		ClassLoader classLoader = getClass().getClassLoader();
+		Object proxy = ServiceEndpoints.toServiceObject(endpoint, Arrays.asList(Foo.class, Bar.class), classLoader);
+		Foo foo = (Foo) proxy;
+		foo.myNotification("notificationParamFoo");
+		assertEquals("resultFoo", foo.doStuff("paramFoo").get(TIMEOUT, TimeUnit.MILLISECONDS));
+		Bar bar = (Bar) proxy;
+		bar.myNotification2("notificationParamBar", 42);
+		assertEquals("resultBar", bar.doStuff2("paramBar", 77).get(TIMEOUT, TimeUnit.MILLISECONDS));
+		
+		assertEquals(2, requests.size());
+		assertEquals(2, notifications.size());
+		assertEquals("notificationParamFoo", notifications.get("foo/myNotification"));
+		assertEquals(Arrays.asList("notificationParamBar", 42), notifications.get("bar/myNotification2"));
 	}
 	
 	@Test public void testRpcMethods_01() {
@@ -150,15 +192,15 @@ public class EndpointsTest {
 	@Test public void testRpcMethods_02() {
 		Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(Bar.class);
 		
-		final JsonRpcMethod requestMethod = methods.get("bar/doStuff");
-		assertEquals("bar/doStuff", requestMethod.getMethodName());
+		final JsonRpcMethod requestMethod = methods.get("bar/doStuff2");
+		assertEquals("bar/doStuff2", requestMethod.getMethodName());
 		assertEquals(2, requestMethod.getParameterTypes().length);
 		assertEquals(String.class, requestMethod.getParameterTypes()[0]);
 		assertEquals(Integer.class, requestMethod.getParameterTypes()[1]);
 		assertFalse(requestMethod.isNotification());
 		
-		final JsonRpcMethod notificationMethod = methods.get("bar/myNotification");
-		assertEquals("bar/myNotification", notificationMethod.getMethodName());
+		final JsonRpcMethod notificationMethod = methods.get("bar/myNotification2");
+		assertEquals("bar/myNotification2", notificationMethod.getMethodName());
 		assertEquals(2, notificationMethod.getParameterTypes().length);
 		assertEquals(String.class, notificationMethod.getParameterTypes()[0]);
 		assertEquals(Integer.class, notificationMethod.getParameterTypes()[1]);

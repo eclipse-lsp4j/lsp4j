@@ -11,6 +11,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
@@ -19,9 +21,8 @@ import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.DelegateInfo;
 import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.MethodInfo;
 
 /**
- * A Proxy that wraps an {@link Endpoint} in a service interface, i.e. an
- * interface containing {@link JsonNotification} and {@link JsonRequest}
- * methods.
+ * A Proxy that wraps an {@link Endpoint} in one or more service interfaces, i.e. interfaces
+ * containing {@link JsonNotification} and {@link JsonRequest} methods.
  */
 public class EndpointProxy implements InvocationHandler {
 	
@@ -33,11 +34,18 @@ public class EndpointProxy implements InvocationHandler {
 	private final LinkedHashMap<String, MethodInfo> methodInfos;
 	private final LinkedHashMap<String, DelegateInfo> delegatedSegments;
 
-	public EndpointProxy(Endpoint delegate, Class<?> interf) {
+	public EndpointProxy(Endpoint delegate, Class<?> interface_) {
+		this(delegate, Collections.singletonList(interface_));
+	}
+	
+	public EndpointProxy(Endpoint delegate, Collection<Class<?>> interfaces) {
 		if (delegate == null)
 			throw new NullPointerException("delegate");
-		if (interf == null)
-			throw new NullPointerException("interf");
+		if (interfaces == null)
+			throw new NullPointerException("interfaces");
+		if (interfaces.isEmpty())
+			throw new IllegalArgumentException("interfaces must not be empty.");
+		
 		this.delegate = delegate;
 		try {
 			object_equals = Object.class.getDeclaredMethod("equals", Object.class);
@@ -47,21 +55,23 @@ public class EndpointProxy implements InvocationHandler {
 			throw new RuntimeException(exception);
 		}
 		methodInfos = new LinkedHashMap<>();
-		AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
-			if (methodInfos.put(methodInfo.method.getName(), methodInfo) != null) {
-				throw new IllegalStateException("Method overload not allowed : " + methodInfo.method);
-			}
-		});
 		delegatedSegments = new LinkedHashMap<>();
-		AnnotationUtil.findDelegateSegments(interf, new HashSet<Class<?>>(), (method) -> {
-			Object delegateProxy = ServiceEndpoints.toServiceObject(delegate, method.getReturnType());
-			DelegateInfo info = new DelegateInfo();
-			info.delegate = delegateProxy;
-			info.method = method;
-			if (delegatedSegments.put(method.getName(), info) != null) {
-				throw new IllegalStateException("Method overload not allowed : " + method);
-			}
-		});
+		for (Class<?> interf : interfaces) {
+			AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
+				if (methodInfos.put(methodInfo.method.getName(), methodInfo) != null) {
+					throw new IllegalStateException("Method overload not allowed : " + methodInfo.method);
+				}
+			});
+			AnnotationUtil.findDelegateSegments(interf, new HashSet<Class<?>>(), (method) -> {
+				Object delegateProxy = ServiceEndpoints.toServiceObject(delegate, method.getReturnType());
+				DelegateInfo info = new DelegateInfo();
+				info.delegate = delegateProxy;
+				info.method = method;
+				if (delegatedSegments.put(method.getName(), info) != null) {
+					throw new IllegalStateException("Method overload not allowed : " + method);
+				}
+			});
+		}
 	}
 
 	@Override

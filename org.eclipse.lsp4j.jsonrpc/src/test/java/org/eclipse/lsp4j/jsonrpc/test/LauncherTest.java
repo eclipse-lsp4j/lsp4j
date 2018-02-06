@@ -7,16 +7,21 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,7 +43,13 @@ public class LauncherTest {
 	}
 	
 	static interface A {
-		@JsonNotification public void say(Param p);
+		@JsonNotification
+		public void say(Param p);
+	}
+	
+	static interface B {
+		@JsonRequest
+		public CompletableFuture<String> ask(Param p);
 	}
 
 	@Test public void testDone() throws Exception {
@@ -105,6 +116,49 @@ public class LauncherTest {
 		remoteProxy.say(new Param("foo"));
 		Assert.assertEquals("Content-Length: 59\r\n\r\n"
 				+ "{\"jsonrpc\":\"2.0\",\"method\":\"say\",\"params\":{\"message\":\"bar\"}}",
+				out.toString());
+	}
+	
+	@Test public void testMultipleServices() throws Exception {
+		final String[] paramA = new String[1];
+		A a = new A() {
+			@Override
+			public void say(Param p) {
+				paramA[0] = p.message;
+			}
+		};
+		final String[] paramB = new String[1];
+		B b = new B() {
+			@Override
+			public CompletableFuture<String> ask(Param p) {
+				paramB[0] = p.message;
+				return CompletableFuture.completedFuture("echo " + p.message);
+			}
+		};
+		String inputMessages = "Content-Length: 60\r\n\r\n"
+			+ "{\"jsonrpc\":\"2.0\",\"method\":\"say\",\"params\":{\"message\":\"foo1\"}}"
+			+ "Content-Length: 69\r\n\r\n"
+			+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"method\":\"ask\",\"params\":{\"message\":\"bar1\"}}";
+		ByteArrayInputStream in = new ByteArrayInputStream(inputMessages.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		
+		ClassLoader classLoader = getClass().getClassLoader();
+		Launcher<Object> launcher = Launcher.createIoLauncher(Arrays.asList(a, b), Arrays.asList(A.class, B.class),
+				classLoader, in, out, Executors.newCachedThreadPool(), c -> c, null);
+		
+		launcher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+		assertEquals("foo1", paramA[0]);
+		assertEquals("bar1", paramB[0]);
+		
+		Object remoteProxy = launcher.getRemoteProxy();
+		((A) remoteProxy).say(new Param("foo2"));
+		((B) remoteProxy).ask(new Param("bar2"));
+		Assert.assertEquals("Content-Length: 47\r\n\r\n" 
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":\"echo bar1\"}"
+				+ "Content-Length: 60\r\n\r\n"
+				+ "{\"jsonrpc\":\"2.0\",\"method\":\"say\",\"params\":{\"message\":\"foo2\"}}"
+				+ "Content-Length: 69\r\n\r\n"
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"method\":\"ask\",\"params\":{\"message\":\"bar2\"}}",
 				out.toString());
 	}
 	
