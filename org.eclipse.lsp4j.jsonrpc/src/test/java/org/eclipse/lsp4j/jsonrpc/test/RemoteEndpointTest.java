@@ -7,16 +7,22 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -24,8 +30,6 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class RemoteEndpointTest {
 	
@@ -64,15 +68,20 @@ public class RemoteEndpointTest {
 		
 	}
 	
+	static <T> T init(T value, Consumer<T> initializer) {
+		initializer.accept(value);
+		return value;
+	}
+	
 	@Test public void testNotification() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
 		
-		endpoint.consume(new NotificationMessage() {{
-			setMethod("foo");
-			setParams("myparam");
-		}});
+		endpoint.consume(init(new NotificationMessage(), it -> {
+			it.setMethod("foo");
+			it.setParams("myparam");
+		}));
 		
 		NotificationMessage notificationMessage = endp.notifications.get(0);
 		assertEquals("foo", notificationMessage.getMethod());
@@ -80,22 +89,44 @@ public class RemoteEndpointTest {
 		assertTrue(consumer.messages.isEmpty());
 	}
 	
-	@Test public void testRequest() {
+	@Test public void testRequest1() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
 		
-		endpoint.consume(new RequestMessage() {{
-			setId("1");
-			setMethod("foo");
-			setParams("myparam");
-		}});
+		endpoint.consume(init(new RequestMessage(), it -> {
+			it.setId("1");
+			it.setMethod("foo");
+			it.setParams("myparam");
+		}));
 		
 		Entry<RequestMessage, CompletableFuture<Object>> entry = endp.requests.entrySet().iterator().next();
 		entry.getValue().complete("success");
 		assertEquals("foo", entry.getKey().getMethod());
 		assertEquals("myparam", entry.getKey().getParams());
-		assertEquals("success", ((ResponseMessage)consumer.messages.get(0)).getResult());
+		ResponseMessage responseMessage = (ResponseMessage) consumer.messages.get(0);
+		assertEquals("success", responseMessage.getResult());
+		assertEquals(Either.forLeft("1"), responseMessage.getRawId());
+	}
+	
+	@Test public void testRequest2() {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		endpoint.consume(init(new RequestMessage(), it -> {
+			it.setId(1);
+			it.setMethod("foo");
+			it.setParams("myparam");
+		}));
+		
+		Entry<RequestMessage, CompletableFuture<Object>> entry = endp.requests.entrySet().iterator().next();
+		entry.getValue().complete("success");
+		assertEquals("foo", entry.getKey().getMethod());
+		assertEquals("myparam", entry.getKey().getParams());
+		ResponseMessage responseMessage = (ResponseMessage) consumer.messages.get(0);
+		assertEquals("success", responseMessage.getResult());
+		assertEquals(Either.forRight(1), responseMessage.getRawId());
 	}
 	
 	@Test public void testCancellation() {
@@ -103,11 +134,11 @@ public class RemoteEndpointTest {
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
 		
-		endpoint.consume(new RequestMessage() {{
-			setId("1");
-			setMethod("foo");
-			setParams("myparam");
-		}});
+		endpoint.consume(init(new RequestMessage(), it -> {
+			it.setId("1");
+			it.setMethod("foo");
+			it.setParams("myparam");
+		}));
 		
 		Entry<RequestMessage, CompletableFuture<Object>> entry = endp.requests.entrySet().iterator().next();
 		entry.getValue().cancel(true);
@@ -134,11 +165,11 @@ public class RemoteEndpointTest {
 			TestMessageConsumer consumer = new TestMessageConsumer();
 			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
 			
-			endpoint.consume(new RequestMessage() {{
-				setId("1");
-				setMethod("foo");
-				setParams("myparam");
-			}});
+			endpoint.consume(init(new RequestMessage(), it -> {
+				it.setId("1");
+				it.setMethod("foo");
+				it.setParams("myparam");
+			}));
 			
 			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
 			assertEquals("Internal error.", response.getError().getMessage());
@@ -167,11 +198,11 @@ public class RemoteEndpointTest {
 			// Misbehaving exception handler that returns null
 			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, (e) -> null);
 
-			endpoint.consume(new RequestMessage() {{
-				setId("1");
-				setMethod("foo");
-				setParams("myparam");
-			}});
+			endpoint.consume(init(new RequestMessage(), it -> {
+				it.setId("1");
+				it.setMethod("foo");
+				it.setParams("myparam");
+			}));
 
 			assertEquals("Check some response received", 1, consumer.messages.size());
 			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
@@ -214,11 +245,11 @@ public class RemoteEndpointTest {
 			// Misbehaving exception handler that returns null
 			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, (e) -> null);
 
-			endpoint.consume(new RequestMessage() {{
-				setId("1");
-				setMethod("foo");
-				setParams("myparam");
-			}});
+			endpoint.consume(init(new RequestMessage(), it -> {
+				it.setId("1");
+				it.setMethod("foo");
+				it.setParams("myparam");
+			}));
 
 			assertEquals("Check some response received", 1, consumer.messages.size());
 			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);

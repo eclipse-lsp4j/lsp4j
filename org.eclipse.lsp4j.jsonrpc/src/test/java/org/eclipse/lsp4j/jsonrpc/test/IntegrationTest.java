@@ -92,6 +92,60 @@ public class IntegrationTest {
 	}
 
 	@Test
+	public void testResponse1() throws Exception {
+		// create client message
+		String requestMessage = "{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"42\",\n" 
+				+ "\"method\":\"askServer\",\n" 
+				+ "\"params\": { value: \"bar\" }\n"
+				+ "}";
+		String clientMessage = getHeader(requestMessage.getBytes().length) + requestMessage;
+		
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessage.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+		
+		Assert.assertEquals("Content-Length: 52" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"42\",\"result\":{\"value\":\"bar\"}}",
+				out.toString());
+	}
+	
+	@Test
+	public void testResponse2() throws Exception {
+		// create client message
+		String requestMessage = "{\"jsonrpc\":\"2.0\","
+				+ "\"id\":42,\n" 
+				+ "\"method\":\"askServer\",\n" 
+				+ "\"params\": { value: \"bar\" }\n"
+				+ "}";
+		String clientMessage = getHeader(requestMessage.getBytes().length) + requestMessage;
+		
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessage.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+		
+		Assert.assertEquals("Content-Length: 50" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":42,\"result\":{\"value\":\"bar\"}}",
+				out.toString());
+	}
+
+	@Test
 	public void testCancellation() throws Exception {
 		// create client side
 		PipedInputStream in = new PipedInputStream();

@@ -43,6 +43,14 @@ public class Either<L, R> {
 	public R getRight() {
 		return right;
 	}
+	
+	public Object get() {
+		if (left != null)
+			return left;
+		if (right != null)
+			return right;
+		return null;
+	}
 
 	public boolean isLeft() {
 		return left != null;

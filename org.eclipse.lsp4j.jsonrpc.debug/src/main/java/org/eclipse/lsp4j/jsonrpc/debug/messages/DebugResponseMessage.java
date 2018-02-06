@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.jsonrpc.debug.messages;
 
 import org.eclipse.lsp4j.jsonrpc.debug.adapters.DebugMessageTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
@@ -24,13 +25,31 @@ public class DebugResponseMessage extends ResponseMessage {
 	 * The {@link #getId()} field is the id of the message being replied to.
 	 */
 	@NonNull
-	private String responseId;
+	private Either<String, Number> responseId;
 
 	public String getResponseId() {
-		return this.responseId;
+		if (responseId == null)
+			return null;
+		if (responseId.isLeft())
+			return responseId.getLeft();
+		if (responseId.isRight())
+			return responseId.getRight().toString();
+		return null;
+	}
+	
+	public Either<String, Number> getRawResponseId() {
+		return responseId;
 	}
 
 	public void setResponseId(String id) {
+		this.responseId = Either.forLeft(id);
+	}
+	
+	public void setResponseId(int id) {
+		this.responseId = Either.forRight(id);
+	}
+	
+	public void setRawResponseId(Either<String, Number> id) {
 		this.responseId = id;
 	}
 

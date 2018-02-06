@@ -7,8 +7,6 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-
 /**
  * Response Message sent as a result of a request. If a request doesn't provide
  * a result value the receiver of a request still needs to return a response
@@ -16,21 +14,7 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
  * ResponseMessage should be set to null in this case to signal a successful
  * request.
  */
-public class ResponseMessage extends Message {
-
-	/**
-	 * The request id.
-	 */
-	@NonNull
-	private String id;
-
-	public String getId() {
-		return this.id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+public class ResponseMessage extends IdentifiableMessage {
 
 	/**
 	 * The result of a request. This can be omitted in the case of an error.
@@ -69,11 +53,6 @@ public class ResponseMessage extends Message {
 		if (!super.equals(obj))
 			return false;
 		ResponseMessage other = (ResponseMessage) obj;
-		if (this.id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!this.id.equals(other.id))
-			return false;
 		if (this.result == null) {
 			if (other.result != null)
 				return false;
@@ -91,7 +70,6 @@ public class ResponseMessage extends Message {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
 		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
 		result = prime * result + ((this.error == null) ? 0 : this.error.hashCode());
 		return result;

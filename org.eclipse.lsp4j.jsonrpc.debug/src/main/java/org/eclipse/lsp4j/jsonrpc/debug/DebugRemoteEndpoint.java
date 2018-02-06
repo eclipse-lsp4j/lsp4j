@@ -34,7 +34,7 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	@Override
 	protected DebugRequestMessage createRequestMessage(String method, Object parameter) {
 		DebugRequestMessage requestMessage = new DebugRequestMessage();
-		requestMessage.setId(String.valueOf(nextSeqId.incrementAndGet()));
+		requestMessage.setId(nextSeqId.incrementAndGet());
 		requestMessage.setMethod(method);
 		requestMessage.setParams(parameter);
 		return requestMessage;
@@ -43,8 +43,8 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	@Override
 	protected DebugResponseMessage createResponseMessage(RequestMessage requestMessage) {
 		DebugResponseMessage responseMessage = new DebugResponseMessage();
-		responseMessage.setResponseId(String.valueOf(nextSeqId.incrementAndGet()));
-		responseMessage.setId(requestMessage.getId());
+		responseMessage.setResponseId(nextSeqId.incrementAndGet());
+		responseMessage.setRawId(requestMessage.getRawId());
 		responseMessage.setMethod(requestMessage.getMethod());
 		return responseMessage;
 	}
@@ -52,7 +52,7 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	@Override
 	protected DebugNotificationMessage createNotificationMessage(String method, Object parameter) {
 		DebugNotificationMessage notificationMessage = new DebugNotificationMessage();
-		notificationMessage.setId(String.valueOf(nextSeqId.incrementAndGet()));
+		notificationMessage.setId(nextSeqId.incrementAndGet());
 		notificationMessage.setMethod(method);
 		notificationMessage.setParams(parameter);
 		return notificationMessage;

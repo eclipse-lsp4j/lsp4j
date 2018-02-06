@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j.jsonrpc.debug.messages;
 
 import org.eclipse.lsp4j.jsonrpc.debug.adapters.DebugMessageTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
@@ -22,13 +23,31 @@ public class DebugNotificationMessage extends NotificationMessage {
 	 * The notification id.
 	 */
 	@NonNull
-	private String id;
+	private Either<String, Number> id;
 
 	public String getId() {
-		return this.id;
+		if (id == null)
+			return null;
+		if (id.isLeft())
+			return id.getLeft();
+		if (id.isRight())
+			return id.getRight().toString();
+		return null;
+	}
+	
+	public Either<String, Number> getRawId() {
+		return id;
 	}
 
 	public void setId(String id) {
+		this.id = Either.forLeft(id);
+	}
+	
+	public void setId(int id) {
+		this.id = Either.forRight(id);
+	}
+	
+	public void setRawId(Either<String, Number> id) {
 		this.id = id;
 	}
 

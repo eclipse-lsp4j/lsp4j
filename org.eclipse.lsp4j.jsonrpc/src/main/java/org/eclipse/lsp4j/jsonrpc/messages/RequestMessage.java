@@ -14,21 +14,7 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
  * Every processed request must send a response back to the sender of the
  * request.
  */
-public class RequestMessage extends Message {
-
-	/**
-	 * The request id.
-	 */
-	@NonNull
-	private String id;
-
-	public String getId() {
-		return this.id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+public class RequestMessage extends IdentifiableMessage {
 
 	/**
 	 * The method to be invoked.
@@ -68,11 +54,6 @@ public class RequestMessage extends Message {
 		if (!super.equals(obj))
 			return false;
 		RequestMessage other = (RequestMessage) obj;
-		if (this.id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!this.id.equals(other.id))
-			return false;
 		if (this.method == null) {
 			if (other.method != null)
 				return false;
@@ -90,7 +71,6 @@ public class RequestMessage extends Message {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
 		result = prime * result + ((this.method == null) ? 0 : this.method.hashCode());
 		result = prime * result + ((this.params == null) ? 0 : this.params.hashCode());
 		return result;
