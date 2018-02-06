@@ -21,12 +21,12 @@ import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 
 public class ConcurrentMessageProcessor implements Runnable {
-    
-    public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
-    		ExecutorService executorService) {
-    	ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
-    	final Future<?> result = executorService.submit(reader);
-    	return new Future<Object>() {
+
+	public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
+			ExecutorService executorService) {
+		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
+		final Future<?> result = executorService.submit(reader);
+		return new Future<Object>() {
 
 			@Override
 			public Object get() throws InterruptedException, ExecutionException {
@@ -61,32 +61,32 @@ public class ConcurrentMessageProcessor implements Runnable {
 				return result.isCancelled();
 			}
 		};
-    }
-	
+	}
+
 	private static final Logger LOG = Logger.getLogger(ConcurrentMessageProcessor.class.getName());
 
-    private boolean isRunning;
+	private boolean isRunning;
 
-    private final MessageProducer messageProducer;
-    private final MessageConsumer messageConsumer;
-    
-    public ConcurrentMessageProcessor(MessageProducer messageProducer, MessageConsumer messageConsumer) {
-    	this.messageProducer = messageProducer;
-    	this.messageConsumer = messageConsumer;
-    }
-    
-    public void run() {
-        if (isRunning) {
-            throw new IllegalStateException("The reader is already running.");
-        }
-        isRunning = true;
-        try {
-            messageProducer.listen(messageConsumer);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, e.getMessage(), e);
-        } finally {
-            isRunning = false;
-        }
-    }
-				
+	private final MessageProducer messageProducer;
+	private final MessageConsumer messageConsumer;
+
+	public ConcurrentMessageProcessor(MessageProducer messageProducer, MessageConsumer messageConsumer) {
+		this.messageProducer = messageProducer;
+		this.messageConsumer = messageConsumer;
+	}
+
+	public void run() {
+		if (isRunning) {
+			throw new IllegalStateException("The reader is already running.");
+		}
+		isRunning = true;
+		try {
+			messageProducer.listen(messageConsumer);
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			isRunning = false;
+		}
+	}
+
 }
