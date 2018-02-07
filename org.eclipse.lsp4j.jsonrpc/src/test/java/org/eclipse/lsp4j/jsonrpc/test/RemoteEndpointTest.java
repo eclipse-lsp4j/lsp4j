@@ -24,6 +24,7 @@ import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
@@ -39,19 +40,19 @@ public class RemoteEndpointTest {
 		Map<RequestMessage, CompletableFuture<Object>> requests = new LinkedHashMap<>();
 		
 		public void notify(String method, Object parameter) {
-			notifications.add(new NotificationMessage() {{
-				setMethod(method);
-				setParams(parameter);
-			}});
+			notifications.add(init(new NotificationMessage(), it -> {
+				it.setMethod(method);
+				it.setParams(parameter);
+			}));
 		}
 		
 		@Override
 		public CompletableFuture<Object> request(String method, Object parameter) {
 			CompletableFuture<Object> completableFuture = new CompletableFuture<Object>();
-			requests.put(new RequestMessage() {{
-				setMethod(method);
-				setParams(parameter);
-			}}, completableFuture);
+			requests.put(init(new RequestMessage(), it -> {
+				it.setMethod(method);
+				it.setParams(parameter);
+			}), completableFuture);
 			return completableFuture;
 		}
 		
@@ -127,6 +128,23 @@ public class RemoteEndpointTest {
 		ResponseMessage responseMessage = (ResponseMessage) consumer.messages.get(0);
 		assertEquals("success", responseMessage.getResult());
 		assertEquals(Either.forRight(1), responseMessage.getRawId());
+	}
+	
+	@Test public void testRequest3() {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		endpoint.consume(init(new RequestMessage(), it -> {
+			it.setId("1");
+			it.setMethod("foo");
+			it.setParams("myparam");
+			it.setIssue(new MessageIssue("bar"));
+		}));
+		
+		ResponseMessage responseMessage = (ResponseMessage) consumer.messages.get(0);
+		assertNotNull(responseMessage.getError());
+		assertEquals("bar", responseMessage.getError().getMessage());
 	}
 	
 	@Test public void testCancellation() {

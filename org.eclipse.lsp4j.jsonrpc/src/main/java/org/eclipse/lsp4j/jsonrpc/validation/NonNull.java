@@ -16,6 +16,10 @@ import java.lang.annotation.Target;
  * Indicates that the annotated field or parameter must not be set to {@code null}. If validation
  * is active, an exception is thrown when a message is received where a {@code NonNull} field
  * has a {@code null} or {@code undefined} value.
+ * 
+ * In order to achieve consistent behavior, for every field with this annotation the corresponding
+ * getter method as well as the parameter of the corresponding setter method are also expected to
+ * be annotated.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE_PARAMETER})

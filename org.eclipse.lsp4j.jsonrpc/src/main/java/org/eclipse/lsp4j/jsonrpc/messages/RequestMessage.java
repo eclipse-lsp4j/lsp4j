@@ -22,16 +22,17 @@ public class RequestMessage extends IdentifiableMessage {
 	@NonNull
 	private String method;
 
+	@NonNull
 	public String getMethod() {
 		return this.method;
 	}
 
-	public void setMethod(String method) {
+	public void setMethod(@NonNull String method) {
 		this.method = method;
 	}
 
 	/**
-	 * The method's params.
+	 * The method's parameters. The object type depends on the chosen method.
 	 */
 	private Object params;
 

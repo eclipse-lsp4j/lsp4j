@@ -18,11 +18,12 @@ public class ResponseError {
 	@NonNull
 	private int code;
 
+	@NonNull
 	public int getCode() {
 		return this.code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(@NonNull int code) {
 		this.code = code;
 	}
 
@@ -36,11 +37,12 @@ public class ResponseError {
 	@NonNull
 	private String message;
 
+	@NonNull
 	public String getMessage() {
 		return this.message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(@NonNull String message) {
 		this.message = message;
 	}
 

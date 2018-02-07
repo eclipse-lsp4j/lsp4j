@@ -21,11 +21,12 @@ public class NotificationMessage extends Message {
 	@NonNull
 	private String method;
 
+	@NonNull
 	public String getMethod() {
 		return this.method;
 	}
 
-	public void setMethod(String method) {
+	public void setMethod(@NonNull String method) {
 		this.method = method;
 	}
 

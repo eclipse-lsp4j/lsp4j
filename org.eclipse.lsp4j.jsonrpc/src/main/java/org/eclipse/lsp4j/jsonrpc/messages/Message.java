@@ -20,12 +20,27 @@ public abstract class Message {
 	@NonNull
 	private String jsonrpc = MessageConstants.JSONRPC_VERSION;
 
+	@NonNull
 	public String getJsonrpc() {
 		return this.jsonrpc;
 	}
 
-	public void setJsonrpc(String jsonrpc) {
+	public void setJsonrpc(@NonNull String jsonrpc) {
 		this.jsonrpc = jsonrpc;
+	}
+	
+	/**
+	 * This field contains a value if the message could not be parsed correctly or
+	 * message validation yields one or more issues.
+	 */
+	private transient MessageIssue issue;
+
+	public MessageIssue getIssue() {
+		return issue;
+	}
+
+	public void setIssue(MessageIssue issue) {
+		this.issue = issue;
 	}
 
 	@Override

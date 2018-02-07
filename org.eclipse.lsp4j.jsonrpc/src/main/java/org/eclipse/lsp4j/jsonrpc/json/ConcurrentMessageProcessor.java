@@ -20,8 +20,16 @@ import java.util.logging.Logger;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 
+/**
+ * This class connects a message producer with a message consumer by listening for new messages in a dedicated thread.
+ */
 public class ConcurrentMessageProcessor implements Runnable {
 
+	/**
+	 * Start a thread that listens for messages in the message producer and forwards them to the message consumer.
+	 * 
+	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
+	 */
 	public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
 			ExecutorService executorService) {
 		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);

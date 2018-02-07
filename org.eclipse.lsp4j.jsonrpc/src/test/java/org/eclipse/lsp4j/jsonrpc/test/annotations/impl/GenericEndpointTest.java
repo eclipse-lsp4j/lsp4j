@@ -91,12 +91,19 @@ public class GenericEndpointTest {
 
 	@Test
 	public void testUnexpectedParams() {
-		Foo foo = new Foo();
-		GenericEndpoint endpoint = new GenericEndpoint(foo);
-		Assert.assertEquals(0, foo.calls);
-
-		endpoint.notify("myNotification", new Object());
-		Assert.assertEquals(1, foo.calls);
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(GenericEndpoint.class);
+			
+			Foo foo = new Foo();
+			GenericEndpoint endpoint = new GenericEndpoint(foo);
+			Assert.assertEquals(0, foo.calls);
+	
+			endpoint.notify("myNotification", new Object());
+			Assert.assertEquals(1, foo.calls);
+		} finally {
+			logMessages.unregister();
+		}
 	}
 	
 	@Test

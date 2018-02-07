@@ -8,16 +8,17 @@
 package org.eclipse.lsp4j.jsonrpc.messages;
 
 /**
- * Response Message sent as a result of a request. If a request doesn't provide
+ * Response message sent as a result of a request. If a request doesn't provide
  * a result value the receiver of a request still needs to return a response
  * message to conform to the JSON RPC specification. The result property of the
  * ResponseMessage should be set to null in this case to signal a successful
- * request.
+ * request. A response message is linked to a request via their {@code id} properties.
  */
 public class ResponseMessage extends IdentifiableMessage {
 
 	/**
 	 * The result of a request. This can be omitted in the case of an error.
+	 * The object type depends on the method of the corresponding request.
 	 */
 	private Object result;
 
