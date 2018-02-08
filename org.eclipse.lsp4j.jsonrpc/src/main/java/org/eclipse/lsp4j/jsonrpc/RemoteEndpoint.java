@@ -158,8 +158,14 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			// Store request information so it can be handled when the response is received
 			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, responseHandler));
 		}
-		// Send the request to the remote service
-		out.consume(requestMessage);
+		
+		try {
+			// Send the request to the remote service
+			out.consume(requestMessage);
+		} catch (Exception exception) {
+			// The message could not be sent, e.g. because the communication channel was closed
+			result.completeExceptionally(exception);
+		}
 		return result;
 	}
 
