@@ -24,10 +24,10 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
-import org.eclipse.lsp4j.jsonrpc.test.LogMessageAccumulator;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
+import org.eclipse.lsp4j.test.LogMessageAccumulator;
 import org.junit.Assert;
 import org.junit.Test;
 
