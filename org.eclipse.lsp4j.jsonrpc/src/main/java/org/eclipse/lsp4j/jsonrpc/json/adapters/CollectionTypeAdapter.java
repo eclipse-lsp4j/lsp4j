@@ -58,8 +58,6 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 		protected <E> Supplier<Collection<E>> getConstructor(Class<Collection<E>> rawType) {
 			try {
 				Constructor<Collection<E>> constructor = rawType.getDeclaredConstructor();
-				if (!constructor.isAccessible())
-					constructor.setAccessible(true);
 				return () -> {
 					try {
 						return constructor.newInstance();
@@ -67,24 +65,15 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 						throw new RuntimeException(e);
 					}
 				};
-			} catch (NoSuchMethodException e) {
-				if (SortedSet.class.isAssignableFrom(rawType)) {
-					return () -> {
-						return new TreeSet<E>();
-					};
-				} else if (Set.class.isAssignableFrom(rawType)) {
-					return () -> {
-						return new LinkedHashSet<E>();
-					};
-				} else if (Queue.class.isAssignableFrom(rawType)) {
-					return () -> {
-						return new LinkedList<E>();
-					};
-				} else {
-					return () -> {
-						return new ArrayList<E>();
-					};
-				}
+			} catch (Exception e) {
+				if (SortedSet.class.isAssignableFrom(rawType))
+					return () -> new TreeSet<E>();
+				else if (Set.class.isAssignableFrom(rawType))
+					return () -> new LinkedHashSet<E>();
+				else if (Queue.class.isAssignableFrom(rawType))
+					return () -> new LinkedList<E>();
+				else
+					return () -> new ArrayList<E>();
 			}
 		}
 

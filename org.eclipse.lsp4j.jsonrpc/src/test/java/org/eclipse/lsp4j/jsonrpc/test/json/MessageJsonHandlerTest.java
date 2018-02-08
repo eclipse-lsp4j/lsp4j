@@ -7,6 +7,10 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +20,7 @@ import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Assert;
@@ -39,7 +44,7 @@ public class MessageJsonHandlerTest {
 
 	@SuppressWarnings({ "unchecked" })
 	@Test
-	public void testParseList() {
+	public void testParseList_01() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<List<? extends Entry>>() {}.getType(),
@@ -55,7 +60,7 @@ public class MessageJsonHandlerTest {
 				+ "  {\"name\":\"additionalProperties\",\"kind\":17,\"location\":{\"uri\":\"file:/home/mistria/runtime-EclipseApplication-with-patch/EclipseConEurope/something.json\",\"range\":{\"start\":{\"line\":4,\"character\":4},\"end\":{\"line\":4,\"character\":32}}}},\n"
 				+ "  {\"name\":\"properties\",\"kind\":15,\"location\":{\"uri\":\"file:/home/mistria/runtime-EclipseApplication-with-patch/EclipseConEurope/something.json\",\"range\":{\"start\":{\"line\":5,\"character\":3},\"end\":{\"line\":5,\"character\":20}}}}\n"
 				+ "]}");
-		List<? extends Entry> result = (List<? extends Entry>) ((ResponseMessage)message).getResult();
+		List<? extends Entry> result = (List<? extends Entry>) ((ResponseMessage) message).getResult();
 		Assert.assertEquals(5, result.size());
 		for (Entry e : result) {
 			Assert.assertTrue(e.location.uri, e.location.uri.startsWith("file:/home/mistria"));
@@ -87,6 +92,29 @@ public class MessageJsonHandlerTest {
 		}
 	}
 	
+	@Test
+	public void testSerializeEmptyList() {
+		MessageJsonHandler handler = new MessageJsonHandler(Collections.emptyMap());
+		NotificationMessage message = new NotificationMessage();
+		message.setMethod("foo");
+		message.setParams(Collections.EMPTY_LIST);
+		String json = handler.serialize(message);
+		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"method\":\"foo\",\"params\":[]}", json);
+	}
+	
+	@Test
+	public void testSerializeImmutableList() {
+		MessageJsonHandler handler = new MessageJsonHandler(Collections.emptyMap());
+		NotificationMessage message = new NotificationMessage();
+		message.setMethod("foo");
+		List<Object> list = new ArrayList<>();
+		list.add("a");
+		list.add("b");
+		message.setParams(Collections.unmodifiableList(list));
+		String json = handler.serialize(message);
+		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"method\":\"foo\",\"params\":[\"a\",\"b\"]}", json);
+	}
+	
 	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_01() {
@@ -113,7 +141,7 @@ public class MessageJsonHandlerTest {
 				+ "}");
 		result = (Either<String, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
 		Assert.assertFalse(result.isRight());
-		Assert.assertEquals("name",result.getLeft());
+		Assert.assertEquals("name", result.getLeft());
 	}
 	
 	@SuppressWarnings({ "unchecked" })
