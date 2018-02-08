@@ -28,6 +28,11 @@ def configurePom = { pom ->
 				organizationUrl 'http://typefox.io'
 			}
 			developer {
+				name 'Jonah Graham'
+				email 'jonah@kichwacoders.com'
+				organizationUrl 'https://kichwacoders.com'
+			}
+			developer {
 				name 'Dennis Hübner'
 				email 'dennis.huebner@typefox.io'
 				organizationUrl 'http://typefox.io'

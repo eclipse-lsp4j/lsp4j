@@ -229,7 +229,9 @@ public class RemoteEndpointTest {
 		}
 
 	}
-	@Test public void testExceptionHandlerMisbehaving02() {
+	
+	@Test
+	public void testExceptionHandlerMisbehaving02() throws Exception {
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
 			// Don't show the exception in the test execution log
@@ -251,6 +253,9 @@ public class RemoteEndpointTest {
 				it.setParams("myparam");
 			}));
 
+			while (consumer.messages.isEmpty()) {
+				Thread.sleep(20);
+			}
 			assertEquals("Check some response received", 1, consumer.messages.size());
 			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
 			assertNotNull("Check response has error", response.getError());

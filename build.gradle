@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 buildscript {
 	repositories.jcenter()
 	dependencies {
-		classpath 'org.xtext:xtext-gradle-plugin:1.0.17'
+		classpath 'org.xtext:xtext-gradle-plugin:1.0.21'
 		classpath 'io.typefox.gradle:gradle-p2gen:0.1.0'
 	}
 }

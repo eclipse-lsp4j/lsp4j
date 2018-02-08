@@ -243,7 +243,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 	 * message.
 	 *
 	 * If the type of message or any other necessary field is not known until after
-	 * parsing, call {@link #parseBody(Object, String, String, String, Boolean)} on
+	 * parsing, call {@link #parseBody(Object, String, int, String, Boolean)} on
 	 * the return value of this call for a second chance conversion.
 	 *
 	 * @param in
