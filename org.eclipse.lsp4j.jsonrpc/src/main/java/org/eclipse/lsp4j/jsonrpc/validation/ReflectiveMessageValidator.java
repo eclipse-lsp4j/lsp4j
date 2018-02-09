@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.jsonrpc.validation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -62,6 +63,8 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		}
 		
 		if (!result.isEmpty()) {
+			// Sort the messages in order to get a stable order (otherwise it depends on the JVM's reflection implementation)
+			Collections.sort(result, (issue1, issue2) -> issue1.getMessage().compareTo(issue2.getMessage()));
 			throw new MessageIssueException(message, result);
 		} else if (delegate != null) {
 			delegate.consume(message);
