@@ -27,7 +27,6 @@ public class DebugResponseMessage extends ResponseMessage {
 	@NonNull
 	private Either<String, Number> responseId;
 
-	@NonNull
 	public String getResponseId() {
 		if (responseId == null)
 			return null;
@@ -43,11 +42,11 @@ public class DebugResponseMessage extends ResponseMessage {
 		return responseId;
 	}
 
-	public void setResponseId(@NonNull String id) {
+	public void setResponseId(String id) {
 		this.responseId = Either.forLeft(id);
 	}
 	
-	public void setResponseId(@NonNull int id) {
+	public void setResponseId(int id) {
 		this.responseId = Either.forRight(id);
 	}
 	

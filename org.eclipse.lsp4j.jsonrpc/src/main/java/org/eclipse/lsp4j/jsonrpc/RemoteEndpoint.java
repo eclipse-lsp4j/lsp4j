@@ -11,12 +11,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +39,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
  * {@link #request(String, Object)} or {@link #notify(String, Object)}. When connected to a {@link MessageProducer},
  * this class forwards received messages to the local {@link Endpoint} given in the constructor.
  */
-public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider {
+public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHandler, MethodProvider {
 
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
 	
@@ -79,14 +79,14 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	 * Information about requests that have been sent and for which no response has been received yet.
 	 */
 	private static class PendingRequestInfo {
-		PendingRequestInfo(RequestMessage requestMessage2, Consumer<ResponseMessage> responseHandler2) {
+		PendingRequestInfo(RequestMessage requestMessage2, CompletableFuture<Object> future2) {
 			this.requestMessage = requestMessage2;
-			this.responseHandler = responseHandler2;
+			this.future = future2;
 		}
 		RequestMessage requestMessage;
-		Consumer<ResponseMessage> responseHandler;
+		CompletableFuture<Object> future;
 	}
-
+	
 	/**
 	 * @param out - a consumer that transmits messages to the remote service
 	 * @param localEndpoint - the local service implementation
@@ -142,21 +142,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 				return super.cancel(mayInterruptIfRunning);
 			}
 		};
-		Consumer<ResponseMessage> responseHandler = (responseMessage) -> {
-			if (responseMessage.getIssue() != null) {
-				// An issue was found while parsing or validating the message
-				result.completeExceptionally(responseMessage.getIssue().asThrowable());
-			} else if (responseMessage.getError() != null) {
-				// The remote service has replied with an error
-				result.completeExceptionally(new ResponseErrorException(responseMessage.getError()));
-			} else {
-				// The remote service has replied with a result object
-				result.complete(responseMessage.getResult());
-			}
-		};
 		synchronized(sentRequestMap) {
 			// Store request information so it can be handled when the response is received
-			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, responseHandler));
+			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, result));
 		}
 		
 		try {
@@ -200,33 +188,29 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 
 	protected void handleResponse(ResponseMessage responseMessage) {
-		PendingRequestInfo pendingRequestInfo;
+		PendingRequestInfo requestInfo;
 		synchronized (sentRequestMap) {
-			pendingRequestInfo = sentRequestMap.remove(responseMessage.getId());
+			requestInfo = sentRequestMap.remove(responseMessage.getId());
 		}
-		if (pendingRequestInfo == null) {
+		if (requestInfo == null) {
 			// We have no pending request information that matches the id given in the response
 			LOG.log(Level.WARNING, "Unmatched response message: " + responseMessage);
-			if (responseMessage.getIssue() != null) {
-				MessageIssue issue = responseMessage.getIssue();
-				LOG.log(Level.WARNING, issue.getMessage(), issue.getCause());
-			}
 		} else {
-			// Complete the future that was created for the request
 			try {
-				pendingRequestInfo.responseHandler.accept(responseMessage);
-			} catch (RuntimeException e) {
+				if (responseMessage.getError() != null)
+					// The remote service has replied with an error
+					requestInfo.future.completeExceptionally(new ResponseErrorException(responseMessage.getError()));
+				else
+					// The remote service has replied with a result object
+					requestInfo.future.complete(responseMessage.getResult());
+			} catch (Exception e) {
 				LOG.log(Level.WARNING, "Handling response threw an exception: " + responseMessage, e);
 			}
 		}
 	}
 
 	protected void handleNotification(NotificationMessage notificationMessage) {
-		if (notificationMessage.getIssue() != null) {
-			// An issue was found while parsing or validating the message
-			MessageIssue issue = notificationMessage.getIssue();
-			LOG.log(Level.WARNING, issue.getMessage(), issue.getCause());
-		} else if (!handleCancellation(notificationMessage)) {
+		if (!handleCancellation(notificationMessage)) {
 			// Forward the notification to the local endpoint
 			try {
 				localEndpoint.notify(notificationMessage.getMethod(), notificationMessage.getParams());
@@ -267,18 +251,6 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 	}
 	
 	protected void handleRequest(RequestMessage requestMessage) {
-		if (requestMessage.getIssue() != null) {
-			// An issue was found while parsing or validating the message - reply with an error response
-			MessageIssue issue = requestMessage.getIssue();
-			ResponseError errorObject = new ResponseError();
-			errorObject.setMessage(issue.getMessage());
-			errorObject.setCode(issue.getIssueCode());
-			if (issue.getCause() != null)
-				errorObject.setData(issue.getCause().getMessage());
-			out.consume(createErrorResponseMessage(requestMessage, errorObject));
-			return;
-		}
-		
 		CompletableFuture<?> future;
 		try {
 			// Forward the request to the local endpoint
@@ -325,6 +297,66 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MethodProvider
 			}
 			return null;
 		});
+	}
+
+	@Override
+	public void handle(Message message, List<MessageIssue> issues) {
+		if (issues.isEmpty()) {
+			throw new IllegalArgumentException("The list of issues must not be empty.");
+		}
+		
+		if (message instanceof RequestMessage) {
+			RequestMessage requestMessage = (RequestMessage) message;
+			handleRequestIssues(requestMessage, issues);
+		} else if (message instanceof ResponseMessage) {
+			ResponseMessage responseMessage = (ResponseMessage) message;
+			handleResponseIssues(responseMessage, issues);
+		} else {
+			logIssues(message, issues);
+		}
+	}
+	
+	protected void logIssues(Message message, List<MessageIssue> issues) {
+		for (MessageIssue issue : issues) {
+			String logMessage = "Issue found in " + message.getClass().getSimpleName() + ": " + issue.getMessage();
+			LOG.log(Level.WARNING, logMessage, issue.getCause());
+		}
+	}
+	
+	protected void handleRequestIssues(RequestMessage requestMessage, List<MessageIssue> issues) {
+		ResponseError errorObject = new ResponseError();
+		if (issues.size() == 1) {
+			MessageIssue issue = issues.get(0);
+			errorObject.setMessage(issue.getMessage());
+			errorObject.setCode(issue.getIssueCode());
+			errorObject.setData(issue.getCause());
+		} else {
+			if (requestMessage.getMethod() != null)
+				errorObject.setMessage("Multiple issues were found in '" + requestMessage.getMethod() + "' request.");
+			else
+				errorObject.setMessage("Multiple issues were found in request.");
+			errorObject.setCode(ResponseErrorCode.InvalidRequest);
+			errorObject.setData(issues);
+		}
+		out.consume(createErrorResponseMessage(requestMessage, errorObject));
+	}
+	
+	protected void handleResponseIssues(ResponseMessage responseMessage, List<MessageIssue> issues) {
+		PendingRequestInfo requestInfo;
+		synchronized (sentRequestMap) {
+			requestInfo = sentRequestMap.remove(responseMessage.getId());
+		}
+		if (requestInfo == null) {
+			// We have no pending request information that matches the id given in the response
+			LOG.log(Level.WARNING, "Unmatched response message: " + responseMessage);
+			logIssues(responseMessage, issues);
+		} else {
+			try {
+				requestInfo.future.completeExceptionally(new MessageIssueException(responseMessage, issues));
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Handling response issues threw an exception.", e);
+			}
+		}
 	}
 
 	protected ResponseMessage createResponseMessage(RequestMessage requestMessage) {

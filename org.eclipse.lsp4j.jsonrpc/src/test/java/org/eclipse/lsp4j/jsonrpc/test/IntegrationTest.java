@@ -55,6 +55,16 @@ public class IntegrationTest {
 		public void setValue(@NonNull String value) {
 			this.value = value;
 		}
+		
+		private MyParam nested;
+
+		public MyParam getNested() {
+			return nested;
+		}
+
+		public void setNested(MyParam nested) {
+			this.nested = nested;
+		}
 	}
 
 	public static interface MyServer {
@@ -112,10 +122,10 @@ public class IntegrationTest {
 	@Test
 	public void testResponse1() throws Exception {
 		// create client message
-		String requestMessage = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"42\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"42\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
 		String clientMessage = getHeader(requestMessage.getBytes().length) + requestMessage;
 		
@@ -134,10 +144,10 @@ public class IntegrationTest {
 	@Test
 	public void testResponse2() throws Exception {
 		// create client message
-		String requestMessage = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":42,\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": 42,\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
 		String clientMessage = getHeader(requestMessage.getBytes().length) + requestMessage;
 		
@@ -222,14 +232,14 @@ public class IntegrationTest {
 	@Test
 	public void testCancellationResponse() throws Exception {
 		// create client messages
-		String requestMessage = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"1\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"1\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
-		String cancellationMessage = "{\"jsonrpc\":\"2.0\","
-				+ "\"method\":\"$/cancelRequest\",\n" 
-				+ "\"params\": { id: 1 }\n"
+		String cancellationMessage = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"method\": \"$/cancelRequest\",\n" 
+				+ "\"params\": { \"id\": 1 }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage.getBytes().length) + requestMessage
 				+ getHeader(cancellationMessage.getBytes().length) + cancellationMessage;
@@ -326,14 +336,14 @@ public class IntegrationTest {
 			logMessages.registerTo(GenericEndpoint.class);
 			
 			// create client messages
-			String clientMessage1 = "{\"jsonrpc\":\"2.0\","
-					+ "\"method\":\"foo1\",\n" 
-					+ " \"params\":\"bar\"\n"
+			String clientMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"method\": \"foo1\",\n" 
+					+ "\"params\": \"bar\"\n"
 					+ "}";
-			String clientMessage2 = "{\"jsonrpc\":\"2.0\","
-					+ "\"id\":\"1\",\n" 
-					+ "\"method\":\"foo2\",\n" 
-					+ " \"params\":\"bar\"\n"
+			String clientMessage2 = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"id\": \"1\",\n" 
+					+ "\"method\": \"foo2\",\n" 
+					+ "\"params\": \"bar\"\n"
 					+ "}";
 			String clientMessages = getHeader(clientMessage1.getBytes().length) + clientMessage1
 					+ getHeader(clientMessage2.getBytes().length) + clientMessage2;
@@ -364,14 +374,14 @@ public class IntegrationTest {
 			logMessages.registerTo(GenericEndpoint.class);
 			
 			// create client messages
-			String clientMessage1 = "{\"jsonrpc\":\"2.0\","
-					+ "\"method\":\"$/foo1\",\n" 
-					+ " \"params\":\"bar\"\n"
+			String clientMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"method\": \"$/foo1\",\n" 
+					+ "\"params\": \"bar\"\n"
 					+ "}";
-			String clientMessage2 = "{\"jsonrpc\":\"2.0\","
-					+ "\"id\":\"1\",\n" 
-					+ "\"method\":\"$/foo2\",\n" 
-					+ " \"params\":\"bar\"\n"
+			String clientMessage2 = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"id\": \"1\",\n" 
+					+ "\"method\": \"$/foo2\",\n" 
+					+ "\"params\": \"bar\"\n"
 					+ "}";
 			String clientMessages = getHeader(clientMessage1.getBytes().length) + clientMessage1
 					+ getHeader(clientMessage2.getBytes().length) + clientMessage2;
@@ -407,8 +417,8 @@ public class IntegrationTest {
 			logMessages.registerTo(GenericEndpoint.class);
 			
 			// create client messages
-			String notificationMessage = "{\"jsonrpc\":\"2.0\","
-					+ "\"method\":\"myNotification\",\n" 
+			String notificationMessage = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"method\": \"myNotification\",\n" 
 					+ "\"params\": { \"value\": \"foo\" }\n"
 					+ "}";
 			String clientMessages = getHeader(notificationMessage.getBytes().length) + notificationMessage;
@@ -432,15 +442,15 @@ public class IntegrationTest {
 	
 	@Test
 	public void testMalformedJson1() throws Exception {
-		String requestMessage1 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"1\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: }\n"
+		String requestMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"1\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": }\n"
 				+ "}";
-		String requestMessage2 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"2\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage2 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"2\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage1.getBytes().length) + requestMessage1
 				+ getHeader(requestMessage2.getBytes().length) + requestMessage2;
@@ -451,9 +461,9 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 202" + CRLF + CRLF
+		Assert.assertEquals("Content-Length: 214" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,\"message\":\"Message could not be parsed.\","
-				+    "\"data\":\"com.google.gson.stream.MalformedJsonException: Expected value at line 3 column 20 path $.params.value\"}}"
+				+    "\"data\":{\"message\":\"com.google.gson.stream.MalformedJsonException: Expected value at line 4 column 22 path $.params.value\"}}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 				out.toString());
@@ -466,15 +476,15 @@ public class IntegrationTest {
 		try {
 			logMessages.registerTo(StreamMessageProducer.class);
 			
-			String requestMessage1 = "{\"jsonrpc\":\"2.0\","
-					+ "\"id\":\"1\",\n" 
-					+ "\"params\": { value: }\n"
+			String requestMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"params\": { \"value\": }\n"
+					+ "\"id\": \"1\",\n" 
 					+ "\"method\":\"askServer\",\n" 
 					+ "}";
-			String requestMessage2 = "{\"jsonrpc\":\"2.0\","
-					+ "\"id\":\"2\",\n" 
-					+ "\"method\":\"askServer\",\n" 
-					+ "\"params\": { value: \"bar\" }\n"
+			String requestMessage2 = "{\"jsonrpc\": \"2.0\",\n"
+					+ "\"id\": \"2\",\n" 
+					+ "\"method\": \"askServer\",\n" 
+					+ "\"params\": { \"value\": \"bar\" }\n"
 					+ "}";
 			String clientMessages = getHeader(requestMessage1.getBytes().length) + requestMessage1
 					+ getHeader(requestMessage2.getBytes().length) + requestMessage2;
@@ -485,7 +495,7 @@ public class IntegrationTest {
 			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 			serverSideLauncher.startListening();
 			
-			logMessages.await(Level.SEVERE, "com.google.gson.stream.MalformedJsonException: Expected value at line 2 column 20 path $.params.value");
+			logMessages.await(Level.SEVERE, "com.google.gson.stream.MalformedJsonException: Expected value at line 2 column 22 path $.params.value");
 			Assert.assertEquals("Content-Length: 51" + CRLF + CRLF
 					+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 					out.toString());
@@ -496,15 +506,15 @@ public class IntegrationTest {
 	
 	@Test
 	public void testMalformedJson3() throws Exception {
-		String requestMessage1 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"1\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"1\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "]";
-		String requestMessage2 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"2\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage2 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"2\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage1.getBytes().length) + requestMessage1
 				+ getHeader(requestMessage2.getBytes().length) + requestMessage2;
@@ -515,9 +525,9 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 153" + CRLF + CRLF
-				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,"
-				+    "\"message\":\"Message could not be parsed.\",\"data\":\"Unterminated object at line 4 column 2 path $.params\"}}"
+		Assert.assertEquals("Content-Length: 165" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,\"message\":\"Message could not be parsed.\","
+				+    "\"data\":{\"message\":\"Unterminated object at line 5 column 2 path $.params\"}}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 				out.toString());
@@ -525,15 +535,15 @@ public class IntegrationTest {
 	
 	@Test
 	public void testMalformedJson4() throws Exception {
-		String requestMessage1 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"1\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"1\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}}";
-		String requestMessage2 = "{\"jsonrpc\":\"2.0\","
+		String requestMessage2 = "{\"jsonrpc\":\"2.0\",\n"
 				+ "\"id\":\"2\",\n" 
 				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage1.getBytes().length) + requestMessage1
 				+ getHeader(requestMessage2.getBytes().length) + requestMessage2;
@@ -544,25 +554,25 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 183" + CRLF + CRLF
-				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,"
-				+    "\"message\":\"Message could not be parsed.\",\"data\":\"Use JsonReader.setLenient(true) to accept malformed JSON at line 4 column 3 path $\"}}"
+		Assert.assertEquals("Content-Length: 195" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,\"message\":\"Message could not be parsed.\","
+				+    "\"data\":{\"message\":\"Use JsonReader.setLenient(true) to accept malformed JSON at line 5 column 3 path $\"}}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 				out.toString());
 	}
 	
 	@Test
-	public void testValidationIssue() throws Exception {
-		String requestMessage1 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"1\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: null }\n"
+	public void testValidationIssue1() throws Exception {
+		String requestMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"1\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": null }\n"
 				+ "}";
-		String requestMessage2 = "{\"jsonrpc\":\"2.0\","
-				+ "\"id\":\"2\",\n" 
-				+ "\"method\":\"askServer\",\n" 
-				+ "\"params\": { value: \"bar\" }\n"
+		String requestMessage2 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"2\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": \"bar\" }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage1.getBytes().length) + requestMessage1
 				+ getHeader(requestMessage2.getBytes().length) + requestMessage2;
@@ -573,10 +583,34 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out, true, null);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 136" + CRLF + CRLF
-				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32602,\"message\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value.\"}}"
+		Assert.assertEquals("Content-Length: 157" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32602,\"message\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.value\"}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
+				out.toString());
+	}
+	
+	@Test
+	public void testValidationIssue2() throws Exception {
+		String requestMessage1 = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": \"1\",\n" 
+				+ "\"method\": \"askServer\",\n" 
+				+ "\"params\": { \"value\": null, \"nested\": { \"value\": null } }\n"
+				+ "}";
+		String clientMessages = getHeader(requestMessage1.getBytes().length) + requestMessage1;
+		
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServerImpl();
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out, true, null);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+		
+		Assert.assertEquals("Content-Length: 385" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32600,\"message\":\"Multiple issues were found in \\u0027askServer\\u0027 request.\","
+				+ "\"data\":["
+				+    "{\"message\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.value\",\"code\":-32602},"
+				+    "{\"message\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.nested.value\",\"code\":-32602}"
+				+ "]}}",
 				out.toString());
 	}
 

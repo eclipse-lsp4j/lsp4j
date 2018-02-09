@@ -16,10 +16,12 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.ThrowableTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
@@ -71,9 +73,14 @@ public class MessageJsonHandler {
 	public GsonBuilder getDefaultGsonBuilder() {
 		return new GsonBuilder()
 			.registerTypeAdapterFactory(new CollectionTypeAdapter.Factory())
+			.registerTypeAdapterFactory(new ThrowableTypeAdapter.Factory())
 			.registerTypeAdapterFactory(new EitherTypeAdapter.Factory())
 			.registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
 			.registerTypeAdapterFactory(new MessageTypeAdapter.Factory(this));
+	}
+	
+	public Gson getGson() {
+		return gson;
 	}
 	
 	/**
@@ -105,14 +112,16 @@ public class MessageJsonHandler {
 		JsonReader jsonReader = new JsonReader(input);
 		Message message = gson.fromJson(jsonReader, Message.class);
 		
-		if (message != null && message.getIssue() == null) {
+		if (message != null) {
 			// Check whether the input has been fully consumed
 			try {
 				if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
-					message.setIssue(new MessageIssue("JSON document was not fully consumed.", ResponseErrorCode.ParseError.getValue()));
+					MessageIssue issue = new MessageIssue("JSON document was not fully consumed.", ResponseErrorCode.ParseError.getValue());
+					throw new MessageIssueException(message, issue);
 				}
 			} catch (MalformedJsonException e) {
-				message.setIssue(new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), e));
+				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), e);
+				throw new MessageIssueException(message, issue);
 			} catch (IOException e) {
 				throw new JsonIOException(e);
 			}

@@ -144,7 +144,7 @@ public interface Launcher<T> {
 		return new Launcher<T> () {
 			@Override
 			public Future<?> startListening() {
-				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
+				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
 			}
 
 			@Override
@@ -190,7 +190,7 @@ public interface Launcher<T> {
 		return new Launcher<Object> () {
 			@Override
 			public Future<?> startListening() {
-				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
+				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
 			}
 			
 			@Override

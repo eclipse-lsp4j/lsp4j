@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
+import org.eclipse.lsp4j.jsonrpc.MessageIssueHandler;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
@@ -25,11 +27,14 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
  */
 public class StreamMessageProducer implements MessageProducer, Closeable, MessageConstants {
 
+	private static final Logger LOG = Logger.getLogger(StreamMessageProducer.class.getName());
+
 	private final MessageJsonHandler jsonHandler;
 
 	private InputStream input;
 
 	private MessageConsumer callback;
+	private MessageIssueHandler issueHandler;
 	private boolean keepRunning;
 
 	public StreamMessageProducer(InputStream input, MessageJsonHandler jsonHandler) {
@@ -51,12 +56,13 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	}
 
 	@Override
-	public void listen(MessageConsumer callback) {
+	public void listen(MessageConsumer callback, MessageIssueHandler issueHandler) {
 		if (keepRunning) {
 			throw new IllegalStateException("This StreamMessageProducer is already running.");
 		}
 		this.keepRunning = true;
 		this.callback = callback;
+		this.issueHandler = issueHandler;
 		try {
 			StringBuilder headerBuilder = null;
 			StringBuilder debugBuilder = null;
@@ -105,11 +111,12 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 				} catch (ClosedChannelException e) {
 					// The channel whose stream has been listened was closed
 				}
-			}
+			} // while (keepRunning)
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
 			this.callback = null;
+			this.issueHandler = null;
 			this.keepRunning = false;
 		}
 	}
@@ -118,7 +125,7 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	 * Log an error.
 	 */
 	protected void fireError(Throwable error) {
-		Logger.getLogger(getClass().getName()).log(Level.SEVERE, error.getMessage(), error);
+		LOG.log(Level.SEVERE, error.getMessage(), error);
 	}
 
 	/**
@@ -152,6 +159,9 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	 * @return {@code true} if we should continue reading from the input stream, {@code false} if we should stop
 	 */
 	protected boolean handleMessage(InputStream input, Headers headers) throws IOException {
+		if (callback == null)
+			callback = message -> LOG.log(Level.INFO, "Received message: " + message);
+		
 		try {
 			int contentLength = headers.contentLength;
 			byte[] buffer = new byte[contentLength];
@@ -165,14 +175,21 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 			}
 
 			String content = new String(buffer, headers.charset);
-			Message message = jsonHandler.parseMessage(content);
-			callback.consume(message);
-		} catch (Exception e) {
+			try {
+				Message message = jsonHandler.parseMessage(content);
+				callback.consume(message);
+			} catch (MessageIssueException exception) {
+				// An issue was found while parsing or validating the message
+				if (issueHandler != null)
+					issueHandler.handle(exception.getRpcMessage(), exception.getIssues());
+				else
+					fireError(exception);
+			}
+		} catch (Exception exception) {
 			// UnsupportedEncodingException can be thrown by String constructor
 			// JsonParseException can be thrown by jsonHandler
-			// InvalidMessageException can be thrown by message validators
 			// We also catch arbitrary exceptions that are thrown by message consumers in order to keep this thread alive
-			fireError(e);
+			fireError(exception);
 		}
 		return true;
 	}

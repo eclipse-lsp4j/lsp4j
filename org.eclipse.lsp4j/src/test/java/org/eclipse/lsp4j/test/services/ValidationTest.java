@@ -12,8 +12,8 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
-import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue.InvalidMessageException;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator;
@@ -53,7 +53,7 @@ public class ValidationTest {
 		try {
 			validator.consume(message);
 			Assert.fail("Expected InvalidMessageException: " + expectedIssues + ".");
-		} catch (InvalidMessageException e) {
+		} catch (MessageIssueException e) {
 			String expected = expectedIssues.toString();
 			String actual = LineEndings.toSystemLineEndings(e.getMessage());
 			// The expectation may be a prefix of the actual exception message

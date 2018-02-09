@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
@@ -21,7 +22,6 @@ import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
-import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue.InvalidMessageException;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
@@ -133,13 +133,12 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			in.endObject();
 			return createMessage(jsonrpc, id, method, params, result, responseError);
 			
-		} catch (MalformedJsonException | EOFException exception) {
-			if (id != null && method != null) {
-				// Create a message and attach an issue to it so it can be processed by a message consumer
+		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
+			if (id != null || method != null) {
+				// Create a message and bundle it to an exception with an issue that wraps the original exception
 				Message message = createMessage(jsonrpc, id, method, rawParams, rawResult, responseError);
-				if (message.getIssue() == null)
-					message.setIssue(new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception));
-				return message;
+				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
+				throw new MessageIssueException(message, issue);
 			} else {
 				throw exception;
 			}
@@ -296,11 +295,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		if (isNullOrVoidType(type)) {
 			return new JsonParser().parse(in);
 		}
-		try {
-			return gson.fromJson(in, type);
-		} catch (JsonSyntaxException syntaxException) {
-			return new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), syntaxException);
-		}
+		return gson.fromJson(in, type);
 	}
 	
 	protected Object fromJson(JsonElement element, Type type) {
@@ -310,15 +305,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		if (isNullOrVoidType(type)) {
 			return element;
 		}
-		try {
-			Object value = gson.fromJson(element, type);
-			if (isNull(value)) {
-				return null;
-			}
-			return value;
-		} catch (JsonSyntaxException syntaxException) {
-			return new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), syntaxException);
+		Object value = gson.fromJson(element, type);
+		if (isNull(value)) {
+			return null;
 		}
+		return value;
 	}
 
 	protected boolean isNull(Object value) {
@@ -345,10 +336,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			message.setJsonrpc(jsonrpc);
 			message.setRawId(id);
 			message.setMethod(method);
-			if (params instanceof MessageIssue)
-				message.setIssue((MessageIssue) params);
-			else
-				message.setParams(params);
+			message.setParams(params);
 			return message;
 		} else if (id != null) {
 			ResponseMessage message = new ResponseMessage();
@@ -356,8 +344,6 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			message.setRawId(id);
 			if (responseError != null)
 				message.setError(responseError);
-			else if (responseResult instanceof MessageIssue)
-				message.setIssue((MessageIssue) responseResult);
 			else
 				message.setResult(responseResult);
 			return message;
@@ -365,10 +351,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			NotificationMessage message = new NotificationMessage();
 			message.setJsonrpc(jsonrpc);
 			message.setMethod(method);
-			if (params instanceof MessageIssue)
-				message.setIssue((MessageIssue) params);
-			else
-				message.setParams(params);
+			message.setParams(params);
 			return message;
 		} else {
 			throw new JsonParseException("Unable to identify the input message.");
@@ -376,11 +359,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	}
 
 	@Override
-	public void write(JsonWriter out, Message message) throws IOException, InvalidMessageException {
-		if (message.getIssue() != null) {
-			throw message.getIssue().asThrowable();
-		}
-		
+	public void write(JsonWriter out, Message message) throws IOException {
 		out.beginObject();
 		out.name("jsonrpc");
 		out.value(message.getJsonrpc() == null ? MessageConstants.JSONRPC_VERSION : message.getJsonrpc());

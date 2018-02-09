@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j.test.services;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
@@ -559,10 +561,10 @@ public class JsonParseTest {
     _builder.append("\"error\": {");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("code = -32600,");
+    _builder.append("\"code\": -32600,");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("message = \"Could not parse request.\"");
+    _builder.append("\"message\": \"Could not parse request.\"");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("}");
@@ -682,10 +684,10 @@ public class JsonParseTest {
     _builder.append("\"contents\": [");
     _builder.newLine();
     _builder.append("            ");
-    _builder.append("\'foo\',");
+    _builder.append("\"foo\",");
     _builder.newLine();
     _builder.append("            ");
-    _builder.append("\'boo shuby doo\'");
+    _builder.append("\"boo shuby doo\"");
     _builder.newLine();
     _builder.append("        ");
     _builder.append("]");
@@ -790,5 +792,44 @@ public class JsonParseTest {
     };
     RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testMessageIssue() {
+    Gson _gson = this.jsonHandler.getGson();
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"message\": \"Howdy!\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"code\": 1234,");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"cause\": {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\"message\": \"Foo\",");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\"cause\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"message\": \"Bar\"");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    final MessageIssue issue = _gson.<MessageIssue>fromJson(_builder.toString(), MessageIssue.class);
+    Assert.assertEquals("Howdy!", issue.getMessage());
+    Assert.assertEquals(1234, issue.getIssueCode());
+    Assert.assertEquals("Foo", issue.getCause().getMessage());
+    Assert.assertEquals("Bar", issue.getCause().getCause().getMessage());
   }
 }

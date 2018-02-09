@@ -11,8 +11,10 @@ public interface MessageProducer {
 	
 	/**
 	 * Listen to a message source and forward all messages to the given consumer. Typically this method
-	 * blocks until the message source is unable to deliver more messages.
+	 * blocks until the message source is unable to deliver more messages. Issues are reported to the
+	 * given issue handler. If {@code issueHandler} is {@code null}, issues are handled locally by
+	 * the message producer, e.g. by logging them.
 	 */
-	void listen(MessageConsumer messageConsumer);
+	void listen(MessageConsumer messageConsumer, MessageIssueHandler issueHandler);
 	
 }

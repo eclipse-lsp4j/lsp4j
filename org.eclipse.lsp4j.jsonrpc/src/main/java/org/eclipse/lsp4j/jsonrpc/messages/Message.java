@@ -29,20 +29,6 @@ public abstract class Message {
 		this.jsonrpc = jsonrpc;
 	}
 	
-	/**
-	 * This field contains a value if the message could not be parsed correctly or
-	 * message validation yields one or more issues.
-	 */
-	private transient MessageIssue issue;
-
-	public MessageIssue getIssue() {
-		return issue;
-	}
-
-	public void setIssue(MessageIssue issue) {
-		this.issue = issue;
-	}
-
 	@Override
 	public String toString() {
 		return MessageJsonHandler.toString(this);

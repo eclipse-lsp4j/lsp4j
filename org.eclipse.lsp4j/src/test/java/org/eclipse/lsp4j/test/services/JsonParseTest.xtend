@@ -27,6 +27,7 @@ import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Message
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError
@@ -268,8 +269,8 @@ class JsonParseTest {
 				"jsonrpc": "2.0",
 				"id": "12",
 				"error": {
-					code = -32600,
-					message = "Could not parse request."
+					"code": -32600,
+					"message": "Could not parse request."
 				}
 			}
 		'''.assertParse(new ResponseMessage => [
@@ -323,8 +324,8 @@ class JsonParseTest {
                         }
                     },
                     "contents": [
-                        'foo',
-                        'boo shuby doo'
+                        "foo",
+                        "boo shuby doo"
                     ]
                 }
             }
@@ -376,5 +377,25 @@ class JsonParseTest {
 			]
 		])
 	}
-    
+	
+	@Test
+	def void testMessageIssue() {
+		val issue = jsonHandler.gson.fromJson('''
+			{
+				"message": "Howdy!",
+				"code": 1234,
+				"cause": {
+					"message": "Foo",
+					"cause": {
+						"message": "Bar"
+					}
+				}
+			}
+		''', MessageIssue)
+		assertEquals('Howdy!', issue.message)
+		assertEquals(1234, issue.issueCode)
+		assertEquals('Foo', issue.cause.message)
+		assertEquals('Bar', issue.cause.cause.message)
+	}
+
 }

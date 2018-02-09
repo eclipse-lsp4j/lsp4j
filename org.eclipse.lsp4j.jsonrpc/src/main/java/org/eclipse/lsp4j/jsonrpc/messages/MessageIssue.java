@@ -7,30 +7,35 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+
 /**
- * An instance of this class is attached to a message in case the message could not be parsed
- * correctly or message validation yields one or more issues.
+ * Describes an issue found while parsing or validating a message.
  */
 public class MessageIssue {
 
-	private final String message;
-	private final int code;
-	private final Exception cause;
+	@NonNull
+	private String message;
+
+	private int code;
 	
-	public MessageIssue(String message) {
+	private Exception cause;
+	
+	public MessageIssue(@NonNull String message) {
 		this(message, 0, null);
 	}
 
-	public MessageIssue(String message, int code) {
+	public MessageIssue(@NonNull String message, int code) {
 		this(message, code, null);
 	}
 	
-	public MessageIssue(String message, int code, Exception cause) {
+	public MessageIssue(@NonNull String message, int code, Exception cause) {
 		this.message = message;
 		this.code = code;
 		this.cause = cause;
 	}
 	
+	@NonNull
 	public String getMessage() {
 		return message;
 	}
@@ -41,32 +46,6 @@ public class MessageIssue {
 
 	public Exception getCause() {
 		return cause;
-	}
-	
-	/**
-	 * An exception thrown when a message issue cannot be handled by downstream consumers, but
-	 * should be reported back to the caller.
-	 */
-	public static class InvalidMessageException extends RuntimeException {
-		private static final long serialVersionUID = 1L;
-
-		public InvalidMessageException(String message) {
-			super(message);
-		}
-		
-		public InvalidMessageException(String message, Throwable cause) {
-			super(message, cause);
-		}
-	}
-	
-	/**
-	 * Create an {@link InvalidMessageException} with the information given in this issue.
-	 */
-	public InvalidMessageException asThrowable() {
-		if (cause == null)
-			return new InvalidMessageException(message);
-		else
-			return new InvalidMessageException(message, cause);
 	}
 	
 }

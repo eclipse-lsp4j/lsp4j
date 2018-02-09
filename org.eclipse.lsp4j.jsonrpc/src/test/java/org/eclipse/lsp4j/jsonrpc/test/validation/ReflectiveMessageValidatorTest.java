@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue.InvalidMessageException;
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -23,7 +23,7 @@ import com.google.gson.JsonObject;
 
 public class ReflectiveMessageValidatorTest {
 	
-	static class Foo {
+	public static class Foo {
 		// a non exposed self reference
 		Foo self = this;
 		
@@ -58,8 +58,8 @@ public class ReflectiveMessageValidatorTest {
 		try {
 			validator.consume(message);
 			Assert.fail();
-		} catch (InvalidMessageException e) {
-			Assert.assertEquals("The accessor 'Foo.getNonNullString()' must return a non-null value.", e.getMessage());
+		} catch (MessageIssueException e) {
+			Assert.assertEquals("The accessor 'Foo.getNonNullString()' must return a non-null value. Path: $.params.nonNullString", e.getMessage());
 		}
 	}
 	
@@ -75,8 +75,8 @@ public class ReflectiveMessageValidatorTest {
 		try {
 			validator.consume(message);
 			Assert.fail();
-		} catch (InvalidMessageException e) {
-			Assert.assertEquals("The accessor 'Foo.getNonNullString()' must return a non-null value.", e.getMessage());
+		} catch (MessageIssueException e) {
+			Assert.assertEquals("The accessor 'Foo.getNonNullString()' must return a non-null value. Path: $.params.nested.nonNullString", e.getMessage());
 		}
 	}
 	
@@ -106,8 +106,8 @@ public class ReflectiveMessageValidatorTest {
 		try {
 			validator.consume(message);
 			Assert.fail();
-		} catch (InvalidMessageException e) {
-			Assert.assertEquals("An element of the message has a direct or indirect reference to itself.", e.getMessage());
+		} catch (MessageIssueException e) {
+			Assert.assertEquals("An element of the message has a direct or indirect reference to itself. Path: $.params.nested", e.getMessage());
 		}
 	}
 	
@@ -127,8 +127,8 @@ public class ReflectiveMessageValidatorTest {
 		try {
 			validator.consume(message);
 			Assert.fail();
-		} catch (InvalidMessageException e) {
-			Assert.assertEquals("The accessor 'Foo.getNonNullString()' must return a non-null value.", e.getMessage());
+		} catch (MessageIssueException e) {
+			Assert.assertEquals("The accessor 'Foo.getNonNullString()' must return a non-null value. Path: $.params.foos[0].nonNullString", e.getMessage());
 		}
 	}
 
@@ -153,8 +153,8 @@ public class ReflectiveMessageValidatorTest {
 		try {
 			validator.consume(message);
 			Assert.fail();
-		} catch (InvalidMessageException e) {
-			Assert.assertEquals("The accessor 'RequestMessage.getMethod()' must return a non-null value.", e.getMessage());
+		} catch (MessageIssueException e) {
+			Assert.assertEquals("The accessor 'RequestMessage.getMethod()' must return a non-null value. Path: $.method", e.getMessage());
 		}
 	}
 	

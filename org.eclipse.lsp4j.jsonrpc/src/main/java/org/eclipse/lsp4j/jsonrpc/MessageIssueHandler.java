@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
+ * Copyright (c) 2018 TypeFox GmbH (http://www.typefox.io) and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,15 +7,16 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
-import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import java.util.List;
 
-public interface MessageConsumer {
+import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
+
+public interface MessageIssueHandler {
 	
 	/**
-	 * Consume a single message.
-	 * 
-	 * @throws MessageIssueException when an issue is found that prevents further processing of the message
+	 * Handle issues found while parsing or validating a message. The list of issues must not be empty.
 	 */
-	void consume(Message message) throws MessageIssueException;
-	
+	void handle(Message message, List<MessageIssue> issues);
+
 }

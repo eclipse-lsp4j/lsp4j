@@ -20,7 +20,6 @@ public abstract class IdentifiableMessage extends Message {
 	@NonNull
 	private Either<String, Number> id;
 
-	@NonNull
 	public String getId() {
 		if (id == null)
 			return null;
@@ -36,11 +35,11 @@ public abstract class IdentifiableMessage extends Message {
 		return id;
 	}
 
-	public void setId(@NonNull String id) {
+	public void setId(String id) {
 		this.id = Either.forLeft(id);
 	}
 	
-	public void setId(@NonNull int id) {
+	public void setId(int id) {
 		this.id = Either.forRight(id);
 	}
 	

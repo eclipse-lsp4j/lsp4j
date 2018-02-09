@@ -203,7 +203,7 @@ public interface DebugLauncher<T> extends Launcher<T> {
 
 			@Override
 			public Future<?> startListening() {
-				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
+				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
 			}
 
 			@Override

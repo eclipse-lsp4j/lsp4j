@@ -13,6 +13,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,17 +140,16 @@ public class RemoteEndpointTest {
 	}
 	
 	@Test
-	public void testRequest3() {
+	public void testHandleRequestIssues() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
 		
-		endpoint.consume(init(new RequestMessage(), it -> {
+		endpoint.handle(init(new RequestMessage(), it -> {
 			it.setId("1");
 			it.setMethod("foo");
 			it.setParams("myparam");
-			it.setIssue(new MessageIssue("bar"));
-		}));
+		}), Collections.singletonList(new MessageIssue("bar")));
 		
 		ResponseMessage responseMessage = (ResponseMessage) consumer.messages.get(0);
 		assertNotNull(responseMessage.getError());

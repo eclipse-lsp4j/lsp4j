@@ -10,6 +10,7 @@ package org.eclipse.lsp4j.jsonrpc.debug.adapters;
 import java.io.EOFException;
 import java.io.IOException;
 
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugRequestMessage;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugResponseMessage;
@@ -28,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
@@ -244,13 +246,12 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			in.endObject();
 			return createMessage(messageType, seq, request_seq, method, success, message, params, body);
 			
-		} catch (MalformedJsonException | EOFException exception) {
+		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if ("request".equals(messageType) || "event".equals(messageType) || "response".equals(messageType)) {
-				// Create a message and attach an issue to it so it can be processed by a message consumer
+				// Create a message and bundle it to an exception with an issue that wraps the original exception
 				Message resultMessage = createMessage(messageType, seq, request_seq, method, rawSuccess, message, rawParams, rawBody);
-				if (resultMessage.getIssue() == null)
-					resultMessage.setIssue(new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception));
-				return resultMessage;
+				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
+				throw new MessageIssueException(resultMessage, issue);
 			} else {
 				throw exception;
 			}
@@ -335,20 +336,14 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			RequestMessage message = new RequestMessage();
 			message.setId(seq);
 			message.setMethod(method);
-			if (params instanceof MessageIssue)
-				message.setIssue((MessageIssue) params);
-			else
-				message.setParams(params);
+			message.setParams(params);
 			return message;
 		}
 		case "event": {
 			DebugNotificationMessage message = new DebugNotificationMessage();
 			message.setId(seq);
 			message.setMethod(method);
-			if (body instanceof MessageIssue)
-				message.setIssue((MessageIssue) body);
-			else
-				message.setParams(body);
+			message.setParams(body);
 			return message;
 		}
 		case "response": {
@@ -361,8 +356,6 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				error.setData(body);
 				error.setMessage(errorMessage);
 				message.setError(error);
-			} else if (body instanceof MessageIssue) {
-				message.setIssue((MessageIssue) body);
 			} else {
 				if (body instanceof JsonElement) {
 					// Type of result could not be resolved - try again with the parsed JSON tree
