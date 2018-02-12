@@ -195,17 +195,12 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		if (requestInfo == null) {
 			// We have no pending request information that matches the id given in the response
 			LOG.log(Level.WARNING, "Unmatched response message: " + responseMessage);
+		} else if (responseMessage.getError() != null) {
+			// The remote service has replied with an error
+			requestInfo.future.completeExceptionally(new ResponseErrorException(responseMessage.getError()));
 		} else {
-			try {
-				if (responseMessage.getError() != null)
-					// The remote service has replied with an error
-					requestInfo.future.completeExceptionally(new ResponseErrorException(responseMessage.getError()));
-				else
-					// The remote service has replied with a result object
-					requestInfo.future.complete(responseMessage.getResult());
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Handling response threw an exception: " + responseMessage, e);
-			}
+			// The remote service has replied with a result object
+			requestInfo.future.complete(responseMessage.getResult());
 		}
 	}
 
@@ -318,7 +313,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	
 	protected void logIssues(Message message, List<MessageIssue> issues) {
 		for (MessageIssue issue : issues) {
-			String logMessage = "Issue found in " + message.getClass().getSimpleName() + ": " + issue.getMessage();
+			String logMessage = "Issue found in " + message.getClass().getSimpleName() + ": " + issue.getText();
 			LOG.log(Level.WARNING, logMessage, issue.getCause());
 		}
 	}
@@ -327,7 +322,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		ResponseError errorObject = new ResponseError();
 		if (issues.size() == 1) {
 			MessageIssue issue = issues.get(0);
-			errorObject.setMessage(issue.getMessage());
+			errorObject.setMessage(issue.getText());
 			errorObject.setCode(issue.getIssueCode());
 			errorObject.setData(issue.getCause());
 		} else {
@@ -351,11 +346,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			LOG.log(Level.WARNING, "Unmatched response message: " + responseMessage);
 			logIssues(responseMessage, issues);
 		} else {
-			try {
-				requestInfo.future.completeExceptionally(new MessageIssueException(responseMessage, issues));
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Handling response issues threw an exception.", e);
-			}
+			requestInfo.future.completeExceptionally(new MessageIssueException(responseMessage, issues));
 		}
 	}
 

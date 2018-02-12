@@ -46,7 +46,7 @@ public class MessageIssueException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return issues.stream().map(issue -> issue.getMessage()).collect(Collectors.joining("\n"));
+		return issues.stream().map(issue -> issue.getText()).collect(Collectors.joining("\n"));
 	}
 	
 	public Message getRpcMessage() {

@@ -143,7 +143,7 @@ public interface Launcher<T> {
 		
 		return new Launcher<T> () {
 			@Override
-			public Future<?> startListening() {
+			public Future<Void> startListening() {
 				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
 			}
 
@@ -189,7 +189,7 @@ public interface Launcher<T> {
 		
 		return new Launcher<Object> () {
 			@Override
-			public Future<?> startListening() {
+			public Future<Void> startListening() {
 				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
 			}
 			
@@ -251,7 +251,7 @@ public interface Launcher<T> {
 	 * 
 	 * @return a future that returns {@code null} when the listener thread is terminated
 	 */
-	Future<?> startListening();
+	Future<Void> startListening();
 	
 	/**
 	 * Returns the proxy instance that implements the remote service interfaces.

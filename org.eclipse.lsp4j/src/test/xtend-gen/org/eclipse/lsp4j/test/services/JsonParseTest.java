@@ -801,7 +801,7 @@ public class JsonParseTest {
     _builder.append("{");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("\"message\": \"Howdy!\",");
+    _builder.append("\"text\": \"Howdy!\",");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("\"code\": 1234,");
@@ -827,7 +827,7 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     final MessageIssue issue = _gson.<MessageIssue>fromJson(_builder.toString(), MessageIssue.class);
-    Assert.assertEquals("Howdy!", issue.getMessage());
+    Assert.assertEquals("Howdy!", issue.getText());
     Assert.assertEquals(1234, issue.getIssueCode());
     Assert.assertEquals("Foo", issue.getCause().getMessage());
     Assert.assertEquals("Bar", issue.getCause().getCause().getMessage());

@@ -37,7 +37,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 	 * @param executorService - the thread is started using this service
 	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
 	 */
-	public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
+	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
 			ExecutorService executorService) {
 		return startProcessing(messageProducer, messageConsumer, null);
 	}
@@ -52,21 +52,21 @@ public class ConcurrentMessageProcessor implements Runnable {
 	 * @param executorService - the thread is started using this service
 	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
 	 */
-	public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
+	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
 			MessageIssueHandler issueHandler, ExecutorService executorService) {
 		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer, issueHandler);
 		final Future<?> result = executorService.submit(reader);
-		return new Future<Object>() {
+		return new Future<Void>() {
 
 			@Override
-			public Object get() throws InterruptedException, ExecutionException {
-				return result.get();
+			public Void get() throws InterruptedException, ExecutionException {
+				return (Void) result.get();
 			}
 
 			@Override
-			public Object get(long timeout, TimeUnit unit)
+			public Void get(long timeout, TimeUnit unit)
 					throws InterruptedException, ExecutionException, TimeoutException {
-				return result.get(timeout, unit);
+				return (Void) result.get(timeout, unit);
 			}
 
 			@Override

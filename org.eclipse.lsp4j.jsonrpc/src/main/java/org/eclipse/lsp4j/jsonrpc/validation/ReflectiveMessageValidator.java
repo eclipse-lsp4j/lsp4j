@@ -64,7 +64,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		
 		if (!result.isEmpty()) {
 			// Sort the messages in order to get a stable order (otherwise it depends on the JVM's reflection implementation)
-			Collections.sort(result, (issue1, issue2) -> issue1.getMessage().compareTo(issue2.getMessage()));
+			Collections.sort(result, (issue1, issue2) -> issue1.getText().compareTo(issue2.getText()));
 			throw new MessageIssueException(message, result);
 		} else if (delegate != null) {
 			delegate.consume(message);

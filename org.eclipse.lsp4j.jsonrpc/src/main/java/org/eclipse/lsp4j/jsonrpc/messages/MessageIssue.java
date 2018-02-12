@@ -15,29 +15,29 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 public class MessageIssue {
 
 	@NonNull
-	private String message;
+	private String text;
 
 	private int code;
 	
 	private Exception cause;
 	
-	public MessageIssue(@NonNull String message) {
-		this(message, 0, null);
+	public MessageIssue(@NonNull String text) {
+		this(text, 0, null);
 	}
 
-	public MessageIssue(@NonNull String message, int code) {
-		this(message, code, null);
+	public MessageIssue(@NonNull String text, int code) {
+		this(text, code, null);
 	}
 	
-	public MessageIssue(@NonNull String message, int code, Exception cause) {
-		this.message = message;
+	public MessageIssue(@NonNull String text, int code, Exception cause) {
+		this.text = text;
 		this.code = code;
 		this.cause = cause;
 	}
 	
 	@NonNull
-	public String getMessage() {
-		return message;
+	public String getText() {
+		return text;
 	}
 	
 	public int getIssueCode() {

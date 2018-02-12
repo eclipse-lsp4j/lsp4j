@@ -34,6 +34,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RemoteEndpointTest {
@@ -227,6 +228,29 @@ public class RemoteEndpointTest {
 		});
 		try {
 			future.get(TIMEOUT, TimeUnit.MILLISECONDS);
+			Assert.fail("Expected an ExecutionException.");
+		} catch (ExecutionException exception) {
+			assertEquals("java.lang.RuntimeException: BAAZ", exception.getMessage());
+		}
+	}
+	
+	@Test
+	public void testExceptionInCompletableFuture() throws Exception {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		CompletableFuture<Object> future = endpoint.request("foo", "myparam");
+		CompletableFuture<Void> chained = future.thenAccept(result -> {
+			throw new RuntimeException("BAAZ");
+		});
+		endpoint.consume(init(new ResponseMessage(), it -> {
+			it.setId("1");
+			it.setResult("Bar");
+		}));
+		try {
+			chained.get(TIMEOUT, TimeUnit.MILLISECONDS);
+			Assert.fail("Expected an ExecutionException.");
 		} catch (ExecutionException exception) {
 			assertEquals("java.lang.RuntimeException: BAAZ", exception.getMessage());
 		}

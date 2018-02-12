@@ -382,7 +382,7 @@ class JsonParseTest {
 	def void testMessageIssue() {
 		val issue = jsonHandler.gson.fromJson('''
 			{
-				"message": "Howdy!",
+				"text": "Howdy!",
 				"code": 1234,
 				"cause": {
 					"message": "Foo",
@@ -392,7 +392,7 @@ class JsonParseTest {
 				}
 			}
 		''', MessageIssue)
-		assertEquals('Howdy!', issue.message)
+		assertEquals('Howdy!', issue.text)
 		assertEquals(1234, issue.issueCode)
 		assertEquals('Foo', issue.cause.message)
 		assertEquals('Bar', issue.cause.cause.message)

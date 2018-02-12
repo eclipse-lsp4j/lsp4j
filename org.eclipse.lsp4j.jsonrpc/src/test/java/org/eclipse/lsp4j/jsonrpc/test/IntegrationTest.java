@@ -605,11 +605,11 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out, true, null);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 385" + CRLF + CRLF
+		Assert.assertEquals("Content-Length: 379" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32600,\"message\":\"Multiple issues were found in \\u0027askServer\\u0027 request.\","
 				+ "\"data\":["
-				+    "{\"message\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.nested.value\",\"code\":-32602},"
-				+    "{\"message\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.value\",\"code\":-32602}"
+				+    "{\"text\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.nested.value\",\"code\":-32602},"
+				+    "{\"text\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.value\",\"code\":-32602}"
 				+ "]}}",
 				out.toString());
 	}
