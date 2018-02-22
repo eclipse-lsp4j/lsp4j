@@ -1,6 +1,6 @@
 # Introduction
 
-A brief description for using LSP4j to develop a language server.
+A brief description for using LSP4J to develop a language server.
 
 # Implement your language server
 
@@ -12,7 +12,7 @@ If you are implementing a client (e.g. an editor) you simply need to implement `
 
 Now that you have an actual implementation you can connect it with a remote client. Let's assume you have an `Inputstream` and an `Outputstream`, over which you want to communicate with a language client.
 
-The utility class LSPLauncher does most of the wiring for you. Here is the code needed.
+The utility class `LSPLauncher` does most of the wiring for you. Here is the code needed.
 
 ``` java
 LanguageServer server = ... ;
@@ -40,6 +40,10 @@ launcher.startListening();
 ```
 
 This will start the listening process in a new thread.
+
+# Extending the Protocol
+
+As explained in the [JSON-RPC implementation documentation](jsonrpc.md#service-objects), protocol messages can be specified through methods annotated with `@JsonNotification` or `@JsonRequest`. If you would like to add more client-to-server messages, just pass a `LanguageServer` implementation with additional annotated methods to the `LSPLauncher`. In case you need to change the protocol so it is no longer compatible with the `LanguageServer` interface, or you would like to add or change some server-to-client messages, use the utility methods in `Launcher` instead of `LSPLauncher`. Those allow you to use arbitrary local service objects and arbitrary remote service interfaces, and you can even combine multiple service objects or interfaces.
 
 # Cancellation Support
 
