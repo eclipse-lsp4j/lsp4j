@@ -7,11 +7,13 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.InsertTextFormat;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -92,6 +94,7 @@ public class CompletionItem {
   /**
    * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
    */
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object data;
   
   public CompletionItem() {

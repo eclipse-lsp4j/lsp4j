@@ -7,8 +7,12 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.test.services
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import java.util.ArrayList
+import java.util.Collection
 import java.util.HashMap
+import org.eclipse.lsp4j.CodeLens
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
@@ -343,6 +347,68 @@ class JsonParseTest {
             ]
         ])
     }
+	
+	@Test
+	def void testCodeLensResponse() {
+		val json = '''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"range": {
+						"start": {
+							"character": 32,
+							"line": 3
+						},
+						"end": {
+							"character": 35,
+							"line": 3
+						}
+					},
+					"command": {
+						"title": "save",
+						"command": "saveCommand",
+						"arguments": [
+							{
+								"uri": "file:/foo",
+								"version": 5
+							}
+						]
+					},
+					"data": [
+						42,
+						"qwert",
+						{
+							"key": "value"
+						}
+					]
+				}
+			}
+		'''
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_CODE_LENS
+			}
+		]
+		val message = jsonHandler.parseMessage(json)
+		assertTrue("Expected a ResponseMessage", message instanceof ResponseMessage)
+		val response = message as ResponseMessage
+		assertTrue("Expected a Collection in result", response.result instanceof Collection<?>)
+		val result = response.result as Collection<?>
+		assertTrue("Expected a CodeLens in result[0]", result.head instanceof CodeLens)
+		val codeLens = result.head as CodeLens
+		assertNotNull(codeLens.command)
+		val argument = codeLens.command.arguments.head
+		assertTrue("Expected a JsonObject in command.arguments[0]", argument instanceof JsonObject)
+		assertEquals("file:/foo", (argument as JsonObject).get("uri").asString)
+		assertEquals(5, (argument as JsonObject).get("version").asInt)
+		assertTrue("Expected a JsonArray in data", codeLens.data instanceof JsonArray)
+		val data = codeLens.data as JsonArray
+		assertEquals(42, data.get(0).asInt)
+		assertEquals("qwert", data.get(1).asString)
+		assertTrue("Expected a JsonObject in data[2]", data.get(2) instanceof JsonObject)
+		assertEquals("value", (data.get(2) as JsonObject).get("key").asString)
+	}
     
 	@Test
 	def void testDocumentFormatting() {

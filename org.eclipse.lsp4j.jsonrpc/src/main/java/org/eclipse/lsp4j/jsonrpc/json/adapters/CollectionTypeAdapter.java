@@ -45,9 +45,14 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 			Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Collection.class);
 			if (elementTypes.length != 1)
 				return null;
-			TypeAdapter<?> elementTypeAdapter = gson.getAdapter(TypeToken.get(elementTypes[0]));
+			Type elementType = elementTypes[0];
+			TypeAdapter<?> elementTypeAdapter;
+			if (elementType == Object.class)
+				elementTypeAdapter = new JsonElementTypeAdapter(gson);
+			else
+				elementTypeAdapter = gson.getAdapter(TypeToken.get(elementType));
 			Supplier<Collection<Object>> constructor = getConstructor((Class<Collection<Object>>) typeToken.getRawType());
-			return (TypeAdapter<T>) create(gson, elementTypes[0], elementTypeAdapter, constructor);
+			return (TypeAdapter<T>) create(gson, elementType, elementTypeAdapter, constructor);
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })

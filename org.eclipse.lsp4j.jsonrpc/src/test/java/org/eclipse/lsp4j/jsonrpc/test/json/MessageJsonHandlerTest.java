@@ -8,7 +8,7 @@
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,6 +22,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Assert;
 import org.junit.Test;
@@ -522,6 +523,26 @@ public class MessageJsonHandlerTest {
 				parameters);
 	}
 
+	@Test
+	public void testResponseErrorData() {
+		MessageJsonHandler handler = new MessageJsonHandler(Collections.emptyMap());
+		ResponseMessage message = (ResponseMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"error\": { \"code\": -32001, \"message\": \"foo\",\n"
+				+ "    \"data\": { \"uri\": \"file:/foo\", \"version\": 5, \"list\": [\"a\", \"b\", \"c\"] }\n"
+				+ "  }\n"
+				+ "}");
+		ResponseError error = message.getError();
+		Assert.assertTrue("Expected a JsonObject in error.data", error.getData() instanceof JsonObject);
+		JsonObject data = (JsonObject) error.getData();
+		Assert.assertEquals("file:/foo", data.get("uri").getAsString());
+		Assert.assertEquals(5, data.get("version").getAsInt());
+		JsonArray list = data.get("list").getAsJsonArray();
+		Assert.assertEquals("a", list.get(0).getAsString());
+		Assert.assertEquals("b", list.get(1).getAsString());
+		Assert.assertEquals("c", list.get(2).getAsString());
+	}
+
 	public static final <T> void swap(T[] a, int i, int j) {
 		T t = a[i];
 		a[i] = a[j];
@@ -652,8 +673,8 @@ public class MessageJsonHandlerTest {
 			ResponseMessage message = (ResponseMessage) handler.parseMessage(json);
 			Assert.assertEquals("failed", message.getError().getMessage());
 			Object data = message.getError().getData();
-			Map<String, String> expected = new HashMap<>();
-			expected.put("uri", "failed");
+			JsonObject expected = new JsonObject();
+			expected.addProperty("uri", "failed");
 			Assert.assertEquals(expected, data);
 			Assert.assertNull(message.getResult());
 		});
