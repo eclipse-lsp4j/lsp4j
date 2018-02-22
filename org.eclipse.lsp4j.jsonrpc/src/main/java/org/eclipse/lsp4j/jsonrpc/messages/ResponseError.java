@@ -8,7 +8,10 @@
 package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+
+import com.google.gson.annotations.JsonAdapter;
 
 public class ResponseError {
 
@@ -50,6 +53,7 @@ public class ResponseError {
 	 * A Primitive or Structured value that contains additional information
 	 * about the error. Can be omitted.
 	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory.class)
 	private Object data;
 
 	public Object getData() {

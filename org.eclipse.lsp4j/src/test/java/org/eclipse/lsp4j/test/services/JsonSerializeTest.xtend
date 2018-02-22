@@ -7,8 +7,11 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.test.services
 
+import com.google.gson.JsonObject
 import java.util.ArrayList
 import java.util.HashMap
+import org.eclipse.lsp4j.CodeLens
+import org.eclipse.lsp4j.Command
 import org.eclipse.lsp4j.CompletionItem
 import org.eclipse.lsp4j.CompletionList
 import org.eclipse.lsp4j.Diagnostic
@@ -17,18 +20,19 @@ import org.eclipse.lsp4j.DidChangeTextDocumentParams
 import org.eclipse.lsp4j.DocumentFormattingParams
 import org.eclipse.lsp4j.FormattingOptions
 import org.eclipse.lsp4j.Hover
+import org.eclipse.lsp4j.InitializeResult
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.Range
+import org.eclipse.lsp4j.ServerCapabilities
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent
 import org.eclipse.lsp4j.TextDocumentIdentifier
 import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
 import org.eclipse.lsp4j.WorkspaceEdit
-import org.eclipse.lsp4j.InitializeResult
-import org.eclipse.lsp4j.ServerCapabilities
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
+import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
@@ -43,7 +47,6 @@ import org.junit.Test
 import static org.junit.Assert.*
 
 import static extension org.eclipse.lsp4j.test.services.LineEndings.*
-import org.eclipse.lsp4j.jsonrpc.messages.Either
 
 class JsonSerializeTest {
 	
@@ -316,6 +319,72 @@ class JsonSerializeTest {
             }
         ''')
     }
+    
+	@Test
+	def void testCodeLensResponse() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new CodeLens => [
+				range = new Range => [
+					start = new Position(3, 32)
+					end = new Position(3, 35)
+				]
+				command = new Command => [
+					title = 'save'
+					command = 'saveCommand'
+					arguments = <Object>newArrayList(
+						new JsonObject => [
+							addProperty('uri', 'file:/foo')
+							addProperty('version', 5)
+						]
+					)
+				]
+				data = <Object>newArrayList(
+					42,
+					'qwert',
+					new JsonObject => [
+						addProperty('key', 'value')
+					]
+				)
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": {
+			    "range": {
+			      "start": {
+			        "line": 3,
+			        "character": 32
+			      },
+			      "end": {
+			        "line": 3,
+			        "character": 35
+			      }
+			    },
+			    "command": {
+			      "title": "save",
+			      "command": "saveCommand",
+			      "arguments": [
+			        {
+			          "uri": "file:/foo",
+			          "version": 5
+			        }
+			      ]
+			    },
+			    "data": [
+			      42,
+			      "qwert",
+			      {
+			        "key": "value"
+			      }
+			    ]
+			  }
+			}
+		''')
+	}
     
     @Test
     def void testResponseError() {

@@ -10,6 +10,11 @@ sourceCompatibility = '1.8'
 
 tasks.withType(Javadoc) {
 	options.addStringOption('Xdoclint:none', '-quiet')
+	options.encoding = 'UTF-8'
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

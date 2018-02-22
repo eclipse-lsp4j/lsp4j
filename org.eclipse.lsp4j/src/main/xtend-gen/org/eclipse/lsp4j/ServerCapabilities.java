@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.CodeLensOptions;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentLinkOptions;
@@ -17,6 +18,7 @@ import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.TextDocumentSyncOptions;
 import org.eclipse.lsp4j.WorkspaceServerCapabilities;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -112,6 +114,7 @@ public class ServerCapabilities {
   /**
    * Experimental server capabilities.
    */
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object experimental;
   
   /**
