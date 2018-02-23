@@ -7,35 +7,42 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import com.google.gson.stream.MalformedJsonException;
 
 /**
  * The type adapter for messages dispatches between the different message types: {@link RequestMessage},
@@ -72,7 +79,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	}
 
 	@Override
-	public Message read(JsonReader in) throws IOException {
+	public Message read(JsonReader in) throws IOException, JsonIOException, JsonSyntaxException {
 		if (in.peek() == JsonToken.NULL) {
 			in.nextNull();
 			return null;
@@ -83,45 +90,59 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		Either<String, Number> id = null;
 		Object rawParams = null;
 		Object rawResult = null;
-		ResponseError error = null;
-		while (in.hasNext()) {
-			String name = in.nextName();
-			switch (name) {
-			case "jsonrpc": {
-				jsonrpc = in.nextString();
-				break;
+		ResponseError responseError = null;
+		try {
+			
+			while (in.hasNext()) {
+				String name = in.nextName();
+				switch (name) {
+				case "jsonrpc": {
+					jsonrpc = in.nextString();
+					break;
+				}
+				case "id": {
+					if (in.peek() == JsonToken.NUMBER)
+						id = Either.forRight(in.nextInt());
+					else
+						id = Either.forLeft(in.nextString());
+					break;
+				}
+				case "method": {
+					method = in.nextString();
+					break;
+				}
+				case "params": {
+					rawParams = parseParams(in, method);
+					break;
+				}
+				case "result": {
+					rawResult = parseResult(in, id != null ? id.get().toString() : null);
+					break;
+				}
+				case "error": {
+					responseError = gson.fromJson(in, ResponseError.class);
+					break;
+				}
+				default:
+					in.skipValue();
+				}
 			}
-			case "id": {
-				if (in.peek() == JsonToken.NUMBER)
-					id = Either.forRight(in.nextInt());
-				else
-					id = Either.forLeft(in.nextString());
-				break;
-			}
-			case "method": {
-				method = in.nextString();
-				break;
-			}
-			case "params": {
-				rawParams = parseParams(in, method);
-				break;
-			}
-			case "result": {
-				rawResult = parseResult(in, id != null ? id.get().toString() : null);
-				break;
-			}
-			case "error": {
-				error = gson.fromJson(in, ResponseError.class);
-				break;
-			}
-			default:
-				in.skipValue();
+			Object params = parseParams(rawParams, method);
+			Object result = parseResult(rawResult, id != null ? id.get().toString() : null);
+			
+			in.endObject();
+			return createMessage(jsonrpc, id, method, params, result, responseError);
+			
+		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
+			if (id != null || method != null) {
+				// Create a message and bundle it to an exception with an issue that wraps the original exception
+				Message message = createMessage(jsonrpc, id, method, rawParams, rawResult, responseError);
+				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
+				throw new MessageIssueException(message, issue);
+			} else {
+				throw exception;
 			}
 		}
-		in.endObject();
-		Object params = parseParams(rawParams, method);
-		Object result = parseResult(rawResult, id != null ? id.get().toString() : null);
-		return createMessage(jsonrpc, id, method, params, result, error);
 	}
 
 	/**
@@ -139,8 +160,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	 * @return correctly typed object if the correct expected type can be
 	 *         determined, or a JsonElement representing the result
 	 */
-	protected Object parseResult(JsonReader in, String id) {
-		Object result;
+	protected Object parseResult(JsonReader in, String id) throws JsonIOException, JsonSyntaxException {
 		Type type = null;
 		MethodProvider methodProvider = handler.getMethodProvider();
 		if (methodProvider != null && id != null) {
@@ -151,11 +171,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					type = jsonRpcMethod.getReturnType();
 			}
 		}
-		if (type == null)
-			result = new JsonParser().parse(in);
-		else
-			result = gson.fromJson(in, type);
-		return result;
+		return fromJson(in, type);
 	}
 
 	/**
@@ -169,21 +185,20 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	 * @return correctly typed object if the correct expected type can be
 	 *         determined, or result unmodified if no conversion can be done.
 	 */
-	protected Object parseResult(Object result, String id) {
-		if (isNull(result)) {
-			return null;
-		}
+	protected Object parseResult(Object result, String id) throws JsonSyntaxException {
 		if (result instanceof JsonElement) {
 			// Type of result could not be resolved - try again with the parsed JSON tree
+			Type type = null;
 			MethodProvider methodProvider = handler.getMethodProvider();
 			if (methodProvider != null) {
 				String resolvedMethod = methodProvider.resolveMethod(id);
 				if (resolvedMethod != null) {
 					JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
 					if (jsonRpcMethod != null)
-						result = gson.fromJson((JsonElement) result, jsonRpcMethod.getReturnType());
+						type = jsonRpcMethod.getReturnType();
 				}
 			}
+			return fromJson((JsonElement) result, type);
 		}
 		return result;
 	}
@@ -203,7 +218,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	 * @return correctly typed object if the correct expected type can be
 	 *         determined, or a JsonElement representing the parameters
 	 */
-	protected Object parseParams(JsonReader in, String method) throws IOException {
+	protected Object parseParams(JsonReader in, String method) throws IOException, JsonIOException {
 		JsonToken next = in.peek();
 		if (next == JsonToken.NULL) {
 			in.nextNull();
@@ -276,7 +291,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		return rawParams;
 	}
 
-	protected Object fromJson(JsonReader in, Type type) {
+	protected Object fromJson(JsonReader in, Type type) throws JsonIOException {
 		if (isNullOrVoidType(type)) {
 			return new JsonParser().parse(in);
 		}
@@ -314,7 +329,8 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		return EMPTY_TYPE_ARRAY;
 	}
 	
-	protected Message createMessage(String jsonrpc, Either<String, Number> id, String method, Object params, Object result, ResponseError error) {
+	protected Message createMessage(String jsonrpc, Either<String, Number> id, String method, Object params,
+			Object responseResult, ResponseError responseError) throws JsonParseException {
 		if (id != null && method != null) {
 			RequestMessage message = new RequestMessage();
 			message.setJsonrpc(jsonrpc);
@@ -326,11 +342,10 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			ResponseMessage message = new ResponseMessage();
 			message.setJsonrpc(jsonrpc);
 			message.setRawId(id);
-			if (error != null) {
-				message.setError(error);
-			} else {
-				message.setResult(result);
-			}
+			if (responseError != null)
+				message.setError(responseError);
+			else
+				message.setResult(responseResult);
 			return message;
 		} else if (method != null) {
 			NotificationMessage message = new NotificationMessage();

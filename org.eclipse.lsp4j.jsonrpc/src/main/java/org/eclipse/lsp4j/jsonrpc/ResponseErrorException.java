@@ -9,6 +9,9 @@ package org.eclipse.lsp4j.jsonrpc;
 
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 
+/**
+ * An exception thrown in order to send a response with an attached {@code error} object.
+ */
 public class ResponseErrorException extends RuntimeException {
 
 	private static final long serialVersionUID = -5970739895395246885L;

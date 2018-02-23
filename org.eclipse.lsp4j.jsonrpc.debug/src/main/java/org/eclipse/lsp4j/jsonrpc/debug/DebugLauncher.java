@@ -195,14 +195,14 @@ public interface DebugLauncher<T> extends Launcher<T> {
 		jsonHandler.setMethodProvider(remoteEndpoint);
 		// wrap incoming message stream
 		MessageConsumer messageConsumer = wrapper.apply(remoteEndpoint);
-		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler);
+		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler, remoteEndpoint);
 
 		T remoteProxy = ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterface);
 
 		return new DebugLauncher<T>() {
 
 			@Override
-			public Future<?> startListening() {
+			public Future<Void> startListening() {
 				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
 			}
 

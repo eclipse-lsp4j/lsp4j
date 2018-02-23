@@ -20,23 +20,34 @@ import java.util.logging.Logger;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 
+/**
+ * This class connects a message producer with a message consumer by listening for new messages in a dedicated thread.
+ */
 public class ConcurrentMessageProcessor implements Runnable {
-
-	public static Future<?> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
+	
+	/**
+	 * Start a thread that listens for messages in the message producer and forwards them to the message consumer.
+	 * 
+	 * @param messageProducer - produces messages, e.g. by reading from an input channel
+	 * @param messageConsumer - processes messages and potentially forwards them to other consumers
+	 * @param executorService - the thread is started using this service
+	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
+	 */
+	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
 			ExecutorService executorService) {
 		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
 		final Future<?> result = executorService.submit(reader);
-		return new Future<Object>() {
+		return new Future<Void>() {
 
 			@Override
-			public Object get() throws InterruptedException, ExecutionException {
-				return result.get();
+			public Void get() throws InterruptedException, ExecutionException {
+				return (Void) result.get();
 			}
 
 			@Override
-			public Object get(long timeout, TimeUnit unit)
+			public Void get(long timeout, TimeUnit unit)
 					throws InterruptedException, ExecutionException, TimeoutException {
-				return result.get(timeout, unit);
+				return (Void) result.get(timeout, unit);
 			}
 
 			@Override
@@ -69,7 +80,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 
 	private final MessageProducer messageProducer;
 	private final MessageConsumer messageConsumer;
-
+	
 	public ConcurrentMessageProcessor(MessageProducer messageProducer, MessageConsumer messageConsumer) {
 		this.messageProducer = messageProducer;
 		this.messageConsumer = messageConsumer;
@@ -77,7 +88,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 
 	public void run() {
 		if (isRunning) {
-			throw new IllegalStateException("The reader is already running.");
+			throw new IllegalStateException("The message processor is already running.");
 		}
 		isRunning = true;
 		try {

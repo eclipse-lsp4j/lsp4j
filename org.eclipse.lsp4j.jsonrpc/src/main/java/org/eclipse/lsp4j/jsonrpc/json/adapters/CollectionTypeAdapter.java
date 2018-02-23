@@ -22,6 +22,7 @@ import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
@@ -60,16 +61,16 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 			return new CollectionTypeAdapter(gson, elementType, elementTypeAdapter, constructor);
 		}
 
-		protected <E> Supplier<Collection<E>> getConstructor(Class<Collection<E>> rawType) {
+		protected <E> Supplier<Collection<E>> getConstructor(Class<? extends Collection<E>> rawType) {
 			try {
-				Constructor<Collection<E>> constructor = rawType.getDeclaredConstructor();
+				Constructor<? extends Collection<E>> constructor = rawType.getDeclaredConstructor();
 				if (!constructor.isAccessible())
 					constructor.setAccessible(true);
 				return () -> {
 					try {
 						return constructor.newInstance();
 					} catch (Exception e) {
-						throw new RuntimeException(e);
+						throw new JsonParseException(e);
 					}
 				};
 			} catch (NoSuchMethodException e) {

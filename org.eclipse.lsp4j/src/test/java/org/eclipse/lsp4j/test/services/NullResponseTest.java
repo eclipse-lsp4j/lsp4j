@@ -22,10 +22,12 @@ import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
+import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
+import org.eclipse.lsp4j.test.LogMessageAccumulator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,25 +35,33 @@ public class NullResponseTest implements LanguageServer {
 	
 	private Object shutdownReturn;
 
-	@Test public void testNullResponse() throws InterruptedException, ExecutionException {
-		Endpoint endpoint = ServiceEndpoints.toEndpoint(this);
-		Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(LanguageServer.class);
-		MessageJsonHandler handler = new MessageJsonHandler(methods);
-		List<Message> msgs = new ArrayList<>();
-		MessageConsumer consumer = (message) -> {
-			msgs.add(message);
-		};
-		RemoteEndpoint re = new RemoteEndpoint(consumer, endpoint);
-		
-		RequestMessage request = new RequestMessage();
-		request.setId("1");
-		request.setMethod("shutdown");
-		re.consume(request);
-		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":null}", handler.serialize(msgs.get(0)));
-		msgs.clear();
-		shutdownReturn = new Object();
-		re.consume(request);
-		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":{}}", handler.serialize(msgs.get(0)));
+	@Test
+	public void testNullResponse() throws InterruptedException, ExecutionException {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(GenericEndpoint.class);
+			
+			Endpoint endpoint = ServiceEndpoints.toEndpoint(this);
+			Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(LanguageServer.class);
+			MessageJsonHandler handler = new MessageJsonHandler(methods);
+			List<Message> msgs = new ArrayList<>();
+			MessageConsumer consumer = (message) -> {
+				msgs.add(message);
+			};
+			RemoteEndpoint re = new RemoteEndpoint(consumer, endpoint);
+			
+			RequestMessage request = new RequestMessage();
+			request.setId("1");
+			request.setMethod("shutdown");
+			re.consume(request);
+			Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":null}", handler.serialize(msgs.get(0)));
+			msgs.clear();
+			shutdownReturn = new Object();
+			re.consume(request);
+			Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"result\":{}}", handler.serialize(msgs.get(0)));
+		} finally {
+			logMessages.unregister();
+		}
 	}
 
 	@Override

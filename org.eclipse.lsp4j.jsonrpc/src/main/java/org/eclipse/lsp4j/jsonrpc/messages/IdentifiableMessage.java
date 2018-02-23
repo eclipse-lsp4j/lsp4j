@@ -30,6 +30,7 @@ public abstract class IdentifiableMessage extends Message {
 		return null;
 	}
 	
+	@NonNull
 	public Either<String, Number> getRawId() {
 		return id;
 	}
@@ -42,7 +43,7 @@ public abstract class IdentifiableMessage extends Message {
 		this.id = Either.forRight(id);
 	}
 	
-	public void setRawId(Either<String, Number> id) {
+	public void setRawId(@NonNull Either<String, Number> id) {
 		this.id = id;
 	}
 

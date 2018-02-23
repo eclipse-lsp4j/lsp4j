@@ -9,14 +9,18 @@ package org.eclipse.lsp4j.jsonrpc.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
@@ -24,14 +28,18 @@ import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RemoteEndpointTest {
+	
+	private static final long TIMEOUT = 2000;
 	
 	static class TestEndpoint implements Endpoint {
 		
@@ -39,19 +47,19 @@ public class RemoteEndpointTest {
 		Map<RequestMessage, CompletableFuture<Object>> requests = new LinkedHashMap<>();
 		
 		public void notify(String method, Object parameter) {
-			notifications.add(new NotificationMessage() {{
-				setMethod(method);
-				setParams(parameter);
-			}});
+			notifications.add(init(new NotificationMessage(), it -> {
+				it.setMethod(method);
+				it.setParams(parameter);
+			}));
 		}
 		
 		@Override
 		public CompletableFuture<Object> request(String method, Object parameter) {
 			CompletableFuture<Object> completableFuture = new CompletableFuture<Object>();
-			requests.put(new RequestMessage() {{
-				setMethod(method);
-				setParams(parameter);
-			}}, completableFuture);
+			requests.put(init(new RequestMessage(), it -> {
+				it.setMethod(method);
+				it.setParams(parameter);
+			}), completableFuture);
 			return completableFuture;
 		}
 		
@@ -73,7 +81,8 @@ public class RemoteEndpointTest {
 		return value;
 	}
 	
-	@Test public void testNotification() {
+	@Test
+	public void testNotification() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
@@ -89,7 +98,8 @@ public class RemoteEndpointTest {
 		assertTrue(consumer.messages.isEmpty());
 	}
 	
-	@Test public void testRequest1() {
+	@Test
+	public void testRequest1() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
@@ -109,7 +119,8 @@ public class RemoteEndpointTest {
 		assertEquals(Either.forLeft("1"), responseMessage.getRawId());
 	}
 	
-	@Test public void testRequest2() {
+	@Test
+	public void testRequest2() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
@@ -129,7 +140,25 @@ public class RemoteEndpointTest {
 		assertEquals(Either.forRight(1), responseMessage.getRawId());
 	}
 	
-	@Test public void testCancellation() {
+	@Test
+	public void testHandleRequestIssues() {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		endpoint.handle(init(new RequestMessage(), it -> {
+			it.setId("1");
+			it.setMethod("foo");
+			it.setParams("myparam");
+		}), Collections.singletonList(new MessageIssue("bar")));
+		
+		ResponseMessage responseMessage = (ResponseMessage) consumer.messages.get(0);
+		assertNotNull(responseMessage.getError());
+		assertEquals("bar", responseMessage.getError().getMessage());
+	}
+	
+	@Test
+	public void testCancellation() {
 		TestEndpoint endp = new TestEndpoint();
 		TestMessageConsumer consumer = new TestMessageConsumer();
 		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
@@ -150,7 +179,8 @@ public class RemoteEndpointTest {
 		assertEquals(error.getMessage(), "The request (id: 1, method: 'foo') has been cancelled");
 	}
 	
-	@Test public void testException() {
+	@Test
+	public void testExceptionInEndpoint() {
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
 			// Don't show the exception in the test execution log
@@ -181,8 +211,53 @@ public class RemoteEndpointTest {
 			logMessages.unregister();
 		}
 	}
+	
+	@Test
+	public void testExceptionInConsumer() throws Exception {
+		TestEndpoint endp = new TestEndpoint();
+		MessageConsumer consumer = message -> {
+			throw new RuntimeException("BAAZ");
+		};
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		CompletableFuture<Object> future = endpoint.request("foo", "myparam");
+		future.whenComplete((result, exception) -> {
+			assertNull(result);
+			assertNotNull(exception);
+			assertEquals("BAAZ", exception.getMessage());
+		});
+		try {
+			future.get(TIMEOUT, TimeUnit.MILLISECONDS);
+			Assert.fail("Expected an ExecutionException.");
+		} catch (ExecutionException exception) {
+			assertEquals("java.lang.RuntimeException: BAAZ", exception.getMessage());
+		}
+	}
+	
+	@Test
+	public void testExceptionInCompletableFuture() throws Exception {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+		
+		CompletableFuture<Object> future = endpoint.request("foo", "myparam");
+		CompletableFuture<Void> chained = future.thenAccept(result -> {
+			throw new RuntimeException("BAAZ");
+		});
+		endpoint.consume(init(new ResponseMessage(), it -> {
+			it.setId("1");
+			it.setResult("Bar");
+		}));
+		try {
+			chained.get(TIMEOUT, TimeUnit.MILLISECONDS);
+			Assert.fail("Expected an ExecutionException.");
+		} catch (ExecutionException exception) {
+			assertEquals("java.lang.RuntimeException: BAAZ", exception.getMessage());
+		}
+	}
 
-	@Test public void testExceptionHandlerMisbehaving01() {
+	@Test
+	public void testExceptionHandlerMisbehaving1() {
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
 			// Don't show the exception in the test execution log
@@ -231,7 +306,7 @@ public class RemoteEndpointTest {
 	}
 	
 	@Test
-	public void testExceptionHandlerMisbehaving02() throws Exception {
+	public void testExceptionHandlerMisbehaving2() throws Exception {
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
 			// Don't show the exception in the test execution log

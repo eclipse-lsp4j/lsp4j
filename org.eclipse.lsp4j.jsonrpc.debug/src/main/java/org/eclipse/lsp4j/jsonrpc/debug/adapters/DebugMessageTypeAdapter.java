@@ -7,8 +7,10 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug.adapters;
 
+import java.io.EOFException;
 import java.io.IOException;
 
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugRequestMessage;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugResponseMessage;
@@ -18,6 +20,7 @@ import org.eclipse.lsp4j.jsonrpc.json.MethodProvider;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
@@ -26,12 +29,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import com.google.gson.stream.MalformedJsonException;
 
 /**
  * The {@link DebugMessageTypeAdapter} provides an adapter that maps Debug
@@ -187,55 +192,70 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		Boolean rawSuccess = null;
 		Object rawParams = null;
 		Object rawBody = null;
-		while (in.hasNext()) {
-			String name = in.nextName();
-			switch (name) {
-			case "seq": {
-				seq = in.nextInt();
-				break;
+		
+		try {
+			
+			while (in.hasNext()) {
+				String name = in.nextName();
+				switch (name) {
+				case "seq": {
+					seq = in.nextInt();
+					break;
+				}
+				case "request_seq": {
+					// on responses we treat the request_seq as the id
+					request_seq = in.nextInt();
+					break;
+				}
+				case "type": {
+					messageType = in.nextString();
+					break;
+				}
+				case "success": {
+					rawSuccess = in.nextBoolean();
+					break;
+				}
+				case "command": {
+					method = in.nextString();
+					break;
+				}
+				case "event": {
+					method = in.nextString();
+					break;
+				}
+				case "message": {
+					message = in.nextString();
+					break;
+				}
+				case "arguments": {
+					rawParams = parseParams(in, method);
+					break;
+				}
+				case "body": {
+					rawBody = parseBody(in, messageType, request_seq, method, rawSuccess);
+					break;
+				}
+				default:
+					in.skipValue();
+				}
 			}
-			case "request_seq": {
-				// on responses we treat the request_seq as the id
-				request_seq = in.nextInt();
-				break;
-			}
-			case "type": {
-				messageType = in.nextString();
-				break;
-			}
-			case "success": {
-				rawSuccess = in.nextBoolean();
-				break;
-			}
-			case "command": {
-				method = in.nextString();
-				break;
-			}
-			case "event": {
-				method = in.nextString();
-				break;
-			}
-			case "message": {
-				message = in.nextString();
-				break;
-			}
-			case "arguments": {
-				rawParams = parseParams(in, method);
-				break;
-			}
-			case "body": {
-				rawBody = parseBody(in, messageType, request_seq, method, rawSuccess);
-				break;
-			}
-			default:
-				in.skipValue();
+			boolean success = rawSuccess != null ? rawSuccess : true;
+			Object params = parseParams(rawParams, method);
+			Object body = parseBody(rawBody, messageType, request_seq, method, success);
+			
+			in.endObject();
+			return createMessage(messageType, seq, request_seq, method, success, message, params, body);
+			
+		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
+			if ("request".equals(messageType) || "event".equals(messageType) || "response".equals(messageType)) {
+				// Create a message and bundle it to an exception with an issue that wraps the original exception
+				Message resultMessage = createMessage(messageType, seq, request_seq, method, rawSuccess, message, rawParams, rawBody);
+				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
+				throw new MessageIssueException(resultMessage, issue);
+			} else {
+				throw exception;
 			}
 		}
-		in.endObject();
-		boolean success = rawSuccess != null ? rawSuccess : true;
-		Object params = parseParams(rawParams, method);
-		Object body = parseBody(rawBody, messageType, request_seq, method, success);
-		return createMessage(messageType, seq, request_seq, method, success, message, params, body);
 	}
 
 	/**
@@ -307,7 +327,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 	}
 
 	private Message createMessage(String messageType, int seq, int request_seq, String method, boolean success,
-			String errorMessage, Object params, Object body) {
+			String errorMessage, Object params, Object body) throws JsonParseException {
 		if (messageType == null) {
 			throw new JsonParseException("Unable to identify the input message. Missing 'type' field.");
 		}

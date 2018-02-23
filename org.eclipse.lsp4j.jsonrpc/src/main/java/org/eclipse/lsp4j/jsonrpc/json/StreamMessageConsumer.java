@@ -14,6 +14,9 @@ import java.nio.charset.StandardCharsets;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
+/**
+ * A message consumer that serializes messages to JSON and sends them to an output stream.
+ */
 public class StreamMessageConsumer implements MessageConsumer, MessageConstants {
 
 	private final String encoding;
@@ -47,10 +50,6 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 
 	@Override
 	public void consume(Message message) {
-		if (message.getJsonrpc() == null) {
-			message.setJsonrpc(JSONRPC_VERSION);
-		}
-
 		try {
 			String content = jsonHandler.serialize(message);
 			byte[] contentBytes = content.getBytes(encoding);
@@ -69,6 +68,10 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 		}
 	}
 
+	/**
+	 * Construct a header to be prepended to the actual content. This implementation writes
+	 * {@code Content-Length} and {@code Content-Type} attributes according to the LSP specification.
+	 */
 	protected String getHeader(int contentLength) {
 		StringBuilder headerBuilder = new StringBuilder();
 		appendHeader(headerBuilder, CONTENT_LENGTH_HEADER, contentLength).append(CRLF);
@@ -80,6 +83,9 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 		return headerBuilder.toString();
 	}
 
+	/**
+	 * Append a header attribute to the given builder.
+	 */
 	protected StringBuilder appendHeader(StringBuilder builder, String name, Object value) {
 		return builder.append(name).append(": ").append(value);
 	}

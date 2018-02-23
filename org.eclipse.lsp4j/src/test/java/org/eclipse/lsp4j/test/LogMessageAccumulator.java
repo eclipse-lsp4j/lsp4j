@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package org.eclipse.lsp4j.jsonrpc.test;
+package org.eclipse.lsp4j.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 
@@ -87,8 +86,10 @@ public class LogMessageAccumulator extends Handler {
 		while (!match(predicate).isPresent()) {
 			Thread.sleep(20);
 			if (System.currentTimeMillis() - startTime > TIMEOUT) {
-				Assert.fail("Timeout elapsed while waiting for specific record.\n"
-						+ "Logged records:\n" + recordsToString());
+				synchronized (records) {
+					String records = this.records.stream().map(r -> r.getLevel() + ": " + r.getMessage()).reduce((a, a2) -> a + '\n' + a2).get();
+					Assert.fail("Timeout elapsed while waiting for logging, logged:\n" + records);
+				}
 			}
 		}
 	}
@@ -97,18 +98,8 @@ public class LogMessageAccumulator extends Handler {
 		long startTime = System.currentTimeMillis();
 		while (findRecord(level, message) == null) {
 			Thread.sleep(20);
-			if (System.currentTimeMillis() - startTime > TIMEOUT) {
-				Assert.fail("Timeout elapsed while waiting for " + level + ": \"" + message + "\"\n"
-						+ "Logged records:\n" + recordsToString());
-			}
-		}
-	}
-	
-	private String recordsToString() {
-		synchronized (records) {
-			if (records.isEmpty())
-				return "None";
-			return records.stream().map(r -> r.getLevel() + ": " + r.getMessage()).collect(Collectors.joining("\n"));
+			if (System.currentTimeMillis() - startTime > TIMEOUT)
+				Assert.fail("Timeout elapsed while waiting for " + level + ": " + message);
 		}
 	}
 

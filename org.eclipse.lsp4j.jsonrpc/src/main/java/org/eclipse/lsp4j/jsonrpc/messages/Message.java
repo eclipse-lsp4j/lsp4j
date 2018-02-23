@@ -20,14 +20,15 @@ public abstract class Message {
 	@NonNull
 	private String jsonrpc = MessageConstants.JSONRPC_VERSION;
 
+	@NonNull
 	public String getJsonrpc() {
 		return this.jsonrpc;
 	}
 
-	public void setJsonrpc(String jsonrpc) {
+	public void setJsonrpc(@NonNull String jsonrpc) {
 		this.jsonrpc = jsonrpc;
 	}
-
+	
 	@Override
 	public String toString() {
 		return MessageJsonHandler.toString(this);

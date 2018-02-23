@@ -12,7 +12,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
-import org.eclipse.lsp4j.jsonrpc.json.InvalidMessageException;
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
@@ -22,7 +22,7 @@ import org.junit.Test;
 
 public class ValidationTest {
 	
-	ReflectiveMessageValidator validator = new ReflectiveMessageValidator((consume)->{});
+	ReflectiveMessageValidator validator = new ReflectiveMessageValidator();
 
 	@Test
 	public void testInvalidCompletion() {
@@ -35,7 +35,7 @@ public class ValidationTest {
 		params.setTextDocument(new TextDocumentIdentifier("file:///tmp/foo"));
 		message.setParams(params);
 		
-		assertIssues(message, "The accessor 'getPosition' must return a non-null value.");
+		assertIssues(message, "The accessor 'TextDocumentPositionParams.getPosition()' must return a non-null value.");
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class ValidationTest {
 		try {
 			validator.consume(message);
 			Assert.fail("Expected InvalidMessageException: " + expectedIssues + ".");
-		} catch (InvalidMessageException e) {
+		} catch (MessageIssueException e) {
 			String expected = expectedIssues.toString();
 			String actual = LineEndings.toSystemLineEndings(e.getMessage());
 			// The expectation may be a prefix of the actual exception message
