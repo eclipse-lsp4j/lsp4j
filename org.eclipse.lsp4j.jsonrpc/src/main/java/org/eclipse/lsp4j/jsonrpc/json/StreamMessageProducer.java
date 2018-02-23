@@ -30,16 +30,21 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	private static final Logger LOG = Logger.getLogger(StreamMessageProducer.class.getName());
 
 	private final MessageJsonHandler jsonHandler;
+	private final MessageIssueHandler issueHandler;
 
 	private InputStream input;
 
 	private MessageConsumer callback;
-	private MessageIssueHandler issueHandler;
 	private boolean keepRunning;
 
 	public StreamMessageProducer(InputStream input, MessageJsonHandler jsonHandler) {
+		this(input, jsonHandler, null);
+	}
+	
+	public StreamMessageProducer(InputStream input, MessageJsonHandler jsonHandler, MessageIssueHandler issueHandler) {
 		this.input = input;
 		this.jsonHandler = jsonHandler;
+		this.issueHandler = issueHandler;
 	}
 
 	public InputStream getInput() {
@@ -56,13 +61,12 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	}
 
 	@Override
-	public void listen(MessageConsumer callback, MessageIssueHandler issueHandler) {
+	public void listen(MessageConsumer callback) {
 		if (keepRunning) {
 			throw new IllegalStateException("This StreamMessageProducer is already running.");
 		}
 		this.keepRunning = true;
 		this.callback = callback;
-		this.issueHandler = issueHandler;
 		try {
 			StringBuilder headerBuilder = null;
 			StringBuilder debugBuilder = null;
@@ -116,7 +120,6 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 			throw new RuntimeException(e);
 		} finally {
 			this.callback = null;
-			this.issueHandler = null;
 			this.keepRunning = false;
 		}
 	}

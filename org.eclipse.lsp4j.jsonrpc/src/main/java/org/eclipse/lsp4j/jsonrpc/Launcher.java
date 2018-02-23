@@ -137,14 +137,14 @@ public interface Launcher<T> {
 		RemoteEndpoint remoteEndpoint = setupRemoteEndpoint(localServiceList, out, jsonHandler, wrapper);
 		
 		MessageConsumer messageConsumer = wrapper.apply(remoteEndpoint);
-		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler);
+		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler, remoteEndpoint);
 		
 		T remoteProxy = ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterface);
 		
 		return new Launcher<T> () {
 			@Override
 			public Future<Void> startListening() {
-				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
+				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
 			}
 
 			@Override
@@ -183,14 +183,14 @@ public interface Launcher<T> {
 		RemoteEndpoint remoteEndpoint = setupRemoteEndpoint(localServices, out, jsonHandler, wrapper);
 		
 		MessageConsumer messageConsumer = wrapper.apply(remoteEndpoint);
-		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler);
+		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler, remoteEndpoint);
 		
 		Object remoteProxy = ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterfaces, classLoader);
 		
 		return new Launcher<Object> () {
 			@Override
 			public Future<Void> startListening() {
-				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, remoteEndpoint, executorService);
+				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
 			}
 			
 			@Override

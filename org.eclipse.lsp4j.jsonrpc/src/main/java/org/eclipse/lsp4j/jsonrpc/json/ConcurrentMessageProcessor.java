@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
-import org.eclipse.lsp4j.jsonrpc.MessageIssueHandler;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 
 /**
@@ -29,9 +28,6 @@ public class ConcurrentMessageProcessor implements Runnable {
 	/**
 	 * Start a thread that listens for messages in the message producer and forwards them to the message consumer.
 	 * 
-	 * <em>Note:</em> No issue handler is set up with this method, so when erroneous requests are received,
-	 * no response will be created for them.
-	 * 
 	 * @param messageProducer - produces messages, e.g. by reading from an input channel
 	 * @param messageConsumer - processes messages and potentially forwards them to other consumers
 	 * @param executorService - the thread is started using this service
@@ -39,22 +35,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 	 */
 	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
 			ExecutorService executorService) {
-		return startProcessing(messageProducer, messageConsumer, null);
-	}
-
-	/**
-	 * Start a thread that listens for messages in the message producer, forwards them to the message consumer,
-	 * and reports issues to the issue handler
-	 * 
-	 * @param messageProducer - produces messages, e.g. by reading from an input channel
-	 * @param messageConsumer - processes messages and potentially forwards them to other consumers
-	 * @param issueHandler - issues found in produced messages are reported to this handler
-	 * @param executorService - the thread is started using this service
-	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
-	 */
-	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
-			MessageIssueHandler issueHandler, ExecutorService executorService) {
-		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer, issueHandler);
+		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
 		final Future<?> result = executorService.submit(reader);
 		return new Future<Void>() {
 
@@ -99,17 +80,10 @@ public class ConcurrentMessageProcessor implements Runnable {
 
 	private final MessageProducer messageProducer;
 	private final MessageConsumer messageConsumer;
-	private final MessageIssueHandler issueHandler;
 	
 	public ConcurrentMessageProcessor(MessageProducer messageProducer, MessageConsumer messageConsumer) {
-		this(messageProducer, messageConsumer, null);
-	}
-
-	public ConcurrentMessageProcessor(MessageProducer messageProducer, MessageConsumer messageConsumer,
-			MessageIssueHandler issueHandler) {
 		this.messageProducer = messageProducer;
 		this.messageConsumer = messageConsumer;
-		this.issueHandler = issueHandler;
 	}
 
 	public void run() {
@@ -118,7 +92,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 		}
 		isRunning = true;
 		try {
-			messageProducer.listen(messageConsumer, issueHandler);
+			messageProducer.listen(messageConsumer);
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
