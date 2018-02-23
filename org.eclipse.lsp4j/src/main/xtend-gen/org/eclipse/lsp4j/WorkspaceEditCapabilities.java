@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -16,6 +17,13 @@ public class WorkspaceEditCapabilities {
    * The client supports versioned document changes in `WorkspaceEdit`s
    */
   private Boolean documentChanges;
+  
+  /**
+   * The client supports resource changes
+   * in `WorkspaceEdit`s.
+   */
+  @Beta
+  private Boolean resourceChanges;
   
   public WorkspaceEditCapabilities() {
   }
@@ -39,11 +47,29 @@ public class WorkspaceEditCapabilities {
     this.documentChanges = documentChanges;
   }
   
+  /**
+   * The client supports resource changes
+   * in `WorkspaceEdit`s.
+   */
+  @Pure
+  public Boolean getResourceChanges() {
+    return this.resourceChanges;
+  }
+  
+  /**
+   * The client supports resource changes
+   * in `WorkspaceEdit`s.
+   */
+  public void setResourceChanges(final Boolean resourceChanges) {
+    this.resourceChanges = resourceChanges;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("documentChanges", this.documentChanges);
+    b.add("resourceChanges", this.resourceChanges);
     return b.toString();
   }
   
@@ -62,6 +88,11 @@ public class WorkspaceEditCapabilities {
         return false;
     } else if (!this.documentChanges.equals(other.documentChanges))
       return false;
+    if (this.resourceChanges == null) {
+      if (other.resourceChanges != null)
+        return false;
+    } else if (!this.resourceChanges.equals(other.resourceChanges))
+      return false;
     return true;
   }
   
@@ -71,6 +102,7 @@ public class WorkspaceEditCapabilities {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.documentChanges== null) ? 0 : this.documentChanges.hashCode());
+    result = prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
     return result;
   }
 }
