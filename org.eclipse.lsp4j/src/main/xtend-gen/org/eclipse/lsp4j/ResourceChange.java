@@ -7,7 +7,6 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -24,7 +23,6 @@ public class ResourceChange {
    * The Uri for current resource. Required for delete and move operations
    * otherwise it is null.
    */
-  @NonNull
   private String current;
   
   /**
@@ -41,7 +39,6 @@ public class ResourceChange {
    * otherwise it is null.
    */
   @Pure
-  @NonNull
   public String getCurrent() {
     return this.current;
   }
@@ -50,7 +47,7 @@ public class ResourceChange {
    * The Uri for current resource. Required for delete and move operations
    * otherwise it is null.
    */
-  public void setCurrent(@NonNull final String current) {
+  public void setCurrent(final String current) {
     this.current = current;
   }
   
