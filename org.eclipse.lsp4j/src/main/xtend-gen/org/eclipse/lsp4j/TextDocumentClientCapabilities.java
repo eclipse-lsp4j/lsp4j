@@ -9,6 +9,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLensCapabilities;
+import org.eclipse.lsp4j.ColorProviderCapabilities;
 import org.eclipse.lsp4j.CompletionCapabilities;
 import org.eclipse.lsp4j.DefinitionCapabilities;
 import org.eclipse.lsp4j.DocumentHighlightCapabilities;
@@ -16,12 +17,14 @@ import org.eclipse.lsp4j.DocumentLinkCapabilities;
 import org.eclipse.lsp4j.DocumentSymbolCapabilities;
 import org.eclipse.lsp4j.FormattingCapabilities;
 import org.eclipse.lsp4j.HoverCapabilities;
+import org.eclipse.lsp4j.ImplementationCapabilities;
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
+import org.eclipse.lsp4j.TypeDefinitionCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -83,6 +86,20 @@ public class TextDocumentClientCapabilities {
   private DefinitionCapabilities definition;
   
   /**
+   * Capabilities specific to the `textDocument/typeDefinition`
+   * 
+   * Since 3.6.0
+   */
+  private TypeDefinitionCapabilities typeDefinition;
+  
+  /**
+   * Capabilities specific to the `textDocument/implementation`
+   * 
+   * Since 3.6.0
+   */
+  private ImplementationCapabilities implementation;
+  
+  /**
    * Capabilities specific to the `textDocument/codeAction`
    */
   private CodeActionCapabilities codeAction;
@@ -96,6 +113,14 @@ public class TextDocumentClientCapabilities {
    * Capabilities specific to the `textDocument/documentLink`
    */
   private DocumentLinkCapabilities documentLink;
+  
+  /**
+   * Capabilities specific to the `textDocument/documentColor` and the
+   * `textDocument/colorPresentation` request.
+   * 
+   * Since 3.6.0
+   */
+  private ColorProviderCapabilities colorProvider;
   
   /**
    * Capabilities specific to the `textDocument/rename`
@@ -262,6 +287,44 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
+   * Capabilities specific to the `textDocument/typeDefinition`
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public TypeDefinitionCapabilities getTypeDefinition() {
+    return this.typeDefinition;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/typeDefinition`
+   * 
+   * Since 3.6.0
+   */
+  public void setTypeDefinition(final TypeDefinitionCapabilities typeDefinition) {
+    this.typeDefinition = typeDefinition;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/implementation`
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public ImplementationCapabilities getImplementation() {
+    return this.implementation;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/implementation`
+   * 
+   * Since 3.6.0
+   */
+  public void setImplementation(final ImplementationCapabilities implementation) {
+    this.implementation = implementation;
+  }
+  
+  /**
    * Capabilities specific to the `textDocument/codeAction`
    */
   @Pure
@@ -307,6 +370,27 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
+   * Capabilities specific to the `textDocument/documentColor` and the
+   * `textDocument/colorPresentation` request.
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public ColorProviderCapabilities getColorProvider() {
+    return this.colorProvider;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/documentColor` and the
+   * `textDocument/colorPresentation` request.
+   * 
+   * Since 3.6.0
+   */
+  public void setColorProvider(final ColorProviderCapabilities colorProvider) {
+    this.colorProvider = colorProvider;
+  }
+  
+  /**
    * Capabilities specific to the `textDocument/rename`
    */
   @Pure
@@ -336,9 +420,12 @@ public class TextDocumentClientCapabilities {
     b.add("rangeFormatting", this.rangeFormatting);
     b.add("onTypeFormatting", this.onTypeFormatting);
     b.add("definition", this.definition);
+    b.add("typeDefinition", this.typeDefinition);
+    b.add("implementation", this.implementation);
     b.add("codeAction", this.codeAction);
     b.add("codeLens", this.codeLens);
     b.add("documentLink", this.documentLink);
+    b.add("colorProvider", this.colorProvider);
     b.add("rename", this.rename);
     return b.toString();
   }
@@ -408,6 +495,16 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.definition.equals(other.definition))
       return false;
+    if (this.typeDefinition == null) {
+      if (other.typeDefinition != null)
+        return false;
+    } else if (!this.typeDefinition.equals(other.typeDefinition))
+      return false;
+    if (this.implementation == null) {
+      if (other.implementation != null)
+        return false;
+    } else if (!this.implementation.equals(other.implementation))
+      return false;
     if (this.codeAction == null) {
       if (other.codeAction != null)
         return false;
@@ -422,6 +519,11 @@ public class TextDocumentClientCapabilities {
       if (other.documentLink != null)
         return false;
     } else if (!this.documentLink.equals(other.documentLink))
+      return false;
+    if (this.colorProvider == null) {
+      if (other.colorProvider != null)
+        return false;
+    } else if (!this.colorProvider.equals(other.colorProvider))
       return false;
     if (this.rename == null) {
       if (other.rename != null)
@@ -447,9 +549,12 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.rangeFormatting== null) ? 0 : this.rangeFormatting.hashCode());
     result = prime * result + ((this.onTypeFormatting== null) ? 0 : this.onTypeFormatting.hashCode());
     result = prime * result + ((this.definition== null) ? 0 : this.definition.hashCode());
+    result = prime * result + ((this.typeDefinition== null) ? 0 : this.typeDefinition.hashCode());
+    result = prime * result + ((this.implementation== null) ? 0 : this.implementation.hashCode());
     result = prime * result + ((this.codeAction== null) ? 0 : this.codeAction.hashCode());
     result = prime * result + ((this.codeLens== null) ? 0 : this.codeLens.hashCode());
     result = prime * result + ((this.documentLink== null) ? 0 : this.documentLink.hashCode());
+    result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
     return result;
   }

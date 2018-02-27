@@ -8,11 +8,17 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
+import org.eclipse.lsp4j.SymbolKindCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
+  /**
+   * Specific capabilities for the `SymbolKind`.
+   */
+  private SymbolKindCapabilities symbolKind;
+  
   public DocumentSymbolCapabilities() {
   }
   
@@ -20,10 +26,35 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
     super(dynamicRegistration);
   }
   
+  public DocumentSymbolCapabilities(final SymbolKindCapabilities symbolKind) {
+    this.symbolKind = symbolKind;
+  }
+  
+  public DocumentSymbolCapabilities(final SymbolKindCapabilities symbolKind, final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+    this.symbolKind = symbolKind;
+  }
+  
+  /**
+   * Specific capabilities for the `SymbolKind`.
+   */
+  @Pure
+  public SymbolKindCapabilities getSymbolKind() {
+    return this.symbolKind;
+  }
+  
+  /**
+   * Specific capabilities for the `SymbolKind`.
+   */
+  public void setSymbolKind(final SymbolKindCapabilities symbolKind) {
+    this.symbolKind = symbolKind;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("symbolKind", this.symbolKind);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -39,13 +70,21 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
       return false;
     if (!super.equals(obj))
       return false;
+    DocumentSymbolCapabilities other = (DocumentSymbolCapabilities) obj;
+    if (this.symbolKind == null) {
+      if (other.symbolKind != null)
+        return false;
+    } else if (!this.symbolKind.equals(other.symbolKind))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
+    final int prime = 31;
     int result = super.hashCode();
+    result = prime * result + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
     return result;
   }
 }

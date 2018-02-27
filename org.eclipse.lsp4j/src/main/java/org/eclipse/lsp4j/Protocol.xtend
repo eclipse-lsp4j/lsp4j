@@ -134,9 +134,9 @@ class WorkspaceClientCapabilities {
     /**
      * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
      * 
-     * This API is a <b>proposal</b> from LSP and may change.
+     * Introduced in 3.6.
      */
-    @Beta Boolean workspaceFolders
+    Boolean workspaceFolders
 }
 
 @JsonRpcData
@@ -187,52 +187,138 @@ class CompletionItemCapabilities {
      */
     Boolean snippetSupport
     
+    /**
+     * Client supports commit characters on a completion item.
+     */
+    Boolean commitCharactersSupport
+  
+    /**
+     * Client supports the following content formats for the documentation
+     * property. The order describes the preferred format of the client.
+     */
+    List<String> documentationFormat
+    
     new() {
     }
     
     new(Boolean snippetSupport) {
-    	this.snippetSupport = snippetSupport
+      this.snippetSupport = snippetSupport
+    }
+}
+
+@JsonRpcData
+class CompletionItemKindCapabilities {
+    /**
+     * The completion item kind values the client supports. When this
+     * property exists the client also guarantees that it will
+     * handle values outside its set gracefully and falls back
+     * to a default value when unknown.
+     *
+     * If this property is not present the client only supports
+     * the completion items kinds from `Text` to `Reference` as defined in
+     * the initial version of the protocol.
+     */
+    List<CompletionItemKind> valueSet
+    
+    new() {
+    }
+    
+    new(List<CompletionItemKind> valueSet) {
+      this.valueSet = valueSet
     }
 }
 
 @JsonRpcData
 class CompletionCapabilities extends DynamicRegistrationCapabilities {     
     /**
-	 * The client supports the following `CompletionItem` specific
-	 * capabilities.
-	 */
-	CompletionItemCapabilities completionItem
+     * The client supports the following `CompletionItem` specific
+     * capabilities.
+     */
+    CompletionItemCapabilities completionItem
+    
+    /**
+     * The client supports the following `CompletionItemKind` specific
+     * capabilities.
+     */
+    CompletionItemKindCapabilities completionItemKind
+    
+    /**
+     * The client supports sending additional context information for a
+     * `textDocument/completion` request.
+     */
+    Boolean contextSupport
     
     new() {
     }
     
     new(CompletionItemCapabilities completionItem) {
-    	this.completionItem = completionItem
+      this.completionItem = completionItem
     }
     
-    new(CompletionItemCapabilities completionItem, Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    	this.completionItem = completionItem
+    new(CompletionItemKindCapabilities completionItemKind) {
+      this.completionItemKind = completionItemKind
+    }
+    
+    new(Boolean contextSupport) {
+      this.contextSupport = contextSupport
     }
 }
 
 @JsonRpcData
-class HoverCapabilities extends DynamicRegistrationCapabilities {	
+class HoverCapabilities extends DynamicRegistrationCapabilities {
+    /**
+     * Client supports the following content formats for the content
+     * property. The order describes the preferred format of the client.
+     */
+    List<String> contentFormat
+    
     new() {
     }
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+    
+    new(List<String> contentFormat, Boolean dynamicRegistration) {
+      super(dynamicRegistration)
+      this.contentFormat = contentFormat
+    }
+}
+
+@JsonRpcData
+class SignatureInformationCapabilities {
+    /**
+     * Client supports the following content formats for the documentation
+     * property. The order describes the preferred format of the client.
+     */
+    List<String> documentationFormat
+    
+    new() {
+    }
+    
+    new(List<String> documentationFormat) {
+      this.documentationFormat = documentationFormat
     }
 }
 
 @JsonRpcData
 class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {	
+    /**
+     * The client supports the following `SignatureInformation`
+     * specific properties.
+     */
+    SignatureInformationCapabilities signatureInformation
+    
     new() {
     }
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+    
+    new(SignatureInformationCapabilities signatureInformation, Boolean dynamicRegistration) {
+      super(dynamicRegistration)
+      this.signatureInformation = signatureInformation
     }
 }
 
@@ -257,12 +343,48 @@ class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
-class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {	
+class SymbolKindCapabilities {
+    /**
+       * The symbol kind values the client supports. When this
+       * property exists the client also guarantees that it will
+       * handle values outside its set gracefully and falls back
+       * to a default value when unknown.
+       *
+       * If this property is not present the client only supports
+       * the symbol kinds from `File` to `Array` as defined in
+       * the initial version of the protocol.
+       */
+    List<SymbolKind> valueSet
+    
+    new() {
+    }
+    
+    new(List<SymbolKind> valueSet) {
+      this.valueSet = valueSet
+    }
+}
+
+@JsonRpcData
+class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
+    /**
+     * Specific capabilities for the `SymbolKind`.
+     */
+    SymbolKindCapabilities symbolKind
+    
     new() {
     }
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+    
+    new(SymbolKindCapabilities symbolKind) {
+      this.symbolKind = symbolKind
+    }
+    
+    new(SymbolKindCapabilities symbolKind, Boolean dynamicRegistration) {
+      super(dynamicRegistration)
+      this.symbolKind = symbolKind
     }
 }
 
@@ -307,6 +429,26 @@ class DefinitionCapabilities extends DynamicRegistrationCapabilities {
 }
 
 @JsonRpcData
+class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+      super(dynamicRegistration)
+    }
+}
+
+@JsonRpcData
+class ImplementationCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+      super(dynamicRegistration)
+    }
+}
+
+@JsonRpcData
 class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     new() {
     }
@@ -333,6 +475,16 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+}
+
+@JsonRpcData
+class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
+    new() {
+    }
+    
+    new(Boolean dynamicRegistration) {
+      super(dynamicRegistration)
     }
 }
 
@@ -404,6 +556,20 @@ class TextDocumentClientCapabilities {
     DefinitionCapabilities definition
     
     /**
+     * Capabilities specific to the `textDocument/typeDefinition`
+     *
+     * Since 3.6.0
+     */
+    TypeDefinitionCapabilities typeDefinition
+    
+    /**
+     * Capabilities specific to the `textDocument/implementation`
+     *
+     * Since 3.6.0
+     */
+    ImplementationCapabilities implementation
+    
+    /**
      * Capabilities specific to the `textDocument/codeAction`
      */
     CodeActionCapabilities codeAction
@@ -417,6 +583,14 @@ class TextDocumentClientCapabilities {
      * Capabilities specific to the `textDocument/documentLink`
      */
     DocumentLinkCapabilities documentLink
+    
+    /**
+     * Capabilities specific to the `textDocument/documentColor` and the
+     * `textDocument/colorPresentation` request.
+     *
+     * Since 3.6.0
+     */
+    ColorProviderCapabilities colorProvider
     
     /**
      * Capabilities specific to the `textDocument/rename`
