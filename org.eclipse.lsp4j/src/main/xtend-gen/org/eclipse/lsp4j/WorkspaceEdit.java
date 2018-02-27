@@ -10,8 +10,10 @@ package org.eclipse.lsp4j;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.lsp4j.ResourceChange;
 import org.eclipse.lsp4j.TextDocumentEdit;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -34,6 +36,15 @@ public class WorkspaceEdit {
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
   private List<TextDocumentEdit> documentChanges;
+  
+  /**
+   * if resource changes are supported the `WorkspaceEdit`
+   * uses the property `resourceChanges` which are either a
+   * rename, move, delete or content change.
+   * These changes are applied in the order that they are supplied,
+   * however clients may group the changes for optimization
+   */
+  private List<Either<ResourceChange, TextDocumentEdit>> resourceChanges;
   
   public WorkspaceEdit() {
     LinkedHashMap<String, List<TextEdit>> _linkedHashMap = new LinkedHashMap<String, List<TextEdit>>();
@@ -92,12 +103,36 @@ public class WorkspaceEdit {
     this.documentChanges = documentChanges;
   }
   
+  /**
+   * if resource changes are supported the `WorkspaceEdit`
+   * uses the property `resourceChanges` which are either a
+   * rename, move, delete or content change.
+   * These changes are applied in the order that they are supplied,
+   * however clients may group the changes for optimization
+   */
+  @Pure
+  public List<Either<ResourceChange, TextDocumentEdit>> getResourceChanges() {
+    return this.resourceChanges;
+  }
+  
+  /**
+   * if resource changes are supported the `WorkspaceEdit`
+   * uses the property `resourceChanges` which are either a
+   * rename, move, delete or content change.
+   * These changes are applied in the order that they are supplied,
+   * however clients may group the changes for optimization
+   */
+  public void setResourceChanges(final List<Either<ResourceChange, TextDocumentEdit>> resourceChanges) {
+    this.resourceChanges = resourceChanges;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("changes", this.changes);
     b.add("documentChanges", this.documentChanges);
+    b.add("resourceChanges", this.resourceChanges);
     return b.toString();
   }
   
@@ -121,6 +156,11 @@ public class WorkspaceEdit {
         return false;
     } else if (!this.documentChanges.equals(other.documentChanges))
       return false;
+    if (this.resourceChanges == null) {
+      if (other.resourceChanges != null)
+        return false;
+    } else if (!this.resourceChanges.equals(other.resourceChanges))
+      return false;
     return true;
   }
   
@@ -131,6 +171,7 @@ public class WorkspaceEdit {
     int result = 1;
     result = prime * result + ((this.changes== null) ? 0 : this.changes.hashCode());
     result = prime * result + ((this.documentChanges== null) ? 0 : this.documentChanges.hashCode());
+    result = prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
     return result;
   }
 }

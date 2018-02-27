@@ -41,6 +41,12 @@ class WorkspaceEditCapabilities {
 	 */
 	Boolean documentChanges
     
+  /**
+   * The client supports resource changes
+   * in `WorkspaceEdit`s.
+   */
+  @Beta Boolean resourceChanges
+
     new() {
     }
     
@@ -2316,6 +2322,35 @@ class TextDocumentEdit {
 }
 
 /**
+ * A resource change.
+ *
+ * If both current and newUri has valid values this is considered to be a move operation.
+ * If current has a valid value while newUri is null it is treated as a delete operation.
+ * If current is null and newUri has a valid value a create operation is executed.
+ *
+ */
+@JsonRpcData
+class ResourceChange{
+
+  /**
+  * The Uri for current resource. Required for delete and move operations
+  * otherwise it is null.
+  *
+  */
+  String current
+
+  /**
+  * The new uri for the resource. Required for create and move operations.
+  * otherwise null.
+  *
+  * Must be compatible with the current uri ie. must be a file
+  * uri if current is not null and is a file uri.
+  */
+  String newUri
+
+}
+
+/**
  * A workspace edit represents changes to many resources managed in the workspace. 
  * The edit should either provide `changes` or `documentChanges`.
  * If documentChanges are present they are preferred over `changes`
@@ -2335,6 +2370,15 @@ class WorkspaceEdit {
 	 */
 	List<TextDocumentEdit> documentChanges
     
+  /**
+   * if resource changes are supported the `WorkspaceEdit`
+   * uses the property `resourceChanges` which are either a
+   * rename, move, delete or content change.
+   * These changes are applied in the order that they are supplied,
+   * however clients may group the changes for optimization
+   */
+  List<Either<ResourceChange,TextDocumentEdit>> resourceChanges
+
     new() {
     	this.changes = new LinkedHashMap
     }
