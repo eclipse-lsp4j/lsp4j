@@ -18,11 +18,23 @@ public class ApplyWorkspaceEditParams {
    */
   private WorkspaceEdit edit;
   
+  /**
+   * An optional label of the workspace edit. This label is
+   * presented in the user interface for example on an undo
+   * stack to undo the workspace edit.
+   */
+  private String label;
+  
   public ApplyWorkspaceEditParams() {
   }
   
   public ApplyWorkspaceEditParams(final WorkspaceEdit edit) {
     this.edit = edit;
+  }
+  
+  public ApplyWorkspaceEditParams(final WorkspaceEdit edit, final String label) {
+    this.edit = edit;
+    this.label = label;
   }
   
   /**
@@ -40,11 +52,31 @@ public class ApplyWorkspaceEditParams {
     this.edit = edit;
   }
   
+  /**
+   * An optional label of the workspace edit. This label is
+   * presented in the user interface for example on an undo
+   * stack to undo the workspace edit.
+   */
+  @Pure
+  public String getLabel() {
+    return this.label;
+  }
+  
+  /**
+   * An optional label of the workspace edit. This label is
+   * presented in the user interface for example on an undo
+   * stack to undo the workspace edit.
+   */
+  public void setLabel(final String label) {
+    this.label = label;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("edit", this.edit);
+    b.add("label", this.label);
     return b.toString();
   }
   
@@ -63,6 +95,11 @@ public class ApplyWorkspaceEditParams {
         return false;
     } else if (!this.edit.equals(other.edit))
       return false;
+    if (this.label == null) {
+      if (other.label != null)
+        return false;
+    } else if (!this.label.equals(other.label))
+      return false;
     return true;
   }
   
@@ -72,6 +109,7 @@ public class ApplyWorkspaceEditParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.edit== null) ? 0 : this.edit.hashCode());
+    result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     return result;
   }
 }
