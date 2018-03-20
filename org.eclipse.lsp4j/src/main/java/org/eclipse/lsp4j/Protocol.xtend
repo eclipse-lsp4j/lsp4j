@@ -2739,12 +2739,24 @@ class ApplyWorkspaceEditParams {
      * The edits to apply.
      */
     WorkspaceEdit edit
+
+	/**
+     * An optional label of the workspace edit. This label is
+     * presented in the user interface for example on an undo
+     * stack to undo the workspace edit.
+     */
+    String label
     
     new() {
     }
     
     new(WorkspaceEdit edit) {
     	this.edit = edit
+    }
+
+    new(WorkspaceEdit edit, String label) {
+    	this.edit = edit;
+    	this.label = label
     }
 }
 
