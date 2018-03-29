@@ -495,5 +495,20 @@ class JsonSerializeTest {
 		package double foo = 12.3
 		package String bar = "qwertz"
 	}
+        
+	@Test
+	def void testNullResponse() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": null
+			}
+		''')
+	}
 	
 }
