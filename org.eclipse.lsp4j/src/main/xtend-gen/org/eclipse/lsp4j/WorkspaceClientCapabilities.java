@@ -7,7 +7,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DidChangeConfigurationCapabilities;
 import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilities;
 import org.eclipse.lsp4j.ExecuteCommandCapabilities;
@@ -55,9 +54,8 @@ public class WorkspaceClientCapabilities {
   /**
    * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
    * 
-   * This API is a <b>proposal</b> from LSP and may change.
+   * Introduced in 3.6.
    */
-  @Beta
   private Boolean workspaceFolders;
   
   /**
@@ -155,7 +153,7 @@ public class WorkspaceClientCapabilities {
   /**
    * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
    * 
-   * This API is a <b>proposal</b> from LSP and may change.
+   * Introduced in 3.6.
    */
   @Pure
   public Boolean getWorkspaceFolders() {
@@ -165,7 +163,7 @@ public class WorkspaceClientCapabilities {
   /**
    * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
    * 
-   * This API is a <b>proposal</b> from LSP and may change.
+   * Introduced in 3.6.
    */
   public void setWorkspaceFolders(final Boolean workspaceFolders) {
     this.workspaceFolders = workspaceFolders;

@@ -10,26 +10,55 @@ package org.eclipse.lsp4j.test.services
 import com.google.gson.JsonObject
 import java.util.ArrayList
 import java.util.HashMap
+import org.eclipse.lsp4j.ClientCapabilities
+import org.eclipse.lsp4j.CodeActionCapabilities
 import org.eclipse.lsp4j.CodeLens
+import org.eclipse.lsp4j.CodeLensCapabilities
+import org.eclipse.lsp4j.ColorProviderCapabilities
 import org.eclipse.lsp4j.Command
+import org.eclipse.lsp4j.CompletionCapabilities
 import org.eclipse.lsp4j.CompletionItem
+import org.eclipse.lsp4j.CompletionItemCapabilities
+import org.eclipse.lsp4j.CompletionItemKind
+import org.eclipse.lsp4j.CompletionItemKindCapabilities
 import org.eclipse.lsp4j.CompletionList
+import org.eclipse.lsp4j.DefinitionCapabilities
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
 import org.eclipse.lsp4j.DocumentFormattingParams
+import org.eclipse.lsp4j.DocumentHighlightCapabilities
+import org.eclipse.lsp4j.DocumentLinkCapabilities
+import org.eclipse.lsp4j.DocumentSymbolCapabilities
+import org.eclipse.lsp4j.FormattingCapabilities
 import org.eclipse.lsp4j.FormattingOptions
 import org.eclipse.lsp4j.Hover
+import org.eclipse.lsp4j.HoverCapabilities
+import org.eclipse.lsp4j.ImplementationCapabilities
+import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.InitializeResult
+import org.eclipse.lsp4j.MarkupKind
+import org.eclipse.lsp4j.OnTypeFormattingCapabilities
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.Range
+import org.eclipse.lsp4j.RangeFormattingCapabilities
+import org.eclipse.lsp4j.ReferencesCapabilities
+import org.eclipse.lsp4j.RenameCapabilities
 import org.eclipse.lsp4j.ServerCapabilities
+import org.eclipse.lsp4j.SignatureHelpCapabilities
+import org.eclipse.lsp4j.SignatureInformationCapabilities
+import org.eclipse.lsp4j.SymbolKind
+import org.eclipse.lsp4j.SymbolKindCapabilities
+import org.eclipse.lsp4j.SynchronizationCapabilities
+import org.eclipse.lsp4j.TextDocumentClientCapabilities
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent
 import org.eclipse.lsp4j.TextDocumentIdentifier
 import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
+import org.eclipse.lsp4j.TypeDefinitionCapabilities
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
+import org.eclipse.lsp4j.WorkspaceClientCapabilities
 import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Either
@@ -96,26 +125,241 @@ class JsonSerializeTest {
 	}
 
 	@Test
-    def void testInit() {
-        val message = new RequestMessage => [
-            jsonrpc = "2.0"
-            id = "1"
-            method = MessageMethods.DOC_COMPLETION
-            params = new InitializeResult => [
-                capabilities = new ServerCapabilities()
-            ]
-        ]
-        message.assertSerialize('''
-            {
-              "jsonrpc": "2.0",
-              "id": "1",
-              "method": "textDocument/completion",
-              "params": {
-                "capabilities": {}
-              }
-            }
-        ''')
-    }
+	def void testInit() {
+		val message = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.INITIALIZE
+			params = new InitializeParams => [
+				rootUri = "file:///tmp/foo"
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "initialize",
+			  "params": {
+			    "rootUri": "file:///tmp/foo"
+			  }
+			}
+		''')
+	}
+	
+	@Test
+	def void testInitClientCapabilities() {
+		val message = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.INITIALIZE
+			params = new InitializeParams => [
+				rootUri = "file:///tmp/foo"
+				capabilities = new ClientCapabilities => [
+					textDocument = new TextDocumentClientCapabilities => [
+						synchronization = new SynchronizationCapabilities => [
+							dynamicRegistration = false
+							willSave= true
+							willSaveWaitUntil= false
+							didSave = true
+						]
+						completion = new CompletionCapabilities => [
+							dynamicRegistration = false
+							completionItem = new CompletionItemCapabilities => [
+								snippetSupport = true
+								commitCharactersSupport = true
+								documentationFormat = #[MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN]
+							]
+							completionItemKind = new CompletionItemKindCapabilities => [
+								valueSet = #[CompletionItemKind.Method, CompletionItemKind.Function]
+							]
+							contextSupport = false
+						]
+						hover = new HoverCapabilities => [
+							dynamicRegistration = false
+							contentFormat = #[MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN]
+						]
+						signatureHelp = new SignatureHelpCapabilities => [
+							dynamicRegistration = false
+							signatureInformation = new SignatureInformationCapabilities => [
+								documentationFormat = #[MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN]
+							]
+						]
+						references = new ReferencesCapabilities => [
+							dynamicRegistration = false
+						]
+						documentHighlight = new DocumentHighlightCapabilities => [
+							dynamicRegistration = false
+						]
+						documentSymbol = new DocumentSymbolCapabilities => [
+							dynamicRegistration = false
+							symbolKind = new SymbolKindCapabilities => [
+								valueSet = #[SymbolKind.Module, SymbolKind.Namespace, SymbolKind.Package, SymbolKind.Class]
+							]
+						]
+						formatting = new FormattingCapabilities => [
+							dynamicRegistration = false
+						]
+						rangeFormatting = new RangeFormattingCapabilities => [
+							dynamicRegistration = false
+						]
+						onTypeFormatting = new OnTypeFormattingCapabilities => [
+							dynamicRegistration = false
+						]
+						definition= new DefinitionCapabilities => [
+							dynamicRegistration = false
+						]
+						typeDefinition= new TypeDefinitionCapabilities => [
+							dynamicRegistration = false
+						]
+						implementation= new ImplementationCapabilities => [
+							dynamicRegistration = false
+						]
+						codeAction = new CodeActionCapabilities => [
+							dynamicRegistration = false
+						]
+						codeLens= new CodeLensCapabilities => [
+							dynamicRegistration = false
+						]
+						documentLink= new DocumentLinkCapabilities => [
+							dynamicRegistration = false
+						]
+						colorProvider = new ColorProviderCapabilities => [
+							dynamicRegistration = false
+						]
+						rename = new RenameCapabilities => [
+							dynamicRegistration = false
+						]
+					]
+					workspace = new WorkspaceClientCapabilities
+				]
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "initialize",
+			  "params": {
+			    "rootUri": "file:///tmp/foo",
+			    "capabilities": {
+			      "workspace": {},
+			      "textDocument": {
+			        "synchronization": {
+			          "willSave": true,
+			          "willSaveWaitUntil": false,
+			          "didSave": true,
+			          "dynamicRegistration": false
+			        },
+			        "completion": {
+			          "completionItem": {
+			            "snippetSupport": true,
+			            "commitCharactersSupport": true,
+			            "documentationFormat": [
+			              "plaintext",
+			              "markdown"
+			            ]
+			          },
+			          "completionItemKind": {
+			            "valueSet": [
+			              2,
+			              3
+			            ]
+			          },
+			          "contextSupport": false,
+			          "dynamicRegistration": false
+			        },
+			        "hover": {
+			          "contentFormat": [
+			            "plaintext",
+			            "markdown"
+			          ],
+			          "dynamicRegistration": false
+			        },
+			        "signatureHelp": {
+			          "signatureInformation": {
+			            "documentationFormat": [
+			              "plaintext",
+			              "markdown"
+			            ]
+			          },
+			          "dynamicRegistration": false
+			        },
+			        "references": {
+			          "dynamicRegistration": false
+			        },
+			        "documentHighlight": {
+			          "dynamicRegistration": false
+			        },
+			        "documentSymbol": {
+			          "symbolKind": {
+			            "valueSet": [
+			              2,
+			              3,
+			              4,
+			              5
+			            ]
+			          },
+			          "dynamicRegistration": false
+			        },
+			        "formatting": {
+			          "dynamicRegistration": false
+			        },
+			        "rangeFormatting": {
+			          "dynamicRegistration": false
+			        },
+			        "onTypeFormatting": {
+			          "dynamicRegistration": false
+			        },
+			        "definition": {
+			          "dynamicRegistration": false
+			        },
+			        "typeDefinition": {
+			          "dynamicRegistration": false
+			        },
+			        "implementation": {
+			          "dynamicRegistration": false
+			        },
+			        "codeAction": {
+			          "dynamicRegistration": false
+			        },
+			        "codeLens": {
+			          "dynamicRegistration": false
+			        },
+			        "documentLink": {
+			          "dynamicRegistration": false
+			        },
+			        "colorProvider": {
+			          "dynamicRegistration": false
+			        },
+			        "rename": {
+			          "dynamicRegistration": false
+			        }
+			      }
+			    }
+			  }
+			}
+		''')
+	}
+	
+	@Test
+	def void testInitResponse() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = 12
+			result = new InitializeResult => [
+				capabilities = new ServerCapabilities
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": 12,
+			  "result": {
+			    "capabilities": {}
+			  }
+			}
+		''')
+	}
 	
 	@Test
 	def void testDidChange() {
