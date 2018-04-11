@@ -7,9 +7,12 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.MarkedString;
+import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.adapters.HoverTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -18,13 +21,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * The result of a hover request.
  */
+@JsonAdapter(HoverTypeAdapter.Factory.class)
 @SuppressWarnings("all")
 public class Hover {
   /**
    * The hover's content as markdown
    */
   @NonNull
-  private List<Either<String, MarkedString>> contents;
+  private Either<List<Either<String, MarkedString>>, MarkupContent> contents;
   
   /**
    * An optional range
@@ -35,11 +39,11 @@ public class Hover {
   }
   
   public Hover(@NonNull final List<Either<String, MarkedString>> contents) {
-    this.contents = contents;
+    this.setContents(contents);
   }
   
   public Hover(@NonNull final List<Either<String, MarkedString>> contents, final Range range) {
-    this.contents = contents;
+    this.setContents(contents);
     this.range = range;
   }
   
@@ -48,15 +52,23 @@ public class Hover {
    */
   @Pure
   @NonNull
-  public List<Either<String, MarkedString>> getContents() {
+  public Either<List<Either<String, MarkedString>>, MarkupContent> getContents() {
     return this.contents;
   }
   
   /**
    * The hover's content as markdown
    */
-  public void setContents(@NonNull final List<Either<String, MarkedString>> contents) {
+  public void setContents(@NonNull final Either<List<Either<String, MarkedString>>, MarkupContent> contents) {
     this.contents = contents;
+  }
+  
+  public void setContents(final List<Either<String, MarkedString>> contents) {
+    this.contents = Either.forLeft(contents);
+  }
+  
+  public void setContents(final MarkupContent contents) {
+    this.contents = Either.forRight(contents);
   }
   
   /**

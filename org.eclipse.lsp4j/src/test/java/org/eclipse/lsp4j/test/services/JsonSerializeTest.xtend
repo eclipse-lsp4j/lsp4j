@@ -37,6 +37,7 @@ import org.eclipse.lsp4j.HoverCapabilities
 import org.eclipse.lsp4j.ImplementationCapabilities
 import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.InitializeResult
+import org.eclipse.lsp4j.MarkupContent
 import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
 import org.eclipse.lsp4j.Position
@@ -84,11 +85,9 @@ class JsonSerializeTest {
 	@Before
 	def void setup() {
 		val methods = ServiceEndpoints.getSupportedMethods(LanguageServer)
-		jsonHandler = new MessageJsonHandler(methods) {
-			override getDefaultGsonBuilder() {
-				super.defaultGsonBuilder.setPrettyPrinting
-			}
-		}
+		jsonHandler = new MessageJsonHandler(methods) [
+			setPrettyPrinting()
+		]
 	}
 	
 	private def assertSerialize(Message message, CharSequence expected) {
@@ -459,110 +458,136 @@ class JsonSerializeTest {
 	}
 	
     @Test
-    def void testRenameResponse() {
-        val message = new ResponseMessage => [
-            jsonrpc = "2.0"
-            id = "12"
-            result = new WorkspaceEdit => [
-                changes = new HashMap => [
-                    put("file:///tmp/foo", newArrayList(
-                        new TextEdit => [
-                            range = new Range => [
-                                start = new Position(3, 32)
-                                end = new Position(3, 35)
-                            ]
-                            newText = "foobar"
-                        ],
-                        new TextEdit => [
-                            range = new Range => [
-                                start = new Position(4, 22)
-                                end = new Position(4, 25)
-                            ]
-                            newText = "foobar"
-                        ]
-                    ))
-                ]
-            ]
-        ]
-        message.assertSerialize('''
-            {
-              "jsonrpc": "2.0",
-              "id": "12",
-              "result": {
-                "changes": {
-                  "file:///tmp/foo": [
-                    {
-                      "range": {
-                        "start": {
-                          "line": 3,
-                          "character": 32
-                        },
-                        "end": {
-                          "line": 3,
-                          "character": 35
-                        }
-                      },
-                      "newText": "foobar"
-                    },
-                    {
-                      "range": {
-                        "start": {
-                          "line": 4,
-                          "character": 22
-                        },
-                        "end": {
-                          "line": 4,
-                          "character": 25
-                        }
-                      },
-                      "newText": "foobar"
-                    }
-                  ]
-                }
-              }
-            }
-        ''')
-    }
-    
-    @Test
-    def void testHoverResponse() {
-        val message = new ResponseMessage => [
-            jsonrpc = "2.0"
-            id = "12"
-            result = new Hover => [
-                range = new Range => [
-                    start = new Position(3, 32)
-                    end = new Position(3, 35)
-                ]
-                contents = newArrayList(
-                    Either.forLeft("foo"),
-                    Either.forLeft("boo shuby doo")
-                )
-            ]
-        ]
-        message.assertSerialize('''
-            {
-              "jsonrpc": "2.0",
-              "id": "12",
-              "result": {
-                "contents": [
-                  "foo",
-                  "boo shuby doo"
-                ],
-                "range": {
-                  "start": {
-                    "line": 3,
-                    "character": 32
-                  },
-                  "end": {
-                    "line": 3,
-                    "character": 35
-                  }
-                }
-              }
-            }
-        ''')
-    }
+	def void testRenameResponse() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceEdit => [
+				changes = new HashMap => [
+					put("file:///tmp/foo", newArrayList(
+						new TextEdit => [
+							range = new Range => [
+								start = new Position(3, 32)
+								end = new Position(3, 35)
+							]
+							newText = "foobar"
+						],
+						new TextEdit => [
+							range = new Range => [
+								start = new Position(4, 22)
+								end = new Position(4, 25)
+							]
+							newText = "foobar"
+						]
+					))
+				]
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": {
+			    "changes": {
+			      "file:///tmp/foo": [
+			        {
+			          "range": {
+			            "start": {
+			              "line": 3,
+			              "character": 32
+			            },
+			            "end": {
+			              "line": 3,
+			              "character": 35
+			            }
+			          },
+			          "newText": "foobar"
+			        },
+			        {
+			          "range": {
+			            "start": {
+			              "line": 4,
+			              "character": 22
+			            },
+			            "end": {
+			              "line": 4,
+			              "character": 25
+			            }
+			          },
+			          "newText": "foobar"
+			        }
+			      ]
+			    }
+			  }
+			}
+		''')
+	}
+
+	@Test
+	def void testHoverResponse1() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new Hover => [
+				range = new Range => [
+					start = new Position(3, 32)
+					end = new Position(3, 35)
+				]
+				contents = newArrayList(
+					Either.forLeft("foo"),
+					Either.forLeft("boo shuby doo")
+				)
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": {
+			    "contents": [
+			      "foo",
+			      "boo shuby doo"
+			    ],
+			    "range": {
+			      "start": {
+			        "line": 3,
+			        "character": 32
+			      },
+			      "end": {
+			        "line": 3,
+			        "character": 35
+			      }
+			    }
+			  }
+			}
+		''')
+	}
+
+	@Test
+	def void testHoverResponse2() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new Hover => [
+				contents = new MarkupContent => [
+					markupKind = "plaintext"
+					value = "foo"
+				]
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": {
+			    "contents": {
+			      "MarkupKind": "plaintext",
+			      "value": "foo"
+			    }
+			  }
+			}
+		''')
+	}
     
 	@Test
 	def void testCodeLensResponse() {
