@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017 TypeFox GmbH (http://www.typefox.io) and others.
+ * Copyright (c) 2016-2018 TypeFox GmbH (http://www.typefox.io) and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,8 @@ package org.eclipse.lsp4j.jsonrpc.debug;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -22,23 +19,22 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.debug.json.DebugMessageJsonHandler;
-import org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
-import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethodProvider;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer;
-import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator;
 
 import com.google.gson.GsonBuilder;
 
 /**
- * This is the entry point for applications that use DSP4J. A DebugLauncher does
+ * This is the entry point for applications that use the debug protocol. A DebugLauncher does
  * all the wiring that is necessary to connect your endpoint via an input stream
  * and an output stream.
  */
-public interface DebugLauncher<T> extends Launcher<T> {
+public final class DebugLauncher {
+	
+	private DebugLauncher() {}
 
 	/**
 	 * Create a new Launcher for a given local service object, a given remote
@@ -53,9 +49,14 @@ public interface DebugLauncher<T> extends Launcher<T> {
 	 * @param out
 	 *            - outputstream to send outgoing messages
 	 */
-	static <T> DebugLauncher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in,
+	public static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in,
 			OutputStream out) {
-		return createLauncher(localService, remoteInterface, in, out, false, null);
+		return new Builder<T>()
+				.setLocalService(localService)
+				.setRemoteInterface(remoteInterface)
+				.setInput(in)
+				.setOutput(out)
+				.create();
 	}
 
 	/**
@@ -78,23 +79,16 @@ public interface DebugLauncher<T> extends Launcher<T> {
 	 *            - a writer to which incoming and outgoing messages are traced, or
 	 *            {@code null} to disable tracing
 	 */
-	static <T> DebugLauncher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in,
+	public static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in,
 			OutputStream out, boolean validate, PrintWriter trace) {
-		Function<MessageConsumer, MessageConsumer> wrapper = consumer -> {
-			MessageConsumer result = consumer;
-			if (trace != null) {
-				result = message -> {
-					trace.println(message);
-					trace.flush();
-					consumer.consume(message);
-				};
-			}
-			if (validate) {
-				result = new ReflectiveMessageValidator(result);
-			}
-			return result;
-		};
-		return createIoLauncher(localService, remoteInterface, in, out, Executors.newCachedThreadPool(), wrapper);
+		return new Builder<T>()
+				.setLocalService(localService)
+				.setRemoteInterface(remoteInterface)
+				.setInput(in)
+				.setOutput(out)
+				.validateMessages(validate)
+				.traceMessages(trace)
+				.create();
 	}
 
 	/**
@@ -117,7 +111,7 @@ public interface DebugLauncher<T> extends Launcher<T> {
 	 * @param wrapper
 	 *            - a function for plugging in additional message consumers
 	 */
-	static <T> DebugLauncher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in,
+	public static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in,
 			OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper);
 	}
@@ -142,11 +136,16 @@ public interface DebugLauncher<T> extends Launcher<T> {
 	 * @param wrapper
 	 *            - a function for plugging in additional message consumers
 	 */
-	static <T> DebugLauncher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in,
+	public static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in,
 			OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
-		Consumer<GsonBuilder> configureGson = gsonBuilder -> {
-		};
-		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper, configureGson);
+		return new Builder<T>()
+				.setLocalService(localService)
+				.setRemoteInterface(remoteInterface)
+				.setInput(in)
+				.setOutput(out)
+				.setExecutorService(executorService)
+				.wrapMessages(wrapper)
+				.create();
 	}
 
 	/**
@@ -174,48 +173,43 @@ public interface DebugLauncher<T> extends Launcher<T> {
 	 * @param configureGson
 	 *            - a function for Gson configuration
 	 */
-	static <T> DebugLauncher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in,
+	public static <T> Launcher<T> createIoLauncher(Object localService, Class<T> remoteInterface, InputStream in,
 			OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper,
 			Consumer<GsonBuilder> configureGson) {
-		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<String, JsonRpcMethod>();
-		supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(remoteInterface));
-
-		if (localService instanceof JsonRpcMethodProvider) {
-			JsonRpcMethodProvider rpcMethodProvider = (JsonRpcMethodProvider) localService;
-			supportedMethods.putAll(rpcMethodProvider.supportedMethods());
-		} else {
-			supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(localService.getClass()));
+		return new Builder<T>()
+				.setLocalService(localService)
+				.setRemoteInterface(remoteInterface)
+				.setInput(in)
+				.setOutput(out)
+				.setExecutorService(executorService)
+				.wrapMessages(wrapper)
+				.configureGson(configureGson)
+				.create();
+	}
+	
+	/**
+	 * Launcher builder for the debug protocol. Adapts the JSON-RPC message classes to the JSON format used
+	 * by the debug protocol.
+	 */
+	public static class Builder<T> extends Launcher.Builder<T> {
+		
+		@Override
+		protected MessageJsonHandler createJsonHandler() {
+			Map<String, JsonRpcMethod> supportedMethods = getSupportedMethods();
+			if (configureGson != null)
+				return new DebugMessageJsonHandler(supportedMethods, configureGson);
+			else
+				return new DebugMessageJsonHandler(supportedMethods);
 		}
-
-		MessageJsonHandler jsonHandler = new DebugMessageJsonHandler(supportedMethods, configureGson);
-		MessageConsumer outgoingMessageStream = new StreamMessageConsumer(out, jsonHandler);
-		outgoingMessageStream = wrapper.apply(outgoingMessageStream);
-		RemoteEndpoint remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream,
-				ServiceEndpoints.toEndpoint(localService));
-		jsonHandler.setMethodProvider(remoteEndpoint);
-		// wrap incoming message stream
-		MessageConsumer messageConsumer = wrapper.apply(remoteEndpoint);
-		StreamMessageProducer reader = new StreamMessageProducer(in, jsonHandler, remoteEndpoint);
-
-		T remoteProxy = ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterface);
-
-		return new DebugLauncher<T>() {
-
-			@Override
-			public Future<Void> startListening() {
-				return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, executorService);
-			}
-
-			@Override
-			public T getRemoteProxy() {
-				return remoteProxy;
-			}
-
-			@Override
-			public RemoteEndpoint getRemoteEndpoint() {
-				return remoteEndpoint;
-			}
-
-		};
+		
+		@Override
+		protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
+			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
+			outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
+			RemoteEndpoint remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, ServiceEndpoints.toEndpoint(localServices));
+			jsonHandler.setMethodProvider(remoteEndpoint);
+			return remoteEndpoint;
+		}
+		
 	}
 }
