@@ -197,7 +197,10 @@ public class JsonParseTest {
     _builder.append("\"textDocument\": {");
     _builder.newLine();
     _builder.append("\t\t\t");
-    _builder.append("\"uri\": \"file:///tmp/foo\"");
+    _builder.append("\"uri\": \"file:///tmp/foo\",");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"version\": 1234");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.append("},");
@@ -264,6 +267,7 @@ public class JsonParseTest {
         VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier();
         final Procedure1<VersionedTextDocumentIdentifier> _function_2 = (VersionedTextDocumentIdentifier it_2) -> {
           it_2.setUri("file:///tmp/foo");
+          it_2.setVersion(Integer.valueOf(1234));
         };
         VersionedTextDocumentIdentifier _doubleArrow = ObjectExtensions.<VersionedTextDocumentIdentifier>operator_doubleArrow(_versionedTextDocumentIdentifier, _function_2);
         it_1.setTextDocument(_doubleArrow);

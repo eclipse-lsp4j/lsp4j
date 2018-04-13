@@ -387,7 +387,7 @@ class JsonSerializeTest {
 			  "method": "textDocument/didChange",
 			  "params": {
 			    "textDocument": {
-			      "version": 0,
+			      "version": null,
 			      "uri": "file:///tmp/foo"
 			    },
 			    "contentChanges": [

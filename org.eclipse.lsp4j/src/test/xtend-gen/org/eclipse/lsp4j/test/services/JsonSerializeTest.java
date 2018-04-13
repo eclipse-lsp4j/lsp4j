@@ -786,7 +786,7 @@ public class JsonSerializeTest {
     _builder.append("\"textDocument\": {");
     _builder.newLine();
     _builder.append("      ");
-    _builder.append("\"version\": 0,");
+    _builder.append("\"version\": null,");
     _builder.newLine();
     _builder.append("      ");
     _builder.append("\"uri\": \"file:///tmp/foo\"");

@@ -135,7 +135,8 @@ class JsonParseTest {
 				"method": "textDocument/didChange",
 				"params": {
 					"textDocument": {
-						"uri": "file:///tmp/foo"
+						"uri": "file:///tmp/foo",
+						"version": 1234
 					},
 					"contentChanges": [
 						{
@@ -161,6 +162,7 @@ class JsonParseTest {
 			params = new DidChangeTextDocumentParams => [
 				textDocument = new VersionedTextDocumentIdentifier => [
 					uri = "file:///tmp/foo"
+					version = 1234
 				]
 				contentChanges = new ArrayList => [
 					add(new TextDocumentContentChangeEvent => [
