@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -17,6 +18,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
  */
+@Beta
 @SuppressWarnings("all")
 public class ResourceChange {
   /**

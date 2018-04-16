@@ -11,6 +11,11 @@ import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `textDocument/typeDefinition`
+ * 
+ * Since 3.6.0
+ */
 @SuppressWarnings("all")
 public class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
   public TypeDefinitionCapabilities() {

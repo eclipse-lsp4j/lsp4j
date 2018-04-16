@@ -20,8 +20,6 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
-import com.google.common.annotations.Beta;
-
 @JsonSegment("workspace")
 public interface WorkspaceService {
 	/**
@@ -67,10 +65,7 @@ public interface WorkspaceService {
 	 * The notification is sent by default if both ServerCapabilities/workspaceFolders
 	 * and ClientCapabilities/workspace/workspaceFolders are true; or if the server has
 	 * registered to receive this notification it first.
-	 *
-	 * This API is a <b>proposal</b> from LSP and may change.
 	 */
 	@JsonNotification
-	@Beta
 	default void didChangeWorkspaceFolders(DidChangeWorkspaceFoldersParams params) {}
 }

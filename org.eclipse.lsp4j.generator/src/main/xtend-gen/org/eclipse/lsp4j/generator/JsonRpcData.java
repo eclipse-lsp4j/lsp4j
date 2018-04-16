@@ -15,7 +15,7 @@ import org.eclipse.lsp4j.generator.JsonRpcDataProcessor;
 import org.eclipse.xtend.lib.macro.Active;
 
 /**
- * Generates getters and setters for all fields as well as {@code eauals} and {@code hashCode} implementations.
+ * Generates getters and setters for all fields as well as {@code equals} and {@code hashCode} implementations.
  * All JSON-RPC protocol classes that are written in Xtend should be annotated with this.
  */
 @Target(ElementType.TYPE)

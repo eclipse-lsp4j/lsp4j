@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.ColoringInformation;
@@ -18,6 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Representation of a computed mapping from ranges to the appropriate
  * highlighting style.
  */
+@Beta
 @SuppressWarnings("all")
 public class ColoringParams {
   /**

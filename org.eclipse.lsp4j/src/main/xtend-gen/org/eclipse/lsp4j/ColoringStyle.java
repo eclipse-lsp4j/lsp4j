@@ -7,6 +7,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 @SuppressWarnings("all")
 public class ColoringStyle {
   public final static int Identifier = 1;

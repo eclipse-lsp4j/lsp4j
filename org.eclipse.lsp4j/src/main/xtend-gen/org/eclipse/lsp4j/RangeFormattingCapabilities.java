@@ -11,6 +11,9 @@ import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `textDocument/rangeFormatting`
+ */
 @SuppressWarnings("all")
 public class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
   public RangeFormattingCapabilities() {

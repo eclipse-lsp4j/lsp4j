@@ -794,7 +794,7 @@ public class JsonParseTest {
     _builder.append("\"contents\": {");
     _builder.newLine();
     _builder.append("            ");
-    _builder.append("\"MarkupKind\": \"plaintext\",");
+    _builder.append("\"kind\": \"plaintext\",");
     _builder.newLine();
     _builder.append("            ");
     _builder.append("\"value\": \"foo\"");
@@ -815,7 +815,7 @@ public class JsonParseTest {
       final Procedure1<Hover> _function_2 = (Hover it_1) -> {
         MarkupContent _markupContent = new MarkupContent();
         final Procedure1<MarkupContent> _function_3 = (MarkupContent it_2) -> {
-          it_2.setMarkupKind("plaintext");
+          it_2.setKind("plaintext");
           it_2.setValue("foo");
         };
         MarkupContent _doubleArrow = ObjectExtensions.<MarkupContent>operator_doubleArrow(_markupContent, _function_3);

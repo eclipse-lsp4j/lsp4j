@@ -8,14 +8,19 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
+ */
 @SuppressWarnings("all")
 public class ApplyWorkspaceEditParams {
   /**
    * The edits to apply.
    */
+  @NonNull
   private WorkspaceEdit edit;
   
   /**
@@ -28,11 +33,11 @@ public class ApplyWorkspaceEditParams {
   public ApplyWorkspaceEditParams() {
   }
   
-  public ApplyWorkspaceEditParams(final WorkspaceEdit edit) {
+  public ApplyWorkspaceEditParams(@NonNull final WorkspaceEdit edit) {
     this.edit = edit;
   }
   
-  public ApplyWorkspaceEditParams(final WorkspaceEdit edit, final String label) {
+  public ApplyWorkspaceEditParams(@NonNull final WorkspaceEdit edit, final String label) {
     this.edit = edit;
     this.label = label;
   }
@@ -41,6 +46,7 @@ public class ApplyWorkspaceEditParams {
    * The edits to apply.
    */
   @Pure
+  @NonNull
   public WorkspaceEdit getEdit() {
     return this.edit;
   }
@@ -48,7 +54,7 @@ public class ApplyWorkspaceEditParams {
   /**
    * The edits to apply.
    */
-  public void setEdit(final WorkspaceEdit edit) {
+  public void setEdit(@NonNull final WorkspaceEdit edit) {
     this.edit = edit;
   }
   

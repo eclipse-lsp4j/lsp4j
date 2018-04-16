@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class WorkspaceEdit {
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
    */
+  @Beta
   private List<Either<ResourceChange, TextDocumentEdit>> resourceChanges;
   
   public WorkspaceEdit() {

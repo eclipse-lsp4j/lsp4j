@@ -8,6 +8,7 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,12 +20,13 @@ public class ExecuteCommandRegistrationOptions {
   /**
    * The commands to be executed on the server
    */
+  @NonNull
   private List<String> commands;
   
   public ExecuteCommandRegistrationOptions() {
   }
   
-  public ExecuteCommandRegistrationOptions(final List<String> commands) {
+  public ExecuteCommandRegistrationOptions(@NonNull final List<String> commands) {
     this.commands = commands;
   }
   
@@ -32,6 +34,7 @@ public class ExecuteCommandRegistrationOptions {
    * The commands to be executed on the server
    */
   @Pure
+  @NonNull
   public List<String> getCommands() {
     return this.commands;
   }
@@ -39,7 +42,7 @@ public class ExecuteCommandRegistrationOptions {
   /**
    * The commands to be executed on the server
    */
-  public void setCommands(final List<String> commands) {
+  public void setCommands(@NonNull final List<String> commands) {
     this.commands = commands;
   }
   

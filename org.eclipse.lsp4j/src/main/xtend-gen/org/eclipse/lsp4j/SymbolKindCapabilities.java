@@ -12,6 +12,9 @@ import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Specific capabilities for the `SymbolKind`.
+ */
 @SuppressWarnings("all")
 public class SymbolKindCapabilities {
   /**

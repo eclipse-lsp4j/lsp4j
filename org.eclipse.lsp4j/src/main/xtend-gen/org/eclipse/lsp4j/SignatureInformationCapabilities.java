@@ -11,11 +11,16 @@ import java.util.List;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The client supports the following `SignatureInformation` specific properties.
+ */
 @SuppressWarnings("all")
 public class SignatureInformationCapabilities {
   /**
    * Client supports the following content formats for the documentation
    * property. The order describes the preferred format of the client.
+   * 
+   * See {@link MarkupKind} for allowed values.
    */
   private List<String> documentationFormat;
   
@@ -29,6 +34,8 @@ public class SignatureInformationCapabilities {
   /**
    * Client supports the following content formats for the documentation
    * property. The order describes the preferred format of the client.
+   * 
+   * See {@link MarkupKind} for allowed values.
    */
   @Pure
   public List<String> getDocumentationFormat() {
@@ -38,6 +45,8 @@ public class SignatureInformationCapabilities {
   /**
    * Client supports the following content formats for the documentation
    * property. The order describes the preferred format of the client.
+   * 
+   * See {@link MarkupKind} for allowed values.
    */
   public void setDocumentationFormat(final List<String> documentationFormat) {
     this.documentationFormat = documentationFormat;

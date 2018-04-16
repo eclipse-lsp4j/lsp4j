@@ -14,6 +14,10 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The client/unregisterCapability request is sent from the server to the client to unregister
+ * a previously registered capability.
+ */
 @SuppressWarnings("all")
 public class UnregistrationParams {
   @NonNull

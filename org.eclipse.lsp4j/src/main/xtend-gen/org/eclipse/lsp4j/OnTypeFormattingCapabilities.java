@@ -11,6 +11,9 @@ import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `textDocument/onTypeFormatting`
+ */
 @SuppressWarnings("all")
 public class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
   public OnTypeFormattingCapabilities() {

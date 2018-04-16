@@ -14,7 +14,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Represents information about programming constructs like variables, classes, classs etc.
+ * Represents information about programming constructs like variables, classes, interfaces etc.
  */
 @SuppressWarnings("all")
 public class SymbolInformation {
@@ -31,13 +31,24 @@ public class SymbolInformation {
   private SymbolKind kind;
   
   /**
-   * The location of this symbol.
+   * The location of this symbol. The location's range is used by a tool
+   * to reveal the location in the editor. If the symbol is selected in the
+   * tool the range's start information is used to position the cursor. So
+   * the range usually spans more then the actual symbol's name and does
+   * normally include things like visibility modifiers.
+   * 
+   * The range doesn't have to denote a node range in the sense of a abstract
+   * syntax tree. It can therefore not be used to re-construct a hierarchy of
+   * the symbols.
    */
   @NonNull
   private Location location;
   
   /**
-   * The name of the symbol containing this symbol.
+   * The name of the symbol containing this symbol. This information is for
+   * user interface purposes (e.g. to render a qualifier in the user interface
+   * if necessary). It can't be used to re-infer a hierarchy for the document
+   * symbols.
    */
   private String containerName;
   
@@ -90,7 +101,15 @@ public class SymbolInformation {
   }
   
   /**
-   * The location of this symbol.
+   * The location of this symbol. The location's range is used by a tool
+   * to reveal the location in the editor. If the symbol is selected in the
+   * tool the range's start information is used to position the cursor. So
+   * the range usually spans more then the actual symbol's name and does
+   * normally include things like visibility modifiers.
+   * 
+   * The range doesn't have to denote a node range in the sense of a abstract
+   * syntax tree. It can therefore not be used to re-construct a hierarchy of
+   * the symbols.
    */
   @Pure
   @NonNull
@@ -99,14 +118,25 @@ public class SymbolInformation {
   }
   
   /**
-   * The location of this symbol.
+   * The location of this symbol. The location's range is used by a tool
+   * to reveal the location in the editor. If the symbol is selected in the
+   * tool the range's start information is used to position the cursor. So
+   * the range usually spans more then the actual symbol's name and does
+   * normally include things like visibility modifiers.
+   * 
+   * The range doesn't have to denote a node range in the sense of a abstract
+   * syntax tree. It can therefore not be used to re-construct a hierarchy of
+   * the symbols.
    */
   public void setLocation(@NonNull final Location location) {
     this.location = location;
   }
   
   /**
-   * The name of the symbol containing this symbol.
+   * The name of the symbol containing this symbol. This information is for
+   * user interface purposes (e.g. to render a qualifier in the user interface
+   * if necessary). It can't be used to re-infer a hierarchy for the document
+   * symbols.
    */
   @Pure
   public String getContainerName() {
@@ -114,7 +144,10 @@ public class SymbolInformation {
   }
   
   /**
-   * The name of the symbol containing this symbol.
+   * The name of the symbol containing this symbol. This information is for
+   * user interface purposes (e.g. to render a qualifier in the user interface
+   * if necessary). It can't be used to re-infer a hierarchy for the document
+   * symbols.
    */
   public void setContainerName(final String containerName) {
     this.containerName = containerName;

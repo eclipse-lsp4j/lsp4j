@@ -7,12 +7,15 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-@Beta
+/**
+ * The server supports workspace folder.
+ * 
+ * Since 3.6.0
+ */
 @SuppressWarnings("all")
 public class WorkspaceFoldersOptions {
   /**
@@ -24,7 +27,7 @@ public class WorkspaceFoldersOptions {
    * Whether the server wants to receive workspace folder
    * change notifications.
    * 
-   * If a strings is provided the string is treated as a ID
+   * If a string is provided, the string is treated as an ID
    * under which the notification is registed on the client
    * side. The ID can be used to unregister for these events
    * using the `client/unregisterCapability` request.
@@ -50,7 +53,7 @@ public class WorkspaceFoldersOptions {
    * Whether the server wants to receive workspace folder
    * change notifications.
    * 
-   * If a strings is provided the string is treated as a ID
+   * If a string is provided, the string is treated as an ID
    * under which the notification is registed on the client
    * side. The ID can be used to unregister for these events
    * using the `client/unregisterCapability` request.
@@ -64,7 +67,7 @@ public class WorkspaceFoldersOptions {
    * Whether the server wants to receive workspace folder
    * change notifications.
    * 
-   * If a strings is provided the string is treated as a ID
+   * If a string is provided, the string is treated as an ID
    * under which the notification is registed on the client
    * side. The ID can be used to unregister for these events
    * using the `client/unregisterCapability` request.

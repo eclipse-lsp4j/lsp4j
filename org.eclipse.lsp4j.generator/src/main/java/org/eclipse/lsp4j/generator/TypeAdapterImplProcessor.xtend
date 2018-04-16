@@ -150,6 +150,13 @@ class TypeAdapterImplProcessor extends AbstractClassProcessor {
 						body = '''
 							gson.toJson(value, «field.simpleName.toUpperCase»_TYPE_TOKEN.getType(), out);
 						'''
+					} else if (field.type == Object.newTypeReference) {
+						body = '''
+							if (value == null)
+								out.nullValue();
+							else
+								gson.toJson(value, value.getClass(), out);
+						'''
 					} else {
 						body = '''
 							gson.toJson(value, «field.type».class, out);

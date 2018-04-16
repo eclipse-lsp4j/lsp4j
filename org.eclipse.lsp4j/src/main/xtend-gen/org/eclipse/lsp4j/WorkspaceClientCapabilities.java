@@ -52,11 +52,18 @@ public class WorkspaceClientCapabilities {
   private ExecuteCommandCapabilities executeCommand;
   
   /**
-   * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+   * The client has support for workspace folders.
    * 
-   * Introduced in 3.6.
+   * Since 3.6.0
    */
   private Boolean workspaceFolders;
+  
+  /**
+   * The client supports `workspace/configuration` requests.
+   * 
+   * Since 3.6.0
+   */
+  private Boolean configuration;
   
   /**
    * The client supports applying batch edits to the workspace by supporting
@@ -151,9 +158,9 @@ public class WorkspaceClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+   * The client has support for workspace folders.
    * 
-   * Introduced in 3.6.
+   * Since 3.6.0
    */
   @Pure
   public Boolean getWorkspaceFolders() {
@@ -161,12 +168,31 @@ public class WorkspaceClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+   * The client has support for workspace folders.
    * 
-   * Introduced in 3.6.
+   * Since 3.6.0
    */
   public void setWorkspaceFolders(final Boolean workspaceFolders) {
     this.workspaceFolders = workspaceFolders;
+  }
+  
+  /**
+   * The client supports `workspace/configuration` requests.
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public Boolean getConfiguration() {
+    return this.configuration;
+  }
+  
+  /**
+   * The client supports `workspace/configuration` requests.
+   * 
+   * Since 3.6.0
+   */
+  public void setConfiguration(final Boolean configuration) {
+    this.configuration = configuration;
   }
   
   @Override
@@ -180,6 +206,7 @@ public class WorkspaceClientCapabilities {
     b.add("symbol", this.symbol);
     b.add("executeCommand", this.executeCommand);
     b.add("workspaceFolders", this.workspaceFolders);
+    b.add("configuration", this.configuration);
     return b.toString();
   }
   
@@ -228,6 +255,11 @@ public class WorkspaceClientCapabilities {
         return false;
     } else if (!this.workspaceFolders.equals(other.workspaceFolders))
       return false;
+    if (this.configuration == null) {
+      if (other.configuration != null)
+        return false;
+    } else if (!this.configuration.equals(other.configuration))
+      return false;
     return true;
   }
   
@@ -243,6 +275,7 @@ public class WorkspaceClientCapabilities {
     result = prime * result + ((this.symbol== null) ? 0 : this.symbol.hashCode());
     result = prime * result + ((this.executeCommand== null) ? 0 : this.executeCommand.hashCode());
     result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
+    result = prime * result + ((this.configuration== null) ? 0 : this.configuration.hashCode());
     return result;
   }
 }

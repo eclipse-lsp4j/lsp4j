@@ -372,17 +372,39 @@ public class TypeAdapterImplProcessor extends AbstractClassProcessor {
                 };
                 it.setBody(_client_1);
               } else {
-                StringConcatenationClient _client_2 = new StringConcatenationClient() {
-                  @Override
-                  protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                    _builder.append("gson.toJson(value, ");
-                    TypeReference _type = field_2.getType();
-                    _builder.append(_type);
-                    _builder.append(".class, out);");
-                    _builder.newLineIfNotEmpty();
-                  }
-                };
-                it.setBody(_client_2);
+                TypeReference _type = field_2.getType();
+                TypeReference _newTypeReference = context.newTypeReference(Object.class);
+                boolean _equals = Objects.equal(_type, _newTypeReference);
+                if (_equals) {
+                  StringConcatenationClient _client_2 = new StringConcatenationClient() {
+                    @Override
+                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                      _builder.append("if (value == null)");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("out.nullValue();");
+                      _builder.newLine();
+                      _builder.append("else");
+                      _builder.newLine();
+                      _builder.append("\t");
+                      _builder.append("gson.toJson(value, value.getClass(), out);");
+                      _builder.newLine();
+                    }
+                  };
+                  it.setBody(_client_2);
+                } else {
+                  StringConcatenationClient _client_3 = new StringConcatenationClient() {
+                    @Override
+                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                      _builder.append("gson.toJson(value, ");
+                      TypeReference _type = field_2.getType();
+                      _builder.append(_type);
+                      _builder.append(".class, out);");
+                      _builder.newLineIfNotEmpty();
+                    }
+                  };
+                  it.setBody(_client_3);
+                }
               }
             }
           };

@@ -15,12 +15,12 @@ public class ApplyWorkspaceEditResponse {
   /**
    * Indicates whether the edit was applied or not.
    */
-  private Boolean applied;
+  private boolean applied;
   
   public ApplyWorkspaceEditResponse() {
   }
   
-  public ApplyWorkspaceEditResponse(final Boolean applied) {
+  public ApplyWorkspaceEditResponse(final boolean applied) {
     this.applied = applied;
   }
   
@@ -28,14 +28,14 @@ public class ApplyWorkspaceEditResponse {
    * Indicates whether the edit was applied or not.
    */
   @Pure
-  public Boolean getApplied() {
+  public boolean isApplied() {
     return this.applied;
   }
   
   /**
    * Indicates whether the edit was applied or not.
    */
-  public void setApplied(final Boolean applied) {
+  public void setApplied(final boolean applied) {
     this.applied = applied;
   }
   
@@ -57,10 +57,7 @@ public class ApplyWorkspaceEditResponse {
     if (getClass() != obj.getClass())
       return false;
     ApplyWorkspaceEditResponse other = (ApplyWorkspaceEditResponse) obj;
-    if (this.applied == null) {
-      if (other.applied != null)
-        return false;
-    } else if (!this.applied.equals(other.applied))
+    if (other.applied != this.applied)
       return false;
     return true;
   }
@@ -70,7 +67,7 @@ public class ApplyWorkspaceEditResponse {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.applied== null) ? 0 : this.applied.hashCode());
+    result = prime * result + (this.applied ? 1231 : 1237);
     return result;
   }
 }

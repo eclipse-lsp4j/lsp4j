@@ -7,13 +7,18 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.WorkspaceFoldersChangeEvent;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-@Beta
+/**
+ * The workspace/didChangeWorkspaceFolders notification is sent from the client to the server to
+ * inform the server about workspace folder configuration changes. The notification is sent by
+ * default if both ServerCapabilities/workspace/workspaceFolders and
+ * ClientCapabilities/workspace/workspaceFolders are true; or if the server has registered to
+ * receive this notification it first.
+ */
 @SuppressWarnings("all")
 public class DidChangeWorkspaceFoldersParams {
   /**
@@ -21,6 +26,13 @@ public class DidChangeWorkspaceFoldersParams {
    */
   @NonNull
   private WorkspaceFoldersChangeEvent event;
+  
+  public DidChangeWorkspaceFoldersParams() {
+  }
+  
+  public DidChangeWorkspaceFoldersParams(@NonNull final WorkspaceFoldersChangeEvent event) {
+    this.event = event;
+  }
   
   /**
    * The actual workspace folder change event.
