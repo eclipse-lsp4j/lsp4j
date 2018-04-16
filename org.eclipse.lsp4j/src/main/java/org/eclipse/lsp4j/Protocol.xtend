@@ -13,6 +13,8 @@ import java.util.ArrayList
 import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.lsp4j.adapters.HoverTypeAdapter
+import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
@@ -1601,15 +1603,41 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 }
 
 /**
+ * A MarkupContent literal represents a string value which content is interpreted based on its
+ * kind flag. Currently the protocol supports `plaintext` and `markdown` as markup kinds.
+ *
+ * If the kind is `markdown` then the value can contain fenced code blocks like in GitHub issues.
+ * See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
+ *
+ * Please Note that clients might sanitize the return markdown. A client could decide to
+ * remove HTML from the markdown to avoid script execution.
+ */
+@JsonRpcData
+class MarkupContent {
+	/**
+	 * The type of the Markup.
+	 */
+	@NonNull
+	String MarkupKind;
+
+	/**
+	 * The content itself.
+	 */
+	@NonNull
+	String value;
+}
+
+/**
  * The result of a hover request.
  */
 @JsonRpcData
+@JsonAdapter(HoverTypeAdapter.Factory)
 class Hover {
 	/**
 	 * The hover's content as markdown
 	 */
 	@NonNull
-	List<Either<String, MarkedString>> contents
+	Either<List<Either<String, MarkedString>>, MarkupContent> contents
 
 	/**
 	 * An optional range
@@ -2453,16 +2481,21 @@ class TextEdit {
  * An identifier to denote a specific version of a text document.
  */
 @JsonRpcData
+@JsonAdapter(VersionedTextDocumentIdentifierTypeAdapter.Factory)
 class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 	/**
-	 * The version number of this document.
+	 * The version number of this document. If a versioned text document identifier
+	 * is sent from the server to the client and the file is not open in the editor
+	 * (the server has not received an open notification before) the server can send
+	 * `null` to indicate that the version is known and the content on disk is the
+	 * truth (as specified with document content ownership).
 	 */
-	int version
+	Integer version
     
     new() {
     }
     
-    new(int version) {
+    new(Integer version) {
     	this.version = version
     }
 }

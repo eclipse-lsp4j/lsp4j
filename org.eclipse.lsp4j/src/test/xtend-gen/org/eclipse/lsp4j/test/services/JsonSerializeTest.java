@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import org.eclipse.lsp4j.ClientCapabilities;
 import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLens;
@@ -42,6 +43,7 @@ import org.eclipse.lsp4j.ImplementationCapabilities;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MarkedString;
+import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.MarkupKind;
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities;
 import org.eclipse.lsp4j.Position;
@@ -99,12 +101,11 @@ public class JsonSerializeTest {
   @Before
   public void setup() {
     final Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(LanguageServer.class);
-    this.jsonHandler = new MessageJsonHandler(methods) {
-      @Override
-      public GsonBuilder getDefaultGsonBuilder() {
-        return super.getDefaultGsonBuilder().setPrettyPrinting();
-      }
+    final Consumer<GsonBuilder> _function = (GsonBuilder it) -> {
+      it.setPrettyPrinting();
     };
+    MessageJsonHandler _messageJsonHandler = new MessageJsonHandler(methods, _function);
+    this.jsonHandler = _messageJsonHandler;
   }
   
   private void assertSerialize(final Message message, final CharSequence expected) {
@@ -176,20 +177,16 @@ public class JsonSerializeTest {
   @Test
   public void testInit() {
     RequestMessage _requestMessage = new RequestMessage();
-    final Procedure1<RequestMessage> _function = new Procedure1<RequestMessage>() {
-      public void apply(final RequestMessage it) {
-        it.setJsonrpc("2.0");
-        it.setId("1");
-        it.setMethod(MessageMethods.INITIALIZE);
-        InitializeParams _initializeParams = new InitializeParams();
-        final Procedure1<InitializeParams> _function_1 = new Procedure1<InitializeParams>() {
-          public void apply(final InitializeParams it_1) {
-            it_1.setRootUri("file:///tmp/foo");
-          }
-        };
-        InitializeParams _doubleArrow = ObjectExtensions.<InitializeParams>operator_doubleArrow(_initializeParams, _function_1);
-        it.setParams(_doubleArrow);
-      }
+    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("1");
+      it.setMethod(MessageMethods.INITIALIZE);
+      InitializeParams _initializeParams = new InitializeParams();
+      final Procedure1<InitializeParams> _function_1 = (InitializeParams it_1) -> {
+        it_1.setRootUri("file:///tmp/foo");
+      };
+      InitializeParams _doubleArrow = ObjectExtensions.<InitializeParams>operator_doubleArrow(_initializeParams, _function_1);
+      it.setParams(_doubleArrow);
     };
     final RequestMessage message = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     StringConcatenation _builder = new StringConcatenation();
@@ -789,7 +786,7 @@ public class JsonSerializeTest {
     _builder.append("\"textDocument\": {");
     _builder.newLine();
     _builder.append("      ");
-    _builder.append("\"version\": 0,");
+    _builder.append("\"version\": null,");
     _builder.newLine();
     _builder.append("      ");
     _builder.append("\"uri\": \"file:///tmp/foo\"");
@@ -1117,7 +1114,7 @@ public class JsonSerializeTest {
   }
   
   @Test
-  public void testHoverResponse() {
+  public void testHoverResponse1() {
     ResponseMessage _responseMessage = new ResponseMessage();
     final Procedure1<ResponseMessage> _function = (ResponseMessage it) -> {
       it.setJsonrpc("2.0");
@@ -1191,6 +1188,58 @@ public class JsonSerializeTest {
     _builder.newLine();
     _builder.append("      ");
     _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    this.assertSerialize(message, _builder);
+  }
+  
+  @Test
+  public void testHoverResponse2() {
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      Hover _hover = new Hover();
+      final Procedure1<Hover> _function_1 = (Hover it_1) -> {
+        MarkupContent _markupContent = new MarkupContent();
+        final Procedure1<MarkupContent> _function_2 = (MarkupContent it_2) -> {
+          it_2.setMarkupKind("plaintext");
+          it_2.setValue("foo");
+        };
+        MarkupContent _doubleArrow = ObjectExtensions.<MarkupContent>operator_doubleArrow(_markupContent, _function_2);
+        it_1.setContents(_doubleArrow);
+      };
+      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_1);
+      it.setResult(_doubleArrow);
+    };
+    final ResponseMessage message = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("  ");
+    _builder.append("\"result\": {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"contents\": {");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("\"MarkupKind\": \"plaintext\",");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("\"value\": \"foo\"");
     _builder.newLine();
     _builder.append("    ");
     _builder.append("}");
@@ -1557,11 +1606,9 @@ public class JsonSerializeTest {
   @Test
   public void testNullResponse() {
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function = new Procedure1<ResponseMessage>() {
-      public void apply(final ResponseMessage it) {
-        it.setJsonrpc("2.0");
-        it.setId("12");
-      }
+    final Procedure1<ResponseMessage> _function = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
     };
     final ResponseMessage message = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function);
     StringConcatenation _builder = new StringConcatenation();

@@ -35,6 +35,8 @@ import org.eclipse.lsp4j.Hover
 import org.eclipse.lsp4j.HoverCapabilities
 import org.eclipse.lsp4j.ImplementationCapabilities
 import org.eclipse.lsp4j.InitializeParams
+import org.eclipse.lsp4j.MarkedString
+import org.eclipse.lsp4j.MarkupContent
 import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
 import org.eclipse.lsp4j.Position
@@ -133,7 +135,8 @@ class JsonParseTest {
 				"method": "textDocument/didChange",
 				"params": {
 					"textDocument": {
-						"uri": "file:///tmp/foo"
+						"uri": "file:///tmp/foo",
+						"version": 1234
 					},
 					"contentChanges": [
 						{
@@ -159,6 +162,7 @@ class JsonParseTest {
 			params = new DidChangeTextDocumentParams => [
 				textDocument = new VersionedTextDocumentIdentifier => [
 					uri = "file:///tmp/foo"
+					version = 1234
 				]
 				contentChanges = new ArrayList => [
 					add(new TextDocumentContentChangeEvent => [
@@ -334,49 +338,133 @@ class JsonParseTest {
 		])
 	}
 	
-    @Test
-    def void testHoverResponse() {
-        jsonHandler.methodProvider = [ id |
-            switch id {
-                case '12': MessageMethods.DOC_HOVER
-            }
-        ]
-        '''
-            {
-                "jsonrpc": "2.0",
-                "id": "12",
-                "result": {
-                    "range": {
-                        "start": {
-                            "character": 32,
-                            "line": 3
-                        },
-                        "end": {
-                            "character": 35,
-                            "line": 3
-                        }
-                    },
-                    "contents": [
-                        "foo",
-                        "boo shuby doo"
-                    ]
-                }
-            }
-        '''.assertParse(new ResponseMessage => [
-            jsonrpc = "2.0"
-            id = "12"
-            result = new Hover => [
-                range = new Range => [
-                    start = new Position(3, 32)
-                    end = new Position(3, 35)
-                ]
-                contents = newArrayList(
-                    Either.forLeft("foo"),
-                    Either.forLeft("boo shuby doo")
-                )
-            ]
-        ])
-    }
+	@Test
+	def void testHoverResponse1() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_HOVER
+			}
+		]
+		'''
+			{
+			    "jsonrpc": "2.0",
+			    "id": "12",
+			    "result": {
+			        "range": {
+			            "start": {
+			                "character": 32,
+			                "line": 3
+			            },
+			            "end": {
+			                "character": 35,
+			                "line": 3
+			            }
+			        },
+			        "contents": [
+			            "foo",
+			            "boo shuby doo"
+			        ]
+			    }
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new Hover => [
+				range = new Range => [
+					start = new Position(3, 32)
+					end = new Position(3, 35)
+				]
+				contents = newArrayList(
+					Either.forLeft("foo"),
+					Either.forLeft("boo shuby doo")
+				)
+			]
+		])
+	}
+
+	@Test
+	def void testHoverResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_HOVER
+			}
+		]
+		'''
+			{
+			    "jsonrpc": "2.0",
+			    "id": "12",
+			    "result": {
+			        "contents": {
+			            "MarkupKind": "plaintext",
+			            "value": "foo"
+			        }
+			    }
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new Hover => [
+				contents = new MarkupContent => [
+					markupKind = "plaintext"
+					value = "foo"
+				]
+			]
+		])
+	}
+
+	@Test
+	def void testHoverResponse3() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_HOVER
+			}
+		]
+		'''
+			{
+			    "jsonrpc": "2.0",
+			    "id": "12",
+			    "result": {
+			        "contents": "foo"
+			    }
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new Hover => [
+				contents = newArrayList(Either.forLeft("foo"))
+			]
+		])
+	}
+
+	@Test
+	def void testHoverResponse4() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_HOVER
+			}
+		]
+		'''
+			{
+			    "jsonrpc": "2.0",
+			    "id": "12",
+			    "result": {
+			        "contents": {
+			            "language": "plaintext",
+			            "value": "foo"
+			        }
+			    }
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new Hover => [
+				contents = newArrayList(Either.forRight(new MarkedString => [
+					language = "plaintext"
+					value = "foo"
+				]))
+			]
+		])
+	}
 	
 	@Test
 	def void testCodeLensResponse() {

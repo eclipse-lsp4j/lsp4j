@@ -41,6 +41,7 @@ import org.eclipse.lsp4j.HoverCapabilities;
 import org.eclipse.lsp4j.ImplementationCapabilities;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.MarkedString;
+import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.MarkupKind;
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities;
 import org.eclipse.lsp4j.Position;
@@ -196,7 +197,10 @@ public class JsonParseTest {
     _builder.append("\"textDocument\": {");
     _builder.newLine();
     _builder.append("\t\t\t");
-    _builder.append("\"uri\": \"file:///tmp/foo\"");
+    _builder.append("\"uri\": \"file:///tmp/foo\",");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"version\": 1234");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.append("},");
@@ -263,6 +267,7 @@ public class JsonParseTest {
         VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier();
         final Procedure1<VersionedTextDocumentIdentifier> _function_2 = (VersionedTextDocumentIdentifier it_2) -> {
           it_2.setUri("file:///tmp/foo");
+          it_2.setVersion(Integer.valueOf(1234));
         };
         VersionedTextDocumentIdentifier _doubleArrow = ObjectExtensions.<VersionedTextDocumentIdentifier>operator_doubleArrow(_versionedTextDocumentIdentifier, _function_2);
         it_1.setTextDocument(_doubleArrow);
@@ -661,7 +666,7 @@ public class JsonParseTest {
   }
   
   @Test
-  public void testHoverResponse() {
+  public void testHoverResponse1() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
       if (id != null) {
@@ -751,6 +756,183 @@ public class JsonParseTest {
         it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(
           Either.<String, MarkedString>forLeft("foo"), 
           Either.<String, MarkedString>forLeft("boo shuby doo")));
+      };
+      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
+      it.setResult(_doubleArrow);
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testHoverResponse2() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_HOVER;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"result\": {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\"contents\": {");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"MarkupKind\": \"plaintext\",");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"value\": \"foo\"");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      Hover _hover = new Hover();
+      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
+        MarkupContent _markupContent = new MarkupContent();
+        final Procedure1<MarkupContent> _function_3 = (MarkupContent it_2) -> {
+          it_2.setMarkupKind("plaintext");
+          it_2.setValue("foo");
+        };
+        MarkupContent _doubleArrow = ObjectExtensions.<MarkupContent>operator_doubleArrow(_markupContent, _function_3);
+        it_1.setContents(_doubleArrow);
+      };
+      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
+      it.setResult(_doubleArrow);
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testHoverResponse3() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_HOVER;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"result\": {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\"contents\": \"foo\"");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      Hover _hover = new Hover();
+      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
+        it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(Either.<String, MarkedString>forLeft("foo")));
+      };
+      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
+      it.setResult(_doubleArrow);
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testHoverResponse4() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_HOVER;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"result\": {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("\"contents\": {");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"language\": \"plaintext\",");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"value\": \"foo\"");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      Hover _hover = new Hover();
+      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
+        MarkedString _markedString = new MarkedString();
+        final Procedure1<MarkedString> _function_3 = (MarkedString it_2) -> {
+          it_2.setLanguage("plaintext");
+          it_2.setValue("foo");
+        };
+        MarkedString _doubleArrow = ObjectExtensions.<MarkedString>operator_doubleArrow(_markedString, _function_3);
+        it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(Either.<String, MarkedString>forRight(_doubleArrow)));
       };
       Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
       it.setResult(_doubleArrow);
