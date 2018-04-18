@@ -30,8 +30,9 @@ Also, you can get them directly from the TypeFox Jenkins server:
 
 ### Supported LSP Versions
 
- * LSP4J 0.2.x &rarr; LSP 3.x
- * LSP4J 0.1.x &rarr; LSP 2.x
+ * LSP4J 0.4.x &rarr; LSP 3.7.0
+ * LSP4J 0.2.x, 0.3.x &rarr; LSP 3.0
+ * LSP4J 0.1.x &rarr; LSP 2.1
 
 ### Licenses
 
