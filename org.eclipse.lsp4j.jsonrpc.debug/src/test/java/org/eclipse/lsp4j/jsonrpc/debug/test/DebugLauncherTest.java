@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.debug.DebugLauncher;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.junit.Assert;
@@ -47,7 +48,7 @@ public class DebugLauncherTest {
 			public void say(Param p) {
 			}
 		};
-		DebugLauncher<A> launcher = DebugLauncher.createLauncher(a, A.class, new ByteArrayInputStream("".getBytes()), new ByteArrayOutputStream());
+		Launcher<A> launcher = DebugLauncher.createLauncher(a, A.class, new ByteArrayInputStream("".getBytes()), new ByteArrayOutputStream());
 		Future<?> startListening = launcher.startListening();
 		startListening.get(TIMEOUT, TimeUnit.MILLISECONDS);
 		Assert.assertTrue(startListening.isDone());
@@ -60,7 +61,7 @@ public class DebugLauncherTest {
 			public void say(Param p) {
 			}
 		};
-		DebugLauncher<A> launcher = DebugLauncher.createLauncher(a, A.class, new InputStream() {
+		Launcher<A> launcher = DebugLauncher.createLauncher(a, A.class, new InputStream() {
 			@Override
 			public int read() throws IOException {
 				try {
@@ -97,7 +98,7 @@ public class DebugLauncherTest {
 				return null;
 			}
 		};
-		DebugLauncher<A> launcher = DebugLauncher.createIoLauncher(a, A.class, new ByteArrayInputStream("".getBytes()), out,
+		Launcher<A> launcher = DebugLauncher.createIoLauncher(a, A.class, new ByteArrayInputStream("".getBytes()), out,
 				Executors.newCachedThreadPool(), c -> c,
 				gsonBuilder -> {gsonBuilder.registerTypeAdapter(Param.class, typeAdapter);});
 		A remoteProxy = launcher.getRemoteProxy();
