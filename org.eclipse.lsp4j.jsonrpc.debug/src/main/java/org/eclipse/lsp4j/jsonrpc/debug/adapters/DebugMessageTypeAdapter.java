@@ -350,6 +350,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			DebugResponseMessage message = new DebugResponseMessage();
 			message.setId(request_seq);
 			message.setResponseId(seq);
+			message.setMethod(method);			
 			if (!success) {
 				ResponseError error = new ResponseError();
 				error.setCode(ResponseErrorCode.UnknownErrorCode);
