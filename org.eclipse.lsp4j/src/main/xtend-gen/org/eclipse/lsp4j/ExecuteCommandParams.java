@@ -12,6 +12,12 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The workspace/executeCommand request is sent from the client to the server to trigger command
+ * execution on the server. In most cases the server creates a WorkspaceEdit structure and applies
+ * the changes to the workspace using the request workspace/applyEdit which is sent from the server
+ * to the client.
+ */
 @SuppressWarnings("all")
 public class ExecuteCommandParams {
   /**

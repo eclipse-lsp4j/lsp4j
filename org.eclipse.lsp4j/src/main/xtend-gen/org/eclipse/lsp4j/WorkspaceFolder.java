@@ -7,12 +7,16 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-@Beta
+/**
+ * The workspace/workspaceFolders request is sent from the server to the client to fetch
+ * the current open list of workspace folders. Returns null in the response if only a single
+ * file is open in the tool. Returns an empty array if a workspace is open but no folders
+ * are configured.
+ */
 @SuppressWarnings("all")
 public class WorkspaceFolder {
   /**
@@ -25,6 +29,18 @@ public class WorkspaceFolder {
    * The name of the workspace folder. Defaults to the uri's basename.
    */
   private String name;
+  
+  public WorkspaceFolder() {
+  }
+  
+  public WorkspaceFolder(@NonNull final String uri) {
+    this.uri = uri;
+  }
+  
+  public WorkspaceFolder(@NonNull final String uri, final String name) {
+    this.uri = uri;
+    this.name = name;
+  }
   
   /**
    * The associated URI for this workspace folder.

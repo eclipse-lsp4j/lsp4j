@@ -8,7 +8,10 @@
 package org.eclipse.lsp4j;
 
 import com.google.gson.annotations.JsonAdapter;
+import java.util.List;
 import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.WorkspaceFolder;
+import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -16,6 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * The initialize request is sent as the first request from the client to the server.
  */
+@JsonAdapter(InitializeParamsTypeAdapter.Factory.class)
 @SuppressWarnings("all")
 public class InitializeParams {
   /**
@@ -33,6 +37,7 @@ public class InitializeParams {
   
   /**
    * The rootUri of the workspace. Is null if no folder is open.
+   * If both `rootPath` and `rootUri` are set, `rootUri` wins.
    */
   private String rootUri;
   
@@ -60,6 +65,16 @@ public class InitializeParams {
    * Legal values: 'off' | 'messages' | 'verbose'
    */
   private String trace;
+  
+  /**
+   * The workspace folders configured in the client when the server starts.
+   * This property is only available if the client supports workspace folders.
+   * It can be `null` if the client supports workspace folders but none are
+   * configured.
+   * 
+   * Since 3.6.0
+   */
+  private List<WorkspaceFolder> workspaceFolders;
   
   /**
    * The process Id of the parent process that started the server.
@@ -99,6 +114,7 @@ public class InitializeParams {
   
   /**
    * The rootUri of the workspace. Is null if no folder is open.
+   * If both `rootPath` and `rootUri` are set, `rootUri` wins.
    */
   @Pure
   public String getRootUri() {
@@ -107,6 +123,7 @@ public class InitializeParams {
   
   /**
    * The rootUri of the workspace. Is null if no folder is open.
+   * If both `rootPath` and `rootUri` are set, `rootUri` wins.
    */
   public void setRootUri(final String rootUri) {
     this.rootUri = rootUri;
@@ -180,6 +197,31 @@ public class InitializeParams {
     this.trace = trace;
   }
   
+  /**
+   * The workspace folders configured in the client when the server starts.
+   * This property is only available if the client supports workspace folders.
+   * It can be `null` if the client supports workspace folders but none are
+   * configured.
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public List<WorkspaceFolder> getWorkspaceFolders() {
+    return this.workspaceFolders;
+  }
+  
+  /**
+   * The workspace folders configured in the client when the server starts.
+   * This property is only available if the client supports workspace folders.
+   * It can be `null` if the client supports workspace folders but none are
+   * configured.
+   * 
+   * Since 3.6.0
+   */
+  public void setWorkspaceFolders(final List<WorkspaceFolder> workspaceFolders) {
+    this.workspaceFolders = workspaceFolders;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -191,6 +233,7 @@ public class InitializeParams {
     b.add("capabilities", this.capabilities);
     b.add("clientName", this.clientName);
     b.add("trace", this.trace);
+    b.add("workspaceFolders", this.workspaceFolders);
     return b.toString();
   }
   
@@ -239,6 +282,11 @@ public class InitializeParams {
         return false;
     } else if (!this.trace.equals(other.trace))
       return false;
+    if (this.workspaceFolders == null) {
+      if (other.workspaceFolders != null)
+        return false;
+    } else if (!this.workspaceFolders.equals(other.workspaceFolders))
+      return false;
     return true;
   }
   
@@ -254,6 +302,7 @@ public class InitializeParams {
     result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
     result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
     result = prime * result + ((this.trace== null) ? 0 : this.trace.hashCode());
+    result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
     return result;
   }
 }

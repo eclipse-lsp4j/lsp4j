@@ -12,6 +12,9 @@ import org.eclipse.lsp4j.SignatureInformationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `textDocument/signatureHelp`
+ */
 @SuppressWarnings("all")
 public class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
   /**

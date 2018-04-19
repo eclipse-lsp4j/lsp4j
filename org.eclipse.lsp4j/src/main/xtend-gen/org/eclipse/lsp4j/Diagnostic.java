@@ -7,6 +7,8 @@
  */
 package org.eclipse.lsp4j;
 
+import java.util.List;
+import org.eclipse.lsp4j.DiagnosticRelatedInformation;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -45,6 +47,14 @@ public class Diagnostic {
    */
   @NonNull
   private String message;
+  
+  /**
+   * An array of related diagnostic information, e.g. when symbol-names within a scope collide
+   * all definitions can be marked via this property.
+   * 
+   * Since 3.7.0
+   */
+  private List<DiagnosticRelatedInformation> relatedInformation;
   
   public Diagnostic() {
   }
@@ -144,6 +154,27 @@ public class Diagnostic {
     this.message = message;
   }
   
+  /**
+   * An array of related diagnostic information, e.g. when symbol-names within a scope collide
+   * all definitions can be marked via this property.
+   * 
+   * Since 3.7.0
+   */
+  @Pure
+  public List<DiagnosticRelatedInformation> getRelatedInformation() {
+    return this.relatedInformation;
+  }
+  
+  /**
+   * An array of related diagnostic information, e.g. when symbol-names within a scope collide
+   * all definitions can be marked via this property.
+   * 
+   * Since 3.7.0
+   */
+  public void setRelatedInformation(final List<DiagnosticRelatedInformation> relatedInformation) {
+    this.relatedInformation = relatedInformation;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -153,6 +184,7 @@ public class Diagnostic {
     b.add("code", this.code);
     b.add("source", this.source);
     b.add("message", this.message);
+    b.add("relatedInformation", this.relatedInformation);
     return b.toString();
   }
   
@@ -191,6 +223,11 @@ public class Diagnostic {
         return false;
     } else if (!this.message.equals(other.message))
       return false;
+    if (this.relatedInformation == null) {
+      if (other.relatedInformation != null)
+        return false;
+    } else if (!this.relatedInformation.equals(other.relatedInformation))
+      return false;
     return true;
   }
   
@@ -204,6 +241,7 @@ public class Diagnostic {
     result = prime * result + ((this.code== null) ? 0 : this.code.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
+    result = prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
     return result;
   }
 }

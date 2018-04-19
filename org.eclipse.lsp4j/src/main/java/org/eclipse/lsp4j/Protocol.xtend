@@ -14,6 +14,7 @@ import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
+import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -36,18 +37,21 @@ class DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to `WorkspaceEdit`s
+ */
 @JsonRpcData
 class WorkspaceEditCapabilities {
 	/**
 	 * The client supports versioned document changes in `WorkspaceEdit`s
 	 */
 	Boolean documentChanges
-    
-  /**
-   * The client supports resource changes
-   * in `WorkspaceEdit`s.
-   */
-  @Beta Boolean resourceChanges
+	
+	/**
+	 * The client supports resource changes
+	 * in `WorkspaceEdit`s.
+	 */
+	@Beta Boolean resourceChanges
 
     new() {
     }
@@ -57,6 +61,9 @@ class WorkspaceEditCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+ */
 @JsonRpcData
 class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -67,6 +74,9 @@ class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities
     }
 }
 
+/**
+ * Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
+ */
 @JsonRpcData
 class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -77,16 +87,37 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
     }
 }
 
+/**
+ * Capabilities specific to the `workspace/symbol` request.
+ */
 @JsonRpcData
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
+	
+	/**
+	 * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
+	 */
+	SymbolKindCapabilities symbolKind
+	
     new() {
     }
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
     }
+    
+    new(SymbolKindCapabilities symbolKind) {
+    	this.symbolKind = symbolKind
+    }
+    
+    new(SymbolKindCapabilities symbolKind, Boolean dynamicRegistration) {
+      super(dynamicRegistration)
+      this.symbolKind = symbolKind
+    }
 }
 
+/**
+ * Capabilities specific to the `workspace/executeCommand` request.
+ */
 @JsonRpcData
 class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -134,11 +165,18 @@ class WorkspaceClientCapabilities {
     ExecuteCommandCapabilities executeCommand
     
     /**
-     * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
-     * 
-     * Introduced in 3.6.
-     */
-    Boolean workspaceFolders
+	 * The client has support for workspace folders.
+	 * 
+	 * Since 3.6.0
+	 */
+	Boolean workspaceFolders
+	
+	/**
+	 * The client supports `workspace/configuration` requests.
+	 *
+	 * Since 3.6.0
+	 */
+	Boolean configuration
 }
 
 @JsonRpcData
@@ -177,6 +215,9 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * The client supports the following `CompletionItem` specific capabilities.
+ */
 @JsonRpcData
 class CompletionItemCapabilities {
 	/**
@@ -230,6 +271,9 @@ class CompletionItemKindCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/completion`
+ */
 @JsonRpcData
 class CompletionCapabilities extends DynamicRegistrationCapabilities {     
     /**
@@ -266,11 +310,16 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/hover`
+ */
 @JsonRpcData
 class HoverCapabilities extends DynamicRegistrationCapabilities {
     /**
      * Client supports the following content formats for the content
      * property. The order describes the preferred format of the client.
+     * 
+     * See {@link MarkupKind} for allowed values.
      */
     List<String> contentFormat
     
@@ -287,11 +336,16 @@ class HoverCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * The client supports the following `SignatureInformation` specific properties.
+ */
 @JsonRpcData
 class SignatureInformationCapabilities {
     /**
      * Client supports the following content formats for the documentation
      * property. The order describes the preferred format of the client.
+     * 
+     * See {@link MarkupKind} for allowed values.
      */
     List<String> documentationFormat
     
@@ -303,6 +357,9 @@ class SignatureInformationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/signatureHelp`
+ */
 @JsonRpcData
 class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {	
     /**
@@ -324,6 +381,9 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/references`
+ */
 @JsonRpcData
 class ReferencesCapabilities extends DynamicRegistrationCapabilities {	
     new() {
@@ -334,6 +394,9 @@ class ReferencesCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/documentHighlight`
+ */
 @JsonRpcData
 class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {	
     new() {
@@ -344,18 +407,21 @@ class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Specific capabilities for the `SymbolKind`.
+ */
 @JsonRpcData
 class SymbolKindCapabilities {
     /**
-       * The symbol kind values the client supports. When this
-       * property exists the client also guarantees that it will
-       * handle values outside its set gracefully and falls back
-       * to a default value when unknown.
-       *
-       * If this property is not present the client only supports
-       * the symbol kinds from `File` to `Array` as defined in
-       * the initial version of the protocol.
-       */
+     * The symbol kind values the client supports. When this
+     * property exists the client also guarantees that it will
+     * handle values outside its set gracefully and falls back
+     * to a default value when unknown.
+     *
+     * If this property is not present the client only supports
+     * the symbol kinds from `File` to `Array` as defined in
+     * the initial version of the protocol.
+     */
     List<SymbolKind> valueSet
     
     new() {
@@ -366,6 +432,9 @@ class SymbolKindCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/documentSymbol`
+ */
 @JsonRpcData
 class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
     /**
@@ -390,6 +459,9 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/formatting`
+ */
 @JsonRpcData
 class FormattingCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -400,6 +472,9 @@ class FormattingCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/rangeFormatting`
+ */
 @JsonRpcData
 class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -410,6 +485,9 @@ class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/onTypeFormatting`
+ */
 @JsonRpcData
 class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -420,6 +498,9 @@ class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/definition`
+ */
 @JsonRpcData
 class DefinitionCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -430,6 +511,11 @@ class DefinitionCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/typeDefinition`
+ *
+ * Since 3.6.0
+ */
 @JsonRpcData
 class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -440,6 +526,11 @@ class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/implementation`.
+ *
+ * Since 3.6.0
+ */
 @JsonRpcData
 class ImplementationCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -450,6 +541,9 @@ class ImplementationCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/codeAction`
+ */
 @JsonRpcData
 class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -460,6 +554,9 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/codeLens`
+ */
 @JsonRpcData
 class CodeLensCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -470,6 +567,9 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/documentLink`
+ */
 @JsonRpcData
 class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -480,6 +580,12 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/documentColor` and the
+ * `textDocument/colorPresentation` request.
+ *
+ * Since 3.6.0
+ */
 @JsonRpcData
 class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -490,6 +596,9 @@ class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+/**
+ * Capabilities specific to the `textDocument/rename`
+ */
 @JsonRpcData
 class RenameCapabilities extends DynamicRegistrationCapabilities {
     new() {
@@ -498,6 +607,24 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
     }
+}
+
+/**
+ * Capabilities specific to `textDocument/publishDiagnostics`.
+ */
+@JsonRpcData
+class PublishDiagnosticsCapabilities {
+	/**
+	 * Whether the client accepts diagnostics with related information.
+	 */
+	Boolean relatedInformation
+	
+	new() {
+	}
+	
+	new(Boolean relatedInformation) {
+		this.relatedInformation = relatedInformation
+	}
 }
 
 /**
@@ -598,6 +725,11 @@ class TextDocumentClientCapabilities {
      * Capabilities specific to the `textDocument/rename`
      */
     RenameCapabilities rename
+    
+    /**
+	 * Capabilities specific to `textDocument/publishDiagnostics`.
+	 */
+	PublishDiagnosticsCapabilities publishDiagnostics
 }
 
 /**
@@ -837,7 +969,7 @@ class CompletionItem {
 	/**
 	 * A human-readable string that represents a doc-comment.
 	 */
-	String documentation
+	Either<String, MarkupContent> documentation
 
 	/**
 	 * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
@@ -875,6 +1007,13 @@ class CompletionItem {
 	 * nor with themselves.
 	 */
 	List<TextEdit> additionalTextEdits
+	
+	/**
+	 * An optional set of characters that when pressed while this completion is active will accept it first and
+	 * then type that character. *Note* that all commit characters should have `length=1` and that superfluous
+	 * characters will be ignored.
+	 */
+	List<String> commitCharacters
 
 	/**
 	 * An optional command that is executed *after* inserting this completion. *Note* that
@@ -984,6 +1123,14 @@ class Diagnostic {
 	@NonNull
 	String message
 	
+	/**
+	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
+	 * all definitions can be marked via this property.
+	 * 
+	 * Since 3.7.0
+	 */
+	List<DiagnosticRelatedInformation> relatedInformation
+	
 	new() {
 	}
 	
@@ -1001,6 +1148,36 @@ class Diagnostic {
 	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source, String code) {
 		this(range, message, severity, source)
 		this.code = code
+	}
+}
+
+/**
+ * Represents a related message and source code location for a diagnostic. This should be
+ * used to point to code locations that cause or related to a diagnostics, e.g when duplicating
+ * a symbol in a scope.
+ * 
+ * Since 3.7.0
+ */
+@JsonRpcData
+class DiagnosticRelatedInformation {
+	/**
+	 * The location of this related diagnostic information.
+	 */
+	@NonNull
+	Location location
+
+	/**
+	 * The message of this related diagnostic information.
+	 */
+	@NonNull
+	String message
+	
+	new() {
+	}
+	
+	new(@NonNull Location location, @NonNull String message) {
+		this.location = location
+		this.message = message
 	}
 }
 
@@ -1082,6 +1259,50 @@ class DidChangeWatchedFilesParams {
     new(@NonNull List<FileEvent> changes) {
     	this.changes = changes
     }
+}
+
+@JsonRpcData
+class DidChangeWatchedFilesRegistrationOptions {
+	/**
+	 * The watchers to register.
+	 */
+	@NonNull
+	List<FileSystemWatcher> watchers
+	
+	new() {
+	}
+	
+	new(@NonNull List<FileSystemWatcher> watchers) {
+		this.watchers = watchers
+	}
+}
+
+@JsonRpcData
+class FileSystemWatcher {
+	/**
+	 * The  glob pattern to watch
+	 */
+	@NonNull
+	String globPattern
+	
+	/**
+	 * The kind of events of interest. If omitted it defaults
+	 * to WatchKind.Create | WatchKind.Change | WatchKind.Delete
+	 * which is 7.
+	 */
+	Integer kind
+	
+	new() {
+	}
+	
+	new(@NonNull String globPattern) {
+		this.globPattern = globPattern
+	}
+	
+	new(@NonNull String globPattern, Integer kind) {
+		this.globPattern = globPattern
+		this.kind = kind
+	}
 }
 
 /**
@@ -1278,17 +1499,21 @@ class DocumentLink {
     }
 }
 
+/**
+ * The document links request is sent from the client to the server to request the location of links in a document.
+ */
 @JsonRpcData
 class DocumentLinkParams {
     /**
      * The document to provide document links for.
      */
+    @NonNull
     TextDocumentIdentifier textDocument
     
     new() {
     }
     
-    new(TextDocumentIdentifier textDocument) {
+    new(@NonNull TextDocumentIdentifier textDocument) {
     	this.textDocument = textDocument
     }
 }
@@ -1349,6 +1574,13 @@ class SaveOptions {
     }
 }
 
+/**
+ * Color provider Options
+ */
+@JsonRpcData
+class ColorProviderOptions extends StaticRegistrationOptions {
+}
+
 @JsonRpcData
 class TextDocumentSyncOptions {
 	/**
@@ -1372,6 +1604,25 @@ class TextDocumentSyncOptions {
      * Save notifications are sent to the server.
      */
     SaveOptions save
+}
+
+/**
+ * Static registration options to be returned in the initialize request.
+ */
+@JsonRpcData
+class StaticRegistrationOptions extends TextDocumentRegistrationOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
+	
+	new() {
+	}
+	
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
@@ -1618,7 +1869,7 @@ class MarkupContent {
 	 * The type of the Markup.
 	 */
 	@NonNull
-	String MarkupKind;
+	String kind;
 
 	/**
 	 * The content itself.
@@ -1652,6 +1903,15 @@ class Hover {
     }
     
     new(@NonNull List<Either<String, MarkedString>> contents, Range range) {
+    	this.contents = contents
+    	this.range = range
+    }
+    
+    new(@NonNull MarkupContent contents) {
+    	this.contents = contents
+    }
+    
+    new(@NonNull MarkupContent contents, Range range) {
     	this.contents = contents
     	this.range = range
     }
@@ -1723,6 +1983,7 @@ interface InitializeErrorCode {
  * The initialize request is sent as the first request from the client to the server.
  */
 @JsonRpcData
+@JsonAdapter(InitializeParamsTypeAdapter.Factory)
 class InitializeParams {
 	/**
 	 * The process Id of the parent process that started the server.
@@ -1739,6 +2000,7 @@ class InitializeParams {
 	
 	/**
      * The rootUri of the workspace. Is null if no folder is open.
+     * If both `rootPath` and `rootUri` are set, `rootUri` wins.
      */
 	String rootUri
 
@@ -1766,6 +2028,16 @@ class InitializeParams {
      * Legal values: 'off' | 'messages' | 'verbose'
      */
     String trace
+    
+	/**
+	 * The workspace folders configured in the client when the server starts.
+	 * This property is only available if the client supports workspace folders.
+	 * It can be `null` if the client supports workspace folders but none are
+	 * configured.
+	 *
+	 * Since 3.6.0
+	 */
+	List<WorkspaceFolder> workspaceFolders
 }
 
 @JsonRpcData
@@ -1873,7 +2145,7 @@ class ParameterInformation {
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
-	String documentation
+	Either<String, MarkupContent> documentation
     
     new() {
     }
@@ -1883,6 +2155,11 @@ class ParameterInformation {
     }
     
     new(@NonNull String label, String documentation) {
+    	this.label = label
+    	this.documentation = documentation
+    }
+    
+    new(@NonNull String label, MarkupContent documentation) {
     	this.label = label
     	this.documentation = documentation
     }
@@ -2062,6 +2339,20 @@ class ServerCapabilities {
 	 * The server provides goto definition support.
 	 */
 	Boolean definitionProvider
+	
+	/**
+	 * The server provides Goto Type Definition support.
+	 *
+	 * Since 3.6.0
+	 */
+	Either<Boolean, StaticRegistrationOptions> typeDefinitionProvider
+	
+	/**
+	 * The server provides Goto Implementation support.
+	 *
+	 * Since 3.6.0
+	 */
+	Either<Boolean, StaticRegistrationOptions> implementationProvider
 
 	/**
 	 * The server provides find references support.
@@ -2118,10 +2409,22 @@ class ServerCapabilities {
      */
     DocumentLinkOptions documentLinkProvider
     
+	/**
+	 * The server provides color provider support.
+	 *
+	 * Since 3.6.0
+	 */
+	ColorProviderOptions colorProvider
+    
     /**
      * The server provides execute command support.
      */
     ExecuteCommandOptions executeCommandProvider
+
+    /**
+     * Workspace specific server capabilities
+     */
+    WorkspaceServerCapabilities workspace
     
     /**
      * Experimental server capabilities.
@@ -2129,29 +2432,26 @@ class ServerCapabilities {
     @JsonAdapter(JsonElementTypeAdapter.Factory)
     Object experimental
 
-    /**
-     * Capabilities of the server regarding workspace.
-     * 
-     * This is an LSP <b>proposal</b>.
-     */
-    @Beta WorkspaceServerCapabilities workspace
-
 }
 
 /**
- * Capabilities of the server regarding workspace.
- * 
- * This is an LSP <b>proposal</b>.
+ * Workspace specific server capabilities
  */
-@Beta
 @JsonRpcData
 class WorkspaceServerCapabilities {
-	  /**
-     * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
-     * 
-     * This is an LSP <b>proposal</b>.
-     */
-    @Beta WorkspaceFoldersOptions workspaceFolders
+	/**
+	 * The server supports workspace folder.
+	 *
+	 * Since 3.6.0
+	 */
+	WorkspaceFoldersOptions workspaceFolders
+	
+	new() {
+	}
+	
+	new(WorkspaceFoldersOptions workspaceFolders) {
+		this.workspaceFolders = workspaceFolders
+	}
 }
 
 /**
@@ -2252,7 +2552,7 @@ class SignatureInformation {
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
-	String documentation
+	Either<String, MarkupContent> documentation
 
 	/**
 	 * The parameters of this signature.
@@ -2271,10 +2571,16 @@ class SignatureInformation {
     	this.documentation = documentation
     	this.parameters = parameters
     }
+    
+    new(@NonNull String label, MarkupContent documentation, List<ParameterInformation> parameters) {
+    	this.label = label
+    	this.documentation = documentation
+    	this.parameters = parameters
+    }
 }
 
 /**
- * Represents information about programming constructs like variables, classes, classs etc.
+ * Represents information about programming constructs like variables, classes, interfaces etc.
  */
 @JsonRpcData
 class SymbolInformation {
@@ -2291,13 +2597,24 @@ class SymbolInformation {
 	SymbolKind kind
 
 	/**
-	 * The location of this symbol.
+	 * The location of this symbol. The location's range is used by a tool
+	 * to reveal the location in the editor. If the symbol is selected in the
+	 * tool the range's start information is used to position the cursor. So
+	 * the range usually spans more then the actual symbol's name and does
+	 * normally include things like visibility modifiers.
+	 *
+	 * The range doesn't have to denote a node range in the sense of a abstract
+	 * syntax tree. It can therefore not be used to re-construct a hierarchy of
+	 * the symbols.
 	 */
 	@NonNull
 	Location location
 
 	/**
-	 * The name of the symbol containing this symbol.
+	 * The name of the symbol containing this symbol. This information is for
+	 * user interface purposes (e.g. to render a qualifier in the user interface
+	 * if necessary). It can't be used to re-infer a hierarchy for the document
+	 * symbols.
 	 */
 	String containerName
 	
@@ -2451,6 +2768,54 @@ class TextDocumentPositionParams {
     }
 }
 
+@JsonRpcData
+class CompletionParams extends TextDocumentPositionParams {
+	/**
+	 * The completion context. This is only available it the client specifies
+	 * to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
+	 */
+	CompletionContext context
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, CompletionContext context) {
+		super(textDocument, position)
+		this.context = context
+	}
+}
+
+@JsonRpcData
+class CompletionContext {
+	/**
+	 * How the completion was triggered.
+	 */
+	@NonNull
+	CompletionTriggerKind triggerKind
+	
+	/**
+	 * The trigger character (a single character) that has trigger code complete.
+	 * Is undefined if `triggerKind !== CompletionTriggerKind.TriggerCharacter`
+	 */
+	String triggerCharacter
+	
+	new() {
+	}
+	
+	new(@NonNull CompletionTriggerKind triggerKind) {
+		this.triggerKind = triggerKind
+	}
+	
+	new(@NonNull CompletionTriggerKind triggerKind, String triggerCharacter) {
+		this.triggerKind = triggerKind
+		this.triggerCharacter = triggerCharacter
+	}
+}
+
 /**
  * A textual edit applicable to a text document.
  */
@@ -2534,10 +2899,10 @@ class TextDocumentEdit {
  * If both current and newUri has valid values this is considered to be a move operation.
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
- *
  */
 @JsonRpcData
-class ResourceChange{
+@Beta
+class ResourceChange {
 
   /**
   * The Uri for current resource. Required for delete and move operations
@@ -2576,15 +2941,15 @@ class WorkspaceEdit {
 	 * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
 	 */
 	List<TextDocumentEdit> documentChanges
-    
-  /**
-   * if resource changes are supported the `WorkspaceEdit`
-   * uses the property `resourceChanges` which are either a
-   * rename, move, delete or content change.
-   * These changes are applied in the order that they are supplied,
-   * however clients may group the changes for optimization
-   */
-  List<Either<ResourceChange,TextDocumentEdit>> resourceChanges
+	
+	/**
+	 * if resource changes are supported the `WorkspaceEdit`
+	 * uses the property `resourceChanges` which are either a
+	 * rename, move, delete or content change.
+	 * These changes are applied in the order that they are supplied,
+	 * however clients may group the changes for optimization
+	 */
+	@Beta List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
     new() {
     	this.changes = new LinkedHashMap
@@ -2667,6 +3032,13 @@ class Registration {
     }
 }
 
+/**
+ * The client/registerCapability request is sent from the server to the client to register
+ * for a new capability on the client side. Not all clients need to support dynamic
+ * capability registration. A client opts in via the dynamicRegistration property on the
+ * specific client capabilities. A client can even provide dynamic registration for
+ * capability A but not for capability B (see TextDocumentClientCapabilities as an example).
+ */
 @JsonRpcData
 class RegistrationParams {
 	@NonNull
@@ -2694,7 +3066,7 @@ class DocumentFilter {
 	/**
      * A uri scheme, like `file` or `untitled`.
      */
-    String schema
+    String scheme
 	
 	/**
      * A glob pattern, like `*.{ts,js}`.
@@ -2704,21 +3076,16 @@ class DocumentFilter {
     new() {
     }
     
-    new(String language, String schema, String pattern) {
+    new(String language, String scheme, String pattern) {
     	this.language = language
-    	this.schema = schema
+    	this.scheme = scheme
     	this.pattern = pattern
     }
 }
 
 /**
- * A document selector is the combination of one or many document filters.
- */
-interface DocumentSelector extends List<DocumentFilter> {
-}
-
-/**
- * Since most of the registration options require to specify a document selector there is a base interface that can be used.
+ * Since most of the registration options require to specify a document selector there is
+ * a base interface that can be used.
  */
 @JsonRpcData
 class TextDocumentRegistrationOptions {
@@ -2726,12 +3093,12 @@ class TextDocumentRegistrationOptions {
      * A document selector to identify the scope of the registration. If set to null
      * the document selector provided on the client side will be used.
      */
-    DocumentSelector documentSelector
+    List<DocumentFilter> documentSelector
     
     new() {
     }
     
-    new(DocumentSelector documentSelector) {
+    new(List<DocumentFilter> documentSelector) {
     	this.documentSelector = documentSelector
     }
 }
@@ -2763,6 +3130,10 @@ class Unregistration {
     }
 }
 
+/**
+ * The client/unregisterCapability request is sent from the server to the client to unregister
+ * a previously registered capability.
+ */
 @JsonRpcData
 class UnregistrationParams {
 	@NonNull
@@ -2815,9 +3186,16 @@ class TextDocumentSaveRegistrationOptions extends TextDocumentRegistrationOption
 @JsonRpcData
 class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-     * The characters that trigger completion automatically.
-     */
-    List<String> triggerCharacters
+	 * Most tools trigger completion request automatically without explicitly requesting
+	 * it using a keyboard shortcut (e.g. Ctrl+Space). Typically they do so when the user
+	 * starts to type an identifier. For example if the user types `c` in a JavaScript file
+	 * code complete will automatically pop up present `console` besides others as a
+	 * completion item. Characters that make up identifiers don't need to be listed here.
+	 *
+	 * If code complete should automatically be trigger on characters not being valid inside
+	 * an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
+	 */
+	List<String> triggerCharacters
 
     /**
      * The server provides support to resolve additional information for a completion item.
@@ -2883,7 +3261,9 @@ class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrati
 	/**
      * A character on which formatting should be triggered, like `}`.
      */
+    @NonNull
     String firstTriggerCharacter
+    
 	/**
      * More trigger characters.
      */
@@ -2892,12 +3272,22 @@ class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrati
     new() {
     }
     
-    new(String firstTriggerCharacter, List<String> moreTriggerCharacter) {
+    new(@NonNull String firstTriggerCharacter) {
+    	this.firstTriggerCharacter = firstTriggerCharacter
+    }
+    
+    new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
     	this.firstTriggerCharacter = firstTriggerCharacter
     	this.moreTriggerCharacter = moreTriggerCharacter
     }
 }
 
+/**
+ * The workspace/executeCommand request is sent from the client to the server to trigger command
+ * execution on the server. In most cases the server creates a WorkspaceEdit structure and applies
+ * the changes to the workspace using the request workspace/applyEdit which is sent from the server
+ * to the client.
+ */
 @JsonRpcData
 class ExecuteCommandParams {
 	/**
@@ -2930,21 +3320,26 @@ class ExecuteCommandRegistrationOptions {
 	/**
      * The commands to be executed on the server
      */
+    @NonNull
     List<String> commands
     
     new() {
     }
     
-    new(List<String> commands) {
+    new(@NonNull List<String> commands) {
     	this.commands = commands
     }
 }
 
+/**
+ * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
+ */
 @JsonRpcData
 class ApplyWorkspaceEditParams {
 	/**
      * The edits to apply.
      */
+    @NonNull
     WorkspaceEdit edit
 
 	/**
@@ -2957,11 +3352,11 @@ class ApplyWorkspaceEditParams {
     new() {
     }
     
-    new(WorkspaceEdit edit) {
+    new(@NonNull WorkspaceEdit edit) {
     	this.edit = edit
     }
 
-    new(WorkspaceEdit edit, String label) {
+    new(@NonNull WorkspaceEdit edit, String label) {
     	this.edit = edit;
     	this.label = label
     }
@@ -2972,17 +3367,21 @@ class ApplyWorkspaceEditResponse {
 	/**
      * Indicates whether the edit was applied or not.
      */
-    Boolean applied
+    boolean applied
     
     new() {
     }
     
-    new(Boolean applied) {
+    new(boolean applied) {
     	this.applied = applied
     }
 }
 
-@Beta
+/**
+ * The server supports workspace folder.
+ *
+ * Since 3.6.0
+ */
 @JsonRpcData
 class WorkspaceFoldersOptions {
 	/**
@@ -2994,15 +3393,20 @@ class WorkspaceFoldersOptions {
 	 * Whether the server wants to receive workspace folder
 	 * change notifications.
 	 *
-	 * If a strings is provided the string is treated as a ID
+	 * If a string is provided, the string is treated as an ID
 	 * under which the notification is registed on the client
 	 * side. The ID can be used to unregister for these events
 	 * using the `client/unregisterCapability` request.
 	 */
-	Either<String, Boolean> changeNotifications;
+	Either<String, Boolean> changeNotifications
 }
 
-@Beta
+/**
+ * The workspace/workspaceFolders request is sent from the server to the client to fetch
+ * the current open list of workspace folders. Returns null in the response if only a single
+ * file is open in the tool. Returns an empty array if a workspace is open but no folders
+ * are configured.
+ */
 @JsonRpcData
 class WorkspaceFolder {
 	/**
@@ -3014,9 +3418,23 @@ class WorkspaceFolder {
 	 * The name of the workspace folder. Defaults to the uri's basename.
 	 */
 	String name
+	
+	new() {
+	}
+	
+	new(@NonNull String uri) {
+		this.uri = uri
+	}
+	
+	new(@NonNull String uri, String name) {
+		this.uri = uri
+		this.name = name
+	}
 }
 
-@Beta
+/**
+ * The workspace folder change event.
+ */
 @JsonRpcData
 class WorkspaceFoldersChangeEvent {
 	/**
@@ -3030,9 +3448,23 @@ class WorkspaceFoldersChangeEvent {
 	 */
 	@NonNull
 	List<WorkspaceFolder> removed = new ArrayList
+	
+	new() {
+	}
+	
+	new(@NonNull List<WorkspaceFolder> added, @NonNull List<WorkspaceFolder> removed) {
+		this.added = added
+		this.removed = removed
+	}
 }
 
-@Beta
+/**
+ * The workspace/didChangeWorkspaceFolders notification is sent from the client to the server to
+ * inform the server about workspace folder configuration changes. The notification is sent by
+ * default if both ServerCapabilities/workspace/workspaceFolders and
+ * ClientCapabilities/workspace/workspaceFolders are true; or if the server has registered to
+ * receive this notification it first.
+ */
 @JsonRpcData
 class DidChangeWorkspaceFoldersParams {
 	/**
@@ -3040,4 +3472,217 @@ class DidChangeWorkspaceFoldersParams {
 	 */
 	@NonNull
 	WorkspaceFoldersChangeEvent event
+	
+	new() {
+	}
+	
+	new(@NonNull WorkspaceFoldersChangeEvent event) {
+		this.event = event
+	}
+}
+
+/**
+ * The workspace/configuration request is sent from the server to the client to fetch configuration
+ * settings from the client. The request can fetch n configuration settings in one roundtrip.
+ * The order of the returned configuration settings correspond to the order of the passed
+ * ConfigurationItems (e.g. the first item in the response is the result for the first
+ * configuration item in the params).
+ * 
+ * Since 3.6.0
+ */
+@JsonRpcData
+class ConfigurationParams {
+	@NonNull
+	List<ConfigurationItem> items
+	
+	new() {
+	}
+	
+	new(@NonNull List<ConfigurationItem> items) {
+		this.items = items
+	}
+}
+
+/**
+ * A ConfigurationItem consist of the configuration section to ask for and an additional scope URI.
+ * The configuration section ask for is defined by the server and doesn’t necessarily need to
+ * correspond to the configuration store used be the client. So a server might ask for a configuration
+ * cpp.formatterOptions but the client stores the configuration in a XML store layout differently.
+ * It is up to the client to do the necessary conversion. If a scope URI is provided the client
+ * should return the setting scoped to the provided resource. If the client for example uses
+ * EditorConfig to manage its settings the configuration should be returned for the passed resource
+ * URI. If the client can’t provide a configuration setting for a given scope then null need to be
+ * present in the returned array.
+ * 
+ * Since 3.6.0
+ */
+@JsonRpcData
+class ConfigurationItem {
+	/**
+	 * The scope to get the configuration section for.
+	 */
+	String scopeUri
+	
+	/**
+	 * The configuration section asked for.
+	 */
+	String section
+}
+
+/**
+ * The document color request is sent from the client to the server to list all color refereces
+ * found in a given text document. Along with the range, a color value in RGB is returned.
+ * 
+ * Since 3.6.0
+ */
+@JsonRpcData
+class DocumentColorParams {
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+	
+	new() {
+	}
+	
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
+}
+
+@JsonRpcData
+class ColorInformation {
+	/**
+	 * The range in the document where this color appers.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The actual color value for this color range.
+	 */
+	@NonNull
+	Color color
+	
+	new() {
+	}
+	
+	new(@NonNull Range range, @NonNull Color color) {
+		this.range = range
+		this.color = color
+	}
+}
+
+/**
+ * Represents a color in RGBA space.
+ */
+@JsonRpcData
+class Color {
+	/**
+	 * The red component of this color in the range [0-1].
+	 */
+	double red
+
+	/**
+	 * The green component of this color in the range [0-1].
+	 */
+	double green
+
+	/**
+	 * The blue component of this color in the range [0-1].
+	 */
+	double blue
+
+	/**
+	 * The alpha component of this color in the range [0-1].
+	 */
+	double alpha
+	
+	new() {
+	}
+	
+	new(double red, double green, double blue, double alpha) {
+		this.red = red
+		this.green = green
+		this.blue = blue
+		this.alpha = alpha
+	}
+}
+
+/**
+ * The color presentation request is sent from the client to the server to obtain a list of presentations
+ * for a color value at a given location.
+ * 
+ * Since 3.6.0
+ */
+@JsonRpcData
+class ColorPresentationParams {
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The color information to request presentations for.
+	 */
+	@NonNull
+	Color colorInfo
+
+	/**
+	 * The range where the color would be inserted. Serves as a context.
+	 */
+	@NonNull
+	Range range
+	
+	new() {
+	}
+	
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Color colorInfo, @NonNull Range range) {
+		this.textDocument = textDocument
+		this.colorInfo = colorInfo
+		this.range = range
+	}
+}
+
+@JsonRpcData
+class ColorPresentation {
+	/**
+	 * The label of this color presentation. It will be shown on the color
+	 * picker header. By default this is also the text that is inserted when selecting
+	 * this color presentation.
+	 */
+	@NonNull
+	String label
+	
+	/**
+	 * An edit which is applied to a document when selecting
+	 * this presentation for the color.  When `null` the label is used.
+	 */
+	TextEdit textEdit
+	
+	/**
+	 * An optional array of additional text edits that are applied when
+	 * selecting this color presentation. Edits must not overlap with the main edit nor with themselves.
+	 */
+	List<TextEdit> additionalTextEdits
+	
+	new() {
+	}
+	
+	new(@NonNull String label) {
+		this.label = label
+	}
+	
+	new(@NonNull String label, TextEdit textEdit) {
+		this.label = label
+		this.textEdit = textEdit
+	}
+	
+	new(@NonNull String label, TextEdit textEdit, List<TextEdit> additionalTextEdits) {
+		this.label = label
+		this.textEdit = textEdit
+		this.additionalTextEdits = additionalTextEdits
+	}
 }

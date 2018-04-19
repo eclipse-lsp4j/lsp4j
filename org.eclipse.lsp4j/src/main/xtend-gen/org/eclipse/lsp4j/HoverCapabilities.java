@@ -12,11 +12,16 @@ import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `textDocument/hover`
+ */
 @SuppressWarnings("all")
 public class HoverCapabilities extends DynamicRegistrationCapabilities {
   /**
    * Client supports the following content formats for the content
    * property. The order describes the preferred format of the client.
+   * 
+   * See {@link MarkupKind} for allowed values.
    */
   private List<String> contentFormat;
   
@@ -35,6 +40,8 @@ public class HoverCapabilities extends DynamicRegistrationCapabilities {
   /**
    * Client supports the following content formats for the content
    * property. The order describes the preferred format of the client.
+   * 
+   * See {@link MarkupKind} for allowed values.
    */
   @Pure
   public List<String> getContentFormat() {
@@ -44,6 +51,8 @@ public class HoverCapabilities extends DynamicRegistrationCapabilities {
   /**
    * Client supports the following content formats for the content
    * property. The order describes the preferred format of the client.
+   * 
+   * See {@link MarkupKind} for allowed values.
    */
   public void setContentFormat(final List<String> contentFormat) {
     this.contentFormat = contentFormat;

@@ -8,11 +8,20 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
+import org.eclipse.lsp4j.SymbolKindCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `workspace/symbol` request.
+ */
 @SuppressWarnings("all")
 public class SymbolCapabilities extends DynamicRegistrationCapabilities {
+  /**
+   * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
+   */
+  private SymbolKindCapabilities symbolKind;
+  
   public SymbolCapabilities() {
   }
   
@@ -20,10 +29,35 @@ public class SymbolCapabilities extends DynamicRegistrationCapabilities {
     super(dynamicRegistration);
   }
   
+  public SymbolCapabilities(final SymbolKindCapabilities symbolKind) {
+    this.symbolKind = symbolKind;
+  }
+  
+  public SymbolCapabilities(final SymbolKindCapabilities symbolKind, final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+    this.symbolKind = symbolKind;
+  }
+  
+  /**
+   * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
+   */
+  @Pure
+  public SymbolKindCapabilities getSymbolKind() {
+    return this.symbolKind;
+  }
+  
+  /**
+   * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
+   */
+  public void setSymbolKind(final SymbolKindCapabilities symbolKind) {
+    this.symbolKind = symbolKind;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("symbolKind", this.symbolKind);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -39,13 +73,21 @@ public class SymbolCapabilities extends DynamicRegistrationCapabilities {
       return false;
     if (!super.equals(obj))
       return false;
+    SymbolCapabilities other = (SymbolCapabilities) obj;
+    if (this.symbolKind == null) {
+      if (other.symbolKind != null)
+        return false;
+    } else if (!this.symbolKind.equals(other.symbolKind))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
+    final int prime = 31;
     int result = super.hashCode();
+    result = prime * result + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
     return result;
   }
 }

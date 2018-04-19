@@ -14,6 +14,13 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The client/registerCapability request is sent from the server to the client to register
+ * for a new capability on the client side. Not all clients need to support dynamic
+ * capability registration. A client opts in via the dynamicRegistration property on the
+ * specific client capabilities. A client can even provide dynamic registration for
+ * capability A but not for capability B (see TextDocumentClientCapabilities as an example).
+ */
 @SuppressWarnings("all")
 public class RegistrationParams {
   @NonNull

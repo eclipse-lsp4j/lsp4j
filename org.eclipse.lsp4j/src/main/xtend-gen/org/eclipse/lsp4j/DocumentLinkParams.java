@@ -8,20 +8,25 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The document links request is sent from the client to the server to request the location of links in a document.
+ */
 @SuppressWarnings("all")
 public class DocumentLinkParams {
   /**
    * The document to provide document links for.
    */
+  @NonNull
   private TextDocumentIdentifier textDocument;
   
   public DocumentLinkParams() {
   }
   
-  public DocumentLinkParams(final TextDocumentIdentifier textDocument) {
+  public DocumentLinkParams(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   
@@ -29,6 +34,7 @@ public class DocumentLinkParams {
    * The document to provide document links for.
    */
   @Pure
+  @NonNull
   public TextDocumentIdentifier getTextDocument() {
     return this.textDocument;
   }
@@ -36,7 +42,7 @@ public class DocumentLinkParams {
   /**
    * The document to provide document links for.
    */
-  public void setTextDocument(final TextDocumentIdentifier textDocument) {
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
     this.textDocument = textDocument;
   }
   

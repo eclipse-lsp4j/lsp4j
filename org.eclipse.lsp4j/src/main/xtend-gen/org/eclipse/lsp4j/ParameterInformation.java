@@ -7,6 +7,8 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.MarkupContent;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -25,7 +27,7 @@ public class ParameterInformation {
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
-  private String documentation;
+  private Either<String, MarkupContent> documentation;
   
   public ParameterInformation() {
   }
@@ -36,7 +38,12 @@ public class ParameterInformation {
   
   public ParameterInformation(@NonNull final String label, final String documentation) {
     this.label = label;
-    this.documentation = documentation;
+    this.setDocumentation(documentation);
+  }
+  
+  public ParameterInformation(@NonNull final String label, final MarkupContent documentation) {
+    this.label = label;
+    this.setDocumentation(documentation);
   }
   
   /**
@@ -59,15 +66,23 @@ public class ParameterInformation {
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
   @Pure
-  public String getDocumentation() {
+  public Either<String, MarkupContent> getDocumentation() {
     return this.documentation;
   }
   
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
-  public void setDocumentation(final String documentation) {
+  public void setDocumentation(final Either<String, MarkupContent> documentation) {
     this.documentation = documentation;
+  }
+  
+  public void setDocumentation(final String documentation) {
+    this.documentation = Either.forLeft(documentation);
+  }
+  
+  public void setDocumentation(final MarkupContent documentation) {
+    this.documentation = Either.forRight(documentation);
   }
   
   @Override

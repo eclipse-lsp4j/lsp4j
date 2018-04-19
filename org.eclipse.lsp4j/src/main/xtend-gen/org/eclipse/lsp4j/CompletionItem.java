@@ -12,8 +12,10 @@ import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.InsertTextFormat;
+import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -45,7 +47,7 @@ public class CompletionItem {
   /**
    * A human-readable string that represents a doc-comment.
    */
-  private String documentation;
+  private Either<String, MarkupContent> documentation;
   
   /**
    * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
@@ -83,6 +85,13 @@ public class CompletionItem {
    * nor with themselves.
    */
   private List<TextEdit> additionalTextEdits;
+  
+  /**
+   * An optional set of characters that when pressed while this completion is active will accept it first and
+   * then type that character. *Note* that all commit characters should have `length=1` and that superfluous
+   * characters will be ignored.
+   */
+  private List<String> commitCharacters;
   
   /**
    * An optional command that is executed *after* inserting this completion. *Note* that
@@ -154,15 +163,23 @@ public class CompletionItem {
    * A human-readable string that represents a doc-comment.
    */
   @Pure
-  public String getDocumentation() {
+  public Either<String, MarkupContent> getDocumentation() {
     return this.documentation;
   }
   
   /**
    * A human-readable string that represents a doc-comment.
    */
-  public void setDocumentation(final String documentation) {
+  public void setDocumentation(final Either<String, MarkupContent> documentation) {
     this.documentation = documentation;
+  }
+  
+  public void setDocumentation(final String documentation) {
+    this.documentation = Either.forLeft(documentation);
+  }
+  
+  public void setDocumentation(final MarkupContent documentation) {
+    this.documentation = Either.forRight(documentation);
   }
   
   /**
@@ -270,6 +287,25 @@ public class CompletionItem {
   }
   
   /**
+   * An optional set of characters that when pressed while this completion is active will accept it first and
+   * then type that character. *Note* that all commit characters should have `length=1` and that superfluous
+   * characters will be ignored.
+   */
+  @Pure
+  public List<String> getCommitCharacters() {
+    return this.commitCharacters;
+  }
+  
+  /**
+   * An optional set of characters that when pressed while this completion is active will accept it first and
+   * then type that character. *Note* that all commit characters should have `length=1` and that superfluous
+   * characters will be ignored.
+   */
+  public void setCommitCharacters(final List<String> commitCharacters) {
+    this.commitCharacters = commitCharacters;
+  }
+  
+  /**
    * An optional command that is executed *after* inserting this completion. *Note* that
    * additional modifications to the current document should be described with the
    * additionalTextEdits-property.
@@ -317,6 +353,7 @@ public class CompletionItem {
     b.add("insertTextFormat", this.insertTextFormat);
     b.add("textEdit", this.textEdit);
     b.add("additionalTextEdits", this.additionalTextEdits);
+    b.add("commitCharacters", this.commitCharacters);
     b.add("command", this.command);
     b.add("data", this.data);
     return b.toString();
@@ -382,6 +419,11 @@ public class CompletionItem {
         return false;
     } else if (!this.additionalTextEdits.equals(other.additionalTextEdits))
       return false;
+    if (this.commitCharacters == null) {
+      if (other.commitCharacters != null)
+        return false;
+    } else if (!this.commitCharacters.equals(other.commitCharacters))
+      return false;
     if (this.command == null) {
       if (other.command != null)
         return false;
@@ -410,6 +452,7 @@ public class CompletionItem {
     result = prime * result + ((this.insertTextFormat== null) ? 0 : this.insertTextFormat.hashCode());
     result = prime * result + ((this.textEdit== null) ? 0 : this.textEdit.hashCode());
     result = prime * result + ((this.additionalTextEdits== null) ? 0 : this.additionalTextEdits.hashCode());
+    result = prime * result + ((this.commitCharacters== null) ? 0 : this.commitCharacters.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
     result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());
     return result;

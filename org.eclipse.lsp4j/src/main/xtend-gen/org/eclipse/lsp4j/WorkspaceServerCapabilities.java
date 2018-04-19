@@ -7,31 +7,33 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.WorkspaceFoldersOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Capabilities of the server regarding workspace.
- * 
- * This is an LSP <b>proposal</b>.
+ * Workspace specific server capabilities
  */
-@Beta
 @SuppressWarnings("all")
 public class WorkspaceServerCapabilities {
   /**
-   * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+   * The server supports workspace folder.
    * 
-   * This is an LSP <b>proposal</b>.
+   * Since 3.6.0
    */
-  @Beta
   private WorkspaceFoldersOptions workspaceFolders;
   
+  public WorkspaceServerCapabilities() {
+  }
+  
+  public WorkspaceServerCapabilities(final WorkspaceFoldersOptions workspaceFolders) {
+    this.workspaceFolders = workspaceFolders;
+  }
+  
   /**
-   * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+   * The server supports workspace folder.
    * 
-   * This is an LSP <b>proposal</b>.
+   * Since 3.6.0
    */
   @Pure
   public WorkspaceFoldersOptions getWorkspaceFolders() {
@@ -39,9 +41,9 @@ public class WorkspaceServerCapabilities {
   }
   
   /**
-   * Capabilities specific to the `workspace/didChangeWorkspaceFolders` notification.
+   * The server supports workspace folder.
    * 
-   * This is an LSP <b>proposal</b>.
+   * Since 3.6.0
    */
   public void setWorkspaceFolders(final WorkspaceFoldersOptions workspaceFolders) {
     this.workspaceFolders = workspaceFolders;

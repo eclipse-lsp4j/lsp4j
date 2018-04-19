@@ -9,6 +9,7 @@ package org.eclipse.lsp4j;
 
 import java.util.List;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -17,6 +18,7 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
   /**
    * A character on which formatting should be triggered, like `}`.
    */
+  @NonNull
   private String firstTriggerCharacter;
   
   /**
@@ -27,7 +29,11 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
   public DocumentOnTypeFormattingRegistrationOptions() {
   }
   
-  public DocumentOnTypeFormattingRegistrationOptions(final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
+  public DocumentOnTypeFormattingRegistrationOptions(@NonNull final String firstTriggerCharacter) {
+    this.firstTriggerCharacter = firstTriggerCharacter;
+  }
+  
+  public DocumentOnTypeFormattingRegistrationOptions(@NonNull final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
     this.firstTriggerCharacter = firstTriggerCharacter;
     this.moreTriggerCharacter = moreTriggerCharacter;
   }
@@ -36,6 +42,7 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
    * A character on which formatting should be triggered, like `}`.
    */
   @Pure
+  @NonNull
   public String getFirstTriggerCharacter() {
     return this.firstTriggerCharacter;
   }
@@ -43,7 +50,7 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
   /**
    * A character on which formatting should be triggered, like `}`.
    */
-  public void setFirstTriggerCharacter(final String firstTriggerCharacter) {
+  public void setFirstTriggerCharacter(@NonNull final String firstTriggerCharacter) {
     this.firstTriggerCharacter = firstTriggerCharacter;
   }
   

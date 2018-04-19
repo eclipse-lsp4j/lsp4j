@@ -7,14 +7,15 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.CodeLensOptions;
+import org.eclipse.lsp4j.ColorProviderOptions;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
+import org.eclipse.lsp4j.StaticRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.TextDocumentSyncOptions;
 import org.eclipse.lsp4j.WorkspaceServerCapabilities;
@@ -50,6 +51,20 @@ public class ServerCapabilities {
    * The server provides goto definition support.
    */
   private Boolean definitionProvider;
+  
+  /**
+   * The server provides Goto Type Definition support.
+   * 
+   * Since 3.6.0
+   */
+  private Either<Boolean, StaticRegistrationOptions> typeDefinitionProvider;
+  
+  /**
+   * The server provides Goto Implementation support.
+   * 
+   * Since 3.6.0
+   */
+  private Either<Boolean, StaticRegistrationOptions> implementationProvider;
   
   /**
    * The server provides find references support.
@@ -107,23 +122,27 @@ public class ServerCapabilities {
   private DocumentLinkOptions documentLinkProvider;
   
   /**
+   * The server provides color provider support.
+   * 
+   * Since 3.6.0
+   */
+  private ColorProviderOptions colorProvider;
+  
+  /**
    * The server provides execute command support.
    */
   private ExecuteCommandOptions executeCommandProvider;
+  
+  /**
+   * Workspace specific server capabilities
+   */
+  private WorkspaceServerCapabilities workspace;
   
   /**
    * Experimental server capabilities.
    */
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object experimental;
-  
-  /**
-   * Capabilities of the server regarding workspace.
-   * 
-   * This is an LSP <b>proposal</b>.
-   */
-  @Beta
-  private WorkspaceServerCapabilities workspace;
   
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
@@ -208,6 +227,60 @@ public class ServerCapabilities {
    */
   public void setDefinitionProvider(final Boolean definitionProvider) {
     this.definitionProvider = definitionProvider;
+  }
+  
+  /**
+   * The server provides Goto Type Definition support.
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getTypeDefinitionProvider() {
+    return this.typeDefinitionProvider;
+  }
+  
+  /**
+   * The server provides Goto Type Definition support.
+   * 
+   * Since 3.6.0
+   */
+  public void setTypeDefinitionProvider(final Either<Boolean, StaticRegistrationOptions> typeDefinitionProvider) {
+    this.typeDefinitionProvider = typeDefinitionProvider;
+  }
+  
+  public void setTypeDefinitionProvider(final Boolean typeDefinitionProvider) {
+    this.typeDefinitionProvider = Either.forLeft(typeDefinitionProvider);
+  }
+  
+  public void setTypeDefinitionProvider(final StaticRegistrationOptions typeDefinitionProvider) {
+    this.typeDefinitionProvider = Either.forRight(typeDefinitionProvider);
+  }
+  
+  /**
+   * The server provides Goto Implementation support.
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getImplementationProvider() {
+    return this.implementationProvider;
+  }
+  
+  /**
+   * The server provides Goto Implementation support.
+   * 
+   * Since 3.6.0
+   */
+  public void setImplementationProvider(final Either<Boolean, StaticRegistrationOptions> implementationProvider) {
+    this.implementationProvider = implementationProvider;
+  }
+  
+  public void setImplementationProvider(final Boolean implementationProvider) {
+    this.implementationProvider = Either.forLeft(implementationProvider);
+  }
+  
+  public void setImplementationProvider(final StaticRegistrationOptions implementationProvider) {
+    this.implementationProvider = Either.forRight(implementationProvider);
   }
   
   /**
@@ -376,6 +449,25 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides color provider support.
+   * 
+   * Since 3.6.0
+   */
+  @Pure
+  public ColorProviderOptions getColorProvider() {
+    return this.colorProvider;
+  }
+  
+  /**
+   * The server provides color provider support.
+   * 
+   * Since 3.6.0
+   */
+  public void setColorProvider(final ColorProviderOptions colorProvider) {
+    this.colorProvider = colorProvider;
+  }
+  
+  /**
    * The server provides execute command support.
    */
   @Pure
@@ -388,6 +480,21 @@ public class ServerCapabilities {
    */
   public void setExecuteCommandProvider(final ExecuteCommandOptions executeCommandProvider) {
     this.executeCommandProvider = executeCommandProvider;
+  }
+  
+  /**
+   * Workspace specific server capabilities
+   */
+  @Pure
+  public WorkspaceServerCapabilities getWorkspace() {
+    return this.workspace;
+  }
+  
+  /**
+   * Workspace specific server capabilities
+   */
+  public void setWorkspace(final WorkspaceServerCapabilities workspace) {
+    this.workspace = workspace;
   }
   
   /**
@@ -405,25 +512,6 @@ public class ServerCapabilities {
     this.experimental = experimental;
   }
   
-  /**
-   * Capabilities of the server regarding workspace.
-   * 
-   * This is an LSP <b>proposal</b>.
-   */
-  @Pure
-  public WorkspaceServerCapabilities getWorkspace() {
-    return this.workspace;
-  }
-  
-  /**
-   * Capabilities of the server regarding workspace.
-   * 
-   * This is an LSP <b>proposal</b>.
-   */
-  public void setWorkspace(final WorkspaceServerCapabilities workspace) {
-    this.workspace = workspace;
-  }
-  
   @Override
   @Pure
   public String toString() {
@@ -433,6 +521,8 @@ public class ServerCapabilities {
     b.add("completionProvider", this.completionProvider);
     b.add("signatureHelpProvider", this.signatureHelpProvider);
     b.add("definitionProvider", this.definitionProvider);
+    b.add("typeDefinitionProvider", this.typeDefinitionProvider);
+    b.add("implementationProvider", this.implementationProvider);
     b.add("referencesProvider", this.referencesProvider);
     b.add("documentHighlightProvider", this.documentHighlightProvider);
     b.add("documentSymbolProvider", this.documentSymbolProvider);
@@ -444,9 +534,10 @@ public class ServerCapabilities {
     b.add("documentOnTypeFormattingProvider", this.documentOnTypeFormattingProvider);
     b.add("renameProvider", this.renameProvider);
     b.add("documentLinkProvider", this.documentLinkProvider);
+    b.add("colorProvider", this.colorProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
-    b.add("experimental", this.experimental);
     b.add("workspace", this.workspace);
+    b.add("experimental", this.experimental);
     return b.toString();
   }
   
@@ -484,6 +575,16 @@ public class ServerCapabilities {
       if (other.definitionProvider != null)
         return false;
     } else if (!this.definitionProvider.equals(other.definitionProvider))
+      return false;
+    if (this.typeDefinitionProvider == null) {
+      if (other.typeDefinitionProvider != null)
+        return false;
+    } else if (!this.typeDefinitionProvider.equals(other.typeDefinitionProvider))
+      return false;
+    if (this.implementationProvider == null) {
+      if (other.implementationProvider != null)
+        return false;
+    } else if (!this.implementationProvider.equals(other.implementationProvider))
       return false;
     if (this.referencesProvider == null) {
       if (other.referencesProvider != null)
@@ -540,20 +641,25 @@ public class ServerCapabilities {
         return false;
     } else if (!this.documentLinkProvider.equals(other.documentLinkProvider))
       return false;
+    if (this.colorProvider == null) {
+      if (other.colorProvider != null)
+        return false;
+    } else if (!this.colorProvider.equals(other.colorProvider))
+      return false;
     if (this.executeCommandProvider == null) {
       if (other.executeCommandProvider != null)
         return false;
     } else if (!this.executeCommandProvider.equals(other.executeCommandProvider))
       return false;
-    if (this.experimental == null) {
-      if (other.experimental != null)
-        return false;
-    } else if (!this.experimental.equals(other.experimental))
-      return false;
     if (this.workspace == null) {
       if (other.workspace != null)
         return false;
     } else if (!this.workspace.equals(other.workspace))
+      return false;
+    if (this.experimental == null) {
+      if (other.experimental != null)
+        return false;
+    } else if (!this.experimental.equals(other.experimental))
       return false;
     return true;
   }
@@ -568,6 +674,8 @@ public class ServerCapabilities {
     result = prime * result + ((this.completionProvider== null) ? 0 : this.completionProvider.hashCode());
     result = prime * result + ((this.signatureHelpProvider== null) ? 0 : this.signatureHelpProvider.hashCode());
     result = prime * result + ((this.definitionProvider== null) ? 0 : this.definitionProvider.hashCode());
+    result = prime * result + ((this.typeDefinitionProvider== null) ? 0 : this.typeDefinitionProvider.hashCode());
+    result = prime * result + ((this.implementationProvider== null) ? 0 : this.implementationProvider.hashCode());
     result = prime * result + ((this.referencesProvider== null) ? 0 : this.referencesProvider.hashCode());
     result = prime * result + ((this.documentHighlightProvider== null) ? 0 : this.documentHighlightProvider.hashCode());
     result = prime * result + ((this.documentSymbolProvider== null) ? 0 : this.documentSymbolProvider.hashCode());
@@ -579,9 +687,10 @@ public class ServerCapabilities {
     result = prime * result + ((this.documentOnTypeFormattingProvider== null) ? 0 : this.documentOnTypeFormattingProvider.hashCode());
     result = prime * result + ((this.renameProvider== null) ? 0 : this.renameProvider.hashCode());
     result = prime * result + ((this.documentLinkProvider== null) ? 0 : this.documentLinkProvider.hashCode());
+    result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
-    result = prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
+    result = prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
     return result;
   }
 }

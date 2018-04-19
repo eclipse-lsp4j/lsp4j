@@ -13,13 +13,18 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.lsp4j.CodeActionParams;
 import org.eclipse.lsp4j.CodeLens;
 import org.eclipse.lsp4j.CodeLensParams;
+import org.eclipse.lsp4j.ColorInformation;
+import org.eclipse.lsp4j.ColorPresentation;
+import org.eclipse.lsp4j.ColorPresentationParams;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
+import org.eclipse.lsp4j.CompletionParams;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidCloseTextDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
+import org.eclipse.lsp4j.DocumentColorParams;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentHighlight;
 import org.eclipse.lsp4j.DocumentLink;
@@ -55,7 +60,7 @@ public interface TextDocumentService {
 	 * Registration Options: CompletionRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(TextDocumentPositionParams position);
+	CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(CompletionParams position);
 
 	/**
 	 * The request is sent from the client to the server to resolve additional
@@ -91,6 +96,32 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position);
+	
+	/**
+	 * The goto type definition request is sent from the client to the server to resolve
+	 * the type definition location of a symbol at a given text document position.
+	 * 
+	 * Registration Options: TextDocumentRegistrationOptions
+	 * 
+	 * Since version 3.6.0
+	 */
+	@JsonRequest
+	default CompletableFuture<List<? extends Location>> typeDefinition(TextDocumentPositionParams position) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The goto implementation request is sent from the client to the server to resolve
+	 * the implementation location of a symbol at a given text document position.
+	 * 
+	 * Registration Options: TextDocumentRegistrationOptions
+	 * 
+	 * Since version 3.6.0
+	 */
+	@JsonRequest
+	default CompletableFuture<List<? extends Location>> implementation(TextDocumentPositionParams position) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The references request is sent from the client to the server to resolve
@@ -259,6 +290,34 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest(value="documentLink/resolve", useSegment = false)
 	default CompletableFuture<DocumentLink> documentLinkResolve(DocumentLink params) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The document color request is sent from the client to the server to list all color refereces found in a given text
+	 * document. Along with the range, a color value in RGB is returned.
+	 * 
+	 * Clients can use the result to decorate color references in an editor. For example:
+	 *  - Color boxes showing the actual color next to the reference
+	 *  - Show a color picker when a color reference is edited
+	 * 
+	 * Since version 3.6.0
+	 */
+	@JsonRequest
+	default CompletableFuture<List<ColorInformation>> documentColor(DocumentColorParams params) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The color presentation request is sent from the client to the server to obtain a list of presentations for a color
+	 * value at a given location. Clients can use the result to
+	 *  - modify a color reference.
+	 *  - show in a color picker and let users pick one of the presentations
+	 * 
+	 * Since version 3.6.0
+	 */
+	@JsonRequest
+	default CompletableFuture<List<ColorPresentation>> colorPresentation(ColorPresentationParams params) {
 		throw new UnsupportedOperationException();
 	}
 }

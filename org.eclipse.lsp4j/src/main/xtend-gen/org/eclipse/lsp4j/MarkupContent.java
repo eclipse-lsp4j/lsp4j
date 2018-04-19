@@ -27,7 +27,7 @@ public class MarkupContent {
    * The type of the Markup.
    */
   @NonNull
-  private String MarkupKind;
+  private String kind;
   
   /**
    * The content itself.
@@ -40,15 +40,15 @@ public class MarkupContent {
    */
   @Pure
   @NonNull
-  public String getMarkupKind() {
-    return this.MarkupKind;
+  public String getKind() {
+    return this.kind;
   }
   
   /**
    * The type of the Markup.
    */
-  public void setMarkupKind(@NonNull final String MarkupKind) {
-    this.MarkupKind = MarkupKind;
+  public void setKind(@NonNull final String kind) {
+    this.kind = kind;
   }
   
   /**
@@ -71,7 +71,7 @@ public class MarkupContent {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("MarkupKind", this.MarkupKind);
+    b.add("kind", this.kind);
     b.add("value", this.value);
     return b.toString();
   }
@@ -86,10 +86,10 @@ public class MarkupContent {
     if (getClass() != obj.getClass())
       return false;
     MarkupContent other = (MarkupContent) obj;
-    if (this.MarkupKind == null) {
-      if (other.MarkupKind != null)
+    if (this.kind == null) {
+      if (other.kind != null)
         return false;
-    } else if (!this.MarkupKind.equals(other.MarkupKind))
+    } else if (!this.kind.equals(other.kind))
       return false;
     if (this.value == null) {
       if (other.value != null)
@@ -104,7 +104,7 @@ public class MarkupContent {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.MarkupKind== null) ? 0 : this.MarkupKind.hashCode());
+    result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
     return result;
   }

@@ -1,0 +1,197 @@
+/**
+ * Copyright (c) 2018 TypeFox GmbH (http://www.typefox.io) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ */
+package org.eclipse.lsp4j.adapters;
+
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.internal.bind.TypeAdapters;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import java.util.List;
+import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.InitializeParams;
+import org.eclipse.lsp4j.WorkspaceFolder;
+import org.eclipse.lsp4j.generator.TypeAdapterImpl;
+
+/**
+ * A type adapter for the InitializeParams protocol type.
+ */
+@TypeAdapterImpl(InitializeParams.class)
+@SuppressWarnings("all")
+public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
+  public static class Factory implements TypeAdapterFactory {
+    public <T> TypeAdapter<T> create(final Gson gson, final TypeToken<T> typeToken) {
+      if (!InitializeParams.class.isAssignableFrom(typeToken.getRawType())) {
+      	return null;
+      }
+      return (TypeAdapter<T>) new InitializeParamsTypeAdapter(gson);
+    }
+  }
+  
+  protected Object readInitializationOptions(final JsonReader in) throws IOException {
+    return TypeAdapters.JSON_ELEMENT.read(in);
+  }
+  
+  protected void writeProcessId(final JsonWriter out, final Integer value) throws IOException {
+    if ((value == null)) {
+      final boolean previousSerializeNulls = out.getSerializeNulls();
+      out.setSerializeNulls(true);
+      out.nullValue();
+      out.setSerializeNulls(previousSerializeNulls);
+    } else {
+      out.value(value);
+    }
+  }
+  
+  protected void writeRootUri(final JsonWriter out, final String value) throws IOException {
+    if ((value == null)) {
+      final boolean previousSerializeNulls = out.getSerializeNulls();
+      out.setSerializeNulls(true);
+      out.nullValue();
+      out.setSerializeNulls(previousSerializeNulls);
+    } else {
+      out.value(value);
+    }
+  }
+  
+  private final static TypeToken<List<WorkspaceFolder>> WORKSPACEFOLDERS_TYPE_TOKEN = new TypeToken<List<WorkspaceFolder>>() {};
+  
+  private final Gson gson;
+  
+  public InitializeParamsTypeAdapter(final Gson gson) {
+    this.gson = gson;
+  }
+  
+  public InitializeParams read(final JsonReader in) throws IOException {
+    JsonToken nextToken = in.peek();
+    if (nextToken == JsonToken.NULL) {
+    	return null;
+    }
+    
+    InitializeParams result = new InitializeParams();
+    in.beginObject();
+    while (in.hasNext()) {
+    	String name = in.nextName();
+    	switch (name) {
+    	case "processId":
+    		result.setProcessId(readProcessId(in));
+    		break;
+    	case "rootPath":
+    		result.setRootPath(readRootPath(in));
+    		break;
+    	case "rootUri":
+    		result.setRootUri(readRootUri(in));
+    		break;
+    	case "initializationOptions":
+    		result.setInitializationOptions(readInitializationOptions(in));
+    		break;
+    	case "capabilities":
+    		result.setCapabilities(readCapabilities(in));
+    		break;
+    	case "clientName":
+    		result.setClientName(readClientName(in));
+    		break;
+    	case "trace":
+    		result.setTrace(readTrace(in));
+    		break;
+    	case "workspaceFolders":
+    		result.setWorkspaceFolders(readWorkspaceFolders(in));
+    		break;
+    	default:
+    		in.skipValue();
+    	}
+    }
+    in.endObject();
+    return result;
+  }
+  
+  protected Integer readProcessId(final JsonReader in) throws IOException {
+    return gson.fromJson(in, Integer.class);
+  }
+  
+  protected String readRootPath(final JsonReader in) throws IOException {
+    return gson.fromJson(in, String.class);
+  }
+  
+  protected String readRootUri(final JsonReader in) throws IOException {
+    return gson.fromJson(in, String.class);
+  }
+  
+  protected ClientCapabilities readCapabilities(final JsonReader in) throws IOException {
+    return gson.fromJson(in, ClientCapabilities.class);
+  }
+  
+  protected String readClientName(final JsonReader in) throws IOException {
+    return gson.fromJson(in, String.class);
+  }
+  
+  protected String readTrace(final JsonReader in) throws IOException {
+    return gson.fromJson(in, String.class);
+  }
+  
+  protected List<WorkspaceFolder> readWorkspaceFolders(final JsonReader in) throws IOException {
+    return gson.fromJson(in, WORKSPACEFOLDERS_TYPE_TOKEN.getType());
+  }
+  
+  public void write(final JsonWriter out, final InitializeParams value) throws IOException {
+    if (value == null) {
+    	out.nullValue();
+    	return;
+    }
+    
+    out.beginObject();
+    out.name("processId");
+    writeProcessId(out, value.getProcessId());
+    out.name("rootPath");
+    writeRootPath(out, value.getRootPath());
+    out.name("rootUri");
+    writeRootUri(out, value.getRootUri());
+    out.name("initializationOptions");
+    writeInitializationOptions(out, value.getInitializationOptions());
+    out.name("capabilities");
+    writeCapabilities(out, value.getCapabilities());
+    out.name("clientName");
+    writeClientName(out, value.getClientName());
+    out.name("trace");
+    writeTrace(out, value.getTrace());
+    out.name("workspaceFolders");
+    writeWorkspaceFolders(out, value.getWorkspaceFolders());
+    out.endObject();
+  }
+  
+  protected void writeRootPath(final JsonWriter out, final String value) throws IOException {
+    gson.toJson(value, String.class, out);
+  }
+  
+  protected void writeInitializationOptions(final JsonWriter out, final Object value) throws IOException {
+    if (value == null)
+    	out.nullValue();
+    else
+    	gson.toJson(value, value.getClass(), out);
+  }
+  
+  protected void writeCapabilities(final JsonWriter out, final ClientCapabilities value) throws IOException {
+    gson.toJson(value, ClientCapabilities.class, out);
+  }
+  
+  protected void writeClientName(final JsonWriter out, final String value) throws IOException {
+    gson.toJson(value, String.class, out);
+  }
+  
+  protected void writeTrace(final JsonWriter out, final String value) throws IOException {
+    gson.toJson(value, String.class, out);
+  }
+  
+  protected void writeWorkspaceFolders(final JsonWriter out, final List<WorkspaceFolder> value) throws IOException {
+    gson.toJson(value, WORKSPACEFOLDERS_TYPE_TOKEN.getType(), out);
+  }
+}

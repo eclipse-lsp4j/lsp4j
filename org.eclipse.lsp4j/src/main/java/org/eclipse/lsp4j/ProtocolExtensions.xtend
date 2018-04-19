@@ -7,16 +7,18 @@
  *******************************************************************************/
 package org.eclipse.lsp4j
 
+import com.google.common.annotations.Beta
+import java.util.ArrayList
 import java.util.List
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
-import java.util.ArrayList
 
 /**
  * Representation of a computed mapping from ranges to the appropriate
  * highlighting style.
  */
 @JsonRpcData
+@Beta
 class ColoringParams {
 
 	/**
@@ -47,6 +49,7 @@ class ColoringParams {
  * highlighted based on the underlying model.
  */
 @JsonRpcData
+@Beta
 class ColoringInformation {
 
 	/**
@@ -73,6 +76,7 @@ class ColoringInformation {
 	}
 }
 
+@Beta
 class ColoringStyle {
 	
 	public static val Identifier     = 1

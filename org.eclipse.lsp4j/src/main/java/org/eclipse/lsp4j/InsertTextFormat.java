@@ -25,8 +25,6 @@ public enum InsertTextFormat {
      * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
      * the end of the snippet. Placeholders with equal identifiers are linked,
      * that is typing in one will update others too.
-     *
-     * See also: https://github.com/Microsoft/vscode/blob/master/src/vs/editor/contrib/snippet/common/snippet.md
      */
     Snippet(2);
 	

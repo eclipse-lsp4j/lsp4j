@@ -11,6 +11,9 @@ import java.util.List;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The client supports the following `CompletionItem` specific capabilities.
+ */
 @SuppressWarnings("all")
 public class CompletionItemCapabilities {
   /**

@@ -19,6 +19,7 @@ import org.eclipse.lsp4j.FormattingCapabilities;
 import org.eclipse.lsp4j.HoverCapabilities;
 import org.eclipse.lsp4j.ImplementationCapabilities;
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities;
+import org.eclipse.lsp4j.PublishDiagnosticsCapabilities;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
@@ -126,6 +127,11 @@ public class TextDocumentClientCapabilities {
    * Capabilities specific to the `textDocument/rename`
    */
   private RenameCapabilities rename;
+  
+  /**
+   * Capabilities specific to `textDocument/publishDiagnostics`.
+   */
+  private PublishDiagnosticsCapabilities publishDiagnostics;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -405,6 +411,21 @@ public class TextDocumentClientCapabilities {
     this.rename = rename;
   }
   
+  /**
+   * Capabilities specific to `textDocument/publishDiagnostics`.
+   */
+  @Pure
+  public PublishDiagnosticsCapabilities getPublishDiagnostics() {
+    return this.publishDiagnostics;
+  }
+  
+  /**
+   * Capabilities specific to `textDocument/publishDiagnostics`.
+   */
+  public void setPublishDiagnostics(final PublishDiagnosticsCapabilities publishDiagnostics) {
+    this.publishDiagnostics = publishDiagnostics;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -427,6 +448,7 @@ public class TextDocumentClientCapabilities {
     b.add("documentLink", this.documentLink);
     b.add("colorProvider", this.colorProvider);
     b.add("rename", this.rename);
+    b.add("publishDiagnostics", this.publishDiagnostics);
     return b.toString();
   }
   
@@ -530,6 +552,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.rename.equals(other.rename))
       return false;
+    if (this.publishDiagnostics == null) {
+      if (other.publishDiagnostics != null)
+        return false;
+    } else if (!this.publishDiagnostics.equals(other.publishDiagnostics))
+      return false;
     return true;
   }
   
@@ -556,6 +583,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.documentLink== null) ? 0 : this.documentLink.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
+    result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
     return result;
   }
 }

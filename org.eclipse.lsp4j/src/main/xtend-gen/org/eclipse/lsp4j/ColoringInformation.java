@@ -7,6 +7,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
@@ -18,6 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Representation of a range and highlighting style identifiers that should be
  * highlighted based on the underlying model.
  */
+@Beta
 @SuppressWarnings("all")
 public class ColoringInformation {
   /**

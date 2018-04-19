@@ -7,7 +7,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.WorkspaceFolder;
@@ -15,7 +14,9 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-@Beta
+/**
+ * The workspace folder change event.
+ */
 @SuppressWarnings("all")
 public class WorkspaceFoldersChangeEvent {
   /**
@@ -29,6 +30,14 @@ public class WorkspaceFoldersChangeEvent {
    */
   @NonNull
   private List<WorkspaceFolder> removed = new ArrayList<WorkspaceFolder>();
+  
+  public WorkspaceFoldersChangeEvent() {
+  }
+  
+  public WorkspaceFoldersChangeEvent(@NonNull final List<WorkspaceFolder> added, @NonNull final List<WorkspaceFolder> removed) {
+    this.added = added;
+    this.removed = removed;
+  }
   
   /**
    * The array of added workspace folders

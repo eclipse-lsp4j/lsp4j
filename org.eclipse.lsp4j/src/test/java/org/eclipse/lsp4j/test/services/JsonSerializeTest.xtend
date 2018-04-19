@@ -139,6 +139,7 @@ class JsonSerializeTest {
 			  "id": "1",
 			  "method": "initialize",
 			  "params": {
+			    "processId": null,
 			    "rootUri": "file:///tmp/foo"
 			  }
 			}
@@ -239,6 +240,7 @@ class JsonSerializeTest {
 			  "id": "1",
 			  "method": "initialize",
 			  "params": {
+			    "processId": null,
 			    "rootUri": "file:///tmp/foo",
 			    "capabilities": {
 			      "workspace": {},
@@ -570,7 +572,7 @@ class JsonSerializeTest {
 			id = "12"
 			result = new Hover => [
 				contents = new MarkupContent => [
-					markupKind = "plaintext"
+					kind = "plaintext"
 					value = "foo"
 				]
 			]
@@ -581,7 +583,7 @@ class JsonSerializeTest {
 			  "id": "12",
 			  "result": {
 			    "contents": {
-			      "MarkupKind": "plaintext",
+			      "kind": "plaintext",
 			      "value": "foo"
 			    }
 			  }

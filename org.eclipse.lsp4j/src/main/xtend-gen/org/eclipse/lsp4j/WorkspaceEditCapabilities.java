@@ -11,6 +11,9 @@ import com.google.common.annotations.Beta;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to `WorkspaceEdit`s
+ */
 @SuppressWarnings("all")
 public class WorkspaceEditCapabilities {
   /**

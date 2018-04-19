@@ -43,7 +43,21 @@ public enum CompletionItemKind {
 	
 	File(17),
 	
-	Reference(18);
+	Reference(18),
+	
+	Folder(19),
+	
+	EnumMember(20),
+	
+	Constant(21),
+	
+	Struct(22),
+	
+	Event(23),
+	
+	Operator(24),
+	
+	TypeParameter(25);
 	
 	private final int value;
 	

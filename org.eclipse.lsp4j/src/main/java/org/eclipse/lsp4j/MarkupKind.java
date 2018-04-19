@@ -14,14 +14,16 @@ package org.eclipse.lsp4j;
  * Please note that `MarkupKind`s must not start with a `$`. These kinds
  * are reserved for internal usage.
  */
-public class MarkupKind {
-  private MarkupKind() {}
-  /**
-   * Plain text is supported as a content format.
-   */
-  public static final String PLAINTEXT = "plaintext";
-  /**
-   * Markdown is supported as a content format.
-   */
-  public static final String MARKDOWN = "markdown";
+public final class MarkupKind {
+	private MarkupKind() {}
+
+	/**
+	 * Plain text is supported as a content format.
+	 */
+	public static final String PLAINTEXT = "plaintext";
+	
+	/**
+	 * Markdown is supported as a content format.
+	 */
+	public static final String MARKDOWN = "markdown";
 }

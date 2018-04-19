@@ -8,7 +8,9 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.ParameterInformation;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -28,7 +30,7 @@ public class SignatureInformation {
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
-  private String documentation;
+  private Either<String, MarkupContent> documentation;
   
   /**
    * The parameters of this signature.
@@ -44,7 +46,13 @@ public class SignatureInformation {
   
   public SignatureInformation(@NonNull final String label, final String documentation, final List<ParameterInformation> parameters) {
     this.label = label;
-    this.documentation = documentation;
+    this.setDocumentation(documentation);
+    this.parameters = parameters;
+  }
+  
+  public SignatureInformation(@NonNull final String label, final MarkupContent documentation, final List<ParameterInformation> parameters) {
+    this.label = label;
+    this.setDocumentation(documentation);
     this.parameters = parameters;
   }
   
@@ -68,15 +76,23 @@ public class SignatureInformation {
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
   @Pure
-  public String getDocumentation() {
+  public Either<String, MarkupContent> getDocumentation() {
     return this.documentation;
   }
   
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
    */
-  public void setDocumentation(final String documentation) {
+  public void setDocumentation(final Either<String, MarkupContent> documentation) {
     this.documentation = documentation;
+  }
+  
+  public void setDocumentation(final String documentation) {
+    this.documentation = Either.forLeft(documentation);
+  }
+  
+  public void setDocumentation(final MarkupContent documentation) {
+    this.documentation = Either.forRight(documentation);
   }
   
   /**

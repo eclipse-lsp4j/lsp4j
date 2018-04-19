@@ -12,6 +12,9 @@ import org.eclipse.lsp4j.SymbolKindCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Capabilities specific to the `textDocument/documentSymbol`
+ */
 @SuppressWarnings("all")
 public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
   /**

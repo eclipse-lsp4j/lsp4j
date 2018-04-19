@@ -47,6 +47,15 @@ public class Hover {
     this.range = range;
   }
   
+  public Hover(@NonNull final MarkupContent contents) {
+    this.setContents(contents);
+  }
+  
+  public Hover(@NonNull final MarkupContent contents, final Range range) {
+    this.setContents(contents);
+    this.range = range;
+  }
+  
   /**
    * The hover's content as markdown
    */

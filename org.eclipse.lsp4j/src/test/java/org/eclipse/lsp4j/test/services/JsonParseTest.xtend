@@ -395,7 +395,7 @@ class JsonParseTest {
 			    "id": "12",
 			    "result": {
 			        "contents": {
-			            "MarkupKind": "plaintext",
+			            "kind": "plaintext",
 			            "value": "foo"
 			        }
 			    }
@@ -405,7 +405,7 @@ class JsonParseTest {
 			id = "12"
 			result = new Hover => [
 				contents = new MarkupContent => [
-					markupKind = "plaintext"
+					kind = "plaintext"
 					value = "foo"
 				]
 			]

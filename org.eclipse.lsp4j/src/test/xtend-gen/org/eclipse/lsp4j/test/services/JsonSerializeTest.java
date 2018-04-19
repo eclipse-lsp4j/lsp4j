@@ -205,6 +205,9 @@ public class JsonSerializeTest {
     _builder.append("\"params\": {");
     _builder.newLine();
     _builder.append("    ");
+    _builder.append("\"processId\": null,");
+    _builder.newLine();
+    _builder.append("    ");
     _builder.append("\"rootUri\": \"file:///tmp/foo\"");
     _builder.newLine();
     _builder.append("  ");
@@ -395,6 +398,9 @@ public class JsonSerializeTest {
     _builder.newLine();
     _builder.append("  ");
     _builder.append("\"params\": {");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"processId\": null,");
     _builder.newLine();
     _builder.append("    ");
     _builder.append("\"rootUri\": \"file:///tmp/foo\",");
@@ -1210,7 +1216,7 @@ public class JsonSerializeTest {
       final Procedure1<Hover> _function_1 = (Hover it_1) -> {
         MarkupContent _markupContent = new MarkupContent();
         final Procedure1<MarkupContent> _function_2 = (MarkupContent it_2) -> {
-          it_2.setMarkupKind("plaintext");
+          it_2.setKind("plaintext");
           it_2.setValue("foo");
         };
         MarkupContent _doubleArrow = ObjectExtensions.<MarkupContent>operator_doubleArrow(_markupContent, _function_2);
@@ -1236,7 +1242,7 @@ public class JsonSerializeTest {
     _builder.append("\"contents\": {");
     _builder.newLine();
     _builder.append("      ");
-    _builder.append("\"MarkupKind\": \"plaintext\",");
+    _builder.append("\"kind\": \"plaintext\",");
     _builder.newLine();
     _builder.append("      ");
     _builder.append("\"value\": \"foo\"");

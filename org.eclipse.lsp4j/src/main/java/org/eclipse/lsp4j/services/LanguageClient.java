@@ -7,12 +7,12 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.services;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
 import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
+import org.eclipse.lsp4j.ConfigurationParams;
 import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
@@ -22,8 +22,6 @@ import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
-
-import com.google.common.annotations.Beta;
 
 public interface LanguageClient {
 	/**
@@ -95,15 +93,24 @@ public interface LanguageClient {
 	 * The workspace/workspaceFolders request is sent from the server to the client
 	 * to fetch the current open list of workspace folders.
 	 *
-	 * This API is a <b>proposal</b> from LSP and may change.
-	 *
 	 * @return null in the response if only a single file is open in the tool,
 	 *         an empty array if a workspace is open but no folders are configured,
 	 *         the workspace folders otherwise.
 	 */
-	@Beta
 	@JsonRequest("workspace/workspaceFolders")
 	default CompletableFuture<List<WorkspaceFolder>> workspaceFolders() {
-		return CompletableFuture.completedFuture(Collections.emptyList());
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The workspace/configuration request is sent from the server to the client to fetch
+	 * configuration settings from the client. The request can fetch n configuration settings
+	 * in one roundtrip. The order of the returned configuration settings correspond to the
+	 * order of the passed ConfigurationItems (e.g. the first item in the response is the
+	 * result for the first configuration item in the params).
+	 */
+	@JsonRequest("workspace/configuration")
+	default CompletableFuture<List<Object>> configuration(ConfigurationParams configurationParams) {
+		throw new UnsupportedOperationException();
 	}
 }

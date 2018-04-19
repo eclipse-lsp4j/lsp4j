@@ -7,12 +7,14 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.DocumentSelector;
+import java.util.List;
+import org.eclipse.lsp4j.DocumentFilter;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Since most of the registration options require to specify a document selector there is a base interface that can be used.
+ * Since most of the registration options require to specify a document selector there is
+ * a base interface that can be used.
  */
 @SuppressWarnings("all")
 public class TextDocumentRegistrationOptions {
@@ -20,12 +22,12 @@ public class TextDocumentRegistrationOptions {
    * A document selector to identify the scope of the registration. If set to null
    * the document selector provided on the client side will be used.
    */
-  private DocumentSelector documentSelector;
+  private List<DocumentFilter> documentSelector;
   
   public TextDocumentRegistrationOptions() {
   }
   
-  public TextDocumentRegistrationOptions(final DocumentSelector documentSelector) {
+  public TextDocumentRegistrationOptions(final List<DocumentFilter> documentSelector) {
     this.documentSelector = documentSelector;
   }
   
@@ -34,7 +36,7 @@ public class TextDocumentRegistrationOptions {
    * the document selector provided on the client side will be used.
    */
   @Pure
-  public DocumentSelector getDocumentSelector() {
+  public List<DocumentFilter> getDocumentSelector() {
     return this.documentSelector;
   }
   
@@ -42,7 +44,7 @@ public class TextDocumentRegistrationOptions {
    * A document selector to identify the scope of the registration. If set to null
    * the document selector provided on the client side will be used.
    */
-  public void setDocumentSelector(final DocumentSelector documentSelector) {
+  public void setDocumentSelector(final List<DocumentFilter> documentSelector) {
     this.documentSelector = documentSelector;
   }
   

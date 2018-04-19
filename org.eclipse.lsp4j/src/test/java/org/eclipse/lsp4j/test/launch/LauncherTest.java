@@ -22,11 +22,11 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.CompletionList;
+import org.eclipse.lsp4j.CompletionParams;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -46,7 +46,6 @@ public class LauncherTest {
 	private static final long TIMEOUT = 2000;
 	
 	@Test public void testNotification() throws IOException {
-		
 		MessageParams p = new MessageParams();
 		p.setMessage("Hello World");
 		p.setType(MessageType.Info);
@@ -57,8 +56,7 @@ public class LauncherTest {
 	}
 	
 	@Test public void testRequest() throws Exception {
-		
-		TextDocumentPositionParams p = new TextDocumentPositionParams();
+		CompletionParams p = new CompletionParams();
 		p.setPosition(new Position(1,1));
 		p.setTextDocument(new TextDocumentIdentifier("test/foo.txt"));
 		
@@ -82,7 +80,6 @@ public class LauncherTest {
 	
 	
 	static class AssertingEndpoint implements Endpoint {
-		
 		public Map<String, Pair<Object, Object>> expectedRequests = new LinkedHashMap<>();
 		
 		@Override
