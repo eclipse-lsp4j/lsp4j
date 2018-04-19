@@ -663,6 +663,33 @@ public class DebugMessageJsonHandlerTest {
 		});
 	}
 
+    @Test
+    public void testNormalResponseExtraFields_AllOrders() {
+        Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+        supportedMethods.put("foo", JsonRpcMethod.request("foo",
+                new TypeToken<Location>() {}.getType(),
+                new TypeToken<Void>() {
+                }.getType()));
+        DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
+        handler.setMethodProvider((id) -> "foo");
+        String[] properties = new String[] {
+                "\"seq\":2",
+                "\"type\":\"response\"",
+                "\"request_seq\":5",
+                "\"success\":true",
+                "\"body\": {\"uri\": \"dummy://mymodel.mydsl\"}",
+                "\"message\": null"
+                };
+        testAllPermutations(properties, json -> {
+            ResponseMessage message = (ResponseMessage) handler.parseMessage(json);
+            Object result = message.getResult();
+            Class<? extends Object> class1 = result.getClass();
+            Assert.assertEquals(Location.class, class1);
+            Assert.assertEquals("dummy://mymodel.mydsl", ((Location)result).uri);
+            Assert.assertNull(message.getError());
+        });
+    }
+
 	@Test
 	public void testErrorResponse_AllOrders() {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();

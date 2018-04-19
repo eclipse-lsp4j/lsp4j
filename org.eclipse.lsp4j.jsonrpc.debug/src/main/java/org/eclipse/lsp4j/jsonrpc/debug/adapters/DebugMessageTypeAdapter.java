@@ -224,7 +224,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					break;
 				}
 				case "message": {
-					message = in.nextString();
+					if (in.peek() == JsonToken.NULL) {
+						in.nextNull();
+					} else {
+						message = in.nextString();
+					}
 					break;
 				}
 				case "arguments": {
@@ -355,6 +359,12 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				ResponseError error = new ResponseError();
 				error.setCode(ResponseErrorCode.UnknownErrorCode);
 				error.setData(body);
+				if (errorMessage == null) {
+					// Some debug servers/clients don't provide a "message" field on an error.
+					// Generally in those cases the body has some extra details to figure out
+					// what went wrong.
+					errorMessage = "Unset error message.";
+				}
 				error.setMessage(errorMessage);
 				message.setError(error);
 			} else {
