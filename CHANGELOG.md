@@ -16,7 +16,8 @@ Breaking API changes:
  * All protocol properties with type `Object` are parsed to `JsonElement` (previously `Map` for objects and `List` for arrays)
  * Corrected `DocumentFilter.schema` property name to `scheme`
  * Removed `DocumentSelector` interface
-
+ * `VersionedTextDocumentIdentifier.version` changed from type `int` to `Integer`, thus can be `null` now.
+ 
 -----
 
 ### v0.3.0 (Sep. 2017)
