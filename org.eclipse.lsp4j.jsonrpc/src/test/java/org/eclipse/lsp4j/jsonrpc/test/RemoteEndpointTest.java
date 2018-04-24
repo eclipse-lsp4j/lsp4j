@@ -12,6 +12,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -22,8 +23,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
+import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -253,6 +256,50 @@ public class RemoteEndpointTest {
 			Assert.fail("Expected an ExecutionException.");
 		} catch (ExecutionException exception) {
 			assertEquals("java.lang.RuntimeException: BAAZ", exception.getMessage());
+		}
+	}
+	
+	@Test
+	public void testExceptionInOutputStream() throws Exception {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(RemoteEndpoint.class);
+			
+			TestEndpoint endp = new TestEndpoint();
+			MessageConsumer consumer = new MessageConsumer() {
+				@Override
+				public void consume(Message message) throws JsonRpcException {
+					throw new JsonRpcException(new SocketException("Permission denied: connect"));
+				}
+			};
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+			endpoint.notify("foo", null);
+			
+			logMessages.await(Level.WARNING, "Failed to send notification message.");
+		} finally {
+			logMessages.unregister();
+		}
+	}
+	
+	@Test
+	public void testOutputStreamClosed() throws Exception {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(RemoteEndpoint.class);
+			
+			TestEndpoint endp = new TestEndpoint();
+			MessageConsumer consumer = new MessageConsumer() {
+				@Override
+				public void consume(Message message) throws JsonRpcException {
+					throw new JsonRpcException(new SocketException("Socket closed"));
+				}
+			};
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+			endpoint.notify("foo", null);
+			
+			logMessages.await(Level.INFO, "Failed to send notification message.");
+		} finally {
+			logMessages.unregister();
 		}
 	}
 

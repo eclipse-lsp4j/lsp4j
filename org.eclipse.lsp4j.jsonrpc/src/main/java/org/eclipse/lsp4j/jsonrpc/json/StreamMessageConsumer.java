@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
@@ -63,8 +64,8 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 				output.write(contentBytes);
 				output.flush();
 			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (IOException exception) {
+			throw new JsonRpcException(exception);
 		}
 	}
 

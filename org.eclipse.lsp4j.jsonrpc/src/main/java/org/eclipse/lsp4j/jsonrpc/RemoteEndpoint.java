@@ -118,7 +118,12 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	@Override
 	public void notify(String method, Object parameter) {
 		NotificationMessage notificationMessage = createNotificationMessage(method, parameter);
-		out.consume(notificationMessage);
+		try {
+			out.consume(notificationMessage);
+		} catch (Exception exception) {
+			Level logLevel = JsonRpcException.indicatesStreamClosed(exception) ? Level.INFO : Level.WARNING;
+			LOG.log(logLevel, "Failed to send notification message.", exception);
+		}
 	}
 
 	protected NotificationMessage createNotificationMessage(String method, Object parameter) {

@@ -19,6 +19,7 @@ import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
@@ -52,7 +53,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 	}
 
 	@Override
-	public void consume(Message message) throws MessageIssueException {
+	public void consume(Message message) throws MessageIssueException, JsonRpcException {
 		List<MessageIssue> result = new ArrayList<>();
 		try {
 			validate(message, result, new LinkedList<>(), new LinkedList<>());
