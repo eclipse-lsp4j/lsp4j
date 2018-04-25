@@ -23,23 +23,24 @@ public class LogMessageAccumulator extends Handler {
 	private static final long TIMEOUT = 2000;
 
 	private final List<LogRecord> records = new ArrayList<>();
-
 	private final List<Logger> registeredLoggers = new ArrayList<>();
-
+	
 	public Logger registerTo(Class<?> clazz) {
 		return registerTo(clazz.getName());
 	}
-
+	
 	public Logger registerTo(String name) {
 		Logger logger = Logger.getLogger(name);
 		logger.setUseParentHandlers(false);
 		logger.addHandler(this);
+		logger.setLevel(Level.ALL);
 		registeredLoggers.add(logger);
 		return logger;
 	}
-
+	
 	public void unregister() {
 		for (Logger logger : registeredLoggers) {
+			logger.setLevel(null);
 			logger.removeHandler(this);
 			logger.setUseParentHandlers(true);
 		}
