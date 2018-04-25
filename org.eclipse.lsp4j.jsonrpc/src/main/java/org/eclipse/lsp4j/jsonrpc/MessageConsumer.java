@@ -15,7 +15,8 @@ public interface MessageConsumer {
 	 * Consume a single message.
 	 * 
 	 * @throws MessageIssueException when an issue is found that prevents further processing of the message
+	 * @throws JsonRpcException when accessing the JSON-RPC communication channel fails
 	 */
-	void consume(Message message) throws MessageIssueException;
+	void consume(Message message) throws MessageIssueException, JsonRpcException;
 	
 }

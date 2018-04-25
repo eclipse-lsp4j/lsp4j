@@ -18,6 +18,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionItemKind;
@@ -29,6 +31,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.launch.LSPLauncher;
@@ -133,6 +136,8 @@ public class LauncherTest {
 	private Launcher<LanguageServer> clientLauncher;
 	private Future<?> clientListening;
 	
+	private Level logLevel;
+	
 	@Before public void setup() throws IOException {
 		PipedInputStream inClient = new PipedInputStream();
 		PipedOutputStream outClient = new PipedOutputStream();
@@ -148,11 +153,18 @@ public class LauncherTest {
 		client = new AssertingEndpoint();
 		clientLauncher = LSPLauncher.createClientLauncher(ServiceEndpoints.toServiceObject(client, LanguageClient.class), inClient, outClient);
 		clientListening = clientLauncher.startListening();
+		
+		Logger logger = Logger.getLogger(StreamMessageProducer.class.getName());
+		logLevel = logger.getLevel();
+		logger.setLevel(Level.SEVERE);
 	}
 	
 	@After public void teardown() throws InterruptedException, ExecutionException {
 		clientListening.cancel(true);
 		serverListening.cancel(true);
+		Thread.sleep(10);
+		Logger logger = Logger.getLogger(StreamMessageProducer.class.getName());
+		logger.setLevel(logLevel);
 	}
 
 }

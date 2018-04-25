@@ -10,12 +10,11 @@ package org.eclipse.lsp4j.jsonrpc.json;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InterruptedIOException;
-import java.nio.channels.ClosedChannelException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.MessageIssueHandler;
@@ -73,51 +72,48 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 			boolean newLine = false;
 			Headers headers = new Headers();
 			while (keepRunning) {
-				try {
-					int c = input.read();
-					if (c == -1) {
-						// End of input stream has been reached
-						keepRunning = false;
-					} else {
-						if (debugBuilder == null)
-							debugBuilder = new StringBuilder();
-						debugBuilder.append((char) c);
-						if (c == '\n') {
-							if (newLine) {
-								// Two consecutive newlines have been read, which signals the start of the message content
-								if (headers.contentLength < 0) {
-									fireError(new IllegalStateException("Missing header " + CONTENT_LENGTH_HEADER
-											+ " in input \"" + debugBuilder + "\""));
-								} else {
-									boolean result = handleMessage(input, headers);
-									if (!result)
-										keepRunning = false;
-									newLine = false;
-								}
-								headers = new Headers();
-								debugBuilder = null;
-							} else if (headerBuilder != null) {
-								// A single newline ends a header line
-								parseHeader(headerBuilder.toString(), headers);
-								headerBuilder = null;
+				int c = input.read();
+				if (c == -1) {
+					// End of input stream has been reached
+					keepRunning = false;
+				} else {
+					if (debugBuilder == null)
+						debugBuilder = new StringBuilder();
+					debugBuilder.append((char) c);
+					if (c == '\n') {
+						if (newLine) {
+							// Two consecutive newlines have been read, which signals the start of the message content
+							if (headers.contentLength < 0) {
+								fireError(new IllegalStateException("Missing header " + CONTENT_LENGTH_HEADER
+										+ " in input \"" + debugBuilder + "\""));
+							} else {
+								boolean result = handleMessage(input, headers);
+								if (!result)
+									keepRunning = false;
+								newLine = false;
 							}
-							newLine = true;
-						} else if (c != '\r') {
-							// Add the input to the current header line
-							if (headerBuilder == null)
-								headerBuilder = new StringBuilder();
-							headerBuilder.append((char) c);
-							newLine = false;
+							headers = new Headers();
+							debugBuilder = null;
+						} else if (headerBuilder != null) {
+							// A single newline ends a header line
+							parseHeader(headerBuilder.toString(), headers);
+							headerBuilder = null;
 						}
+						newLine = true;
+					} else if (c != '\r') {
+						// Add the input to the current header line
+						if (headerBuilder == null)
+							headerBuilder = new StringBuilder();
+						headerBuilder.append((char) c);
+						newLine = false;
 					}
-				} catch (InterruptedIOException e) {
-					// The read operation has been interrupted
-				} catch (ClosedChannelException e) {
-					// The channel whose stream has been listened was closed
 				}
 			} // while (keepRunning)
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (IOException exception) {
+			if (JsonRpcException.indicatesStreamClosed(exception))
+				fireStreamClosed(exception);
+			else
+				throw new JsonRpcException(exception);
 		} finally {
 			this.callback = null;
 			this.keepRunning = false;
@@ -128,7 +124,16 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	 * Log an error.
 	 */
 	protected void fireError(Throwable error) {
-		LOG.log(Level.SEVERE, error.getMessage(), error);
+		String message = error.getMessage() != null ? error.getMessage() : "An error occurred while processing an incoming message.";
+		LOG.log(Level.SEVERE, message, error);
+	}
+	
+	/**
+	 * Report that the stream was closed through an exception.
+	 */
+	protected void fireStreamClosed(Exception cause) {
+		String message = cause.getMessage() != null ? cause.getMessage() : "The input stream was closed.";
+		LOG.log(Level.INFO, message, cause);
 	}
 
 	/**
