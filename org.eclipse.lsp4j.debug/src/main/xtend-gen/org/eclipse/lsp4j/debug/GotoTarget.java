@@ -228,7 +228,6 @@ public class GotoTarget {
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
-    result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
-    return result;
+    return prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
   }
 }

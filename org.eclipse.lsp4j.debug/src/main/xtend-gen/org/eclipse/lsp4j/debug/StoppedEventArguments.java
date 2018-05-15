@@ -239,7 +239,6 @@ public class StoppedEventArguments {
     result = prime * result + ((this.description== null) ? 0 : this.description.hashCode());
     result = prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    result = prime * result + ((this.allThreadsStopped== null) ? 0 : this.allThreadsStopped.hashCode());
-    return result;
+    return prime * result + ((this.allThreadsStopped== null) ? 0 : this.allThreadsStopped.hashCode());
   }
 }

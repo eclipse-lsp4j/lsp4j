@@ -143,7 +143,6 @@ public class SynchronizationCapabilities extends DynamicRegistrationCapabilities
     int result = super.hashCode();
     result = prime * result + ((this.willSave== null) ? 0 : this.willSave.hashCode());
     result = prime * result + ((this.willSaveWaitUntil== null) ? 0 : this.willSaveWaitUntil.hashCode());
-    result = prime * result + ((this.didSave== null) ? 0 : this.didSave.hashCode());
-    return result;
+    return prime * result + ((this.didSave== null) ? 0 : this.didSave.hashCode());
   }
 }

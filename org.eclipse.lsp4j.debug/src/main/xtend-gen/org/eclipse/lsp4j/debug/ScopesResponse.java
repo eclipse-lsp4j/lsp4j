@@ -69,9 +69,6 @@ public class ScopesResponse {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.scopes== null) ? 0 : Arrays.deepHashCode(this.scopes));
-    return result;
+    return 31 * 1 + ((this.scopes== null) ? 0 : Arrays.deepHashCode(this.scopes));
   }
 }

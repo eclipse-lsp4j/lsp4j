@@ -141,7 +141,6 @@ public class RenameParams {
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());
-    result = prime * result + ((this.newName== null) ? 0 : this.newName.hashCode());
-    return result;
+    return prime * result + ((this.newName== null) ? 0 : this.newName.hashCode());
   }
 }

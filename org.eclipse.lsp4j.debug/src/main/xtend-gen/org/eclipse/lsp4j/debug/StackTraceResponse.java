@@ -110,7 +110,6 @@ public class StackTraceResponse {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.stackFrames== null) ? 0 : Arrays.deepHashCode(this.stackFrames));
-    result = prime * result + ((this.totalFrames== null) ? 0 : this.totalFrames.hashCode());
-    return result;
+    return prime * result + ((this.totalFrames== null) ? 0 : this.totalFrames.hashCode());
   }
 }

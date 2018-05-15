@@ -68,9 +68,6 @@ public class DynamicRegistrationCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.dynamicRegistration== null) ? 0 : this.dynamicRegistration.hashCode());
-    return result;
+    return 31 * 1 + ((this.dynamicRegistration== null) ? 0 : this.dynamicRegistration.hashCode());
   }
 }

@@ -70,9 +70,6 @@ public class LaunchRequestArguments {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.noDebug== null) ? 0 : this.noDebug.hashCode());
-    return result;
+    return 31 * 1 + ((this.noDebug== null) ? 0 : this.noDebug.hashCode());
   }
 }

@@ -90,9 +90,6 @@ public class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.version== null) ? 0 : this.version.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.version== null) ? 0 : this.version.hashCode());
   }
 }

@@ -178,7 +178,6 @@ public class EvaluateArguments {
     result = prime * result + ((this.expression== null) ? 0 : this.expression.hashCode());
     result = prime * result + ((this.frameId== null) ? 0 : this.frameId.hashCode());
     result = prime * result + ((this.context== null) ? 0 : this.context.hashCode());
-    result = prime * result + ((this.format== null) ? 0 : this.format.hashCode());
-    return result;
+    return prime * result + ((this.format== null) ? 0 : this.format.hashCode());
   }
 }

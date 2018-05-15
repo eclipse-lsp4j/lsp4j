@@ -78,9 +78,6 @@ public class WorkspaceServerCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
-    return result;
+    return 31 * 1 + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
   }
 }

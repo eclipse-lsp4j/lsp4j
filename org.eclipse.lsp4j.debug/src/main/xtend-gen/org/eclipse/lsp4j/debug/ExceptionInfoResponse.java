@@ -166,7 +166,6 @@ public class ExceptionInfoResponse {
     result = prime * result + ((this.exceptionId== null) ? 0 : this.exceptionId.hashCode());
     result = prime * result + ((this.description== null) ? 0 : this.description.hashCode());
     result = prime * result + ((this.breakMode== null) ? 0 : this.breakMode.hashCode());
-    result = prime * result + ((this.details== null) ? 0 : this.details.hashCode());
-    return result;
+    return prime * result + ((this.details== null) ? 0 : this.details.hashCode());
   }
 }

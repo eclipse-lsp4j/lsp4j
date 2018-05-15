@@ -112,7 +112,6 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());
-    result = prime * result + ((this.ch== null) ? 0 : this.ch.hashCode());
-    return result;
+    return prime * result + ((this.ch== null) ? 0 : this.ch.hashCode());
   }
 }

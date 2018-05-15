@@ -203,7 +203,6 @@ public class VariablesArguments {
     result = prime * result + ((this.filter== null) ? 0 : this.filter.hashCode());
     result = prime * result + ((this.start== null) ? 0 : this.start.hashCode());
     result = prime * result + ((this.count== null) ? 0 : this.count.hashCode());
-    result = prime * result + ((this.format== null) ? 0 : this.format.hashCode());
-    return result;
+    return prime * result + ((this.format== null) ? 0 : this.format.hashCode());
   }
 }

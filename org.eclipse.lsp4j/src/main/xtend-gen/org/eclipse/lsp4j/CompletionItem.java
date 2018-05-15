@@ -50,6 +50,11 @@ public class CompletionItem {
   private Either<String, MarkupContent> documentation;
   
   /**
+   * Indicates if this item is deprecated.
+   */
+  private Boolean deprecated;
+  
+  /**
    * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
    */
   private String sortText;
@@ -81,8 +86,12 @@ public class CompletionItem {
   
   /**
    * An optional array of additional text edits that are applied when
-   * selecting this completion. Edits must not overlap with the main edit
-   * nor with themselves.
+   * selecting this completion. Edits must not overlap (including the same insert position)
+   * with the main edit nor with themselves.
+   * 
+   * Additional text edits should be used to change text unrelated to the current cursor position
+   * (for example adding an import statement at the top of the file if the completion item will
+   * insert an unqualified type).
    */
   private List<TextEdit> additionalTextEdits;
   
@@ -183,6 +192,21 @@ public class CompletionItem {
   }
   
   /**
+   * Indicates if this item is deprecated.
+   */
+  @Pure
+  public Boolean getDeprecated() {
+    return this.deprecated;
+  }
+  
+  /**
+   * Indicates if this item is deprecated.
+   */
+  public void setDeprecated(final Boolean deprecated) {
+    this.deprecated = deprecated;
+  }
+  
+  /**
    * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
    */
   @Pure
@@ -269,8 +293,12 @@ public class CompletionItem {
   
   /**
    * An optional array of additional text edits that are applied when
-   * selecting this completion. Edits must not overlap with the main edit
-   * nor with themselves.
+   * selecting this completion. Edits must not overlap (including the same insert position)
+   * with the main edit nor with themselves.
+   * 
+   * Additional text edits should be used to change text unrelated to the current cursor position
+   * (for example adding an import statement at the top of the file if the completion item will
+   * insert an unqualified type).
    */
   @Pure
   public List<TextEdit> getAdditionalTextEdits() {
@@ -279,8 +307,12 @@ public class CompletionItem {
   
   /**
    * An optional array of additional text edits that are applied when
-   * selecting this completion. Edits must not overlap with the main edit
-   * nor with themselves.
+   * selecting this completion. Edits must not overlap (including the same insert position)
+   * with the main edit nor with themselves.
+   * 
+   * Additional text edits should be used to change text unrelated to the current cursor position
+   * (for example adding an import statement at the top of the file if the completion item will
+   * insert an unqualified type).
    */
   public void setAdditionalTextEdits(final List<TextEdit> additionalTextEdits) {
     this.additionalTextEdits = additionalTextEdits;
@@ -347,6 +379,7 @@ public class CompletionItem {
     b.add("kind", this.kind);
     b.add("detail", this.detail);
     b.add("documentation", this.documentation);
+    b.add("deprecated", this.deprecated);
     b.add("sortText", this.sortText);
     b.add("filterText", this.filterText);
     b.add("insertText", this.insertText);
@@ -388,6 +421,11 @@ public class CompletionItem {
       if (other.documentation != null)
         return false;
     } else if (!this.documentation.equals(other.documentation))
+      return false;
+    if (this.deprecated == null) {
+      if (other.deprecated != null)
+        return false;
+    } else if (!this.deprecated.equals(other.deprecated))
       return false;
     if (this.sortText == null) {
       if (other.sortText != null)
@@ -446,6 +484,7 @@ public class CompletionItem {
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
     result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
+    result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());
     result = prime * result + ((this.sortText== null) ? 0 : this.sortText.hashCode());
     result = prime * result + ((this.filterText== null) ? 0 : this.filterText.hashCode());
     result = prime * result + ((this.insertText== null) ? 0 : this.insertText.hashCode());
@@ -454,7 +493,6 @@ public class CompletionItem {
     result = prime * result + ((this.additionalTextEdits== null) ? 0 : this.additionalTextEdits.hashCode());
     result = prime * result + ((this.commitCharacters== null) ? 0 : this.commitCharacters.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
-    result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());
-    return result;
+    return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

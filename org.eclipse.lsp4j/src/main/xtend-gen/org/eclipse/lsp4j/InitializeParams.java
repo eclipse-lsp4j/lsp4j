@@ -302,7 +302,6 @@ public class InitializeParams {
     result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
     result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
     result = prime * result + ((this.trace== null) ? 0 : this.trace.hashCode());
-    result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
-    return result;
+    return prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
   }
 }

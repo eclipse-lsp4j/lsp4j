@@ -133,7 +133,6 @@ public class ExceptionBreakpointsFilter {
     int result = 1;
     result = prime * result + ((this.filter== null) ? 0 : this.filter.hashCode());
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
-    result = prime * result + ((this.default_== null) ? 0 : this.default_.hashCode());
-    return result;
+    return prime * result + ((this.default_== null) ? 0 : this.default_.hashCode());
   }
 }

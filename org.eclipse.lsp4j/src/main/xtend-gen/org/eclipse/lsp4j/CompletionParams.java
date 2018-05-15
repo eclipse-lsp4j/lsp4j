@@ -86,9 +86,6 @@ public class CompletionParams extends TextDocumentPositionParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.context== null) ? 0 : this.context.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.context== null) ? 0 : this.context.hashCode());
   }
 }

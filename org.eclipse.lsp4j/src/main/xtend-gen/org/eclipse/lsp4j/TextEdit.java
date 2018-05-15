@@ -107,7 +107,6 @@ public class TextEdit {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.newText== null) ? 0 : this.newText.hashCode());
-    return result;
+    return prime * result + ((this.newText== null) ? 0 : this.newText.hashCode());
   }
 }

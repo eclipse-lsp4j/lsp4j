@@ -102,7 +102,6 @@ public class LoadedSourceEventArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
-    result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
-    return result;
+    return prime * result + ((this.source== null) ? 0 : this.source.hashCode());
   }
 }

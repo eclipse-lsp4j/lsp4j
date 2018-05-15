@@ -48,7 +48,6 @@ public class DidChangeConfigurationCapabilities extends DynamicRegistrationCapab
   @Override
   @Pure
   public int hashCode() {
-    int result = super.hashCode();
-    return result;
+    return super.hashCode();
   }
 }

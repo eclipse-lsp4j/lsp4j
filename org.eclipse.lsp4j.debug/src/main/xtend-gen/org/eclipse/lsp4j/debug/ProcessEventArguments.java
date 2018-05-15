@@ -175,7 +175,6 @@ public class ProcessEventArguments {
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.systemProcessId== null) ? 0 : this.systemProcessId.hashCode());
     result = prime * result + ((this.isLocalProcess== null) ? 0 : this.isLocalProcess.hashCode());
-    result = prime * result + ((this.startMethod== null) ? 0 : this.startMethod.hashCode());
-    return result;
+    return prime * result + ((this.startMethod== null) ? 0 : this.startMethod.hashCode());
   }
 }

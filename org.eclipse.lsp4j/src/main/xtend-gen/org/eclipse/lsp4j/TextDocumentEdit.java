@@ -111,7 +111,6 @@ public class TextDocumentEdit {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.edits== null) ? 0 : this.edits.hashCode());
-    return result;
+    return prime * result + ((this.edits== null) ? 0 : this.edits.hashCode());
   }
 }

@@ -169,7 +169,6 @@ public class StackTraceArguments {
     result = prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
     result = prime * result + ((this.startFrame== null) ? 0 : this.startFrame.hashCode());
     result = prime * result + ((this.levels== null) ? 0 : this.levels.hashCode());
-    result = prime * result + ((this.format== null) ? 0 : this.format.hashCode());
-    return result;
+    return prime * result + ((this.format== null) ? 0 : this.format.hashCode());
   }
 }

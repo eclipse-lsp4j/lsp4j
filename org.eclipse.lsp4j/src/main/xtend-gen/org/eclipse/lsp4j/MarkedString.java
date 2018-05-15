@@ -98,7 +98,6 @@ public class MarkedString {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.language== null) ? 0 : this.language.hashCode());
-    result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
-    return result;
+    return prime * result + ((this.value== null) ? 0 : this.value.hashCode());
   }
 }

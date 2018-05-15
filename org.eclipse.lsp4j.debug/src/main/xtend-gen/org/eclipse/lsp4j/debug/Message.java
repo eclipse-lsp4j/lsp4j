@@ -273,7 +273,6 @@ public class Message {
     result = prime * result + ((this.sendTelemetry== null) ? 0 : this.sendTelemetry.hashCode());
     result = prime * result + ((this.showUser== null) ? 0 : this.showUser.hashCode());
     result = prime * result + ((this.url== null) ? 0 : this.url.hashCode());
-    result = prime * result + ((this.urlLabel== null) ? 0 : this.urlLabel.hashCode());
-    return result;
+    return prime * result + ((this.urlLabel== null) ? 0 : this.urlLabel.hashCode());
   }
 }

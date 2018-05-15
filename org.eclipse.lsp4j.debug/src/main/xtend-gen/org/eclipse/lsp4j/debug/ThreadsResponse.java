@@ -68,9 +68,6 @@ public class ThreadsResponse {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.threads== null) ? 0 : Arrays.deepHashCode(this.threads));
-    return result;
+    return 31 * 1 + ((this.threads== null) ? 0 : Arrays.deepHashCode(this.threads));
   }
 }

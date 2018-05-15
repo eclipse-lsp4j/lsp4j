@@ -282,7 +282,6 @@ public class OutputEventArguments {
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
-    result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());
-    return result;
+    return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

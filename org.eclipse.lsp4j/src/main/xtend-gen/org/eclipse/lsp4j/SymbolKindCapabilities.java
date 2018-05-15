@@ -94,9 +94,6 @@ public class SymbolKindCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.valueSet== null) ? 0 : this.valueSet.hashCode());
-    return result;
+    return 31 * 1 + ((this.valueSet== null) ? 0 : this.valueSet.hashCode());
   }
 }

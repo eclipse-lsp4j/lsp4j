@@ -138,7 +138,6 @@ public class FunctionBreakpoint {
     int result = 1;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.condition== null) ? 0 : this.condition.hashCode());
-    result = prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());
-    return result;
+    return prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());
   }
 }

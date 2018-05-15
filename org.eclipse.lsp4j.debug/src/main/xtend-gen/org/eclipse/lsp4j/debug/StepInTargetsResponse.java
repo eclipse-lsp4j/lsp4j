@@ -69,9 +69,6 @@ public class StepInTargetsResponse {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.targets== null) ? 0 : Arrays.deepHashCode(this.targets));
-    return result;
+    return 31 * 1 + ((this.targets== null) ? 0 : Arrays.deepHashCode(this.targets));
   }
 }

@@ -129,7 +129,6 @@ public class DocumentFilter {
     int result = 1;
     result = prime * result + ((this.language== null) ? 0 : this.language.hashCode());
     result = prime * result + ((this.scheme== null) ? 0 : this.scheme.hashCode());
-    result = prime * result + ((this.pattern== null) ? 0 : this.pattern.hashCode());
-    return result;
+    return prime * result + ((this.pattern== null) ? 0 : this.pattern.hashCode());
   }
 }

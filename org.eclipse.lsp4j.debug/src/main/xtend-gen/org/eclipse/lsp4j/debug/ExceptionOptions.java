@@ -108,7 +108,6 @@ public class ExceptionOptions {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.path== null) ? 0 : Arrays.deepHashCode(this.path));
-    result = prime * result + ((this.breakMode== null) ? 0 : this.breakMode.hashCode());
-    return result;
+    return prime * result + ((this.breakMode== null) ? 0 : this.breakMode.hashCode());
   }
 }

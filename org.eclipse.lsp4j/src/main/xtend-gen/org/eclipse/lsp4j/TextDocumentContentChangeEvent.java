@@ -138,7 +138,6 @@ public class TextDocumentContentChangeEvent {
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.rangeLength== null) ? 0 : this.rangeLength.hashCode());
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    return result;
+    return prime * result + ((this.text== null) ? 0 : this.text.hashCode());
   }
 }

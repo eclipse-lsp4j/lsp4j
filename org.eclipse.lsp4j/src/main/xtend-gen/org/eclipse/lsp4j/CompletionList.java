@@ -109,7 +109,6 @@ public class CompletionList {
     final int prime = 31;
     int result = 1;
     result = prime * result + (this.isIncomplete ? 1231 : 1237);
-    result = prime * result + ((this.items== null) ? 0 : this.items.hashCode());
-    return result;
+    return prime * result + ((this.items== null) ? 0 : this.items.hashCode());
   }
 }

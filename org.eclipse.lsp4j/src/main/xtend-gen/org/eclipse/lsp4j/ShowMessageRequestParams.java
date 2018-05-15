@@ -80,9 +80,6 @@ public class ShowMessageRequestParams extends MessageParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.actions== null) ? 0 : this.actions.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.actions== null) ? 0 : this.actions.hashCode());
   }
 }

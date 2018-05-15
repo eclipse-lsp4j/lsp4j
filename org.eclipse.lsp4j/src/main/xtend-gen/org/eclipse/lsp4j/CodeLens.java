@@ -145,7 +145,6 @@ public class CodeLens {
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
-    result = prime * result + ((this.data== null) ? 0 : this.data.hashCode());
-    return result;
+    return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

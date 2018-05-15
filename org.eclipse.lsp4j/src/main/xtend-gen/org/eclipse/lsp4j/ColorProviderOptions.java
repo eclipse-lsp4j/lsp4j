@@ -42,7 +42,6 @@ public class ColorProviderOptions extends StaticRegistrationOptions {
   @Override
   @Pure
   public int hashCode() {
-    int result = super.hashCode();
-    return result;
+    return super.hashCode();
   }
 }

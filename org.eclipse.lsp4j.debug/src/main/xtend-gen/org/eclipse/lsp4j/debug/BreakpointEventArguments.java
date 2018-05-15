@@ -107,7 +107,6 @@ public class BreakpointEventArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
-    result = prime * result + ((this.breakpoint== null) ? 0 : this.breakpoint.hashCode());
-    return result;
+    return prime * result + ((this.breakpoint== null) ? 0 : this.breakpoint.hashCode());
   }
 }

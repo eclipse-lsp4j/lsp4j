@@ -171,7 +171,6 @@ public class SourceBreakpoint {
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.condition== null) ? 0 : this.condition.hashCode());
-    result = prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());
-    return result;
+    return prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());
   }
 }

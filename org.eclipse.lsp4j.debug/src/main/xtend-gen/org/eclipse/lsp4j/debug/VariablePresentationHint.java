@@ -160,7 +160,6 @@ public class VariablePresentationHint {
     int result = 1;
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.attributes== null) ? 0 : Arrays.deepHashCode(this.attributes));
-    result = prime * result + ((this.visibility== null) ? 0 : this.visibility.hashCode());
-    return result;
+    return prime * result + ((this.visibility== null) ? 0 : this.visibility.hashCode());
   }
 }

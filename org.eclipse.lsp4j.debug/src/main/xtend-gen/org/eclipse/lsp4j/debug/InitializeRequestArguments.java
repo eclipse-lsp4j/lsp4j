@@ -339,7 +339,6 @@ public class InitializeRequestArguments {
     result = prime * result + ((this.pathFormat== null) ? 0 : this.pathFormat.hashCode());
     result = prime * result + ((this.supportsVariableType== null) ? 0 : this.supportsVariableType.hashCode());
     result = prime * result + ((this.supportsVariablePaging== null) ? 0 : this.supportsVariablePaging.hashCode());
-    result = prime * result + ((this.supportsRunInTerminalRequest== null) ? 0 : this.supportsRunInTerminalRequest.hashCode());
-    return result;
+    return prime * result + ((this.supportsRunInTerminalRequest== null) ? 0 : this.supportsRunInTerminalRequest.hashCode());
   }
 }

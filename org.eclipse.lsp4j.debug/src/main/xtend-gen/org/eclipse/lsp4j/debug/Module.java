@@ -412,7 +412,6 @@ public class Module {
     result = prime * result + ((this.symbolStatus== null) ? 0 : this.symbolStatus.hashCode());
     result = prime * result + ((this.symbolFilePath== null) ? 0 : this.symbolFilePath.hashCode());
     result = prime * result + ((this.dateTimeStamp== null) ? 0 : this.dateTimeStamp.hashCode());
-    result = prime * result + ((this.addressRange== null) ? 0 : this.addressRange.hashCode());
-    return result;
+    return prime * result + ((this.addressRange== null) ? 0 : this.addressRange.hashCode());
   }
 }

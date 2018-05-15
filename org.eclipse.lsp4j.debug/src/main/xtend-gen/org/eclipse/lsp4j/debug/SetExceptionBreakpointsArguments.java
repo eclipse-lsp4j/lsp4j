@@ -104,7 +104,6 @@ public class SetExceptionBreakpointsArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.filters== null) ? 0 : Arrays.deepHashCode(this.filters));
-    result = prime * result + ((this.exceptionOptions== null) ? 0 : Arrays.deepHashCode(this.exceptionOptions));
-    return result;
+    return prime * result + ((this.exceptionOptions== null) ? 0 : Arrays.deepHashCode(this.exceptionOptions));
   }
 }

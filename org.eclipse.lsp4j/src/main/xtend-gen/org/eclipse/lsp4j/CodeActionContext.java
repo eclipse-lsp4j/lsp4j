@@ -78,9 +78,6 @@ public class CodeActionContext {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
-    return result;
+    return 31 * 1 + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
   }
 }

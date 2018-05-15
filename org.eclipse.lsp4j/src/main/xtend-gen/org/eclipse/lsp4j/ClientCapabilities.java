@@ -144,7 +144,6 @@ public class ClientCapabilities {
     int result = 1;
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
-    return result;
+    return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

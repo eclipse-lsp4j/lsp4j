@@ -73,9 +73,6 @@ public class DidChangeWatchedFilesRegistrationOptions {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.watchers== null) ? 0 : this.watchers.hashCode());
-    return result;
+    return 31 * 1 + ((this.watchers== null) ? 0 : this.watchers.hashCode());
   }
 }

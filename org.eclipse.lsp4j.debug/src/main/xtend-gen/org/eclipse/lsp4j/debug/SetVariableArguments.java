@@ -161,7 +161,6 @@ public class SetVariableArguments {
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
-    result = prime * result + ((this.format== null) ? 0 : this.format.hashCode());
-    return result;
+    return prime * result + ((this.format== null) ? 0 : this.format.hashCode());
   }
 }

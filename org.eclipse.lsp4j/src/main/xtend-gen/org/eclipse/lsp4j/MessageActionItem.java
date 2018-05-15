@@ -76,9 +76,6 @@ public class MessageActionItem {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
-    return result;
+    return 31 * 1 + ((this.title== null) ? 0 : this.title.hashCode());
   }
 }

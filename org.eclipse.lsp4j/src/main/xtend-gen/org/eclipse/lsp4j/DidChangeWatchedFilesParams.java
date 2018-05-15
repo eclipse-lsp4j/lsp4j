@@ -79,9 +79,6 @@ public class DidChangeWatchedFilesParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.changes== null) ? 0 : this.changes.hashCode());
-    return result;
+    return 31 * 1 + ((this.changes== null) ? 0 : this.changes.hashCode());
   }
 }

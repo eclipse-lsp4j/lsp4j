@@ -115,7 +115,6 @@ public class DidOpenTextDocumentParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    return result;
+    return prime * result + ((this.text== null) ? 0 : this.text.hashCode());
   }
 }

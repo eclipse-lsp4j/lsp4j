@@ -69,9 +69,6 @@ public class VariablesResponse {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.variables== null) ? 0 : Arrays.deepHashCode(this.variables));
-    return result;
+    return 31 * 1 + ((this.variables== null) ? 0 : Arrays.deepHashCode(this.variables));
   }
 }

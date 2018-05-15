@@ -111,7 +111,6 @@ public class FileSystemWatcher {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.globPattern== null) ? 0 : this.globPattern.hashCode());
-    result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
-    return result;
+    return prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
   }
 }

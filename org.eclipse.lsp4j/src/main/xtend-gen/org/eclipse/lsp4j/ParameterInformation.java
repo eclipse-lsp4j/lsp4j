@@ -123,7 +123,6 @@ public class ParameterInformation {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
-    result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
-    return result;
+    return prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
   }
 }

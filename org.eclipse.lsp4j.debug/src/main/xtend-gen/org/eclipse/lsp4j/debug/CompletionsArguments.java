@@ -173,7 +173,6 @@ public class CompletionsArguments {
     result = prime * result + ((this.frameId== null) ? 0 : this.frameId.hashCode());
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
-    result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
-    return result;
+    return prime * result + ((this.line== null) ? 0 : this.line.hashCode());
   }
 }

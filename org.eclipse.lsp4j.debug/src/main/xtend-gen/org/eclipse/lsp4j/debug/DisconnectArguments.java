@@ -85,9 +85,6 @@ public class DisconnectArguments {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.terminateDebuggee== null) ? 0 : this.terminateDebuggee.hashCode());
-    return result;
+    return 31 * 1 + ((this.terminateDebuggee== null) ? 0 : this.terminateDebuggee.hashCode());
   }
 }

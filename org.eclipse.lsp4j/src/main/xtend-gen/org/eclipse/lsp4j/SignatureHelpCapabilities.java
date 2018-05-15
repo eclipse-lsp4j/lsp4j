@@ -84,9 +84,6 @@ public class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.signatureInformation== null) ? 0 : this.signatureInformation.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.signatureInformation== null) ? 0 : this.signatureInformation.hashCode());
   }
 }

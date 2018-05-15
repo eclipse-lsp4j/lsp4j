@@ -110,7 +110,6 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result + ((this.firstTriggerCharacter== null) ? 0 : this.firstTriggerCharacter.hashCode());
-    result = prime * result + ((this.moreTriggerCharacter== null) ? 0 : this.moreTriggerCharacter.hashCode());
-    return result;
+    return prime * result + ((this.moreTriggerCharacter== null) ? 0 : this.moreTriggerCharacter.hashCode());
   }
 }

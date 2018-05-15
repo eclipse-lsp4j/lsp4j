@@ -95,7 +95,6 @@ public class Position {
     final int prime = 31;
     int result = 1;
     result = prime * result + this.line;
-    result = prime * result + this.character;
-    return result;
+    return prime * result + this.character;
   }
 }

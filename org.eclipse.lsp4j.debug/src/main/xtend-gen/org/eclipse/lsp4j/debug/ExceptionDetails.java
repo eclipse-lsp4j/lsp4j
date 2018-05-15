@@ -238,7 +238,6 @@ public class ExceptionDetails {
     result = prime * result + ((this.fullTypeName== null) ? 0 : this.fullTypeName.hashCode());
     result = prime * result + ((this.evaluateName== null) ? 0 : this.evaluateName.hashCode());
     result = prime * result + ((this.stackTrace== null) ? 0 : this.stackTrace.hashCode());
-    result = prime * result + ((this.innerException== null) ? 0 : Arrays.deepHashCode(this.innerException));
-    return result;
+    return prime * result + ((this.innerException== null) ? 0 : Arrays.deepHashCode(this.innerException));
   }
 }

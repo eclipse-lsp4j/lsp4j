@@ -69,9 +69,6 @@ public class ReferenceContext {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + (this.includeDeclaration ? 1231 : 1237);
-    return result;
+    return 31 * 1 + (this.includeDeclaration ? 1231 : 1237);
   }
 }

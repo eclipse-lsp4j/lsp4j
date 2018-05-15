@@ -72,9 +72,6 @@ public class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
   }
 }

@@ -37,6 +37,11 @@ public class CompletionItemCapabilities {
    */
   private List<String> documentationFormat;
   
+  /**
+   * Client supports the deprecated property on a completion item.
+   */
+  private Boolean deprecatedSupport;
+  
   public CompletionItemCapabilities() {
   }
   
@@ -101,6 +106,21 @@ public class CompletionItemCapabilities {
     this.documentationFormat = documentationFormat;
   }
   
+  /**
+   * Client supports the deprecated property on a completion item.
+   */
+  @Pure
+  public Boolean getDeprecatedSupport() {
+    return this.deprecatedSupport;
+  }
+  
+  /**
+   * Client supports the deprecated property on a completion item.
+   */
+  public void setDeprecatedSupport(final Boolean deprecatedSupport) {
+    this.deprecatedSupport = deprecatedSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -108,6 +128,7 @@ public class CompletionItemCapabilities {
     b.add("snippetSupport", this.snippetSupport);
     b.add("commitCharactersSupport", this.commitCharactersSupport);
     b.add("documentationFormat", this.documentationFormat);
+    b.add("deprecatedSupport", this.deprecatedSupport);
     return b.toString();
   }
   
@@ -136,6 +157,11 @@ public class CompletionItemCapabilities {
         return false;
     } else if (!this.documentationFormat.equals(other.documentationFormat))
       return false;
+    if (this.deprecatedSupport == null) {
+      if (other.deprecatedSupport != null)
+        return false;
+    } else if (!this.deprecatedSupport.equals(other.deprecatedSupport))
+      return false;
     return true;
   }
   
@@ -147,6 +173,6 @@ public class CompletionItemCapabilities {
     result = prime * result + ((this.snippetSupport== null) ? 0 : this.snippetSupport.hashCode());
     result = prime * result + ((this.commitCharactersSupport== null) ? 0 : this.commitCharactersSupport.hashCode());
     result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
-    return result;
+    return prime * result + ((this.deprecatedSupport== null) ? 0 : this.deprecatedSupport.hashCode());
   }
 }

@@ -102,7 +102,6 @@ public class CompletionOptions {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
-    result = prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
-    return result;
+    return prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
   }
 }

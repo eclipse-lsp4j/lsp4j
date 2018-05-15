@@ -778,7 +778,6 @@ public class Capabilities {
     result = prime * result + ((this.supportsExceptionInfoRequest== null) ? 0 : this.supportsExceptionInfoRequest.hashCode());
     result = prime * result + ((this.supportTerminateDebuggee== null) ? 0 : this.supportTerminateDebuggee.hashCode());
     result = prime * result + ((this.supportsDelayedStackTraceLoading== null) ? 0 : this.supportsDelayedStackTraceLoading.hashCode());
-    result = prime * result + ((this.supportsLoadedSourcesRequest== null) ? 0 : this.supportsLoadedSourcesRequest.hashCode());
-    return result;
+    return prime * result + ((this.supportsLoadedSourcesRequest== null) ? 0 : this.supportsLoadedSourcesRequest.hashCode());
   }
 }

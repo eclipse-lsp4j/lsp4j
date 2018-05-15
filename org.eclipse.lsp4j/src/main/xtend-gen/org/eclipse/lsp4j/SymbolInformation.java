@@ -31,6 +31,11 @@ public class SymbolInformation {
   private SymbolKind kind;
   
   /**
+   * Indicates if this symbol is deprecated.
+   */
+  private Boolean deprecated;
+  
+  /**
    * The location of this symbol. The location's range is used by a tool
    * to reveal the location in the editor. If the symbol is selected in the
    * tool the range's start information is used to position the cursor. So
@@ -101,6 +106,21 @@ public class SymbolInformation {
   }
   
   /**
+   * Indicates if this symbol is deprecated.
+   */
+  @Pure
+  public Boolean getDeprecated() {
+    return this.deprecated;
+  }
+  
+  /**
+   * Indicates if this symbol is deprecated.
+   */
+  public void setDeprecated(final Boolean deprecated) {
+    this.deprecated = deprecated;
+  }
+  
+  /**
    * The location of this symbol. The location's range is used by a tool
    * to reveal the location in the editor. If the symbol is selected in the
    * tool the range's start information is used to position the cursor. So
@@ -159,6 +179,7 @@ public class SymbolInformation {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("name", this.name);
     b.add("kind", this.kind);
+    b.add("deprecated", this.deprecated);
     b.add("location", this.location);
     b.add("containerName", this.containerName);
     return b.toString();
@@ -184,6 +205,11 @@ public class SymbolInformation {
         return false;
     } else if (!this.kind.equals(other.kind))
       return false;
+    if (this.deprecated == null) {
+      if (other.deprecated != null)
+        return false;
+    } else if (!this.deprecated.equals(other.deprecated))
+      return false;
     if (this.location == null) {
       if (other.location != null)
         return false;
@@ -204,8 +230,8 @@ public class SymbolInformation {
     int result = 1;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
+    result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());
     result = prime * result + ((this.location== null) ? 0 : this.location.hashCode());
-    result = prime * result + ((this.containerName== null) ? 0 : this.containerName.hashCode());
-    return result;
+    return prime * result + ((this.containerName== null) ? 0 : this.containerName.hashCode());
   }
 }
