@@ -221,32 +221,37 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 @JsonRpcData
 class CompletionItemCapabilities {
 	/**
-     * Client supports snippets as insert text.
-     *
-     * A snippet can define tab stops and placeholders with `$1`, `$2`
-     * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
-     * the end of the snippet. Placeholders with equal identifiers are linked,
-     * that is typing in one will update others too.
-     */
-    Boolean snippetSupport
-    
-    /**
-     * Client supports commit characters on a completion item.
-     */
-    Boolean commitCharactersSupport
-  
-    /**
-     * Client supports the following content formats for the documentation
-     * property. The order describes the preferred format of the client.
-     */
-    List<String> documentationFormat
-    
-    new() {
-    }
-    
-    new(Boolean snippetSupport) {
-      this.snippetSupport = snippetSupport
-    }
+	 * Client supports snippets as insert text.
+	 * 
+	 * A snippet can define tab stops and placeholders with `$1`, `$2`
+	 * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+	 * the end of the snippet. Placeholders with equal identifiers are linked,
+	 * that is typing in one will update others too.
+	 */
+	Boolean snippetSupport
+
+	/**
+	 * Client supports commit characters on a completion item.
+	 */
+	Boolean commitCharactersSupport
+
+	/**
+	 * Client supports the following content formats for the documentation
+	 * property. The order describes the preferred format of the client.
+	 */
+	List<String> documentationFormat
+
+	/**
+	 * Client supports the deprecated property on a completion item.
+	 */
+	Boolean deprecatedSupport
+
+	new() {
+	}
+
+	new(Boolean snippetSupport) {
+		this.snippetSupport = snippetSupport
+	}
 }
 
 @JsonRpcData
@@ -970,6 +975,11 @@ class CompletionItem {
 	 * A human-readable string that represents a doc-comment.
 	 */
 	Either<String, MarkupContent> documentation
+	
+	/**
+	 * Indicates if this item is deprecated.
+	 */
+	Boolean deprecated
 
 	/**
 	 * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
@@ -1003,8 +1013,12 @@ class CompletionItem {
 
 	/**
 	 * An optional array of additional text edits that are applied when
-	 * selecting this completion. Edits must not overlap with the main edit
-	 * nor with themselves.
+	 * selecting this completion. Edits must not overlap (including the same insert position)
+	 * with the main edit nor with themselves.
+	 *
+	 * Additional text edits should be used to change text unrelated to the current cursor position
+	 * (for example adding an import statement at the top of the file if the completion item will
+	 * insert an unqualified type).
 	 */
 	List<TextEdit> additionalTextEdits
 	
@@ -1475,28 +1489,40 @@ class DocumentHighlight {
  */
 @JsonRpcData
 class DocumentLink {
-    /**
-     * The range this link applies to.
-     */
-    @NonNull
-    Range range
-    
-    /**
-     * The uri this link points to. If missing a resolve request is sent later.
-     */
-    String target
-    
-    new() {
-    }
-    
-    new(@NonNull Range range) {
-    	this.range = range
-    }
-    
-    new(@NonNull Range range, String target) {
-    	this(range)
-    	this.target = target
-    }
+	/**
+	 * The range this link applies to.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The uri this link points to. If missing a resolve request is sent later.
+	 */
+	String target
+
+	/**
+	 * A data entry field that is preserved on a document link between a
+	 * DocumentLinkRequest and a DocumentLinkResolveRequest.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
+	new() {
+	}
+
+	new(@NonNull Range range) {
+		this.range = range
+	}
+
+	new(@NonNull Range range, String target) {
+		this(range)
+		this.target = target
+	}
+
+	new(@NonNull Range range, String target, Object data) {
+		this(range, target)
+		this.data = data
+	}
 }
 
 /**
@@ -2316,7 +2342,7 @@ class RenameParams {
 class ServerCapabilities {
 	/**
 	 * Defines how text documents are synced. Is either a detailed structure defining each notification or
-     * for backwards compatibility the TextDocumentSyncKind number.
+	 * for backwards compatibility the TextDocumentSyncKind number.
 	 */
 	Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync
 
@@ -2339,17 +2365,17 @@ class ServerCapabilities {
 	 * The server provides goto definition support.
 	 */
 	Boolean definitionProvider
-	
+
 	/**
 	 * The server provides Goto Type Definition support.
-	 *
+	 * 
 	 * Since 3.6.0
 	 */
 	Either<Boolean, StaticRegistrationOptions> typeDefinitionProvider
-	
+
 	/**
 	 * The server provides Goto Implementation support.
-	 *
+	 * 
 	 * Since 3.6.0
 	 */
 	Either<Boolean, StaticRegistrationOptions> implementationProvider
@@ -2403,34 +2429,34 @@ class ServerCapabilities {
 	 * The server provides rename support.
 	 */
 	Boolean renameProvider
-	
+
 	/**
-     * The server provides document link support.
-     */
-    DocumentLinkOptions documentLinkProvider
-    
+	 * The server provides document link support.
+	 */
+	DocumentLinkOptions documentLinkProvider
+
 	/**
 	 * The server provides color provider support.
-	 *
+	 * 
 	 * Since 3.6.0
 	 */
-	ColorProviderOptions colorProvider
-    
-    /**
-     * The server provides execute command support.
-     */
-    ExecuteCommandOptions executeCommandProvider
+	Either<Boolean, ColorProviderOptions> colorProvider
 
-    /**
-     * Workspace specific server capabilities
-     */
-    WorkspaceServerCapabilities workspace
-    
-    /**
-     * Experimental server capabilities.
-     */
-    @JsonAdapter(JsonElementTypeAdapter.Factory)
-    Object experimental
+	/**
+	 * The server provides execute command support.
+	 */
+	ExecuteCommandOptions executeCommandProvider
+
+	/**
+	 * Workspace specific server capabilities
+	 */
+	WorkspaceServerCapabilities workspace
+
+	/**
+	 * Experimental server capabilities.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object experimental
 
 }
 
@@ -2595,6 +2621,11 @@ class SymbolInformation {
 	 */
 	@NonNull
 	SymbolKind kind
+	
+	/**
+	 * Indicates if this symbol is deprecated.
+	 */
+	Boolean deprecated
 
 	/**
 	 * The location of this symbol. The location's range is used by a tool
@@ -3628,7 +3659,7 @@ class ColorPresentationParams {
 	 * The color information to request presentations for.
 	 */
 	@NonNull
-	Color colorInfo
+	Color color
 
 	/**
 	 * The range where the color would be inserted. Serves as a context.
@@ -3639,9 +3670,9 @@ class ColorPresentationParams {
 	new() {
 	}
 	
-	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Color colorInfo, @NonNull Range range) {
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Color color, @NonNull Range range) {
 		this.textDocument = textDocument
-		this.colorInfo = colorInfo
+		this.color = color
 		this.range = range
 	}
 }
