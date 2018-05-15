@@ -85,9 +85,6 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
   }
 }

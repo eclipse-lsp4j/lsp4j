@@ -246,7 +246,6 @@ public class EvaluateResponse {
     result = prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
     result = prime * result + ((this.namedVariables== null) ? 0 : this.namedVariables.hashCode());
-    result = prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
-    return result;
+    return prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
   }
 }

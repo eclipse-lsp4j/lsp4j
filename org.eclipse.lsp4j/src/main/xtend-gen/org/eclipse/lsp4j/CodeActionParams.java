@@ -141,7 +141,6 @@ public class CodeActionParams {
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.context== null) ? 0 : this.context.hashCode());
-    return result;
+    return prime * result + ((this.context== null) ? 0 : this.context.hashCode());
   }
 }

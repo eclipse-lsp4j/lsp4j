@@ -150,7 +150,6 @@ public class CompletionCapabilities extends DynamicRegistrationCapabilities {
     int result = super.hashCode();
     result = prime * result + ((this.completionItem== null) ? 0 : this.completionItem.hashCode());
     result = prime * result + ((this.completionItemKind== null) ? 0 : this.completionItemKind.hashCode());
-    result = prime * result + ((this.contextSupport== null) ? 0 : this.contextSupport.hashCode());
-    return result;
+    return prime * result + ((this.contextSupport== null) ? 0 : this.contextSupport.hashCode());
   }
 }

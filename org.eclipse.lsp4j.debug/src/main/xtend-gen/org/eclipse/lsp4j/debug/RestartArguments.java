@@ -39,7 +39,6 @@ public class RestartArguments {
   @Override
   @Pure
   public int hashCode() {
-    int result = 1;
-    return result;
+    return 1;
   }
 }

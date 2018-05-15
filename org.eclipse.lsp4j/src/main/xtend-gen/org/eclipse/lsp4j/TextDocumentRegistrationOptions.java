@@ -77,9 +77,6 @@ public class TextDocumentRegistrationOptions {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.documentSelector== null) ? 0 : this.documentSelector.hashCode());
-    return result;
+    return 31 * 1 + ((this.documentSelector== null) ? 0 : this.documentSelector.hashCode());
   }
 }

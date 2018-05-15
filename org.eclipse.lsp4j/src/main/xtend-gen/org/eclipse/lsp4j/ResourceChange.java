@@ -114,7 +114,6 @@ public class ResourceChange {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.current== null) ? 0 : this.current.hashCode());
-    result = prime * result + ((this.newUri== null) ? 0 : this.newUri.hashCode());
-    return result;
+    return prime * result + ((this.newUri== null) ? 0 : this.newUri.hashCode());
   }
 }

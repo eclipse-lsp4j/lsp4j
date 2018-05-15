@@ -173,7 +173,6 @@ public class WorkspaceEdit {
     int result = 1;
     result = prime * result + ((this.changes== null) ? 0 : this.changes.hashCode());
     result = prime * result + ((this.documentChanges== null) ? 0 : this.documentChanges.hashCode());
-    result = prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
-    return result;
+    return prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
   }
 }

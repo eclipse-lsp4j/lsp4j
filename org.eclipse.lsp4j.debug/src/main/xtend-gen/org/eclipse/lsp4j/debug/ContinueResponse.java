@@ -73,9 +73,6 @@ public class ContinueResponse {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.allThreadsContinued== null) ? 0 : this.allThreadsContinued.hashCode());
-    return result;
+    return 31 * 1 + ((this.allThreadsContinued== null) ? 0 : this.allThreadsContinued.hashCode());
   }
 }

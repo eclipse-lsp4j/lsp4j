@@ -71,9 +71,6 @@ public class SaveOptions {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.includeText== null) ? 0 : this.includeText.hashCode());
-    return result;
+    return 31 * 1 + ((this.includeText== null) ? 0 : this.includeText.hashCode());
   }
 }

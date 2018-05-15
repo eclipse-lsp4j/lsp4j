@@ -105,7 +105,6 @@ public class ColorInformation {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.color== null) ? 0 : this.color.hashCode());
-    return result;
+    return prime * result + ((this.color== null) ? 0 : this.color.hashCode());
   }
 }

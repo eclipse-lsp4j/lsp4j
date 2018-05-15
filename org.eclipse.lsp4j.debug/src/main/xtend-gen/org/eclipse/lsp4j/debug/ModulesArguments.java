@@ -105,7 +105,6 @@ public class ModulesArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.startModule== null) ? 0 : this.startModule.hashCode());
-    result = prime * result + ((this.moduleCount== null) ? 0 : this.moduleCount.hashCode());
-    return result;
+    return prime * result + ((this.moduleCount== null) ? 0 : this.moduleCount.hashCode());
   }
 }

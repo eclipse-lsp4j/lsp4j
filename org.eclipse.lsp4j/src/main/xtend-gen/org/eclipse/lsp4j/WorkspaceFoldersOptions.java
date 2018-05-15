@@ -122,7 +122,6 @@ public class WorkspaceFoldersOptions {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.supported== null) ? 0 : this.supported.hashCode());
-    result = prime * result + ((this.changeNotifications== null) ? 0 : this.changeNotifications.hashCode());
-    return result;
+    return prime * result + ((this.changeNotifications== null) ? 0 : this.changeNotifications.hashCode());
   }
 }

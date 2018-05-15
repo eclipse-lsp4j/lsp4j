@@ -107,7 +107,6 @@ public class Range {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.start== null) ? 0 : this.start.hashCode());
-    result = prime * result + ((this.end== null) ? 0 : this.end.hashCode());
-    return result;
+    return prime * result + ((this.end== null) ? 0 : this.end.hashCode());
   }
 }

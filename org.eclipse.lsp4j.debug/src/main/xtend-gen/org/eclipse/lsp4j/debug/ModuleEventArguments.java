@@ -7,7 +7,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.Module;
 import org.eclipse.lsp4j.debug.ModuleEventArgumentsReason;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -30,7 +29,7 @@ public class ModuleEventArguments {
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
   @NonNull
-  private Module module;
+  private org.eclipse.lsp4j.debug.Module module;
   
   /**
    * The reason for the event.
@@ -53,14 +52,14 @@ public class ModuleEventArguments {
    */
   @Pure
   @NonNull
-  public Module getModule() {
+  public org.eclipse.lsp4j.debug.Module getModule() {
     return this.module;
   }
   
   /**
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
-  public void setModule(@NonNull final Module module) {
+  public void setModule(@NonNull final org.eclipse.lsp4j.debug.Module module) {
     this.module = module;
   }
   
@@ -102,7 +101,6 @@ public class ModuleEventArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
-    result = prime * result + ((this.module== null) ? 0 : this.module.hashCode());
-    return result;
+    return prime * result + ((this.module== null) ? 0 : this.module.hashCode());
   }
 }

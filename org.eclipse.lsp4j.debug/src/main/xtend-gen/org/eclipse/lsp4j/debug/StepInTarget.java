@@ -99,7 +99,6 @@ public class StepInTarget {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
-    return result;
+    return prime * result + ((this.label== null) ? 0 : this.label.hashCode());
   }
 }

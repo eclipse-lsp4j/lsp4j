@@ -102,7 +102,6 @@ public class StepInArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
-    result = prime * result + ((this.targetId== null) ? 0 : this.targetId.hashCode());
-    return result;
+    return prime * result + ((this.targetId== null) ? 0 : this.targetId.hashCode());
   }
 }

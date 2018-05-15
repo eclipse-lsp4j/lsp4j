@@ -70,9 +70,6 @@ public class ValueFormat {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.hex== null) ? 0 : this.hex.hashCode());
-    return result;
+    return 31 * 1 + ((this.hex== null) ? 0 : this.hex.hashCode());
   }
 }

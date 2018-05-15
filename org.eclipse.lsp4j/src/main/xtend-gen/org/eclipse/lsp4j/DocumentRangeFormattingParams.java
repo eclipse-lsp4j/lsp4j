@@ -80,9 +80,6 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.range== null) ? 0 : this.range.hashCode());
   }
 }

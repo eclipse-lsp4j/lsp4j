@@ -78,9 +78,6 @@ public class StaticRegistrationOptions extends TextDocumentRegistrationOptions {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.id== null) ? 0 : this.id.hashCode());
   }
 }

@@ -106,7 +106,6 @@ public class ThreadEventArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
-    result = prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
-    return result;
+    return prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
   }
 }

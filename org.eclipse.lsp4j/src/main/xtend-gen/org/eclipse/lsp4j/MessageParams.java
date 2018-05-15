@@ -110,7 +110,6 @@ public class MessageParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
-    result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
-    return result;
+    return prime * result + ((this.message== null) ? 0 : this.message.hashCode());
   }
 }

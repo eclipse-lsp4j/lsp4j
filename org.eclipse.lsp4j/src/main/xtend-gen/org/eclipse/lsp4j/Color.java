@@ -145,7 +145,6 @@ public class Color {
     result = prime * result + (int) (Double.doubleToLongBits(this.red) ^ (Double.doubleToLongBits(this.red) >>> 32));
     result = prime * result + (int) (Double.doubleToLongBits(this.green) ^ (Double.doubleToLongBits(this.green) >>> 32));
     result = prime * result + (int) (Double.doubleToLongBits(this.blue) ^ (Double.doubleToLongBits(this.blue) >>> 32));
-    result = prime * result + (int) (Double.doubleToLongBits(this.alpha) ^ (Double.doubleToLongBits(this.alpha) >>> 32));
-    return result;
+    return prime * result + (int) (Double.doubleToLongBits(this.alpha) ^ (Double.doubleToLongBits(this.alpha) >>> 32));
   }
 }

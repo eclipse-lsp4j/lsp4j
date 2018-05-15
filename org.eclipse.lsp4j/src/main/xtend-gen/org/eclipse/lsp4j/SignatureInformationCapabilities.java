@@ -81,9 +81,6 @@ public class SignatureInformationCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
-    return result;
+    return 31 * 1 + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
   }
 }

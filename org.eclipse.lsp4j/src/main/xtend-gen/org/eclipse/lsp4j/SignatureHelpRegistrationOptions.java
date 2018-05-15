@@ -73,9 +73,6 @@ public class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOp
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
   }
 }

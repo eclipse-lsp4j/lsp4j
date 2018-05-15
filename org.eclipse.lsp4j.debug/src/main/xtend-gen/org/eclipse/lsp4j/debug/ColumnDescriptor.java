@@ -201,7 +201,6 @@ public class ColumnDescriptor {
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     result = prime * result + ((this.format== null) ? 0 : this.format.hashCode());
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
-    result = prime * result + ((this.width== null) ? 0 : this.width.hashCode());
-    return result;
+    return prime * result + ((this.width== null) ? 0 : this.width.hashCode());
   }
 }

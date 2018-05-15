@@ -133,7 +133,6 @@ public class Hover {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.contents== null) ? 0 : this.contents.hashCode());
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    return result;
+    return prime * result + ((this.range== null) ? 0 : this.range.hashCode());
   }
 }

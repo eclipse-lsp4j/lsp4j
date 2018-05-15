@@ -82,9 +82,6 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.syncKind== null) ? 0 : this.syncKind.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.syncKind== null) ? 0 : this.syncKind.hashCode());
   }
 }

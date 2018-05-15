@@ -69,9 +69,6 @@ public class LoadedSourcesResponse {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.sources== null) ? 0 : Arrays.deepHashCode(this.sources));
-    return result;
+    return 31 * 1 + ((this.sources== null) ? 0 : Arrays.deepHashCode(this.sources));
   }
 }

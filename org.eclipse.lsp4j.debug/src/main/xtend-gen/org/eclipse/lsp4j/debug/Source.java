@@ -328,7 +328,6 @@ public class Source {
     result = prime * result + ((this.origin== null) ? 0 : this.origin.hashCode());
     result = prime * result + ((this.sources== null) ? 0 : Arrays.deepHashCode(this.sources));
     result = prime * result + ((this.adapterData== null) ? 0 : this.adapterData.hashCode());
-    result = prime * result + ((this.checksums== null) ? 0 : Arrays.deepHashCode(this.checksums));
-    return result;
+    return prime * result + ((this.checksums== null) ? 0 : Arrays.deepHashCode(this.checksums));
   }
 }

@@ -115,7 +115,6 @@ public class ApplyWorkspaceEditParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.edit== null) ? 0 : this.edit.hashCode());
-    result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
-    return result;
+    return prime * result + ((this.label== null) ? 0 : this.label.hashCode());
   }
 }

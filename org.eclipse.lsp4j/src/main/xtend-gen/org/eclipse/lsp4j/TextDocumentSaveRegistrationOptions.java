@@ -72,9 +72,6 @@ public class TextDocumentSaveRegistrationOptions extends TextDocumentRegistratio
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.includeText== null) ? 0 : this.includeText.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.includeText== null) ? 0 : this.includeText.hashCode());
   }
 }

@@ -241,7 +241,6 @@ public class Diagnostic {
     result = prime * result + ((this.code== null) ? 0 : this.code.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
-    result = prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
-    return result;
+    return prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
   }
 }

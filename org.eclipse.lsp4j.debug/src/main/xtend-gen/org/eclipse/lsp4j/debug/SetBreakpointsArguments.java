@@ -174,7 +174,6 @@ public class SetBreakpointsArguments {
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.breakpoints== null) ? 0 : Arrays.deepHashCode(this.breakpoints));
     result = prime * result + ((this.lines== null) ? 0 : Arrays.deepHashCode(this.lines));
-    result = prime * result + ((this.sourceModified== null) ? 0 : this.sourceModified.hashCode());
-    return result;
+    return prime * result + ((this.sourceModified== null) ? 0 : this.sourceModified.hashCode());
   }
 }

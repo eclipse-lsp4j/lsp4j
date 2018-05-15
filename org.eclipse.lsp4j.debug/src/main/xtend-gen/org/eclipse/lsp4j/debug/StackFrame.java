@@ -341,7 +341,6 @@ public class StackFrame {
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
     result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
     result = prime * result + ((this.moduleId== null) ? 0 : this.moduleId.hashCode());
-    result = prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
-    return result;
+    return prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
   }
 }

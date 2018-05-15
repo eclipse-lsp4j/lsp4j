@@ -140,7 +140,6 @@ public class Command {
     int result = 1;
     result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
-    result = prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());
-    return result;
+    return prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());
   }
 }

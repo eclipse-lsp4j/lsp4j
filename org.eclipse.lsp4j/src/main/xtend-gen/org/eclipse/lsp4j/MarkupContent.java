@@ -105,7 +105,6 @@ public class MarkupContent {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
-    result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
-    return result;
+    return prime * result + ((this.value== null) ? 0 : this.value.hashCode());
   }
 }

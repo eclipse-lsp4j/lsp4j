@@ -124,7 +124,6 @@ public class CompletionRegistrationOptions extends TextDocumentRegistrationOptio
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
-    result = prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
-    return result;
+    return prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
   }
 }

@@ -62,9 +62,6 @@ public class ModulesViewDescriptor {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.columns== null) ? 0 : Arrays.deepHashCode(this.columns));
-    return result;
+    return 31 * 1 + ((this.columns== null) ? 0 : Arrays.deepHashCode(this.columns));
   }
 }

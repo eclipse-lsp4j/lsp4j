@@ -111,7 +111,6 @@ public class DocumentHighlight {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
-    return result;
+    return prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
   }
 }

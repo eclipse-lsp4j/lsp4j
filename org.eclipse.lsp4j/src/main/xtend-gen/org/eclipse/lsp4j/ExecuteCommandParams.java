@@ -114,7 +114,6 @@ public class ExecuteCommandParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
-    result = prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());
-    return result;
+    return prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());
   }
 }

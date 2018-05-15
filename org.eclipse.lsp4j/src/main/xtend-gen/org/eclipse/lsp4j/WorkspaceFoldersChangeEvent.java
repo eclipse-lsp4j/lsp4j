@@ -109,7 +109,6 @@ public class WorkspaceFoldersChangeEvent {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.added== null) ? 0 : this.added.hashCode());
-    result = prime * result + ((this.removed== null) ? 0 : this.removed.hashCode());
-    return result;
+    return prime * result + ((this.removed== null) ? 0 : this.removed.hashCode());
   }
 }

@@ -126,7 +126,7 @@ public class ServerCapabilities {
    * 
    * Since 3.6.0
    */
-  private ColorProviderOptions colorProvider;
+  private Either<Boolean, ColorProviderOptions> colorProvider;
   
   /**
    * The server provides execute command support.
@@ -454,7 +454,7 @@ public class ServerCapabilities {
    * Since 3.6.0
    */
   @Pure
-  public ColorProviderOptions getColorProvider() {
+  public Either<Boolean, ColorProviderOptions> getColorProvider() {
     return this.colorProvider;
   }
   
@@ -463,8 +463,16 @@ public class ServerCapabilities {
    * 
    * Since 3.6.0
    */
-  public void setColorProvider(final ColorProviderOptions colorProvider) {
+  public void setColorProvider(final Either<Boolean, ColorProviderOptions> colorProvider) {
     this.colorProvider = colorProvider;
+  }
+  
+  public void setColorProvider(final Boolean colorProvider) {
+    this.colorProvider = Either.forLeft(colorProvider);
+  }
+  
+  public void setColorProvider(final ColorProviderOptions colorProvider) {
+    this.colorProvider = Either.forRight(colorProvider);
   }
   
   /**
@@ -690,7 +698,6 @@ public class ServerCapabilities {
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
-    result = prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
-    return result;
+    return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

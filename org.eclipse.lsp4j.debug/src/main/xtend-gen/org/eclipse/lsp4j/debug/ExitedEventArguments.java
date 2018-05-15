@@ -69,9 +69,6 @@ public class ExitedEventArguments {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.exitCode== null) ? 0 : this.exitCode.hashCode());
-    return result;
+    return 31 * 1 + ((this.exitCode== null) ? 0 : this.exitCode.hashCode());
   }
 }

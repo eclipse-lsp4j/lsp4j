@@ -79,9 +79,6 @@ public class DidChangeWorkspaceFoldersParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.event== null) ? 0 : this.event.hashCode());
-    return result;
+    return 31 * 1 + ((this.event== null) ? 0 : this.event.hashCode());
   }
 }

@@ -174,7 +174,6 @@ public class SignatureHelp {
     int result = 1;
     result = prime * result + ((this.signatures== null) ? 0 : this.signatures.hashCode());
     result = prime * result + ((this.activeSignature== null) ? 0 : this.activeSignature.hashCode());
-    result = prime * result + ((this.activeParameter== null) ? 0 : this.activeParameter.hashCode());
-    return result;
+    return prime * result + ((this.activeParameter== null) ? 0 : this.activeParameter.hashCode());
   }
 }

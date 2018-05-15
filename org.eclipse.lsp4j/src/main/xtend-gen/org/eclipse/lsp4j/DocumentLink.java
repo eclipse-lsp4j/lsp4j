@@ -7,7 +7,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -29,6 +31,13 @@ public class DocumentLink {
    */
   private String target;
   
+  /**
+   * A data entry field that is preserved on a document link between a
+   * DocumentLinkRequest and a DocumentLinkResolveRequest.
+   */
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
+  private Object data;
+  
   public DocumentLink() {
   }
   
@@ -39,6 +48,11 @@ public class DocumentLink {
   public DocumentLink(@NonNull final Range range, final String target) {
     this(range);
     this.target = target;
+  }
+  
+  public DocumentLink(@NonNull final Range range, final String target, final Object data) {
+    this(range, target);
+    this.data = data;
   }
   
   /**
@@ -72,12 +86,30 @@ public class DocumentLink {
     this.target = target;
   }
   
+  /**
+   * A data entry field that is preserved on a document link between a
+   * DocumentLinkRequest and a DocumentLinkResolveRequest.
+   */
+  @Pure
+  public Object getData() {
+    return this.data;
+  }
+  
+  /**
+   * A data entry field that is preserved on a document link between a
+   * DocumentLinkRequest and a DocumentLinkResolveRequest.
+   */
+  public void setData(final Object data) {
+    this.data = data;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("range", this.range);
     b.add("target", this.target);
+    b.add("data", this.data);
     return b.toString();
   }
   
@@ -101,6 +133,11 @@ public class DocumentLink {
         return false;
     } else if (!this.target.equals(other.target))
       return false;
+    if (this.data == null) {
+      if (other.data != null)
+        return false;
+    } else if (!this.data.equals(other.data))
+      return false;
     return true;
   }
   
@@ -111,6 +148,6 @@ public class DocumentLink {
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.target== null) ? 0 : this.target.hashCode());
-    return result;
+    return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

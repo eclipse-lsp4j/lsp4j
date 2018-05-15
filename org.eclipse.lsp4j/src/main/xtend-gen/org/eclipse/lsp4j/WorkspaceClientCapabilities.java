@@ -275,7 +275,6 @@ public class WorkspaceClientCapabilities {
     result = prime * result + ((this.symbol== null) ? 0 : this.symbol.hashCode());
     result = prime * result + ((this.executeCommand== null) ? 0 : this.executeCommand.hashCode());
     result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
-    result = prime * result + ((this.configuration== null) ? 0 : this.configuration.hashCode());
-    return result;
+    return prime * result + ((this.configuration== null) ? 0 : this.configuration.hashCode());
   }
 }

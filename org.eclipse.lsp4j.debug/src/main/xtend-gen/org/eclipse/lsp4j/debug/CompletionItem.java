@@ -220,7 +220,6 @@ public class CompletionItem {
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
     result = prime * result + ((this.start== null) ? 0 : this.start.hashCode());
-    result = prime * result + ((this.length== null) ? 0 : this.length.hashCode());
-    return result;
+    return prime * result + ((this.length== null) ? 0 : this.length.hashCode());
   }
 }

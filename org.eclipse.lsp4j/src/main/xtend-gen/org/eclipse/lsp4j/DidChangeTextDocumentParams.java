@@ -149,7 +149,6 @@ public class DidChangeTextDocumentParams {
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
-    result = prime * result + ((this.contentChanges== null) ? 0 : this.contentChanges.hashCode());
-    return result;
+    return prime * result + ((this.contentChanges== null) ? 0 : this.contentChanges.hashCode());
   }
 }

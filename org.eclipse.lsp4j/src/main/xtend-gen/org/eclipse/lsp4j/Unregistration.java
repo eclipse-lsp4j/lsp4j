@@ -109,7 +109,6 @@ public class Unregistration {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.method== null) ? 0 : this.method.hashCode());
-    return result;
+    return prime * result + ((this.method== null) ? 0 : this.method.hashCode());
   }
 }

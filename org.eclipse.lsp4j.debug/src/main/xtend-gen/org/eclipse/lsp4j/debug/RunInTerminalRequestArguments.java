@@ -200,7 +200,6 @@ public class RunInTerminalRequestArguments {
     result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
     result = prime * result + ((this.cwd== null) ? 0 : this.cwd.hashCode());
     result = prime * result + ((this.args== null) ? 0 : Arrays.deepHashCode(this.args));
-    result = prime * result + ((this.env== null) ? 0 : this.env.hashCode());
-    return result;
+    return prime * result + ((this.env== null) ? 0 : this.env.hashCode());
   }
 }

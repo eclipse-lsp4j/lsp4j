@@ -106,7 +106,6 @@ public class SourceArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
-    result = prime * result + ((this.sourceReference== null) ? 0 : this.sourceReference.hashCode());
-    return result;
+    return prime * result + ((this.sourceReference== null) ? 0 : this.sourceReference.hashCode());
   }
 }

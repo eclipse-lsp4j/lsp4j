@@ -99,7 +99,6 @@ public class Checksum {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.algorithm== null) ? 0 : this.algorithm.hashCode());
-    result = prime * result + ((this.checksum== null) ? 0 : this.checksum.hashCode());
-    return result;
+    return prime * result + ((this.checksum== null) ? 0 : this.checksum.hashCode());
   }
 }

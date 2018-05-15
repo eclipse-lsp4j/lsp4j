@@ -50,7 +50,6 @@ public class ImplementationCapabilities extends DynamicRegistrationCapabilities 
   @Override
   @Pure
   public int hashCode() {
-    int result = super.hashCode();
-    return result;
+    return super.hashCode();
   }
 }

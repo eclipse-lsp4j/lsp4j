@@ -90,9 +90,6 @@ public class HoverCapabilities extends DynamicRegistrationCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.contentFormat== null) ? 0 : this.contentFormat.hashCode());
-    return result;
+    return 31 * super.hashCode() + ((this.contentFormat== null) ? 0 : this.contentFormat.hashCode());
   }
 }

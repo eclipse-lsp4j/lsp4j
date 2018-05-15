@@ -274,7 +274,6 @@ public class StackFrameFormat extends ValueFormat {
     result = prime * result + ((this.parameterValues== null) ? 0 : this.parameterValues.hashCode());
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.module== null) ? 0 : this.module.hashCode());
-    result = prime * result + ((this.includeAll== null) ? 0 : this.includeAll.hashCode());
-    return result;
+    return prime * result + ((this.includeAll== null) ? 0 : this.includeAll.hashCode());
   }
 }

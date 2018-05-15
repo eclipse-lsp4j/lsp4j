@@ -48,7 +48,6 @@ public class DocumentHighlightCapabilities extends DynamicRegistrationCapabiliti
   @Override
   @Pure
   public int hashCode() {
-    int result = super.hashCode();
-    return result;
+    return super.hashCode();
   }
 }

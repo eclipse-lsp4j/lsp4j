@@ -32,7 +32,7 @@ public class ColorPresentationParams {
    * The color information to request presentations for.
    */
   @NonNull
-  private Color colorInfo;
+  private Color color;
   
   /**
    * The range where the color would be inserted. Serves as a context.
@@ -43,9 +43,9 @@ public class ColorPresentationParams {
   public ColorPresentationParams() {
   }
   
-  public ColorPresentationParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Color colorInfo, @NonNull final Range range) {
+  public ColorPresentationParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Color color, @NonNull final Range range) {
     this.textDocument = textDocument;
-    this.colorInfo = colorInfo;
+    this.color = color;
     this.range = range;
   }
   
@@ -70,15 +70,15 @@ public class ColorPresentationParams {
    */
   @Pure
   @NonNull
-  public Color getColorInfo() {
-    return this.colorInfo;
+  public Color getColor() {
+    return this.color;
   }
   
   /**
    * The color information to request presentations for.
    */
-  public void setColorInfo(@NonNull final Color colorInfo) {
-    this.colorInfo = colorInfo;
+  public void setColor(@NonNull final Color color) {
+    this.color = color;
   }
   
   /**
@@ -102,7 +102,7 @@ public class ColorPresentationParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
-    b.add("colorInfo", this.colorInfo);
+    b.add("color", this.color);
     b.add("range", this.range);
     return b.toString();
   }
@@ -122,10 +122,10 @@ public class ColorPresentationParams {
         return false;
     } else if (!this.textDocument.equals(other.textDocument))
       return false;
-    if (this.colorInfo == null) {
-      if (other.colorInfo != null)
+    if (this.color == null) {
+      if (other.color != null)
         return false;
-    } else if (!this.colorInfo.equals(other.colorInfo))
+    } else if (!this.color.equals(other.color))
       return false;
     if (this.range == null) {
       if (other.range != null)
@@ -141,8 +141,7 @@ public class ColorPresentationParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.colorInfo== null) ? 0 : this.colorInfo.hashCode());
-    result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    return result;
+    result = prime * result + ((this.color== null) ? 0 : this.color.hashCode());
+    return prime * result + ((this.range== null) ? 0 : this.range.hashCode());
   }
 }

@@ -145,7 +145,6 @@ public class Registration {
     int result = 1;
     result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
     result = prime * result + ((this.method== null) ? 0 : this.method.hashCode());
-    result = prime * result + ((this.registerOptions== null) ? 0 : this.registerOptions.hashCode());
-    return result;
+    return prime * result + ((this.registerOptions== null) ? 0 : this.registerOptions.hashCode());
   }
 }

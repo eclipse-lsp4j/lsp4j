@@ -132,7 +132,6 @@ public class GotoTargetsArguments {
     int result = 1;
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
-    result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
-    return result;
+    return prime * result + ((this.column== null) ? 0 : this.column.hashCode());
   }
 }

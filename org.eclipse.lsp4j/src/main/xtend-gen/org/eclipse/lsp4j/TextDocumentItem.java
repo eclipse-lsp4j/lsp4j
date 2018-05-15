@@ -161,7 +161,6 @@ public class TextDocumentItem {
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.languageId== null) ? 0 : this.languageId.hashCode());
     result = prime * result + this.version;
-    result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    return result;
+    return prime * result + ((this.text== null) ? 0 : this.text.hashCode());
   }
 }

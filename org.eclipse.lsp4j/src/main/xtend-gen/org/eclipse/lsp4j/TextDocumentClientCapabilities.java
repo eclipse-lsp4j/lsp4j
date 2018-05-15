@@ -583,7 +583,6 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.documentLink== null) ? 0 : this.documentLink.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
-    result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
-    return result;
+    return prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
   }
 }

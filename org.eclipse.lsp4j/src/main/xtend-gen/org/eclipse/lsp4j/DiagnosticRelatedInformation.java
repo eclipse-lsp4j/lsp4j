@@ -111,7 +111,6 @@ public class DiagnosticRelatedInformation {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.location== null) ? 0 : this.location.hashCode());
-    result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
-    return result;
+    return prime * result + ((this.message== null) ? 0 : this.message.hashCode());
   }
 }
