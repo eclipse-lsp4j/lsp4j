@@ -1,5 +1,13 @@
 ## LSP4J Change Log
 
+### v0.4.1 (May 2018)
+
+Fixed issues: [#190](https://github.com/eclipse/lsp4j/issues/190)
+
+Breaking API changes:
+ * Type of `ServerCapabilities.colorProvider` changed from `ColorProviderOptions` to `Either<Boolean, ColorProviderOptions>`
+ * Renamed `ColorPresentationParams.colorInfo` property to `color`
+
 ### v0.4.0 (Apr. 2018)
 
  * Implemented the VS Code Debug Protocol
