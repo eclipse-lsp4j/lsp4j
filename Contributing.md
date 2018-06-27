@@ -25,11 +25,11 @@ To develop with Eclipse this is the recommended flow:
 3. Import the root of LSP4J as a Gradle project:
   - File -> Import
   - Existing Grade Project
-  - Select root of cloned directory as "Project root directory"
+  - Select the root of the cloned directory as "Project root directory"
   - Finish the wizard - this will import all the projects but there will be lots of errors
 
 4. Run the "eclipse assemble" gradle targets.
-  - There is already a launch configuration called "lsp4j-build-gradle", run it.
+  - There is already a launch configuration in the root of the repository called "lsp4j-build-gradle", run it.
   - Doing this will generate the missing files and update the project configurations
 
 5. Clean the projects
