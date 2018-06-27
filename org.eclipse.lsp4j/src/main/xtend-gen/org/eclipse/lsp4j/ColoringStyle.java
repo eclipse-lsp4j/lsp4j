@@ -8,8 +8,13 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.services.LanguageClient;
 
+/**
+ * @deprecated Use {@link LanguageClient#semanticHighlighting} instead.
+ */
 @Beta
+@Deprecated
 @SuppressWarnings("all")
 public class ColoringStyle {
   public final static int Identifier = 1;

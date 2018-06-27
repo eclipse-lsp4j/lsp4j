@@ -14,6 +14,7 @@ import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
+import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
@@ -137,6 +138,11 @@ public class ServerCapabilities {
    * Workspace specific server capabilities
    */
   private WorkspaceServerCapabilities workspace;
+  
+  /**
+   * Semantic highlighting server capabilities.
+   */
+  private SemanticHighlightingServerCapabilities semanticHighlighting;
   
   /**
    * Experimental server capabilities.
@@ -506,6 +512,21 @@ public class ServerCapabilities {
   }
   
   /**
+   * Semantic highlighting server capabilities.
+   */
+  @Pure
+  public SemanticHighlightingServerCapabilities getSemanticHighlighting() {
+    return this.semanticHighlighting;
+  }
+  
+  /**
+   * Semantic highlighting server capabilities.
+   */
+  public void setSemanticHighlighting(final SemanticHighlightingServerCapabilities semanticHighlighting) {
+    this.semanticHighlighting = semanticHighlighting;
+  }
+  
+  /**
    * Experimental server capabilities.
    */
   @Pure
@@ -545,6 +566,7 @@ public class ServerCapabilities {
     b.add("colorProvider", this.colorProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
+    b.add("semanticHighlighting", this.semanticHighlighting);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -664,6 +686,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.workspace.equals(other.workspace))
       return false;
+    if (this.semanticHighlighting == null) {
+      if (other.semanticHighlighting != null)
+        return false;
+    } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -698,6 +725,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
+    result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

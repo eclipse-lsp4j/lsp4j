@@ -18,8 +18,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Representation of a range and highlighting style identifiers that should be
  * highlighted based on the underlying model.
+ * 
+ * @deprecated Use {@link SemanticHighlightingInformation} instead.
  */
 @Beta
+@Deprecated
 @SuppressWarnings("all")
 public class ColoringInformation {
   /**
