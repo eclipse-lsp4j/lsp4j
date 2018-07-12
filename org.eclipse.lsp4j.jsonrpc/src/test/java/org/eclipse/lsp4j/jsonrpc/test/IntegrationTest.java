@@ -26,6 +26,7 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -64,6 +65,16 @@ public class IntegrationTest {
 
 		public void setNested(MyParam nested) {
 			this.nested = nested;
+		}
+
+		private Either<String, Integer> either;
+
+		public Either<String, Integer> getEither() {
+			return either;
+		}
+
+		public void setEither(Either<String, Integer> either) {
+			this.either = either;
 		}
 	}
 
@@ -162,6 +173,51 @@ public class IntegrationTest {
 				+ "{\"jsonrpc\":\"2.0\",\"id\":42,\"result\":{\"value\":\"bar\"}}",
 				out.toString());
 	}
+
+	@Test
+	public void testEither() throws Exception {
+		// create client message
+		String requestMessage = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": 42,\n"
+				+ "\"method\": \"askServer\",\n"
+				+ "\"params\": { \"either\": \"bar\", \"value\": \"foo\" }\n"
+				+ "}";
+		String clientMessage = getHeader(requestMessage.getBytes().length) + requestMessage;
+
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessage.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServerImpl();
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+
+		Assert.assertEquals("Content-Length: 65" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":42,\"result\":{\"value\":\"foo\",\"either\":\"bar\"}}",
+				out.toString());
+	}
+
+	@Test
+	public void testEitherNull() throws Exception {
+		// create client message
+		String requestMessage = "{\"jsonrpc\": \"2.0\",\n"
+				+ "\"id\": 42,\n"
+				+ "\"method\": \"askServer\",\n"
+				+ "\"params\": { \"either\": null, \"value\": \"foo\" }\n"
+				+ "}";
+		String clientMessage = getHeader(requestMessage.getBytes().length) + requestMessage;
+
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessage.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServerImpl();
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+
+		Assert.assertEquals("Content-Length: 50" + CRLF + CRLF
+				+ "{\"jsonrpc\":\"2.0\",\"id\":42,\"result\":{\"value\":\"foo\"}}",
+				out.toString());
+	}
+
 
 	@Test
 	public void testCancellation() throws Exception {

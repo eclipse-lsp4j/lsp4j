@@ -46,8 +46,10 @@ public class ThrowableTypeAdapter extends TypeAdapter<Throwable> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Throwable read(JsonReader in) throws IOException {
-		if (in.peek() == JsonToken.NULL)
+		if (in.peek() == JsonToken.NULL) {
+			in.nextNull();
 			return null;
+		}
 		
 		in.beginObject();
 		String message = null;
