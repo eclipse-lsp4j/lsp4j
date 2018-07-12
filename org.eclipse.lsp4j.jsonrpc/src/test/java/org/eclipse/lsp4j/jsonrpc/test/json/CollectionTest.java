@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 TypeFox GmbH (http://www.typefox.io) and others.
+ * Copyright (c) 2017, 2018 TypeFox GmbH (http://www.typefox.io) and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,11 +7,11 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
-import org.eclipse.lsp4j.jsonrpc.messages.Either;
-import org.eclipse.lsp4j.jsonrpc.messages.Either3;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,10 +19,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
-public class EitherTest {
+public class CollectionTest {
 
 	protected Gson createGson() {
-		return new GsonBuilder().registerTypeAdapterFactory(new EitherTypeAdapter.Factory()).create();
+		return new GsonBuilder().registerTypeAdapterFactory(new CollectionTypeAdapter.Factory()).create();
 	}
 
 	protected void assertSerialize(Object object, String expected) {
@@ -38,10 +38,10 @@ public class EitherTest {
 	}
 
 	@Test
-	public void testSerializeEither() {
+	public void testSerializeList() {
 		MyObjectA object = new MyObjectA();
-		object.myProperty = Either.forRight(7);
-		assertSerialize(object, "{\"myProperty\":7}");
+		object.myProperty = Arrays.asList("foo", "bar");
+		assertSerialize(object, "{\"myProperty\":[\"foo\",\"bar\"]}");
 	}
 
 	@Test
@@ -49,14 +49,14 @@ public class EitherTest {
 		MyObjectA object = new MyObjectA();
 		object.myProperty = null;
 		object.otherProperty = "ok";
-		assertSerialize(object, "{\"otherProperty\":\"ok\"}");
+		assertParse(object, "{\"otherProperty\":\"ok\"}");
 	}
 
 	@Test
-	public void testParseEither() {
+	public void testParseList() {
 		MyObjectA object = new MyObjectA();
-		object.myProperty = Either.forRight(7);
-		assertParse(object, "{\"myProperty\":7}");
+		object.myProperty = Arrays.asList("foo", "bar");
+		assertParse(object, "{\"myProperty\":[\"foo\",\"bar\"]}");
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class EitherTest {
 	}
 
 	protected static class MyObjectA {
-		public Either<String, Integer> myProperty;
+		public List<String> myProperty;
 		public String otherProperty;
 
 		@Override
@@ -85,40 +85,4 @@ public class EitherTest {
 			return Objects.hash(this.myProperty, this.otherProperty);
 		}
 	}
-
-	@Test
-	public void testSerializeEither3() {
-		MyObjectB object = new MyObjectB();
-		object.myProperty = Either3.forSecond(7);
-		assertSerialize(object, "{\"myProperty\":7}");
-	}
-
-	@Test
-	public void testParseEither3() {
-		MyObjectB object = new MyObjectB();
-		object.myProperty = Either3.forSecond(7);
-		assertParse(object, "{\"myProperty\":7}");
-	}
-
-	protected static class MyObjectB {
-		public Either3<String, Integer, Boolean> myProperty;
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj instanceof MyObjectB) {
-				MyObjectB other = (MyObjectB) obj;
-				return this.myProperty == null && other.myProperty == null
-						|| this.myProperty != null && this.myProperty.equals(other.myProperty);
-			}
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			if (myProperty != null)
-				return myProperty.hashCode();
-			return 0;
-		}
-	}
-
 }

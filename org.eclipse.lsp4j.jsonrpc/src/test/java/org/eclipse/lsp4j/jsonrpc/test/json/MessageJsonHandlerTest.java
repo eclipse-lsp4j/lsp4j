@@ -93,7 +93,37 @@ public class MessageJsonHandlerTest {
 			Assert.assertTrue(e.location.uri, e.location.uri.startsWith("file:/home/mistria"));
 		}
 	}
-	
+
+	@Test
+	public void testParseNullList() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<List<? extends Entry>>() {}.getType(),
+				new TypeToken<List<? extends Entry>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id)->"foo");
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ " \"result\": null}");
+		Assert.assertNull(((ResponseMessage)message).getResult());
+	}
+
+	@SuppressWarnings({ "unchecked" })
+	@Test
+	public void testParseEmptyList() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<List<? extends Entry>>() {}.getType(),
+				new TypeToken<List<? extends Entry>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id)->"foo");
+		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ " \"result\": []}");
+		List<Entry> result = (List<Entry>) ((ResponseMessage)message).getResult();
+		Assert.assertEquals(0, result.size());
+	}
+
 	@Test
 	public void testSerializeEmptyList() {
 		MessageJsonHandler handler = new MessageJsonHandler(Collections.emptyMap());
@@ -544,6 +574,26 @@ public class MessageJsonHandlerTest {
 
 		List<?> parameters = (List<?>) message.getParams();
 		Assert.assertEquals(Arrays.asList(MyEnum.A, MyEnum.B, MyEnum.C),
+				parameters);
+	}
+
+	@Test
+	public void testEnumParamNull() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<List<MyEnum>>() {}.getType()));
+		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
+				+ "\"id\":\"2\",\n"
+				+ "\"params\": [1, 2, null],\n"
+				+ "\"method\":\"foo\"\n"
+				+ "}");
+		Assert.assertTrue("" + message.getParams().getClass(), message.getParams() instanceof List);
+
+		List<?> parameters = (List<?>) message.getParams();
+		Assert.assertEquals(Arrays.asList(MyEnum.A, MyEnum.B, null),
 				parameters);
 	}
 
