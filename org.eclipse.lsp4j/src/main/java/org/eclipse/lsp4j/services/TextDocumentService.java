@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.CodeLensParams;
 import org.eclipse.lsp4j.ColorInformation;
 import org.eclipse.lsp4j.ColorPresentation;
 import org.eclipse.lsp4j.ColorPresentationParams;
+import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
@@ -159,7 +160,7 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends Command>> codeAction(CodeActionParams params);
+	CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params);
 
 	/**
 	 * The code lens request is sent from the client to the server to compute
