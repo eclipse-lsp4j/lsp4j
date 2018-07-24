@@ -55,6 +55,15 @@ public class CompletionItem {
   private Boolean deprecated;
   
   /**
+   * Select this item when showing.
+   * 
+   * *Note* that only one completion item can be selected and that the
+   * tool / client decides which item that is. The rule is that the *first
+   * item of those that match best is selected.
+   */
+  private Boolean preselect;
+  
+  /**
    * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
    */
   private String sortText;
@@ -204,6 +213,29 @@ public class CompletionItem {
    */
   public void setDeprecated(final Boolean deprecated) {
     this.deprecated = deprecated;
+  }
+  
+  /**
+   * Select this item when showing.
+   * 
+   * *Note* that only one completion item can be selected and that the
+   * tool / client decides which item that is. The rule is that the *first
+   * item of those that match best is selected.
+   */
+  @Pure
+  public Boolean getPreselect() {
+    return this.preselect;
+  }
+  
+  /**
+   * Select this item when showing.
+   * 
+   * *Note* that only one completion item can be selected and that the
+   * tool / client decides which item that is. The rule is that the *first
+   * item of those that match best is selected.
+   */
+  public void setPreselect(final Boolean preselect) {
+    this.preselect = preselect;
   }
   
   /**
@@ -380,6 +412,7 @@ public class CompletionItem {
     b.add("detail", this.detail);
     b.add("documentation", this.documentation);
     b.add("deprecated", this.deprecated);
+    b.add("preselect", this.preselect);
     b.add("sortText", this.sortText);
     b.add("filterText", this.filterText);
     b.add("insertText", this.insertText);
@@ -426,6 +459,11 @@ public class CompletionItem {
       if (other.deprecated != null)
         return false;
     } else if (!this.deprecated.equals(other.deprecated))
+      return false;
+    if (this.preselect == null) {
+      if (other.preselect != null)
+        return false;
+    } else if (!this.preselect.equals(other.preselect))
       return false;
     if (this.sortText == null) {
       if (other.sortText != null)
@@ -485,6 +523,7 @@ public class CompletionItem {
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
     result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
     result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());
+    result = prime * result + ((this.preselect== null) ? 0 : this.preselect.hashCode());
     result = prime * result + ((this.sortText== null) ? 0 : this.sortText.hashCode());
     result = prime * result + ((this.filterText== null) ? 0 : this.filterText.hashCode());
     result = prime * result + ((this.insertText== null) ? 0 : this.insertText.hashCode());

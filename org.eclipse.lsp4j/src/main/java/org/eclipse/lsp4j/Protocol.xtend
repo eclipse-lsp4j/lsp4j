@@ -245,6 +245,11 @@ class CompletionItemCapabilities {
 	 * Client supports the deprecated property on a completion item.
 	 */
 	Boolean deprecatedSupport
+	
+	/**
+	 * Client supports the preselect property on a completion item.
+	 */
+	Boolean preselectSupport
 
 	new() {
 	}
@@ -1094,6 +1099,15 @@ class CompletionItem {
 	 * Indicates if this item is deprecated.
 	 */
 	Boolean deprecated
+
+	/**
+	 * Select this item when showing.
+	 *
+	 * *Note* that only one completion item can be selected and that the
+	 * tool / client decides which item that is. The rule is that the *first*
+	 * item of those that match best is selected.
+	 */
+	Boolean preselect
 
 	/**
 	 * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
