@@ -7,7 +7,6 @@
  */
 package org.eclipse.lsp4j;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -25,12 +24,26 @@ public class CodeActionContext {
   @NonNull
   private List<Diagnostic> diagnostics;
   
+  /**
+   * Requested kind of actions to return.
+   * 
+   * Actions not of this kind are filtered out by the client before being shown. So servers
+   * can omit computing them.
+   * 
+   * See {@link CodeActionKind} for allowed values.
+   */
+  private List<String> only;
+  
   public CodeActionContext() {
-    this(new ArrayList<Diagnostic>());
   }
   
   public CodeActionContext(@NonNull final List<Diagnostic> diagnostics) {
     this.diagnostics = diagnostics;
+  }
+  
+  public CodeActionContext(@NonNull final List<Diagnostic> diagnostics, final List<String> only) {
+    this(diagnostics);
+    this.only = only;
   }
   
   /**
@@ -49,11 +62,37 @@ public class CodeActionContext {
     this.diagnostics = diagnostics;
   }
   
+  /**
+   * Requested kind of actions to return.
+   * 
+   * Actions not of this kind are filtered out by the client before being shown. So servers
+   * can omit computing them.
+   * 
+   * See {@link CodeActionKind} for allowed values.
+   */
+  @Pure
+  public List<String> getOnly() {
+    return this.only;
+  }
+  
+  /**
+   * Requested kind of actions to return.
+   * 
+   * Actions not of this kind are filtered out by the client before being shown. So servers
+   * can omit computing them.
+   * 
+   * See {@link CodeActionKind} for allowed values.
+   */
+  public void setOnly(final List<String> only) {
+    this.only = only;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("diagnostics", this.diagnostics);
+    b.add("only", this.only);
     return b.toString();
   }
   
@@ -72,12 +111,20 @@ public class CodeActionContext {
         return false;
     } else if (!this.diagnostics.equals(other.diagnostics))
       return false;
+    if (this.only == null) {
+      if (other.only != null)
+        return false;
+    } else if (!this.only.equals(other.only))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
+    return prime * result + ((this.only== null) ? 0 : this.only.hashCode());
   }
 }

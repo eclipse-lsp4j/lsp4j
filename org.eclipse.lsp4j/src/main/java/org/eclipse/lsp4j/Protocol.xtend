@@ -546,16 +546,67 @@ class ImplementationCapabilities extends DynamicRegistrationCapabilities {
     }
 }
 
+
+@JsonRpcData
+class CodeActionKindCapabilities {
+	/**
+	 * The code action kind values the client supports. When this
+	 * property exists the client also guarantees that it will
+	 * handle values outside its set gracefully and falls back
+	 * to a default value when unknown.
+	 * 
+	 * See {@link CodeActionKind} for allowed values.
+	 */
+    List<String> valueSet
+
+    new() {
+    }
+    
+    new(List<String> valueSet) {
+      this.valueSet = valueSet
+    }
+}
+
+
+@JsonRpcData
+class CodeActionLiteralSupportCapabilities {
+	/**
+	  * The code action kind is support with the following value
+	  * set.
+	  */
+    CodeActionKindCapabilities codeActionKind
+    
+    new() {
+    }
+    
+    new(CodeActionKindCapabilities codeActionKind) {
+      this.codeActionKind = codeActionKind;
+    }
+}
+
+
 /**
  * Capabilities specific to the `textDocument/codeAction`
  */
 @JsonRpcData
 class CodeActionCapabilities extends DynamicRegistrationCapabilities {
+	
+	/**
+	 * The client support code action literals as a valid
+	 * response of the `textDocument/codeAction` request.
+	 */
+    CodeActionLiteralSupportCapabilities codeActionLiteralSupport
+
     new() {
     }
-    
+
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+    
+    new(CodeActionLiteralSupportCapabilities codeActionLiteralSupport, Boolean dynamicRegistration) {
+        super(dynamicRegistration)
+        this.codeActionLiteralSupport = codeActionLiteralSupport
     }
 }
 
@@ -779,6 +830,55 @@ class ClientCapabilities {
 }
 
 /**
+ * A code action represents a change that can be performed in code, e.g. to fix a problem or
+ * to refactor code.
+ *
+ * A CodeAction must set either `edit` and/or a `command`. If both are supplied, the `edit` is applied first, then the `command` is executed.
+ */
+ @JsonRpcData
+class CodeAction {
+    /**
+     * A short, human-readable, title for this code action.
+     */
+    @NonNull
+	String title
+
+    /**
+     * The kind of the code action.
+     *
+     * Used to filter code actions.
+     */
+    String kind
+    
+    /**
+     * The diagnostics that this code action resolves.
+     */
+	List<Diagnostic> diagnostics
+    /**
+     * The workspace edit this code action performs.
+     */
+   WorkspaceEdit edit
+
+    /**
+     * A command this code action executes. If a code action
+     * provides a edit and a command, first the edit is
+     * executed and then the command.
+     */
+    Command command
+
+    new() {
+    }
+    
+    new(@NonNull String title, String kind, List<Diagnostic> diagnostics, WorkspaceEdit edit, Command command) {
+    	this.title = title
+    	this.kind = kind
+    	this.diagnostics = diagnostics
+    	this.edit = edit
+    	this.command = command
+    }
+}
+
+/**
  * Contains additional diagnostic information about the context in which a code action is run.
  */
 @JsonRpcData
@@ -788,13 +888,27 @@ class CodeActionContext {
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
-    
+	
+	/**
+	 * Requested kind of actions to return.
+	 *
+	 * Actions not of this kind are filtered out by the client before being shown. So servers
+	 * can omit computing them.
+	 *
+	 * See {@link CodeActionKind} for allowed values.
+	 */
+	List<String> only
+
     new() {
-    	this(new ArrayList)
     }
     
     new(@NonNull List<Diagnostic> diagnostics) {
     	this.diagnostics = diagnostics
+    }
+    
+    new(@NonNull List<Diagnostic> diagnostics, List<String> only) {
+    	this(diagnostics)
+    	this.only = only
     }
 }
 

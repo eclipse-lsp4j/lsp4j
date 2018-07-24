@@ -27,7 +27,7 @@ import com.google.gson.stream.JsonWriter;
  * Type adapter for {@link Either} and {@link Either3}.
  */
 public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
-	
+
 	public static class Factory implements TypeAdapterFactory {
 
 		@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -67,6 +67,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 	public Either<L, R> read(JsonReader in) throws IOException {
 		JsonToken next = in.peek();
 		if (next == JsonToken.NULL) {
+			in.nextNull();
 			return null;
 		}
 		Either<L, R> result = create(next, in);
@@ -138,6 +139,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			return this.adapter.read(in);
 		}
 
+		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			for (JsonToken expectedToken : expectedTokens) {
