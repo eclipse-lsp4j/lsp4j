@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -43,7 +45,10 @@ import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.LanguageServer;
 
 public class LSPWebSocketServer<T extends LanguageServer> {
-	private final Map<Session,Endpoint> endpoints = new LinkedHashMap<>();
+
+        private static final Logger LOG = Logger.getLogger(LSPWebSocketServer.class.getName());
+
+        private final Map<Session,Endpoint> endpoints = new LinkedHashMap<>();
 
 	private final MessageJsonHandler jsonHandler;
 	private final Supplier<T> newServer;
@@ -70,7 +75,7 @@ public class LSPWebSocketServer<T extends LanguageServer> {
 			MessageConsumer out = new MessageConsumer() {
 				@Override
 				public void consume(Message arg0) throws MessageIssueException, JsonRpcException {
-					System.err.println("sending message: " + arg0);
+				    LOG.log(Level.INFO, "sending message: " + arg0);
 					try {
 						session.getBasicRemote().sendText(arg0.toString());
 					} catch (IOException e) {
@@ -97,7 +102,7 @@ public class LSPWebSocketServer<T extends LanguageServer> {
         Endpoint localEndpoint = endpoints.get(session);
         
         if (m instanceof RequestMessage) {
-            System.err.println("Request from the client: " + m);
+            LOG.log(Level.INFO, "Request from the client: " + m);
         	RequestMessage requestMessage = (RequestMessage)m;
         	CompletableFuture<?> result = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
         	Object r = result.join();
@@ -105,11 +110,11 @@ public class LSPWebSocketServer<T extends LanguageServer> {
         	responseMessage.setRawId(requestMessage.getRawId());
         	responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
         	responseMessage.setResult(r);
-        	System.err.println("reply to client " + responseMessage);
+        	LOG.log(Level.INFO, "reply to client " + responseMessage);
         	return responseMessage.toString();
         
         } else if (m instanceof NotificationMessage) {
-            System.err.println("Notification from the client: " + m);
+            LOG.log(Level.INFO, "Notification from the client: " + m);
         	NotificationMessage notifyMessage = (NotificationMessage)m;
         	localEndpoint.notify(notifyMessage.getMethod(), notifyMessage.getParams());
         	return null;
