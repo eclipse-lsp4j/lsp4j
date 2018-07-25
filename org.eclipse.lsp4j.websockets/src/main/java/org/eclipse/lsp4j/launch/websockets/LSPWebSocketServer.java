@@ -127,7 +127,7 @@ public class LSPWebSocketServer<T extends LanguageServer> {
 
     @OnError
     public void onError(Throwable e, Session session){
-        e.printStackTrace();
+        LOG.log(Level.SEVERE, e.getMessage());
     }
 
 }
