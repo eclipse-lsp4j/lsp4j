@@ -42,6 +42,11 @@ public class CompletionItemCapabilities {
    */
   private Boolean deprecatedSupport;
   
+  /**
+   * Client supports the preselect property on a completion item.
+   */
+  private Boolean preselectSupport;
+  
   public CompletionItemCapabilities() {
   }
   
@@ -121,6 +126,21 @@ public class CompletionItemCapabilities {
     this.deprecatedSupport = deprecatedSupport;
   }
   
+  /**
+   * Client supports the preselect property on a completion item.
+   */
+  @Pure
+  public Boolean getPreselectSupport() {
+    return this.preselectSupport;
+  }
+  
+  /**
+   * Client supports the preselect property on a completion item.
+   */
+  public void setPreselectSupport(final Boolean preselectSupport) {
+    this.preselectSupport = preselectSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -129,6 +149,7 @@ public class CompletionItemCapabilities {
     b.add("commitCharactersSupport", this.commitCharactersSupport);
     b.add("documentationFormat", this.documentationFormat);
     b.add("deprecatedSupport", this.deprecatedSupport);
+    b.add("preselectSupport", this.preselectSupport);
     return b.toString();
   }
   
@@ -162,6 +183,11 @@ public class CompletionItemCapabilities {
         return false;
     } else if (!this.deprecatedSupport.equals(other.deprecatedSupport))
       return false;
+    if (this.preselectSupport == null) {
+      if (other.preselectSupport != null)
+        return false;
+    } else if (!this.preselectSupport.equals(other.preselectSupport))
+      return false;
     return true;
   }
   
@@ -173,6 +199,7 @@ public class CompletionItemCapabilities {
     result = prime * result + ((this.snippetSupport== null) ? 0 : this.snippetSupport.hashCode());
     result = prime * result + ((this.commitCharactersSupport== null) ? 0 : this.commitCharactersSupport.hashCode());
     result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
-    return prime * result + ((this.deprecatedSupport== null) ? 0 : this.deprecatedSupport.hashCode());
+    result = prime * result + ((this.deprecatedSupport== null) ? 0 : this.deprecatedSupport.hashCode());
+    return prime * result + ((this.preselectSupport== null) ? 0 : this.preselectSupport.hashCode());
   }
 }
