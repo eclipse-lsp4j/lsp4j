@@ -32,6 +32,7 @@ import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.DocumentLinkParams;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
+import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.DocumentSymbolParams;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
@@ -150,7 +151,7 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends SymbolInformation>> documentSymbol(DocumentSymbolParams params);
+	CompletableFuture<Either<List<? extends SymbolInformation>, List<? extends DocumentSymbol>>> documentSymbol(DocumentSymbolParams params);
 
 	/**
 	 * The code action request is sent from the client to the server to compute

@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.DocumentLinkParams;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
+import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.DocumentSymbolParams;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.InitializeParams;
@@ -124,7 +125,7 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	}
 
 	@Override
-	public CompletableFuture<List<? extends SymbolInformation>> documentSymbol(DocumentSymbolParams params) {
+	public CompletableFuture<Either<List<? extends SymbolInformation>, List<? extends DocumentSymbol>>> documentSymbol(DocumentSymbolParams params) {
 		throw new UnsupportedOperationException();
 	}
 
