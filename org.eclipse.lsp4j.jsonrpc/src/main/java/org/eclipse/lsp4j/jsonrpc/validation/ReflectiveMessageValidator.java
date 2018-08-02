@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
@@ -104,6 +105,17 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				}
 				validate(element, issues, objectStack, accessorStack);
 				accessorStack.pop();
+			}
+		} else if (object instanceof Either<?, ?>) {
+			Either<?, ?> either = (Either<?, ?>) object;
+			if (either.isLeft()) {
+				validate(either.getLeft(), issues, objectStack, accessorStack);
+			} else if (either.isRight()) {
+				validate(either.getRight(), issues, objectStack, accessorStack);
+			} else {
+				issues.add(new MessageIssue("An Either instance must not be empty."
+						 + " Path: " + createPathString(accessorStack),
+						ResponseErrorCode.InvalidParams.getValue()));
 			}
 		} else {
 			for (Method method : object.getClass().getMethods()) {

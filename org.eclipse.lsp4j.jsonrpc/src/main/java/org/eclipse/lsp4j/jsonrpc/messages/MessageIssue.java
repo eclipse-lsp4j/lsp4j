@@ -48,4 +48,9 @@ public class MessageIssue {
 		return cause;
 	}
 	
+	@Override
+	public String toString() {
+		return getText();
+	}
+	
 }
