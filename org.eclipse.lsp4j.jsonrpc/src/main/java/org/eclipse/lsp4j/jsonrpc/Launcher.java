@@ -42,7 +42,7 @@ public interface Launcher<T> {
 	 * 
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
-	 * @param in - inputs tream to listen for incoming messages
+	 * @param in - input stream to listen for incoming messages
 	 * @param out - output stream to send outgoing messages
 	 */
 	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out) {
