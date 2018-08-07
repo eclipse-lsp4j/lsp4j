@@ -28,6 +28,7 @@ import org.eclipse.lsp4j.DidChangeTextDocumentParams
 import org.eclipse.lsp4j.DocumentFormattingParams
 import org.eclipse.lsp4j.DocumentHighlightCapabilities
 import org.eclipse.lsp4j.DocumentLinkCapabilities
+import org.eclipse.lsp4j.DocumentSymbol
 import org.eclipse.lsp4j.DocumentSymbolCapabilities
 import org.eclipse.lsp4j.FormattingCapabilities
 import org.eclipse.lsp4j.FormattingOptions
@@ -72,6 +73,7 @@ import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.services.LanguageServer
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.*
@@ -126,6 +128,8 @@ class JsonParseTest {
 			]
 		])
 	}
+	
+
 	
 	@Test
 	def void testDidChange() {
@@ -223,6 +227,64 @@ class JsonParseTest {
 		])
 	}
 	
+	@Ignore
+	@Test
+	def void testDocumentSymbolResponse() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_SYMBOL
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [{
+					"name" : "foobar",
+					"kind" : 9,
+					"range" : {
+						"start": {
+							"character": 22,
+							"line": 4
+						},
+						"end": {
+							"character": 25,
+							"line": 4
+						}
+					},
+					"selectionRange": {
+						"start": {
+							"character": 22,
+							"line": 4
+						},
+						"end": {
+							"character": 25,
+							"line": 4
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.forRight(newArrayList(
+				new DocumentSymbol => [
+					name = "foobar"
+					kind = SymbolKind.Constructor
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+					selectionRange = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+				]
+			))
+		])
+	}
+	
+	@Ignore
 	@Test
 	def void testRenameResponse() {
 		jsonHandler.methodProvider = [ id |
