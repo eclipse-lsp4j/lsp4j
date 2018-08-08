@@ -689,6 +689,24 @@ class PublishDiagnosticsCapabilities {
 }
 
 /**
+ * Capabilities specific to {@code textDocument/semanticHighlighting}.
+ */
+@JsonRpcData
+class SemanticHighlightingCapabilities {
+	/**
+	 * The client supports semantic highlighting.
+	 */
+	Boolean semanticHighlighting
+
+	new() {
+	}
+
+	new(Boolean semanticHighlighting) {
+		this.semanticHighlighting = semanticHighlighting
+	}
+}
+
+/**
  * Text document specific client capabilities.
  */
 @JsonRpcData
@@ -791,6 +809,11 @@ class TextDocumentClientCapabilities {
 	 * Capabilities specific to `textDocument/publishDiagnostics`.
 	 */
 	PublishDiagnosticsCapabilities publishDiagnostics
+
+	/**
+	 * Capabilities specific to {@code textDocument/semanticHighlighting}.
+	 */
+	SemanticHighlightingCapabilities semanticHighlightingCapabilities
 }
 
 /**
@@ -2579,6 +2602,11 @@ class ServerCapabilities {
 	 * Workspace specific server capabilities
 	 */
 	WorkspaceServerCapabilities workspace
+	
+	/**
+	 * Semantic highlighting server capabilities.
+	 */
+	SemanticHighlightingServerCapabilities semanticHighlighting; 
 
 	/**
 	 * Experimental server capabilities.
@@ -2606,6 +2634,30 @@ class WorkspaceServerCapabilities {
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
 	}
+}
+
+/**
+ * Semantic highlighting server capabilities.
+ */
+@Beta
+@JsonRpcData
+class SemanticHighlightingServerCapabilities {
+
+	/**
+	 * A "lookup table" of semantic highlighting <a href="https://manual.macromates.com/en/language_grammars">TextMate scopes</a>
+	 * supported by the language server. If not defined or empty, then the server does not support the semantic highlighting
+	 * feature. Otherwise, clients should reuse this "lookup table" when receiving semantic highlighting notifications from
+	 * the server.
+	 */
+	List<List<String>> scopes;
+	
+	new() {
+	}
+	
+	new(List<List<String>> scopes) {
+		this.scopes = scopes;
+	}
+
 }
 
 /**
@@ -3843,5 +3895,59 @@ class ColorPresentation {
 		this.label = label
 		this.textEdit = textEdit
 		this.additionalTextEdits = additionalTextEdits
+	}
+}
+
+/**
+ * Parameters for the semantic highlighting (server-side) push notification.
+ */
+@Beta
+@JsonRpcData
+class SemanticHighlightingParams {
+	/**
+	 * The text document that has to be decorated with the semantic highlighting information.
+	 */
+	@NonNull
+	VersionedTextDocumentIdentifier textDocument
+
+	/**
+	 * An array of semantic highlighting information.
+	 */
+	@NonNull
+	List<SemanticHighlightingInformation> lines
+
+	new() {
+	}
+
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<SemanticHighlightingInformation> lines) {
+		this.textDocument = textDocument
+		this.lines = lines
+	}
+}
+
+/**
+ * Represents a semantic highlighting information that has to be applied on a specific line of the text document.
+ */
+@Beta
+@JsonRpcData
+class SemanticHighlightingInformation {
+	/**
+	 * The zero-based line position in the text document.
+	 */
+	int line
+
+	/**
+	 * A base64 encoded string representing every single highlighted ranges in the line with its start position, length
+	 * and the "lookup table" index of of the semantic highlighting <a href="https://manual.macromates.com/en/language_grammars">
+	 * TextMate scopes</a>. If the {@code tokens} is empty or not defined, then no highlighted positions are available for the line.
+	 */
+	String tokens
+
+	new() {
+	}
+
+	new(int line, String tokens) {
+		this.line = line
+		this.tokens = tokens
 	}
 }

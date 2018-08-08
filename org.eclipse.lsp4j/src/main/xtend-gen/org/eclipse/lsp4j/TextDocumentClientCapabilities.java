@@ -23,6 +23,7 @@ import org.eclipse.lsp4j.PublishDiagnosticsCapabilities;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
+import org.eclipse.lsp4j.SemanticHighlightingCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
 import org.eclipse.lsp4j.TypeDefinitionCapabilities;
@@ -132,6 +133,11 @@ public class TextDocumentClientCapabilities {
    * Capabilities specific to `textDocument/publishDiagnostics`.
    */
   private PublishDiagnosticsCapabilities publishDiagnostics;
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   */
+  private SemanticHighlightingCapabilities semanticHighlightingCapabilities;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -426,6 +432,21 @@ public class TextDocumentClientCapabilities {
     this.publishDiagnostics = publishDiagnostics;
   }
   
+  /**
+   * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   */
+  @Pure
+  public SemanticHighlightingCapabilities getSemanticHighlightingCapabilities() {
+    return this.semanticHighlightingCapabilities;
+  }
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   */
+  public void setSemanticHighlightingCapabilities(final SemanticHighlightingCapabilities semanticHighlightingCapabilities) {
+    this.semanticHighlightingCapabilities = semanticHighlightingCapabilities;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -449,6 +470,7 @@ public class TextDocumentClientCapabilities {
     b.add("colorProvider", this.colorProvider);
     b.add("rename", this.rename);
     b.add("publishDiagnostics", this.publishDiagnostics);
+    b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
     return b.toString();
   }
   
@@ -557,6 +579,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.publishDiagnostics.equals(other.publishDiagnostics))
       return false;
+    if (this.semanticHighlightingCapabilities == null) {
+      if (other.semanticHighlightingCapabilities != null)
+        return false;
+    } else if (!this.semanticHighlightingCapabilities.equals(other.semanticHighlightingCapabilities))
+      return false;
     return true;
   }
   
@@ -583,6 +610,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.documentLink== null) ? 0 : this.documentLink.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
-    return prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
+    result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
+    return prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
   }
 }

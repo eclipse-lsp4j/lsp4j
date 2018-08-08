@@ -18,8 +18,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Representation of a computed mapping from ranges to the appropriate
  * highlighting style.
+ * 
+ * @deprecated Use {@link SemanticHighlightingParams} instead.
  */
 @Beta
+@Deprecated
 @SuppressWarnings("all")
 public class ColoringParams {
   /**

@@ -12,13 +12,17 @@ import java.util.ArrayList
 import java.util.List
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import org.eclipse.lsp4j.services.LanguageClient
 
 /**
  * Representation of a computed mapping from ranges to the appropriate
  * highlighting style.
+ *
+ * @deprecated Use {@link SemanticHighlightingParams} instead.
  */
 @JsonRpcData
 @Beta
+@Deprecated
 class ColoringParams {
 
 	/**
@@ -47,9 +51,12 @@ class ColoringParams {
 /**
  * Representation of a range and highlighting style identifiers that should be
  * highlighted based on the underlying model.
+ *
+ * @deprecated Use {@link SemanticHighlightingInformation} instead.
  */
 @JsonRpcData
 @Beta
+@Deprecated
 class ColoringInformation {
 
 	/**
@@ -76,7 +83,11 @@ class ColoringInformation {
 	}
 }
 
+/**
+ * @deprecated Use {@link LanguageClient#semanticHighlighting} instead.
+ */
 @Beta
+@Deprecated
 class ColoringStyle {
 	
 	public static val Identifier     = 1
