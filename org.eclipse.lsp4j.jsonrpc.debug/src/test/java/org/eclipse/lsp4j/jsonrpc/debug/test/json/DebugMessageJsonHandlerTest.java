@@ -787,4 +787,62 @@ public class DebugMessageJsonHandlerTest {
 			Assert.assertNull(message.getResult());
 		});
 	}
+
+	@Test
+	public void testParseErrorRequest() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String input = "{"
+				+ "\"seq\":2,\n"
+				+ "\"type\":\"request\",\n"
+				+ "\"command\":\"foo\"\n"
+				+ "\"arguments\": \"ERROR HERE - a string where an object is expected\",\n"
+				+ "}";
+		try {
+			handler.parseMessage(input);
+			fail("Should have had a parse error");
+		} catch (MessageIssueException e) {
+			// Make sure the message parsed ok up until the parse error
+			DebugRequestMessage rpcMessage = (DebugRequestMessage)e.getRpcMessage();
+			Assert.assertEquals("2", rpcMessage.getId());
+			Assert.assertEquals("foo", rpcMessage.getMethod());
+
+			// check there is an underlying error
+			MessageIssue messageIssue = e.getIssues().get(0);
+			Assert.assertNotNull(messageIssue.getCause());
+		}
+	}
+
+	@Test
+	public void testParseSyntaxErrorRequest() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String input = "{"
+				+ "\"seq\":2,\n"
+				+ "\"type\":\"request\",\n"
+				+ "\"command\":\"foo\"\n"
+				+ "\"arguments\": \"ERROR HERE - an unterminated string,\n"
+				+ "}";
+		try {
+			handler.parseMessage(input);
+			fail("Should have had a parse error");
+		} catch (MessageIssueException e) {
+			// Make sure the message parsed ok up until the parse error
+			DebugRequestMessage rpcMessage = (DebugRequestMessage)e.getRpcMessage();
+			Assert.assertEquals("2", rpcMessage.getId());
+			Assert.assertEquals("foo", rpcMessage.getMethod());
+
+			// check there is an underlying error
+			MessageIssue messageIssue = e.getIssues().get(0);
+			Assert.assertNotNull(messageIssue.getCause());
+		}
+	}
 }

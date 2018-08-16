@@ -252,7 +252,8 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if ("request".equals(messageType) || "event".equals(messageType) || "response".equals(messageType)) {
 				// Create a message and bundle it to an exception with an issue that wraps the original exception
-				Message resultMessage = createMessage(messageType, seq, request_seq, method, rawSuccess, message, rawParams, rawBody);
+				boolean success = rawSuccess != null ? rawSuccess : false;
+				Message resultMessage = createMessage(messageType, seq, request_seq, method, success, message, rawParams, rawBody);
 				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
 				throw new MessageIssueException(resultMessage, issue);
 			} else {
