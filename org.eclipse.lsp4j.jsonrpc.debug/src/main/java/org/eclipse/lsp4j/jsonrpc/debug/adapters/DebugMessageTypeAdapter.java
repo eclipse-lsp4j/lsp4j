@@ -243,7 +243,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					in.skipValue();
 				}
 			}
-			boolean success = rawSuccess != null ? rawSuccess : true;
+			boolean success = rawSuccess != null ? rawSuccess : false;
 			Object params = parseParams(rawParams, method);
 			Object body = parseBody(rawBody, messageType, request_seq, method, success);
 			
