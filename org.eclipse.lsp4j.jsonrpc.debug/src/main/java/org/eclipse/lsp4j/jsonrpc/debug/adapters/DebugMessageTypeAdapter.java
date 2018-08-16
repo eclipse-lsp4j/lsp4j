@@ -433,6 +433,8 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					gson.toJson(errorData, errorData.getClass(), out);
 				}
 			} else {
+				out.name("success");
+				out.value(true);
 				out.name("body");
 				Object result = responseMessage.getResult();
 				if (result == null)
