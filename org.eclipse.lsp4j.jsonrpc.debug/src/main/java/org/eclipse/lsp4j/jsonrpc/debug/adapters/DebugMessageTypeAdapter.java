@@ -21,7 +21,6 @@ import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
-import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 
@@ -192,9 +191,9 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		Boolean rawSuccess = null;
 		Object rawParams = null;
 		Object rawBody = null;
-		
+
 		try {
-			
+
 			while (in.hasNext()) {
 				String name = in.nextName();
 				switch (name) {
@@ -243,17 +242,18 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					in.skipValue();
 				}
 			}
-			boolean success = rawSuccess != null ? rawSuccess : true;
+			boolean success = rawSuccess != null ? rawSuccess : false;
 			Object params = parseParams(rawParams, method);
 			Object body = parseBody(rawBody, messageType, request_seq, method, success);
-			
+
 			in.endObject();
 			return createMessage(messageType, seq, request_seq, method, success, message, params, body);
-			
+
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if ("request".equals(messageType) || "event".equals(messageType) || "response".equals(messageType)) {
 				// Create a message and bundle it to an exception with an issue that wraps the original exception
-				Message resultMessage = createMessage(messageType, seq, request_seq, method, rawSuccess, message, rawParams, rawBody);
+				boolean success = rawSuccess != null ? rawSuccess : false;
+				Message resultMessage = createMessage(messageType, seq, request_seq, method, success, message, rawParams, rawBody);
 				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
 				throw new MessageIssueException(resultMessage, issue);
 			} else {
@@ -337,7 +337,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		}
 		switch (messageType) {
 		case "request": {
-			RequestMessage message = new RequestMessage();
+			DebugRequestMessage message = new DebugRequestMessage();
 			message.setId(seq);
 			message.setMethod(method);
 			message.setParams(params);
@@ -354,7 +354,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			DebugResponseMessage message = new DebugResponseMessage();
 			message.setId(request_seq);
 			message.setResponseId(seq);
-			message.setMethod(method);			
+			message.setMethod(method);
 			if (!success) {
 				ResponseError error = new ResponseError();
 				error.setCode(ResponseErrorCode.UnknownErrorCode);
@@ -433,6 +433,8 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					gson.toJson(errorData, errorData.getClass(), out);
 				}
 			} else {
+				out.name("success");
+				out.value(true);
 				out.name("body");
 				Object result = responseMessage.getResult();
 				if (result == null)
@@ -458,7 +460,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 
 		out.endObject();
 	}
-	
+
 	private void writeIntId(JsonWriter out, Either<String, Number> id) throws IOException {
 		if (id == null)
 			writeNullValue(out);

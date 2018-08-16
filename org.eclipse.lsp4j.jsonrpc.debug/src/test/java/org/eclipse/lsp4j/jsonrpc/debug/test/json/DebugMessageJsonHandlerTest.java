@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug.test.json;
 
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,10 +18,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.debug.json.DebugMessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugRequestMessage;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
@@ -28,6 +33,7 @@ import org.junit.Test;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 public class DebugMessageJsonHandlerTest {
@@ -54,6 +60,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ " \"body\": [\n"
 				+ "  {\"name\":\"$schema\",\"kind\":15,\"location\":{\"uri\":\"file:/home/mistria/runtime-EclipseApplication-with-patch/EclipseConEurope/something.json\",\"range\":{\"start\":{\"line\":1,\"character\":3},\"end\":{\"line\":1,\"character\":55}}}},\n"
 				+ "  {\"name\":\"type\",\"kind\":15,\"location\":{\"uri\":\"file:/home/mistria/runtime-EclipseApplication-with-patch/EclipseConEurope/something.json\",\"range\":{\"start\":{\"line\":2,\"character\":3},\"end\":{\"line\":2,\"character\":19}}}},\n"
@@ -80,6 +87,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ " \"body\": [\n"
 				+ "  {\"name\":\"$schema\",\"kind\":15,\"location\":{\"uri\":\"file:/home/mistria/runtime-EclipseApplication-with-patch/EclipseConEurope/something.json\",\"range\":{\"start\":{\"line\":1,\"character\":3},\"end\":{\"line\":1,\"character\":55}}}},\n"
 				+ "  {\"name\":\"type\",\"kind\":15,\"location\":{\"uri\":\"file:/home/mistria/runtime-EclipseApplication-with-patch/EclipseConEurope/something.json\",\"range\":{\"start\":{\"line\":2,\"character\":3},\"end\":{\"line\":2,\"character\":19}}}},\n"
@@ -106,6 +114,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ " \"body\": [\n"
 				+ "  {\"name\":\"foo\"},\n"
 				+ "  {\"name\":\"bar\"}\n"
@@ -118,6 +127,7 @@ public class DebugMessageJsonHandlerTest {
 		message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": \"name\"\n"
 				+ "}");
 		result = (Either<String, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
@@ -137,6 +147,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": 2\n"
 				+ "}");
 		Either<Integer, List<Map<String, String>>> result = (Either<Integer, List<Map<String,String>>>) ((ResponseMessage)message).getResult();
@@ -157,6 +168,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": 2\n"
 				+ "}");
 		Either<Either<Integer, Map<String,String>>, List<Either<Integer, Map<String,String>>>> result = (Either<Either<Integer, Map<String, String>>, List<Either<Integer, Map<String, String>>>>) ((ResponseMessage)message).getResult();
@@ -167,6 +179,7 @@ public class DebugMessageJsonHandlerTest {
 		message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ " \"body\": {\n"
 				+ "  \"foo\":\"1\",\n"
 				+ "  \"bar\":\"2\"\n"
@@ -180,6 +193,7 @@ public class DebugMessageJsonHandlerTest {
 		message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ " \"body\": [{\n"
 				+ "  \"foo\":\"1\",\n"
 				+ "  \"bar\":\"2\"\n"
@@ -193,6 +207,7 @@ public class DebugMessageJsonHandlerTest {
 		message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ " \"body\": [\n"
 				+ "  2\n"
 				+ "]}");
@@ -215,6 +230,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": {\n"
 				+ "  value:\"foo\"\n"
 				+ "}}");
@@ -225,6 +241,7 @@ public class DebugMessageJsonHandlerTest {
 		message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": [{\n"
 				+ "  value:\"bar\"\n"
 				+ "}]}");
@@ -246,6 +263,7 @@ public class DebugMessageJsonHandlerTest {
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": [{\n"
 				+ "  value:\"foo\"\n"
 				+ "}]}");
@@ -256,6 +274,7 @@ public class DebugMessageJsonHandlerTest {
 		message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
+				+ "\"success\":true,\n"
 				+ "\"body\": {\n"
 				+ "  items: [{\n"
 				+ "    value:\"bar\"\n"
@@ -740,5 +759,90 @@ public class DebugMessageJsonHandlerTest {
 			Assert.assertEquals(Location.class, class1);
 			Assert.assertEquals("dummy://mymodel.mydsl", ((Location)params).uri);
 		});
+	}
+
+	@Test
+	public void testMissingSuccessResponse_AllOrders() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Location>() {}.getType(),
+				new TypeToken<Void>() {
+				}.getType()));
+		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String[] properties = new String[] {
+				"\"seq\":2",
+				"\"type\":\"response\"",
+				"\"request_seq\":5",
+				"\"message\": \"failed\"",
+				"\"body\": {\"uri\": \"failed\"}"
+				};
+		testAllPermutations(properties, json -> {
+			ResponseMessage message = (ResponseMessage) handler.parseMessage(json);
+			Assert.assertEquals("failed", message.getError().getMessage());
+			Object data = message.getError().getData();
+			Map<String, String> expected = new HashMap<>();
+			expected.put("uri", "failed");
+			Assert.assertEquals(expected, data);
+			Assert.assertNull(message.getResult());
+		});
+	}
+
+	@Test
+	public void testParseErrorRequest() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String input = "{"
+				+ "\"seq\":2,\n"
+				+ "\"type\":\"request\",\n"
+				+ "\"command\":\"foo\"\n"
+				+ "\"arguments\": \"ERROR HERE - a string where an object is expected\",\n"
+				+ "}";
+		try {
+			handler.parseMessage(input);
+			fail("Should have had a parse error");
+		} catch (MessageIssueException e) {
+			// Make sure the message parsed ok up until the parse error
+			DebugRequestMessage rpcMessage = (DebugRequestMessage)e.getRpcMessage();
+			Assert.assertEquals("2", rpcMessage.getId());
+			Assert.assertEquals("foo", rpcMessage.getMethod());
+
+			// check there is an underlying error
+			MessageIssue messageIssue = e.getIssues().get(0);
+			Assert.assertNotNull(messageIssue.getCause());
+		}
+	}
+
+	@Test
+	public void testParseSyntaxErrorRequest() {
+		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+		supportedMethods.put("foo", JsonRpcMethod.request("foo",
+				new TypeToken<Void>() {}.getType(),
+				new TypeToken<Location>() {}.getType()));
+		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
+		handler.setMethodProvider((id) -> "foo");
+		String input = "{"
+				+ "\"seq\":2,\n"
+				+ "\"type\":\"request\",\n"
+				+ "\"command\":\"foo\"\n"
+				+ "\"arguments\": \"ERROR HERE - an unterminated string,\n"
+				+ "}";
+		try {
+			handler.parseMessage(input);
+			fail("Should have had a parse error");
+		} catch (MessageIssueException e) {
+			// Make sure the message parsed ok up until the parse error
+			DebugRequestMessage rpcMessage = (DebugRequestMessage)e.getRpcMessage();
+			Assert.assertEquals("2", rpcMessage.getId());
+			Assert.assertEquals("foo", rpcMessage.getMethod());
+
+			// check there is an underlying error
+			MessageIssue messageIssue = e.getIssues().get(0);
+			Assert.assertNotNull(messageIssue.getCause());
+		}
 	}
 }

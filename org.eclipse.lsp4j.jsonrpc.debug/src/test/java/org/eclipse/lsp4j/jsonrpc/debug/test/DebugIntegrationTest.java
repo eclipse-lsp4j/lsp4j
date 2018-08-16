@@ -346,12 +346,38 @@ public class DebugIntegrationTest {
 			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
 			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
 
-			Assert.assertEquals("Content-Length: 74\r\n\r\n" +
-					"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"$/foo2\",\"body\":null}",
+			Assert.assertEquals("Content-Length: 89\r\n\r\n" +
+					"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"$/foo2\",\"success\":true,\"body\":null}",
 					out.toString());
 		} finally {
 			logMessages.unregister();
 		}
+	}
+
+	@Test
+	public void testResponse() throws Exception {
+		String clientMessage = "{\"type\":\"request\","
+				+ "\"seq\":1,\n"
+				+ "\"command\":\"askServer\",\n"
+				+ " \"arguments\": { value: \"bar\" }\n"
+				+ "}";
+		String clientMessages = getHeader(clientMessage.getBytes().length) + clientMessage;
+
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = DebugLauncher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+
+		Assert.assertEquals("Content-Length: 103\r\n\r\n" +
+				"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"askServer\",\"success\":true,\"body\":{\"value\":\"bar\"}}",
+				out.toString());
 	}
 
 	public static interface UnexpectedParamsTestServer {
