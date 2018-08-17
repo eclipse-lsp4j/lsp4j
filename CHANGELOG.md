@@ -75,4 +75,4 @@ Fixed issues: [#58](https://github.com/eclipse/lsp4j/issues/58), [#59](https://g
 
 ### v0.1.1 (Jan. 2017)
 
-Fixed issues: [#50](https://github.com/eclipse/lsp4j/issues/50), [#51](https://github.com/eclipse/lsp4j/issues/51), [#52](https://github.com/eclipse/lsp4j/issues/52), [#53](https://github.com/eclipse/lsp4j/issues/53)
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/5?closed=1
