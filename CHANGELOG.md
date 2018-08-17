@@ -61,7 +61,7 @@ Fixed issues: [#107](https://github.com/eclipse/lsp4j/issues/107)
  * Support multiple parameters in protocol methods
  * Support custom error codes
 
-Fixed issues: [#17](https://github.com/eclipse/lsp4j/issues/17), [#56](https://github.com/eclipse/lsp4j/issues/56), [#68](https://github.com/eclipse/lsp4j/issues/68), [#69](https://github.com/eclipse/lsp4j/issues/69), [#70](https://github.com/eclipse/lsp4j/issues/70), [#71](https://github.com/eclipse/lsp4j/issues/71), [#73](https://github.com/eclipse/lsp4j/issues/73), [#77](https://github.com/eclipse/lsp4j/issues/77), [#80](https://github.com/eclipse/lsp4j/issues/80), [#82](https://github.com/eclipse/lsp4j/issues/82), [#87](https://github.com/eclipse/lsp4j/issues/87), [#88](https://github.com/eclipse/lsp4j/issues/88), [#93](https://github.com/eclipse/lsp4j/issues/93)
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/7?closed=1
 
 Breaking API changes:
  * Type of `ServerCapabilities.textDocumentSync` changed from `TextDocumentSyncKind` to `Either<TextDocumentSyncKind, TextDocumentSyncOptions>`
