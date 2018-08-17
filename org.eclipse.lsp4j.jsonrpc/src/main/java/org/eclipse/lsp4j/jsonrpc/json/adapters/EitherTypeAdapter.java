@@ -11,13 +11,19 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.Predicate;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
+import com.google.gson.internal.bind.JsonTreeReader;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -40,16 +46,69 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		}
 
 	}
+	
+	/**
+	 * A predicate that is usedful for checking alternatives in case both the left and the right type
+	 * are JSON object types.
+	 */
+	public static class PropertyChecker implements Predicate<JsonElement> {
+		
+		private final String propertyName;
+		private final String expectedValue;
+		private final Class<? extends JsonElement> expectedType;
+		
+		public PropertyChecker(String propertyName) {
+			this.propertyName = propertyName;
+			this.expectedValue = null;
+			this.expectedType = null;
+		}
+		
+		public PropertyChecker(String propertyName, String expectedValue) {
+			this.propertyName = propertyName;
+			this.expectedValue = expectedValue;
+			this.expectedType = null;
+		}
+		
+		public PropertyChecker(String propertyName, Class<? extends JsonElement> expectedType) {
+			this.propertyName = propertyName;
+			this.expectedType = expectedType;
+			this.expectedValue = null;
+		}
+
+		@Override
+		public boolean test(JsonElement element) {
+			if (element.isJsonObject()) {
+				JsonObject object = element.getAsJsonObject();
+				JsonElement value = object.get(propertyName);
+				if (expectedValue != null)
+					return value != null && value.isJsonPrimitive() && expectedValue.equals(value.getAsString());
+				else if (expectedType != null)
+					return expectedType.isInstance(value);
+				else
+					return value != null;
+			}
+			return false;
+		}
+		
+	}
 
 	protected final TypeToken<Either<L, R>> typeToken;
 	protected final EitherTypeArgument<L> left;
 	protected final EitherTypeArgument<R> right;
+	protected final Predicate<JsonElement> leftChecker;
+	protected final Predicate<JsonElement> rightChecker;
 
 	public EitherTypeAdapter(Gson gson, TypeToken<Either<L, R>> typeToken) {
+		this(gson, typeToken, null, null);
+	}
+	
+	public EitherTypeAdapter(Gson gson, TypeToken<Either<L, R>> typeToken, Predicate<JsonElement> leftChecker, Predicate<JsonElement> rightChecker) {
 		this.typeToken = typeToken;
 		Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Either.class);
 		this.left = new EitherTypeArgument<L>(gson, elementTypes[0]);
 		this.right = new EitherTypeArgument<R>(gson, elementTypes[1]);
+		this.leftChecker = leftChecker;
+		this.rightChecker = rightChecker;
 	}
 
 	@Override
@@ -70,39 +129,60 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			in.nextNull();
 			return null;
 		}
-		Either<L, R> result = create(next, in);
-		if (result == null)
-			throw new IOException("Unexpected token " + next + ", expected " + left + " | " + right + " tokens.");
-		return result;
+		return create(next, in);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected Either<L, R> create(JsonToken nextToken, JsonReader in) throws IOException {
-		if (left.isAssignable(nextToken)) {
-			if (Either3.class.isAssignableFrom(typeToken.getRawType()))
-				return (Either<L, R>) Either3.forLeft3(left.read(in));
-			else
-				return Either.forLeft(left.read(in));
+		boolean matchesLeft = left.isAssignable(nextToken);
+		boolean matchesRight = right.isAssignable(nextToken);
+		if (matchesLeft && matchesRight) {
+			if (leftChecker != null || rightChecker != null) {
+				JsonElement element = new JsonParser().parse(in);
+				if (leftChecker != null && leftChecker.test(element))
+					// Parse the left alternative from the JSON element tree
+					return createLeft(left.read(element));
+				if (rightChecker != null && rightChecker.test(element))
+					// Parse the right alternative from the JSON element tree
+					return createRight(right.read(element));
+			}
+			throw new JsonParseException("Ambiguous Either type: token " + nextToken + " matches both alternatives.");
+		} else if (matchesLeft) {
+			// Parse the left alternative from the JSON stream
+			return createLeft(left.read(in));
+		} else if (matchesRight) {
+			// Parse the right alternative from the JSON stream
+			return createRight(right.read(in));
+		} else {
+			throw new JsonParseException("Unexpected token " + nextToken + ": expected " + left + " | " + right + " tokens.");
 		}
-		if (right.isAssignable(nextToken)) {
-			if (Either3.class.isAssignableFrom(typeToken.getRawType()))
-				return (Either<L, R>) Either3.forRight3((Either<?, ?>) right.read(in));
-			else
-				return Either.forRight(right.read(in));
-		}
-		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Either<L, R> createLeft(L obj) throws IOException {
+		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
+			return (Either<L, R>) Either3.forLeft3(obj);
+		else
+			return Either.forLeft(obj);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Either<L, R> createRight(R obj) throws IOException {
+		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
+			return (Either<L, R>) Either3.forRight3((Either<?, ?>) obj);
+		else
+			return Either.forRight(obj);
 	}
 
 	protected static class EitherTypeArgument<T> {
 
-		protected final TypeToken<T> token;
+		protected final TypeToken<T> typeToken;
 		protected final TypeAdapter<T> adapter;
 		protected final Collection<JsonToken> expectedTokens;
 
 		@SuppressWarnings("unchecked")
 		public EitherTypeArgument(Gson gson, Type type) {
-			this.token = (TypeToken<T>) TypeToken.get(type);
-			this.adapter = gson.getAdapter(this.token);
+			this.typeToken = (TypeToken<T>) TypeToken.get(type);
+			this.adapter = gson.getAdapter(this.typeToken);
 			this.expectedTokens = new HashSet<>();
 			for (Type expectedType : TypeUtils.getExpectedTypes(type)) {
 				Class<?> rawType = TypeToken.get(expectedType).getRawType();
@@ -127,8 +207,8 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			return JsonToken.BEGIN_OBJECT;
 		}
 
-		public boolean isAssignable(JsonToken token) {
-			return this.expectedTokens.contains(token);
+		public boolean isAssignable(JsonToken jsonToken) {
+			return this.expectedTokens.contains(jsonToken);
 		}
 
 		public void write(JsonWriter out, T value) throws IOException {
@@ -137,6 +217,10 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 
 		public T read(JsonReader in) throws IOException {
 			return this.adapter.read(in);
+		}
+		
+		public T read(JsonElement element) throws IOException {
+			return this.adapter.read(new JsonTreeReader(element));
 		}
 
 		@Override

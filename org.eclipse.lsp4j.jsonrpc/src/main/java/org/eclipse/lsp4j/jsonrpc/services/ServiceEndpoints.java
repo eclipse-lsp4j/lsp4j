@@ -18,6 +18,9 @@ import java.util.Set;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethod;
+import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
+
+import com.google.gson.TypeAdapterFactory;
 
 public final class ServiceEndpoints {
 	private ServiceEndpoints() {}
@@ -85,12 +88,21 @@ public final class ServiceEndpoints {
 			if (methodInfo.isNotification) {
 				meth = JsonRpcMethod.notification(methodInfo.name, methodInfo.parameterTypes);
 			} else {
-				Type returnType = methodInfo.method.getGenericReturnType();
-				if (returnType instanceof ParameterizedType) {
-					ParameterizedType rType = (ParameterizedType) returnType;
-					meth = JsonRpcMethod.request(methodInfo.name, rType.getActualTypeArguments()[0], methodInfo.parameterTypes);
+				Type genericReturnType = methodInfo.method.getGenericReturnType();
+				if (genericReturnType instanceof ParameterizedType) {
+					Type returnType = ((ParameterizedType) genericReturnType).getActualTypeArguments()[0];
+					TypeAdapterFactory responseTypeAdapter = null;
+					ResponseJsonAdapter responseTypeAdapterAnnotation = methodInfo.method.getAnnotation(ResponseJsonAdapter.class);
+					if (responseTypeAdapterAnnotation != null) {
+						try {
+							responseTypeAdapter = responseTypeAdapterAnnotation.value().newInstance();
+						} catch (InstantiationException | IllegalAccessException e) {
+							throw new RuntimeException(e);
+						}
+					}
+					meth = JsonRpcMethod.request(methodInfo.name, returnType, responseTypeAdapter, methodInfo.parameterTypes);
 				} else {
-					throw new IllegalStateException("Expecting return type of CompletableFuture but was : "+returnType);
+					throw new IllegalStateException("Expecting return type of CompletableFuture but was : " + genericReturnType);
 				}
 			}
 			if (result.put(methodInfo.name, meth) != null) {
