@@ -40,7 +40,7 @@ Breaking API changes:
 
 ### v0.3.1 (Apr. 2018)
 
-Fixed issues: [#122](https://github.com/eclipse/lsp4j/issues/122), [#123](https://github.com/eclipse/lsp4j/issues/123), [#128](https://github.com/eclipse/lsp4j/issues/128), [#144](https://github.com/eclipse/lsp4j/issues/144), [#157](https://github.com/eclipse/lsp4j/issues/157)
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/9?closed=1
 
 ### v0.3.0 (Sep. 2017)
 
