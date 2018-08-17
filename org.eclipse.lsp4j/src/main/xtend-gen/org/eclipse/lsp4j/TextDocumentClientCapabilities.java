@@ -15,6 +15,7 @@ import org.eclipse.lsp4j.DefinitionCapabilities;
 import org.eclipse.lsp4j.DocumentHighlightCapabilities;
 import org.eclipse.lsp4j.DocumentLinkCapabilities;
 import org.eclipse.lsp4j.DocumentSymbolCapabilities;
+import org.eclipse.lsp4j.FoldingRangeCapabilities;
 import org.eclipse.lsp4j.FormattingCapabilities;
 import org.eclipse.lsp4j.HoverCapabilities;
 import org.eclipse.lsp4j.ImplementationCapabilities;
@@ -133,6 +134,13 @@ public class TextDocumentClientCapabilities {
    * Capabilities specific to `textDocument/publishDiagnostics`.
    */
   private PublishDiagnosticsCapabilities publishDiagnostics;
+  
+  /**
+   * Capabilities specific to `textDocument/foldingRange` requests.
+   * 
+   * Since 3.10.0
+   */
+  private FoldingRangeCapabilities foldingRange;
   
   /**
    * Capabilities specific to {@code textDocument/semanticHighlighting}.
@@ -433,6 +441,25 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
+   * Capabilities specific to `textDocument/foldingRange` requests.
+   * 
+   * Since 3.10.0
+   */
+  @Pure
+  public FoldingRangeCapabilities getFoldingRange() {
+    return this.foldingRange;
+  }
+  
+  /**
+   * Capabilities specific to `textDocument/foldingRange` requests.
+   * 
+   * Since 3.10.0
+   */
+  public void setFoldingRange(final FoldingRangeCapabilities foldingRange) {
+    this.foldingRange = foldingRange;
+  }
+  
+  /**
    * Capabilities specific to {@code textDocument/semanticHighlighting}.
    */
   @Pure
@@ -470,6 +497,7 @@ public class TextDocumentClientCapabilities {
     b.add("colorProvider", this.colorProvider);
     b.add("rename", this.rename);
     b.add("publishDiagnostics", this.publishDiagnostics);
+    b.add("foldingRange", this.foldingRange);
     b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
     return b.toString();
   }
@@ -579,6 +607,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.publishDiagnostics.equals(other.publishDiagnostics))
       return false;
+    if (this.foldingRange == null) {
+      if (other.foldingRange != null)
+        return false;
+    } else if (!this.foldingRange.equals(other.foldingRange))
+      return false;
     if (this.semanticHighlightingCapabilities == null) {
       if (other.semanticHighlightingCapabilities != null)
         return false;
@@ -611,6 +644,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
     result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
+    result = prime * result + ((this.foldingRange== null) ? 0 : this.foldingRange.hashCode());
     return prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
   }
 }

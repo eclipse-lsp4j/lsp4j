@@ -10,13 +10,13 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionParams;
 import org.eclipse.lsp4j.CodeLens;
 import org.eclipse.lsp4j.CodeLensParams;
 import org.eclipse.lsp4j.ColorInformation;
 import org.eclipse.lsp4j.ColorPresentation;
 import org.eclipse.lsp4j.ColorPresentationParams;
-import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
@@ -34,6 +34,8 @@ import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
 import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.DocumentSymbolParams;
+import org.eclipse.lsp4j.FoldingRange;
+import org.eclipse.lsp4j.FoldingRangeRequestParams;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.ReferenceParams;
@@ -322,4 +324,16 @@ public interface TextDocumentService {
 	default CompletableFuture<List<ColorPresentation>> colorPresentation(ColorPresentationParams params) {
 		throw new UnsupportedOperationException();
 	}
+	
+	/**
+	 * The folding range request is sent from the client to the server to return all folding
+	 * ranges found in a given text document.
+	 * 
+	 * Since version 3.10.0
+	 */
+	@JsonRequest
+	default CompletableFuture<List<FoldingRange>> foldingRanges(FoldingRangeRequestParams params) {
+		throw new UnsupportedOperationException();
+	}
+	
 }

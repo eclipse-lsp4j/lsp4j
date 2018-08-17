@@ -22,6 +22,11 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
    */
   private SymbolKindCapabilities symbolKind;
   
+  /**
+   * The client support hierarchical document symbols.
+   */
+  private Boolean hierarchicalDocumentSymbolSupport;
+  
   public DocumentSymbolCapabilities() {
   }
   
@@ -53,11 +58,27 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
     this.symbolKind = symbolKind;
   }
   
+  /**
+   * The client support hierarchical document symbols.
+   */
+  @Pure
+  public Boolean getHierarchicalDocumentSymbolSupport() {
+    return this.hierarchicalDocumentSymbolSupport;
+  }
+  
+  /**
+   * The client support hierarchical document symbols.
+   */
+  public void setHierarchicalDocumentSymbolSupport(final Boolean hierarchicalDocumentSymbolSupport) {
+    this.hierarchicalDocumentSymbolSupport = hierarchicalDocumentSymbolSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("symbolKind", this.symbolKind);
+    b.add("hierarchicalDocumentSymbolSupport", this.hierarchicalDocumentSymbolSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -79,12 +100,20 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
         return false;
     } else if (!this.symbolKind.equals(other.symbolKind))
       return false;
+    if (this.hierarchicalDocumentSymbolSupport == null) {
+      if (other.hierarchicalDocumentSymbolSupport != null)
+        return false;
+    } else if (!this.hierarchicalDocumentSymbolSupport.equals(other.hierarchicalDocumentSymbolSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
+    return prime * result + ((this.hierarchicalDocumentSymbolSupport== null) ? 0 : this.hierarchicalDocumentSymbolSupport.hashCode());
   }
 }
