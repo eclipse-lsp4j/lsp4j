@@ -46,7 +46,7 @@ Fixed issues: [#122](https://github.com/eclipse/lsp4j/issues/122), [#123](https:
 
  * Support union of three types with the `Either3` class
 
-Fixed issues: [#99](https://github.com/eclipse/lsp4j/issues/99), [#100](https://github.com/eclipse/lsp4j/issues/100), [#103](https://github.com/eclipse/lsp4j/issues/103), [#105](https://github.com/eclipse/lsp4j/issues/105), [#106](https://github.com/eclipse/lsp4j/issues/106), [#111](https://github.com/eclipse/lsp4j/issues/111), [#119](https://github.com/eclipse/lsp4j/issues/119)
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/1?closed=1
 
 -----
 
