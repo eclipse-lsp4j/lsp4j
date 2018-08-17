@@ -12,7 +12,7 @@ Breaking API changes:
 
 ### v0.4.1 (May 2018)
 
-Fixed issues: [#190](https://github.com/eclipse/lsp4j/issues/190)
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/4?closed=1
 
 Breaking API changes:
  * Type of `ServerCapabilities.colorProvider` changed from `ColorProviderOptions` to `Either<Boolean, ColorProviderOptions>`
