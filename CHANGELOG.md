@@ -1,5 +1,15 @@
 ## LSP4J Change Log
 
+### v0.5.0 (Sep. 2018)
+
+ * Implemented LSP version 3.10.0
+
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/3?closed=1
+
+Breaking API changes:
+ * Return type of `textDocument/documentSymbol` changed from `List<? extends SymbolInformation>` to `List<Either<SymbolInformation, DocumentSymbol>>`
+ * Return type of `textDocument/codeAction` changed from `List<? extends Command>` to `List<Either<Command, CodeAction>>`
+
 ### v0.4.1 (May 2018)
 
 Fixed issues: [#190](https://github.com/eclipse/lsp4j/issues/190)
