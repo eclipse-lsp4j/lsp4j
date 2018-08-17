@@ -15,6 +15,7 @@ import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
+import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -3150,6 +3151,12 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
     new() {
     }
     
+    new(@NonNull String uri, Integer version) {
+    	super(uri)
+    	this.version = version
+    }
+    
+    @Deprecated
     new(Integer version) {
     	this.version = version
     }
@@ -3233,13 +3240,15 @@ class WorkspaceEdit {
 	List<TextDocumentEdit> documentChanges
 	
 	/**
-	 * if resource changes are supported the `WorkspaceEdit`
+	 * If resource changes are supported the `WorkspaceEdit`
 	 * uses the property `resourceChanges` which are either a
 	 * rename, move, delete or content change.
 	 * These changes are applied in the order that they are supplied,
 	 * however clients may group the changes for optimization
 	 */
-	@Beta List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
+	@Beta
+	@JsonAdapter(ResourceChangeListAdapter)
+	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
     new() {
     	this.changes = new LinkedHashMap

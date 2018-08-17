@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.test.services
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.internal.LazilyParsedNumber
 import java.util.ArrayList
 import java.util.Collection
 import java.util.HashMap
@@ -50,6 +51,7 @@ import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
 import org.eclipse.lsp4j.ReferencesCapabilities
 import org.eclipse.lsp4j.RenameCapabilities
+import org.eclipse.lsp4j.ResourceChange
 import org.eclipse.lsp4j.SignatureHelpCapabilities
 import org.eclipse.lsp4j.SignatureInformationCapabilities
 import org.eclipse.lsp4j.SymbolInformation
@@ -58,6 +60,7 @@ import org.eclipse.lsp4j.SymbolKindCapabilities
 import org.eclipse.lsp4j.SynchronizationCapabilities
 import org.eclipse.lsp4j.TextDocumentClientCapabilities
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent
+import org.eclipse.lsp4j.TextDocumentEdit
 import org.eclipse.lsp4j.TextDocumentIdentifier
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.TypeDefinitionCapabilities
@@ -76,17 +79,17 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.services.LanguageServer
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 class JsonParseTest {
 	
 	/**
-	 * Gson parses numbers with {@link com.google.gson.internal.LazilyParsedNumber}, which is not
-	 * equals-compatible with {@link java.lang.Integer}.
+	 * Gson parses numbers with {@link LazilyParsedNumber}, which is not
+	 * equals-compatible with {@link Integer}.
 	 */
 	@FinalFieldsConstructor
 	private static class MyInteger extends Number {
@@ -465,7 +468,7 @@ class JsonParseTest {
 	}
 	
 	@Test
-	def void testRenameResponse() {
+	def void testRenameResponse1() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.DOC_RENAME
@@ -530,6 +533,73 @@ class JsonParseTest {
 						]
 					))
 				]
+			]
+		])
+	}
+	
+	@Test
+	def void testRenameResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_RENAME
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"resourceChanges": [
+						{
+							"current": "file:/foo.txt",
+							"newUri": "file:/bar.txt"
+						},
+						{
+							"textDocument": {
+								"uri": "file:/baz.txt",
+								"version": 17
+							},
+							"edits": [
+								{
+									"range": {
+										"start": {
+											"character": 32,
+											"line": 3
+										},
+										"end": {
+											"character": 35,
+											"line": 3
+										}
+									},
+									"newText": "asdfqweryxcv"
+								}
+							]
+						}
+					]
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceEdit => [
+				resourceChanges = newArrayList(
+					Either.forLeft(new ResourceChange => [
+						current = "file:/foo.txt"
+						newUri = "file:/bar.txt"
+					]),
+					Either.forRight(new TextDocumentEdit => [
+						textDocument = new VersionedTextDocumentIdentifier("file:/baz.txt", 17)
+						edits = newArrayList(
+							new TextEdit => [
+								range = new Range => [
+									start = new Position(3, 32)
+									end = new Position(3, 35)
+								]
+								newText = "asdfqweryxcv"
+							]
+						)
+					])
+				)
 			]
 		])
 	}

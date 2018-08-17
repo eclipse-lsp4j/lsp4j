@@ -10,6 +10,7 @@ package org.eclipse.lsp4j;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -31,6 +32,12 @@ public class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
   public VersionedTextDocumentIdentifier() {
   }
   
+  public VersionedTextDocumentIdentifier(@NonNull final String uri, final Integer version) {
+    super(uri);
+    this.version = version;
+  }
+  
+  @Deprecated
   public VersionedTextDocumentIdentifier(final Integer version) {
     this.version = version;
   }
