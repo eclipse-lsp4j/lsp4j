@@ -52,7 +52,7 @@ Fixed issues: [#99](https://github.com/eclipse/lsp4j/issues/99), [#100](https://
 
 ### v0.2.1 (Jul. 2017)
 
-Fixed issues: [#107](https://github.com/eclipse/lsp4j/issues/107)
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/8?closed=1
 
 ### v0.2.0 (May 2017)
 
