@@ -104,8 +104,8 @@ public class DebugLauncherTest {
 		A remoteProxy = launcher.getRemoteProxy();
 
 		remoteProxy.say(new Param("foo"));
-		Assert.assertEquals("Content-Length: 65\r\n\r\n" +
-				"{\"type\":\"event\",\"seq\":1,\"command\":\"say\",\"body\":{\"message\":\"bar\"}}",
+		Assert.assertEquals("Content-Length: 63\r\n\r\n" +
+				"{\"type\":\"event\",\"seq\":1,\"event\":\"say\",\"body\":{\"message\":\"bar\"}}",
 				out.toString());
 	}
 
