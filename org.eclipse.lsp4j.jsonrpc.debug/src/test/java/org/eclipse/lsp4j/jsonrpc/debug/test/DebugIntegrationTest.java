@@ -173,7 +173,7 @@ public class DebugIntegrationTest {
 				+ "\"arguments\": { value: \"bar\" }\n"
 				+ "}";
 		String cancellationMessage = "{\"type\":\"event\","
-				+ "\"command\":\"$/cancelRequest\",\n"
+				+ "\"event\":\"$/cancelRequest\",\n"
 				+ "\"body\": { id: 1 }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage.getBytes().length) + requestMessage
@@ -277,7 +277,7 @@ public class DebugIntegrationTest {
 
 			// create client messages
 			String clientMessage1 = "{\"type\":\"event\","
-					+ "\"command\":\"foo1\",\n"
+					+ "\"event\":\"foo1\",\n"
 					+ " \"body\":\"bar\"\n"
 					+ "}";
 			String clientMessage2 = "{\"type\":\"request\","
@@ -320,7 +320,7 @@ public class DebugIntegrationTest {
 
 			// create client messages
 			String clientMessage1 = "{\"type\":\"event\","
-					+ "\"command\":\"$/foo1\",\n"
+					+ "\"event\":\"$/foo1\",\n"
 					+ " \"body\":\"bar\"\n"
 					+ "}";
 			String clientMessage2 = "{\"type\":\"request\","
@@ -394,7 +394,7 @@ public class DebugIntegrationTest {
 
 			// create client messages
 			String notificationMessage = "{\"type\":\"event\","
-					+ "\"command\":\"myNotification\",\n"
+					+ "\"event\":\"myNotification\",\n"
 					+ "\"body\": { \"value\": \"foo\" }\n"
 					+ "}";
 			String clientMessages = getHeader(notificationMessage.getBytes().length) + notificationMessage;
