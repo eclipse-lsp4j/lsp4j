@@ -448,7 +448,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.value("event");
 			out.name("seq");
 			writeIntId(out, notificationMessage.getRawId());
-			out.name("command");
+			out.name("event");
 			out.value(notificationMessage.getMethod());
 			out.name("body");
 			Object params = notificationMessage.getParams();
