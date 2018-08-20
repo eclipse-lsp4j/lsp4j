@@ -56,6 +56,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
 @JsonSegment("textDocument")
 public interface TextDocumentService {
+
 	/**
 	 * The Completion request is sent from the client to the server to compute
 	 * completion items at a given cursor position. Completion items are
@@ -67,14 +68,18 @@ public interface TextDocumentService {
 	 * Registration Options: CompletionRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(CompletionParams position);
+	default CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(CompletionParams position) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request is sent from the client to the server to resolve additional
 	 * information for a given completion item.
 	 */
 	@JsonRequest(value="completionItem/resolve", useSegment = false)
-	CompletableFuture<CompletionItem> resolveCompletionItem(CompletionItem unresolved);
+	default CompletableFuture<CompletionItem> resolveCompletionItem(CompletionItem unresolved) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The hover request is sent from the client to the server to request hover
@@ -83,7 +88,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<Hover> hover(TextDocumentPositionParams position);
+	default CompletableFuture<Hover> hover(TextDocumentPositionParams position) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The signature help request is sent from the client to the server to
@@ -92,7 +99,9 @@ public interface TextDocumentService {
 	 * Registration Options: SignatureHelpRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position);
+	default CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The goto definition request is sent from the client to the server to
@@ -102,7 +111,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position);
+	default CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/**
 	 * The goto type definition request is sent from the client to the server to resolve
@@ -138,7 +149,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends Location>> references(ReferenceParams params);
+	default CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The document highlight request is sent from the client to the server to
@@ -147,7 +160,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends DocumentHighlight>> documentHighlight(TextDocumentPositionParams position);
+	default CompletableFuture<List<? extends DocumentHighlight>> documentHighlight(TextDocumentPositionParams position) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The document symbol request is sent from the client to the server to list
@@ -157,7 +172,9 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(DocumentSymbolResponseAdapter.class)
-	CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> documentSymbol(DocumentSymbolParams params);
+	default CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> documentSymbol(DocumentSymbolParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The code action request is sent from the client to the server to compute
@@ -168,7 +185,9 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(CodeActionResponseAdapter.class)
-	CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params);
+	default CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The code lens request is sent from the client to the server to compute
@@ -177,14 +196,18 @@ public interface TextDocumentService {
 	 * Registration Options: CodeLensRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends CodeLens>> codeLens(CodeLensParams params);
+	default CompletableFuture<List<? extends CodeLens>> codeLens(CodeLensParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The code lens resolve request is sent from the client to the server to
 	 * resolve the command for a given code lens item.
 	 */
 	@JsonRequest(value="codeLens/resolve", useSegment = false)
-	CompletableFuture<CodeLens> resolveCodeLens(CodeLens unresolved);
+	default CompletableFuture<CodeLens> resolveCodeLens(CodeLens unresolved) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The document formatting request is sent from the client to the server to
@@ -193,7 +216,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends TextEdit>> formatting(DocumentFormattingParams params);
+	default CompletableFuture<List<? extends TextEdit>> formatting(DocumentFormattingParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The document range formatting request is sent from the client to the
@@ -202,7 +227,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params);
+	default CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The document on type formatting request is sent from the client to the
@@ -211,7 +238,9 @@ public interface TextDocumentService {
 	 * Registration Options: DocumentOnTypeFormattingRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params);
+	default CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The rename request is sent from the client to the server to do a
@@ -220,7 +249,9 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<WorkspaceEdit> rename(RenameParams params);
+	default CompletableFuture<WorkspaceEdit> rename(RenameParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The document open notification is sent from the client to the server to
@@ -268,8 +299,7 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonNotification
-	default void willSave(WillSaveTextDocumentParams params) {
-	}
+	default void willSave(WillSaveTextDocumentParams params) {}
 	
 	/**
 	 * The document will save request is sent from the client to the server before the document is actually saved.

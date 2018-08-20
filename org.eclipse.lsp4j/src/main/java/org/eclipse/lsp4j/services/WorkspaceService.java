@@ -43,7 +43,9 @@ public interface WorkspaceService {
 	 * Registration Options: void
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends SymbolInformation>> symbol(WorkspaceSymbolParams params);
+	default CompletableFuture<List<? extends SymbolInformation>> symbol(WorkspaceSymbolParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * A notification sent from the client to the server to signal the change of
@@ -68,4 +70,5 @@ public interface WorkspaceService {
 	 */
 	@JsonNotification
 	default void didChangeWorkspaceFolders(DidChangeWorkspaceFoldersParams params) {}
+	
 }
