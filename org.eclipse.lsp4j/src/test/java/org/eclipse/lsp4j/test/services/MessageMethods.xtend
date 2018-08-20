@@ -23,6 +23,7 @@ interface MessageMethods {
 	public static val DOC_CODE_ACTION = 'textDocument/codeAction'
 	public static val DOC_CODE_LENS = 'textDocument/codeLens'
 	public static val RESOLVE_CODE_LENS = 'codeLens/resolve'
+	public static val DOC_FOLDING_RANGES = 'textDocument/foldingRanges'
 	public static val DOC_FORMATTING = 'textDocument/formatting'
 	public static val DOC_RANGE_FORMATTING = 'textDocument/rangeFormatting'
 	public static val DOC_TYPE_FORMATTING = 'textDocument/onTypeFormatting'

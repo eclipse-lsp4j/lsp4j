@@ -452,6 +452,11 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
      */
     SymbolKindCapabilities symbolKind
     
+    /**
+     * The client support hierarchical document symbols.
+     */
+    Boolean hierarchicalDocumentSymbolSupport
+    
     new() {
     }
     
@@ -589,7 +594,6 @@ class CodeActionLiteralSupportCapabilities {
     }
 }
 
-
 /**
  * Capabilities specific to the `textDocument/codeAction`
  */
@@ -686,6 +690,26 @@ class PublishDiagnosticsCapabilities {
 	new(Boolean relatedInformation) {
 		this.relatedInformation = relatedInformation
 	}
+}
+
+/**
+ * Capabilities specific to `textDocument/foldingRange` requests.
+ * 
+ * Since 3.10.0
+ */
+@JsonRpcData
+class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The maximum number of folding ranges that the client prefers to receive per document. The value serves as a
+	 * hint, servers are free to follow the limit.
+	 */
+	Integer rangeLimit
+	
+	/**
+	 * If set, the client signals that it only supports folding complete lines. If set, client will
+	 * ignore specified `startCharacter` and `endCharacter` properties in a FoldingRange.
+	 */
+	Boolean lineFoldingOnly
 }
 
 /**
@@ -809,6 +833,13 @@ class TextDocumentClientCapabilities {
 	 * Capabilities specific to `textDocument/publishDiagnostics`.
 	 */
 	PublishDiagnosticsCapabilities publishDiagnostics
+	
+	/**
+	 * Capabilities specific to `textDocument/foldingRange` requests.
+	 * 
+	 * Since 3.10.0
+	 */
+	FoldingRangeCapabilities foldingRange
 
 	/**
 	 * Capabilities specific to {@code textDocument/semanticHighlighting}.
@@ -869,7 +900,7 @@ class CodeAction {
      * A short, human-readable, title for this code action.
      */
     @NonNull
-	String title
+    String title
 
     /**
      * The kind of the code action.
@@ -881,11 +912,12 @@ class CodeAction {
     /**
      * The diagnostics that this code action resolves.
      */
-	List<Diagnostic> diagnostics
+    List<Diagnostic> diagnostics
+    
     /**
      * The workspace edit this code action performs.
      */
-   WorkspaceEdit edit
+    WorkspaceEdit edit
 
     /**
      * A command this code action executes. If a code action
@@ -897,13 +929,10 @@ class CodeAction {
     new() {
     }
     
-    new(@NonNull String title, String kind, List<Diagnostic> diagnostics, WorkspaceEdit edit, Command command) {
+    new(@NonNull String title) {
     	this.title = title
-    	this.kind = kind
-    	this.diagnostics = diagnostics
-    	this.edit = edit
-    	this.command = command
-    }
+	}
+    
 }
 
 /**
@@ -1758,6 +1787,13 @@ class SaveOptions {
 class ColorProviderOptions extends StaticRegistrationOptions {
 }
 
+/**
+ * Folding range provider options.
+ */
+@JsonRpcData
+class FoldingRangeProviderOptions extends StaticRegistrationOptions {
+}
+
 @JsonRpcData
 class TextDocumentSyncOptions {
 	/**
@@ -2592,6 +2628,13 @@ class ServerCapabilities {
 	 * Since 3.6.0
 	 */
 	Either<Boolean, ColorProviderOptions> colorProvider
+
+	/**
+	 * The server provides folding provider support.
+	 *
+	 * Since 3.10.0
+	 */
+	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
 
 	/**
 	 * The server provides execute command support.
@@ -3974,6 +4017,70 @@ class ColorPresentation {
 		this.label = label
 		this.textEdit = textEdit
 		this.additionalTextEdits = additionalTextEdits
+	}
+}
+
+/**
+ * The folding range request is sent from the client to the server to return all folding
+ * ranges found in a given text document.
+ */
+@JsonRpcData
+class FoldingRangeRequestParams {
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+	
+	new() {
+	}
+	
+	new(TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
+}
+
+/**
+ * Represents a folding range.
+ */
+@JsonRpcData
+class FoldingRange {
+
+	/**
+	 * The zero-based line number from where the folded range starts.
+	 */
+	int startLine
+
+	/**
+	 * The zero-based line number where the folded range ends.
+	 */
+	int endLine
+
+	/**
+	 * The zero-based character offset from where the folded range starts. If not defined, defaults
+	 * to the length of the start line.
+	 */
+	Integer startCharacter
+
+	/**
+	 * The zero-based character offset before the folded range ends. If not defined, defaults to the
+	 * length of the end line.
+	 */
+	Integer endCharacter
+
+	/**
+	 * Describes the kind of the folding range such as `comment' or 'region'. The kind
+	 * is used to categorize folding ranges and used by commands like 'Fold all comments'. See
+	 * FoldingRangeKind for an enumeration of standardized kinds.
+	 */
+	String kind
+	
+	new() {
+	}
+	
+	new(int startLine, int endLine) {
+		this.startLine = startLine
+		this.endLine = endLine
 	}
 }
 

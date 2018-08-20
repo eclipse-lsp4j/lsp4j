@@ -14,6 +14,7 @@ import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
+import org.eclipse.lsp4j.FoldingRangeProviderOptions;
 import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
@@ -128,6 +129,13 @@ public class ServerCapabilities {
    * Since 3.6.0
    */
   private Either<Boolean, ColorProviderOptions> colorProvider;
+  
+  /**
+   * The server provides folding provider support.
+   * 
+   * Since 3.10.0
+   */
+  private Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider;
   
   /**
    * The server provides execute command support.
@@ -482,6 +490,33 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides folding provider support.
+   * 
+   * Since 3.10.0
+   */
+  @Pure
+  public Either<Boolean, FoldingRangeProviderOptions> getFoldingRangeProvider() {
+    return this.foldingRangeProvider;
+  }
+  
+  /**
+   * The server provides folding provider support.
+   * 
+   * Since 3.10.0
+   */
+  public void setFoldingRangeProvider(final Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider) {
+    this.foldingRangeProvider = foldingRangeProvider;
+  }
+  
+  public void setFoldingRangeProvider(final Boolean foldingRangeProvider) {
+    this.foldingRangeProvider = Either.forLeft(foldingRangeProvider);
+  }
+  
+  public void setFoldingRangeProvider(final FoldingRangeProviderOptions foldingRangeProvider) {
+    this.foldingRangeProvider = Either.forRight(foldingRangeProvider);
+  }
+  
+  /**
    * The server provides execute command support.
    */
   @Pure
@@ -564,6 +599,7 @@ public class ServerCapabilities {
     b.add("renameProvider", this.renameProvider);
     b.add("documentLinkProvider", this.documentLinkProvider);
     b.add("colorProvider", this.colorProvider);
+    b.add("foldingRangeProvider", this.foldingRangeProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
     b.add("semanticHighlighting", this.semanticHighlighting);
@@ -676,6 +712,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.colorProvider.equals(other.colorProvider))
       return false;
+    if (this.foldingRangeProvider == null) {
+      if (other.foldingRangeProvider != null)
+        return false;
+    } else if (!this.foldingRangeProvider.equals(other.foldingRangeProvider))
+      return false;
     if (this.executeCommandProvider == null) {
       if (other.executeCommandProvider != null)
         return false;
@@ -723,6 +764,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.renameProvider== null) ? 0 : this.renameProvider.hashCode());
     result = prime * result + ((this.documentLinkProvider== null) ? 0 : this.documentLinkProvider.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
+    result = prime * result + ((this.foldingRangeProvider== null) ? 0 : this.foldingRangeProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());

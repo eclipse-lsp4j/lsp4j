@@ -56,12 +56,8 @@ public class CodeAction {
   public CodeAction() {
   }
   
-  public CodeAction(@NonNull final String title, final String kind, final List<Diagnostic> diagnostics, final WorkspaceEdit edit, final Command command) {
+  public CodeAction(@NonNull final String title) {
     this.title = title;
-    this.kind = kind;
-    this.diagnostics = diagnostics;
-    this.edit = edit;
-    this.command = command;
   }
   
   /**
