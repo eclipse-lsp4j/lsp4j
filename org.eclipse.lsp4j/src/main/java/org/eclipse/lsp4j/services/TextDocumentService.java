@@ -46,6 +46,9 @@ import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
+import org.eclipse.lsp4j.adapters.DocumentSymbolResponseAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -153,7 +156,8 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	CompletableFuture<Either<List<? extends SymbolInformation>, List<? extends DocumentSymbol>>> documentSymbol(DocumentSymbolParams params);
+	@ResponseJsonAdapter(DocumentSymbolResponseAdapter.class)
+	CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> documentSymbol(DocumentSymbolParams params);
 
 	/**
 	 * The code action request is sent from the client to the server to compute
@@ -163,6 +167,7 @@ public interface TextDocumentService {
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
+	@ResponseJsonAdapter(CodeActionResponseAdapter.class)
 	CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params);
 
 	/**

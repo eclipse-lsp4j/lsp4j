@@ -167,8 +167,18 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			String resolvedMethod = methodProvider.resolveMethod(id);
 			if (resolvedMethod != null) {
 				JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-				if (jsonRpcMethod != null)
+				if (jsonRpcMethod != null) {
 					type = jsonRpcMethod.getReturnType();
+					if (jsonRpcMethod.getReturnTypeAdapterFactory() != null) {
+						TypeAdapter<?> typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(type));
+						try {
+							if (typeAdapter != null)
+								return typeAdapter.read(in);
+						} catch (IOException exception) {
+							throw new JsonIOException(exception);
+						}
+					}
+				}
 			}
 		}
 		return fromJson(in, type);
@@ -194,8 +204,14 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				String resolvedMethod = methodProvider.resolveMethod(id);
 				if (resolvedMethod != null) {
 					JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-					if (jsonRpcMethod != null)
+					if (jsonRpcMethod != null) {
 						type = jsonRpcMethod.getReturnType();
+						if (jsonRpcMethod.getReturnTypeAdapterFactory() != null) {
+							TypeAdapter<?> typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(type));
+							if (typeAdapter != null)
+								return typeAdapter.fromJsonTree((JsonElement) result);
+						}
+					}
 				}
 			}
 			return fromJson((JsonElement) result, type);

@@ -9,6 +9,8 @@ package org.eclipse.lsp4j.jsonrpc.json;
 
 import java.lang.reflect.Type;
 
+import com.google.gson.TypeAdapterFactory;
+
 /**
  * A description of a JSON-RPC method. 
  */
@@ -17,14 +19,17 @@ public class JsonRpcMethod {
 	private final String methodName;
 	private final Type[] parameterTypes;
 	private final Type returnType;
+	private final TypeAdapterFactory returnTypeAdapterFactory;
 	private final boolean isNotification;
 	
-	private JsonRpcMethod(String methodName, Type[] parameterTypes, Type returnType, boolean isNotification) {
+	private JsonRpcMethod(String methodName, Type[] parameterTypes, Type returnType, TypeAdapterFactory returnTypeAdapterFactory,
+			boolean isNotification) {
 		if (methodName == null)
 			throw new NullPointerException("methodName");
 		this.methodName = methodName;
 		this.parameterTypes = parameterTypes;
 		this.returnType = returnType;
+		this.returnTypeAdapterFactory = returnTypeAdapterFactory;
 		this.isNotification = isNotification;
 	}
 
@@ -40,16 +45,24 @@ public class JsonRpcMethod {
 		return returnType;
 	}
 	
+	public TypeAdapterFactory getReturnTypeAdapterFactory() {
+		return returnTypeAdapterFactory;
+	}
+	
 	public boolean isNotification() {
 		return isNotification;
 	}
 	
 	public static JsonRpcMethod notification(String name, Type... parameterTypes) {
-		return new JsonRpcMethod(name, parameterTypes, Void.class, true);
+		return new JsonRpcMethod(name, parameterTypes, Void.class, null, true);
 	}
 	
 	public static JsonRpcMethod request(String name, Type returnType, Type... parameterTypes) {
-		return new JsonRpcMethod(name, parameterTypes, returnType, false);
+		return new JsonRpcMethod(name, parameterTypes, returnType, null, false);
+	}
+	
+	public static JsonRpcMethod request(String name, Type returnType, TypeAdapterFactory returnTypeAdapterFactory, Type... parameterTypes) {
+		return new JsonRpcMethod(name, parameterTypes, returnType, returnTypeAdapterFactory, false);
 	}
 	
 	@Override

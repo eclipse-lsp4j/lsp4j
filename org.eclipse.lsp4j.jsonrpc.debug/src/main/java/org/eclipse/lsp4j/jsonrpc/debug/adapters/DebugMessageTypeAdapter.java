@@ -9,6 +9,7 @@ package org.eclipse.lsp4j.jsonrpc.debug.adapters;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
@@ -375,8 +376,17 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 						String resolvedMethod = methodProvider.resolveMethod(Integer.toString(request_seq));
 						if (resolvedMethod != null) {
 							JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-							if (jsonRpcMethod != null)
-								body = gson.fromJson((JsonElement) body, jsonRpcMethod.getReturnType());
+							if (jsonRpcMethod != null) {
+								TypeAdapter<?> typeAdapter = null;
+								Type returnType = jsonRpcMethod.getReturnType();
+								if (jsonRpcMethod.getReturnTypeAdapterFactory() != null)
+									typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(returnType));
+								JsonElement jsonElement = (JsonElement) body;
+								if (typeAdapter != null)
+									body = typeAdapter.fromJsonTree(jsonElement);
+								else
+									body = gson.fromJson(jsonElement, returnType);
+							}
 						}
 					}
 				}

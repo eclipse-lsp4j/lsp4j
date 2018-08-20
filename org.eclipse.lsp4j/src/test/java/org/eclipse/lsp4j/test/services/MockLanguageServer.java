@@ -125,7 +125,7 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	}
 
 	@Override
-	public CompletableFuture<Either<List<? extends SymbolInformation>, List<? extends DocumentSymbol>>> documentSymbol(DocumentSymbolParams params) {
+	public CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> documentSymbol(DocumentSymbolParams params) {
 		throw new UnsupportedOperationException();
 	}
 

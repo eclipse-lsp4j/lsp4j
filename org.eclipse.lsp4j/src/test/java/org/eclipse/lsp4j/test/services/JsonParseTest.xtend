@@ -9,18 +9,22 @@ package org.eclipse.lsp4j.test.services
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.internal.LazilyParsedNumber
 import java.util.ArrayList
 import java.util.Collection
 import java.util.HashMap
 import org.eclipse.lsp4j.ClientCapabilities
+import org.eclipse.lsp4j.CodeAction
 import org.eclipse.lsp4j.CodeActionCapabilities
 import org.eclipse.lsp4j.CodeLens
 import org.eclipse.lsp4j.CodeLensCapabilities
 import org.eclipse.lsp4j.ColorProviderCapabilities
+import org.eclipse.lsp4j.Command
 import org.eclipse.lsp4j.CompletionCapabilities
 import org.eclipse.lsp4j.CompletionItemCapabilities
 import org.eclipse.lsp4j.CompletionItemKind
 import org.eclipse.lsp4j.CompletionItemKindCapabilities
+import org.eclipse.lsp4j.CompletionParams
 import org.eclipse.lsp4j.DefinitionCapabilities
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
@@ -36,6 +40,7 @@ import org.eclipse.lsp4j.Hover
 import org.eclipse.lsp4j.HoverCapabilities
 import org.eclipse.lsp4j.ImplementationCapabilities
 import org.eclipse.lsp4j.InitializeParams
+import org.eclipse.lsp4j.Location
 import org.eclipse.lsp4j.MarkedString
 import org.eclipse.lsp4j.MarkupContent
 import org.eclipse.lsp4j.MarkupKind
@@ -46,15 +51,17 @@ import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
 import org.eclipse.lsp4j.ReferencesCapabilities
 import org.eclipse.lsp4j.RenameCapabilities
+import org.eclipse.lsp4j.ResourceChange
 import org.eclipse.lsp4j.SignatureHelpCapabilities
 import org.eclipse.lsp4j.SignatureInformationCapabilities
+import org.eclipse.lsp4j.SymbolInformation
 import org.eclipse.lsp4j.SymbolKind
 import org.eclipse.lsp4j.SymbolKindCapabilities
 import org.eclipse.lsp4j.SynchronizationCapabilities
 import org.eclipse.lsp4j.TextDocumentClientCapabilities
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent
+import org.eclipse.lsp4j.TextDocumentEdit
 import org.eclipse.lsp4j.TextDocumentIdentifier
-import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.TypeDefinitionCapabilities
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
@@ -72,13 +79,44 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.services.LanguageServer
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 import static org.junit.Assert.*
 
 class JsonParseTest {
+	
+	/**
+	 * Gson parses numbers with {@link LazilyParsedNumber}, which is not
+	 * equals-compatible with {@link Integer}.
+	 */
+	@FinalFieldsConstructor
+	private static class MyInteger extends Number {
+		
+		val int value
+		
+		override doubleValue() { value }
+		override floatValue() { value }
+		override intValue() { value }
+		override longValue() { value }
+		
+		override equals(Object obj) {
+			if (obj instanceof Number) {
+				return value as double == obj.doubleValue
+			}
+			return false
+		}
+		
+		override hashCode() {
+			Integer.hashCode(value)
+		}
+		
+		override toString() {
+			Integer.toString(value)
+		}
+		
+	}
 	
 	MessageJsonHandler jsonHandler
 	
@@ -93,7 +131,9 @@ class JsonParseTest {
 	}
 	
 	private def void assertParse(CharSequence json, Message expected) {
-		assertEquals(expected.toString, jsonHandler.parseMessage(json).toString)
+		val actual = jsonHandler.parseMessage(json)
+		assertEquals(expected.toString, actual.toString)
+		assertEquals(expected, actual)
 	}
 	
 	@Test
@@ -117,7 +157,7 @@ class JsonParseTest {
 			jsonrpc = "2.0"
 			id = 1
 			method = MessageMethods.DOC_COMPLETION
-			params = new TextDocumentPositionParams => [
+			params = new CompletionParams => [
 				textDocument = new TextDocumentIdentifier => [
 					uri = "file:///tmp/foo"
 				]
@@ -227,9 +267,8 @@ class JsonParseTest {
 		])
 	}
 	
-	@Ignore
 	@Test
-	def void testDocumentSymbolResponse() {
+	def void testDocumentSymbolResponse1() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.DOC_SYMBOL
@@ -239,27 +278,22 @@ class JsonParseTest {
 			{
 				"jsonrpc": "2.0",
 				"id": "12",
-				"result": [{
-					"name" : "foobar",
-					"kind" : 9,
-					"range" : {
-						"start": {
-							"character": 22,
-							"line": 4
-						},
-						"end": {
-							"character": 25,
-							"line": 4
-						}
-					},
-					"selectionRange": {
-						"start": {
-							"character": 22,
-							"line": 4
-						},
-						"end": {
-							"character": 25,
-							"line": 4
+				"result": [
+					{
+						"name" : "foobar",
+						"kind" : 9,
+						"location" : {
+							"uri": "file:/baz.txt",
+							"range" : {
+								"start": {
+									"character": 22,
+									"line": 4
+								},
+								"end": {
+									"character": 25,
+									"line": 4
+								}
+							}
 						}
 					}
 				]
@@ -267,7 +301,64 @@ class JsonParseTest {
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
 			id = "12"
-			result = Either.forRight(newArrayList(
+			result = newArrayList(Either.forLeft(
+				new SymbolInformation => [
+					name = "foobar"
+					kind = SymbolKind.Constructor
+					location = new Location => [
+						uri = "file:/baz.txt"
+						range = new Range => [
+							start = new Position(4, 22)
+							end = new Position(4, 25)
+						]
+					]
+				]
+			))
+		])
+	}
+	
+	@Test
+	def void testDocumentSymbolResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_SYMBOL
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"name" : "foobar",
+						"kind" : 9,
+						"range" : {
+							"start": {
+								"character": 22,
+								"line": 4
+							},
+							"end": {
+								"character": 25,
+								"line": 4
+							}
+						},
+						"selectionRange": {
+							"start": {
+								"character": 22,
+								"line": 4
+							},
+							"end": {
+								"character": 25,
+								"line": 4
+							}
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either.forRight(
 				new DocumentSymbol => [
 					name = "foobar"
 					kind = SymbolKind.Constructor
@@ -284,9 +375,100 @@ class JsonParseTest {
 		])
 	}
 	
-	@Ignore
 	@Test
-	def void testRenameResponse() {
+	def void testCodeActionResponse1() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_CODE_ACTION
+			}
+		]
+		'''
+			{
+			    "jsonrpc": "2.0",
+			    "id": "12",
+			    "result": [
+			        {
+			            "title": "fixme",
+			            "command": "fix"
+			        }
+			    ]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either.forLeft(
+				new Command => [
+					title = "fixme"
+					command = "fix"
+				]
+			))
+		])
+	}
+	
+	@Test
+	def void testCodeActionResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_CODE_ACTION
+			}
+		]
+		'''
+			{
+			    "jsonrpc": "2.0",
+			    "id": "12",
+			    "result": [
+			        {
+			            "title": "fixme",
+			            "kind": "fix",
+			            "diagnostics": [],
+			            "edit": {
+			                "changes": {
+			                    "file:test1533196529126.lspt": [
+			                        {
+			                            "range": {
+			                                "start": {
+			                                    "line": 0,
+			                                    "character": 0
+			                                },
+			                                "end": {
+			                                    "line": 0,
+			                                    "character": 5
+			                                }
+			                            },
+			                            "newText": "fixed"
+			                        }
+			                    ]
+			                }
+			            }
+			        }
+			    ]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either.forRight(
+				new CodeAction => [
+					title = "fixme"
+					kind = "fix"
+					diagnostics = newArrayList
+					edit = new WorkspaceEdit => [
+						changes.put("file:test1533196529126.lspt", newArrayList(
+							new TextEdit => [
+								range = new Range => [
+									start = new Position(0, 0)
+									end = new Position(0, 5)
+								]
+								newText = "fixed"
+							]
+						))
+					]
+				]
+			))
+		])
+	}
+	
+	@Test
+	def void testRenameResponse1() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.DOC_RENAME
@@ -351,6 +533,73 @@ class JsonParseTest {
 						]
 					))
 				]
+			]
+		])
+	}
+	
+	@Test
+	def void testRenameResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_RENAME
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"resourceChanges": [
+						{
+							"current": "file:/foo.txt",
+							"newUri": "file:/bar.txt"
+						},
+						{
+							"textDocument": {
+								"uri": "file:/baz.txt",
+								"version": 17
+							},
+							"edits": [
+								{
+									"range": {
+										"start": {
+											"character": 32,
+											"line": 3
+										},
+										"end": {
+											"character": 35,
+											"line": 3
+										}
+									},
+									"newText": "asdfqweryxcv"
+								}
+							]
+						}
+					]
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceEdit => [
+				resourceChanges = newArrayList(
+					Either.forLeft(new ResourceChange => [
+						current = "file:/foo.txt"
+						newUri = "file:/bar.txt"
+					]),
+					Either.forRight(new TextDocumentEdit => [
+						textDocument = new VersionedTextDocumentIdentifier("file:/baz.txt", 17)
+						edits = newArrayList(
+							new TextEdit => [
+								range = new Range => [
+									start = new Position(3, 32)
+									end = new Position(3, 35)
+								]
+								newText = "asdfqweryxcv"
+							]
+						)
+					])
+				)
 			]
 		])
 	}
@@ -602,8 +851,8 @@ class JsonParseTest {
 			      "uri": "file:///tmp/foo"
 			    },
 			    "options": {
-			      "tabSize": 4,
 			      "insertSpaces": false,
+			      "tabSize": 4,
 			      "customProperty": -7
 			    }
 			  }
@@ -615,10 +864,10 @@ class JsonParseTest {
 			params = new DocumentFormattingParams => [
 				textDocument = new TextDocumentIdentifier("file:///tmp/foo")
 				options = new FormattingOptions => [
-					tabSize = 4
 					insertSpaces = false
+					putNumber('tabSize', new MyInteger(4))
+					putNumber('customProperty', new MyInteger(-7))
 				]
-				options.putNumber('customProperty', -7)
 			]
 		])
 	}
