@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -16,14 +16,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Event message for 'continued' event type.
- * <p>
  * The event indicates that the execution of the debuggee has continued.
  * <p>
  * Please note: a debug adapter is not expected to send this event in response to a request that implies that
  * execution continues, e.g. 'launch' or 'continue'.
  * <p>
- * It is only necessary to send a ContinuedEvent if there was no previous request that implied this.
+ * It is only necessary to send a 'continued' event if there was no previous request that implied this.
  */
 @SuppressWarnings("all")
 public class ContinuedEventArguments {
@@ -34,7 +32,7 @@ public class ContinuedEventArguments {
   private Long threadId;
   
   /**
-   * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
+   * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
    * <p>
    * This is an optional property.
    */
@@ -57,7 +55,7 @@ public class ContinuedEventArguments {
   }
   
   /**
-   * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
+   * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
    * <p>
    * This is an optional property.
    */
@@ -67,7 +65,7 @@ public class ContinuedEventArguments {
   }
   
   /**
-   * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
+   * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
    * <p>
    * This is an optional property.
    */

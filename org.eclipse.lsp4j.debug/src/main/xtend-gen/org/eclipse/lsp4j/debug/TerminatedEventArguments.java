@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -15,9 +15,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Event message for 'terminated' event types.
- * <p>
- * The event indicates that debugging of the debuggee has terminated.
+ * The event indicates that debugging of the debuggee has terminated. This does **not** mean that the debuggee
+ * itself has exited.
  */
 @SuppressWarnings("all")
 public class TerminatedEventArguments {
@@ -25,8 +24,8 @@ public class TerminatedEventArguments {
    * A debug adapter may set 'restart' to true (or to an arbitrary object) to request that the front end restarts
    * the session.
    * <p>
-   * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the
-   * launchRequest.
+   * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the 'launch'
+   * and 'attach' requests.
    * <p>
    * This is an optional property.
    */
@@ -36,8 +35,8 @@ public class TerminatedEventArguments {
    * A debug adapter may set 'restart' to true (or to an arbitrary object) to request that the front end restarts
    * the session.
    * <p>
-   * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the
-   * launchRequest.
+   * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the 'launch'
+   * and 'attach' requests.
    * <p>
    * This is an optional property.
    */
@@ -50,8 +49,8 @@ public class TerminatedEventArguments {
    * A debug adapter may set 'restart' to true (or to an arbitrary object) to request that the front end restarts
    * the session.
    * <p>
-   * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the
-   * launchRequest.
+   * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the 'launch'
+   * and 'attach' requests.
    * <p>
    * This is an optional property.
    */

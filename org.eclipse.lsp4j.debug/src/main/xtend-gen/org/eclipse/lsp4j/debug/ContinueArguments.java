@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -22,14 +22,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class ContinueArguments {
   /**
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-   * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
+   * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
    */
   @NonNull
   private Long threadId;
   
   /**
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-   * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
+   * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
    */
   @Pure
   @NonNull
@@ -39,7 +39,7 @@ public class ContinueArguments {
   
   /**
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-   * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
+   * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
    */
   public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;

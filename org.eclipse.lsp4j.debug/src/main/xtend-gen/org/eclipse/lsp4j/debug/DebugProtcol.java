@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,12 +14,12 @@ package org.eclipse.lsp4j.debug;
 /**
  * Declaration of parameters, response bodies, and event bodies.
  * <p>
- * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit manually.
+ * Auto-generated from debugProtocol.json schema version 1.31.0. Do not edit manually.
  */
 @SuppressWarnings("all")
 public class DebugProtcol {
   /**
    * Version of debugProtocol.json this class was derived from.
    */
-  public final static String SCHEMA_VERSION = "1.25.0";
+  public final static String SCHEMA_VERSION = "1.31.0";
 }

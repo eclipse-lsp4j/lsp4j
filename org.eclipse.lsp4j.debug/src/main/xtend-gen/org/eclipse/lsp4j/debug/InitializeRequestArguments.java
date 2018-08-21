@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -26,6 +26,13 @@ public class InitializeRequestArguments {
    * This is an optional property.
    */
   private String clientID;
+  
+  /**
+   * The human readable name of the (frontend) client using this adapter.
+   * <p>
+   * This is an optional property.
+   */
+  private String clientName;
   
   /**
    * The ID of the debug adapter.
@@ -101,6 +108,25 @@ public class InitializeRequestArguments {
    */
   public void setClientID(final String clientID) {
     this.clientID = clientID;
+  }
+  
+  /**
+   * The human readable name of the (frontend) client using this adapter.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getClientName() {
+    return this.clientName;
+  }
+  
+  /**
+   * The human readable name of the (frontend) client using this adapter.
+   * <p>
+   * This is an optional property.
+   */
+  public void setClientName(final String clientName) {
+    this.clientName = clientName;
   }
   
   /**
@@ -261,6 +287,7 @@ public class InitializeRequestArguments {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("clientID", this.clientID);
+    b.add("clientName", this.clientName);
     b.add("adapterID", this.adapterID);
     b.add("locale", this.locale);
     b.add("linesStartAt1", this.linesStartAt1);
@@ -286,6 +313,11 @@ public class InitializeRequestArguments {
       if (other.clientID != null)
         return false;
     } else if (!this.clientID.equals(other.clientID))
+      return false;
+    if (this.clientName == null) {
+      if (other.clientName != null)
+        return false;
+    } else if (!this.clientName.equals(other.clientName))
       return false;
     if (this.adapterID == null) {
       if (other.adapterID != null)
@@ -336,6 +368,7 @@ public class InitializeRequestArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.clientID== null) ? 0 : this.clientID.hashCode());
+    result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
     result = prime * result + ((this.adapterID== null) ? 0 : this.adapterID.hashCode());
     result = prime * result + ((this.locale== null) ? 0 : this.locale.hashCode());
     result = prime * result + ((this.linesStartAt1== null) ? 0 : this.linesStartAt1.hashCode());

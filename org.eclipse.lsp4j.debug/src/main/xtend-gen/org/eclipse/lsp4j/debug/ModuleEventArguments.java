@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11,15 +11,12 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.Module;
 import org.eclipse.lsp4j.debug.ModuleEventArgumentsReason;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Event message for 'module' event type.
- * <p>
  * The event indicates that some information about a module has changed.
  */
 @SuppressWarnings("all")
@@ -34,7 +31,7 @@ public class ModuleEventArguments {
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
   @NonNull
-  private Module module;
+  private org.eclipse.lsp4j.debug.Module module;
   
   /**
    * The reason for the event.
@@ -57,14 +54,14 @@ public class ModuleEventArguments {
    */
   @Pure
   @NonNull
-  public Module getModule() {
+  public org.eclipse.lsp4j.debug.Module getModule() {
     return this.module;
   }
   
   /**
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
-  public void setModule(@NonNull final Module module) {
+  public void setModule(@NonNull final org.eclipse.lsp4j.debug.Module module) {
     this.module = module;
   }
   

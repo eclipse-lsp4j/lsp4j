@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -17,8 +17,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Event message for 'output' event type.
- * <p>
  * The event indicates that the target has produced some output.
  */
 @SuppressWarnings("all")
@@ -40,7 +38,7 @@ public class OutputEventArguments {
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing variablesReference to the VariablesRequest.
+   * retrieved by passing 'variablesReference' to the 'variables' request.
    * <p>
    * This is an optional property.
    */
@@ -116,7 +114,7 @@ public class OutputEventArguments {
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing variablesReference to the VariablesRequest.
+   * retrieved by passing 'variablesReference' to the 'variables' request.
    * <p>
    * This is an optional property.
    */
@@ -127,7 +125,7 @@ public class OutputEventArguments {
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing variablesReference to the VariablesRequest.
+   * retrieved by passing 'variablesReference' to the 'variables' request.
    * <p>
    * This is an optional property.
    */

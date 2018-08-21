@@ -17,42 +17,39 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Arguments for 'evaluate' request.
+ * Arguments for 'setExpression' request.
  */
 @SuppressWarnings("all")
-public class EvaluateArguments {
+public class SetExpressionArguments {
   /**
-   * The expression to evaluate.
+   * The l-value expression to assign to.
    */
   @NonNull
   private String expression;
   
   /**
-   * Evaluate the expression in the scope of this stack frame. If not specified, the expression is evaluated in the
-   * global scope.
+   * The value expression to assign to the l-value expression.
+   */
+  @NonNull
+  private String value;
+  
+  /**
+   * Evaluate the expressions in the scope of this stack frame. If not specified, the expressions are evaluated in
+   * the global scope.
    * <p>
    * This is an optional property.
    */
   private Long frameId;
   
   /**
-   * The context in which the evaluate request is run.
-   * <p>
-   * This is an optional property.
-   * <p>
-   * Possible values include - but not limited to those defined in {@link EvaluateArgumentsContext}
-   */
-  private String context;
-  
-  /**
-   * Specifies details on how to format the Evaluate result.
+   * Specifies how the resulting value should be formatted.
    * <p>
    * This is an optional property.
    */
   private ValueFormat format;
   
   /**
-   * The expression to evaluate.
+   * The l-value expression to assign to.
    */
   @Pure
   @NonNull
@@ -61,15 +58,31 @@ public class EvaluateArguments {
   }
   
   /**
-   * The expression to evaluate.
+   * The l-value expression to assign to.
    */
   public void setExpression(@NonNull final String expression) {
     this.expression = expression;
   }
   
   /**
-   * Evaluate the expression in the scope of this stack frame. If not specified, the expression is evaluated in the
-   * global scope.
+   * The value expression to assign to the l-value expression.
+   */
+  @Pure
+  @NonNull
+  public String getValue() {
+    return this.value;
+  }
+  
+  /**
+   * The value expression to assign to the l-value expression.
+   */
+  public void setValue(@NonNull final String value) {
+    this.value = value;
+  }
+  
+  /**
+   * Evaluate the expressions in the scope of this stack frame. If not specified, the expressions are evaluated in
+   * the global scope.
    * <p>
    * This is an optional property.
    */
@@ -79,8 +92,8 @@ public class EvaluateArguments {
   }
   
   /**
-   * Evaluate the expression in the scope of this stack frame. If not specified, the expression is evaluated in the
-   * global scope.
+   * Evaluate the expressions in the scope of this stack frame. If not specified, the expressions are evaluated in
+   * the global scope.
    * <p>
    * This is an optional property.
    */
@@ -89,30 +102,7 @@ public class EvaluateArguments {
   }
   
   /**
-   * The context in which the evaluate request is run.
-   * <p>
-   * This is an optional property.
-   * <p>
-   * Possible values include - but not limited to those defined in {@link EvaluateArgumentsContext}
-   */
-  @Pure
-  public String getContext() {
-    return this.context;
-  }
-  
-  /**
-   * The context in which the evaluate request is run.
-   * <p>
-   * This is an optional property.
-   * <p>
-   * Possible values include - but not limited to those defined in {@link EvaluateArgumentsContext}
-   */
-  public void setContext(final String context) {
-    this.context = context;
-  }
-  
-  /**
-   * Specifies details on how to format the Evaluate result.
+   * Specifies how the resulting value should be formatted.
    * <p>
    * This is an optional property.
    */
@@ -122,7 +112,7 @@ public class EvaluateArguments {
   }
   
   /**
-   * Specifies details on how to format the Evaluate result.
+   * Specifies how the resulting value should be formatted.
    * <p>
    * This is an optional property.
    */
@@ -135,8 +125,8 @@ public class EvaluateArguments {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("expression", this.expression);
+    b.add("value", this.value);
     b.add("frameId", this.frameId);
-    b.add("context", this.context);
     b.add("format", this.format);
     return b.toString();
   }
@@ -150,21 +140,21 @@ public class EvaluateArguments {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    EvaluateArguments other = (EvaluateArguments) obj;
+    SetExpressionArguments other = (SetExpressionArguments) obj;
     if (this.expression == null) {
       if (other.expression != null)
         return false;
     } else if (!this.expression.equals(other.expression))
       return false;
+    if (this.value == null) {
+      if (other.value != null)
+        return false;
+    } else if (!this.value.equals(other.value))
+      return false;
     if (this.frameId == null) {
       if (other.frameId != null)
         return false;
     } else if (!this.frameId.equals(other.frameId))
-      return false;
-    if (this.context == null) {
-      if (other.context != null)
-        return false;
-    } else if (!this.context.equals(other.context))
       return false;
     if (this.format == null) {
       if (other.format != null)
@@ -180,8 +170,8 @@ public class EvaluateArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.expression== null) ? 0 : this.expression.hashCode());
+    result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
     result = prime * result + ((this.frameId== null) ? 0 : this.frameId.hashCode());
-    result = prime * result + ((this.context== null) ? 0 : this.context.hashCode());
     return prime * result + ((this.format== null) ? 0 : this.format.hashCode());
   }
 }

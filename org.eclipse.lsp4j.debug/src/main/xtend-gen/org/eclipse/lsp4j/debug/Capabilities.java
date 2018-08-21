@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -24,7 +24,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class Capabilities {
   /**
-   * The debug adapter supports the configurationDoneRequest.
+   * The debug adapter supports the 'configurationDone' request.
    * <p>
    * This is an optional property.
    */
@@ -66,7 +66,7 @@ public class Capabilities {
   private ExceptionBreakpointsFilter[] exceptionBreakpointFilters;
   
   /**
-   * The debug adapter supports stepping back via the stepBack and reverseContinue requests.
+   * The debug adapter supports stepping back via the 'stepBack' and 'reverseContinue' requests.
    * <p>
    * This is an optional property.
    */
@@ -87,28 +87,28 @@ public class Capabilities {
   private Boolean supportsRestartFrame;
   
   /**
-   * The debug adapter supports the gotoTargetsRequest.
+   * The debug adapter supports the 'gotoTargets' request.
    * <p>
    * This is an optional property.
    */
   private Boolean supportsGotoTargetsRequest;
   
   /**
-   * The debug adapter supports the stepInTargetsRequest.
+   * The debug adapter supports the 'stepInTargets' request.
    * <p>
    * This is an optional property.
    */
   private Boolean supportsStepInTargetsRequest;
   
   /**
-   * The debug adapter supports the completionsRequest.
+   * The debug adapter supports the 'completions' request.
    * <p>
    * This is an optional property.
    */
   private Boolean supportsCompletionsRequest;
   
   /**
-   * The debug adapter supports the modules request.
+   * The debug adapter supports the 'modules' request.
    * <p>
    * This is an optional property.
    */
@@ -129,7 +129,7 @@ public class Capabilities {
   private ChecksumAlgorithm[] supportedChecksumAlgorithms;
   
   /**
-   * The debug adapter supports the RestartRequest. In this case a client should not implement 'restart' by
+   * The debug adapter supports the 'restart' request. In this case a client should not implement 'restart' by
    * terminating and relaunching the adapter but by calling the RestartRequest.
    * <p>
    * This is an optional property.
@@ -152,7 +152,7 @@ public class Capabilities {
   private Boolean supportsValueFormattingOptions;
   
   /**
-   * The debug adapter supports the exceptionInfo request.
+   * The debug adapter supports the 'exceptionInfo' request.
    * <p>
    * This is an optional property.
    */
@@ -181,7 +181,35 @@ public class Capabilities {
   private Boolean supportsLoadedSourcesRequest;
   
   /**
-   * The debug adapter supports the configurationDoneRequest.
+   * The debug adapter supports logpoints by interpreting the 'logMessage' attribute of the SourceBreakpoint.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsLogPoints;
+  
+  /**
+   * The debug adapter supports the 'terminateThreads' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsTerminateThreadsRequest;
+  
+  /**
+   * The debug adapter supports the 'setExpression' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsSetExpression;
+  
+  /**
+   * The debug adapter supports the 'terminate' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsTerminateRequest;
+  
+  /**
+   * The debug adapter supports the 'configurationDone' request.
    * <p>
    * This is an optional property.
    */
@@ -191,7 +219,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the configurationDoneRequest.
+   * The debug adapter supports the 'configurationDone' request.
    * <p>
    * This is an optional property.
    */
@@ -295,7 +323,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports stepping back via the stepBack and reverseContinue requests.
+   * The debug adapter supports stepping back via the 'stepBack' and 'reverseContinue' requests.
    * <p>
    * This is an optional property.
    */
@@ -305,7 +333,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports stepping back via the stepBack and reverseContinue requests.
+   * The debug adapter supports stepping back via the 'stepBack' and 'reverseContinue' requests.
    * <p>
    * This is an optional property.
    */
@@ -352,7 +380,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the gotoTargetsRequest.
+   * The debug adapter supports the 'gotoTargets' request.
    * <p>
    * This is an optional property.
    */
@@ -362,7 +390,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the gotoTargetsRequest.
+   * The debug adapter supports the 'gotoTargets' request.
    * <p>
    * This is an optional property.
    */
@@ -371,7 +399,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the stepInTargetsRequest.
+   * The debug adapter supports the 'stepInTargets' request.
    * <p>
    * This is an optional property.
    */
@@ -381,7 +409,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the stepInTargetsRequest.
+   * The debug adapter supports the 'stepInTargets' request.
    * <p>
    * This is an optional property.
    */
@@ -390,7 +418,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the completionsRequest.
+   * The debug adapter supports the 'completions' request.
    * <p>
    * This is an optional property.
    */
@@ -400,7 +428,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the completionsRequest.
+   * The debug adapter supports the 'completions' request.
    * <p>
    * This is an optional property.
    */
@@ -409,7 +437,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the modules request.
+   * The debug adapter supports the 'modules' request.
    * <p>
    * This is an optional property.
    */
@@ -419,7 +447,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the modules request.
+   * The debug adapter supports the 'modules' request.
    * <p>
    * This is an optional property.
    */
@@ -466,7 +494,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the RestartRequest. In this case a client should not implement 'restart' by
+   * The debug adapter supports the 'restart' request. In this case a client should not implement 'restart' by
    * terminating and relaunching the adapter but by calling the RestartRequest.
    * <p>
    * This is an optional property.
@@ -477,7 +505,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the RestartRequest. In this case a client should not implement 'restart' by
+   * The debug adapter supports the 'restart' request. In this case a client should not implement 'restart' by
    * terminating and relaunching the adapter but by calling the RestartRequest.
    * <p>
    * This is an optional property.
@@ -527,7 +555,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the exceptionInfo request.
+   * The debug adapter supports the 'exceptionInfo' request.
    * <p>
    * This is an optional property.
    */
@@ -537,7 +565,7 @@ public class Capabilities {
   }
   
   /**
-   * The debug adapter supports the exceptionInfo request.
+   * The debug adapter supports the 'exceptionInfo' request.
    * <p>
    * This is an optional property.
    */
@@ -604,6 +632,82 @@ public class Capabilities {
     this.supportsLoadedSourcesRequest = supportsLoadedSourcesRequest;
   }
   
+  /**
+   * The debug adapter supports logpoints by interpreting the 'logMessage' attribute of the SourceBreakpoint.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsLogPoints() {
+    return this.supportsLogPoints;
+  }
+  
+  /**
+   * The debug adapter supports logpoints by interpreting the 'logMessage' attribute of the SourceBreakpoint.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsLogPoints(final Boolean supportsLogPoints) {
+    this.supportsLogPoints = supportsLogPoints;
+  }
+  
+  /**
+   * The debug adapter supports the 'terminateThreads' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsTerminateThreadsRequest() {
+    return this.supportsTerminateThreadsRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'terminateThreads' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsTerminateThreadsRequest(final Boolean supportsTerminateThreadsRequest) {
+    this.supportsTerminateThreadsRequest = supportsTerminateThreadsRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'setExpression' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsSetExpression() {
+    return this.supportsSetExpression;
+  }
+  
+  /**
+   * The debug adapter supports the 'setExpression' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsSetExpression(final Boolean supportsSetExpression) {
+    this.supportsSetExpression = supportsSetExpression;
+  }
+  
+  /**
+   * The debug adapter supports the 'terminate' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsTerminateRequest() {
+    return this.supportsTerminateRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'terminate' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsTerminateRequest(final Boolean supportsTerminateRequest) {
+    this.supportsTerminateRequest = supportsTerminateRequest;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -630,6 +734,10 @@ public class Capabilities {
     b.add("supportTerminateDebuggee", this.supportTerminateDebuggee);
     b.add("supportsDelayedStackTraceLoading", this.supportsDelayedStackTraceLoading);
     b.add("supportsLoadedSourcesRequest", this.supportsLoadedSourcesRequest);
+    b.add("supportsLogPoints", this.supportsLogPoints);
+    b.add("supportsTerminateThreadsRequest", this.supportsTerminateThreadsRequest);
+    b.add("supportsSetExpression", this.supportsSetExpression);
+    b.add("supportsTerminateRequest", this.supportsTerminateRequest);
     return b.toString();
   }
   
@@ -753,6 +861,26 @@ public class Capabilities {
         return false;
     } else if (!this.supportsLoadedSourcesRequest.equals(other.supportsLoadedSourcesRequest))
       return false;
+    if (this.supportsLogPoints == null) {
+      if (other.supportsLogPoints != null)
+        return false;
+    } else if (!this.supportsLogPoints.equals(other.supportsLogPoints))
+      return false;
+    if (this.supportsTerminateThreadsRequest == null) {
+      if (other.supportsTerminateThreadsRequest != null)
+        return false;
+    } else if (!this.supportsTerminateThreadsRequest.equals(other.supportsTerminateThreadsRequest))
+      return false;
+    if (this.supportsSetExpression == null) {
+      if (other.supportsSetExpression != null)
+        return false;
+    } else if (!this.supportsSetExpression.equals(other.supportsSetExpression))
+      return false;
+    if (this.supportsTerminateRequest == null) {
+      if (other.supportsTerminateRequest != null)
+        return false;
+    } else if (!this.supportsTerminateRequest.equals(other.supportsTerminateRequest))
+      return false;
     return true;
   }
   
@@ -782,6 +910,10 @@ public class Capabilities {
     result = prime * result + ((this.supportsExceptionInfoRequest== null) ? 0 : this.supportsExceptionInfoRequest.hashCode());
     result = prime * result + ((this.supportTerminateDebuggee== null) ? 0 : this.supportTerminateDebuggee.hashCode());
     result = prime * result + ((this.supportsDelayedStackTraceLoading== null) ? 0 : this.supportsDelayedStackTraceLoading.hashCode());
-    return prime * result + ((this.supportsLoadedSourcesRequest== null) ? 0 : this.supportsLoadedSourcesRequest.hashCode());
+    result = prime * result + ((this.supportsLoadedSourcesRequest== null) ? 0 : this.supportsLoadedSourcesRequest.hashCode());
+    result = prime * result + ((this.supportsLogPoints== null) ? 0 : this.supportsLogPoints.hashCode());
+    result = prime * result + ((this.supportsTerminateThreadsRequest== null) ? 0 : this.supportsTerminateThreadsRequest.hashCode());
+    result = prime * result + ((this.supportsSetExpression== null) ? 0 : this.supportsSetExpression.hashCode());
+    return prime * result + ((this.supportsTerminateRequest== null) ? 0 : this.supportsTerminateRequest.hashCode());
   }
 }

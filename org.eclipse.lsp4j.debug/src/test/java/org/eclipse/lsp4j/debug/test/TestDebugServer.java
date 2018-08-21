@@ -34,6 +34,8 @@ import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetExpressionArguments;
+import org.eclipse.lsp4j.debug.SetExpressionResponse;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetVariableArguments;
@@ -47,6 +49,8 @@ import org.eclipse.lsp4j.debug.StepInArguments;
 import org.eclipse.lsp4j.debug.StepInTargetsArguments;
 import org.eclipse.lsp4j.debug.StepInTargetsResponse;
 import org.eclipse.lsp4j.debug.StepOutArguments;
+import org.eclipse.lsp4j.debug.TerminateArguments;
+import org.eclipse.lsp4j.debug.TerminateThreadsArguments;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.VariablesArguments;
 import org.eclipse.lsp4j.debug.VariablesResponse;
@@ -211,6 +215,21 @@ public class TestDebugServer implements IDebugProtocolServer {
 
 	@Override
 	public CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<Void> terminate(TerminateArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<Void> terminateThreads(TerminateThreadsArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
 		return CompletableFuture.completedFuture(null);
 	}
 

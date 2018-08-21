@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -16,12 +16,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Properties of a breakpoint passed to the setBreakpoints request.
+ * Properties of a breakpoint or logpoint passed to the setBreakpoints request.
  */
 @SuppressWarnings("all")
 public class SourceBreakpoint {
   /**
-   * The source line of the breakpoint.
+   * The source line of the breakpoint or logpoint.
    */
   @NonNull
   private Long line;
@@ -49,7 +49,15 @@ public class SourceBreakpoint {
   private String hitCondition;
   
   /**
-   * The source line of the breakpoint.
+   * If this attribute exists and is non-empty, the backend must not 'break' (stop) but log the message instead.
+   * Expressions within {} are interpolated.
+   * <p>
+   * This is an optional property.
+   */
+  private String logMessage;
+  
+  /**
+   * The source line of the breakpoint or logpoint.
    */
   @Pure
   @NonNull
@@ -58,7 +66,7 @@ public class SourceBreakpoint {
   }
   
   /**
-   * The source line of the breakpoint.
+   * The source line of the breakpoint or logpoint.
    */
   public void setLine(@NonNull final Long line) {
     this.line = line;
@@ -123,6 +131,27 @@ public class SourceBreakpoint {
     this.hitCondition = hitCondition;
   }
   
+  /**
+   * If this attribute exists and is non-empty, the backend must not 'break' (stop) but log the message instead.
+   * Expressions within {} are interpolated.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getLogMessage() {
+    return this.logMessage;
+  }
+  
+  /**
+   * If this attribute exists and is non-empty, the backend must not 'break' (stop) but log the message instead.
+   * Expressions within {} are interpolated.
+   * <p>
+   * This is an optional property.
+   */
+  public void setLogMessage(final String logMessage) {
+    this.logMessage = logMessage;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -131,6 +160,7 @@ public class SourceBreakpoint {
     b.add("column", this.column);
     b.add("condition", this.condition);
     b.add("hitCondition", this.hitCondition);
+    b.add("logMessage", this.logMessage);
     return b.toString();
   }
   
@@ -164,6 +194,11 @@ public class SourceBreakpoint {
         return false;
     } else if (!this.hitCondition.equals(other.hitCondition))
       return false;
+    if (this.logMessage == null) {
+      if (other.logMessage != null)
+        return false;
+    } else if (!this.logMessage.equals(other.logMessage))
+      return false;
     return true;
   }
   
@@ -175,6 +210,7 @@ public class SourceBreakpoint {
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.condition== null) ? 0 : this.condition.hashCode());
-    return prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());
+    result = prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());
+    return prime * result + ((this.logMessage== null) ? 0 : this.logMessage.hashCode());
   }
 }
