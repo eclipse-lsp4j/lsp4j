@@ -2,6 +2,7 @@
 
 ### v0.5.0 (Sep. 2018)
 
+ * Updated primary license to EPL v2.0 (the secondary license EDL v1.0 remains)
  * Implemented LSP version 3.10.0
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/3?closed=1
