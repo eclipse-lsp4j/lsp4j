@@ -1,12 +1,17 @@
 /**
  * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.Module;
 import org.eclipse.lsp4j.debug.ModuleEventArgumentsReason;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -29,7 +34,7 @@ public class ModuleEventArguments {
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
   @NonNull
-  private org.eclipse.lsp4j.debug.Module module;
+  private Module module;
   
   /**
    * The reason for the event.
@@ -52,14 +57,14 @@ public class ModuleEventArguments {
    */
   @Pure
   @NonNull
-  public org.eclipse.lsp4j.debug.Module getModule() {
+  public Module getModule() {
     return this.module;
   }
   
   /**
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
-  public void setModule(@NonNull final org.eclipse.lsp4j.debug.Module module) {
+  public void setModule(@NonNull final Module module) {
     this.module = module;
   }
   

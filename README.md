@@ -38,5 +38,7 @@ Also, you can get them directly from the TypeFox Jenkins server:
 
 LSP4J is published under two licenses:
 
- * [Eclipse Public License v1.0](https://www.eclipse.org/legal/epl-v10.html)
- * [Eclipse Distribution License - v 1.0](https://www.eclipse.org/org/documents/edl-v10.php) [A BSD 3-clause License](https://opensource.org/licenses/BSD-3-Clause)
+ * [Eclipse Public License v. 2.0](https://www.eclipse.org/legal/epl-2.0)
+ * [Eclipse Distribution License v. 1.0](https://www.eclipse.org/org/documents/edl-v10.php), a [BSD-3-clause license](https://opensource.org/licenses/BSD-3-Clause)
+
+SPDX-License-Identifier: `EPL-2.0 OR BSD-3-Clause`

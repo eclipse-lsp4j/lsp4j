@@ -1,13 +1,18 @@
 /**
  * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
+import org.eclipse.lsp4j.debug.Module;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -21,7 +26,7 @@ public class ModulesResponse {
    * All modules or range of modules.
    */
   @NonNull
-  private org.eclipse.lsp4j.debug.Module[] modules;
+  private Module[] modules;
   
   /**
    * The total number of modules available.
@@ -35,14 +40,14 @@ public class ModulesResponse {
    */
   @Pure
   @NonNull
-  public org.eclipse.lsp4j.debug.Module[] getModules() {
+  public Module[] getModules() {
     return this.modules;
   }
   
   /**
    * All modules or range of modules.
    */
-  public void setModules(@NonNull final org.eclipse.lsp4j.debug.Module[] modules) {
+  public void setModules(@NonNull final Module[] modules) {
     this.modules = modules;
   }
   
