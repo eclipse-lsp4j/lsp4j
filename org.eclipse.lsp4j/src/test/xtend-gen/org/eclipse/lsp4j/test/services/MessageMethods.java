@@ -41,7 +41,7 @@ public interface MessageMethods {
   
   public final static String RESOLVE_CODE_LENS = "codeLens/resolve";
   
-  public final static String DOC_FOLDING_RANGES = "textDocument/foldingRanges";
+  public final static String DOC_FOLDING_RANGE = "textDocument/foldingRange";
   
   public final static String DOC_FORMATTING = "textDocument/formatting";
   

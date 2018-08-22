@@ -371,7 +371,7 @@ public interface TextDocumentService {
 	 * Since version 3.10.0
 	 */
 	@JsonRequest
-	default CompletableFuture<List<FoldingRange>> foldingRanges(FoldingRangeRequestParams params) {
+	default CompletableFuture<List<FoldingRange>> foldingRange(FoldingRangeRequestParams params) {
 		throw new UnsupportedOperationException();
 	}
 	
