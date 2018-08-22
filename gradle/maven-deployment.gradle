@@ -21,8 +21,8 @@ def configurePom = { pom ->
 		url 'https://github.com/eclipse/lsp4j'
 		licenses {
 			license {
-				name 'Eclipse Public License, Version 1.0'
-				url 'http://www.eclipse.org/legal/epl-v10.html'
+				name 'Eclipse Public License, Version 2.0'
+				url 'https://www.eclipse.org/legal/epl-2.0'
 			}
 		}
 		developers {
