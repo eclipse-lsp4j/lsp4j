@@ -414,12 +414,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			writeIntId(out, requestMessage.getRawId());
 			out.name("command");
 			out.value(requestMessage.getMethod());
-			out.name("arguments");
 			Object params = requestMessage.getParams();
-			if (params == null)
-				writeNullValue(out);
-			else
+			if (params != null) {
+				out.name("arguments");		
 				gson.toJson(params, params.getClass(), out);
+			}
 		} else if (message instanceof DebugResponseMessage) {
 			DebugResponseMessage responseMessage = (DebugResponseMessage) message;
 			out.name("type");
