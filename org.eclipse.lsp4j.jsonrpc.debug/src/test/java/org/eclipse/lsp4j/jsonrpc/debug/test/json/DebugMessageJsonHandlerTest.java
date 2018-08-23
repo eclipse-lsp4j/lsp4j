@@ -830,7 +830,6 @@ public class DebugMessageJsonHandlerTest {
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
 		handler.setMethodProvider((id) -> "foo");
 		String input = "{"
-				+ "\"seq\":2,\n"
 				+ "\"type\":\"request\",\n"
 				+ "\"command\":\"foo\"\n"
 				+ "\"arguments\": \"ERROR HERE - an unterminated string,\n"
