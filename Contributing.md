@@ -4,10 +4,34 @@ The project is build with Gradle and written in Java 8.
 
 To start working on it simply clone and run `./gradlew build`.
 
-# CLA
+# ECA
 
 In order to contribute code, you need to sign an Eclipse Contributor Agreement, using the e-mail used at Github.
 See https://eclipse.org/legal/ECA.php for details
+
+# GitHub Pull Requests
+
+All GitHub Pull Requests run the following checks.
+
+## ip-validation
+
+All Pull Requests must be by authors who have signed the ECA, and if they are not committers they must "Sign off" their commits. The "ip-validation" status check on GitHub will check this.
+
+## Jenkins PR Build
+
+The [Jenkins CI job](https://ci.eclipse.org/lsp4j/job/lsp4j-github-pullrequests/) builds and tests pull requests. All member of the [GitHub Eclipse organisation](https://github.com/orgs/eclipse/people) should have their PRs built automatically as the whole organisation is on the whitelist. All other PRs need to be approved before they are built for the first time. To approve a PR you have to be an admin and say:
+
+* "ok to test" to accept this pull request for testing
+* "test this please" for a one time test run
+* "add to whitelist" to add the author to the whitelist
+
+If the build fails for other various reasons you can rebuild.
+
+* "retest this please" to start a new build
+
+See full documentation for the [GitHub Pull Request plug-in for Jenkins](https://wiki.jenkins.io/display/JENKINS/GitHub+pull+request+builder+plugin). To see the current list of Admins, visit the [configuration](https://ci.eclipse.org/lsp4j/job/lsp4j-github-pullrequests/configure) -> Build Triggers -> GitHub Pull Request Builder -> Admin list. All LSP4J committers can add their GitHub username to that list.
+
+The Pull Request Builder polls the GitHub repo at 5 minute intervals, so there may be a short delay before the check shows up as Pending on GitHub.
 
 # Eclipse
 
