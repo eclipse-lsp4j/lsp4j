@@ -448,12 +448,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			} else {
 				out.name("success");
 				out.value(true);
-				out.name("body");
 				Object result = responseMessage.getResult();
-				if (result == null)
-					writeNullValue(out);
-				else
+				if (result != null) {
+					out.name("body");
 					gson.toJson(result, result.getClass(), out);
+				}
 			}
 		} else if (message instanceof DebugNotificationMessage) {
 			DebugNotificationMessage notificationMessage = (DebugNotificationMessage) message;
@@ -463,12 +462,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			writeIntId(out, notificationMessage.getRawId());
 			out.name("event");
 			out.value(notificationMessage.getMethod());
-			out.name("body");
-			Object params = notificationMessage.getParams();
-			if (params == null)
-				writeNullValue(out);
-			else
+      Object params = notificationMessage.getParams();
+			if (params != null)
+			  out.name("body");
 				gson.toJson(params, params.getClass(), out);
+				
 		}
 
 		out.endObject();
