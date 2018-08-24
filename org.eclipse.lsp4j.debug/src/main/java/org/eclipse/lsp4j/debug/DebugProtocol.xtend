@@ -94,7 +94,7 @@ class StoppedEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
  */
-public interface StoppedEventArgumentsReason {
+interface StoppedEventArgumentsReason {
 	public static final String STEP = "step";
 	public static final String BREAKPOINT = "breakpoint";
 	public static final String EXCEPTION = "exception";
@@ -180,7 +180,7 @@ class ThreadEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
  */
-public interface ThreadEventArgumentsReason {
+interface ThreadEventArgumentsReason {
 	public static final String STARTED = "started";
 	public static final String EXITED = "exited";
 }
@@ -242,7 +242,7 @@ class OutputEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link OutputEventArgumentsCategory}
  */
-public interface OutputEventArgumentsCategory {
+interface OutputEventArgumentsCategory {
 	public static final String CONSOLE = "console";
 	public static final String STDOUT = "stdout";
 	public static final String STDERR = "stderr";
@@ -273,7 +273,7 @@ class BreakpointEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
  */
-public interface BreakpointEventArgumentsReason {
+interface BreakpointEventArgumentsReason {
 	public static final String CHANGED = "changed";
 	public static final String NEW = "new";
 	public static final String REMOVED = "removed";
@@ -299,7 +299,7 @@ class ModuleEventArguments {
 /**
  * The reason for the event.
  */
-public enum ModuleEventArgumentsReason {
+enum ModuleEventArgumentsReason {
 	NEW,
 	CHANGED,
 	REMOVED
@@ -325,7 +325,7 @@ class LoadedSourceEventArguments {
 /**
  * The reason for the event.
  */
-public enum LoadedSourceEventArgumentsReason {
+enum LoadedSourceEventArgumentsReason {
 	NEW,
 	CHANGED,
 	REMOVED
@@ -366,7 +366,7 @@ class ProcessEventArguments {
 /**
  * Describes how the debug engine started debugging this process.
  */
-public enum ProcessEventArgumentsStartMethod {
+enum ProcessEventArgumentsStartMethod {
 	/**
 	 * Process was launched under the debugger.
 	 */
@@ -453,7 +453,7 @@ class RunInTerminalRequestArguments {
 /**
  * What kind of terminal to launch.
  */
-public enum RunInTerminalRequestArgumentsKind {
+enum RunInTerminalRequestArgumentsKind {
 	INTEGRATED,
 	EXTERNAL
 }
@@ -531,7 +531,7 @@ class InitializeRequestArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link InitializeRequestArgumentsPathFormat}
  */
-public interface InitializeRequestArgumentsPathFormat {
+interface InitializeRequestArgumentsPathFormat {
 	public static final String PATH = "path";
 	public static final String URI = "uri";
 }
@@ -970,7 +970,7 @@ class VariablesArguments {
 /**
  * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
  */
-public enum VariablesArgumentsFilter {
+enum VariablesArgumentsFilter {
 	INDEXED,
 	NAMED
 }
@@ -1246,7 +1246,7 @@ class EvaluateArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link EvaluateArgumentsContext}
  */
-public interface EvaluateArgumentsContext {
+interface EvaluateArgumentsContext {
 	/**
 	 * evaluate is run in a watch.
 	 */
@@ -1853,7 +1853,7 @@ class ColumnDescriptor {
 /**
  * Datatype of values in this column.  Defaults to 'string' if not specified.
  */
-public enum ColumnDescriptorType {
+enum ColumnDescriptorType {
 	STRING,
 	NUMBER,
 	BOOLEAN,
@@ -1959,7 +1959,7 @@ class Source {
  * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
  * the source is not available or that it is skipped on stepping.
  */
-public enum SourcePresentationHint {
+enum SourcePresentationHint {
 	NORMAL,
 	EMPHASIZE,
 	DEEMPHASIZE
@@ -2030,7 +2030,7 @@ class StackFrame {
  * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
  * change the appearance of a frame in a 'subtle' way.
  */
-public enum StackFramePresentationHint {
+enum StackFramePresentationHint {
 	NORMAL,
 	LABEL,
 	SUBTLE
@@ -2214,7 +2214,7 @@ class VariablePresentationHint {
  * <p>
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintKind}
  */
-public interface VariablePresentationHintKind {
+interface VariablePresentationHintKind {
 	/**
 	 * Indicates that the object is a property.
 	 */
@@ -2263,7 +2263,7 @@ public interface VariablePresentationHintKind {
  * <p>
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintAttributes}
  */
-public interface VariablePresentationHintAttributes {
+interface VariablePresentationHintAttributes {
 	/**
 	 * Indicates that the object is static.
 	 */
@@ -2299,7 +2299,7 @@ public interface VariablePresentationHintAttributes {
  * <p>
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintVisibility}
  */
-public interface VariablePresentationHintVisibility {
+interface VariablePresentationHintVisibility {
 	public static final String PUBLIC = "public";
 	public static final String PRIVATE = "private";
 	public static final String PROTECTED = "protected";
@@ -2532,7 +2532,7 @@ class CompletionItem {
  * Some predefined types for the CompletionItem. Please note that not all clients have specific icons for all of
  * them.
  */
-public enum CompletionItemType {
+enum CompletionItemType {
 	METHOD,
 	FUNCTION,
 	CONSTRUCTOR,
@@ -2557,7 +2557,7 @@ public enum CompletionItemType {
 /**
  * Names of checksum algorithms that may be supported by a debug adapter.
  */
-public enum ChecksumAlgorithm {
+enum ChecksumAlgorithm {
 	@SerializedName("MD5")
 	MD5,
 	@SerializedName("SHA1")
@@ -2676,7 +2676,7 @@ class ExceptionOptions {
  * <p>
  * userUnhandled: breaks if the exception is not handled by user code.
  */
-public enum ExceptionBreakMode {
+enum ExceptionBreakMode {
 	NEVER,
 	ALWAYS,
 	UNHANDLED,
