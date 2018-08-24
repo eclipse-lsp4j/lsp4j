@@ -59,7 +59,8 @@ public interface IDebugProtocolClient {
 	 * </ul>
 	 */
 	@JsonNotification
-	void initialized();
+	default void initialized() {
+	}
 
 	/**
 	 * The event indicates that the execution of the debuggee has stopped due to
@@ -69,7 +70,8 @@ public interface IDebugProtocolClient {
 	 * completed, by executing a debugger statement etc.
 	 */
 	@JsonNotification
-	void stopped(StoppedEventArguments args);
+	default void stopped(StoppedEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that the execution of the debuggee has continued.
@@ -82,58 +84,67 @@ public interface IDebugProtocolClient {
 	 * request that implied this.
 	 */
 	@JsonNotification
-	void continued(ContinuedEventArguments args);
+	default void continued(ContinuedEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that the debuggee has exited and returns its exit code.
 	 */
 	@JsonNotification
-	void exited(ExitedEventArguments args);
+	default void exited(ExitedEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that debugging of the debuggee has terminated. This does
 	 * **not** mean that the debuggee itself has exited.
 	 */
 	@JsonNotification
-	void terminated(TerminatedEventArguments args);
+	default void terminated(TerminatedEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that a thread has started or exited.
 	 */
 	@JsonNotification
-	void thread(ThreadEventArguments args);
+	default void thread(ThreadEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that the target has produced some output.
 	 */
 	@JsonNotification
-	void output(OutputEventArguments args);
+	default void output(OutputEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that some information about a breakpoint has changed.
 	 */
 	@JsonNotification
-	void breakpoint(BreakpointEventArguments args);
+	default void breakpoint(BreakpointEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that some information about a module has changed.
 	 */
 	@JsonNotification
-	void module(ModuleEventArguments args);
+	default void module(ModuleEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that some source has been added, changed, or removed from
 	 * the set of all loaded sources.
 	 */
 	@JsonNotification
-	void loadedSource(LoadedSourceEventArguments args);
+	default void loadedSource(LoadedSourceEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that the debugger has begun debugging a new process.
 	 * Either one that it has launched, or one that it has attached to.
 	 */
 	@JsonNotification
-	void process(ProcessEventArguments args);
+	default void process(ProcessEventArguments args) {
+	}
 
 	/**
 	 * The event indicates that one or more capabilities have changed.
@@ -149,5 +160,6 @@ public interface IDebugProtocolClient {
 	 * their values.
 	 */
 	@JsonNotification
-	void capabilities(CapabilitiesEventArguments args);
+	default void capabilities(CapabilitiesEventArguments args) {
+	}
 }

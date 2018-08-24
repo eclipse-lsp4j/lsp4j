@@ -85,7 +85,9 @@ public interface IDebugProtocolServer {
 	 * provided by the client.
 	 */
 	@JsonRequest
-	CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args);
+	default CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The 'initialize' request is sent as the first request from the client to the
@@ -100,7 +102,9 @@ public interface IDebugProtocolServer {
 	 * The 'initialize' request may only be sent once.
 	 */
 	@JsonRequest
-	CompletableFuture<Capabilities> initialize(InitializeRequestArguments args);
+	default CompletableFuture<Capabilities> initialize(InitializeRequestArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The client of the debug protocol must send this request at the end of the
@@ -108,7 +112,9 @@ public interface IDebugProtocolServer {
 	 * event).
 	 */
 	@JsonRequest
-	CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args);
+	default CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The launch request is sent from the client to the debug adapter to start the
@@ -117,7 +123,9 @@ public interface IDebugProtocolServer {
 	 * this specification.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> launch(Map<String, Object> args);
+	default CompletableFuture<Void> launch(Map<String, Object> args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The attach request is sent from the client to the debug adapter to attach to
@@ -125,7 +133,9 @@ public interface IDebugProtocolServer {
 	 * specific, the arguments for this request are not part of this specification.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> attach(Map<String, Object> args);
+	default CompletableFuture<Void> attach(Map<String, Object> args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Restarts a debug session. If the capability 'supportsRestartRequest' is
@@ -140,7 +150,9 @@ public interface IDebugProtocolServer {
 	 * and setting the capability 'supportsRestartRequest' to true.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> restart(RestartArguments args);
+	default CompletableFuture<Void> restart(RestartArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The 'disconnect' request is sent from the client to the debug adapter in
@@ -152,14 +164,18 @@ public interface IDebugProtocolServer {
 	 * 'terminateDebuggee' (if supported by the debug adapter).
 	 */
 	@JsonRequest
-	CompletableFuture<Void> disconnect(DisconnectArguments args);
+	default CompletableFuture<Void> disconnect(DisconnectArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The 'terminate' request is sent from the client to the debug adapter in order
 	 * to give the debuggee a chance for terminating itself.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> terminate(TerminateArguments args);
+	default CompletableFuture<Void> terminate(TerminateArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Sets multiple breakpoints for a single source and clears all previous
@@ -171,7 +187,9 @@ public interface IDebugProtocolServer {
 	 * generated.
 	 */
 	@JsonRequest
-	CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args);
+	default CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Sets multiple function breakpoints and clears all previous function
@@ -183,7 +201,10 @@ public interface IDebugProtocolServer {
 	 * breakpoint') is generated.
 	 */
 	@JsonRequest
-	CompletableFuture<SetFunctionBreakpointsResponse> setFunctionBreakpoints(SetFunctionBreakpointsArguments args);
+	default CompletableFuture<SetFunctionBreakpointsResponse> setFunctionBreakpoints(
+			SetFunctionBreakpointsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request configures the debuggers response to thrown exceptions. If an
@@ -191,13 +212,17 @@ public interface IDebugProtocolServer {
 	 * 'exception').
 	 */
 	@JsonRequest
-	CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args);
+	default CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request starts the debuggee to run again.
 	 */
 	@JsonRequest(value = "continue")
-	CompletableFuture<ContinueResponse> continue_(ContinueArguments args);
+	default CompletableFuture<ContinueResponse> continue_(ContinueArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request starts the debuggee to run again for one step.
@@ -206,7 +231,9 @@ public interface IDebugProtocolServer {
 	 * reason 'step') after the step has completed.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> next(NextArguments args);
+	default CompletableFuture<Void> next(NextArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request starts the debuggee to step into a function/method if possible.
@@ -226,7 +253,9 @@ public interface IDebugProtocolServer {
 	 * 'stepInTargets' request.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> stepIn(StepInArguments args);
+	default CompletableFuture<Void> stepIn(StepInArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request starts the debuggee to run again for one step.
@@ -235,7 +264,9 @@ public interface IDebugProtocolServer {
 	 * reason 'step') after the step has completed.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> stepOut(StepOutArguments args);
+	default CompletableFuture<Void> stepOut(StepOutArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request starts the debuggee to run one step backwards.
@@ -245,14 +276,18 @@ public interface IDebugProtocolServer {
 	 * request if the capability 'supportsStepBack' is true.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> stepBack(StepBackArguments args);
+	default CompletableFuture<Void> stepBack(StepBackArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request starts the debuggee to run backward. Clients should only call
 	 * this request if the capability 'supportsStepBack' is true.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> reverseContinue(ReverseContinueArguments args);
+	default CompletableFuture<Void> reverseContinue(ReverseContinueArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request restarts execution of the specified stackframe.
@@ -261,7 +296,9 @@ public interface IDebugProtocolServer {
 	 * reason 'restart') after the restart has completed.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> restartFrame(RestartFrameArguments args);
+	default CompletableFuture<Void> restartFrame(RestartFrameArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request sets the location where the debuggee will continue to run.
@@ -276,7 +313,9 @@ public interface IDebugProtocolServer {
 	 * reason 'goto'.
 	 */
 	@JsonRequest(value = "goto")
-	CompletableFuture<Void> goto_(GotoArguments args);
+	default CompletableFuture<Void> goto_(GotoArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request suspenses the debuggee.
@@ -285,19 +324,25 @@ public interface IDebugProtocolServer {
 	 * reason 'pause') after the thread has been paused successfully.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> pause(PauseArguments args);
+	default CompletableFuture<Void> pause(PauseArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request returns a stacktrace from the current execution state.
 	 */
 	@JsonRequest
-	CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args);
+	default CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request returns the variable scopes for a given stackframe ID.
 	 */
 	@JsonRequest
-	CompletableFuture<ScopesResponse> scopes(ScopesArguments args);
+	default CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Retrieves all child variables for the given variable reference.
@@ -306,45 +351,59 @@ public interface IDebugProtocolServer {
 	 * or indexed children.
 	 */
 	@JsonRequest
-	CompletableFuture<VariablesResponse> variables(VariablesArguments args);
+	default CompletableFuture<VariablesResponse> variables(VariablesArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Set the variable with the given name in the variable container to a new
 	 * value.
 	 */
 	@JsonRequest
-	CompletableFuture<SetVariableResponse> setVariable(SetVariableArguments args);
+	default CompletableFuture<SetVariableResponse> setVariable(SetVariableArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request retrieves the source code for a given source reference.
 	 */
 	@JsonRequest
-	CompletableFuture<SourceResponse> source(SourceArguments args);
+	default CompletableFuture<SourceResponse> source(SourceArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request retrieves a list of all threads.
 	 */
 	@JsonRequest
-	CompletableFuture<ThreadsResponse> threads();
+	default CompletableFuture<ThreadsResponse> threads() {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * The request terminates the threads with the given ids.
 	 */
 	@JsonRequest
-	CompletableFuture<Void> terminateThreads(TerminateThreadsArguments args);
+	default CompletableFuture<Void> terminateThreads(TerminateThreadsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Modules can be retrieved from the debug adapter with the ModulesRequest which
 	 * can either return all modules or a range of modules to support paging.
 	 */
 	@JsonRequest
-	CompletableFuture<ModulesResponse> modules(ModulesArguments args);
+	default CompletableFuture<ModulesResponse> modules(ModulesArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Retrieves the set of all sources currently loaded by the debugged process.
 	 */
 	@JsonRequest
-	CompletableFuture<LoadedSourcesResponse> loadedSources(LoadedSourcesArguments args);
+	default CompletableFuture<LoadedSourcesResponse> loadedSources(LoadedSourcesArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Evaluates the given expression in the context of the top most stack frame.
@@ -352,7 +411,9 @@ public interface IDebugProtocolServer {
 	 * The expression has access to any variables and arguments that are in scope.
 	 */
 	@JsonRequest
-	CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args);
+	default CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Evaluates the given 'value' expression and assigns it to the 'expression'
@@ -362,7 +423,9 @@ public interface IDebugProtocolServer {
 	 * of the specified frame.
 	 */
 	@JsonRequest
-	CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args);
+	default CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * This request retrieves the possible stepIn targets for the specified stack
@@ -374,7 +437,9 @@ public interface IDebugProtocolServer {
 	 * capability exists and is true.
 	 */
 	@JsonRequest
-	CompletableFuture<StepInTargetsResponse> stepInTargets(StepInTargetsArguments args);
+	default CompletableFuture<StepInTargetsResponse> stepInTargets(StepInTargetsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * This request retrieves the possible goto targets for the specified source
@@ -386,7 +451,9 @@ public interface IDebugProtocolServer {
 	 * 'supportsGotoTargetsRequest' capability exists and is true.
 	 */
 	@JsonRequest
-	CompletableFuture<GotoTargetsResponse> gotoTargets(GotoTargetsArguments args);
+	default CompletableFuture<GotoTargetsResponse> gotoTargets(GotoTargetsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Returns a list of possible completions for a given caret position and text.
@@ -395,11 +462,15 @@ public interface IDebugProtocolServer {
 	 * capability exists and is true.
 	 */
 	@JsonRequest
-	CompletableFuture<CompletionsResponse> completions(CompletionsArguments args);
+	default CompletableFuture<CompletionsResponse> completions(CompletionsArguments args) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * Retrieves the details of the exception that caused this event to be raised.
 	 */
 	@JsonRequest
-	CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args);
+	default CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args) {
+		throw new UnsupportedOperationException();
+	}
 }
