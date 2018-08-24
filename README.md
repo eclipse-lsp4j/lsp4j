@@ -1,6 +1,6 @@
 ## Eclipse LSP4J
 
-Java binding for the [Language Server Protocol](https://github.com/Microsoft/language-server-protocol).
+Java binding for the [Language Server Protocol](https://github.com/Microsoft/language-server-protocol) and the [Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/).
 
 ### How To Use
 
@@ -33,6 +33,12 @@ Also, you can get them directly from the TypeFox Jenkins server:
  * LSP4J 0.4.x &rarr; LSP 3.7.0
  * LSP4J 0.2.x, 0.3.x &rarr; LSP 3.0
  * LSP4J 0.1.x &rarr; LSP 2.1
+
+### Supported DAP Versions
+
+ * LSP4J 0.5.x &rarr; DAP 1.31.0
+ * LSP4J 0.4.x &rarr; DAP 1.25.0
+ * LSP4J before 0.4.x did not support DAP
 
 ### Licenses
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -12,7 +12,6 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
-import org.eclipse.lsp4j.debug.Module;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -26,7 +25,7 @@ public class ModulesResponse {
    * All modules or range of modules.
    */
   @NonNull
-  private Module[] modules;
+  private org.eclipse.lsp4j.debug.Module[] modules;
   
   /**
    * The total number of modules available.
@@ -40,14 +39,14 @@ public class ModulesResponse {
    */
   @Pure
   @NonNull
-  public Module[] getModules() {
+  public org.eclipse.lsp4j.debug.Module[] getModules() {
     return this.modules;
   }
   
   /**
    * All modules or range of modules.
    */
-  public void setModules(@NonNull final Module[] modules) {
+  public void setModules(@NonNull final org.eclipse.lsp4j.debug.Module[] modules) {
     this.modules = modules;
   }
   

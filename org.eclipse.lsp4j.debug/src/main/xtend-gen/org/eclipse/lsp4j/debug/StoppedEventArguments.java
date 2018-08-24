@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -16,8 +16,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Event message for 'stopped' event type.
- * <p>
  * The event indicates that the execution of the debuggee has stopped due to some condition.
  * <p>
  * This can be caused by a break point previously set, a stepping action has completed, by executing a debugger
@@ -37,7 +35,8 @@ public class StoppedEventArguments {
   private String reason;
   
   /**
-   * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is.
+   * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is and must be
+   * translated.
    * <p>
    * This is an optional property.
    */
@@ -51,6 +50,13 @@ public class StoppedEventArguments {
   private Long threadId;
   
   /**
+   * A value of true hints to the frontend that this event should not change the focus.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean preserveFocusHint;
+  
+  /**
    * Additional information. E.g. if reason is 'exception', text contains the exception name. This string is shown
    * in the UI.
    * <p>
@@ -59,12 +65,12 @@ public class StoppedEventArguments {
   private String text;
   
   /**
-   * If allThreadsStopped is true, a debug adapter can announce that all threads have stopped.
-   * <p>
-   *  The client should use this information to enable that all threads can be expanded to access their
-   * stacktraces.
-   * <p>
-   *  If the attribute is missing or false, only the thread with the given threadId can be expanded.
+   * If 'allThreadsStopped' is true, a debug adapter can announce that all threads have stopped.
+   * <ul>
+   * <li>The client should use this information to enable that all threads can be expanded to access their
+   * stacktraces.</li>
+   * <li>If the attribute is missing or false, only the thread with the given threadId can be expanded.</li>
+   * </ul>
    * <p>
    * This is an optional property.
    */
@@ -97,7 +103,8 @@ public class StoppedEventArguments {
   }
   
   /**
-   * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is.
+   * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is and must be
+   * translated.
    * <p>
    * This is an optional property.
    */
@@ -107,7 +114,8 @@ public class StoppedEventArguments {
   }
   
   /**
-   * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is.
+   * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is and must be
+   * translated.
    * <p>
    * This is an optional property.
    */
@@ -135,6 +143,25 @@ public class StoppedEventArguments {
   }
   
   /**
+   * A value of true hints to the frontend that this event should not change the focus.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getPreserveFocusHint() {
+    return this.preserveFocusHint;
+  }
+  
+  /**
+   * A value of true hints to the frontend that this event should not change the focus.
+   * <p>
+   * This is an optional property.
+   */
+  public void setPreserveFocusHint(final Boolean preserveFocusHint) {
+    this.preserveFocusHint = preserveFocusHint;
+  }
+  
+  /**
    * Additional information. E.g. if reason is 'exception', text contains the exception name. This string is shown
    * in the UI.
    * <p>
@@ -156,12 +183,12 @@ public class StoppedEventArguments {
   }
   
   /**
-   * If allThreadsStopped is true, a debug adapter can announce that all threads have stopped.
-   * <p>
-   *  The client should use this information to enable that all threads can be expanded to access their
-   * stacktraces.
-   * <p>
-   *  If the attribute is missing or false, only the thread with the given threadId can be expanded.
+   * If 'allThreadsStopped' is true, a debug adapter can announce that all threads have stopped.
+   * <ul>
+   * <li>The client should use this information to enable that all threads can be expanded to access their
+   * stacktraces.</li>
+   * <li>If the attribute is missing or false, only the thread with the given threadId can be expanded.</li>
+   * </ul>
    * <p>
    * This is an optional property.
    */
@@ -171,12 +198,12 @@ public class StoppedEventArguments {
   }
   
   /**
-   * If allThreadsStopped is true, a debug adapter can announce that all threads have stopped.
-   * <p>
-   *  The client should use this information to enable that all threads can be expanded to access their
-   * stacktraces.
-   * <p>
-   *  If the attribute is missing or false, only the thread with the given threadId can be expanded.
+   * If 'allThreadsStopped' is true, a debug adapter can announce that all threads have stopped.
+   * <ul>
+   * <li>The client should use this information to enable that all threads can be expanded to access their
+   * stacktraces.</li>
+   * <li>If the attribute is missing or false, only the thread with the given threadId can be expanded.</li>
+   * </ul>
    * <p>
    * This is an optional property.
    */
@@ -191,6 +218,7 @@ public class StoppedEventArguments {
     b.add("reason", this.reason);
     b.add("description", this.description);
     b.add("threadId", this.threadId);
+    b.add("preserveFocusHint", this.preserveFocusHint);
     b.add("text", this.text);
     b.add("allThreadsStopped", this.allThreadsStopped);
     return b.toString();
@@ -221,6 +249,11 @@ public class StoppedEventArguments {
         return false;
     } else if (!this.threadId.equals(other.threadId))
       return false;
+    if (this.preserveFocusHint == null) {
+      if (other.preserveFocusHint != null)
+        return false;
+    } else if (!this.preserveFocusHint.equals(other.preserveFocusHint))
+      return false;
     if (this.text == null) {
       if (other.text != null)
         return false;
@@ -242,6 +275,7 @@ public class StoppedEventArguments {
     result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
     result = prime * result + ((this.description== null) ? 0 : this.description.hashCode());
     result = prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
+    result = prime * result + ((this.preserveFocusHint== null) ? 0 : this.preserveFocusHint.hashCode());
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
     return prime * result + ((this.allThreadsStopped== null) ? 0 : this.allThreadsStopped.hashCode());
   }

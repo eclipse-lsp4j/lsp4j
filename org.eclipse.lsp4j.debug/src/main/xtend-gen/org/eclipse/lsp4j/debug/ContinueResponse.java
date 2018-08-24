@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -20,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class ContinueResponse {
   /**
-   * If true, the continue request has ignored the specified thread and continued all threads instead. If this
+   * If true, the 'continue' request has ignored the specified thread and continued all threads instead. If this
    * attribute is missing a value of 'true' is assumed for backward compatibility.
    * <p>
    * This is an optional property.
@@ -28,7 +28,7 @@ public class ContinueResponse {
   private Boolean allThreadsContinued;
   
   /**
-   * If true, the continue request has ignored the specified thread and continued all threads instead. If this
+   * If true, the 'continue' request has ignored the specified thread and continued all threads instead. If this
    * attribute is missing a value of 'true' is assumed for backward compatibility.
    * <p>
    * This is an optional property.
@@ -39,7 +39,7 @@ public class ContinueResponse {
   }
   
   /**
-   * If true, the continue request has ignored the specified thread and continued all threads instead. If this
+   * If true, the 'continue' request has ignored the specified thread and continued all threads instead. If this
    * attribute is missing a value of 'true' is assumed for backward compatibility.
    * <p>
    * This is an optional property.

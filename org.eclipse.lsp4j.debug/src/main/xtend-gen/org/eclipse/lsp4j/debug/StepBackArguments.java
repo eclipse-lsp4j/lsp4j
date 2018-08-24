@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -21,13 +21,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class StepBackArguments {
   /**
-   * Exceute 'stepBack' for this thread.
+   * Execute 'stepBack' for this thread.
    */
   @NonNull
   private Long threadId;
   
   /**
-   * Exceute 'stepBack' for this thread.
+   * Execute 'stepBack' for this thread.
    */
   @Pure
   @NonNull
@@ -36,7 +36,7 @@ public class StepBackArguments {
   }
   
   /**
-   * Exceute 'stepBack' for this thread.
+   * Execute 'stepBack' for this thread.
    */
   public void setThreadId(@NonNull final Long threadId) {
     this.threadId = threadId;

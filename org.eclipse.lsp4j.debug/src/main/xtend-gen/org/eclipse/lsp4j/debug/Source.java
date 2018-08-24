@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -33,7 +33,7 @@ public class Source {
   
   /**
    * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its vaule is 0).
+   * no sourceReference is specified (or its value is 0).
    * <p>
    * This is an optional property.
    */
@@ -109,7 +109,7 @@ public class Source {
   
   /**
    * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its vaule is 0).
+   * no sourceReference is specified (or its value is 0).
    * <p>
    * This is an optional property.
    */
@@ -120,7 +120,7 @@ public class Source {
   
   /**
    * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its vaule is 0).
+   * no sourceReference is specified (or its value is 0).
    * <p>
    * This is an optional property.
    */

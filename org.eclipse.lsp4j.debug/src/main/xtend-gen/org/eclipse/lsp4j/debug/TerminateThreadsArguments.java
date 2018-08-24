@@ -11,42 +11,46 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import java.util.Arrays;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Arguments for 'pause' request.
+ * Arguments for 'terminateThreads' request.
  */
 @SuppressWarnings("all")
-public class PauseArguments {
+public class TerminateThreadsArguments {
   /**
-   * Pause execution for this thread.
+   * Ids of threads to be terminated.
+   * <p>
+   * This is an optional property.
    */
-  @NonNull
-  private Long threadId;
+  private Long[] threadIds;
   
   /**
-   * Pause execution for this thread.
+   * Ids of threads to be terminated.
+   * <p>
+   * This is an optional property.
    */
   @Pure
-  @NonNull
-  public Long getThreadId() {
-    return this.threadId;
+  public Long[] getThreadIds() {
+    return this.threadIds;
   }
   
   /**
-   * Pause execution for this thread.
+   * Ids of threads to be terminated.
+   * <p>
+   * This is an optional property.
    */
-  public void setThreadId(@NonNull final Long threadId) {
-    this.threadId = threadId;
+  public void setThreadIds(final Long[] threadIds) {
+    this.threadIds = threadIds;
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("threadId", this.threadId);
+    b.add("threadIds", this.threadIds);
     return b.toString();
   }
   
@@ -59,11 +63,11 @@ public class PauseArguments {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    PauseArguments other = (PauseArguments) obj;
-    if (this.threadId == null) {
-      if (other.threadId != null)
+    TerminateThreadsArguments other = (TerminateThreadsArguments) obj;
+    if (this.threadIds == null) {
+      if (other.threadIds != null)
         return false;
-    } else if (!this.threadId.equals(other.threadId))
+    } else if (!Arrays.deepEquals(this.threadIds, other.threadIds))
       return false;
     return true;
   }
@@ -71,6 +75,6 @@ public class PauseArguments {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.threadId== null) ? 0 : this.threadId.hashCode());
+    return 31 * 1 + ((this.threadIds== null) ? 0 : Arrays.deepHashCode(this.threadIds));
   }
 }

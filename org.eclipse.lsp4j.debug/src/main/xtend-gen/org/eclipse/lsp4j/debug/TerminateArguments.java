@@ -11,42 +11,18 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Arguments for 'pause' request.
+ * Arguments for 'terminate' request.
  */
 @SuppressWarnings("all")
-public class PauseArguments {
-  /**
-   * Pause execution for this thread.
-   */
-  @NonNull
-  private Long threadId;
-  
-  /**
-   * Pause execution for this thread.
-   */
-  @Pure
-  @NonNull
-  public Long getThreadId() {
-    return this.threadId;
-  }
-  
-  /**
-   * Pause execution for this thread.
-   */
-  public void setThreadId(@NonNull final Long threadId) {
-    this.threadId = threadId;
-  }
-  
+public class TerminateArguments {
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("threadId", this.threadId);
     return b.toString();
   }
   
@@ -59,18 +35,12 @@ public class PauseArguments {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    PauseArguments other = (PauseArguments) obj;
-    if (this.threadId == null) {
-      if (other.threadId != null)
-        return false;
-    } else if (!this.threadId.equals(other.threadId))
-      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.threadId== null) ? 0 : this.threadId.hashCode());
+    return 1;
   }
 }
