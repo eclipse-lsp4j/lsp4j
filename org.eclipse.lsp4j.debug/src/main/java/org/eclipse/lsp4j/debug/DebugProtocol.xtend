@@ -19,13 +19,12 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
- * Declaration of parameters, response bodies, and event bodies.
- * <p>
- * Auto-generated from debugProtocol.json schema version 1.31.0. Do not edit manually.
+ * Declaration of parameters, response bodies, and event bodies for
+ * the <a href="https://microsoft.github.io/debug-adapter-protocol/">Debug Adapter Protocol</a>
  */
 class DebugProtcol {
 	/**
-	 * Version of debugProtocol.json this class was derived from.
+	 * Version of Debug Protocol
 	 */
 	public static final String SCHEMA_VERSION = "1.31.0";
 }
