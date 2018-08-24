@@ -4,6 +4,7 @@
 
  * Updated primary license to EPL v2.0 (the secondary license EDL v1.0 remains)
  * Implemented LSP version 3.10.0
+ * Implemented DAP version 1.31.0
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/3?closed=1
 
