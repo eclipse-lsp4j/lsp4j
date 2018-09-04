@@ -462,11 +462,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			writeIntId(out, notificationMessage.getRawId());
 			out.name("event");
 			out.value(notificationMessage.getMethod());
-      Object params = notificationMessage.getParams();
-			if (params != null)
-			  out.name("body");
+			Object params = notificationMessage.getParams();
+			if (params != null) {
+				out.name("body");
 				gson.toJson(params, params.getClass(), out);
-				
+			}
 		}
 
 		out.endObject();
