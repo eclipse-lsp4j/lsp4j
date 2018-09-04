@@ -22,6 +22,9 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 public class EitherTest {
 
@@ -69,6 +72,38 @@ public class EitherTest {
 		object.myProperty = null;
 		object.otherProperty = "ok";
 		assertParse(object, "{\"myProperty\":null, \"otherProperty\": \"ok\"}");
+	}
+	
+	@Test
+	public void testEqualsForNull() {
+		Either<Object, Object> either1 = Either.forLeft(null);
+		Either<Object, Object> either2 = Either.forLeft(null);
+
+		assertTrue(either1.equals(either2));
+	}
+
+	@Test
+	public void testLeftEqualsNull() {
+		Either<Object, String> either1 = Either.forRight("Testing");
+		Either<Object, String> either2 = Either.forRight("Testing");
+
+		assertTrue(either1.equals(either2));
+	}
+
+	@Test
+	public void testRightEqualsNull() {
+		Either<Object, String> either1 = Either.forLeft("Testing");
+		Either<Object, String> either2 = Either.forLeft("Testing");
+
+		assertTrue(either1.equals(either2));
+	}
+
+	@Test
+	public void testEqualsFalseWithNonNull() {
+		Either<Object, String> either1 = Either.forLeft("Testing");
+		Either<Object, String> either2 = Either.forRight("Testing");
+
+		assertFalse(either1.equals(either2));
 	}
 
 	protected static class MyObjectA {
