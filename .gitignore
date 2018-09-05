@@ -3,6 +3,7 @@ bin/
 target/
 build/
 .gradle/
+.idea/
 META-INF/
 org.eclipse.buildship.core.prefs
 org.eclipse.jdt.core.prefs
