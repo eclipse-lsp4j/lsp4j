@@ -53,7 +53,7 @@ public class LSPWebSocketServer<T extends LanguageServer> {
 	private final MessageJsonHandler jsonHandler;
 	private final Supplier<T> newServer;
 	
-	LSPWebSocketServer(Supplier<T> newServer, Class<T> serverClass) {
+	public LSPWebSocketServer(Supplier<T> newServer, Class<T> serverClass) {
 		this.newServer = newServer;
 		
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
