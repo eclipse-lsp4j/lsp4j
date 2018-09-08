@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ *
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 
 package org.eclipse.lsp4j.debug;
 
@@ -15,20 +19,17 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 /**
- * Declaration of parameters, response bodies, and event bodies.
- * <p>
- * Auto-generated from debugProtocol.json schema version 1.25.0. Do not edit manually.
+ * Declaration of parameters, response bodies, and event bodies for
+ * the <a href="https://microsoft.github.io/debug-adapter-protocol/">Debug Adapter Protocol</a>
  */
 class DebugProtcol {
 	/**
-	 * Version of debugProtocol.json this class was derived from.
+	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.25.0";
+	public static final String SCHEMA_VERSION = "1.31.0";
 }
 
 /**
- * Event message for 'stopped' event type.
- * <p>
  * The event indicates that the execution of the debuggee has stopped due to some condition.
  * <p>
  * This can be caused by a break point previously set, a stepping action has completed, by executing a debugger
@@ -47,7 +48,8 @@ class StoppedEventArguments {
 	@NonNull
 	String reason;
 	/**
-	 * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is.
+	 * The full reason for the event, e.g. 'Paused on exception'. This string is shown in the UI as is and must be
+	 * translated.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -59,6 +61,12 @@ class StoppedEventArguments {
 	 */
 	Long threadId;
 	/**
+	 * A value of true hints to the frontend that this event should not change the focus.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean preserveFocusHint;
+	/**
 	 * Additional information. E.g. if reason is 'exception', text contains the exception name. This string is shown
 	 * in the UI.
 	 * <p>
@@ -66,12 +74,12 @@ class StoppedEventArguments {
 	 */
 	String text;
 	/**
-	 * If allThreadsStopped is true, a debug adapter can announce that all threads have stopped.
-	 * <p>
-	 *  The client should use this information to enable that all threads can be expanded to access their
-	 * stacktraces.
-	 * <p>
-	 *  If the attribute is missing or false, only the thread with the given threadId can be expanded.
+	 * If 'allThreadsStopped' is true, a debug adapter can announce that all threads have stopped.
+	 * <ul>
+	 * <li>The client should use this information to enable that all threads can be expanded to access their
+	 * stacktraces.</li>
+	 * <li>If the attribute is missing or false, only the thread with the given threadId can be expanded.</li>
+	 * </ul>
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -86,23 +94,22 @@ class StoppedEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
  */
-public interface StoppedEventArgumentsReason {
+interface StoppedEventArgumentsReason {
 	public static final String STEP = "step";
 	public static final String BREAKPOINT = "breakpoint";
 	public static final String EXCEPTION = "exception";
 	public static final String PAUSE = "pause";
 	public static final String ENTRY = "entry";
+	public static final String GOTO = "goto";
 }
 
 /**
- * Event message for 'continued' event type.
- * <p>
  * The event indicates that the execution of the debuggee has continued.
  * <p>
  * Please note: a debug adapter is not expected to send this event in response to a request that implies that
  * execution continues, e.g. 'launch' or 'continue'.
  * <p>
- * It is only necessary to send a ContinuedEvent if there was no previous request that implied this.
+ * It is only necessary to send a 'continued' event if there was no previous request that implied this.
  */
 @JsonRpcData
 class ContinuedEventArguments {
@@ -112,7 +119,7 @@ class ContinuedEventArguments {
 	@NonNull
 	Long threadId;
 	/**
-	 * If allThreadsContinued is true, a debug adapter can announce that all threads have continued.
+	 * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -120,9 +127,7 @@ class ContinuedEventArguments {
 }
 
 /**
- * Event message for 'exited' event type.
- * <p>
- * The event indicates that the debuggee has exited.
+ * The event indicates that the debuggee has exited and returns its exit code.
  */
 @JsonRpcData
 class ExitedEventArguments {
@@ -134,9 +139,8 @@ class ExitedEventArguments {
 }
 
 /**
- * Event message for 'terminated' event types.
- * <p>
- * The event indicates that debugging of the debuggee has terminated.
+ * The event indicates that debugging of the debuggee has terminated. This does **not** mean that the debuggee
+ * itself has exited.
  */
 @JsonRpcData
 class TerminatedEventArguments {
@@ -144,8 +148,8 @@ class TerminatedEventArguments {
 	 * A debug adapter may set 'restart' to true (or to an arbitrary object) to request that the front end restarts
 	 * the session.
 	 * <p>
-	 * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the
-	 * launchRequest.
+	 * The value is not interpreted by the client and passed unmodified as an attribute '__restart' to the 'launch'
+	 * and 'attach' requests.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -153,8 +157,6 @@ class TerminatedEventArguments {
 }
 
 /**
- * Event message for 'thread' event type.
- * <p>
  * The event indicates that a thread has started or exited.
  */
 @JsonRpcData
@@ -178,14 +180,12 @@ class ThreadEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
  */
-public interface ThreadEventArgumentsReason {
+interface ThreadEventArgumentsReason {
 	public static final String STARTED = "started";
 	public static final String EXITED = "exited";
 }
 
 /**
- * Event message for 'output' event type.
- * <p>
  * The event indicates that the target has produced some output.
  */
 @JsonRpcData
@@ -205,7 +205,7 @@ class OutputEventArguments {
 	String output;
 	/**
 	 * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-	 * retrieved by passing variablesReference to the VariablesRequest.
+	 * retrieved by passing 'variablesReference' to the 'variables' request.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -242,7 +242,7 @@ class OutputEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link OutputEventArgumentsCategory}
  */
-public interface OutputEventArgumentsCategory {
+interface OutputEventArgumentsCategory {
 	public static final String CONSOLE = "console";
 	public static final String STDOUT = "stdout";
 	public static final String STDERR = "stderr";
@@ -250,8 +250,6 @@ public interface OutputEventArgumentsCategory {
 }
 
 /**
- * Event message for 'breakpoint' event type.
- * <p>
  * The event indicates that some information about a breakpoint has changed.
  */
 @JsonRpcData
@@ -275,15 +273,13 @@ class BreakpointEventArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
  */
-public interface BreakpointEventArgumentsReason {
+interface BreakpointEventArgumentsReason {
 	public static final String CHANGED = "changed";
 	public static final String NEW = "new";
 	public static final String REMOVED = "removed";
 }
 
 /**
- * Event message for 'module' event type.
- * <p>
  * The event indicates that some information about a module has changed.
  */
 @JsonRpcData
@@ -303,15 +299,13 @@ class ModuleEventArguments {
 /**
  * The reason for the event.
  */
-public enum ModuleEventArgumentsReason {
+enum ModuleEventArgumentsReason {
 	NEW,
 	CHANGED,
 	REMOVED
 }
 
 /**
- * Event message for 'loadedSource' event type.
- * <p>
  * The event indicates that some source has been added, changed, or removed from the set of all loaded sources.
  */
 @JsonRpcData
@@ -331,15 +325,13 @@ class LoadedSourceEventArguments {
 /**
  * The reason for the event.
  */
-public enum LoadedSourceEventArgumentsReason {
+enum LoadedSourceEventArgumentsReason {
 	NEW,
 	CHANGED,
 	REMOVED
 }
 
 /**
- * Event message for 'process' event type.
- * <p>
  * The event indicates that the debugger has begun debugging a new process. Either one that it has launched, or
  * one that it has attached to.
  */
@@ -374,7 +366,7 @@ class ProcessEventArguments {
 /**
  * Describes how the debug engine started debugging this process.
  */
-public enum ProcessEventArgumentsStartMethod {
+enum ProcessEventArgumentsStartMethod {
 	/**
 	 * Process was launched under the debugger.
 	 */
@@ -391,7 +383,27 @@ public enum ProcessEventArgumentsStartMethod {
 }
 
 /**
- * Response to Initialize request.
+ * The event indicates that one or more capabilities have changed.
+ * <p>
+ * Since the capabilities are dependent on the frontend and its UI, it might not be possible to change that at
+ * random times (or too late).
+ * <p>
+ * Consequently this event has a hint characteristic: a frontend can only be expected to make a 'best effort' in
+ * honouring individual capabilities but there are no guarantees.
+ * <p>
+ * Only changed capabilities need to be included, all other capabilities keep their values.
+ */
+@JsonRpcData
+class CapabilitiesEventArguments {
+	/**
+	 * The set of updated capabilities.
+	 */
+	@NonNull
+	Capabilities capabilities;
+}
+
+/**
+ * Response to 'runInTerminal' request.
  */
 @JsonRpcData
 class RunInTerminalResponse {
@@ -441,7 +453,7 @@ class RunInTerminalRequestArguments {
 /**
  * What kind of terminal to launch.
  */
-public enum RunInTerminalRequestArgumentsKind {
+enum RunInTerminalRequestArgumentsKind {
 	INTEGRATED,
 	EXTERNAL
 }
@@ -457,6 +469,12 @@ class InitializeRequestArguments {
 	 * This is an optional property.
 	 */
 	String clientID;
+	/**
+	 * The human readable name of the (frontend) client using this adapter.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String clientName;
 	/**
 	 * The ID of the debug adapter.
 	 */
@@ -513,22 +531,20 @@ class InitializeRequestArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link InitializeRequestArgumentsPathFormat}
  */
-public interface InitializeRequestArgumentsPathFormat {
+interface InitializeRequestArgumentsPathFormat {
 	public static final String PATH = "path";
 	public static final String URI = "uri";
 }
 
 /**
  * Arguments for 'configurationDone' request.
- * <p>
- * The configurationDone request has no standardized attributes.
  */
 @JsonRpcData
 class ConfigurationDoneArguments {
 }
 
 /**
- * Arguments for 'launch' request.
+ * Arguments for 'launch' request. Additional attributes are implementation specific.
  */
 @JsonRpcData
 class LaunchRequestArguments {
@@ -538,21 +554,37 @@ class LaunchRequestArguments {
 	 * This is an optional property.
 	 */
 	Boolean noDebug;
+	/**
+	 * Optional data from the previous, restarted session.
+	 * <p>
+	 * The data is sent as the 'restart' attribute of the 'terminated' event.
+	 * <p>
+	 * The client should leave the data intact.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Object __restart;
 }
 
 /**
- * Arguments for 'attach' request.
- * <p>
- * The attach request has no standardized attributes.
+ * Arguments for 'attach' request. Additional attributes are implementation specific.
  */
 @JsonRpcData
 class AttachRequestArguments {
+	/**
+	 * Optional data from the previous, restarted session.
+	 * <p>
+	 * The data is sent as the 'restart' attribute of the 'terminated' event.
+	 * <p>
+	 * The client should leave the data intact.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Object __restart;
 }
 
 /**
  * Arguments for 'restart' request.
- * <p>
- * The restart request has no standardized attributes.
  */
 @JsonRpcData
 class RestartArguments {
@@ -577,6 +609,13 @@ class DisconnectArguments {
 }
 
 /**
+ * Arguments for 'terminate' request.
+ */
+@JsonRpcData
+class TerminateArguments {
+}
+
+/**
  * Response to 'setBreakpoints' request.
  * <p>
  * Returned is information about each breakpoint created by this request.
@@ -585,13 +624,13 @@ class DisconnectArguments {
  * <p>
  * The breakpoints returned are in the same order as the elements of the 'breakpoints'
  * <p>
- * (or the deprecated 'lines') in the SetBreakpointsArguments.
+ * (or the deprecated 'lines') array in the arguments.
  */
 @JsonRpcData
 class SetBreakpointsResponse {
 	/**
 	 * Information about the breakpoints. The array elements are in the same order as the elements of the
-	 * 'breakpoints' (or the deprecated 'lines') in the SetBreakpointsArguments.
+	 * 'breakpoints' (or the deprecated 'lines') array in the arguments.
 	 */
 	@NonNull
 	Breakpoint[] breakpoints;
@@ -603,7 +642,7 @@ class SetBreakpointsResponse {
 @JsonRpcData
 class SetBreakpointsArguments {
 	/**
-	 * The source location of the breakpoints; either source.path or source.reference must be specified.
+	 * The source location of the breakpoints; either 'source.path' or 'source.reference' must be specified.
 	 */
 	@NonNull
 	Source source;
@@ -678,7 +717,7 @@ class SetExceptionBreakpointsArguments {
 @JsonRpcData
 class ContinueResponse {
 	/**
-	 * If true, the continue request has ignored the specified thread and continued all threads instead. If this
+	 * If true, the 'continue' request has ignored the specified thread and continued all threads instead. If this
 	 * attribute is missing a value of 'true' is assumed for backward compatibility.
 	 * <p>
 	 * This is an optional property.
@@ -693,7 +732,7 @@ class ContinueResponse {
 class ContinueArguments {
 	/**
 	 * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-	 * but will continue on all threads, it should set the allThreadsContinued attribute in the response to true.
+	 * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
 	 */
 	@NonNull
 	Long threadId;
@@ -747,7 +786,7 @@ class StepOutArguments {
 @JsonRpcData
 class StepBackArguments {
 	/**
-	 * Exceute 'stepBack' for this thread.
+	 * Execute 'stepBack' for this thread.
 	 */
 	@NonNull
 	Long threadId;
@@ -759,7 +798,7 @@ class StepBackArguments {
 @JsonRpcData
 class ReverseContinueArguments {
 	/**
-	 * Exceute 'reverseContinue' for this thread.
+	 * Execute 'reverseContinue' for this thread.
 	 */
 	@NonNull
 	Long threadId;
@@ -931,7 +970,7 @@ class VariablesArguments {
 /**
  * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
  */
-public enum VariablesArgumentsFilter {
+enum VariablesArgumentsFilter {
 	INDEXED,
 	NAMED
 }
@@ -1055,6 +1094,19 @@ class ThreadsResponse {
 }
 
 /**
+ * Arguments for 'terminateThreads' request.
+ */
+@JsonRpcData
+class TerminateThreadsArguments {
+	/**
+	 * Ids of threads to be terminated.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long[] threadIds;
+}
+
+/**
  * Response to 'modules' request.
  */
 @JsonRpcData
@@ -1105,8 +1157,6 @@ class LoadedSourcesResponse {
 
 /**
  * Arguments for 'loadedSources' request.
- * <p>
- * The 'loadedSources' request has no standardized arguments.
  */
 @JsonRpcData
 class LoadedSourcesArguments {
@@ -1196,7 +1246,7 @@ class EvaluateArguments {
  * <p>
  * Possible values include - but not limited to those defined in {@link EvaluateArgumentsContext}
  */
-public interface EvaluateArgumentsContext {
+interface EvaluateArgumentsContext {
 	/**
 	 * evaluate is run in a watch.
 	 */
@@ -1209,6 +1259,83 @@ public interface EvaluateArgumentsContext {
 	 * evaluate is run from a data hover.
 	 */
 	public static final String HOVER = "hover";
+}
+
+/**
+ * Response to 'setExpression' request.
+ */
+@JsonRpcData
+class SetExpressionResponse {
+	/**
+	 * The new value of the expression.
+	 */
+	@NonNull
+	String value;
+	/**
+	 * The optional type of the value.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String type;
+	/**
+	 * Properties of a value that can be used to determine how to render the result in the UI.
+	 * <p>
+	 * This is an optional property.
+	 */
+	VariablePresentationHint presentationHint;
+	/**
+	 * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
+	 * variablesReference to the VariablesRequest.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long variablesReference;
+	/**
+	 * The number of named child variables.
+	 * <p>
+	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long namedVariables;
+	/**
+	 * The number of indexed child variables.
+	 * <p>
+	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long indexedVariables;
+}
+
+/**
+ * Arguments for 'setExpression' request.
+ */
+@JsonRpcData
+class SetExpressionArguments {
+	/**
+	 * The l-value expression to assign to.
+	 */
+	@NonNull
+	String expression;
+	/**
+	 * The value expression to assign to the l-value expression.
+	 */
+	@NonNull
+	String value;
+	/**
+	 * Evaluate the expressions in the scope of this stack frame. If not specified, the expressions are evaluated in
+	 * the global scope.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long frameId;
+	/**
+	 * Specifies how the resulting value should be formatted.
+	 * <p>
+	 * This is an optional property.
+	 */
+	ValueFormat format;
 }
 
 /**
@@ -1361,7 +1488,7 @@ class ExceptionInfoArguments {
 @JsonRpcData
 class Capabilities {
 	/**
-	 * The debug adapter supports the configurationDoneRequest.
+	 * The debug adapter supports the 'configurationDone' request.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1397,7 +1524,7 @@ class Capabilities {
 	 */
 	ExceptionBreakpointsFilter[] exceptionBreakpointFilters;
 	/**
-	 * The debug adapter supports stepping back via the stepBack and reverseContinue requests.
+	 * The debug adapter supports stepping back via the 'stepBack' and 'reverseContinue' requests.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1415,25 +1542,25 @@ class Capabilities {
 	 */
 	Boolean supportsRestartFrame;
 	/**
-	 * The debug adapter supports the gotoTargetsRequest.
+	 * The debug adapter supports the 'gotoTargets' request.
 	 * <p>
 	 * This is an optional property.
 	 */
 	Boolean supportsGotoTargetsRequest;
 	/**
-	 * The debug adapter supports the stepInTargetsRequest.
+	 * The debug adapter supports the 'stepInTargets' request.
 	 * <p>
 	 * This is an optional property.
 	 */
 	Boolean supportsStepInTargetsRequest;
 	/**
-	 * The debug adapter supports the completionsRequest.
+	 * The debug adapter supports the 'completions' request.
 	 * <p>
 	 * This is an optional property.
 	 */
 	Boolean supportsCompletionsRequest;
 	/**
-	 * The debug adapter supports the modules request.
+	 * The debug adapter supports the 'modules' request.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1451,7 +1578,7 @@ class Capabilities {
 	 */
 	ChecksumAlgorithm[] supportedChecksumAlgorithms;
 	/**
-	 * The debug adapter supports the RestartRequest. In this case a client should not implement 'restart' by
+	 * The debug adapter supports the 'restart' request. In this case a client should not implement 'restart' by
 	 * terminating and relaunching the adapter but by calling the RestartRequest.
 	 * <p>
 	 * This is an optional property.
@@ -1471,7 +1598,7 @@ class Capabilities {
 	 */
 	Boolean supportsValueFormattingOptions;
 	/**
-	 * The debug adapter supports the exceptionInfo request.
+	 * The debug adapter supports the 'exceptionInfo' request.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1495,6 +1622,30 @@ class Capabilities {
 	 * This is an optional property.
 	 */
 	Boolean supportsLoadedSourcesRequest;
+	/**
+	 * The debug adapter supports logpoints by interpreting the 'logMessage' attribute of the SourceBreakpoint.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsLogPoints;
+	/**
+	 * The debug adapter supports the 'terminateThreads' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsTerminateThreadsRequest;
+	/**
+	 * The debug adapter supports the 'setExpression' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsSetExpression;
+	/**
+	 * The debug adapter supports the 'terminate' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsTerminateRequest;
 }
 
 /**
@@ -1702,7 +1853,7 @@ class ColumnDescriptor {
 /**
  * Datatype of values in this column.  Defaults to 'string' if not specified.
  */
-public enum ColumnDescriptorType {
+enum ColumnDescriptorType {
 	STRING,
 	NUMBER,
 	BOOLEAN,
@@ -1756,7 +1907,7 @@ class Source {
 	String name;
 	/**
 	 * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-	 * no sourceReference is specified (or its vaule is 0).
+	 * no sourceReference is specified (or its value is 0).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1808,7 +1959,7 @@ class Source {
  * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
  * the source is not available or that it is skipped on stepping.
  */
-public enum SourcePresentationHint {
+enum SourcePresentationHint {
 	NORMAL,
 	EMPHASIZE,
 	DEEMPHASIZE
@@ -1879,7 +2030,7 @@ class StackFrame {
  * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
  * change the appearance of a frame in a 'subtle' way.
  */
-public enum StackFramePresentationHint {
+enum StackFramePresentationHint {
 	NORMAL,
 	LABEL,
 	SUBTLE
@@ -2063,7 +2214,7 @@ class VariablePresentationHint {
  * <p>
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintKind}
  */
-public interface VariablePresentationHintKind {
+interface VariablePresentationHintKind {
 	/**
 	 * Indicates that the object is a property.
 	 */
@@ -2112,7 +2263,7 @@ public interface VariablePresentationHintKind {
  * <p>
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintAttributes}
  */
-public interface VariablePresentationHintAttributes {
+interface VariablePresentationHintAttributes {
 	/**
 	 * Indicates that the object is static.
 	 */
@@ -2148,7 +2299,7 @@ public interface VariablePresentationHintAttributes {
  * <p>
  * Possible values include - but not limited to those defined in {@link VariablePresentationHintVisibility}
  */
-public interface VariablePresentationHintVisibility {
+interface VariablePresentationHintVisibility {
 	public static final String PUBLIC = "public";
 	public static final String PRIVATE = "private";
 	public static final String PROTECTED = "protected";
@@ -2157,12 +2308,12 @@ public interface VariablePresentationHintVisibility {
 }
 
 /**
- * Properties of a breakpoint passed to the setBreakpoints request.
+ * Properties of a breakpoint or logpoint passed to the setBreakpoints request.
  */
 @JsonRpcData
 class SourceBreakpoint {
 	/**
-	 * The source line of the breakpoint.
+	 * The source line of the breakpoint or logpoint.
 	 */
 	@NonNull
 	Long line;
@@ -2185,6 +2336,13 @@ class SourceBreakpoint {
 	 * This is an optional property.
 	 */
 	String hitCondition;
+	/**
+	 * If this attribute exists and is non-empty, the backend must not 'break' (stop) but log the message instead.
+	 * Expressions within {} are interpolated.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String logMessage;
 }
 
 /**
@@ -2374,7 +2532,7 @@ class CompletionItem {
  * Some predefined types for the CompletionItem. Please note that not all clients have specific icons for all of
  * them.
  */
-public enum CompletionItemType {
+enum CompletionItemType {
 	METHOD,
 	FUNCTION,
 	CONSTRUCTOR,
@@ -2399,7 +2557,7 @@ public enum CompletionItemType {
 /**
  * Names of checksum algorithms that may be supported by a debug adapter.
  */
-public enum ChecksumAlgorithm {
+enum ChecksumAlgorithm {
 	@SerializedName("MD5")
 	MD5,
 	@SerializedName("SHA1")
@@ -2518,7 +2676,7 @@ class ExceptionOptions {
  * <p>
  * userUnhandled: breaks if the exception is not handled by user code.
  */
-public enum ExceptionBreakMode {
+enum ExceptionBreakMode {
 	NEVER,
 	ALWAYS,
 	UNHANDLED,

@@ -1,19 +1,25 @@
 /**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import com.google.gson.annotations.JsonAdapter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.lsp4j.ResourceChange;
 import org.eclipse.lsp4j.TextDocumentEdit;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -39,13 +45,14 @@ public class WorkspaceEdit {
   private List<TextDocumentEdit> documentChanges;
   
   /**
-   * if resource changes are supported the `WorkspaceEdit`
+   * If resource changes are supported the `WorkspaceEdit`
    * uses the property `resourceChanges` which are either a
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
    */
   @Beta
+  @JsonAdapter(ResourceChangeListAdapter.class)
   private List<Either<ResourceChange, TextDocumentEdit>> resourceChanges;
   
   public WorkspaceEdit() {
@@ -106,7 +113,7 @@ public class WorkspaceEdit {
   }
   
   /**
-   * if resource changes are supported the `WorkspaceEdit`
+   * If resource changes are supported the `WorkspaceEdit`
    * uses the property `resourceChanges` which are either a
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
@@ -118,7 +125,7 @@ public class WorkspaceEdit {
   }
   
   /**
-   * if resource changes are supported the `WorkspaceEdit`
+   * If resource changes are supported the `WorkspaceEdit`
    * uses the property `resourceChanges` which are either a
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,

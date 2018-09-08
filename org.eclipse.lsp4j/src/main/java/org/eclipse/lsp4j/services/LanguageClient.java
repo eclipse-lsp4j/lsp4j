@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.services;
 
 import java.util.List;
@@ -17,11 +21,14 @@ import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.RegistrationParams;
+import org.eclipse.lsp4j.SemanticHighlightingParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
+
+import com.google.common.annotations.Beta;
 
 public interface LanguageClient {
 	/**
@@ -111,6 +118,22 @@ public interface LanguageClient {
 	 */
 	@JsonRequest("workspace/configuration")
 	default CompletableFuture<List<Object>> configuration(ConfigurationParams configurationParams) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code textDocument/semanticHighlighting} notification is pushed from the server to the client
+	 * to inform the client about additional semantic highlighting information that has to be applied
+	 * on the text document. It is the server's responsibility to decide which lines are included in
+	 * the highlighting information. In other words, the server is capable of sending only a delta
+	 * information. For instance, after opening the text document ({@code DidOpenTextDocumentNotification})
+	 * the server sends the semantic highlighting information for the entire document, but if the server
+	 * receives a {@code DidChangeTextDocumentNotification}, it pushes the information only about
+	 * the affected lines in the document.
+	 */
+	@Beta
+	@JsonNotification("textDocument/semanticHighlighting")
+	default void semanticHighlighting(SemanticHighlightingParams params) {
 		throw new UnsupportedOperationException();
 	}
 }

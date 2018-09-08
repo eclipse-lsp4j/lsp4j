@@ -1,10 +1,14 @@
-/**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- */
+/******************************************************************************
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.services;
 
 import java.util.List;
@@ -43,7 +47,9 @@ public interface WorkspaceService {
 	 * Registration Options: void
 	 */
 	@JsonRequest
-	CompletableFuture<List<? extends SymbolInformation>> symbol(WorkspaceSymbolParams params);
+	default CompletableFuture<List<? extends SymbolInformation>> symbol(WorkspaceSymbolParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
 	 * A notification sent from the client to the server to signal the change of
@@ -68,4 +74,5 @@ public interface WorkspaceService {
 	 */
 	@JsonNotification
 	default void didChangeWorkspaceFolders(DidChangeWorkspaceFoldersParams params) {}
+	
 }

@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2016, 2017 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2016-2017 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug.test;
 
 import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CONTENT_LENGTH_HEADER;
@@ -173,7 +177,7 @@ public class DebugIntegrationTest {
 				+ "\"arguments\": { value: \"bar\" }\n"
 				+ "}";
 		String cancellationMessage = "{\"type\":\"event\","
-				+ "\"command\":\"$/cancelRequest\",\n"
+				+ "\"event\":\"$/cancelRequest\",\n"
 				+ "\"body\": { id: 1 }\n"
 				+ "}";
 		String clientMessages = getHeader(requestMessage.getBytes().length) + requestMessage
@@ -277,7 +281,7 @@ public class DebugIntegrationTest {
 
 			// create client messages
 			String clientMessage1 = "{\"type\":\"event\","
-					+ "\"command\":\"foo1\",\n"
+					+ "\"event\":\"foo1\",\n"
 					+ " \"body\":\"bar\"\n"
 					+ "}";
 			String clientMessage2 = "{\"type\":\"request\","
@@ -320,7 +324,7 @@ public class DebugIntegrationTest {
 
 			// create client messages
 			String clientMessage1 = "{\"type\":\"event\","
-					+ "\"command\":\"$/foo1\",\n"
+					+ "\"event\":\"$/foo1\",\n"
 					+ " \"body\":\"bar\"\n"
 					+ "}";
 			String clientMessage2 = "{\"type\":\"request\","
@@ -346,12 +350,38 @@ public class DebugIntegrationTest {
 			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
 			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
 
-			Assert.assertEquals("Content-Length: 74\r\n\r\n" +
-					"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"$/foo2\",\"body\":null}",
+			Assert.assertEquals("Content-Length: 77\r\n\r\n" +
+					"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"$/foo2\",\"success\":true}",
 					out.toString());
 		} finally {
 			logMessages.unregister();
 		}
+	}
+
+	@Test
+	public void testResponse() throws Exception {
+		String clientMessage = "{\"type\":\"request\","
+				+ "\"seq\":1,\n"
+				+ "\"command\":\"askServer\",\n"
+				+ " \"arguments\": { value: \"bar\" }\n"
+				+ "}";
+		String clientMessages = getHeader(clientMessage.getBytes().length) + clientMessage;
+
+		// create server side
+		ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = DebugLauncher.createLauncher(server, MyClient.class, in, out);
+		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
+
+		Assert.assertEquals("Content-Length: 103\r\n\r\n" +
+				"{\"type\":\"response\",\"seq\":1,\"request_seq\":1,\"command\":\"askServer\",\"success\":true,\"body\":{\"value\":\"bar\"}}",
+				out.toString());
 	}
 
 	public static interface UnexpectedParamsTestServer {
@@ -368,7 +398,7 @@ public class DebugIntegrationTest {
 
 			// create client messages
 			String notificationMessage = "{\"type\":\"event\","
-					+ "\"command\":\"myNotification\",\n"
+					+ "\"event\":\"myNotification\",\n"
 					+ "\"body\": { \"value\": \"foo\" }\n"
 					+ "}";
 			String clientMessages = getHeader(notificationMessage.getBytes().length) + notificationMessage;

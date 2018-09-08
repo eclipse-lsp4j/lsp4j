@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2016-2018 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
 import java.io.InputStream;
@@ -42,7 +46,7 @@ public interface Launcher<T> {
 	 * 
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
-	 * @param in - inputs tream to listen for incoming messages
+	 * @param in - input stream to listen for incoming messages
 	 * @param out - output stream to send outgoing messages
 	 */
 	static <T> Launcher<T> createLauncher(Object localService, Class<T> remoteInterface, InputStream in, OutputStream out) {

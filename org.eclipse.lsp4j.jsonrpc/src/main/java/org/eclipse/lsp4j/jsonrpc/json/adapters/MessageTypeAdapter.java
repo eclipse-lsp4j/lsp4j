@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2016, 2017 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
 
 import java.io.EOFException;
@@ -167,8 +171,18 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			String resolvedMethod = methodProvider.resolveMethod(id);
 			if (resolvedMethod != null) {
 				JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-				if (jsonRpcMethod != null)
+				if (jsonRpcMethod != null) {
 					type = jsonRpcMethod.getReturnType();
+					if (jsonRpcMethod.getReturnTypeAdapterFactory() != null) {
+						TypeAdapter<?> typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(type));
+						try {
+							if (typeAdapter != null)
+								return typeAdapter.read(in);
+						} catch (IOException exception) {
+							throw new JsonIOException(exception);
+						}
+					}
+				}
 			}
 		}
 		return fromJson(in, type);
@@ -194,8 +208,14 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				String resolvedMethod = methodProvider.resolveMethod(id);
 				if (resolvedMethod != null) {
 					JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-					if (jsonRpcMethod != null)
+					if (jsonRpcMethod != null) {
 						type = jsonRpcMethod.getReturnType();
+						if (jsonRpcMethod.getReturnTypeAdapterFactory() != null) {
+							TypeAdapter<?> typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(type));
+							if (typeAdapter != null)
+								return typeAdapter.fromJsonTree((JsonElement) result);
+						}
+					}
 				}
 			}
 			return fromJson((JsonElement) result, type);

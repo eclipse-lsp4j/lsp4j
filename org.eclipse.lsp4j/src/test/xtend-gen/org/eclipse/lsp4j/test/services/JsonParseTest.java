@@ -1,9 +1,13 @@
 /**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j.test.services;
 
@@ -11,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.internal.LazilyParsedNumber;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,14 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLens;
 import org.eclipse.lsp4j.CodeLensCapabilities;
 import org.eclipse.lsp4j.ColorProviderCapabilities;
+import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionCapabilities;
 import org.eclipse.lsp4j.CompletionItemCapabilities;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.CompletionItemKindCapabilities;
+import org.eclipse.lsp4j.CompletionParams;
 import org.eclipse.lsp4j.DefinitionCapabilities;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
@@ -33,6 +41,7 @@ import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentHighlightCapabilities;
 import org.eclipse.lsp4j.DocumentLinkCapabilities;
+import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.DocumentSymbolCapabilities;
 import org.eclipse.lsp4j.FormattingCapabilities;
 import org.eclipse.lsp4j.FormattingOptions;
@@ -40,6 +49,7 @@ import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.HoverCapabilities;
 import org.eclipse.lsp4j.ImplementationCapabilities;
 import org.eclipse.lsp4j.InitializeParams;
+import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.MarkedString;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.MarkupKind;
@@ -50,15 +60,17 @@ import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
+import org.eclipse.lsp4j.ResourceChange;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SignatureInformationCapabilities;
+import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.SymbolKindCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
 import org.eclipse.lsp4j.TextDocumentClientCapabilities;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
+import org.eclipse.lsp4j.TextDocumentEdit;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.TypeDefinitionCapabilities;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
@@ -79,6 +91,7 @@ import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.eclipse.lsp4j.test.services.MessageMethods;
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
@@ -91,6 +104,59 @@ import org.junit.Test;
 
 @SuppressWarnings("all")
 public class JsonParseTest {
+  /**
+   * Gson parses numbers with {@link LazilyParsedNumber}, which is not
+   * equals-compatible with {@link Integer}.
+   */
+  @FinalFieldsConstructor
+  private static class MyInteger extends Number {
+    private final int value;
+    
+    @Override
+    public double doubleValue() {
+      return this.value;
+    }
+    
+    @Override
+    public float floatValue() {
+      return this.value;
+    }
+    
+    @Override
+    public int intValue() {
+      return this.value;
+    }
+    
+    @Override
+    public long longValue() {
+      return this.value;
+    }
+    
+    @Override
+    public boolean equals(final Object obj) {
+      if ((obj instanceof Number)) {
+        double _doubleValue = ((Number)obj).doubleValue();
+        return (((double) this.value) == _doubleValue);
+      }
+      return false;
+    }
+    
+    @Override
+    public int hashCode() {
+      return Integer.hashCode(this.value);
+    }
+    
+    @Override
+    public String toString() {
+      return Integer.toString(this.value);
+    }
+    
+    public MyInteger(final int value) {
+      super();
+      this.value = value;
+    }
+  }
+  
   private MessageJsonHandler jsonHandler;
   
   @Before
@@ -105,7 +171,9 @@ public class JsonParseTest {
   }
   
   private void assertParse(final CharSequence json, final Message expected) {
-    Assert.assertEquals(expected.toString(), this.jsonHandler.parseMessage(json).toString());
+    final Message actual = this.jsonHandler.parseMessage(json);
+    Assert.assertEquals(expected.toString(), actual.toString());
+    Assert.assertEquals(expected, actual);
   }
   
   @Test
@@ -156,8 +224,8 @@ public class JsonParseTest {
       it.setJsonrpc("2.0");
       it.setId(1);
       it.setMethod(MessageMethods.DOC_COMPLETION);
-      TextDocumentPositionParams _textDocumentPositionParams = new TextDocumentPositionParams();
-      final Procedure1<TextDocumentPositionParams> _function_1 = (TextDocumentPositionParams it_1) -> {
+      CompletionParams _completionParams = new CompletionParams();
+      final Procedure1<CompletionParams> _function_1 = (CompletionParams it_1) -> {
         TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier();
         final Procedure1<TextDocumentIdentifier> _function_2 = (TextDocumentIdentifier it_2) -> {
           it_2.setUri("file:///tmp/foo");
@@ -172,7 +240,7 @@ public class JsonParseTest {
         Position _doubleArrow_1 = ObjectExtensions.<Position>operator_doubleArrow(_position, _function_3);
         it_1.setPosition(_doubleArrow_1);
       };
-      TextDocumentPositionParams _doubleArrow = ObjectExtensions.<TextDocumentPositionParams>operator_doubleArrow(_textDocumentPositionParams, _function_1);
+      CompletionParams _doubleArrow = ObjectExtensions.<CompletionParams>operator_doubleArrow(_completionParams, _function_1);
       it.setParams(_doubleArrow);
     };
     RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
@@ -407,7 +475,460 @@ public class JsonParseTest {
   }
   
   @Test
-  public void testRenameResponse() {
+  public void testDocumentSymbolResponse1() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_SYMBOL;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"result\": [");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"name\" : \"foobar\",");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"kind\" : 9,");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"location\" : {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"uri\": \"file:/baz.txt\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"range\" : {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"start\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"character\": 22,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"line\": 4");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"end\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"character\": 25,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"line\": 4");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      SymbolInformation _symbolInformation = new SymbolInformation();
+      final Procedure1<SymbolInformation> _function_2 = (SymbolInformation it_1) -> {
+        it_1.setName("foobar");
+        it_1.setKind(SymbolKind.Constructor);
+        Location _location = new Location();
+        final Procedure1<Location> _function_3 = (Location it_2) -> {
+          it_2.setUri("file:/baz.txt");
+          Range _range = new Range();
+          final Procedure1<Range> _function_4 = (Range it_3) -> {
+            Position _position = new Position(4, 22);
+            it_3.setStart(_position);
+            Position _position_1 = new Position(4, 25);
+            it_3.setEnd(_position_1);
+          };
+          Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_4);
+          it_2.setRange(_doubleArrow);
+        };
+        Location _doubleArrow = ObjectExtensions.<Location>operator_doubleArrow(_location, _function_3);
+        it_1.setLocation(_doubleArrow);
+      };
+      SymbolInformation _doubleArrow = ObjectExtensions.<SymbolInformation>operator_doubleArrow(_symbolInformation, _function_2);
+      it.setResult(CollectionLiterals.<Either<SymbolInformation, Object>>newArrayList(
+        Either.<SymbolInformation, Object>forLeft(_doubleArrow)));
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testDocumentSymbolResponse2() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_SYMBOL;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"result\": [");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"name\" : \"foobar\",");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"kind\" : 9,");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"range\" : {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"start\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"character\": 22,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"line\": 4");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"end\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"character\": 25,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"line\": 4");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("\"selectionRange\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"start\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"character\": 22,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"line\": 4");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"end\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"character\": 25,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"line\": 4");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      DocumentSymbol _documentSymbol = new DocumentSymbol();
+      final Procedure1<DocumentSymbol> _function_2 = (DocumentSymbol it_1) -> {
+        it_1.setName("foobar");
+        it_1.setKind(SymbolKind.Constructor);
+        Range _range = new Range();
+        final Procedure1<Range> _function_3 = (Range it_2) -> {
+          Position _position = new Position(4, 22);
+          it_2.setStart(_position);
+          Position _position_1 = new Position(4, 25);
+          it_2.setEnd(_position_1);
+        };
+        Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_3);
+        it_1.setRange(_doubleArrow);
+        Range _range_1 = new Range();
+        final Procedure1<Range> _function_4 = (Range it_2) -> {
+          Position _position = new Position(4, 22);
+          it_2.setStart(_position);
+          Position _position_1 = new Position(4, 25);
+          it_2.setEnd(_position_1);
+        };
+        Range _doubleArrow_1 = ObjectExtensions.<Range>operator_doubleArrow(_range_1, _function_4);
+        it_1.setSelectionRange(_doubleArrow_1);
+      };
+      DocumentSymbol _doubleArrow = ObjectExtensions.<DocumentSymbol>operator_doubleArrow(_documentSymbol, _function_2);
+      it.setResult(CollectionLiterals.<Either<Object, DocumentSymbol>>newArrayList(
+        Either.<Object, DocumentSymbol>forRight(_doubleArrow)));
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testCodeActionResponse1() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_CODE_ACTION;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"result\": [");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"title\": \"fixme\",");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"command\": \"fix\"");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      Command _command = new Command();
+      final Procedure1<Command> _function_2 = (Command it_1) -> {
+        it_1.setTitle("fixme");
+        it_1.setCommand("fix");
+      };
+      Command _doubleArrow = ObjectExtensions.<Command>operator_doubleArrow(_command, _function_2);
+      it.setResult(CollectionLiterals.<Either<Command, Object>>newArrayList(
+        Either.<Command, Object>forLeft(_doubleArrow)));
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testCodeActionResponse2() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_CODE_ACTION;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("\"result\": [");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"title\": \"fixme\",");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"kind\": \"fix\",");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"diagnostics\": [],");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("\"edit\": {");
+    _builder.newLine();
+    _builder.append("                ");
+    _builder.append("\"changes\": {");
+    _builder.newLine();
+    _builder.append("                    ");
+    _builder.append("\"file:test1533196529126.lspt\": [");
+    _builder.newLine();
+    _builder.append("                        ");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("                            ");
+    _builder.append("\"range\": {");
+    _builder.newLine();
+    _builder.append("                                ");
+    _builder.append("\"start\": {");
+    _builder.newLine();
+    _builder.append("                                    ");
+    _builder.append("\"line\": 0,");
+    _builder.newLine();
+    _builder.append("                                    ");
+    _builder.append("\"character\": 0");
+    _builder.newLine();
+    _builder.append("                                ");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("                                ");
+    _builder.append("\"end\": {");
+    _builder.newLine();
+    _builder.append("                                    ");
+    _builder.append("\"line\": 0,");
+    _builder.newLine();
+    _builder.append("                                    ");
+    _builder.append("\"character\": 5");
+    _builder.newLine();
+    _builder.append("                                ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("                            ");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("                            ");
+    _builder.append("\"newText\": \"fixed\"");
+    _builder.newLine();
+    _builder.append("                        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("                    ");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("                ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("    ");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      CodeAction _codeAction = new CodeAction();
+      final Procedure1<CodeAction> _function_2 = (CodeAction it_1) -> {
+        it_1.setTitle("fixme");
+        it_1.setKind("fix");
+        it_1.setDiagnostics(CollectionLiterals.<Diagnostic>newArrayList());
+        WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
+        final Procedure1<WorkspaceEdit> _function_3 = (WorkspaceEdit it_2) -> {
+          TextEdit _textEdit = new TextEdit();
+          final Procedure1<TextEdit> _function_4 = (TextEdit it_3) -> {
+            Range _range = new Range();
+            final Procedure1<Range> _function_5 = (Range it_4) -> {
+              Position _position = new Position(0, 0);
+              it_4.setStart(_position);
+              Position _position_1 = new Position(0, 5);
+              it_4.setEnd(_position_1);
+            };
+            Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_5);
+            it_3.setRange(_doubleArrow);
+            it_3.setNewText("fixed");
+          };
+          TextEdit _doubleArrow = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function_4);
+          it_2.getChanges().put("file:test1533196529126.lspt", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow));
+        };
+        WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_3);
+        it_1.setEdit(_doubleArrow);
+      };
+      CodeAction _doubleArrow = ObjectExtensions.<CodeAction>operator_doubleArrow(_codeAction, _function_2);
+      it.setResult(CollectionLiterals.<Either<Object, CodeAction>>newArrayList(
+        Either.<Object, CodeAction>forRight(_doubleArrow)));
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testRenameResponse1() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
       if (id != null) {
@@ -567,6 +1088,162 @@ public class JsonParseTest {
         };
         HashMap<String, List<TextEdit>> _doubleArrow = ObjectExtensions.<HashMap<String, List<TextEdit>>>operator_doubleArrow(_hashMap, _function_3);
         it_1.setChanges(_doubleArrow);
+      };
+      WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_2);
+      it.setResult(_doubleArrow);
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testRenameResponse2() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_RENAME;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"result\": {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\"resourceChanges\": [");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"current\": \"file:/foo.txt\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"newUri\": \"file:/bar.txt\"");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"textDocument\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"uri\": \"file:/baz.txt\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"version\": 17");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"edits\": [");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"range\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("\"start\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"character\": 32,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"line\": 3");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("\"end\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"character\": 35,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"line\": 3");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"newText\": \"asdfqweryxcv\"");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
+      final Procedure1<WorkspaceEdit> _function_2 = (WorkspaceEdit it_1) -> {
+        ResourceChange _resourceChange = new ResourceChange();
+        final Procedure1<ResourceChange> _function_3 = (ResourceChange it_2) -> {
+          it_2.setCurrent("file:/foo.txt");
+          it_2.setNewUri("file:/bar.txt");
+        };
+        ResourceChange _doubleArrow = ObjectExtensions.<ResourceChange>operator_doubleArrow(_resourceChange, _function_3);
+        TextDocumentEdit _textDocumentEdit = new TextDocumentEdit();
+        final Procedure1<TextDocumentEdit> _function_4 = (TextDocumentEdit it_2) -> {
+          VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier("file:/baz.txt", Integer.valueOf(17));
+          it_2.setTextDocument(_versionedTextDocumentIdentifier);
+          TextEdit _textEdit = new TextEdit();
+          final Procedure1<TextEdit> _function_5 = (TextEdit it_3) -> {
+            Range _range = new Range();
+            final Procedure1<Range> _function_6 = (Range it_4) -> {
+              Position _position = new Position(3, 32);
+              it_4.setStart(_position);
+              Position _position_1 = new Position(3, 35);
+              it_4.setEnd(_position_1);
+            };
+            Range _doubleArrow_1 = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_6);
+            it_3.setRange(_doubleArrow_1);
+            it_3.setNewText("asdfqweryxcv");
+          };
+          TextEdit _doubleArrow_1 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function_5);
+          it_2.setEdits(CollectionLiterals.<TextEdit>newArrayList(_doubleArrow_1));
+        };
+        TextDocumentEdit _doubleArrow_1 = ObjectExtensions.<TextDocumentEdit>operator_doubleArrow(_textDocumentEdit, _function_4);
+        it_1.setResourceChanges(CollectionLiterals.<Either<ResourceChange, TextDocumentEdit>>newArrayList(
+          Either.<ResourceChange, TextDocumentEdit>forLeft(_doubleArrow), 
+          Either.<ResourceChange, TextDocumentEdit>forRight(_doubleArrow_1)));
       };
       WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_2);
       it.setResult(_doubleArrow);
@@ -1112,10 +1789,10 @@ public class JsonParseTest {
     _builder.append("\"options\": {");
     _builder.newLine();
     _builder.append("      ");
-    _builder.append("\"tabSize\": 4,");
+    _builder.append("\"insertSpaces\": false,");
     _builder.newLine();
     _builder.append("      ");
-    _builder.append("\"insertSpaces\": false,");
+    _builder.append("\"tabSize\": 4,");
     _builder.newLine();
     _builder.append("      ");
     _builder.append("\"customProperty\": -7");
@@ -1139,12 +1816,14 @@ public class JsonParseTest {
         it_1.setTextDocument(_textDocumentIdentifier);
         FormattingOptions _formattingOptions = new FormattingOptions();
         final Procedure1<FormattingOptions> _function_2 = (FormattingOptions it_2) -> {
-          it_2.setTabSize(4);
           it_2.setInsertSpaces(false);
+          JsonParseTest.MyInteger _myInteger = new JsonParseTest.MyInteger(4);
+          it_2.putNumber("tabSize", _myInteger);
+          JsonParseTest.MyInteger _myInteger_1 = new JsonParseTest.MyInteger((-7));
+          it_2.putNumber("customProperty", _myInteger_1);
         };
         FormattingOptions _doubleArrow = ObjectExtensions.<FormattingOptions>operator_doubleArrow(_formattingOptions, _function_2);
         it_1.setOptions(_doubleArrow);
-        it_1.getOptions().putNumber("customProperty", Integer.valueOf((-7)));
       };
       DocumentFormattingParams _doubleArrow = ObjectExtensions.<DocumentFormattingParams>operator_doubleArrow(_documentFormattingParams, _function_1);
       it.setParams(_doubleArrow);

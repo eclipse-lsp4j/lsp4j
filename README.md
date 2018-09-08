@@ -1,6 +1,6 @@
 ## Eclipse LSP4J
 
-Java binding for the [Language Server Protocol](https://github.com/Microsoft/language-server-protocol).
+Java binding for the [Language Server Protocol](https://github.com/Microsoft/language-server-protocol) and the [Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/).
 
 ### How To Use
 
@@ -34,9 +34,17 @@ Also, you can get them directly from the TypeFox Jenkins server:
  * LSP4J 0.2.x, 0.3.x &rarr; LSP 3.0
  * LSP4J 0.1.x &rarr; LSP 2.1
 
+### Supported DAP Versions
+
+ * LSP4J 0.5.x &rarr; DAP 1.31.0
+ * LSP4J 0.4.x &rarr; DAP 1.25.0
+ * LSP4J before 0.4.x did not support DAP
+
 ### Licenses
 
 LSP4J is published under two licenses:
 
- * [Eclipse Public License v1.0](https://www.eclipse.org/legal/epl-v10.html)
- * [Eclipse Distribution License - v 1.0](https://www.eclipse.org/org/documents/edl-v10.php) [A BSD 3-clause License](https://opensource.org/licenses/BSD-3-Clause)
+ * [Eclipse Public License v. 2.0](https://www.eclipse.org/legal/epl-2.0)
+ * [Eclipse Distribution License v. 1.0](https://www.eclipse.org/org/documents/edl-v10.php), a [BSD-3-clause license](https://opensource.org/licenses/BSD-3-Clause)
+
+SPDX-License-Identifier: `EPL-2.0 OR BSD-3-Clause`

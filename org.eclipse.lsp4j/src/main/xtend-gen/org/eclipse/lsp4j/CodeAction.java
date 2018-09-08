@@ -1,9 +1,13 @@
 /**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j;
 
@@ -56,12 +60,8 @@ public class CodeAction {
   public CodeAction() {
   }
   
-  public CodeAction(@NonNull final String title, final String kind, final List<Diagnostic> diagnostics, final WorkspaceEdit edit, final Command command) {
+  public CodeAction(@NonNull final String title) {
     this.title = title;
-    this.kind = kind;
-    this.diagnostics = diagnostics;
-    this.edit = edit;
-    this.command = command;
   }
   
   /**

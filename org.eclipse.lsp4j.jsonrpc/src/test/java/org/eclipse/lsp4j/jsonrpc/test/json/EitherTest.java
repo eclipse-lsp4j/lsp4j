@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2017 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2017 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
 import java.util.Objects;
@@ -17,6 +21,9 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class EitherTest {
@@ -65,6 +72,38 @@ public class EitherTest {
 		object.myProperty = null;
 		object.otherProperty = "ok";
 		assertParse(object, "{\"myProperty\":null, \"otherProperty\": \"ok\"}");
+	}
+	
+	@Test
+	public void testEqualsForNull() {
+		Either<Object, Object> either1 = Either.forLeft(null);
+		Either<Object, Object> either2 = Either.forLeft(null);
+
+		assertTrue(either1.equals(either2));
+	}
+
+	@Test
+	public void testLeftEqualsNull() {
+		Either<Object, String> either1 = Either.forRight("Testing");
+		Either<Object, String> either2 = Either.forRight("Testing");
+
+		assertTrue(either1.equals(either2));
+	}
+
+	@Test
+	public void testRightEqualsNull() {
+		Either<Object, String> either1 = Either.forLeft("Testing");
+		Either<Object, String> either2 = Either.forLeft("Testing");
+
+		assertTrue(either1.equals(either2));
+	}
+
+	@Test
+	public void testEqualsFalseWithNonNull() {
+		Either<Object, String> either1 = Either.forLeft("Testing");
+		Either<Object, String> either2 = Either.forRight("Testing");
+
+		assertFalse(either1.equals(either2));
 	}
 
 	protected static class MyObjectA {

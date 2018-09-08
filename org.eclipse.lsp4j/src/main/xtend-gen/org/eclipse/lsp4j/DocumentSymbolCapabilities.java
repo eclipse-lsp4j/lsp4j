@@ -1,9 +1,13 @@
 /**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j;
 
@@ -21,6 +25,11 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
    * Specific capabilities for the `SymbolKind`.
    */
   private SymbolKindCapabilities symbolKind;
+  
+  /**
+   * The client support hierarchical document symbols.
+   */
+  private Boolean hierarchicalDocumentSymbolSupport;
   
   public DocumentSymbolCapabilities() {
   }
@@ -53,11 +62,27 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
     this.symbolKind = symbolKind;
   }
   
+  /**
+   * The client support hierarchical document symbols.
+   */
+  @Pure
+  public Boolean getHierarchicalDocumentSymbolSupport() {
+    return this.hierarchicalDocumentSymbolSupport;
+  }
+  
+  /**
+   * The client support hierarchical document symbols.
+   */
+  public void setHierarchicalDocumentSymbolSupport(final Boolean hierarchicalDocumentSymbolSupport) {
+    this.hierarchicalDocumentSymbolSupport = hierarchicalDocumentSymbolSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("symbolKind", this.symbolKind);
+    b.add("hierarchicalDocumentSymbolSupport", this.hierarchicalDocumentSymbolSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -79,12 +104,20 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
         return false;
     } else if (!this.symbolKind.equals(other.symbolKind))
       return false;
+    if (this.hierarchicalDocumentSymbolSupport == null) {
+      if (other.hierarchicalDocumentSymbolSupport != null)
+        return false;
+    } else if (!this.hierarchicalDocumentSymbolSupport.equals(other.hierarchicalDocumentSymbolSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
+    return prime * result + ((this.hierarchicalDocumentSymbolSupport== null) ? 0 : this.hierarchicalDocumentSymbolSupport.hashCode());
   }
 }

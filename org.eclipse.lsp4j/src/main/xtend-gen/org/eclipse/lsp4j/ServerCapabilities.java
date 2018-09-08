@@ -1,9 +1,13 @@
 /**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j;
 
@@ -14,6 +18,8 @@ import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
+import org.eclipse.lsp4j.FoldingRangeProviderOptions;
+import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
@@ -129,6 +135,13 @@ public class ServerCapabilities {
   private Either<Boolean, ColorProviderOptions> colorProvider;
   
   /**
+   * The server provides folding provider support.
+   * 
+   * Since 3.10.0
+   */
+  private Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider;
+  
+  /**
    * The server provides execute command support.
    */
   private ExecuteCommandOptions executeCommandProvider;
@@ -137,6 +150,11 @@ public class ServerCapabilities {
    * Workspace specific server capabilities
    */
   private WorkspaceServerCapabilities workspace;
+  
+  /**
+   * Semantic highlighting server capabilities.
+   */
+  private SemanticHighlightingServerCapabilities semanticHighlighting;
   
   /**
    * Experimental server capabilities.
@@ -476,6 +494,33 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides folding provider support.
+   * 
+   * Since 3.10.0
+   */
+  @Pure
+  public Either<Boolean, FoldingRangeProviderOptions> getFoldingRangeProvider() {
+    return this.foldingRangeProvider;
+  }
+  
+  /**
+   * The server provides folding provider support.
+   * 
+   * Since 3.10.0
+   */
+  public void setFoldingRangeProvider(final Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider) {
+    this.foldingRangeProvider = foldingRangeProvider;
+  }
+  
+  public void setFoldingRangeProvider(final Boolean foldingRangeProvider) {
+    this.foldingRangeProvider = Either.forLeft(foldingRangeProvider);
+  }
+  
+  public void setFoldingRangeProvider(final FoldingRangeProviderOptions foldingRangeProvider) {
+    this.foldingRangeProvider = Either.forRight(foldingRangeProvider);
+  }
+  
+  /**
    * The server provides execute command support.
    */
   @Pure
@@ -503,6 +548,21 @@ public class ServerCapabilities {
    */
   public void setWorkspace(final WorkspaceServerCapabilities workspace) {
     this.workspace = workspace;
+  }
+  
+  /**
+   * Semantic highlighting server capabilities.
+   */
+  @Pure
+  public SemanticHighlightingServerCapabilities getSemanticHighlighting() {
+    return this.semanticHighlighting;
+  }
+  
+  /**
+   * Semantic highlighting server capabilities.
+   */
+  public void setSemanticHighlighting(final SemanticHighlightingServerCapabilities semanticHighlighting) {
+    this.semanticHighlighting = semanticHighlighting;
   }
   
   /**
@@ -543,8 +603,10 @@ public class ServerCapabilities {
     b.add("renameProvider", this.renameProvider);
     b.add("documentLinkProvider", this.documentLinkProvider);
     b.add("colorProvider", this.colorProvider);
+    b.add("foldingRangeProvider", this.foldingRangeProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
+    b.add("semanticHighlighting", this.semanticHighlighting);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -654,6 +716,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.colorProvider.equals(other.colorProvider))
       return false;
+    if (this.foldingRangeProvider == null) {
+      if (other.foldingRangeProvider != null)
+        return false;
+    } else if (!this.foldingRangeProvider.equals(other.foldingRangeProvider))
+      return false;
     if (this.executeCommandProvider == null) {
       if (other.executeCommandProvider != null)
         return false;
@@ -663,6 +730,11 @@ public class ServerCapabilities {
       if (other.workspace != null)
         return false;
     } else if (!this.workspace.equals(other.workspace))
+      return false;
+    if (this.semanticHighlighting == null) {
+      if (other.semanticHighlighting != null)
+        return false;
+    } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
       return false;
     if (this.experimental == null) {
       if (other.experimental != null)
@@ -696,8 +768,10 @@ public class ServerCapabilities {
     result = prime * result + ((this.renameProvider== null) ? 0 : this.renameProvider.hashCode());
     result = prime * result + ((this.documentLinkProvider== null) ? 0 : this.documentLinkProvider.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
+    result = prime * result + ((this.foldingRangeProvider== null) ? 0 : this.foldingRangeProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
+    result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

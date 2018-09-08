@@ -1,9 +1,13 @@
 /**
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j;
 
@@ -15,6 +19,7 @@ import org.eclipse.lsp4j.DefinitionCapabilities;
 import org.eclipse.lsp4j.DocumentHighlightCapabilities;
 import org.eclipse.lsp4j.DocumentLinkCapabilities;
 import org.eclipse.lsp4j.DocumentSymbolCapabilities;
+import org.eclipse.lsp4j.FoldingRangeCapabilities;
 import org.eclipse.lsp4j.FormattingCapabilities;
 import org.eclipse.lsp4j.HoverCapabilities;
 import org.eclipse.lsp4j.ImplementationCapabilities;
@@ -23,6 +28,7 @@ import org.eclipse.lsp4j.PublishDiagnosticsCapabilities;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
+import org.eclipse.lsp4j.SemanticHighlightingCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
 import org.eclipse.lsp4j.TypeDefinitionCapabilities;
@@ -132,6 +138,18 @@ public class TextDocumentClientCapabilities {
    * Capabilities specific to `textDocument/publishDiagnostics`.
    */
   private PublishDiagnosticsCapabilities publishDiagnostics;
+  
+  /**
+   * Capabilities specific to `textDocument/foldingRange` requests.
+   * 
+   * Since 3.10.0
+   */
+  private FoldingRangeCapabilities foldingRange;
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   */
+  private SemanticHighlightingCapabilities semanticHighlightingCapabilities;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -426,6 +444,40 @@ public class TextDocumentClientCapabilities {
     this.publishDiagnostics = publishDiagnostics;
   }
   
+  /**
+   * Capabilities specific to `textDocument/foldingRange` requests.
+   * 
+   * Since 3.10.0
+   */
+  @Pure
+  public FoldingRangeCapabilities getFoldingRange() {
+    return this.foldingRange;
+  }
+  
+  /**
+   * Capabilities specific to `textDocument/foldingRange` requests.
+   * 
+   * Since 3.10.0
+   */
+  public void setFoldingRange(final FoldingRangeCapabilities foldingRange) {
+    this.foldingRange = foldingRange;
+  }
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   */
+  @Pure
+  public SemanticHighlightingCapabilities getSemanticHighlightingCapabilities() {
+    return this.semanticHighlightingCapabilities;
+  }
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   */
+  public void setSemanticHighlightingCapabilities(final SemanticHighlightingCapabilities semanticHighlightingCapabilities) {
+    this.semanticHighlightingCapabilities = semanticHighlightingCapabilities;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -449,6 +501,8 @@ public class TextDocumentClientCapabilities {
     b.add("colorProvider", this.colorProvider);
     b.add("rename", this.rename);
     b.add("publishDiagnostics", this.publishDiagnostics);
+    b.add("foldingRange", this.foldingRange);
+    b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
     return b.toString();
   }
   
@@ -557,6 +611,16 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.publishDiagnostics.equals(other.publishDiagnostics))
       return false;
+    if (this.foldingRange == null) {
+      if (other.foldingRange != null)
+        return false;
+    } else if (!this.foldingRange.equals(other.foldingRange))
+      return false;
+    if (this.semanticHighlightingCapabilities == null) {
+      if (other.semanticHighlightingCapabilities != null)
+        return false;
+    } else if (!this.semanticHighlightingCapabilities.equals(other.semanticHighlightingCapabilities))
+      return false;
     return true;
   }
   
@@ -583,6 +647,8 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.documentLink== null) ? 0 : this.documentLink.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
-    return prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
+    result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
+    result = prime * result + ((this.foldingRange== null) ? 0 : this.foldingRange.hashCode());
+    return prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
   }
 }

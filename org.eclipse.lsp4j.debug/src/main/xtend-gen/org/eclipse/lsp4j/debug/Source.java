@@ -1,9 +1,13 @@
 /**
- * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2017, 2018 Kichwa Coders Ltd. and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  */
 package org.eclipse.lsp4j.debug;
 
@@ -29,7 +33,7 @@ public class Source {
   
   /**
    * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its vaule is 0).
+   * no sourceReference is specified (or its value is 0).
    * <p>
    * This is an optional property.
    */
@@ -105,7 +109,7 @@ public class Source {
   
   /**
    * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its vaule is 0).
+   * no sourceReference is specified (or its value is 0).
    * <p>
    * This is an optional property.
    */
@@ -116,7 +120,7 @@ public class Source {
   
   /**
    * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its vaule is 0).
+   * no sourceReference is specified (or its value is 0).
    * <p>
    * This is an optional property.
    */

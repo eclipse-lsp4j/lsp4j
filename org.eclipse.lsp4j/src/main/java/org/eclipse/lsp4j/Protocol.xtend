@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j
 
 import com.google.common.annotations.Beta
@@ -15,6 +19,7 @@ import java.util.List
 import java.util.Map
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
+import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -452,6 +457,11 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
      */
     SymbolKindCapabilities symbolKind
     
+    /**
+     * The client support hierarchical document symbols.
+     */
+    Boolean hierarchicalDocumentSymbolSupport
+    
     new() {
     }
     
@@ -589,7 +599,6 @@ class CodeActionLiteralSupportCapabilities {
     }
 }
 
-
 /**
  * Capabilities specific to the `textDocument/codeAction`
  */
@@ -685,6 +694,44 @@ class PublishDiagnosticsCapabilities {
 	
 	new(Boolean relatedInformation) {
 		this.relatedInformation = relatedInformation
+	}
+}
+
+/**
+ * Capabilities specific to `textDocument/foldingRange` requests.
+ * 
+ * Since 3.10.0
+ */
+@JsonRpcData
+class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The maximum number of folding ranges that the client prefers to receive per document. The value serves as a
+	 * hint, servers are free to follow the limit.
+	 */
+	Integer rangeLimit
+	
+	/**
+	 * If set, the client signals that it only supports folding complete lines. If set, client will
+	 * ignore specified `startCharacter` and `endCharacter` properties in a FoldingRange.
+	 */
+	Boolean lineFoldingOnly
+}
+
+/**
+ * Capabilities specific to {@code textDocument/semanticHighlighting}.
+ */
+@JsonRpcData
+class SemanticHighlightingCapabilities {
+	/**
+	 * The client supports semantic highlighting.
+	 */
+	Boolean semanticHighlighting
+
+	new() {
+	}
+
+	new(Boolean semanticHighlighting) {
+		this.semanticHighlighting = semanticHighlighting
 	}
 }
 
@@ -791,6 +838,18 @@ class TextDocumentClientCapabilities {
 	 * Capabilities specific to `textDocument/publishDiagnostics`.
 	 */
 	PublishDiagnosticsCapabilities publishDiagnostics
+	
+	/**
+	 * Capabilities specific to `textDocument/foldingRange` requests.
+	 * 
+	 * Since 3.10.0
+	 */
+	FoldingRangeCapabilities foldingRange
+
+	/**
+	 * Capabilities specific to {@code textDocument/semanticHighlighting}.
+	 */
+	SemanticHighlightingCapabilities semanticHighlightingCapabilities
 }
 
 /**
@@ -846,7 +905,7 @@ class CodeAction {
      * A short, human-readable, title for this code action.
      */
     @NonNull
-	String title
+    String title
 
     /**
      * The kind of the code action.
@@ -858,11 +917,12 @@ class CodeAction {
     /**
      * The diagnostics that this code action resolves.
      */
-	List<Diagnostic> diagnostics
+    List<Diagnostic> diagnostics
+    
     /**
      * The workspace edit this code action performs.
      */
-   WorkspaceEdit edit
+    WorkspaceEdit edit
 
     /**
      * A command this code action executes. If a code action
@@ -874,13 +934,10 @@ class CodeAction {
     new() {
     }
     
-    new(@NonNull String title, String kind, List<Diagnostic> diagnostics, WorkspaceEdit edit, Command command) {
+    new(@NonNull String title) {
     	this.title = title
-    	this.kind = kind
-    	this.diagnostics = diagnostics
-    	this.edit = edit
-    	this.command = command
-    }
+	}
+    
 }
 
 /**
@@ -1735,6 +1792,13 @@ class SaveOptions {
 class ColorProviderOptions extends StaticRegistrationOptions {
 }
 
+/**
+ * Folding range provider options.
+ */
+@JsonRpcData
+class FoldingRangeProviderOptions extends StaticRegistrationOptions {
+}
+
 @JsonRpcData
 class TextDocumentSyncOptions {
 	/**
@@ -2571,6 +2635,13 @@ class ServerCapabilities {
 	Either<Boolean, ColorProviderOptions> colorProvider
 
 	/**
+	 * The server provides folding provider support.
+	 *
+	 * Since 3.10.0
+	 */
+	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
+
+	/**
 	 * The server provides execute command support.
 	 */
 	ExecuteCommandOptions executeCommandProvider
@@ -2579,6 +2650,11 @@ class ServerCapabilities {
 	 * Workspace specific server capabilities
 	 */
 	WorkspaceServerCapabilities workspace
+	
+	/**
+	 * Semantic highlighting server capabilities.
+	 */
+	SemanticHighlightingServerCapabilities semanticHighlighting; 
 
 	/**
 	 * Experimental server capabilities.
@@ -2606,6 +2682,30 @@ class WorkspaceServerCapabilities {
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
 	}
+}
+
+/**
+ * Semantic highlighting server capabilities.
+ */
+@Beta
+@JsonRpcData
+class SemanticHighlightingServerCapabilities {
+
+	/**
+	 * A "lookup table" of semantic highlighting <a href="https://manual.macromates.com/en/language_grammars">TextMate scopes</a>
+	 * supported by the language server. If not defined or empty, then the server does not support the semantic highlighting
+	 * feature. Otherwise, clients should reuse this "lookup table" when receiving semantic highlighting notifications from
+	 * the server.
+	 */
+	List<List<String>> scopes;
+	
+	new() {
+	}
+	
+	new(List<List<String>> scopes) {
+		this.scopes = scopes;
+	}
+
 }
 
 /**
@@ -2730,6 +2830,85 @@ class SignatureInformation {
     	this.label = label
     	this.documentation = documentation
     	this.parameters = parameters
+    }
+}
+
+/**
+ * Represents programming constructs like variables, classes, interfaces etc. that appear in a document. Document symbols can be
+ * hierarchical and they have two ranges: one that encloses its definition and one that points to its most interesting range,
+ * e.g. the range of an identifier.
+ */
+ @JsonRpcData
+class DocumentSymbol {
+
+	/**
+	 * The name of this symbol.
+	 */
+	@NonNull
+	String name
+
+	/**
+	 * The kind of this symbol.
+	 */
+	@NonNull
+	SymbolKind kind
+	
+	/**
+	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
+	 * like comments. This information is typically used to determine if the the clients cursor is
+	 * inside the symbol to reveal in the symbol in the UI.
+	 */
+	@NonNull
+	Range range;
+
+	/**
+	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
+	 * Must be contained by the the `range`.
+	 */
+	@NonNull
+	Range selectionRange
+
+	/**
+	 * More detail for this symbol, e.g the signature of a function. If not provided the
+	 * name is used.
+	 */
+	String detail
+
+	/**
+	 * Indicates if this symbol is deprecated.
+	 */
+	Boolean deprecated
+
+	/**
+	 * Children of this symbol, e.g. properties of a class.
+	 */
+	List<DocumentSymbol> children
+	
+	new() {
+    }
+    
+    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange) {
+    	this.name = name
+    	this.kind = kind
+    	this.range = range
+    	this.selectionRange = selectionRange
+    }
+    
+    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange, String detail) {
+    	this.name = name
+    	this.kind = kind
+    	this.range = range
+    	this.selectionRange = selectionRange
+    	this.detail = detail
+    }
+    
+    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange, String detail, List<DocumentSymbol> children) {
+    	this.name = name
+    	this.kind = kind
+    	this.range = range
+    	this.selectionRange = selectionRange
+    	this.detail = detail
+    	this.children = children
     }
 }
 
@@ -3019,6 +3198,12 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
     new() {
     }
     
+    new(@NonNull String uri, Integer version) {
+    	super(uri)
+    	this.version = version
+    }
+    
+    @Deprecated
     new(Integer version) {
     	this.version = version
     }
@@ -3102,13 +3287,15 @@ class WorkspaceEdit {
 	List<TextDocumentEdit> documentChanges
 	
 	/**
-	 * if resource changes are supported the `WorkspaceEdit`
+	 * If resource changes are supported the `WorkspaceEdit`
 	 * uses the property `resourceChanges` which are either a
 	 * rename, move, delete or content change.
 	 * These changes are applied in the order that they are supplied,
 	 * however clients may group the changes for optimization
 	 */
-	@Beta List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
+	@Beta
+	@JsonAdapter(ResourceChangeListAdapter)
+	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
     new() {
     	this.changes = new LinkedHashMap
@@ -3843,5 +4030,123 @@ class ColorPresentation {
 		this.label = label
 		this.textEdit = textEdit
 		this.additionalTextEdits = additionalTextEdits
+	}
+}
+
+/**
+ * The folding range request is sent from the client to the server to return all folding
+ * ranges found in a given text document.
+ */
+@JsonRpcData
+class FoldingRangeRequestParams {
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+	
+	new() {
+	}
+	
+	new(TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
+}
+
+/**
+ * Represents a folding range.
+ */
+@JsonRpcData
+class FoldingRange {
+
+	/**
+	 * The zero-based line number from where the folded range starts.
+	 */
+	int startLine
+
+	/**
+	 * The zero-based line number where the folded range ends.
+	 */
+	int endLine
+
+	/**
+	 * The zero-based character offset from where the folded range starts. If not defined, defaults
+	 * to the length of the start line.
+	 */
+	Integer startCharacter
+
+	/**
+	 * The zero-based character offset before the folded range ends. If not defined, defaults to the
+	 * length of the end line.
+	 */
+	Integer endCharacter
+
+	/**
+	 * Describes the kind of the folding range such as `comment' or 'region'. The kind
+	 * is used to categorize folding ranges and used by commands like 'Fold all comments'. See
+	 * FoldingRangeKind for an enumeration of standardized kinds.
+	 */
+	String kind
+	
+	new() {
+	}
+	
+	new(int startLine, int endLine) {
+		this.startLine = startLine
+		this.endLine = endLine
+	}
+}
+
+/**
+ * Parameters for the semantic highlighting (server-side) push notification.
+ */
+@Beta
+@JsonRpcData
+class SemanticHighlightingParams {
+	/**
+	 * The text document that has to be decorated with the semantic highlighting information.
+	 */
+	@NonNull
+	VersionedTextDocumentIdentifier textDocument
+
+	/**
+	 * An array of semantic highlighting information.
+	 */
+	@NonNull
+	List<SemanticHighlightingInformation> lines
+
+	new() {
+	}
+
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<SemanticHighlightingInformation> lines) {
+		this.textDocument = textDocument
+		this.lines = lines
+	}
+}
+
+/**
+ * Represents a semantic highlighting information that has to be applied on a specific line of the text document.
+ */
+@Beta
+@JsonRpcData
+class SemanticHighlightingInformation {
+	/**
+	 * The zero-based line position in the text document.
+	 */
+	int line
+
+	/**
+	 * A base64 encoded string representing every single highlighted ranges in the line with its start position, length
+	 * and the "lookup table" index of of the semantic highlighting <a href="https://manual.macromates.com/en/language_grammars">
+	 * TextMate scopes</a>. If the {@code tokens} is empty or not defined, then no highlighted positions are available for the line.
+	 */
+	String tokens
+
+	new() {
+	}
+
+	new(int line, String tokens) {
+		this.line = line
+		this.tokens = tokens
 	}
 }

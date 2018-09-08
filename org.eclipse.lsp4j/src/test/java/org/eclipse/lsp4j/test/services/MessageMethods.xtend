@@ -1,10 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2016 TypeFox GmbH (http://www.typefox.io) and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+/******************************************************************************
+ * Copyright (c) 2016 TypeFox and others.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.test.services
 
 interface MessageMethods {
@@ -23,6 +27,7 @@ interface MessageMethods {
 	public static val DOC_CODE_ACTION = 'textDocument/codeAction'
 	public static val DOC_CODE_LENS = 'textDocument/codeLens'
 	public static val RESOLVE_CODE_LENS = 'codeLens/resolve'
+	public static val DOC_FOLDING_RANGE = 'textDocument/foldingRange'
 	public static val DOC_FORMATTING = 'textDocument/formatting'
 	public static val DOC_RANGE_FORMATTING = 'textDocument/rangeFormatting'
 	public static val DOC_TYPE_FORMATTING = 'textDocument/onTypeFormatting'

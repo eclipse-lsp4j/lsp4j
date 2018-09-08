@@ -1,14 +1,19 @@
-/*******************************************************************************
+/******************************************************************************
  * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v. 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0,
+ * or the Eclipse Distribution License v. 1.0 which is available at
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ * 
+ * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+ ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug.adapters;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
@@ -21,7 +26,6 @@ import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
-import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 
@@ -192,9 +196,9 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		Boolean rawSuccess = null;
 		Object rawParams = null;
 		Object rawBody = null;
-		
+
 		try {
-			
+
 			while (in.hasNext()) {
 				String name = in.nextName();
 				switch (name) {
@@ -243,17 +247,18 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					in.skipValue();
 				}
 			}
-			boolean success = rawSuccess != null ? rawSuccess : true;
+			boolean success = rawSuccess != null ? rawSuccess : false;
 			Object params = parseParams(rawParams, method);
 			Object body = parseBody(rawBody, messageType, request_seq, method, success);
-			
+
 			in.endObject();
 			return createMessage(messageType, seq, request_seq, method, success, message, params, body);
-			
+
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if ("request".equals(messageType) || "event".equals(messageType) || "response".equals(messageType)) {
 				// Create a message and bundle it to an exception with an issue that wraps the original exception
-				Message resultMessage = createMessage(messageType, seq, request_seq, method, rawSuccess, message, rawParams, rawBody);
+				boolean success = rawSuccess != null ? rawSuccess : false;
+				Message resultMessage = createMessage(messageType, seq, request_seq, method, success, message, rawParams, rawBody);
 				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
 				throw new MessageIssueException(resultMessage, issue);
 			} else {
@@ -337,7 +342,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		}
 		switch (messageType) {
 		case "request": {
-			RequestMessage message = new RequestMessage();
+			DebugRequestMessage message = new DebugRequestMessage();
 			message.setId(seq);
 			message.setMethod(method);
 			message.setParams(params);
@@ -354,7 +359,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			DebugResponseMessage message = new DebugResponseMessage();
 			message.setId(request_seq);
 			message.setResponseId(seq);
-			message.setMethod(method);			
+			message.setMethod(method);
 			if (!success) {
 				ResponseError error = new ResponseError();
 				error.setCode(ResponseErrorCode.UnknownErrorCode);
@@ -375,8 +380,17 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 						String resolvedMethod = methodProvider.resolveMethod(Integer.toString(request_seq));
 						if (resolvedMethod != null) {
 							JsonRpcMethod jsonRpcMethod = handler.getJsonRpcMethod(resolvedMethod);
-							if (jsonRpcMethod != null)
-								body = gson.fromJson((JsonElement) body, jsonRpcMethod.getReturnType());
+							if (jsonRpcMethod != null) {
+								TypeAdapter<?> typeAdapter = null;
+								Type returnType = jsonRpcMethod.getReturnType();
+								if (jsonRpcMethod.getReturnTypeAdapterFactory() != null)
+									typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(returnType));
+								JsonElement jsonElement = (JsonElement) body;
+								if (typeAdapter != null)
+									body = typeAdapter.fromJsonTree(jsonElement);
+								else
+									body = gson.fromJson(jsonElement, returnType);
+							}
 						}
 					}
 				}
@@ -400,12 +414,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			writeIntId(out, requestMessage.getRawId());
 			out.name("command");
 			out.value(requestMessage.getMethod());
-			out.name("arguments");
 			Object params = requestMessage.getParams();
-			if (params == null)
-				writeNullValue(out);
-			else
+			if (params != null) {
+				out.name("arguments");		
 				gson.toJson(params, params.getClass(), out);
+			}
 		} else if (message instanceof DebugResponseMessage) {
 			DebugResponseMessage responseMessage = (DebugResponseMessage) message;
 			out.name("type");
@@ -433,12 +446,13 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 					gson.toJson(errorData, errorData.getClass(), out);
 				}
 			} else {
-				out.name("body");
+				out.name("success");
+				out.value(true);
 				Object result = responseMessage.getResult();
-				if (result == null)
-					writeNullValue(out);
-				else
+				if (result != null) {
+					out.name("body");
 					gson.toJson(result, result.getClass(), out);
+				}
 			}
 		} else if (message instanceof DebugNotificationMessage) {
 			DebugNotificationMessage notificationMessage = (DebugNotificationMessage) message;
@@ -446,19 +460,18 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.value("event");
 			out.name("seq");
 			writeIntId(out, notificationMessage.getRawId());
-			out.name("command");
+			out.name("event");
 			out.value(notificationMessage.getMethod());
-			out.name("body");
 			Object params = notificationMessage.getParams();
-			if (params == null)
-				writeNullValue(out);
-			else
+			if (params != null) {
+				out.name("body");
 				gson.toJson(params, params.getClass(), out);
+			}
 		}
 
 		out.endObject();
 	}
-	
+
 	private void writeIntId(JsonWriter out, Either<String, Number> id) throws IOException {
 		if (id == null)
 			writeNullValue(out);
