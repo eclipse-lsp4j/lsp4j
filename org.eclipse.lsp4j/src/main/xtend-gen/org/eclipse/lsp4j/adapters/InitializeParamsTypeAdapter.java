@@ -12,9 +12,9 @@
 package org.eclipse.lsp4j.adapters;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -42,7 +42,7 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
   }
   
   protected Object readInitializationOptions(final JsonReader in) throws IOException {
-    return TypeAdapters.JSON_ELEMENT.read(in);
+    return this.gson.<JsonElement>getAdapter(JsonElement.class).read(in);
   }
   
   protected void writeProcessId(final JsonWriter out, final Integer value) throws IOException {

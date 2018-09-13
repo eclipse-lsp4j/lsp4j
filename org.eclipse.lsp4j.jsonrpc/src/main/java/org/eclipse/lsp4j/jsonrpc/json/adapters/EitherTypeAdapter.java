@@ -27,7 +27,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.bind.JsonTreeReader;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -224,7 +223,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		}
 		
 		public T read(JsonElement element) throws IOException {
-			return this.adapter.read(new JsonTreeReader(element));
+			return this.adapter.fromJsonTree(element);
 		}
 
 		@Override
