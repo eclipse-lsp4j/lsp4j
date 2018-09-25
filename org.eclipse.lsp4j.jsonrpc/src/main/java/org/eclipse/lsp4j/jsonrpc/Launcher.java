@@ -293,6 +293,7 @@ public interface Launcher<T> {
 
 		@SuppressWarnings("unchecked")
 		public Launcher<T> create() {
+			// Validate input
 			if (input == null)
 				throw new IllegalStateException("Input stream must be configured.");
 			if (output == null)
@@ -302,6 +303,7 @@ public interface Launcher<T> {
 			if (remoteInterfaces == null)
 				throw new IllegalStateException("Remote interface must be configured.");
 			
+			// Create proxy and endpoints
 			MessageJsonHandler jsonHandler = createJsonHandler();
 			RemoteEndpoint remoteEndpoint = createRemoteEndpoint(jsonHandler);
 			T remoteProxy;
@@ -310,28 +312,61 @@ public interface Launcher<T> {
 			} else {
 				remoteProxy = (T) ServiceEndpoints.toServiceObject(remoteEndpoint, (Collection<Class<?>>) (Object) remoteInterfaces, classLoader);
 			}
+			
+			// create the message processor
 			StreamMessageProducer reader = new StreamMessageProducer(input, jsonHandler, remoteEndpoint);
 			MessageConsumer messageConsumer = wrapMessageConsumer(remoteEndpoint);
 			ExecutorService execService = executorService != null ? executorService : Executors.newCachedThreadPool();
+			ConcurrentMessageProcessor<T> msgProcessor = createMessageProcessor(reader, messageConsumer, remoteProxy);
 			
-			return new Launcher<T> () {
-				@Override
-				public Future<Void> startListening() {
-					return ConcurrentMessageProcessor.startProcessing(reader, messageConsumer, execService);
-				}
-
-				@Override
-				public T getRemoteProxy() {
-					return remoteProxy;
-				}
-
-				@Override
-				public RemoteEndpoint getRemoteEndpoint() {
-					return remoteEndpoint;
-				}
-			};
+			return createLauncher(reader, messageConsumer, execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
+		protected Launcher<T> createLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
+				ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint, ConcurrentMessageProcessor<T> msgProcessor) {
+			return new StandardLauncher<T>(reader, execService, remoteProxy, remoteEndpoint, msgProcessor);
+		}
+		
+		public static class StandardLauncher<T> implements Launcher<T> {
+			private StreamMessageProducer reader;
+			private ExecutorService execService;
+			private T remoteProxy;
+			private RemoteEndpoint remoteEndpoint;
+			private ConcurrentMessageProcessor<T> msgProcessor;
+
+			public StandardLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
+					ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint) {
+				this(reader, execService, remoteProxy, remoteEndpoint, 
+						new ConcurrentMessageProcessor<>(reader, messageConsumer));
+			}
+			
+			public StandardLauncher(StreamMessageProducer reader2,
+					ExecutorService execService2, T remoteProxy2, RemoteEndpoint remoteEndpoint2,
+					ConcurrentMessageProcessor<T> msgProcessor) {
+				this.reader = reader2;
+				this.execService = execService2;
+				this.remoteProxy = remoteProxy2;
+				this.remoteEndpoint = remoteEndpoint2;
+				this.msgProcessor = msgProcessor;
+			}
+
+			@Override
+			public Future<Void> startListening() {
+				final Future<?> result = execService.submit(msgProcessor);
+				return ConcurrentMessageProcessor.wrapFuture(result, reader);
+			}
+
+			@Override
+			public T getRemoteProxy() {
+				return remoteProxy;
+			}
+
+			@Override
+			public RemoteEndpoint getRemoteEndpoint() {
+				return remoteEndpoint;
+			}
+		}
+
 		protected MessageConsumer wrapMessageConsumer(MessageConsumer consumer) {
 			MessageConsumer result = consumer;
 			if (messageTracer != null) {
@@ -383,6 +418,22 @@ public interface Launcher<T> {
 				return new MessageJsonHandler(supportedMethods, configureGson);
 			else
 				return new MessageJsonHandler(supportedMethods);
+		}
+		
+		/**
+		 * Create a message processor given the provided parameters. 
+		 * 
+		 * Clients may override this method to create a message processor
+		 * with an expanded feature set.
+		 * 
+		 * @param reader
+		 * @param messageConsumer
+		 * @param remoteProxy
+		 * @return
+		 */
+		protected ConcurrentMessageProcessor<T> createMessageProcessor(MessageProducer reader, 
+				MessageConsumer messageConsumer, T remoteProxy) {
+			return  new ConcurrentMessageProcessor<T>(reader, messageConsumer);
 		}
 		
 		/**
