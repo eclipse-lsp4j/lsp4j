@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -43,14 +42,16 @@ public class JsonElementTypeAdapter extends TypeAdapter<Object> {
 	}
 	
 	private final Gson gson;
-	
+	private final TypeAdapter<JsonElement> adapter;
+
 	public JsonElementTypeAdapter(Gson gson) {
 		this.gson = gson;
+		this.adapter = gson.getAdapter(JsonElement.class);
 	}
 	
 	@Override
 	public JsonElement read(JsonReader in) throws IOException {
-		return TypeAdapters.JSON_ELEMENT.read(in);
+		return adapter.read(in);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class JsonElementTypeAdapter extends TypeAdapter<Object> {
 		if (value == null) {
 			out.nullValue();
 		} else if (value instanceof JsonElement) {
-			TypeAdapters.JSON_ELEMENT.write(out, (JsonElement) value);
+			adapter.write(out, (JsonElement) value);
 		} else {
 			gson.toJson(value, value.getClass(), out);;
 		}
