@@ -752,6 +752,7 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to {@code textDocument/semanticHighlighting}.
  */
+@Beta
 @JsonRpcData
 class SemanticHighlightingCapabilities {
 	/**
@@ -765,6 +766,28 @@ class SemanticHighlightingCapabilities {
 	new(Boolean semanticHighlighting) {
 		this.semanticHighlighting = semanticHighlighting
 	}
+}
+
+/**
+ * Capabilities specific to the {@code textDocument/typeHierarchy} and the {@code typeHierarchy/resolve}
+ * language server methods.
+ */
+@Beta
+@JsonRpcData
+class TypeHierarchyCapabilities {
+
+	/**
+	 * The language client supports super- and subtype hierarchies.
+	 */
+	Boolean typeHierarchy
+
+	new() {
+	}
+
+	new(Boolean typeHierarchy) {
+		this.typeHierarchy = typeHierarchy
+	}
+
 }
 
 /**
@@ -881,7 +904,14 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to {@code textDocument/semanticHighlighting}.
 	 */
+	@Beta
 	SemanticHighlightingCapabilities semanticHighlightingCapabilities
+
+	/**
+	 * Capabilities specific to {@code textDocument/typeHierarchy}.
+	 */
+	@Beta
+	TypeHierarchyCapabilities typeHierarchyCapabilities
 }
 
 /**
@@ -1983,6 +2013,70 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
 }
 
 /**
+ * The type hierarchy request is sent from the client resolve a {@link TypeHierarchyItem type hierarchy item} for
+ * a give cursor location in the text document. The request would also allow to specify if the item should be resolved
+ * and whether sub- or supertypes are to be resolved.
+ */
+@JsonRpcData
+class TypeHierarchyParams extends TextDocumentPositionParams {
+
+	/**
+	 * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
+	 */
+	int resolve
+	
+	/**
+	 * The direction of the type hierarchy resolution. If not defined, defaults to {@code children}.
+	 * 
+	 * <p>
+	 * The followings are the legal values:
+	 * <ul>
+	 * <li>{@code children},</li>
+	 * <li>{@code parents}, and</li>
+	 * <li>{@code both}.</li>
+	 * </ul>
+	 * </p>
+	 */
+	String direction
+}
+
+/**
+ * Request to resolve an unresolved {@link TypeHierarchyItem type hierarchy item} which is indicated if the
+ * {@link TypeHierarchyItem#getParents parents} or the {@link TypeHierarchyItem#getChildren children} is not
+ * defined. If resolved and no {@code parents} or {@code children} are available then an empty list is returned.
+ */
+@JsonRpcData
+class ResolveTypeHierarchyItemParams {
+
+	/**
+	 * The hierarchy item to resolve.
+	 */
+	@NonNull
+	TypeHierarchyItem item
+
+	/**
+	 * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level.
+	 */
+	int resolve
+
+	/**
+	 * The direction of the type hierarchy resolution.
+	 * 
+	 * <p>
+	 * The followings are the legal values:
+	 * <ul>
+	 * <li>{@code children},</li>
+	 * <li>{@code parents}, and</li>
+	 * <li>{@code both}.</li>
+	 * </ul>
+	 * </p>
+	 */
+	@NonNull
+	String direction
+
+}
+
+/**
  * The document symbol request is sent from the client to the server to list all symbols found in a given text document.
  */
 @JsonRpcData
@@ -2743,7 +2837,13 @@ class ServerCapabilities {
 	/**
 	 * Semantic highlighting server capabilities.
 	 */
-	SemanticHighlightingServerCapabilities semanticHighlighting;
+	SemanticHighlightingServerCapabilities semanticHighlighting
+	
+	/**
+	 * Server capability for calculating super- and subtype hierarchies.
+	 * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+	 */
+	Boolean typeHierarchy
 
 	/**
 	 * Experimental server capabilities.
@@ -2920,6 +3020,79 @@ class SignatureInformation {
 		this.documentation = documentation
 		this.parameters = parameters
 	}
+}
+
+/**
+ * Representation of an item that carries type information (such as class, interface, enumeration, etc) with additional parentage details.
+ */
+@JsonRpcData
+class TypeHierarchyItem {
+	
+	/**
+	 * The human readable name of the hierarchy item.
+	 */
+	@NonNull
+	String name
+	
+	/**
+	 * Optional detail for the hierarchy item. It can be, for instance, the signature of a function or method.
+	 */
+	String detail
+	
+	/**
+	 * The kind of the hierarchy item. For instance, class or interface.
+	 */
+	@NonNull
+	SymbolKind kind
+	
+	/**
+	 * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
+	 */
+	Boolean deprecated
+	
+	/**
+	 * The URI of the text document where this type hierarchy item belongs to.
+	 */
+	@NonNull
+	String uri
+
+	/**
+	 * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
+	 * like comments. This information is typically used to determine if the the clients cursor is inside the type
+	 * hierarchy item to reveal in the symbol in the UI.
+	 * 
+	 * @see TypeHierarchyItem#selectionRange
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The range that should be selected and revealed when this type hierarchy item is being picked, e.g the name of a function.
+	 * Must be contained by the the {@link TypeHierarchyItem#getRange range}.
+	 * 
+	 * @see TypeHierarchyItem#range
+	 */
+	@NonNull
+	Range selectionRange
+
+	/**
+	 * If this type hierarchy item is resolved, it contains the direct parents. Could be empty if the item does not have any
+	 * direct parents. If not defined, the parents have not been resolved yet.
+	 */
+	List<TypeHierarchyItem> parents
+
+	/**
+	 * If this type hierarchy item is resolved, it contains the direct children of the current item.
+	 * Could be empty if the item does not have any descendants. If not defined, the children have not been resolved.
+	 */
+	List<TypeHierarchyItem> children
+
+	/**
+	 * An optional data field can be used to identify a type hierarchy item in a resolve request.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
 }
 
 /**

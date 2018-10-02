@@ -16,43 +16,44 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Capabilities specific to {@code textDocument/semanticHighlighting}.
+ * Capabilities specific to the {@code textDocument/typeHierarchy} and the {@code typeHierarchy/resolve}
+ * language server methods.
  */
 @Beta
 @SuppressWarnings("all")
-public class SemanticHighlightingCapabilities {
+public class TypeHierarchyCapabilities {
   /**
-   * The client supports semantic highlighting.
+   * The language client supports super- and subtype hierarchies.
    */
-  private Boolean semanticHighlighting;
+  private Boolean typeHierarchy;
   
-  public SemanticHighlightingCapabilities() {
+  public TypeHierarchyCapabilities() {
   }
   
-  public SemanticHighlightingCapabilities(final Boolean semanticHighlighting) {
-    this.semanticHighlighting = semanticHighlighting;
+  public TypeHierarchyCapabilities(final Boolean typeHierarchy) {
+    this.typeHierarchy = typeHierarchy;
   }
   
   /**
-   * The client supports semantic highlighting.
+   * The language client supports super- and subtype hierarchies.
    */
   @Pure
-  public Boolean getSemanticHighlighting() {
-    return this.semanticHighlighting;
+  public Boolean getTypeHierarchy() {
+    return this.typeHierarchy;
   }
   
   /**
-   * The client supports semantic highlighting.
+   * The language client supports super- and subtype hierarchies.
    */
-  public void setSemanticHighlighting(final Boolean semanticHighlighting) {
-    this.semanticHighlighting = semanticHighlighting;
+  public void setTypeHierarchy(final Boolean typeHierarchy) {
+    this.typeHierarchy = typeHierarchy;
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("semanticHighlighting", this.semanticHighlighting);
+    b.add("typeHierarchy", this.typeHierarchy);
     return b.toString();
   }
   
@@ -65,11 +66,11 @@ public class SemanticHighlightingCapabilities {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    SemanticHighlightingCapabilities other = (SemanticHighlightingCapabilities) obj;
-    if (this.semanticHighlighting == null) {
-      if (other.semanticHighlighting != null)
+    TypeHierarchyCapabilities other = (TypeHierarchyCapabilities) obj;
+    if (this.typeHierarchy == null) {
+      if (other.typeHierarchy != null)
         return false;
-    } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
+    } else if (!this.typeHierarchy.equals(other.typeHierarchy))
       return false;
     return true;
   }
@@ -77,6 +78,6 @@ public class SemanticHighlightingCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
+    return 31 * 1 + ((this.typeHierarchy== null) ? 0 : this.typeHierarchy.hashCode());
   }
 }

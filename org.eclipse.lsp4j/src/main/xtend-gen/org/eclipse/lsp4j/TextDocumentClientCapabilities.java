@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLensCapabilities;
 import org.eclipse.lsp4j.ColorProviderCapabilities;
@@ -32,6 +33,7 @@ import org.eclipse.lsp4j.SemanticHighlightingCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
 import org.eclipse.lsp4j.TypeDefinitionCapabilities;
+import org.eclipse.lsp4j.TypeHierarchyCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -149,7 +151,14 @@ public class TextDocumentClientCapabilities {
   /**
    * Capabilities specific to {@code textDocument/semanticHighlighting}.
    */
+  @Beta
   private SemanticHighlightingCapabilities semanticHighlightingCapabilities;
+  
+  /**
+   * Capabilities specific to {@code textDocument/typeHierarchy}.
+   */
+  @Beta
+  private TypeHierarchyCapabilities typeHierarchyCapabilities;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -478,6 +487,21 @@ public class TextDocumentClientCapabilities {
     this.semanticHighlightingCapabilities = semanticHighlightingCapabilities;
   }
   
+  /**
+   * Capabilities specific to {@code textDocument/typeHierarchy}.
+   */
+  @Pure
+  public TypeHierarchyCapabilities getTypeHierarchyCapabilities() {
+    return this.typeHierarchyCapabilities;
+  }
+  
+  /**
+   * Capabilities specific to {@code textDocument/typeHierarchy}.
+   */
+  public void setTypeHierarchyCapabilities(final TypeHierarchyCapabilities typeHierarchyCapabilities) {
+    this.typeHierarchyCapabilities = typeHierarchyCapabilities;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -503,6 +527,7 @@ public class TextDocumentClientCapabilities {
     b.add("publishDiagnostics", this.publishDiagnostics);
     b.add("foldingRange", this.foldingRange);
     b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
+    b.add("typeHierarchyCapabilities", this.typeHierarchyCapabilities);
     return b.toString();
   }
   
@@ -621,6 +646,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.semanticHighlightingCapabilities.equals(other.semanticHighlightingCapabilities))
       return false;
+    if (this.typeHierarchyCapabilities == null) {
+      if (other.typeHierarchyCapabilities != null)
+        return false;
+    } else if (!this.typeHierarchyCapabilities.equals(other.typeHierarchyCapabilities))
+      return false;
     return true;
   }
   
@@ -649,6 +679,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
     result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
     result = prime * result + ((this.foldingRange== null) ? 0 : this.foldingRange.hashCode());
-    return prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
+    result = prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
+    return prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
   }
 }
