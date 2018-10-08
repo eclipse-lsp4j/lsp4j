@@ -197,10 +197,18 @@ public class CompletionItem {
   }
   
   public void setDocumentation(final String documentation) {
+    if (documentation == null) {
+      this.documentation = null;
+      return;
+    }
     this.documentation = Either.forLeft(documentation);
   }
   
   public void setDocumentation(final MarkupContent documentation) {
+    if (documentation == null) {
+      this.documentation = null;
+      return;
+    }
     this.documentation = Either.forRight(documentation);
   }
   

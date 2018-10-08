@@ -81,10 +81,18 @@ public class WorkspaceFoldersOptions {
   }
   
   public void setChangeNotifications(final String changeNotifications) {
+    if (changeNotifications == null) {
+      this.changeNotifications = null;
+      return;
+    }
     this.changeNotifications = Either.forLeft(changeNotifications);
   }
   
   public void setChangeNotifications(final Boolean changeNotifications) {
+    if (changeNotifications == null) {
+      this.changeNotifications = null;
+      return;
+    }
     this.changeNotifications = Either.forRight(changeNotifications);
   }
   

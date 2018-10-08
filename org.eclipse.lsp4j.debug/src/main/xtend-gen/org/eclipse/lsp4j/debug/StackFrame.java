@@ -228,10 +228,18 @@ public class StackFrame {
   }
   
   public void setModuleId(final Long moduleId) {
+    if (moduleId == null) {
+      this.moduleId = null;
+      return;
+    }
     this.moduleId = Either.forLeft(moduleId);
   }
   
   public void setModuleId(final String moduleId) {
+    if (moduleId == null) {
+      this.moduleId = null;
+      return;
+    }
     this.moduleId = Either.forRight(moduleId);
   }
   

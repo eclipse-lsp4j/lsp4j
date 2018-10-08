@@ -131,10 +131,18 @@ public class Module {
   }
   
   public void setId(final Long id) {
+    if (id == null) {
+      this.id = null;
+      return;
+    }
     this.id = Either.forLeft(id);
   }
   
   public void setId(final String id) {
+    if (id == null) {
+      this.id = null;
+      return;
+    }
     this.id = Either.forRight(id);
   }
   
