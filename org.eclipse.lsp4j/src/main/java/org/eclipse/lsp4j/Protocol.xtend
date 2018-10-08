@@ -1050,6 +1050,28 @@ class CodeLens {
 }
 
 /**
+ * Code Action options.
+ */
+@JsonRpcData
+class CodeActionOptions {
+	/**
+	 * CodeActionKinds that this server may return.
+	 *
+	 * The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+	 * may list out every specific kind they provide.
+	 */
+	List<String> codeActionKinds
+	
+	new() {
+	}
+	
+	new (List<String> codeActionKinds) {
+		this.codeActionKinds = codeActionKinds
+	}
+}
+
+
+/**
  * Code Lens options.
  */
 @JsonRpcData
@@ -2593,9 +2615,11 @@ class ServerCapabilities {
 	Boolean workspaceSymbolProvider
 
 	/**
-	 * The server provides code actions.
+	 * The server provides code actions. The `CodeActionOptions` return type is only
+	 * valid if the client signals code action literal support via the property
+	 * `textDocument.codeAction.codeActionLiteralSupport`.
 	 */
-	Boolean codeActionProvider
+	Either<Boolean, CodeActionOptions> codeActionProvider
 
 	/**
 	 * The server provides code lens.
