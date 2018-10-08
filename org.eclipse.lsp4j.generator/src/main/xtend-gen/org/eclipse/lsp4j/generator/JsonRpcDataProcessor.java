@@ -180,6 +180,21 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       _builder.append(")");
       final String compileNewEither = _builder.toString();
       StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("if (");
+      _builder_1.append(variableName);
+      _builder_1.append(" == null) {");
+      _builder_1.newLineIfNotEmpty();
+      _builder_1.append("  ");
+      _builder_1.append("this.");
+      String _simpleName = field.getSimpleName();
+      _builder_1.append(_simpleName, "  ");
+      _builder_1.append(" = null;");
+      _builder_1.newLineIfNotEmpty();
+      _builder_1.append("  ");
+      _builder_1.append("return;");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
       {
         EitherTypeArgument _parent = argument.getParent();
         boolean _tripleNotEquals = (_parent != null);
@@ -198,8 +213,8 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           _builder_1.newLineIfNotEmpty();
         } else {
           _builder_1.append("this.");
-          String _simpleName = field.getSimpleName();
-          _builder_1.append(_simpleName);
+          String _simpleName_1 = field.getSimpleName();
+          _builder_1.append(_simpleName_1);
           _builder_1.append(" = ");
           _builder_1.append(compileNewEither);
           _builder_1.append(";");

@@ -77,10 +77,18 @@ public class Hover {
   }
   
   public void setContents(final List<Either<String, MarkedString>> contents) {
+    if (contents == null) {
+      this.contents = null;
+      return;
+    }
     this.contents = Either.forLeft(contents);
   }
   
   public void setContents(final MarkupContent contents) {
+    if (contents == null) {
+      this.contents = null;
+      return;
+    }
     this.contents = Either.forRight(contents);
   }
   

@@ -180,10 +180,18 @@ public class ServerCapabilities {
   }
   
   public void setTextDocumentSync(final TextDocumentSyncKind textDocumentSync) {
+    if (textDocumentSync == null) {
+      this.textDocumentSync = null;
+      return;
+    }
     this.textDocumentSync = Either.forLeft(textDocumentSync);
   }
   
   public void setTextDocumentSync(final TextDocumentSyncOptions textDocumentSync) {
+    if (textDocumentSync == null) {
+      this.textDocumentSync = null;
+      return;
+    }
     this.textDocumentSync = Either.forRight(textDocumentSync);
   }
   
@@ -267,10 +275,18 @@ public class ServerCapabilities {
   }
   
   public void setTypeDefinitionProvider(final Boolean typeDefinitionProvider) {
+    if (typeDefinitionProvider == null) {
+      this.typeDefinitionProvider = null;
+      return;
+    }
     this.typeDefinitionProvider = Either.forLeft(typeDefinitionProvider);
   }
   
   public void setTypeDefinitionProvider(final StaticRegistrationOptions typeDefinitionProvider) {
+    if (typeDefinitionProvider == null) {
+      this.typeDefinitionProvider = null;
+      return;
+    }
     this.typeDefinitionProvider = Either.forRight(typeDefinitionProvider);
   }
   
@@ -294,10 +310,18 @@ public class ServerCapabilities {
   }
   
   public void setImplementationProvider(final Boolean implementationProvider) {
+    if (implementationProvider == null) {
+      this.implementationProvider = null;
+      return;
+    }
     this.implementationProvider = Either.forLeft(implementationProvider);
   }
   
   public void setImplementationProvider(final StaticRegistrationOptions implementationProvider) {
+    if (implementationProvider == null) {
+      this.implementationProvider = null;
+      return;
+    }
     this.implementationProvider = Either.forRight(implementationProvider);
   }
   
@@ -486,10 +510,18 @@ public class ServerCapabilities {
   }
   
   public void setColorProvider(final Boolean colorProvider) {
+    if (colorProvider == null) {
+      this.colorProvider = null;
+      return;
+    }
     this.colorProvider = Either.forLeft(colorProvider);
   }
   
   public void setColorProvider(final ColorProviderOptions colorProvider) {
+    if (colorProvider == null) {
+      this.colorProvider = null;
+      return;
+    }
     this.colorProvider = Either.forRight(colorProvider);
   }
   
@@ -513,10 +545,18 @@ public class ServerCapabilities {
   }
   
   public void setFoldingRangeProvider(final Boolean foldingRangeProvider) {
+    if (foldingRangeProvider == null) {
+      this.foldingRangeProvider = null;
+      return;
+    }
     this.foldingRangeProvider = Either.forLeft(foldingRangeProvider);
   }
   
   public void setFoldingRangeProvider(final FoldingRangeProviderOptions foldingRangeProvider) {
+    if (foldingRangeProvider == null) {
+      this.foldingRangeProvider = null;
+      return;
+    }
     this.foldingRangeProvider = Either.forRight(foldingRangeProvider);
   }
   

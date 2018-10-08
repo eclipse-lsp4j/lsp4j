@@ -116,6 +116,10 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 		val newVariableName = '_' + variableName
 		val compileNewEither = '''«eitherType.toJavaCode».for«IF argument.right»Right«ELSE»Left«ENDIF»(«variableName»)'''
 		'''
+			if («variableName» == null) {
+			  this.«field.simpleName» = null;
+			  return;
+			}
 			«IF argument.parent !== null»
 				final «argument.parent.type.toJavaCode» «newVariableName» = «compileNewEither»;
 				«compileEitherSetterBody(field, argument.parent, newVariableName, compilaitonContext, context)»
