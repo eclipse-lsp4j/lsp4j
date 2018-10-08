@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.gson.annotations.JsonAdapter;
+import org.eclipse.lsp4j.CodeActionOptions;
 import org.eclipse.lsp4j.CodeLensOptions;
 import org.eclipse.lsp4j.ColorProviderOptions;
 import org.eclipse.lsp4j.CompletionOptions;
@@ -93,9 +94,11 @@ public class ServerCapabilities {
   private Boolean workspaceSymbolProvider;
   
   /**
-   * The server provides code actions.
+   * The server provides code actions. The `CodeActionOptions` return type is only
+   * valid if the client signals code action literal support via the property
+   * `textDocument.codeAction.codeActionLiteralSupport`.
    */
-  private Boolean codeActionProvider;
+  private Either<Boolean, CodeActionOptions> codeActionProvider;
   
   /**
    * The server provides code lens.
@@ -386,18 +389,38 @@ public class ServerCapabilities {
   }
   
   /**
-   * The server provides code actions.
+   * The server provides code actions. The `CodeActionOptions` return type is only
+   * valid if the client signals code action literal support via the property
+   * `textDocument.codeAction.codeActionLiteralSupport`.
    */
   @Pure
-  public Boolean getCodeActionProvider() {
+  public Either<Boolean, CodeActionOptions> getCodeActionProvider() {
     return this.codeActionProvider;
   }
   
   /**
-   * The server provides code actions.
+   * The server provides code actions. The `CodeActionOptions` return type is only
+   * valid if the client signals code action literal support via the property
+   * `textDocument.codeAction.codeActionLiteralSupport`.
    */
-  public void setCodeActionProvider(final Boolean codeActionProvider) {
+  public void setCodeActionProvider(final Either<Boolean, CodeActionOptions> codeActionProvider) {
     this.codeActionProvider = codeActionProvider;
+  }
+  
+  public void setCodeActionProvider(final Boolean codeActionProvider) {
+    if (codeActionProvider == null) {
+      this.codeActionProvider = null;
+      return;
+    }
+    this.codeActionProvider = Either.forLeft(codeActionProvider);
+  }
+  
+  public void setCodeActionProvider(final CodeActionOptions codeActionProvider) {
+    if (codeActionProvider == null) {
+      this.codeActionProvider = null;
+      return;
+    }
+    this.codeActionProvider = Either.forRight(codeActionProvider);
   }
   
   /**
