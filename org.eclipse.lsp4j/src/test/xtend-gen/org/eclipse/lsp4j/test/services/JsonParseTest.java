@@ -34,7 +34,10 @@ import org.eclipse.lsp4j.CompletionItemCapabilities;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.CompletionItemKindCapabilities;
 import org.eclipse.lsp4j.CompletionParams;
+import org.eclipse.lsp4j.CreateFile;
+import org.eclipse.lsp4j.CreateFileOptions;
 import org.eclipse.lsp4j.DefinitionCapabilities;
+import org.eclipse.lsp4j.DeleteFile;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
@@ -60,7 +63,9 @@ import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
+import org.eclipse.lsp4j.RenameFile;
 import org.eclipse.lsp4j.ResourceChange;
+import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SignatureInformationCapabilities;
 import org.eclipse.lsp4j.SymbolInformation;
@@ -1244,6 +1249,220 @@ public class JsonParseTest {
         it_1.setResourceChanges(CollectionLiterals.<Either<ResourceChange, TextDocumentEdit>>newArrayList(
           Either.<ResourceChange, TextDocumentEdit>forLeft(_doubleArrow), 
           Either.<ResourceChange, TextDocumentEdit>forRight(_doubleArrow_1)));
+      };
+      WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_2);
+      it.setResult(_doubleArrow);
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testRenameResponse3() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_RENAME;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"result\": {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("\"documentChanges\": [");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"kind\": \"create\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"uri\": \"file:/foo.txt\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"options\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"overwrite\": true,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"ignoreIfExists\": true");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"kind\": \"delete\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"uri\": \"file:/foo.txt\"");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"kind\": \"rename\",");
+    _builder.newLine();
+    _builder.append("\t\t\t    ");
+    _builder.append("\"oldUri\": \"file:/foo.txt\",");
+    _builder.newLine();
+    _builder.append("\t\t\t    ");
+    _builder.append("\"newUri\": \"file:/bar.txt\"");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"textDocument\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"uri\": \"file:/baz.txt\",");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("\"version\": 17");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("\"edits\": [");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"range\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("\"start\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"character\": 32,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"line\": 3");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("\"end\": {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"character\": 35,");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t\t");
+    _builder.append("\"line\": 3");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("},");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.append("\"newText\": \"asdfqweryxcv\"");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("]");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
+      final Procedure1<WorkspaceEdit> _function_2 = (WorkspaceEdit it_1) -> {
+        CreateFile _createFile = new CreateFile();
+        final Procedure1<CreateFile> _function_3 = (CreateFile it_2) -> {
+          it_2.setUri("file:/foo.txt");
+          CreateFileOptions _createFileOptions = new CreateFileOptions();
+          final Procedure1<CreateFileOptions> _function_4 = (CreateFileOptions it_3) -> {
+            it_3.setOverwrite(Boolean.valueOf(true));
+            it_3.setIgnoreIfExists(Boolean.valueOf(true));
+          };
+          CreateFileOptions _doubleArrow = ObjectExtensions.<CreateFileOptions>operator_doubleArrow(_createFileOptions, _function_4);
+          it_2.setOptions(_doubleArrow);
+        };
+        CreateFile _doubleArrow = ObjectExtensions.<CreateFile>operator_doubleArrow(_createFile, _function_3);
+        DeleteFile _deleteFile = new DeleteFile();
+        final Procedure1<DeleteFile> _function_4 = (DeleteFile it_2) -> {
+          it_2.setUri("file:/foo.txt");
+        };
+        DeleteFile _doubleArrow_1 = ObjectExtensions.<DeleteFile>operator_doubleArrow(_deleteFile, _function_4);
+        RenameFile _renameFile = new RenameFile();
+        final Procedure1<RenameFile> _function_5 = (RenameFile it_2) -> {
+          it_2.setOldUri("file:/foo.txt");
+          it_2.setNewUri("file:/bar.txt");
+        };
+        RenameFile _doubleArrow_2 = ObjectExtensions.<RenameFile>operator_doubleArrow(_renameFile, _function_5);
+        TextDocumentEdit _textDocumentEdit = new TextDocumentEdit();
+        final Procedure1<TextDocumentEdit> _function_6 = (TextDocumentEdit it_2) -> {
+          VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier("file:/baz.txt", Integer.valueOf(17));
+          it_2.setTextDocument(_versionedTextDocumentIdentifier);
+          TextEdit _textEdit = new TextEdit();
+          final Procedure1<TextEdit> _function_7 = (TextEdit it_3) -> {
+            Range _range = new Range();
+            final Procedure1<Range> _function_8 = (Range it_4) -> {
+              Position _position = new Position(3, 32);
+              it_4.setStart(_position);
+              Position _position_1 = new Position(3, 35);
+              it_4.setEnd(_position_1);
+            };
+            Range _doubleArrow_3 = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_8);
+            it_3.setRange(_doubleArrow_3);
+            it_3.setNewText("asdfqweryxcv");
+          };
+          TextEdit _doubleArrow_3 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function_7);
+          it_2.setEdits(CollectionLiterals.<TextEdit>newArrayList(_doubleArrow_3));
+        };
+        TextDocumentEdit _doubleArrow_3 = ObjectExtensions.<TextDocumentEdit>operator_doubleArrow(_textDocumentEdit, _function_6);
+        it_1.setDocumentChanges(CollectionLiterals.<Either<TextDocumentEdit, ResourceOperation>>newArrayList(
+          Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow)), 
+          Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow_1)), 
+          Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow_2)), 
+          Either.<TextDocumentEdit, ResourceOperation>forLeft(_doubleArrow_3)));
       };
       WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_2);
       it.setResult(_doubleArrow);

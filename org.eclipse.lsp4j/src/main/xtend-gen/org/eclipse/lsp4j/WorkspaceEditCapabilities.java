@@ -12,6 +12,9 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import java.util.List;
+import org.eclipse.lsp4j.FailureHandlingKind;
+import org.eclipse.lsp4j.ResourceOperationKind;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -31,6 +34,18 @@ public class WorkspaceEditCapabilities {
    */
   @Beta
   private Boolean resourceChanges;
+  
+  /**
+   * The resource operations the client supports. Clients should at least
+   * support 'create', 'rename' and 'delete' files and folders.
+   */
+  private List<ResourceOperationKind> resourceOperations;
+  
+  /**
+   * The failure handling strategy of a client if applying the workspace edit
+   * fails.
+   */
+  private FailureHandlingKind failureHandling;
   
   public WorkspaceEditCapabilities() {
   }
@@ -71,12 +86,48 @@ public class WorkspaceEditCapabilities {
     this.resourceChanges = resourceChanges;
   }
   
+  /**
+   * The resource operations the client supports. Clients should at least
+   * support 'create', 'rename' and 'delete' files and folders.
+   */
+  @Pure
+  public List<ResourceOperationKind> getResourceOperations() {
+    return this.resourceOperations;
+  }
+  
+  /**
+   * The resource operations the client supports. Clients should at least
+   * support 'create', 'rename' and 'delete' files and folders.
+   */
+  public void setResourceOperations(final List<ResourceOperationKind> resourceOperations) {
+    this.resourceOperations = resourceOperations;
+  }
+  
+  /**
+   * The failure handling strategy of a client if applying the workspace edit
+   * fails.
+   */
+  @Pure
+  public FailureHandlingKind getFailureHandling() {
+    return this.failureHandling;
+  }
+  
+  /**
+   * The failure handling strategy of a client if applying the workspace edit
+   * fails.
+   */
+  public void setFailureHandling(final FailureHandlingKind failureHandling) {
+    this.failureHandling = failureHandling;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("documentChanges", this.documentChanges);
     b.add("resourceChanges", this.resourceChanges);
+    b.add("resourceOperations", this.resourceOperations);
+    b.add("failureHandling", this.failureHandling);
     return b.toString();
   }
   
@@ -100,6 +151,16 @@ public class WorkspaceEditCapabilities {
         return false;
     } else if (!this.resourceChanges.equals(other.resourceChanges))
       return false;
+    if (this.resourceOperations == null) {
+      if (other.resourceOperations != null)
+        return false;
+    } else if (!this.resourceOperations.equals(other.resourceOperations))
+      return false;
+    if (this.failureHandling == null) {
+      if (other.failureHandling != null)
+        return false;
+    } else if (!this.failureHandling.equals(other.failureHandling))
+      return false;
     return true;
   }
   
@@ -109,6 +170,8 @@ public class WorkspaceEditCapabilities {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.documentChanges== null) ? 0 : this.documentChanges.hashCode());
-    return prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
+    result = prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
+    result = prime * result + ((this.resourceOperations== null) ? 0 : this.resourceOperations.hashCode());
+    return prime * result + ((this.failureHandling== null) ? 0 : this.failureHandling.hashCode());
   }
 }

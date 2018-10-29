@@ -20,6 +20,7 @@ import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.FoldingRangeProviderOptions;
+import org.eclipse.lsp4j.RenameOptions;
 import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
@@ -123,7 +124,7 @@ public class ServerCapabilities {
   /**
    * The server provides rename support.
    */
-  private Boolean renameProvider;
+  private Either<Boolean, RenameOptions> renameProvider;
   
   /**
    * The server provides document link support.
@@ -487,15 +488,31 @@ public class ServerCapabilities {
    * The server provides rename support.
    */
   @Pure
-  public Boolean getRenameProvider() {
+  public Either<Boolean, RenameOptions> getRenameProvider() {
     return this.renameProvider;
   }
   
   /**
    * The server provides rename support.
    */
-  public void setRenameProvider(final Boolean renameProvider) {
+  public void setRenameProvider(final Either<Boolean, RenameOptions> renameProvider) {
     this.renameProvider = renameProvider;
+  }
+  
+  public void setRenameProvider(final Boolean renameProvider) {
+    if (renameProvider == null) {
+      this.renameProvider = null;
+      return;
+    }
+    this.renameProvider = Either.forLeft(renameProvider);
+  }
+  
+  public void setRenameProvider(final RenameOptions renameProvider) {
+    if (renameProvider == null) {
+      this.renameProvider = null;
+      return;
+    }
+    this.renameProvider = Either.forRight(renameProvider);
   }
   
   /**

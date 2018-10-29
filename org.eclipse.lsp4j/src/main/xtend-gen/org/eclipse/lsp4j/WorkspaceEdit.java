@@ -17,8 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.lsp4j.ResourceChange;
+import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.TextDocumentEdit;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter;
 import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -42,7 +44,8 @@ public class WorkspaceEdit {
    * version of a text document. Whether a client supports versioned document
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
-  private List<TextDocumentEdit> documentChanges;
+  @JsonAdapter(DocumentChangeListAdapter.class)
+  private List<Either<TextDocumentEdit, ResourceOperation>> documentChanges;
   
   /**
    * If resource changes are supported the `WorkspaceEdit`
@@ -64,7 +67,7 @@ public class WorkspaceEdit {
     this.changes = changes;
   }
   
-  public WorkspaceEdit(final List<TextDocumentEdit> documentChanges) {
+  public WorkspaceEdit(final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
     this.documentChanges = documentChanges;
   }
   
@@ -73,7 +76,7 @@ public class WorkspaceEdit {
    * 		changes and documentChanges
    */
   @Deprecated
-  public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<TextDocumentEdit> documentChanges) {
+  public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
     this.changes = changes;
     this.documentChanges = documentChanges;
   }
@@ -99,7 +102,7 @@ public class WorkspaceEdit {
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
   @Pure
-  public List<TextDocumentEdit> getDocumentChanges() {
+  public List<Either<TextDocumentEdit, ResourceOperation>> getDocumentChanges() {
     return this.documentChanges;
   }
   
@@ -108,7 +111,7 @@ public class WorkspaceEdit {
    * version of a text document. Whether a client supports versioned document
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
-  public void setDocumentChanges(final List<TextDocumentEdit> documentChanges) {
+  public void setDocumentChanges(final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
     this.documentChanges = documentChanges;
   }
   

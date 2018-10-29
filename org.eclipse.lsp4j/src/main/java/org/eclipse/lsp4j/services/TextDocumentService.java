@@ -42,6 +42,8 @@ import org.eclipse.lsp4j.FoldingRange;
 import org.eclipse.lsp4j.FoldingRangeRequestParams;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
+import org.eclipse.lsp4j.PrepareRenameResult;
+import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.SignatureHelp;
@@ -372,6 +374,17 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	default CompletableFuture<List<FoldingRange>> foldingRange(FoldingRangeRequestParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The prepare rename request is sent from the client to the server to setup and test the validity of a rename
+	 * operation at a given location.
+	 * 
+	 * Since version 3.12.0
+	 */
+	@JsonRequest
+	default CompletableFuture<Either<Range, PrepareRenameResult>> prepareRename(TextDocumentPositionParams params) {
 		throw new UnsupportedOperationException();
 	}
 	
