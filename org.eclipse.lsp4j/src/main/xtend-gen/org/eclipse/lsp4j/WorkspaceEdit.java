@@ -53,9 +53,12 @@ public class WorkspaceEdit {
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
+   * 
+   * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
    */
   @Beta
   @JsonAdapter(ResourceChangeListAdapter.class)
+  @Deprecated
   private List<Either<ResourceChange, TextDocumentEdit>> resourceChanges;
   
   public WorkspaceEdit() {
@@ -68,16 +71,6 @@ public class WorkspaceEdit {
   }
   
   public WorkspaceEdit(final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
-    this.documentChanges = documentChanges;
-  }
-  
-  /**
-   * @deprecated According to the protocol documentation, it doesn't make sense to send both
-   * 		changes and documentChanges
-   */
-  @Deprecated
-  public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
-    this.changes = changes;
     this.documentChanges = documentChanges;
   }
   
@@ -121,8 +114,11 @@ public class WorkspaceEdit {
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
+   * 
+   * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
    */
   @Pure
+  @Deprecated
   public List<Either<ResourceChange, TextDocumentEdit>> getResourceChanges() {
     return this.resourceChanges;
   }
@@ -133,7 +129,10 @@ public class WorkspaceEdit {
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
+   * 
+   * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
    */
+  @Deprecated
   public void setResourceChanges(final List<Either<ResourceChange, TextDocumentEdit>> resourceChanges) {
     this.resourceChanges = resourceChanges;
   }

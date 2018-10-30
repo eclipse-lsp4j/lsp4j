@@ -31,7 +31,10 @@ public class WorkspaceEditCapabilities {
   /**
    * The client supports resource changes
    * in `WorkspaceEdit`s.
+   * 
+   * @deprecated Since LSP introduces resource operations, use {link #resourceOperations}
    */
+  @Deprecated
   @Beta
   private Boolean resourceChanges;
   
@@ -50,6 +53,7 @@ public class WorkspaceEditCapabilities {
   public WorkspaceEditCapabilities() {
   }
   
+  @Deprecated
   public WorkspaceEditCapabilities(final Boolean documentChanges) {
     this.documentChanges = documentChanges;
   }
@@ -72,8 +76,11 @@ public class WorkspaceEditCapabilities {
   /**
    * The client supports resource changes
    * in `WorkspaceEdit`s.
+   * 
+   * @deprecated Since LSP introduces resource operations, use {link #resourceOperations}
    */
   @Pure
+  @Deprecated
   public Boolean getResourceChanges() {
     return this.resourceChanges;
   }
@@ -81,7 +88,10 @@ public class WorkspaceEditCapabilities {
   /**
    * The client supports resource changes
    * in `WorkspaceEdit`s.
+   * 
+   * @deprecated Since LSP introduces resource operations, use {link #resourceOperations}
    */
+  @Deprecated
   public void setResourceChanges(final Boolean resourceChanges) {
     this.resourceChanges = resourceChanges;
   }

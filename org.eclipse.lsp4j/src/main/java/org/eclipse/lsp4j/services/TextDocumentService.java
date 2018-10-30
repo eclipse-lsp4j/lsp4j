@@ -54,6 +54,7 @@ import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
 import org.eclipse.lsp4j.adapters.DocumentSymbolResponseAdapter;
+import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
@@ -384,8 +385,8 @@ public interface TextDocumentService {
 	 * Since version 3.12.0
 	 */
 	@JsonRequest
+	@ResponseJsonAdapter(PrepareRenameResponseAdapter.class)
 	default CompletableFuture<Either<Range, PrepareRenameResult>> prepareRename(TextDocumentPositionParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
 }

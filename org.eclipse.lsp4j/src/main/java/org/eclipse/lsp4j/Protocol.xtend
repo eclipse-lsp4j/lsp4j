@@ -57,7 +57,10 @@ class WorkspaceEditCapabilities {
 	/**
 	 * The client supports resource changes
 	 * in `WorkspaceEdit`s.
+	 * 
+	 * @deprecated Since LSP introduces resource operations, use {link #resourceOperations} 
 	 */
+	@Deprecated
 	@Beta Boolean resourceChanges
 
 	/**
@@ -75,6 +78,7 @@ class WorkspaceEditCapabilities {
     new() {
     }
     
+    @Deprecated
     new(Boolean documentChanges) {
     	this.documentChanges = documentChanges
     }
@@ -685,11 +689,23 @@ class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class RenameCapabilities extends DynamicRegistrationCapabilities {
+	
+	/**
+	 * Client supports testing for validity of rename operations
+	 * before execution.
+	 */
+	Boolean prepareSupport
+	
     new() {
     }
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+    
+    new(Boolean prepareSupport, Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    	this.prepareSupport = prepareSupport
     }
 }
 
@@ -1822,6 +1838,17 @@ class SaveOptions {
 }
 
 /**
+ * Rename options
+ */
+@JsonRpcData
+class RenameOptions extends StaticRegistrationOptions {
+	/**
+	 * Renames should be checked and tested before being executed.
+	 */
+	Boolean prepareProvider;
+}
+
+/**
  * Color provider Options
  */
 @JsonRpcData
@@ -2535,11 +2562,14 @@ class ReferenceParams extends TextDocumentPositionParams {
 @JsonRpcData
 class PrepareRenameResult {
 	/**
-	 * The capabilities the language server provides.
+	 * The range of the string to rename
 	 */
 	@NonNull
 	Range range
 
+	/*
+	 * A placeholder text of the string content to be renamed.
+	 */
 	@NonNull
 	String placeholder
 
@@ -2584,24 +2614,6 @@ class RenameParams {
     	this.position = position
     	this.newName = newName
     }
-}
-
-/**
- * Rename options
- */
-@JsonRpcData
-class RenameOptions {
-	/**
-	 * Renames should be checked and tested before being executed.
-	 */
-	Boolean prepareProvider;
-
-	new() {
-	}
-
-	new(Boolean prepareProvider) {
-		this.prepareProvider = prepareProvider
-	}
 }
 
 @JsonRpcData
@@ -3315,7 +3327,7 @@ class TextDocumentEdit {
 
 @JsonRpcData
 @JsonAdapter(ResourceOperationTypeAdapter)
-class ResourceOperation {
+abstract class ResourceOperation {
 
 	@NonNull
 	String kind;
@@ -3506,9 +3518,12 @@ class DeleteFile extends ResourceOperation {
  * If both current and newUri has valid values this is considered to be a move operation.
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
+ * 
+ * @deprecated As LSP introduces resource operation, use the {@link ResourceOperation} instead.
  */
 @JsonRpcData
 @Beta
+@Deprecated
 class ResourceChange {
 
   /**
@@ -3556,9 +3571,12 @@ class WorkspaceEdit {
 	 * rename, move, delete or content change.
 	 * These changes are applied in the order that they are supplied,
 	 * however clients may group the changes for optimization
+	 * 
+	 * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
 	 */
 	@Beta
 	@JsonAdapter(ResourceChangeListAdapter)
+	@Deprecated
 	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
     new() {
@@ -3571,16 +3589,6 @@ class WorkspaceEdit {
     
 
 	new(List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
-		this.documentChanges = documentChanges
-	}
-
-	/**
-	 * @deprecated According to the protocol documentation, it doesn't make sense to send both
-	 * 		changes and documentChanges
-	 */
-	@Deprecated
-	new(Map<String, List<TextEdit>> changes, List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
-		this.changes = changes
 		this.documentChanges = documentChanges
 	}
 }

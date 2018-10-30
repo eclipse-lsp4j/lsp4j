@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.StaticRegistrationOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,18 +19,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Rename options
  */
 @SuppressWarnings("all")
-public class RenameOptions {
+public class RenameOptions extends StaticRegistrationOptions {
   /**
    * Renames should be checked and tested before being executed.
    */
   private Boolean prepareProvider;
-  
-  public RenameOptions() {
-  }
-  
-  public RenameOptions(final Boolean prepareProvider) {
-    this.prepareProvider = prepareProvider;
-  }
   
   /**
    * Renames should be checked and tested before being executed.
@@ -51,6 +45,8 @@ public class RenameOptions {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("prepareProvider", this.prepareProvider);
+    b.add("id", getId());
+    b.add("documentSelector", getDocumentSelector());
     return b.toString();
   }
   
@@ -62,6 +58,8 @@ public class RenameOptions {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     RenameOptions other = (RenameOptions) obj;
     if (this.prepareProvider == null) {
@@ -75,6 +73,6 @@ public class RenameOptions {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.prepareProvider== null) ? 0 : this.prepareProvider.hashCode());
+    return 31 * super.hashCode() + ((this.prepareProvider== null) ? 0 : this.prepareProvider.hashCode());
   }
 }

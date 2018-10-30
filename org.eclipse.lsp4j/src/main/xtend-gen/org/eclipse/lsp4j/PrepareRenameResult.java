@@ -19,11 +19,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class PrepareRenameResult {
   /**
-   * The capabilities the language server provides.
+   * The range of the string to rename
    */
   @NonNull
   private Range range;
   
+  /**
+   * A placeholder text of the string content to be renamed.
+   */
   @NonNull
   private String placeholder;
   
@@ -36,7 +39,7 @@ public class PrepareRenameResult {
   }
   
   /**
-   * The capabilities the language server provides.
+   * The range of the string to rename
    */
   @Pure
   @NonNull
@@ -45,18 +48,24 @@ public class PrepareRenameResult {
   }
   
   /**
-   * The capabilities the language server provides.
+   * The range of the string to rename
    */
   public void setRange(@NonNull final Range range) {
     this.range = range;
   }
   
+  /**
+   * A placeholder text of the string content to be renamed.
+   */
   @Pure
   @NonNull
   public String getPlaceholder() {
     return this.placeholder;
   }
   
+  /**
+   * A placeholder text of the string content to be renamed.
+   */
   public void setPlaceholder(@NonNull final String placeholder) {
     this.placeholder = placeholder;
   }

@@ -9,14 +9,13 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-
 package org.eclipse.lsp4j.adapters;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-import org.eclipse.lsp4j.ResourceOperation;
-import org.eclipse.lsp4j.TextDocumentEdit;
+import org.eclipse.lsp4j.PrepareRenameResult;
+import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter.PropertyChecker;
@@ -28,19 +27,19 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
-@Deprecated
-public class DocumentChangeListAdapter implements TypeAdapterFactory {
+public class PrepareRenameResponseAdapter implements TypeAdapterFactory {
 	
-	private static final TypeToken<Either<TextDocumentEdit, ResourceOperation>> ELEMENT_TYPE
-			= new TypeToken<Either<TextDocumentEdit, ResourceOperation>>() {};
+	private static final TypeToken<Either<Range, PrepareRenameResult>> ELEMENT_TYPE
+			= new TypeToken<Either<Range, PrepareRenameResult>>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-		Predicate<JsonElement> leftChecker = new PropertyChecker("textDocument").and(new PropertyChecker("edits"));
-		Predicate<JsonElement> rightChecker = new PropertyChecker("kind");
-		TypeAdapter<Either<TextDocumentEdit, ResourceOperation>> elementTypeAdapter = new EitherTypeAdapter<>(gson,
-				ELEMENT_TYPE, leftChecker, rightChecker);
-		return (TypeAdapter<T>) new CollectionTypeAdapter<>(gson, ELEMENT_TYPE.getType(), elementTypeAdapter, ArrayList::new);
+		Predicate<JsonElement> leftChecker = new PropertyChecker("start");
+		Predicate<JsonElement> rightChecker = new PropertyChecker("range");
+		TypeAdapter<Either<Range, PrepareRenameResult>> elementTypeAdapter = new EitherTypeAdapter<>(gson, ELEMENT_TYPE,
+				leftChecker, rightChecker);
+		return (TypeAdapter<T>) new CollectionTypeAdapter<>(gson, ELEMENT_TYPE.getType(), elementTypeAdapter,
+				ArrayList::new);
 	}
 }

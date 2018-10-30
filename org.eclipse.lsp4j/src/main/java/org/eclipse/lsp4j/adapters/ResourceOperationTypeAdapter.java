@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2018 TypeFox and others.
+ * Copyright (c) 2018 Microsoft Corporation and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23,6 +23,8 @@ import org.eclipse.lsp4j.ResourceOperationKind;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
@@ -44,13 +46,11 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 
 	private static class InnerResourceOperationTypeAdapter extends TypeAdapter<ResourceOperation> {
 
-		TypeAdapter<JsonElement> jsonElementAdapter;
 		TypeAdapter<CreateFile> createFileAdapter;
 		TypeAdapter<DeleteFile> deleteFileAdapter;
 		TypeAdapter<RenameFile> renameFileAdapter;
 
 		InnerResourceOperationTypeAdapter(TypeAdapterFactory factory, Gson gson) {
-			jsonElementAdapter = gson.getAdapter(JsonElement.class);
 			createFileAdapter = gson.getDelegateAdapter(factory, TypeToken.get(CreateFile.class));
 			deleteFileAdapter = gson.getDelegateAdapter(factory, TypeToken.get(DeleteFile.class));
 			renameFileAdapter = gson.getDelegateAdapter(factory, TypeToken.get(RenameFile.class));
@@ -58,7 +58,6 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 
 		@Override
 		public void write(JsonWriter out, ResourceOperation value) throws IOException {
-
 			if (value.getClass().isAssignableFrom(CreateFile.class)) {
 				createFileAdapter.write(out, (CreateFile) value);
 			} else if (value.getClass().isAssignableFrom(DeleteFile.class)) {
@@ -70,7 +69,7 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 
 		@Override
 		public ResourceOperation read(JsonReader in) throws IOException {
-			JsonObject objectJson = jsonElementAdapter.read(in).getAsJsonObject();
+			JsonObject objectJson = new JsonParser().parse(in).getAsJsonObject();
 			JsonElement value = objectJson.get("kind");
 			if (value != null && value.isJsonPrimitive()) {
 				String kindValue = value.getAsString();
@@ -84,7 +83,8 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 				}
 			}
 
-			return null;
+			throw new JsonParseException(
+					"The ResourceOperation object either has null \"kind\" value or the \"kind\" value is not valid.");
 		}
 	}
 }

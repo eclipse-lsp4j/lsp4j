@@ -19,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @JsonAdapter(ResourceOperationTypeAdapter.class)
 @SuppressWarnings("all")
-public class ResourceOperation {
+public abstract class ResourceOperation {
   @NonNull
   private String kind;
   
