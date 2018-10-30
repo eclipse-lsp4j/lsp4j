@@ -17,9 +17,11 @@ import java.util.ArrayList
 import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
+import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -55,12 +57,28 @@ class WorkspaceEditCapabilities {
 	/**
 	 * The client supports resource changes
 	 * in `WorkspaceEdit`s.
+	 * 
+	 * @deprecated Since LSP introduces resource operations, use {link #resourceOperations} 
 	 */
+	@Deprecated
 	@Beta Boolean resourceChanges
+
+	/**
+	 * The resource operations the client supports. Clients should at least
+	 * support 'create', 'rename' and 'delete' files and folders.
+	 */
+	List<ResourceOperationKind> resourceOperations;
+
+	/**
+	 * The failure handling strategy of a client if applying the workspace edit
+	 * fails.
+	 */
+	FailureHandlingKind failureHandling;
 
     new() {
     }
     
+    @Deprecated
     new(Boolean documentChanges) {
     	this.documentChanges = documentChanges
     }
@@ -671,11 +689,23 @@ class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class RenameCapabilities extends DynamicRegistrationCapabilities {
+	
+	/**
+	 * Client supports testing for validity of rename operations
+	 * before execution.
+	 */
+	Boolean prepareSupport
+	
     new() {
     }
     
     new(Boolean dynamicRegistration) {
     	super(dynamicRegistration)
+    }
+    
+    new(Boolean prepareSupport, Boolean dynamicRegistration) {
+    	super(dynamicRegistration)
+    	this.prepareSupport = prepareSupport
     }
 }
 
@@ -1808,6 +1838,17 @@ class SaveOptions {
 }
 
 /**
+ * Rename options
+ */
+@JsonRpcData
+class RenameOptions extends StaticRegistrationOptions {
+	/**
+	 * Renames should be checked and tested before being executed.
+	 */
+	Boolean prepareProvider;
+}
+
+/**
  * Color provider Options
  */
 @JsonRpcData
@@ -2518,6 +2559,29 @@ class ReferenceParams extends TextDocumentPositionParams {
     }
 }
 
+@JsonRpcData
+class PrepareRenameResult {
+	/**
+	 * The range of the string to rename
+	 */
+	@NonNull
+	Range range
+
+	/*
+	 * A placeholder text of the string content to be renamed.
+	 */
+	@NonNull
+	String placeholder
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull String placeholder) {
+		this.range = range
+		this.placeholder = placeholder
+	}
+}
+
 /**
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
@@ -2644,7 +2708,7 @@ class ServerCapabilities {
 	/**
 	 * The server provides rename support.
 	 */
-	Boolean renameProvider
+	Either<Boolean, RenameOptions> renameProvider
 
 	/**
 	 * The server provides document link support.
@@ -3261,15 +3325,205 @@ class TextDocumentEdit {
     }
 }
 
+@JsonRpcData
+@JsonAdapter(ResourceOperationTypeAdapter)
+abstract class ResourceOperation {
+
+	@NonNull
+	String kind;
+
+	new() {
+	}
+
+	new(@NonNull String kind) {
+		this.kind = kind;
+	}
+}
+
+/**
+ * Options to create a file.
+ */
+@JsonRpcData
+class CreateFileOptions {
+	/**
+	 * Overwrite existing file. Overwrite wins over `ignoreIfExists`
+	 */
+	Boolean overwrite
+
+	/**
+	 * Ignore if exists.
+	 */
+	Boolean ignoreIfExists
+
+	new() {
+	}
+
+	new(Boolean overwrite, Boolean ignoreIfExists) {
+		this.overwrite = overwrite
+		this.ignoreIfExists = ignoreIfExists
+	}
+}
+
+/**
+ * Create file operation
+ */
+@JsonRpcData
+class CreateFile extends ResourceOperation {
+
+	/**
+	 * The resource to create.
+	 */
+	@NonNull
+	String uri
+	/**
+	 * Additional options
+	 */
+	CreateFileOptions options
+
+	new() {
+		super(ResourceOperationKind.Create)
+	}
+
+	new(@NonNull String uri) {
+		super(ResourceOperationKind.Create)
+		this.uri = uri
+	}
+
+	new(@NonNull String uri, CreateFileOptions options) {
+		super(ResourceOperationKind.Create)
+		this.uri = uri
+		this.options = options
+	}
+}
+
+/**
+ * Rename file options
+ */
+@JsonRpcData
+class RenameFileOptions {
+	/**
+	 * Overwrite target if existing. Overwrite wins over `ignoreIfExists`
+	 */
+	Boolean overwrite
+	/**
+	 * Ignores if target exists.
+	 */
+	Boolean ignoreIfExists
+
+	new() {
+	}
+
+	new(Boolean overwrite, Boolean ignoreIfExists) {
+		this.overwrite = overwrite
+		this.ignoreIfExists = ignoreIfExists
+	}
+}
+
+/**
+ * Rename file operation
+ */
+@JsonRpcData
+class RenameFile extends ResourceOperation {
+	/**
+	 * The old (existing) location.
+	 */
+	@NonNull
+	String oldUri
+
+	/**
+	 * The new location.
+	 */
+	@NonNull
+	String newUri
+	/**
+	 * Rename options.
+	 */
+	RenameFileOptions options
+
+	new() {
+		super(ResourceOperationKind.Rename)
+	}
+
+	new(@NonNull String oldUri, @NonNull String newUri) {
+		super(ResourceOperationKind.Rename)
+		this.oldUri = oldUri
+		this.newUri = newUri
+	}
+
+	new(@NonNull String oldUri, @NonNull String newUri, RenameFileOptions options) {
+		super(ResourceOperationKind.Rename)
+		this.oldUri = oldUri
+		this.newUri = newUri
+		this.options = options
+	}
+}
+
+/**
+ * Delete file options
+ */
+@JsonRpcData
+class DeleteFileOptions {
+	/**
+	 * Delete the content recursively if a folder is denoted.
+	 */
+	Boolean recursive
+	/**
+	 * Ignore the operation if the file doesn't exist.
+	 */
+	Boolean ignoreIfNotExists
+
+	new() {
+	}
+
+	new(Boolean recursive, Boolean ignoreIfNotExists) {
+		this.recursive = recursive
+		this.ignoreIfNotExists = ignoreIfNotExists
+	}
+}
+
+/**
+ * Delete file operation
+ */
+@JsonRpcData
+class DeleteFile extends ResourceOperation {
+	/**
+	 * The file to delete.
+	 */
+	@NonNull
+	String uri
+	/**
+	 * Delete options.
+	 */
+	DeleteFileOptions options
+
+	new() {
+		super(ResourceOperationKind.Delete)
+	}
+
+	new(@NonNull String uri) {
+		super(ResourceOperationKind.Delete)
+		this.uri = uri
+	}
+
+	new(@NonNull String uri, DeleteFileOptions options) {
+		super(ResourceOperationKind.Delete)
+		this.uri = uri
+		this.options = options
+	}
+}
+
 /**
  * A resource change.
  *
  * If both current and newUri has valid values this is considered to be a move operation.
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
+ * 
+ * @deprecated As LSP introduces resource operation, use the {@link ResourceOperation} instead.
  */
 @JsonRpcData
 @Beta
+@Deprecated
 class ResourceChange {
 
   /**
@@ -3308,17 +3562,21 @@ class WorkspaceEdit {
 	 * version of a text document. Whether a client supports versioned document
 	 * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
 	 */
-	List<TextDocumentEdit> documentChanges
-	
+	@JsonAdapter(DocumentChangeListAdapter)
+	List<Either<TextDocumentEdit, ResourceOperation>> documentChanges
+
 	/**
 	 * If resource changes are supported the `WorkspaceEdit`
 	 * uses the property `resourceChanges` which are either a
 	 * rename, move, delete or content change.
 	 * These changes are applied in the order that they are supplied,
 	 * however clients may group the changes for optimization
+	 * 
+	 * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
 	 */
 	@Beta
 	@JsonAdapter(ResourceChangeListAdapter)
+	@Deprecated
 	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
     new() {
@@ -3329,19 +3587,10 @@ class WorkspaceEdit {
     	this.changes = changes
     }
     
-    new(List<TextDocumentEdit> documentChanges) {
-    	this.documentChanges = documentChanges
-    }
-    
-    /**
-     * @deprecated According to the protocol documentation, it doesn't make sense to send both
-     * 		changes and documentChanges
-     */
-    @Deprecated
-    new(Map<String, List<TextEdit>> changes, List<TextDocumentEdit> documentChanges) {
-    	this.changes = changes
-    	this.documentChanges = documentChanges
-    }
+
+	new(List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
+		this.documentChanges = documentChanges
+	}
 }
 
 /**

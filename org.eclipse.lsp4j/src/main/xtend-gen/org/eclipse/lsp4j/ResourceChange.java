@@ -21,8 +21,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * If both current and newUri has valid values this is considered to be a move operation.
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
+ * 
+ * @deprecated As LSP introduces resource operation, use the {@link ResourceOperation} instead.
  */
 @Beta
+@Deprecated
 @SuppressWarnings("all")
 public class ResourceChange {
   /**

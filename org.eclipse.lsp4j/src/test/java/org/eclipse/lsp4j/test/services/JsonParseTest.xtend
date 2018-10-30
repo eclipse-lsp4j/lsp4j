@@ -29,7 +29,10 @@ import org.eclipse.lsp4j.CompletionItemCapabilities
 import org.eclipse.lsp4j.CompletionItemKind
 import org.eclipse.lsp4j.CompletionItemKindCapabilities
 import org.eclipse.lsp4j.CompletionParams
+import org.eclipse.lsp4j.CreateFile
+import org.eclipse.lsp4j.CreateFileOptions
 import org.eclipse.lsp4j.DefinitionCapabilities
+import org.eclipse.lsp4j.DeleteFile
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
@@ -55,7 +58,9 @@ import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
 import org.eclipse.lsp4j.ReferencesCapabilities
 import org.eclipse.lsp4j.RenameCapabilities
+import org.eclipse.lsp4j.RenameFile
 import org.eclipse.lsp4j.ResourceChange
+import org.eclipse.lsp4j.ResourceOperation
 import org.eclipse.lsp4j.SignatureHelpCapabilities
 import org.eclipse.lsp4j.SignatureInformationCapabilities
 import org.eclipse.lsp4j.SymbolInformation
@@ -592,6 +597,96 @@ class JsonParseTest {
 						newUri = "file:/bar.txt"
 					]),
 					Either.forRight(new TextDocumentEdit => [
+						textDocument = new VersionedTextDocumentIdentifier("file:/baz.txt", 17)
+						edits = newArrayList(
+							new TextEdit => [
+								range = new Range => [
+									start = new Position(3, 32)
+									end = new Position(3, 35)
+								]
+								newText = "asdfqweryxcv"
+							]
+						)
+					])
+				)
+			]
+		])
+	}
+
+	@Test
+	def void testRenameResponse3() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_RENAME
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"documentChanges": [
+						{
+							"kind": "create",
+							"uri": "file:/foo.txt",
+							"options": {
+								"overwrite": true,
+								"ignoreIfExists": true
+							}
+						},
+						{
+							"kind": "delete",
+							"uri": "file:/foo.txt"
+						},
+						{
+							"kind": "rename",
+						    "oldUri": "file:/foo.txt",
+						    "newUri": "file:/bar.txt"
+						},
+						{
+							"textDocument": {
+								"uri": "file:/baz.txt",
+								"version": 17
+							},
+							"edits": [
+								{
+									"range": {
+										"start": {
+											"character": 32,
+											"line": 3
+										},
+										"end": {
+											"character": 35,
+											"line": 3
+										}
+									},
+									"newText": "asdfqweryxcv"
+								}
+							]
+						}
+					]
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceEdit => [
+				documentChanges = newArrayList(
+					Either.forRight((new CreateFile => [
+						uri = "file:/foo.txt"
+						options = new CreateFileOptions => [
+							overwrite = true
+							ignoreIfExists = true
+						]
+					]) as ResourceOperation),
+					Either.forRight((new DeleteFile => [
+						uri = "file:/foo.txt"
+					]) as ResourceOperation),
+					Either.forRight((new RenameFile => [
+						oldUri = "file:/foo.txt"
+						newUri = "file:/bar.txt"
+					]) as ResourceOperation),
+					Either.forLeft(new TextDocumentEdit => [
 						textDocument = new VersionedTextDocumentIdentifier("file:/baz.txt", 17)
 						edits = newArrayList(
 							new TextEdit => [

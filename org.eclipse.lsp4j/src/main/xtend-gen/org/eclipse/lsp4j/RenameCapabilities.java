@@ -20,6 +20,12 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class RenameCapabilities extends DynamicRegistrationCapabilities {
+  /**
+   * Client supports testing for validity of rename operations
+   * before execution.
+   */
+  private Boolean prepareSupport;
+  
   public RenameCapabilities() {
   }
   
@@ -27,10 +33,33 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
     super(dynamicRegistration);
   }
   
+  public RenameCapabilities(final Boolean prepareSupport, final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
+    this.prepareSupport = prepareSupport;
+  }
+  
+  /**
+   * Client supports testing for validity of rename operations
+   * before execution.
+   */
+  @Pure
+  public Boolean getPrepareSupport() {
+    return this.prepareSupport;
+  }
+  
+  /**
+   * Client supports testing for validity of rename operations
+   * before execution.
+   */
+  public void setPrepareSupport(final Boolean prepareSupport) {
+    this.prepareSupport = prepareSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("prepareSupport", this.prepareSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -46,12 +75,18 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
       return false;
     if (!super.equals(obj))
       return false;
+    RenameCapabilities other = (RenameCapabilities) obj;
+    if (this.prepareSupport == null) {
+      if (other.prepareSupport != null)
+        return false;
+    } else if (!this.prepareSupport.equals(other.prepareSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return super.hashCode();
+    return 31 * super.hashCode() + ((this.prepareSupport== null) ? 0 : this.prepareSupport.hashCode());
   }
 }

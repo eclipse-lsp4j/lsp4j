@@ -17,8 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.lsp4j.ResourceChange;
+import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.TextDocumentEdit;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter;
 import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -42,7 +44,8 @@ public class WorkspaceEdit {
    * version of a text document. Whether a client supports versioned document
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
-  private List<TextDocumentEdit> documentChanges;
+  @JsonAdapter(DocumentChangeListAdapter.class)
+  private List<Either<TextDocumentEdit, ResourceOperation>> documentChanges;
   
   /**
    * If resource changes are supported the `WorkspaceEdit`
@@ -50,9 +53,12 @@ public class WorkspaceEdit {
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
+   * 
+   * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
    */
   @Beta
   @JsonAdapter(ResourceChangeListAdapter.class)
+  @Deprecated
   private List<Either<ResourceChange, TextDocumentEdit>> resourceChanges;
   
   public WorkspaceEdit() {
@@ -64,17 +70,7 @@ public class WorkspaceEdit {
     this.changes = changes;
   }
   
-  public WorkspaceEdit(final List<TextDocumentEdit> documentChanges) {
-    this.documentChanges = documentChanges;
-  }
-  
-  /**
-   * @deprecated According to the protocol documentation, it doesn't make sense to send both
-   * 		changes and documentChanges
-   */
-  @Deprecated
-  public WorkspaceEdit(final Map<String, List<TextEdit>> changes, final List<TextDocumentEdit> documentChanges) {
-    this.changes = changes;
+  public WorkspaceEdit(final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
     this.documentChanges = documentChanges;
   }
   
@@ -99,7 +95,7 @@ public class WorkspaceEdit {
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
   @Pure
-  public List<TextDocumentEdit> getDocumentChanges() {
+  public List<Either<TextDocumentEdit, ResourceOperation>> getDocumentChanges() {
     return this.documentChanges;
   }
   
@@ -108,7 +104,7 @@ public class WorkspaceEdit {
    * version of a text document. Whether a client supports versioned document
    * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
    */
-  public void setDocumentChanges(final List<TextDocumentEdit> documentChanges) {
+  public void setDocumentChanges(final List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
     this.documentChanges = documentChanges;
   }
   
@@ -118,8 +114,11 @@ public class WorkspaceEdit {
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
+   * 
+   * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
    */
   @Pure
+  @Deprecated
   public List<Either<ResourceChange, TextDocumentEdit>> getResourceChanges() {
     return this.resourceChanges;
   }
@@ -130,7 +129,10 @@ public class WorkspaceEdit {
    * rename, move, delete or content change.
    * These changes are applied in the order that they are supplied,
    * however clients may group the changes for optimization
+   * 
+   * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
    */
+  @Deprecated
   public void setResourceChanges(final List<Either<ResourceChange, TextDocumentEdit>> resourceChanges) {
     this.resourceChanges = resourceChanges;
   }
