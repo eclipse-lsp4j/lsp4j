@@ -66,14 +66,18 @@ class WorkspaceEditCapabilities {
 	/**
 	 * The resource operations the client supports. Clients should at least
 	 * support 'create', 'rename' and 'delete' files and folders.
+	 * 
+	 * See {@link ResourceOperationKind} for allowed values.
 	 */
-	List<ResourceOperationKind> resourceOperations;
+	List<String> resourceOperations;
 
 	/**
 	 * The failure handling strategy of a client if applying the workspace edit
 	 * fails.
+	 * 
+	 * See {@link FailureHandlingKind} for allowed values.
 	 */
-	FailureHandlingKind failureHandling;
+	String failureHandling;
 
     new() {
     }
