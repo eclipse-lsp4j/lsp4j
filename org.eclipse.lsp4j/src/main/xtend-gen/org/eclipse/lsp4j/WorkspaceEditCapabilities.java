@@ -13,8 +13,6 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 import java.util.List;
-import org.eclipse.lsp4j.FailureHandlingKind;
-import org.eclipse.lsp4j.ResourceOperationKind;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -41,14 +39,18 @@ public class WorkspaceEditCapabilities {
   /**
    * The resource operations the client supports. Clients should at least
    * support 'create', 'rename' and 'delete' files and folders.
+   * 
+   * See {@link ResourceOperationKind} for allowed values.
    */
-  private List<ResourceOperationKind> resourceOperations;
+  private List<String> resourceOperations;
   
   /**
    * The failure handling strategy of a client if applying the workspace edit
    * fails.
+   * 
+   * See {@link FailureHandlingKind} for allowed values.
    */
-  private FailureHandlingKind failureHandling;
+  private String failureHandling;
   
   public WorkspaceEditCapabilities() {
   }
@@ -99,34 +101,42 @@ public class WorkspaceEditCapabilities {
   /**
    * The resource operations the client supports. Clients should at least
    * support 'create', 'rename' and 'delete' files and folders.
+   * 
+   * See {@link ResourceOperationKind} for allowed values.
    */
   @Pure
-  public List<ResourceOperationKind> getResourceOperations() {
+  public List<String> getResourceOperations() {
     return this.resourceOperations;
   }
   
   /**
    * The resource operations the client supports. Clients should at least
    * support 'create', 'rename' and 'delete' files and folders.
+   * 
+   * See {@link ResourceOperationKind} for allowed values.
    */
-  public void setResourceOperations(final List<ResourceOperationKind> resourceOperations) {
+  public void setResourceOperations(final List<String> resourceOperations) {
     this.resourceOperations = resourceOperations;
   }
   
   /**
    * The failure handling strategy of a client if applying the workspace edit
    * fails.
+   * 
+   * See {@link FailureHandlingKind} for allowed values.
    */
   @Pure
-  public FailureHandlingKind getFailureHandling() {
+  public String getFailureHandling() {
     return this.failureHandling;
   }
   
   /**
    * The failure handling strategy of a client if applying the workspace edit
    * fails.
+   * 
+   * See {@link FailureHandlingKind} for allowed values.
    */
-  public void setFailureHandling(final FailureHandlingKind failureHandling) {
+  public void setFailureHandling(final String failureHandling) {
     this.failureHandling = failureHandling;
   }
   
