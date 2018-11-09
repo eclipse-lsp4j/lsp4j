@@ -27,19 +27,18 @@ import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 /**
  * This class connects a message producer with a message consumer by listening for new messages in a dedicated thread.
  */
-public class ConcurrentMessageProcessor<T> implements Runnable {
+public class ConcurrentMessageProcessor implements Runnable {
 	
 	/**
 	 * Start a thread that listens for messages in the message producer and forwards them to the message consumer.
-	 * 
-	 * This method is deprecated. Please use the non-static ConcurrentMessageProcessor.beginProcessing() instead.
 	 * 
 	 * @param messageProducer - produces messages, e.g. by reading from an input channel
 	 * @param messageConsumer - processes messages and potentially forwards them to other consumers
 	 * @param executorService - the thread is started using this service
 	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
-	 * @deprecated
+	 * @deprecated Please use the non-static ConcurrentMessageProcessor.beginProcessing() instead.
 	 */
+	@Deprecated
 	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
 			ExecutorService executorService) {
 		ConcurrentMessageProcessor reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
