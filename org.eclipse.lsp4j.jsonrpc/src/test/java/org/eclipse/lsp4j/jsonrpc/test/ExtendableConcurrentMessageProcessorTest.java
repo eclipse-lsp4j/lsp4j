@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2016 TypeFox and others.
+ * Copyright (c) 2018 Red Hat Inc. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -93,9 +93,9 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 */
 	static <T> Builder<T> createBuilder(MessageContextStore<T> store) {
 		return new Builder<T>() {
-			protected ConcurrentMessageProcessor<T> createMessageProcessor(MessageProducer reader, 
+			protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
 					MessageConsumer messageConsumer, T remoteProxy) {
-				return  new CustomConcurrentMessageProcessor<T>(reader, messageConsumer, remoteProxy, store);
+				return new CustomConcurrentMessageProcessor<T>(reader, messageConsumer, remoteProxy, store);
 			}
 		};
 	}
@@ -104,7 +104,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 * The custom message processor, which can make sure to persist which clients are 
 	 * making a given request before propagating those requests to the server implementation. 
 	 */
-	public static class CustomConcurrentMessageProcessor<T> extends ConcurrentMessageProcessor<T> {
+	public static class CustomConcurrentMessageProcessor<T> extends ConcurrentMessageProcessor {
 
 		private T remoteProxy;
 		private final MessageContextStore<T> threadMap;

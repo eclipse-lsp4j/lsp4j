@@ -317,13 +317,13 @@ public interface Launcher<T> {
 			StreamMessageProducer reader = new StreamMessageProducer(input, jsonHandler, remoteEndpoint);
 			MessageConsumer messageConsumer = wrapMessageConsumer(remoteEndpoint);
 			ExecutorService execService = executorService != null ? executorService : Executors.newCachedThreadPool();
-			ConcurrentMessageProcessor<T> msgProcessor = createMessageProcessor(reader, messageConsumer, remoteProxy);
+			ConcurrentMessageProcessor msgProcessor = createMessageProcessor(reader, messageConsumer, remoteProxy);
 			
 			return createLauncher(reader, messageConsumer, execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
 		protected Launcher<T> createLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
-				ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint, ConcurrentMessageProcessor<T> msgProcessor) {
+				ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint, ConcurrentMessageProcessor msgProcessor) {
 			return new StandardLauncher<T>(reader, execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
@@ -332,17 +332,17 @@ public interface Launcher<T> {
 			private ExecutorService execService;
 			private T remoteProxy;
 			private RemoteEndpoint remoteEndpoint;
-			private ConcurrentMessageProcessor<T> msgProcessor;
+			private ConcurrentMessageProcessor msgProcessor;
 
 			public StandardLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
 					ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint) {
 				this(reader, execService, remoteProxy, remoteEndpoint, 
-						new ConcurrentMessageProcessor<>(reader, messageConsumer));
+						new ConcurrentMessageProcessor(reader, messageConsumer));
 			}
 			
 			public StandardLauncher(StreamMessageProducer reader2,
 					ExecutorService execService2, T remoteProxy2, RemoteEndpoint remoteEndpoint2,
-					ConcurrentMessageProcessor<T> msgProcessor) {
+					ConcurrentMessageProcessor msgProcessor) {
 				this.reader = reader2;
 				this.execService = execService2;
 				this.remoteProxy = remoteProxy2;
@@ -352,8 +352,7 @@ public interface Launcher<T> {
 
 			@Override
 			public Future<Void> startListening() {
-				final Future<?> result = execService.submit(msgProcessor);
-				return ConcurrentMessageProcessor.wrapFuture(result, reader);
+				return msgProcessor.beginProcessing(execService);
 			}
 
 			@Override
@@ -426,14 +425,14 @@ public interface Launcher<T> {
 		 * Clients may override this method to create a message processor
 		 * with an expanded feature set.
 		 * 
-		 * @param reader
-		 * @param messageConsumer
-		 * @param remoteProxy
-		 * @return
+		 * @param reader - A message producer capable of receiving messages from clients
+		 * @param messageConsumer - A message consumer capable of passing completed messages to the local service 
+		 * @param remoteProxy - The remote proxy for communicating with the connecting client
+		 * @return A ConcurrentMessageProcessor capable of linking an incoming request to the local service's implementation
 		 */
-		protected ConcurrentMessageProcessor<T> createMessageProcessor(MessageProducer reader, 
+		protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
 				MessageConsumer messageConsumer, T remoteProxy) {
-			return  new ConcurrentMessageProcessor<T>(reader, messageConsumer);
+			return  new ConcurrentMessageProcessor(reader, messageConsumer);
 		}
 		
 		/**
