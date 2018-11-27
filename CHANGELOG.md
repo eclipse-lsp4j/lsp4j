@@ -9,6 +9,8 @@ Fixed issues: https://github.com/eclipse/lsp4j/milestone/10?closed=1
 Breaking API changes:
  * Type of `WorkspaceEdit.documentChanges` changed from `List<TextDocumentEdit>` to `List<Either<TextDocumentEdit, ResourceOperation>>`
 
+-----
+
 ### v0.5.0 (Sep. 2018)
 
  * Updated primary license to EPL v2.0 (the secondary license EDL v1.0 remains)
