@@ -27,6 +27,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+@SuppressWarnings("deprecation")
 public class ResourceChangeListAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either<ResourceChange, TextDocumentEdit>> ELEMENT_TYPE

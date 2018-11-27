@@ -28,7 +28,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
-@Deprecated
 public class DocumentChangeListAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either<TextDocumentEdit, ResourceOperation>> ELEMENT_TYPE
