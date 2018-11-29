@@ -37,6 +37,7 @@ import org.eclipse.lsp4j.DocumentLinkParams;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
 import org.eclipse.lsp4j.DocumentSymbol;
+import org.eclipse.lsp4j.DocumentSymbolCapabilities;
 import org.eclipse.lsp4j.DocumentSymbolParams;
 import org.eclipse.lsp4j.FoldingRange;
 import org.eclipse.lsp4j.FoldingRangeRequestParams;
@@ -49,6 +50,7 @@ import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
@@ -172,10 +174,21 @@ public interface TextDocumentService {
 	}
 
 	/**
-	 * The document symbol request is sent from the client to the server to list
-	 * all symbols found in a given text document.
+	 * The document symbol request is sent from the client to the server to list all
+	 * symbols found in a given text document.
 	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * Registration Options: {@link TextDocumentRegistrationOptions}
+	 * 
+	 * <p>
+	 * <b>Caveat</b>: although the return type allows mixing the
+	 * {@link DocumentSymbol} and {@link SymbolInformation} instances into a list do
+	 * not do it because the clients cannot accept a heterogeneous list. A list of
+	 * {@code DocumentSymbol} instances is only a valid return value if the
+	 * {@link DocumentSymbolCapabilities#getHierarchicalDocumentSymbolSupport()
+	 * textDocument.documentSymbol.hierarchicalDocumentSymbolSupport} is
+	 * {@code true}. More details on this difference between the LSP and the LSP4J
+	 * can be found <a href="https://github.com/eclipse/lsp4j/issues/252">here</a>.
+	 * </p>
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(DocumentSymbolResponseAdapter.class)
