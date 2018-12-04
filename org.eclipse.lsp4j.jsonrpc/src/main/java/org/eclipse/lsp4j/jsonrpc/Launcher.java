@@ -324,48 +324,9 @@ public interface Launcher<T> {
 		
 		protected Launcher<T> createLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
 				ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint, ConcurrentMessageProcessor msgProcessor) {
-			return new StandardLauncher<T>(reader, execService, remoteProxy, remoteEndpoint, msgProcessor);
+			return new StandardLauncher<T>(execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
-		public static class StandardLauncher<T> implements Launcher<T> {
-			private StreamMessageProducer reader;
-			private ExecutorService execService;
-			private T remoteProxy;
-			private RemoteEndpoint remoteEndpoint;
-			private ConcurrentMessageProcessor msgProcessor;
-
-			public StandardLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
-					ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint) {
-				this(reader, execService, remoteProxy, remoteEndpoint, 
-						new ConcurrentMessageProcessor(reader, messageConsumer));
-			}
-			
-			public StandardLauncher(StreamMessageProducer reader2,
-					ExecutorService execService2, T remoteProxy2, RemoteEndpoint remoteEndpoint2,
-					ConcurrentMessageProcessor msgProcessor) {
-				this.reader = reader2;
-				this.execService = execService2;
-				this.remoteProxy = remoteProxy2;
-				this.remoteEndpoint = remoteEndpoint2;
-				this.msgProcessor = msgProcessor;
-			}
-
-			@Override
-			public Future<Void> startListening() {
-				return msgProcessor.beginProcessing(execService);
-			}
-
-			@Override
-			public T getRemoteProxy() {
-				return remoteProxy;
-			}
-
-			@Override
-			public RemoteEndpoint getRemoteEndpoint() {
-				return remoteEndpoint;
-			}
-		}
-
 		protected MessageConsumer wrapMessageConsumer(MessageConsumer consumer) {
 			MessageConsumer result = consumer;
 			if (messageTracer != null) {
