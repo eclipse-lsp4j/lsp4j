@@ -21,15 +21,15 @@ public interface EvaluateArgumentsContext {
   /**
    * evaluate is run in a watch.
    */
-  public final static String WATCH = "watch";
+  public static final String WATCH = "watch";
   
   /**
    * evaluate is run from REPL console.
    */
-  public final static String REPL = "repl";
+  public static final String REPL = "repl";
   
   /**
    * evaluate is run from a data hover.
    */
-  public final static String HOVER = "hover";
+  public static final String HOVER = "hover";
 }

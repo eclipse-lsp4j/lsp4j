@@ -21,51 +21,51 @@ public interface VariablePresentationHintKind {
   /**
    * Indicates that the object is a property.
    */
-  public final static String PROPERTY = "property";
+  public static final String PROPERTY = "property";
   
   /**
    * Indicates that the object is a method.
    */
-  public final static String METHOD = "method";
+  public static final String METHOD = "method";
   
   /**
    * Indicates that the object is a class.
    */
-  public final static String CLASS = "class";
+  public static final String CLASS = "class";
   
   /**
    * Indicates that the object is data.
    */
-  public final static String DATA = "data";
+  public static final String DATA = "data";
   
   /**
    * Indicates that the object is an event.
    */
-  public final static String EVENT = "event";
+  public static final String EVENT = "event";
   
   /**
    * Indicates that the object is a base class.
    */
-  public final static String BASE_CLASS = "baseClass";
+  public static final String BASE_CLASS = "baseClass";
   
   /**
    * Indicates that the object is an inner class.
    */
-  public final static String INNER_CLASS = "innerClass";
+  public static final String INNER_CLASS = "innerClass";
   
   /**
    * Indicates that the object is an interface.
    */
-  public final static String INTERFACE = "interface";
+  public static final String INTERFACE = "interface";
   
   /**
    * Indicates that the object is the most derived class.
    */
-  public final static String MOST_DERIVED_CLASS = "mostDerivedClass";
+  public static final String MOST_DERIVED_CLASS = "mostDerivedClass";
   
   /**
    * Indicates that the object is virtual, that means it is a synthetic object introduced by the adapter for
    * rendering purposes, e.g. an index range for large arrays.
    */
-  public final static String VIRTUAL = "virtual";
+  public static final String VIRTUAL = "virtual";
 }

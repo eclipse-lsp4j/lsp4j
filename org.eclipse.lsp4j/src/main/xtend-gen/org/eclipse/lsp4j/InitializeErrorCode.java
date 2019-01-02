@@ -23,5 +23,5 @@ public interface InitializeErrorCode {
    * There is no version handshake in version 3.0x
    */
   @Deprecated
-  public final static int unknownProtocolVersion = 1;
+  public static final int unknownProtocolVersion = 1;
 }

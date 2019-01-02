@@ -47,10 +47,10 @@ public class HoverTypeAdapter extends TypeAdapter<Hover> {
     }
   }
   
-  private final static TypeToken<List<Either<String, MarkedString>>> LIST_STRING_MARKEDSTRING = new TypeToken<List<Either<String, MarkedString>>>() {
+  private static final TypeToken<List<Either<String, MarkedString>>> LIST_STRING_MARKEDSTRING = new TypeToken<List<Either<String, MarkedString>>>() {
   };
   
-  private final static TypeToken<Either<String, MarkedString>> STRING_MARKEDSTRING = new TypeToken<Either<String, MarkedString>>() {
+  private static final TypeToken<Either<String, MarkedString>> STRING_MARKEDSTRING = new TypeToken<Either<String, MarkedString>>() {
   };
   
   protected Either<List<Either<String, MarkedString>>, MarkupContent> readContents(final JsonReader in) throws IOException {
@@ -94,7 +94,7 @@ public class HoverTypeAdapter extends TypeAdapter<Hover> {
     }
   }
   
-  private final static TypeToken<Either<List<Either<String, MarkedString>>, MarkupContent>> CONTENTS_TYPE_TOKEN = new TypeToken<Either<List<Either<String, MarkedString>>, MarkupContent>>() {};
+  private static final TypeToken<Either<List<Either<String, MarkedString>>, MarkupContent>> CONTENTS_TYPE_TOKEN = new TypeToken<Either<List<Either<String, MarkedString>>, MarkupContent>>() {};
   
   private final Gson gson;
   

@@ -21,7 +21,7 @@ import org.eclipse.lsp4j.generator.TypeAdapterImpl
  */
 @TypeAdapterImpl(VersionedTextDocumentIdentifier)
 class VersionedTextDocumentIdentifierTypeAdapter {
-	
+
 	protected def void writeVersion(JsonWriter out, Integer value) throws IOException {
 		if (value === null) {
 			val previousSerializeNulls = out.serializeNulls
@@ -32,5 +32,5 @@ class VersionedTextDocumentIdentifierTypeAdapter {
 			out.value(value)
 		}
 	}
-	
+
 }
