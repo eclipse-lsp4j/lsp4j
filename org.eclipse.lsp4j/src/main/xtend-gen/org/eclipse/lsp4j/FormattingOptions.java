@@ -24,9 +24,9 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
  */
 @SuppressWarnings("all")
 public class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Boolean>> {
-  private final static String TAB_SIZE = "tabSize";
+  private static final String TAB_SIZE = "tabSize";
   
-  private final static String INSERT_SPACES = "insertSpaces";
+  private static final String INSERT_SPACES = "insertSpaces";
   
   public FormattingOptions() {
   }

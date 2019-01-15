@@ -67,7 +67,7 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     }
   }
   
-  private final static TypeToken<List<WorkspaceFolder>> WORKSPACEFOLDERS_TYPE_TOKEN = new TypeToken<List<WorkspaceFolder>>() {};
+  private static final TypeToken<List<WorkspaceFolder>> WORKSPACEFOLDERS_TYPE_TOKEN = new TypeToken<List<WorkspaceFolder>>() {};
   
   private final Gson gson;
   

@@ -21,13 +21,13 @@ import org.eclipse.lsp4j.generator.TypeAdapterImpl
 /**
  * A type adapter for the InitializeParams protocol type.
  */
- @TypeAdapterImpl(InitializeParams)
+@TypeAdapterImpl(InitializeParams)
 class InitializeParamsTypeAdapter {
-	
+
 	protected def Object readInitializationOptions(JsonReader in) throws IOException {
 		return gson.getAdapter(JsonElement).read(in);
 	}
-	
+
 	protected def void writeProcessId(JsonWriter out, Integer value) throws IOException {
 		if (value === null) {
 			val previousSerializeNulls = out.serializeNulls
@@ -38,7 +38,7 @@ class InitializeParamsTypeAdapter {
 			out.value(value)
 		}
 	}
-	
+
 	protected def void writeRootUri(JsonWriter out, String value) throws IOException {
 		if (value === null) {
 			val previousSerializeNulls = out.serializeNulls
@@ -49,5 +49,5 @@ class InitializeParamsTypeAdapter {
 			out.value(value)
 		}
 	}
-	
+
 }

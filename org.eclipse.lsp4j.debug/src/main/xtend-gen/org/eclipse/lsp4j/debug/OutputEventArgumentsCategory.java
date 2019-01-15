@@ -18,11 +18,11 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface OutputEventArgumentsCategory {
-  public final static String CONSOLE = "console";
+  public static final String CONSOLE = "console";
   
-  public final static String STDOUT = "stdout";
+  public static final String STDOUT = "stdout";
   
-  public final static String STDERR = "stderr";
+  public static final String STDERR = "stderr";
   
-  public final static String TELEMETRY = "telemetry";
+  public static final String TELEMETRY = "telemetry";
 }

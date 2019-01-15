@@ -16,7 +16,7 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 
 @SuppressWarnings("all")
 public final class LineEndings {
-  private final static Pattern LINE_ENDING_PAT = Pattern.compile("\\r?\\n");
+  private static final Pattern LINE_ENDING_PAT = Pattern.compile("\\r?\\n");
   
   private LineEndings() {
   }

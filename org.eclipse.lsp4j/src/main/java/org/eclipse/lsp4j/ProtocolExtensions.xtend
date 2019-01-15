@@ -21,7 +21,7 @@ import org.eclipse.lsp4j.services.LanguageClient
 /**
  * Representation of a computed mapping from ranges to the appropriate
  * highlighting style.
- *
+ * 
  * @deprecated Use {@link SemanticHighlightingParams} instead.
  */
 @JsonRpcData
@@ -40,22 +40,21 @@ class ColoringParams {
 	 */
 	@NonNull
 	List<? extends ColoringInformation> infos
-	
+
 	new() {
 		this.infos = new ArrayList
 	}
-	
+
 	new(String uri, List<? extends ColoringInformation> infos) {
 		this.uri = uri
 		this.infos = infos
 	}
 }
 
-
 /**
  * Representation of a range and highlighting style identifiers that should be
  * highlighted based on the underlying model.
- *
+ * 
  * @deprecated Use {@link SemanticHighlightingInformation} instead.
  */
 @JsonRpcData
@@ -76,11 +75,11 @@ class ColoringInformation {
 	 */
 	@NonNull
 	List<Integer> styles
-	
+
 	new() {
 		this.styles = new ArrayList
 	}
-	
+
 	new(Range range, List<Integer> styles) {
 		this.range = range
 		this.styles = styles
@@ -93,32 +92,32 @@ class ColoringInformation {
 @Beta
 @Deprecated
 class ColoringStyle {
-	
-	public static val Identifier     = 1
-	public static val Entity         = 2
-	public static val Constructor    = 3
-	public static val Operators      = 4
-	public static val Tag            = 5
-	public static val Namespace      = 6
-	public static val Keyword        = 7
-	public static val Info_token     = 8
-	public static val Type           = 9
-	public static val String         = 10
-	public static val Warn_token     = 11
-	public static val Predefined     = 12
-	public static val String_escape  = 13
-	public static val Error_token    = 14
-	public static val Invalid        = 15
-	public static val Comment        = 16
-	public static val Debug_token    = 17
-	public static val Comment_doc    = 18
-	public static val Regexp         = 19
-	public static val Constant       = 20
-	public static val Attribute      = 21
-	
-	public static val Modifier_public  = 22
+
+	public static val Identifier = 1
+	public static val Entity = 2
+	public static val Constructor = 3
+	public static val Operators = 4
+	public static val Tag = 5
+	public static val Namespace = 6
+	public static val Keyword = 7
+	public static val Info_token = 8
+	public static val Type = 9
+	public static val String = 10
+	public static val Warn_token = 11
+	public static val Predefined = 12
+	public static val String_escape = 13
+	public static val Error_token = 14
+	public static val Invalid = 15
+	public static val Comment = 16
+	public static val Debug_token = 17
+	public static val Comment_doc = 18
+	public static val Regexp = 19
+	public static val Constant = 20
+	public static val Attribute = 21
+
+	public static val Modifier_public = 22
 	public static val Modifier_private = 23
 	public static val Modifier_protected = 24
-	public static val Modifier_static  = 25
-	public static val Modifier_final   = 26
+	public static val Modifier_static = 25
+	public static val Modifier_final = 26
 }

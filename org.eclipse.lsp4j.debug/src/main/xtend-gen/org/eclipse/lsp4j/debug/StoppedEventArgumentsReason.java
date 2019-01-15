@@ -21,15 +21,15 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface StoppedEventArgumentsReason {
-  public final static String STEP = "step";
+  public static final String STEP = "step";
   
-  public final static String BREAKPOINT = "breakpoint";
+  public static final String BREAKPOINT = "breakpoint";
   
-  public final static String EXCEPTION = "exception";
+  public static final String EXCEPTION = "exception";
   
-  public final static String PAUSE = "pause";
+  public static final String PAUSE = "pause";
   
-  public final static String ENTRY = "entry";
+  public static final String ENTRY = "entry";
   
-  public final static String GOTO = "goto";
+  public static final String GOTO = "goto";
 }

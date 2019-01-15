@@ -21,55 +21,55 @@ import org.eclipse.lsp4j.services.LanguageClient;
 @Deprecated
 @SuppressWarnings("all")
 public class ColoringStyle {
-  public final static int Identifier = 1;
+  public static final int Identifier = 1;
   
-  public final static int Entity = 2;
+  public static final int Entity = 2;
   
-  public final static int Constructor = 3;
+  public static final int Constructor = 3;
   
-  public final static int Operators = 4;
+  public static final int Operators = 4;
   
-  public final static int Tag = 5;
+  public static final int Tag = 5;
   
-  public final static int Namespace = 6;
+  public static final int Namespace = 6;
   
-  public final static int Keyword = 7;
+  public static final int Keyword = 7;
   
-  public final static int Info_token = 8;
+  public static final int Info_token = 8;
   
-  public final static int Type = 9;
+  public static final int Type = 9;
   
-  public final static int String = 10;
+  public static final int String = 10;
   
-  public final static int Warn_token = 11;
+  public static final int Warn_token = 11;
   
-  public final static int Predefined = 12;
+  public static final int Predefined = 12;
   
-  public final static int String_escape = 13;
+  public static final int String_escape = 13;
   
-  public final static int Error_token = 14;
+  public static final int Error_token = 14;
   
-  public final static int Invalid = 15;
+  public static final int Invalid = 15;
   
-  public final static int Comment = 16;
+  public static final int Comment = 16;
   
-  public final static int Debug_token = 17;
+  public static final int Debug_token = 17;
   
-  public final static int Comment_doc = 18;
+  public static final int Comment_doc = 18;
   
-  public final static int Regexp = 19;
+  public static final int Regexp = 19;
   
-  public final static int Constant = 20;
+  public static final int Constant = 20;
   
-  public final static int Attribute = 21;
+  public static final int Attribute = 21;
   
-  public final static int Modifier_public = 22;
+  public static final int Modifier_public = 22;
   
-  public final static int Modifier_private = 23;
+  public static final int Modifier_private = 23;
   
-  public final static int Modifier_protected = 24;
+  public static final int Modifier_protected = 24;
   
-  public final static int Modifier_static = 25;
+  public static final int Modifier_static = 25;
   
-  public final static int Modifier_final = 26;
+  public static final int Modifier_final = 26;
 }

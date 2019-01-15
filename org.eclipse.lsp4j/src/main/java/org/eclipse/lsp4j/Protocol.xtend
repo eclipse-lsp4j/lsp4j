@@ -32,16 +32,16 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 @JsonRpcData
 class DynamicRegistrationCapabilities {
 	/**
-     * Supports dynamic registration.
-     */
-    Boolean dynamicRegistration
-    
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	this.dynamicRegistration = dynamicRegistration
-    }
+	 * Supports dynamic registration.
+	 */
+	Boolean dynamicRegistration
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		this.dynamicRegistration = dynamicRegistration
+	}
 }
 
 /**
@@ -53,7 +53,7 @@ class WorkspaceEditCapabilities {
 	 * The client supports versioned document changes in `WorkspaceEdit`s
 	 */
 	Boolean documentChanges
-	
+
 	/**
 	 * The client supports resource changes
 	 * in `WorkspaceEdit`s.
@@ -79,13 +79,13 @@ class WorkspaceEditCapabilities {
 	 */
 	String failureHandling;
 
-    new() {
-    }
-    
-    @Deprecated
-    new(Boolean documentChanges) {
-    	this.documentChanges = documentChanges
-    }
+	new() {
+	}
+
+	@Deprecated
+	new(Boolean documentChanges) {
+		this.documentChanges = documentChanges
+	}
 }
 
 /**
@@ -93,12 +93,12 @@ class WorkspaceEditCapabilities {
  */
 @JsonRpcData
 class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -106,12 +106,12 @@ class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities
  */
 @JsonRpcData
 class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -119,27 +119,27 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
  */
 @JsonRpcData
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
-	
+
 	/**
 	 * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
 	 */
 	SymbolKindCapabilities symbolKind
-	
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
-    
-    new(SymbolKindCapabilities symbolKind) {
-    	this.symbolKind = symbolKind
-    }
-    
-    new(SymbolKindCapabilities symbolKind, Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-      this.symbolKind = symbolKind
-    }
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(SymbolKindCapabilities symbolKind) {
+		this.symbolKind = symbolKind
+	}
+
+	new(SymbolKindCapabilities symbolKind, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.symbolKind = symbolKind
+	}
 }
 
 /**
@@ -147,12 +147,12 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -161,46 +161,46 @@ class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
 @JsonRpcData
 class WorkspaceClientCapabilities {
 	/**
-     * The client supports applying batch edits to the workspace by supporting 
-     * the request 'workspace/applyEdit'.
-     */
-    Boolean applyEdit
-    
-    /**
-     * Capabilities specific to `WorkspaceEdit`s
-     */
-    WorkspaceEditCapabilities workspaceEdit
-    
-    /**
-     * Capabilities specific to the `workspace/didChangeConfiguration` notification.
-     */
-    DidChangeConfigurationCapabilities didChangeConfiguration
-    
-    /**
-     * Capabilities specific to the `workspace/didChangeConfiguration` notification.
-     */
-    DidChangeWatchedFilesCapabilities didChangeWatchedFiles
-    
-    /**
-     * Capabilities specific to the `workspace/symbol` request.
-     */
-    SymbolCapabilities symbol
-    
-    /**
-     * Capabilities specific to the `workspace/executeCommand` request.
-     */
-    ExecuteCommandCapabilities executeCommand
-    
-    /**
+	 * The client supports applying batch edits to the workspace by supporting 
+	 * the request 'workspace/applyEdit'.
+	 */
+	Boolean applyEdit
+
+	/**
+	 * Capabilities specific to `WorkspaceEdit`s
+	 */
+	WorkspaceEditCapabilities workspaceEdit
+
+	/**
+	 * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+	 */
+	DidChangeConfigurationCapabilities didChangeConfiguration
+
+	/**
+	 * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+	 */
+	DidChangeWatchedFilesCapabilities didChangeWatchedFiles
+
+	/**
+	 * Capabilities specific to the `workspace/symbol` request.
+	 */
+	SymbolCapabilities symbol
+
+	/**
+	 * Capabilities specific to the `workspace/executeCommand` request.
+	 */
+	ExecuteCommandCapabilities executeCommand
+
+	/**
 	 * The client has support for workspace folders.
 	 * 
 	 * Since 3.6.0
 	 */
 	Boolean workspaceFolders
-	
+
 	/**
 	 * The client supports `workspace/configuration` requests.
-	 *
+	 * 
 	 * Since 3.6.0
 	 */
 	Boolean configuration
@@ -208,38 +208,38 @@ class WorkspaceClientCapabilities {
 
 @JsonRpcData
 class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
-    /**
-     * The client supports sending will save notifications.
-     */
-    Boolean willSave
-    
-    /**
-     * The client supports sending a will save request and
-     * waits for a response providing text edits which will
-     * be applied to the document before it is saved.
-     */
-    Boolean willSaveWaitUntil
-    
-    /**
-     * The client supports did save notifications.
-     */
-    Boolean didSave
-    
-    new() {
-    }
-    
-    new(Boolean willSave, Boolean willSaveWaitUntil, Boolean didSave) {
-    	this.willSave = willSave
-    	this.willSaveWaitUntil = willSaveWaitUntil
-    	this.didSave = didSave
-    }
-    
-    new(Boolean willSave, Boolean willSaveWaitUntil, Boolean didSave, Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    	this.willSave = willSave
-    	this.willSaveWaitUntil = willSaveWaitUntil
-    	this.didSave = didSave
-    }
+	/**
+	 * The client supports sending will save notifications.
+	 */
+	Boolean willSave
+
+	/**
+	 * The client supports sending a will save request and
+	 * waits for a response providing text edits which will
+	 * be applied to the document before it is saved.
+	 */
+	Boolean willSaveWaitUntil
+
+	/**
+	 * The client supports did save notifications.
+	 */
+	Boolean didSave
+
+	new() {
+	}
+
+	new(Boolean willSave, Boolean willSaveWaitUntil, Boolean didSave) {
+		this.willSave = willSave
+		this.willSaveWaitUntil = willSaveWaitUntil
+		this.didSave = didSave
+	}
+
+	new(Boolean willSave, Boolean willSaveWaitUntil, Boolean didSave, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.willSave = willSave
+		this.willSaveWaitUntil = willSaveWaitUntil
+		this.didSave = didSave
+	}
 }
 
 /**
@@ -272,7 +272,7 @@ class CompletionItemCapabilities {
 	 * Client supports the deprecated property on a completion item.
 	 */
 	Boolean deprecatedSupport
-	
+
 	/**
 	 * Client supports the preselect property on a completion item.
 	 */
@@ -288,63 +288,63 @@ class CompletionItemCapabilities {
 
 @JsonRpcData
 class CompletionItemKindCapabilities {
-    /**
-     * The completion item kind values the client supports. When this
-     * property exists the client also guarantees that it will
-     * handle values outside its set gracefully and falls back
-     * to a default value when unknown.
-     *
-     * If this property is not present the client only supports
-     * the completion items kinds from `Text` to `Reference` as defined in
-     * the initial version of the protocol.
-     */
-    List<CompletionItemKind> valueSet
-    
-    new() {
-    }
-    
-    new(List<CompletionItemKind> valueSet) {
-      this.valueSet = valueSet
-    }
+	/**
+	 * The completion item kind values the client supports. When this
+	 * property exists the client also guarantees that it will
+	 * handle values outside its set gracefully and falls back
+	 * to a default value when unknown.
+	 * 
+	 * If this property is not present the client only supports
+	 * the completion items kinds from `Text` to `Reference` as defined in
+	 * the initial version of the protocol.
+	 */
+	List<CompletionItemKind> valueSet
+
+	new() {
+	}
+
+	new(List<CompletionItemKind> valueSet) {
+		this.valueSet = valueSet
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/completion`
  */
 @JsonRpcData
-class CompletionCapabilities extends DynamicRegistrationCapabilities {     
-    /**
-     * The client supports the following `CompletionItem` specific
-     * capabilities.
-     */
-    CompletionItemCapabilities completionItem
-    
-    /**
-     * The client supports the following `CompletionItemKind` specific
-     * capabilities.
-     */
-    CompletionItemKindCapabilities completionItemKind
-    
-    /**
-     * The client supports sending additional context information for a
-     * `textDocument/completion` request.
-     */
-    Boolean contextSupport
-    
-    new() {
-    }
-    
-    new(CompletionItemCapabilities completionItem) {
-      this.completionItem = completionItem
-    }
-    
-    new(CompletionItemKindCapabilities completionItemKind) {
-      this.completionItemKind = completionItemKind
-    }
-    
-    new(Boolean contextSupport) {
-      this.contextSupport = contextSupport
-    }
+class CompletionCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports the following `CompletionItem` specific
+	 * capabilities.
+	 */
+	CompletionItemCapabilities completionItem
+
+	/**
+	 * The client supports the following `CompletionItemKind` specific
+	 * capabilities.
+	 */
+	CompletionItemKindCapabilities completionItemKind
+
+	/**
+	 * The client supports sending additional context information for a
+	 * `textDocument/completion` request.
+	 */
+	Boolean contextSupport
+
+	new() {
+	}
+
+	new(CompletionItemCapabilities completionItem) {
+		this.completionItem = completionItem
+	}
+
+	new(CompletionItemKindCapabilities completionItemKind) {
+		this.completionItemKind = completionItemKind
+	}
+
+	new(Boolean contextSupport) {
+		this.contextSupport = contextSupport
+	}
 }
 
 /**
@@ -352,25 +352,25 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class HoverCapabilities extends DynamicRegistrationCapabilities {
-    /**
-     * Client supports the following content formats for the content
-     * property. The order describes the preferred format of the client.
-     * 
-     * See {@link MarkupKind} for allowed values.
-     */
-    List<String> contentFormat
-    
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
-    
-    new(List<String> contentFormat, Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-      this.contentFormat = contentFormat
-    }
+	/**
+	 * Client supports the following content formats for the content
+	 * property. The order describes the preferred format of the client.
+	 * 
+	 * See {@link MarkupKind} for allowed values.
+	 */
+	List<String> contentFormat
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(List<String> contentFormat, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.contentFormat = contentFormat
+	}
 }
 
 /**
@@ -378,70 +378,70 @@ class HoverCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class SignatureInformationCapabilities {
-    /**
-     * Client supports the following content formats for the documentation
-     * property. The order describes the preferred format of the client.
-     * 
-     * See {@link MarkupKind} for allowed values.
-     */
-    List<String> documentationFormat
-    
-    new() {
-    }
-    
-    new(List<String> documentationFormat) {
-      this.documentationFormat = documentationFormat
-    }
+	/**
+	 * Client supports the following content formats for the documentation
+	 * property. The order describes the preferred format of the client.
+	 * 
+	 * See {@link MarkupKind} for allowed values.
+	 */
+	List<String> documentationFormat
+
+	new() {
+	}
+
+	new(List<String> documentationFormat) {
+		this.documentationFormat = documentationFormat
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/signatureHelp`
  */
 @JsonRpcData
-class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {	
-    /**
-     * The client supports the following `SignatureInformation`
-     * specific properties.
-     */
-    SignatureInformationCapabilities signatureInformation
-    
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
-    
-    new(SignatureInformationCapabilities signatureInformation, Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-      this.signatureInformation = signatureInformation
-    }
+class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports the following `SignatureInformation`
+	 * specific properties.
+	 */
+	SignatureInformationCapabilities signatureInformation
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(SignatureInformationCapabilities signatureInformation, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.signatureInformation = signatureInformation
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/references`
  */
 @JsonRpcData
-class ReferencesCapabilities extends DynamicRegistrationCapabilities {	
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+class ReferencesCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/documentHighlight`
  */
 @JsonRpcData
-class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {	
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -449,24 +449,24 @@ class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class SymbolKindCapabilities {
-    /**
-     * The symbol kind values the client supports. When this
-     * property exists the client also guarantees that it will
-     * handle values outside its set gracefully and falls back
-     * to a default value when unknown.
-     *
-     * If this property is not present the client only supports
-     * the symbol kinds from `File` to `Array` as defined in
-     * the initial version of the protocol.
-     */
-    List<SymbolKind> valueSet
-    
-    new() {
-    }
-    
-    new(List<SymbolKind> valueSet) {
-      this.valueSet = valueSet
-    }
+	/**
+	 * The symbol kind values the client supports. When this
+	 * property exists the client also guarantees that it will
+	 * handle values outside its set gracefully and falls back
+	 * to a default value when unknown.
+	 * 
+	 * If this property is not present the client only supports
+	 * the symbol kinds from `File` to `Array` as defined in
+	 * the initial version of the protocol.
+	 */
+	List<SymbolKind> valueSet
+
+	new() {
+	}
+
+	new(List<SymbolKind> valueSet) {
+		this.valueSet = valueSet
+	}
 }
 
 /**
@@ -474,31 +474,31 @@ class SymbolKindCapabilities {
  */
 @JsonRpcData
 class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
-    /**
-     * Specific capabilities for the `SymbolKind`.
-     */
-    SymbolKindCapabilities symbolKind
-    
-    /**
-     * The client support hierarchical document symbols.
-     */
-    Boolean hierarchicalDocumentSymbolSupport
-    
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
-    
-    new(SymbolKindCapabilities symbolKind) {
-      this.symbolKind = symbolKind
-    }
-    
-    new(SymbolKindCapabilities symbolKind, Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-      this.symbolKind = symbolKind
-    }
+	/**
+	 * Specific capabilities for the `SymbolKind`.
+	 */
+	SymbolKindCapabilities symbolKind
+
+	/**
+	 * The client support hierarchical document symbols.
+	 */
+	Boolean hierarchicalDocumentSymbolSupport
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(SymbolKindCapabilities symbolKind) {
+		this.symbolKind = symbolKind
+	}
+
+	new(SymbolKindCapabilities symbolKind, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.symbolKind = symbolKind
+	}
 }
 
 /**
@@ -506,12 +506,12 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class FormattingCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -519,12 +519,12 @@ class FormattingCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -532,12 +532,12 @@ class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -545,44 +545,43 @@ class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class DefinitionCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/typeDefinition`
- *
+ * 
  * Since 3.6.0
  */
 @JsonRpcData
 class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/implementation`.
- *
+ * 
  * Since 3.6.0
  */
 @JsonRpcData
 class ImplementationCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-    }
-}
+	new() {
+	}
 
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+}
 
 @JsonRpcData
 class CodeActionKindCapabilities {
@@ -594,31 +593,30 @@ class CodeActionKindCapabilities {
 	 * 
 	 * See {@link CodeActionKind} for allowed values.
 	 */
-    List<String> valueSet
+	List<String> valueSet
 
-    new() {
-    }
-    
-    new(List<String> valueSet) {
-      this.valueSet = valueSet
-    }
+	new() {
+	}
+
+	new(List<String> valueSet) {
+		this.valueSet = valueSet
+	}
 }
-
 
 @JsonRpcData
 class CodeActionLiteralSupportCapabilities {
 	/**
-	  * The code action kind is support with the following value
-	  * set.
-	  */
-    CodeActionKindCapabilities codeActionKind
-    
-    new() {
-    }
-    
-    new(CodeActionKindCapabilities codeActionKind) {
-      this.codeActionKind = codeActionKind;
-    }
+	 * The code action kind is support with the following value
+	 * set.
+	 */
+	CodeActionKindCapabilities codeActionKind
+
+	new() {
+	}
+
+	new(CodeActionKindCapabilities codeActionKind) {
+		this.codeActionKind = codeActionKind;
+	}
 }
 
 /**
@@ -626,24 +624,24 @@ class CodeActionLiteralSupportCapabilities {
  */
 @JsonRpcData
 class CodeActionCapabilities extends DynamicRegistrationCapabilities {
-	
+
 	/**
 	 * The client support code action literals as a valid
 	 * response of the `textDocument/codeAction` request.
 	 */
-    CodeActionLiteralSupportCapabilities codeActionLiteralSupport
+	CodeActionLiteralSupportCapabilities codeActionLiteralSupport
 
-    new() {
-    }
+	new() {
+	}
 
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
-    
-    new(CodeActionLiteralSupportCapabilities codeActionLiteralSupport, Boolean dynamicRegistration) {
-        super(dynamicRegistration)
-        this.codeActionLiteralSupport = codeActionLiteralSupport
-    }
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(CodeActionLiteralSupportCapabilities codeActionLiteralSupport, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.codeActionLiteralSupport = codeActionLiteralSupport
+	}
 }
 
 /**
@@ -651,12 +649,12 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class CodeLensCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -664,28 +662,28 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
  * Capabilities specific to the `textDocument/documentColor` and the
  * `textDocument/colorPresentation` request.
- *
+ * 
  * Since 3.6.0
  */
 @JsonRpcData
 class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-      super(dynamicRegistration)
-    }
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -693,24 +691,24 @@ class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class RenameCapabilities extends DynamicRegistrationCapabilities {
-	
+
 	/**
 	 * Client supports testing for validity of rename operations
 	 * before execution.
 	 */
 	Boolean prepareSupport
-	
-    new() {
-    }
-    
-    new(Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    }
-    
-    new(Boolean prepareSupport, Boolean dynamicRegistration) {
-    	super(dynamicRegistration)
-    	this.prepareSupport = prepareSupport
-    }
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(Boolean prepareSupport, Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+		this.prepareSupport = prepareSupport
+	}
 }
 
 /**
@@ -722,10 +720,10 @@ class PublishDiagnosticsCapabilities {
 	 * Whether the client accepts diagnostics with related information.
 	 */
 	Boolean relatedInformation
-	
+
 	new() {
 	}
-	
+
 	new(Boolean relatedInformation) {
 		this.relatedInformation = relatedInformation
 	}
@@ -743,7 +741,7 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	 * hint, servers are free to follow the limit.
 	 */
 	Integer rangeLimit
-	
+
 	/**
 	 * If set, the client signals that it only supports folding complete lines. If set, client will
 	 * ignore specified `startCharacter` and `endCharacter` properties in a FoldingRange.
@@ -775,104 +773,104 @@ class SemanticHighlightingCapabilities {
 @JsonRpcData
 class TextDocumentClientCapabilities {
 	SynchronizationCapabilities synchronization
-	
+
 	/**
-     * Capabilities specific to the `textDocument/completion`
-     */
-    CompletionCapabilities completion
-    
-    /**
-     * Capabilities specific to the `textDocument/hover`
-     */
-    HoverCapabilities hover
-    
-    /**
-     * Capabilities specific to the `textDocument/signatureHelp`
-     */
-    SignatureHelpCapabilities signatureHelp
-    
-    /**
-     * Capabilities specific to the `textDocument/references`
-     */
-    ReferencesCapabilities references
-    
-    /**
-     * Capabilities specific to the `textDocument/documentHighlight`
-     */
-    DocumentHighlightCapabilities documentHighlight
-    
-    /**
-     * Capabilities specific to the `textDocument/documentSymbol`
-     */
-    DocumentSymbolCapabilities documentSymbol
-    
-    /**
-     * Capabilities specific to the `textDocument/formatting`
-     */
-    FormattingCapabilities formatting
-    
-    /**
-     * Capabilities specific to the `textDocument/rangeFormatting`
-     */
-    RangeFormattingCapabilities rangeFormatting
-    
-    /**
-     * Capabilities specific to the `textDocument/onTypeFormatting`
-     */
-    OnTypeFormattingCapabilities onTypeFormatting
-    
-    /**
-     * Capabilities specific to the `textDocument/definition`
-     */
-    DefinitionCapabilities definition
-    
-    /**
-     * Capabilities specific to the `textDocument/typeDefinition`
-     *
-     * Since 3.6.0
-     */
-    TypeDefinitionCapabilities typeDefinition
-    
-    /**
-     * Capabilities specific to the `textDocument/implementation`
-     *
-     * Since 3.6.0
-     */
-    ImplementationCapabilities implementation
-    
-    /**
-     * Capabilities specific to the `textDocument/codeAction`
-     */
-    CodeActionCapabilities codeAction
-    
-    /**
-     * Capabilities specific to the `textDocument/codeLens`
-     */
-    CodeLensCapabilities codeLens
-    
-    /**
-     * Capabilities specific to the `textDocument/documentLink`
-     */
-    DocumentLinkCapabilities documentLink
-    
-    /**
-     * Capabilities specific to the `textDocument/documentColor` and the
-     * `textDocument/colorPresentation` request.
-     *
-     * Since 3.6.0
-     */
-    ColorProviderCapabilities colorProvider
-    
-    /**
-     * Capabilities specific to the `textDocument/rename`
-     */
-    RenameCapabilities rename
-    
-    /**
+	 * Capabilities specific to the `textDocument/completion`
+	 */
+	CompletionCapabilities completion
+
+	/**
+	 * Capabilities specific to the `textDocument/hover`
+	 */
+	HoverCapabilities hover
+
+	/**
+	 * Capabilities specific to the `textDocument/signatureHelp`
+	 */
+	SignatureHelpCapabilities signatureHelp
+
+	/**
+	 * Capabilities specific to the `textDocument/references`
+	 */
+	ReferencesCapabilities references
+
+	/**
+	 * Capabilities specific to the `textDocument/documentHighlight`
+	 */
+	DocumentHighlightCapabilities documentHighlight
+
+	/**
+	 * Capabilities specific to the `textDocument/documentSymbol`
+	 */
+	DocumentSymbolCapabilities documentSymbol
+
+	/**
+	 * Capabilities specific to the `textDocument/formatting`
+	 */
+	FormattingCapabilities formatting
+
+	/**
+	 * Capabilities specific to the `textDocument/rangeFormatting`
+	 */
+	RangeFormattingCapabilities rangeFormatting
+
+	/**
+	 * Capabilities specific to the `textDocument/onTypeFormatting`
+	 */
+	OnTypeFormattingCapabilities onTypeFormatting
+
+	/**
+	 * Capabilities specific to the `textDocument/definition`
+	 */
+	DefinitionCapabilities definition
+
+	/**
+	 * Capabilities specific to the `textDocument/typeDefinition`
+	 * 
+	 * Since 3.6.0
+	 */
+	TypeDefinitionCapabilities typeDefinition
+
+	/**
+	 * Capabilities specific to the `textDocument/implementation`
+	 * 
+	 * Since 3.6.0
+	 */
+	ImplementationCapabilities implementation
+
+	/**
+	 * Capabilities specific to the `textDocument/codeAction`
+	 */
+	CodeActionCapabilities codeAction
+
+	/**
+	 * Capabilities specific to the `textDocument/codeLens`
+	 */
+	CodeLensCapabilities codeLens
+
+	/**
+	 * Capabilities specific to the `textDocument/documentLink`
+	 */
+	DocumentLinkCapabilities documentLink
+
+	/**
+	 * Capabilities specific to the `textDocument/documentColor` and the
+	 * `textDocument/colorPresentation` request.
+	 * 
+	 * Since 3.6.0
+	 */
+	ColorProviderCapabilities colorProvider
+
+	/**
+	 * Capabilities specific to the `textDocument/rename`
+	 */
+	RenameCapabilities rename
+
+	/**
 	 * Capabilities specific to `textDocument/publishDiagnostics`.
 	 */
 	PublishDiagnosticsCapabilities publishDiagnostics
-	
+
 	/**
 	 * Capabilities specific to `textDocument/foldingRange` requests.
 	 * 
@@ -902,76 +900,76 @@ class TextDocumentClientCapabilities {
 @JsonRpcData
 class ClientCapabilities {
 	/**
-     * Workspace specific client capabilities.
-     */
-    WorkspaceClientCapabilities workspace
-    
-    /**
-     * Text document specific client capabilities.
-     */
-    TextDocumentClientCapabilities textDocument
-    
-    /**
-     * Experimental client capabilities.
-     */
-    @JsonAdapter(JsonElementTypeAdapter.Factory)
-    Object experimental
-    
-    new() {
-    }
-    
-    new(WorkspaceClientCapabilities workspace, TextDocumentClientCapabilities textDocument, Object experimental) {
-    	this.workspace = workspace
-    	this.textDocument = textDocument
-    	this.experimental = experimental
-    }
+	 * Workspace specific client capabilities.
+	 */
+	WorkspaceClientCapabilities workspace
+
+	/**
+	 * Text document specific client capabilities.
+	 */
+	TextDocumentClientCapabilities textDocument
+
+	/**
+	 * Experimental client capabilities.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object experimental
+
+	new() {
+	}
+
+	new(WorkspaceClientCapabilities workspace, TextDocumentClientCapabilities textDocument, Object experimental) {
+		this.workspace = workspace
+		this.textDocument = textDocument
+		this.experimental = experimental
+	}
 }
 
 /**
  * A code action represents a change that can be performed in code, e.g. to fix a problem or
  * to refactor code.
- *
+ * 
  * A CodeAction must set either `edit` and/or a `command`. If both are supplied, the `edit` is applied first, then the `command` is executed.
  */
- @JsonRpcData
+@JsonRpcData
 class CodeAction {
-    /**
-     * A short, human-readable, title for this code action.
-     */
-    @NonNull
-    String title
+	/**
+	 * A short, human-readable, title for this code action.
+	 */
+	@NonNull
+	String title
 
-    /**
-     * The kind of the code action.
-     *
-     * Used to filter code actions.
-     */
-    String kind
-    
-    /**
-     * The diagnostics that this code action resolves.
-     */
-    List<Diagnostic> diagnostics
-    
-    /**
-     * The workspace edit this code action performs.
-     */
-    WorkspaceEdit edit
+	/**
+	 * The kind of the code action.
+	 * 
+	 * Used to filter code actions.
+	 */
+	String kind
 
-    /**
-     * A command this code action executes. If a code action
-     * provides a edit and a command, first the edit is
-     * executed and then the command.
-     */
-    Command command
+	/**
+	 * The diagnostics that this code action resolves.
+	 */
+	List<Diagnostic> diagnostics
 
-    new() {
-    }
-    
-    new(@NonNull String title) {
-    	this.title = title
+	/**
+	 * The workspace edit this code action performs.
+	 */
+	WorkspaceEdit edit
+
+	/**
+	 * A command this code action executes. If a code action
+	 * provides a edit and a command, first the edit is
+	 * executed and then the command.
+	 */
+	Command command
+
+	new() {
 	}
-    
+
+	new(@NonNull String title) {
+		this.title = title
+	}
+
 }
 
 /**
@@ -984,28 +982,28 @@ class CodeActionContext {
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
-	
+
 	/**
 	 * Requested kind of actions to return.
-	 *
+	 * 
 	 * Actions not of this kind are filtered out by the client before being shown. So servers
 	 * can omit computing them.
-	 *
+	 * 
 	 * See {@link CodeActionKind} for allowed values.
 	 */
 	List<String> only
 
-    new() {
-    }
-    
-    new(@NonNull List<Diagnostic> diagnostics) {
-    	this.diagnostics = diagnostics
-    }
-    
-    new(@NonNull List<Diagnostic> diagnostics, List<String> only) {
-    	this(diagnostics)
-    	this.only = only
-    }
+	new() {
+	}
+
+	new(@NonNull List<Diagnostic> diagnostics) {
+		this.diagnostics = diagnostics
+	}
+
+	new(@NonNull List<Diagnostic> diagnostics, List<String> only) {
+		this(diagnostics)
+		this.only = only
+	}
 }
 
 /**
@@ -1032,15 +1030,15 @@ class CodeActionParams {
 	 */
 	@NonNull
 	CodeActionContext context
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range, @NonNull CodeActionContext context) {
-    	this.textDocument = textDocument
-    	this.range = range
-    	this.context = context
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range, @NonNull CodeActionContext context) {
+		this.textDocument = textDocument
+		this.range = range
+		this.context = context
+	}
 }
 
 /**
@@ -1068,19 +1066,19 @@ class CodeLens {
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
-    
-    new() {
-    }
-    
-    new(@NonNull Range range) {
-    	this.range = range
-    }
-    
-    new(@NonNull Range range, Command command, Object data) {
-    	this(range)
-    	this.command = command
-    	this.data = data
-    }
+
+	new() {
+	}
+
+	new(@NonNull Range range) {
+		this.range = range
+	}
+
+	new(@NonNull Range range, Command command, Object data) {
+		this(range)
+		this.command = command
+		this.data = data
+	}
 }
 
 /**
@@ -1090,20 +1088,19 @@ class CodeLens {
 class CodeActionOptions {
 	/**
 	 * CodeActionKinds that this server may return.
-	 *
+	 * 
 	 * The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
 	 * may list out every specific kind they provide.
 	 */
 	List<String> codeActionKinds
-	
+
 	new() {
 	}
-	
-	new (List<String> codeActionKinds) {
+
+	new(List<String> codeActionKinds) {
 		this.codeActionKinds = codeActionKinds
 	}
 }
-
 
 /**
  * Code Lens options.
@@ -1114,13 +1111,13 @@ class CodeLensOptions {
 	 * Code lens has a resolve provider as well.
 	 */
 	boolean resolveProvider
-    
-    new() {
-    }
-    
-    new(boolean resolveProvider) {
-    	this.resolveProvider = resolveProvider
-    }
+
+	new() {
+	}
+
+	new(boolean resolveProvider) {
+		this.resolveProvider = resolveProvider
+	}
 }
 
 /**
@@ -1133,13 +1130,13 @@ class CodeLensParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument) {
-    	this.textDocument = textDocument
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
 }
 
 /**
@@ -1164,19 +1161,19 @@ class Command {
 	 * Arguments that the command handler should be invoked with.
 	 */
 	List<Object> arguments
-    
-    new() {
-    }
-    
-    new(@NonNull String title, @NonNull String command) {
-    	this.title = title
-    	this.command = command
-    }
-    
-    new(@NonNull String title, @NonNull String command, List<Object> arguments) {
-    	this(title, command)
-    	this.arguments = arguments
-    }
+
+	new() {
+	}
+
+	new(@NonNull String title, @NonNull String command) {
+		this.title = title
+		this.command = command
+	}
+
+	new(@NonNull String title, @NonNull String command, List<Object> arguments) {
+		this(title, command)
+		this.arguments = arguments
+	}
 }
 
 /**
@@ -1207,7 +1204,7 @@ class CompletionItem {
 	 * A human-readable string that represents a doc-comment.
 	 */
 	Either<String, MarkupContent> documentation
-	
+
 	/**
 	 * Indicates if this item is deprecated.
 	 */
@@ -1215,7 +1212,7 @@ class CompletionItem {
 
 	/**
 	 * Select this item when showing.
-	 *
+	 * 
 	 * *Note* that only one completion item can be selected and that the
 	 * tool / client decides which item that is. The rule is that the *first*
 	 * item of those that match best is selected.
@@ -1236,33 +1233,33 @@ class CompletionItem {
 	 * A string that should be inserted a document when selecting this completion. When `falsy` the label is used.
 	 */
 	String insertText
-	
-	/**
-     * The format of the insert text. The format applies to both the `insertText` property
-     * and the `newText` property of a provided `textEdit`.
-     */
-    InsertTextFormat insertTextFormat
 
-    /**
-     * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-     * `insertText` is ignored.
-     *
-     * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
-     * has been requested.
-     */
-    TextEdit textEdit
+	/**
+	 * The format of the insert text. The format applies to both the `insertText` property
+	 * and the `newText` property of a provided `textEdit`.
+	 */
+	InsertTextFormat insertTextFormat
+
+	/**
+	 * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
+	 * `insertText` is ignored.
+	 * 
+	 * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
+	 * has been requested.
+	 */
+	TextEdit textEdit
 
 	/**
 	 * An optional array of additional text edits that are applied when
 	 * selecting this completion. Edits must not overlap (including the same insert position)
 	 * with the main edit nor with themselves.
-	 *
+	 * 
 	 * Additional text edits should be used to change text unrelated to the current cursor position
 	 * (for example adding an import statement at the top of the file if the completion item will
 	 * insert an unqualified type).
 	 */
 	List<TextEdit> additionalTextEdits
-	
+
 	/**
 	 * An optional set of characters that when pressed while this completion is active will accept it first and
 	 * then type that character. *Note* that all commit characters should have `length=1` and that superfluous
@@ -1282,10 +1279,10 @@ class CompletionItem {
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull String label) {
 		this.label = label
 	}
@@ -1306,19 +1303,19 @@ class CompletionList {
 	 */
 	@NonNull
 	List<CompletionItem> items
-    
-    new() {
-    	this(new ArrayList)
-    }
-    
-    new(@NonNull List<CompletionItem> items) {
-    	this.items = items
-    }
-    
-    new(boolean isIncomplete, @NonNull List<CompletionItem> items) {
-    	this(items)
-    	this.isIncomplete = isIncomplete
-    }
+
+	new() {
+		this(new ArrayList)
+	}
+
+	new(@NonNull List<CompletionItem> items) {
+		this.items = items
+	}
+
+	new(boolean isIncomplete, @NonNull List<CompletionItem> items) {
+		this(items)
+		this.isIncomplete = isIncomplete
+	}
 }
 
 /**
@@ -1335,14 +1332,14 @@ class CompletionOptions {
 	 * The characters that trigger completion automatically.
 	 */
 	List<String> triggerCharacters
-    
-    new() {
-    }
-    
-    new(Boolean resolveProvider, List<String> triggerCharacters) {
-    	this.resolveProvider = resolveProvider
-    	this.triggerCharacters = triggerCharacters
-    }
+
+	new() {
+	}
+
+	new(Boolean resolveProvider, List<String> triggerCharacters) {
+		this.resolveProvider = resolveProvider
+		this.triggerCharacters = triggerCharacters
+	}
 }
 
 /**
@@ -1377,7 +1374,7 @@ class Diagnostic {
 	 */
 	@NonNull
 	String message
-	
+
 	/**
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
 	 * all definitions can be marked via this property.
@@ -1385,21 +1382,21 @@ class Diagnostic {
 	 * Since 3.7.0
 	 */
 	List<DiagnosticRelatedInformation> relatedInformation
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull Range range, @NonNull String message) {
 		this.range = range
 		this.message = message
 	}
-	
+
 	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source) {
 		this(range, message)
 		this.severity = severity
 		this.source = source
 	}
-	
+
 	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source, String code) {
 		this(range, message, severity, source)
 		this.code = code
@@ -1426,10 +1423,10 @@ class DiagnosticRelatedInformation {
 	 */
 	@NonNull
 	String message
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull Location location, @NonNull String message) {
 		this.location = location
 		this.message = message
@@ -1447,13 +1444,13 @@ class DidChangeConfigurationParams {
 	@NonNull
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object settings
-    
-    new() {
-    }
-    
-    new(@NonNull Object settings) {
-    	this.settings = settings
-    }
+
+	new() {
+	}
+
+	new(@NonNull Object settings) {
+		this.settings = settings
+	}
 }
 
 /**
@@ -1479,20 +1476,22 @@ class DidChangeTextDocumentParams {
 	 */
 	@NonNull
 	List<TextDocumentContentChangeEvent> contentChanges = new ArrayList
-    
-    new() {
-    }
-    
-    new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextDocumentContentChangeEvent> contentChanges) {
-    	this.textDocument = textDocument
-    	this.contentChanges = contentChanges
-    }
-    
-    @Deprecated
-    new(@NonNull VersionedTextDocumentIdentifier textDocument, String uri, @NonNull List<TextDocumentContentChangeEvent> contentChanges) {
-    	this(textDocument, contentChanges)
-    	this.uri = uri
-    }
+
+	new() {
+	}
+
+	new(@NonNull VersionedTextDocumentIdentifier textDocument,
+		@NonNull List<TextDocumentContentChangeEvent> contentChanges) {
+		this.textDocument = textDocument
+		this.contentChanges = contentChanges
+	}
+
+	@Deprecated
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, String uri,
+		@NonNull List<TextDocumentContentChangeEvent> contentChanges) {
+		this(textDocument, contentChanges)
+		this.uri = uri
+	}
 }
 
 /**
@@ -1506,14 +1505,14 @@ class DidChangeWatchedFilesParams {
 	 */
 	@NonNull
 	List<FileEvent> changes
-    
-    new() {
-    	this(new ArrayList)
-    }
-    
-    new(@NonNull List<FileEvent> changes) {
-    	this.changes = changes
-    }
+
+	new() {
+		this(new ArrayList)
+	}
+
+	new(@NonNull List<FileEvent> changes) {
+		this.changes = changes
+	}
 }
 
 @JsonRpcData
@@ -1523,10 +1522,10 @@ class DidChangeWatchedFilesRegistrationOptions {
 	 */
 	@NonNull
 	List<FileSystemWatcher> watchers
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull List<FileSystemWatcher> watchers) {
 		this.watchers = watchers
 	}
@@ -1539,21 +1538,21 @@ class FileSystemWatcher {
 	 */
 	@NonNull
 	String globPattern
-	
+
 	/**
 	 * The kind of events of interest. If omitted it defaults
 	 * to WatchKind.Create | WatchKind.Change | WatchKind.Delete
 	 * which is 7.
 	 */
 	Integer kind
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull String globPattern) {
 		this.globPattern = globPattern
 	}
-	
+
 	new(@NonNull String globPattern, Integer kind) {
 		this.globPattern = globPattern
 		this.kind = kind
@@ -1572,13 +1571,13 @@ class DidCloseTextDocumentParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument) {
-    	this.textDocument = textDocument
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
 }
 
 /**
@@ -1599,19 +1598,19 @@ class DidOpenTextDocumentParams {
 	 */
 	@Deprecated
 	String text
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentItem textDocument) {
-    	this.textDocument = textDocument
-    }
-    
-    @Deprecated
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentItem textDocument) {
+		this.textDocument = textDocument
+	}
+
+	@Deprecated
 	new(@NonNull TextDocumentItem textDocument, String text) {
-    	this(textDocument)
-    	this.text = text
-    }
+		this(textDocument)
+		this.text = text
+	}
 }
 
 /**
@@ -1624,26 +1623,25 @@ class DidSaveTextDocumentParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-	
-	/**
-     * Optional the content when saved. Depends on the includeText value
-     * when the save notification was requested.
-     */
-    String text
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument) {
-    	this.textDocument = textDocument
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument, String text) {
-    	this(textDocument)
-    	this.text = text
-    }
-}
 
+	/**
+	 * Optional the content when saved. Depends on the includeText value
+	 * when the save notification was requested.
+	 */
+	String text
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, String text) {
+		this(textDocument)
+		this.text = text
+	}
+}
 
 @JsonRpcData
 class WillSaveTextDocumentParams {
@@ -1652,20 +1650,20 @@ class WillSaveTextDocumentParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-	
+
 	/**
 	 * A reason why a text document is saved.
 	 */
 	@NonNull
 	TextDocumentSaveReason reason
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument, @NonNull TextDocumentSaveReason reason) {
-    	this.textDocument = textDocument
-    	this.reason = reason
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull TextDocumentSaveReason reason) {
+		this.textDocument = textDocument
+		this.reason = reason
+	}
 }
 
 /**
@@ -1684,14 +1682,14 @@ class DocumentFormattingParams {
 	 */
 	@NonNull
 	FormattingOptions options
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options) {
-    	this.textDocument = textDocument
-    	this.options = options
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options) {
+		this.textDocument = textDocument
+		this.options = options
+	}
 }
 
 /**
@@ -1710,18 +1708,18 @@ class DocumentHighlight {
 	 * The highlight kind, default is {@link DocumentHighlightKind#Text}.
 	 */
 	DocumentHighlightKind kind
-    
-    new() {
-    }
-    
-    new(@NonNull Range range) {
-    	this.range = range
-    }
-    
-    new(@NonNull Range range, DocumentHighlightKind kind) {
-    	this(range)
-    	this.kind = kind
-    }
+
+	new() {
+	}
+
+	new(@NonNull Range range) {
+		this.range = range
+	}
+
+	new(@NonNull Range range, DocumentHighlightKind kind) {
+		this(range)
+		this.kind = kind
+	}
 }
 
 /**
@@ -1771,18 +1769,18 @@ class DocumentLink {
  */
 @JsonRpcData
 class DocumentLinkParams {
-    /**
-     * The document to provide document links for.
-     */
-    @NonNull
-    TextDocumentIdentifier textDocument
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument) {
-    	this.textDocument = textDocument
-    }
+	/**
+	 * The document to provide document links for.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
 }
 
 /**
@@ -1791,16 +1789,16 @@ class DocumentLinkParams {
 @JsonRpcData
 class DocumentLinkOptions {
 	/**
-     * Document links have a resolve provider as well.
-     */
-    Boolean resolveProvider
-    
-    new() {
-    }
-    
-    new(Boolean resolveProvider) {
-    	this.resolveProvider = resolveProvider
-    }
+	 * Document links have a resolve provider as well.
+	 */
+	Boolean resolveProvider
+
+	new() {
+	}
+
+	new(Boolean resolveProvider) {
+		this.resolveProvider = resolveProvider
+	}
 }
 
 /**
@@ -1809,18 +1807,18 @@ class DocumentLinkOptions {
 @JsonRpcData
 class ExecuteCommandOptions {
 	/**
-     * The commands to be executed on the server
-     */
-    @NonNull
-    List<String> commands
-    
-    new() {
-    	this(new ArrayList)
-    }
-    
-    new(@NonNull List<String> commands) {
-    	this.commands = commands
-    }
+	 * The commands to be executed on the server
+	 */
+	@NonNull
+	List<String> commands
+
+	new() {
+		this(new ArrayList)
+	}
+
+	new(@NonNull List<String> commands) {
+		this.commands = commands
+	}
 }
 
 /**
@@ -1829,16 +1827,16 @@ class ExecuteCommandOptions {
 @JsonRpcData
 class SaveOptions {
 	/**
-     * The client is supposed to include the content on save.
-     */
-    Boolean includeText
-    
-    new() {
-    }
-    
-    new(Boolean includeText) {
-    	this.includeText = includeText
-    }
+	 * The client is supposed to include the content on save.
+	 */
+	Boolean includeText
+
+	new() {
+	}
+
+	new(Boolean includeText) {
+		this.includeText = includeText
+	}
 }
 
 /**
@@ -1869,26 +1867,26 @@ class FoldingRangeProviderOptions extends StaticRegistrationOptions {
 @JsonRpcData
 class TextDocumentSyncOptions {
 	/**
-     * Open and close notifications are sent to the server.
-     */
-    Boolean openClose
-    /**
-     * Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
-     * and TextDocumentSyncKind.Incremental.
-     */
-    TextDocumentSyncKind change
-    /**
-     * Will save notifications are sent to the server.
-     */
-    Boolean willSave
-    /**
-     * Will save wait until requests are sent to the server.
-     */
-    Boolean willSaveWaitUntil
-    /**
-     * Save notifications are sent to the server.
-     */
-    SaveOptions save
+	 * Open and close notifications are sent to the server.
+	 */
+	Boolean openClose
+	/**
+	 * Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
+	 * and TextDocumentSyncKind.Incremental.
+	 */
+	TextDocumentSyncKind change
+	/**
+	 * Will save notifications are sent to the server.
+	 */
+	Boolean willSave
+	/**
+	 * Will save wait until requests are sent to the server.
+	 */
+	Boolean willSaveWaitUntil
+	/**
+	 * Save notifications are sent to the server.
+	 */
+	SaveOptions save
 }
 
 /**
@@ -1901,10 +1899,10 @@ class StaticRegistrationOptions extends TextDocumentRegistrationOptions {
 	 * the request again. See also Registration#id.
 	 */
 	String id
-	
+
 	new() {
 	}
-	
+
 	new(String id) {
 		this.id = id
 	}
@@ -1925,18 +1923,18 @@ class DocumentOnTypeFormattingOptions {
 	 * More trigger characters.
 	 */
 	List<String> moreTriggerCharacter
-    
-    new() {
-    }
-    
-    new(@NonNull String firstTriggerCharacter) {
-    	this.firstTriggerCharacter = firstTriggerCharacter
-    }
-    
-    new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
-    	this.firstTriggerCharacter = firstTriggerCharacter
-    	this.moreTriggerCharacter = moreTriggerCharacter
-    }
+
+	new() {
+	}
+
+	new(@NonNull String firstTriggerCharacter) {
+		this.firstTriggerCharacter = firstTriggerCharacter
+	}
+
+	new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
+		this.firstTriggerCharacter = firstTriggerCharacter
+		this.moreTriggerCharacter = moreTriggerCharacter
+	}
 }
 
 /**
@@ -1955,14 +1953,14 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	 */
 	@NonNull
 	String ch
-    
-    new() {
-    }
-    
-    new(@NonNull Position position, @NonNull String ch) {
-    	this.position = position
-    	this.ch = ch
-    }
+
+	new() {
+	}
+
+	new(@NonNull Position position, @NonNull String ch) {
+		this.position = position
+		this.ch = ch
+	}
 }
 
 /**
@@ -1975,13 +1973,13 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
 	 */
 	@NonNull
 	Range range
-    
-    new() {
-    }
-    
-    new(@NonNull Range range) {
-    	this.range = range
-    }
+
+	new() {
+	}
+
+	new(@NonNull Range range) {
+		this.range = range
+	}
 }
 
 /**
@@ -1994,13 +1992,13 @@ class DocumentSymbolParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument) {
-    	this.textDocument = textDocument
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = textDocument
+	}
 }
 
 /**
@@ -2019,14 +2017,14 @@ class FileEvent {
 	 */
 	@NonNull
 	FileChangeType type
-    
-    new() {
-    }
-    
-    new(@NonNull String uri, @NonNull FileChangeType type) {
-    	this.uri = uri
-    	this.type = type
-    }
+
+	new() {
+	}
+
+	new(@NonNull String uri, @NonNull FileChangeType type) {
+		this.uri = uri
+		this.type = type
+	}
 }
 
 /**
@@ -2037,114 +2035,114 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	static val TAB_SIZE = 'tabSize'
 	static val INSERT_SPACES = 'insertSpaces'
 
-    new() {
-    }
-    
-    new(int tabSize, boolean insertSpaces) {
-    	this.tabSize = tabSize
-    	this.insertSpaces = insertSpaces
-    }
-    
-    /**
-     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
-     */
-    @Deprecated
-    new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
-    	this(tabSize, insertSpaces)
-    	setProperties(properties)
-    }
-    
-    def String getString(String key) {
-    	get(key)?.getFirst
-    }
-    
-    def void putString(String key, String value) {
-    	put(key, Either3.forFirst(value))
-    }
-    
-    def Number getNumber(String key) {
-    	get(key)?.getSecond
-    }
-    
-    def void putNumber(String key, Number value) {
-    	put(key, Either3.forSecond(value))
-    }
-    
-    def Boolean getBoolean(String key) {
-    	get(key)?.getThird
-    }
-    
-    def void putBoolean(String key, Boolean value) {
-    	put(key, Either3.forThird(value))
-    }
-    
+	new() {
+	}
+
+	new(int tabSize, boolean insertSpaces) {
+		this.tabSize = tabSize
+		this.insertSpaces = insertSpaces
+	}
+
+	/**
+	 * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+	 */
+	@Deprecated
+	new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
+		this(tabSize, insertSpaces)
+		setProperties(properties)
+	}
+
+	def String getString(String key) {
+		get(key)?.getFirst
+	}
+
+	def void putString(String key, String value) {
+		put(key, Either3.forFirst(value))
+	}
+
+	def Number getNumber(String key) {
+		get(key)?.getSecond
+	}
+
+	def void putNumber(String key, Number value) {
+		put(key, Either3.forSecond(value))
+	}
+
+	def Boolean getBoolean(String key) {
+		get(key)?.getThird
+	}
+
+	def void putBoolean(String key, Boolean value) {
+		put(key, Either3.forThird(value))
+	}
+
 	/**
 	 * Size of a tab in spaces.
 	 */
-    def int getTabSize() {
-    	val value = getNumber(TAB_SIZE)
-    	if (value !== null)
-    		return value.intValue
-    	else
-    		return 0
-    }
-    
-    def void setTabSize(int tabSize) {
-    	putNumber(TAB_SIZE, tabSize)
-    }
-    
- 	/**
+	def int getTabSize() {
+		val value = getNumber(TAB_SIZE)
+		if (value !== null)
+			return value.intValue
+		else
+			return 0
+	}
+
+	def void setTabSize(int tabSize) {
+		putNumber(TAB_SIZE, tabSize)
+	}
+
+	/**
 	 * Prefer spaces over tabs.
 	 */
-    def boolean isInsertSpaces() {
-       	val value = getBoolean(INSERT_SPACES)
-    	if (value !== null)
-    		return value
-    	else
-    		return false
-    }
-    
-    def void setInsertSpaces(boolean insertSpaces) {
-    	putBoolean(INSERT_SPACES, insertSpaces)
-    }
-    
-    /**
-     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
-     */
-    @Deprecated
-    def Map<String, String> getProperties() {
-    	val properties = newLinkedHashMap
-    	for (entry : entrySet) {
-    		val value = switch it: entry.value {
-    			case isFirst: getFirst
-    			case isSecond: getSecond
-    			case isThird: getThird
-    		}
-    		if (value !== null)
-    			properties.put(entry.key, value.toString)
-    	}
-    	return properties.unmodifiableView
-    }
-    
-    /**
-     * @deprecated See https://github.com/eclipse/lsp4j/issues/99
-     */
-    @Deprecated
-    def void setProperties(Map<String, String> properties) {
-    	for (entry : properties.entrySet) {
-    		putString(entry.key, entry.value)
-    	}
-    }
-    
+	def boolean isInsertSpaces() {
+		val value = getBoolean(INSERT_SPACES)
+		if (value !== null)
+			return value
+		else
+			return false
+	}
+
+	def void setInsertSpaces(boolean insertSpaces) {
+		putBoolean(INSERT_SPACES, insertSpaces)
+	}
+
+	/**
+	 * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+	 */
+	@Deprecated
+	def Map<String, String> getProperties() {
+		val properties = newLinkedHashMap
+		for (entry : entrySet) {
+			val value = switch it: entry.value {
+				case isFirst: getFirst
+				case isSecond: getSecond
+				case isThird: getThird
+			}
+			if (value !== null)
+				properties.put(entry.key, value.toString)
+		}
+		return properties.unmodifiableView
+	}
+
+	/**
+	 * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+	 */
+	@Deprecated
+	def void setProperties(Map<String, String> properties) {
+		for (entry : properties.entrySet) {
+			putString(entry.key, entry.value)
+		}
+	}
+
 }
 
 /**
  * A MarkupContent literal represents a string value which content is interpreted based on its
  * kind flag. Currently the protocol supports `plaintext` and `markdown` as markup kinds.
- *
+ * 
  * If the kind is `markdown` then the value can contain fenced code blocks like in GitHub issues.
  * See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
- *
+ * 
  * Please Note that clients might sanitize the return markdown. A client could decide to
  * remove HTML from the markdown to avoid script execution.
  */
@@ -2179,27 +2177,27 @@ class Hover {
 	 * An optional range
 	 */
 	Range range
-    
-    new() {
-    }
-    
-    new(@NonNull List<Either<String, MarkedString>> contents) {
-    	this.contents = contents
-    }
-    
-    new(@NonNull List<Either<String, MarkedString>> contents, Range range) {
-    	this.contents = contents
-    	this.range = range
-    }
-    
-    new(@NonNull MarkupContent contents) {
-    	this.contents = contents
-    }
-    
-    new(@NonNull MarkupContent contents, Range range) {
-    	this.contents = contents
-    	this.range = range
-    }
+
+	new() {
+	}
+
+	new(@NonNull List<Either<String, MarkedString>> contents) {
+		this.contents = contents
+	}
+
+	new(@NonNull List<Either<String, MarkedString>> contents, Range range) {
+		this.contents = contents
+		this.range = range
+	}
+
+	new(@NonNull MarkupContent contents) {
+		this.contents = contents
+	}
+
+	new(@NonNull MarkupContent contents, Range range) {
+		this.contents = contents
+		this.range = range
+	}
 }
 
 /**
@@ -2207,29 +2205,29 @@ class Hover {
  * or a code-block that provides a language and a code snippet. The language identifier
  * is sematically equal to the optional language identifier in fenced code blocks in GitHub
  * issues. See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
- *
+ * 
  * The pair of a language and a value is an equivalent to markdown:
  * ```${language}
  * ${value}
  * ```
- *
+ * 
  * Note that markdown strings will be sanitized - that means html will be escaped.
  */
 @JsonRpcData
 class MarkedString {
 	@NonNull
 	String language
-	
+
 	@NonNull
 	String value
-    
-    new() {
-    }
-    
-    new(@NonNull String language, @NonNull String value) {
-    	this.language = language
-    	this.value = value
-    }
+
+	new() {
+	}
+
+	new(@NonNull String language, @NonNull String value) {
+		this.language = language
+		this.value = value
+	}
 }
 
 @JsonRpcData
@@ -2241,13 +2239,13 @@ class InitializeError {
 	 * (3) if user selected retry the initialize method is sent again.
 	 */
 	boolean retry
-    
-    new() {
-    }
-    
-    new(boolean retry) {
-    	this.retry = retry
-    }
+
+	new() {
+	}
+
+	new(boolean retry) {
+		this.retry = retry
+	}
 }
 
 /**
@@ -2255,13 +2253,13 @@ class InitializeError {
  */
 interface InitializeErrorCode {
 	/**
-     * If the protocol version provided by the client can't be handled by the server.
-     * 
-     * @deprecated This initialize error got replaced by client capabilities.
-     * There is no version handshake in version 3.0x
-     */
-    @Deprecated
-    val unknownProtocolVersion = 1
+	 * If the protocol version provided by the client can't be handled by the server.
+	 * 
+	 * @deprecated This initialize error got replaced by client capabilities.
+	 * There is no version handshake in version 3.0x
+	 */
+	@Deprecated
+	val unknownProtocolVersion = 1
 }
 
 /**
@@ -2282,11 +2280,11 @@ class InitializeParams {
 	 */
 	@Deprecated
 	String rootPath
-	
+
 	/**
-     * The rootUri of the workspace. Is null if no folder is open.
-     * If both `rootPath` and `rootUri` are set, `rootUri` wins.
-     */
+	 * The rootUri of the workspace. Is null if no folder is open.
+	 * If both `rootPath` and `rootUri` are set, `rootUri` wins.
+	 */
 	String rootUri
 
 	/**
@@ -2306,20 +2304,20 @@ class InitializeParams {
 	 */
 	@Deprecated
 	String clientName
-	
+
 	/**
-     * The initial trace setting. If omitted trace is disabled ('off').
-     * 
-     * Legal values: 'off' | 'messages' | 'verbose'
-     */
-    String trace
-    
+	 * The initial trace setting. If omitted trace is disabled ('off').
+	 * 
+	 * Legal values: 'off' | 'messages' | 'verbose'
+	 */
+	String trace
+
 	/**
 	 * The workspace folders configured in the client when the server starts.
 	 * This property is only available if the client supports workspace folders.
 	 * It can be `null` if the client supports workspace folders but none are
 	 * configured.
-	 *
+	 * 
 	 * Since 3.6.0
 	 */
 	List<WorkspaceFolder> workspaceFolders
@@ -2332,18 +2330,17 @@ class InitializeResult {
 	 */
 	@NonNull
 	ServerCapabilities capabilities
-    
-    new() {
-    }
-    
-    new(@NonNull ServerCapabilities capabilities) {
-    	this.capabilities = capabilities
-    }
+
+	new() {
+	}
+
+	new(@NonNull ServerCapabilities capabilities) {
+		this.capabilities = capabilities
+	}
 }
 
 @JsonRpcData
 class InitializedParams {
-	
 }
 
 /**
@@ -2356,14 +2353,14 @@ class Location {
 
 	@NonNull
 	Range range
-    
-    new() {
-    }
-    
-    new(@NonNull String uri, @NonNull Range range) {
-    	this.uri = uri
-    	this.range = range
-    }
+
+	new() {
+	}
+
+	new(@NonNull String uri, @NonNull Range range) {
+		this.uri = uri
+		this.range = range
+	}
 }
 
 /**
@@ -2378,13 +2375,13 @@ class MessageActionItem {
 	 */
 	@NonNull
 	String title
-    
-    new() {
-    }
-    
-    new(@NonNull String title) {
-    	this.title = title
-    }
+
+	new() {
+	}
+
+	new(@NonNull String title) {
+		this.title = title
+	}
 }
 
 /**
@@ -2406,14 +2403,14 @@ class MessageParams {
 	 */
 	@NonNull
 	String message
-    
-    new() {
-    }
-    
-    new(@NonNull MessageType type, @NonNull String message) {
-    	this.type = type
-    	this.message = message
-    }
+
+	new() {
+	}
+
+	new(@NonNull MessageType type, @NonNull String message) {
+		this.type = type
+		this.message = message
+	}
 }
 
 /**
@@ -2431,23 +2428,23 @@ class ParameterInformation {
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
 	 */
 	Either<String, MarkupContent> documentation
-    
-    new() {
-    }
-    
-    new(@NonNull String label) {
-    	this.label = label
-    }
-    
-    new(@NonNull String label, String documentation) {
-    	this.label = label
-    	this.documentation = documentation
-    }
-    
-    new(@NonNull String label, MarkupContent documentation) {
-    	this.label = label
-    	this.documentation = documentation
-    }
+
+	new() {
+	}
+
+	new(@NonNull String label) {
+		this.label = label
+	}
+
+	new(@NonNull String label, String documentation) {
+		this.label = label
+		this.documentation = documentation
+	}
+
+	new(@NonNull String label, MarkupContent documentation) {
+		this.label = label
+		this.documentation = documentation
+	}
 }
 
 /**
@@ -2464,14 +2461,14 @@ class Position {
 	 * Character offset on a line in a document (zero-based).
 	 */
 	int character
-    
-    new() {
-    }
-    
-    new(int line, int character) {
-    	this.line = line
-    	this.character = character
-    }
+
+	new() {
+	}
+
+	new(int line, int character) {
+		this.line = line
+		this.character = character
+	}
 }
 
 /**
@@ -2490,15 +2487,15 @@ class PublishDiagnosticsParams {
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
-    
-    new() {
-    	this.diagnostics = new ArrayList
-    }
-    
-    new(@NonNull String uri, @NonNull List<Diagnostic> diagnostics) {
-    	this.uri = uri
-    	this.diagnostics = diagnostics
-    }
+
+	new() {
+		this.diagnostics = new ArrayList
+	}
+
+	new(@NonNull String uri, @NonNull List<Diagnostic> diagnostics) {
+		this.uri = uri
+		this.diagnostics = diagnostics
+	}
 }
 
 /**
@@ -2517,14 +2514,14 @@ class Range {
 	 */
 	@NonNull
 	Position end
-    
-    new() {
-    }
-    
-    new(@NonNull Position start, @NonNull Position end) {
-    	this.start = start
-    	this.end = end
-    }
+
+	new() {
+	}
+
+	new(@NonNull Position start, @NonNull Position end) {
+		this.start = start
+		this.end = end
+	}
 }
 
 /**
@@ -2537,13 +2534,13 @@ class ReferenceContext {
 	 * Include the declaration of the current symbol.
 	 */
 	boolean includeDeclaration
-    
-    new() {
-    }
-    
-    new(boolean includeDeclaration) {
-    	this.includeDeclaration = includeDeclaration
-    }
+
+	new() {
+	}
+
+	new(boolean includeDeclaration) {
+		this.includeDeclaration = includeDeclaration
+	}
 }
 
 /**
@@ -2554,13 +2551,13 @@ class ReferenceContext {
 class ReferenceParams extends TextDocumentPositionParams {
 	@NonNull
 	ReferenceContext context
-    
-    new() {
-    }
-    
-    new(@NonNull ReferenceContext context) {
-    	this.context = context
-    }
+
+	new() {
+	}
+
+	new(@NonNull ReferenceContext context) {
+		this.context = context
+	}
 }
 
 @JsonRpcData
@@ -2609,15 +2606,15 @@ class RenameParams {
 	 */
 	@NonNull
 	String newName
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull String newName) {
-    	this.textDocument = textDocument
-    	this.position = position
-    	this.newName = newName
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull String newName) {
+		this.textDocument = textDocument
+		this.position = position
+		this.newName = newName
+	}
 }
 
 @JsonRpcData
@@ -2728,7 +2725,7 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides folding provider support.
-	 *
+	 * 
 	 * Since 3.10.0
 	 */
 	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
@@ -2742,11 +2739,11 @@ class ServerCapabilities {
 	 * Workspace specific server capabilities
 	 */
 	WorkspaceServerCapabilities workspace
-	
+
 	/**
 	 * Semantic highlighting server capabilities.
 	 */
-	SemanticHighlightingServerCapabilities semanticHighlighting; 
+	SemanticHighlightingServerCapabilities semanticHighlighting;
 
 	/**
 	 * Experimental server capabilities.
@@ -2763,14 +2760,14 @@ class ServerCapabilities {
 class WorkspaceServerCapabilities {
 	/**
 	 * The server supports workspace folder.
-	 *
+	 * 
 	 * Since 3.6.0
 	 */
 	WorkspaceFoldersOptions workspaceFolders
-	
+
 	new() {
 	}
-	
+
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
 	}
@@ -2790,10 +2787,10 @@ class SemanticHighlightingServerCapabilities {
 	 * the server.
 	 */
 	List<List<String>> scopes;
-	
+
 	new() {
 	}
-	
+
 	new(List<List<String>> scopes) {
 		this.scopes = scopes;
 	}
@@ -2811,13 +2808,13 @@ class ShowMessageRequestParams extends MessageParams {
 	 * The message action items to present.
 	 */
 	List<MessageActionItem> actions
-    
-    new() {
-    }
-    
-    new(List<MessageActionItem> actions) {
-    	this.actions = actions
-    }
+
+	new() {
+	}
+
+	new(List<MessageActionItem> actions) {
+		this.actions = actions
+	}
 }
 
 /**
@@ -2853,16 +2850,16 @@ class SignatureHelp {
 	 * active signature does have any.
 	 */
 	Integer activeParameter
-    
-    new() {
-    	this.signatures = new ArrayList
-    }
-    
-    new(@NonNull List<SignatureInformation> signatures, Integer activeSignature, Integer activeParameter) {
-    	this.signatures = signatures
-    	this.activeSignature = activeSignature
-    	this.activeParameter = activeParameter
-    }
+
+	new() {
+		this.signatures = new ArrayList
+	}
+
+	new(@NonNull List<SignatureInformation> signatures, Integer activeSignature, Integer activeParameter) {
+		this.signatures = signatures
+		this.activeSignature = activeSignature
+		this.activeParameter = activeParameter
+	}
 }
 
 /**
@@ -2874,13 +2871,13 @@ class SignatureHelpOptions {
 	 * The characters that trigger signature help automatically.
 	 */
 	List<String> triggerCharacters
-    
-    new() {
-    }
-    
-    new(List<String> triggerCharacters) {
-    	this.triggerCharacters = triggerCharacters
-    }
+
+	new() {
+	}
+
+	new(List<String> triggerCharacters) {
+		this.triggerCharacters = triggerCharacters
+	}
 }
 
 /**
@@ -2904,25 +2901,25 @@ class SignatureInformation {
 	 * The parameters of this signature.
 	 */
 	List<ParameterInformation> parameters
-    
-    new() {
-    }
-    
-    new(@NonNull String label) {
-    	this.label = label
-    }
-    
-    new(@NonNull String label, String documentation, List<ParameterInformation> parameters) {
-    	this.label = label
-    	this.documentation = documentation
-    	this.parameters = parameters
-    }
-    
-    new(@NonNull String label, MarkupContent documentation, List<ParameterInformation> parameters) {
-    	this.label = label
-    	this.documentation = documentation
-    	this.parameters = parameters
-    }
+
+	new() {
+	}
+
+	new(@NonNull String label) {
+		this.label = label
+	}
+
+	new(@NonNull String label, String documentation, List<ParameterInformation> parameters) {
+		this.label = label
+		this.documentation = documentation
+		this.parameters = parameters
+	}
+
+	new(@NonNull String label, MarkupContent documentation, List<ParameterInformation> parameters) {
+		this.label = label
+		this.documentation = documentation
+		this.parameters = parameters
+	}
 }
 
 /**
@@ -2930,7 +2927,7 @@ class SignatureInformation {
  * hierarchical and they have two ranges: one that encloses its definition and one that points to its most interesting range,
  * e.g. the range of an identifier.
  */
- @JsonRpcData
+@JsonRpcData
 class DocumentSymbol {
 
 	/**
@@ -2944,7 +2941,7 @@ class DocumentSymbol {
 	 */
 	@NonNull
 	SymbolKind kind
-	
+
 	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
 	 * like comments. This information is typically used to determine if the the clients cursor is
@@ -2975,33 +2972,35 @@ class DocumentSymbol {
 	 * Children of this symbol, e.g. properties of a class.
 	 */
 	List<DocumentSymbol> children
-	
+
 	new() {
-    }
-    
-    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange) {
-    	this.name = name
-    	this.kind = kind
-    	this.range = range
-    	this.selectionRange = selectionRange
-    }
-    
-    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange, String detail) {
-    	this.name = name
-    	this.kind = kind
-    	this.range = range
-    	this.selectionRange = selectionRange
-    	this.detail = detail
-    }
-    
-    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange, String detail, List<DocumentSymbol> children) {
-    	this.name = name
-    	this.kind = kind
-    	this.range = range
-    	this.selectionRange = selectionRange
-    	this.detail = detail
-    	this.children = children
-    }
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange) {
+		this.name = name
+		this.kind = kind
+		this.range = range
+		this.selectionRange = selectionRange
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange,
+		String detail) {
+		this.name = name
+		this.kind = kind
+		this.range = range
+		this.selectionRange = selectionRange
+		this.detail = detail
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange,
+		String detail, List<DocumentSymbol> children) {
+		this.name = name
+		this.kind = kind
+		this.range = range
+		this.selectionRange = selectionRange
+		this.detail = detail
+		this.children = children
+	}
 }
 
 /**
@@ -3020,7 +3019,7 @@ class SymbolInformation {
 	 */
 	@NonNull
 	SymbolKind kind
-	
+
 	/**
 	 * Indicates if this symbol is deprecated.
 	 */
@@ -3032,7 +3031,7 @@ class SymbolInformation {
 	 * tool the range's start information is used to position the cursor. So
 	 * the range usually spans more then the actual symbol's name and does
 	 * normally include things like visibility modifiers.
-	 *
+	 * 
 	 * The range doesn't have to denote a node range in the sense of a abstract
 	 * syntax tree. It can therefore not be used to re-construct a hierarchy of
 	 * the symbols.
@@ -3047,22 +3046,22 @@ class SymbolInformation {
 	 * symbols.
 	 */
 	String containerName
-	
-    new() {
-    }
-    
-    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location) {
-    	this.name = name
-    	this.kind = kind
-    	this.location = location
-    }
-    
-    new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
-    	this.name = name
-    	this.kind = kind
-    	this.location = location
-    	this.containerName = containerName
-    }
+
+	new() {
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location) {
+		this.name = name
+		this.kind = kind
+		this.location = location
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
+		this.name = name
+		this.kind = kind
+		this.location = location
+		this.containerName = containerName
+	}
 }
 
 /**
@@ -3086,19 +3085,19 @@ class TextDocumentContentChangeEvent {
 	 */
 	@NonNull
 	String text
-    
-    new() {
-    }
-    
-    new(@NonNull String text) {
-    	this.text = text
-    }
-    
-    new(Range range, Integer rangeLength, @NonNull String text) {
-    	this.range = range
-    	this.rangeLength = rangeLength
-    	this.text = text
-    }
+
+	new() {
+	}
+
+	new(@NonNull String text) {
+		this.text = text
+	}
+
+	new(Range range, Integer rangeLength, @NonNull String text) {
+		this.range = range
+		this.rangeLength = rangeLength
+		this.text = text
+	}
 }
 
 /**
@@ -3111,13 +3110,13 @@ class TextDocumentIdentifier {
 	 */
 	@NonNull
 	String uri
-    
-    new() {
-    }
-    
-    new(@NonNull String uri) {
-    	this.uri = uri
-    }
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = uri
+	}
 }
 
 /**
@@ -3147,16 +3146,16 @@ class TextDocumentItem {
 	 */
 	@NonNull
 	String text
-    
-    new() {
-    }
-    
-    new(@NonNull String uri, @NonNull String languageId, int version, @NonNull String text) {
-    	this.uri = uri
-    	this.languageId = languageId
-    	this.version = version
-    	this.text = text
-    }
+
+	new() {
+	}
+
+	new(@NonNull String uri, @NonNull String languageId, int version, @NonNull String text) {
+		this.uri = uri
+		this.languageId = languageId
+		this.version = version
+		this.text = text
+	}
 }
 
 /**
@@ -3181,21 +3180,21 @@ class TextDocumentPositionParams {
 	 */
 	@NonNull
 	Position position
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
-    	this.textDocument = textDocument
-    	this.position = position
-    }
-    
-    @Deprecated
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		this.textDocument = textDocument
+		this.position = position
+	}
+
+	@Deprecated
 	new(@NonNull TextDocumentIdentifier textDocument, String uri, @NonNull Position position) {
-    	this.textDocument = textDocument
-    	this.uri = uri
-    	this.position = position
-    }
+		this.textDocument = textDocument
+		this.uri = uri
+		this.position = position
+	}
 }
 
 @JsonRpcData
@@ -3226,20 +3225,20 @@ class CompletionContext {
 	 */
 	@NonNull
 	CompletionTriggerKind triggerKind
-	
+
 	/**
 	 * The trigger character (a single character) that has trigger code complete.
 	 * Is undefined if `triggerKind !== CompletionTriggerKind.TriggerCharacter`
 	 */
 	String triggerCharacter
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull CompletionTriggerKind triggerKind) {
 		this.triggerKind = triggerKind
 	}
-	
+
 	new(@NonNull CompletionTriggerKind triggerKind, String triggerCharacter) {
 		this.triggerKind = triggerKind
 		this.triggerCharacter = triggerCharacter
@@ -3262,14 +3261,14 @@ class TextEdit {
 	 */
 	@NonNull
 	String newText
-    
-    new() {
-    }
-    
-    new(@NonNull Range range, @NonNull String newText) {
-    	this.range = range
-    	this.newText = newText
-    }
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull String newText) {
+		this.range = range
+		this.newText = newText
+	}
 }
 
 /**
@@ -3286,19 +3285,19 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 	 * truth (as specified with document content ownership).
 	 */
 	Integer version
-    
-    new() {
-    }
-    
-    new(@NonNull String uri, Integer version) {
-    	super(uri)
-    	this.version = version
-    }
-    
-    @Deprecated
-    new(Integer version) {
-    	this.version = version
-    }
+
+	new() {
+	}
+
+	new(@NonNull String uri, Integer version) {
+		super(uri)
+		this.version = version
+	}
+
+	@Deprecated
+	new(Integer version) {
+		this.version = version
+	}
 }
 
 /**
@@ -3313,20 +3312,20 @@ class TextDocumentEdit {
 	 */
 	@NonNull
 	VersionedTextDocumentIdentifier textDocument
-	
+
 	/**
 	 * The edits to be applied
 	 */
 	@NonNull
 	List<TextEdit> edits
-    
-    new() {
-    }
-    
-    new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextEdit> edits) {
-    	this.textDocument = textDocument
-    	this.edits = edits
-    }
+
+	new() {
+	}
+
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextEdit> edits) {
+		this.textDocument = textDocument
+		this.edits = edits
+	}
 }
 
 @JsonRpcData
@@ -3518,7 +3517,7 @@ class DeleteFile extends ResourceOperation {
 
 /**
  * A resource change.
- *
+ * 
  * If both current and newUri has valid values this is considered to be a move operation.
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
@@ -3530,21 +3529,21 @@ class DeleteFile extends ResourceOperation {
 @Deprecated
 class ResourceChange {
 
-  /**
-  * The Uri for current resource. Required for delete and move operations
-  * otherwise it is null.
-  *
-  */
-  String current
+	/**
+	 * The Uri for current resource. Required for delete and move operations
+	 * otherwise it is null.
+	 * 
+	 */
+	String current
 
-  /**
-  * The new uri for the resource. Required for create and move operations.
-  * otherwise null.
-  *
-  * Must be compatible with the current uri ie. must be a file
-  * uri if current is not null and is a file uri.
-  */
-  String newUri
+	/**
+	 * The new uri for the resource. Required for create and move operations.
+	 * otherwise null.
+	 * 
+	 * Must be compatible with the current uri ie. must be a file
+	 * uri if current is not null and is a file uri.
+	 */
+	String newUri
 
 }
 
@@ -3583,14 +3582,13 @@ class WorkspaceEdit {
 	@Deprecated
 	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
-    new() {
-    	this.changes = new LinkedHashMap
-    }
-    
-    new(Map<String, List<TextEdit>> changes) {
-    	this.changes = changes
-    }
-    
+	new() {
+		this.changes = new LinkedHashMap
+	}
+
+	new(Map<String, List<TextEdit>> changes) {
+		this.changes = changes
+	}
 
 	new(List<Either<TextDocumentEdit, ResourceOperation>> documentChanges) {
 		this.documentChanges = documentChanges
@@ -3607,13 +3605,13 @@ class WorkspaceSymbolParams {
 	 */
 	@NonNull
 	String query
-    
-    new() {
-    }
-    
-    new(@NonNull String query) {
-    	this.query = query
-    }
+
+	new() {
+	}
+
+	new(@NonNull String query) {
+		this.query = query
+	}
 }
 
 /**
@@ -3622,37 +3620,37 @@ class WorkspaceSymbolParams {
 @JsonRpcData
 class Registration {
 	/**
-     * The id used to register the request. The id can be used to deregister
-     * the request again.
-     */
-    @NonNull
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again.
+	 */
+	@NonNull
 	String id
-	
+
 	/**
-     * The method / capability to register for.
-     */
-    @NonNull
+	 * The method / capability to register for.
+	 */
+	@NonNull
 	String method
-	
+
 	/**
-     * Options necessary for the registration.
-     */
-    @JsonAdapter(JsonElementTypeAdapter.Factory)
-    Object registerOptions
-    
-    new() {
-    }
-    
-    new(@NonNull String id, @NonNull String method) {
-    	this.id = id
-    	this.method = method
-    }
-    
-    new(@NonNull String id, @NonNull String method, Object registerOptions) {
-    	this.id = id
-    	this.method = method
-    	this.registerOptions = registerOptions
-    }
+	 * Options necessary for the registration.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object registerOptions
+
+	new() {
+	}
+
+	new(@NonNull String id, @NonNull String method) {
+		this.id = id
+		this.method = method
+	}
+
+	new(@NonNull String id, @NonNull String method, Object registerOptions) {
+		this.id = id
+		this.method = method
+		this.registerOptions = registerOptions
+	}
 }
 
 /**
@@ -3666,14 +3664,14 @@ class Registration {
 class RegistrationParams {
 	@NonNull
 	List<Registration> registrations
-    
-    new() {
-    	this(new ArrayList)
-    }
-    
-    new(@NonNull List<Registration> registrations) {
-    	this.registrations = registrations
-    }
+
+	new() {
+		this(new ArrayList)
+	}
+
+	new(@NonNull List<Registration> registrations) {
+		this.registrations = registrations
+	}
 }
 
 /**
@@ -3682,28 +3680,28 @@ class RegistrationParams {
 @JsonRpcData
 class DocumentFilter {
 	/**
-     * A language id, like `typescript`.
-     */
-    String language
-	
+	 * A language id, like `typescript`.
+	 */
+	String language
+
 	/**
-     * A uri scheme, like `file` or `untitled`.
-     */
-    String scheme
-	
+	 * A uri scheme, like `file` or `untitled`.
+	 */
+	String scheme
+
 	/**
-     * A glob pattern, like `*.{ts,js}`.
-     */
-    String pattern
-    
-    new() {
-    }
-    
-    new(String language, String scheme, String pattern) {
-    	this.language = language
-    	this.scheme = scheme
-    	this.pattern = pattern
-    }
+	 * A glob pattern, like `*.{ts,js}`.
+	 */
+	String pattern
+
+	new() {
+	}
+
+	new(String language, String scheme, String pattern) {
+		this.language = language
+		this.scheme = scheme
+		this.pattern = pattern
+	}
 }
 
 /**
@@ -3713,17 +3711,17 @@ class DocumentFilter {
 @JsonRpcData
 class TextDocumentRegistrationOptions {
 	/**
-     * A document selector to identify the scope of the registration. If set to null
-     * the document selector provided on the client side will be used.
-     */
-    List<DocumentFilter> documentSelector
-    
-    new() {
-    }
-    
-    new(List<DocumentFilter> documentSelector) {
-    	this.documentSelector = documentSelector
-    }
+	 * A document selector to identify the scope of the registration. If set to null
+	 * the document selector provided on the client side will be used.
+	 */
+	List<DocumentFilter> documentSelector
+
+	new() {
+	}
+
+	new(List<DocumentFilter> documentSelector) {
+		this.documentSelector = documentSelector
+	}
 }
 
 /**
@@ -3732,25 +3730,25 @@ class TextDocumentRegistrationOptions {
 @JsonRpcData
 class Unregistration {
 	/**
-     * The id used to unregister the request or notification. Usually an id
-     * provided during the register request.
-     */
-    @NonNull
+	 * The id used to unregister the request or notification. Usually an id
+	 * provided during the register request.
+	 */
+	@NonNull
 	String id
-	
+
 	/**
-     * The method / capability to unregister for.
-     */
-    @NonNull
+	 * The method / capability to unregister for.
+	 */
+	@NonNull
 	String method
-    
-    new() {
-    }
-    
-    new(@NonNull String id, @NonNull String method) {
-    	this.id = id
-    	this.method = method
-    }
+
+	new() {
+	}
+
+	new(@NonNull String id, @NonNull String method) {
+		this.id = id
+		this.method = method
+	}
 }
 
 /**
@@ -3761,14 +3759,14 @@ class Unregistration {
 class UnregistrationParams {
 	@NonNull
 	List<Unregistration> unregisterations
-    
-    new() {
-    	this(new ArrayList)
-    }
-    
-    new(@NonNull List<Unregistration> unregisterations) {
-    	this.unregisterations = unregisterations
-    }
+
+	new() {
+		this(new ArrayList)
+	}
+
+	new(@NonNull List<Unregistration> unregisterations) {
+		this.unregisterations = unregisterations
+	}
 }
 
 /**
@@ -3777,18 +3775,18 @@ class UnregistrationParams {
 @JsonRpcData
 class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-     * How documents are synced to the server. See TextDocumentSyncKind.Full 
-     * and TextDocumentSyncKind.Incremental.
-     */
-    @NonNull
+	 * How documents are synced to the server. See TextDocumentSyncKind.Full 
+	 * and TextDocumentSyncKind.Incremental.
+	 */
+	@NonNull
 	TextDocumentSyncKind syncKind
-    
-    new() {
-    }
-    
-    new(@NonNull TextDocumentSyncKind syncKind) {
-    	this.syncKind = syncKind
-    }
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentSyncKind syncKind) {
+		this.syncKind = syncKind
+	}
 }
 
 @JsonRpcData
@@ -3797,13 +3795,13 @@ class TextDocumentSaveRegistrationOptions extends TextDocumentRegistrationOption
 	 * The client is supposed to include the content on save.
 	 */
 	Boolean includeText
-    
-    new() {
-    }
-    
-    new(Boolean includeText) {
-    	this.includeText = includeText
-    }
+
+	new() {
+	}
+
+	new(Boolean includeText) {
+		this.includeText = includeText
+	}
 }
 
 @JsonRpcData
@@ -3814,95 +3812,95 @@ class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
 	 * starts to type an identifier. For example if the user types `c` in a JavaScript file
 	 * code complete will automatically pop up present `console` besides others as a
 	 * completion item. Characters that make up identifiers don't need to be listed here.
-	 *
+	 * 
 	 * If code complete should automatically be trigger on characters not being valid inside
 	 * an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
 	 */
 	List<String> triggerCharacters
 
-    /**
-     * The server provides support to resolve additional information for a completion item.
-     */
-    Boolean resolveProvider
-    
-    new() {
-    }
-    
-    new(List<String> triggerCharacters, Boolean resolveProvider) {
-    	this.triggerCharacters = triggerCharacters
-    	this.resolveProvider = resolveProvider
-    }
+	/**
+	 * The server provides support to resolve additional information for a completion item.
+	 */
+	Boolean resolveProvider
+
+	new() {
+	}
+
+	new(List<String> triggerCharacters, Boolean resolveProvider) {
+		this.triggerCharacters = triggerCharacters
+		this.resolveProvider = resolveProvider
+	}
 }
 
 @JsonRpcData
 class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-     * The characters that trigger signature help automatically.
-     */
-    List<String> triggerCharacters
-    
-    new() {
-    }
-    
-    new(List<String> triggerCharacters) {
-    	this.triggerCharacters = triggerCharacters
-    }
+	 * The characters that trigger signature help automatically.
+	 */
+	List<String> triggerCharacters
+
+	new() {
+	}
+
+	new(List<String> triggerCharacters) {
+		this.triggerCharacters = triggerCharacters
+	}
 }
 
 @JsonRpcData
 class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-     * Code lens has a resolve provider as well.
-     */
-    Boolean resolveProvider
-    
-    new() {
-    }
-    
-    new(Boolean resolveProvider) {
-    	this.resolveProvider = resolveProvider
-    }
+	 * Code lens has a resolve provider as well.
+	 */
+	Boolean resolveProvider
+
+	new() {
+	}
+
+	new(Boolean resolveProvider) {
+		this.resolveProvider = resolveProvider
+	}
 }
 
 @JsonRpcData
 class DocumentLinkRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-     * Document links have a resolve provider as well.
-     */
-    Boolean resolveProvider
-    
-    new() {
-    }
-    
-    new(Boolean resolveProvider) {
-    	this.resolveProvider = resolveProvider
-    }
+	 * Document links have a resolve provider as well.
+	 */
+	Boolean resolveProvider
+
+	new() {
+	}
+
+	new(Boolean resolveProvider) {
+		this.resolveProvider = resolveProvider
+	}
 }
 
 @JsonRpcData
 class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-     * A character on which formatting should be triggered, like `}`.
-     */
-    @NonNull
-    String firstTriggerCharacter
-    
+	 * A character on which formatting should be triggered, like `}`.
+	 */
+	@NonNull
+	String firstTriggerCharacter
+
 	/**
-     * More trigger characters.
-     */
-    List<String> moreTriggerCharacter
-    
-    new() {
-    }
-    
-    new(@NonNull String firstTriggerCharacter) {
-    	this.firstTriggerCharacter = firstTriggerCharacter
-    }
-    
-    new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
-    	this.firstTriggerCharacter = firstTriggerCharacter
-    	this.moreTriggerCharacter = moreTriggerCharacter
-    }
+	 * More trigger characters.
+	 */
+	List<String> moreTriggerCharacter
+
+	new() {
+	}
+
+	new(@NonNull String firstTriggerCharacter) {
+		this.firstTriggerCharacter = firstTriggerCharacter
+	}
+
+	new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
+		this.firstTriggerCharacter = firstTriggerCharacter
+		this.moreTriggerCharacter = moreTriggerCharacter
+	}
 }
 
 /**
@@ -3914,25 +3912,25 @@ class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrati
 @JsonRpcData
 class ExecuteCommandParams {
 	/**
-     * The identifier of the actual command handler.
-     */
-    @NonNull
+	 * The identifier of the actual command handler.
+	 */
+	@NonNull
 	String command
-	
+
 	/**
-     * Arguments that the command should be invoked with.
-     * The arguments are typically specified when a command is returned from the server to the client.
-     * Example requests that return a command are textDocument/codeAction or textDocument/codeLens.
-     */
-    List<Object> arguments
-    
-    new() {
-    }
-    
-    new(@NonNull String command, List<Object> arguments) {
-    	this.command = command
-    	this.arguments = arguments
-    }
+	 * Arguments that the command should be invoked with.
+	 * The arguments are typically specified when a command is returned from the server to the client.
+	 * Example requests that return a command are textDocument/codeAction or textDocument/codeLens.
+	 */
+	List<Object> arguments
+
+	new() {
+	}
+
+	new(@NonNull String command, List<Object> arguments) {
+		this.command = command
+		this.arguments = arguments
+	}
 }
 
 /**
@@ -3941,17 +3939,17 @@ class ExecuteCommandParams {
 @JsonRpcData
 class ExecuteCommandRegistrationOptions {
 	/**
-     * The commands to be executed on the server
-     */
-    @NonNull
-    List<String> commands
-    
-    new() {
-    }
-    
-    new(@NonNull List<String> commands) {
-    	this.commands = commands
-    }
+	 * The commands to be executed on the server
+	 */
+	@NonNull
+	List<String> commands
+
+	new() {
+	}
+
+	new(@NonNull List<String> commands) {
+		this.commands = commands
+	}
 }
 
 /**
@@ -3960,49 +3958,49 @@ class ExecuteCommandRegistrationOptions {
 @JsonRpcData
 class ApplyWorkspaceEditParams {
 	/**
-     * The edits to apply.
-     */
-    @NonNull
-    WorkspaceEdit edit
+	 * The edits to apply.
+	 */
+	@NonNull
+	WorkspaceEdit edit
 
 	/**
-     * An optional label of the workspace edit. This label is
-     * presented in the user interface for example on an undo
-     * stack to undo the workspace edit.
-     */
-    String label
-    
-    new() {
-    }
-    
-    new(@NonNull WorkspaceEdit edit) {
-    	this.edit = edit
-    }
+	 * An optional label of the workspace edit. This label is
+	 * presented in the user interface for example on an undo
+	 * stack to undo the workspace edit.
+	 */
+	String label
 
-    new(@NonNull WorkspaceEdit edit, String label) {
-    	this.edit = edit;
-    	this.label = label
-    }
+	new() {
+	}
+
+	new(@NonNull WorkspaceEdit edit) {
+		this.edit = edit
+	}
+
+	new(@NonNull WorkspaceEdit edit, String label) {
+		this.edit = edit;
+		this.label = label
+	}
 }
 
 @JsonRpcData
 class ApplyWorkspaceEditResponse {
 	/**
-     * Indicates whether the edit was applied or not.
-     */
-    boolean applied
-    
-    new() {
-    }
-    
-    new(boolean applied) {
-    	this.applied = applied
-    }
+	 * Indicates whether the edit was applied or not.
+	 */
+	boolean applied
+
+	new() {
+	}
+
+	new(boolean applied) {
+		this.applied = applied
+	}
 }
 
 /**
  * The server supports workspace folder.
- *
+ * 
  * Since 3.6.0
  */
 @JsonRpcData
@@ -4011,11 +4009,11 @@ class WorkspaceFoldersOptions {
 	 * The server has support for workspace folders
 	 */
 	Boolean supported
-	
+
 	/**
 	 * Whether the server wants to receive workspace folder
 	 * change notifications.
-	 *
+	 * 
 	 * If a string is provided, the string is treated as an ID
 	 * under which the notification is registed on the client
 	 * side. The ID can be used to unregister for these events
@@ -4041,14 +4039,14 @@ class WorkspaceFolder {
 	 * The name of the workspace folder. Defaults to the uri's basename.
 	 */
 	String name
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull String uri) {
 		this.uri = uri
 	}
-	
+
 	new(@NonNull String uri, String name) {
 		this.uri = uri
 		this.name = name
@@ -4071,10 +4069,10 @@ class WorkspaceFoldersChangeEvent {
 	 */
 	@NonNull
 	List<WorkspaceFolder> removed = new ArrayList
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull List<WorkspaceFolder> added, @NonNull List<WorkspaceFolder> removed) {
 		this.added = added
 		this.removed = removed
@@ -4095,10 +4093,10 @@ class DidChangeWorkspaceFoldersParams {
 	 */
 	@NonNull
 	WorkspaceFoldersChangeEvent event
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull WorkspaceFoldersChangeEvent event) {
 		this.event = event
 	}
@@ -4117,10 +4115,10 @@ class DidChangeWorkspaceFoldersParams {
 class ConfigurationParams {
 	@NonNull
 	List<ConfigurationItem> items
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull List<ConfigurationItem> items) {
 		this.items = items
 	}
@@ -4145,7 +4143,7 @@ class ConfigurationItem {
 	 * The scope to get the configuration section for.
 	 */
 	String scopeUri
-	
+
 	/**
 	 * The configuration section asked for.
 	 */
@@ -4165,10 +4163,10 @@ class DocumentColorParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull TextDocumentIdentifier textDocument) {
 		this.textDocument = textDocument
 	}
@@ -4187,10 +4185,10 @@ class ColorInformation {
 	 */
 	@NonNull
 	Color color
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull Range range, @NonNull Color color) {
 		this.range = range
 		this.color = color
@@ -4221,10 +4219,10 @@ class Color {
 	 * The alpha component of this color in the range [0-1].
 	 */
 	double alpha
-	
+
 	new() {
 	}
-	
+
 	new(double red, double green, double blue, double alpha) {
 		this.red = red
 		this.green = green
@@ -4258,10 +4256,10 @@ class ColorPresentationParams {
 	 */
 	@NonNull
 	Range range
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Color color, @NonNull Range range) {
 		this.textDocument = textDocument
 		this.color = color
@@ -4278,31 +4276,31 @@ class ColorPresentation {
 	 */
 	@NonNull
 	String label
-	
+
 	/**
 	 * An edit which is applied to a document when selecting
 	 * this presentation for the color.  When `null` the label is used.
 	 */
 	TextEdit textEdit
-	
+
 	/**
 	 * An optional array of additional text edits that are applied when
 	 * selecting this color presentation. Edits must not overlap with the main edit nor with themselves.
 	 */
 	List<TextEdit> additionalTextEdits
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull String label) {
 		this.label = label
 	}
-	
+
 	new(@NonNull String label, TextEdit textEdit) {
 		this.label = label
 		this.textEdit = textEdit
 	}
-	
+
 	new(@NonNull String label, TextEdit textEdit, List<TextEdit> additionalTextEdits) {
 		this.label = label
 		this.textEdit = textEdit
@@ -4321,10 +4319,10 @@ class FoldingRangeRequestParams {
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-	
+
 	new() {
 	}
-	
+
 	new(TextDocumentIdentifier textDocument) {
 		this.textDocument = textDocument
 	}
@@ -4364,10 +4362,10 @@ class FoldingRange {
 	 * FoldingRangeKind for an enumeration of standardized kinds.
 	 */
 	String kind
-	
+
 	new() {
 	}
-	
+
 	new(int startLine, int endLine) {
 		this.startLine = startLine
 		this.endLine = endLine
