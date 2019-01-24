@@ -21,7 +21,7 @@ import com.google.common.base.Preconditions;
 public final class Positions {
 
 	/**
-	 * {@code true} if {@left} is strictly before than {@code right}. Otherwise,
+	 * {@code true} if {@code left} is strictly before than {@code right}. Otherwise,
 	 * {@code false}.
 	 * <p>
 	 * If you want to allow equality, use {@link Position#equals}.
