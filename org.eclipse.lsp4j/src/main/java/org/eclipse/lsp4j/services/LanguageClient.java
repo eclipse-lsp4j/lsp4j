@@ -130,6 +130,11 @@ public interface LanguageClient {
 	 * the server sends the semantic highlighting information for the entire document, but if the server
 	 * receives a {@code DidChangeTextDocumentNotification}, it pushes the information only about
 	 * the affected lines in the document.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
+	 * language feature</a> is not yet part of the official LSP specification.
 	 */
 	@Beta
 	@JsonNotification("textDocument/semanticHighlighting")

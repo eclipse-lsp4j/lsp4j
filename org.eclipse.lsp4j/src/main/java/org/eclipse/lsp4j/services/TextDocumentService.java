@@ -14,6 +14,8 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.lsp4j.CallHierarchyItem;
+import org.eclipse.lsp4j.CallHierarchyParams;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionParams;
 import org.eclipse.lsp4j.CodeLens;
@@ -47,6 +49,7 @@ import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
+import org.eclipse.lsp4j.ResolveCallHierarchyItemParams;
 import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SymbolInformation;
@@ -415,6 +418,11 @@ public interface TextDocumentService {
 	 * request would also allow to specify if the item should be resolved and
 	 * whether sub- or supertypes are to be resolved. If no type hierarchy item can
 	 * be found under the given text document position, resolves to {@code null}.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+	 * language feature</a> is not yet part of the official LSP specification.
 	 */
 	@Beta
 	@JsonRequest
@@ -428,10 +436,50 @@ public interface TextDocumentService {
 	 * item}. A type hierarchy item is unresolved if the if the
 	 * {@link TypeHierarchyItem#getParents parents} or the
 	 * {@link TypeHierarchyItem#getChildren children} is not defined.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+	 * language feature</a> is not yet part of the official LSP specification.
 	 */
 	@Beta
 	@JsonRequest(value="typeHierarchy/resolve", useSegment = false)
 	default CompletableFuture<TypeHierarchyItem> resolveTypeHierarchy(ResolveTypeHierarchyItemParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Request to request the call hierarchy at a given text document position.
+	 *
+	 * The optional request's parameter defines the maximum number of levels to
+	 * {@link CallHierarchyParams#getResolve() resolve} by this request. Unresolved
+	 * items can be resolved in subsequent {@code callHierarchy/resolve} requests.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+	 * language feature</a> is not yet part of the official LSP specification.
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<CallHierarchyItem> callHierarchy(CallHierarchyParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Request to resolve a call hierarchy item.
+	 *
+	 * The request's parameter is of type {@link ResolveCallHierarchyItemParams}.
+	 * The response is of type {@link CallHierarchyItem}.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+	 * language feature</a> is not yet part of the official LSP specification.
+	 */
+	@Beta
+	@JsonRequest(value = "callHierarchy/resolve", useSegment = false)
+	default CompletableFuture<CallHierarchyItem> resolveCallHierarchy(ResolveCallHierarchyItemParams params) {
 		throw new UnsupportedOperationException();
 	}
 

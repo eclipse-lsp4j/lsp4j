@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.CodeActionOptions;
 import org.eclipse.lsp4j.CodeLensOptions;
@@ -158,13 +159,31 @@ public class ServerCapabilities {
   /**
    * Semantic highlighting server capabilities.
    */
+  @Beta
   private SemanticHighlightingServerCapabilities semanticHighlighting;
   
   /**
    * Server capability for calculating super- and subtype hierarchies.
    * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+   * 
+   * <p>
+   * <b>Note:</b> the <a href=
+   * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+   * language feature</a> is not yet part of the official LSP specification.
    */
+  @Beta
   private Boolean typeHierarchy;
+  
+  /**
+   * The server provides Call Hierarchy support.
+   * 
+   * <p>
+   * <b>Note:</b> the <a href=
+   * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+   * language feature</a> is not yet part of the official LSP specification.
+   */
+  @Beta
+  private Either<Boolean, StaticRegistrationOptions> callHierarchyProvider;
   
   /**
    * Experimental server capabilities.
@@ -654,6 +673,11 @@ public class ServerCapabilities {
   /**
    * Server capability for calculating super- and subtype hierarchies.
    * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+   * 
+   * <p>
+   * <b>Note:</b> the <a href=
+   * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+   * language feature</a> is not yet part of the official LSP specification.
    */
   @Pure
   public Boolean getTypeHierarchy() {
@@ -663,9 +687,55 @@ public class ServerCapabilities {
   /**
    * Server capability for calculating super- and subtype hierarchies.
    * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+   * 
+   * <p>
+   * <b>Note:</b> the <a href=
+   * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+   * language feature</a> is not yet part of the official LSP specification.
    */
   public void setTypeHierarchy(final Boolean typeHierarchy) {
     this.typeHierarchy = typeHierarchy;
+  }
+  
+  /**
+   * The server provides Call Hierarchy support.
+   * 
+   * <p>
+   * <b>Note:</b> the <a href=
+   * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+   * language feature</a> is not yet part of the official LSP specification.
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getCallHierarchyProvider() {
+    return this.callHierarchyProvider;
+  }
+  
+  /**
+   * The server provides Call Hierarchy support.
+   * 
+   * <p>
+   * <b>Note:</b> the <a href=
+   * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+   * language feature</a> is not yet part of the official LSP specification.
+   */
+  public void setCallHierarchyProvider(final Either<Boolean, StaticRegistrationOptions> callHierarchyProvider) {
+    this.callHierarchyProvider = callHierarchyProvider;
+  }
+  
+  public void setCallHierarchyProvider(final Boolean callHierarchyProvider) {
+    if (callHierarchyProvider == null) {
+      this.callHierarchyProvider = null;
+      return;
+    }
+    this.callHierarchyProvider = Either.forLeft(callHierarchyProvider);
+  }
+  
+  public void setCallHierarchyProvider(final StaticRegistrationOptions callHierarchyProvider) {
+    if (callHierarchyProvider == null) {
+      this.callHierarchyProvider = null;
+      return;
+    }
+    this.callHierarchyProvider = Either.forRight(callHierarchyProvider);
   }
   
   /**
@@ -711,6 +781,7 @@ public class ServerCapabilities {
     b.add("workspace", this.workspace);
     b.add("semanticHighlighting", this.semanticHighlighting);
     b.add("typeHierarchy", this.typeHierarchy);
+    b.add("callHierarchyProvider", this.callHierarchyProvider);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -845,6 +916,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.typeHierarchy.equals(other.typeHierarchy))
       return false;
+    if (this.callHierarchyProvider == null) {
+      if (other.callHierarchyProvider != null)
+        return false;
+    } else if (!this.callHierarchyProvider.equals(other.callHierarchyProvider))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -882,6 +958,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
     result = prime * result + ((this.typeHierarchy== null) ? 0 : this.typeHierarchy.hashCode());
+    result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

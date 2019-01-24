@@ -18,6 +18,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Capabilities specific to the {@code textDocument/typeHierarchy} and the {@code typeHierarchy/resolve}
  * language server methods.
+ * 
+ * <p>
+ * <b>Note:</b> the <a href=
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+ * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @SuppressWarnings("all")
@@ -26,9 +31,6 @@ public class TypeHierarchyCapabilities {
    * The language client supports super- and subtype hierarchies.
    */
   private Boolean typeHierarchy;
-  
-  public TypeHierarchyCapabilities() {
-  }
   
   public TypeHierarchyCapabilities(final Boolean typeHierarchy) {
     this.typeHierarchy = typeHierarchy;
