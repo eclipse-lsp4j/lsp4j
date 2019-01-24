@@ -47,11 +47,14 @@ import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
+import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.TypeHierarchyItem;
+import org.eclipse.lsp4j.TypeHierarchyParams;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
@@ -62,6 +65,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
+
+import com.google.common.annotations.Beta;
 
 @JsonSegment("textDocument")
 public interface TextDocumentService {
@@ -353,7 +358,7 @@ public interface TextDocumentService {
 	}
 	
 	/**
-	 * The document color request is sent from the client to the server to list all color refereces found in a given text
+	 * The document color request is sent from the client to the server to list all color references found in a given text
 	 * document. Along with the range, a color value in RGB is returned.
 	 * 
 	 * Clients can use the result to decorate color references in an editor. For example:
@@ -402,4 +407,32 @@ public interface TextDocumentService {
 	default CompletableFuture<Either<Range, PrepareRenameResult>> prepareRename(TextDocumentPositionParams params) {
 		throw new UnsupportedOperationException();
 	}
+
+	/**
+	 * The {@code textDocument/typeHierarchy} request is sent from the client to the
+	 * server to retrieve a {@link TypeHierarchyItem type hierarchy item} based on
+	 * the {@link TypeHierarchyParams cursor position in the text document}. This
+	 * request would also allow to specify if the item should be resolved and
+	 * whether sub- or supertypes are to be resolved. If no type hierarchy item can
+	 * be found under the given text document position, resolves to {@code null}.
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<TypeHierarchyItem> typeHierarchy(TypeHierarchyParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code typeHierarchy/resolve} request is sent from the client to the
+	 * server to resolve an unresolved {@link TypeHierarchyItem type hierarchy
+	 * item}. A type hierarchy item is unresolved if the if the
+	 * {@link TypeHierarchyItem#getParents parents} or the
+	 * {@link TypeHierarchyItem#getChildren children} is not defined.
+	 */
+	@Beta
+	@JsonRequest(value="typeHierarchy/resolve", useSegment = false)
+	default CompletableFuture<TypeHierarchyItem> resolveTypeHierarchy(ResolveTypeHierarchyItemParams params) {
+		throw new UnsupportedOperationException();
+	}
+
 }

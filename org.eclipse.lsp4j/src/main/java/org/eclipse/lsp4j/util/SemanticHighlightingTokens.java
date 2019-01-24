@@ -131,7 +131,7 @@ public final class SemanticHighlightingTokens {
 		 * 
 		 * The elements of the input will be used to create new {@link Token} instances,
 		 * hence they must comply the requirements described
-		 * {@link #Token(int, int, int) here}.
+		 * {@link #SemanticHighlightingTokens.Token(int, int, int) here}.
 		 */
 		public static List<Token> fromIntArray(int... input) {
 			if (input == null) {

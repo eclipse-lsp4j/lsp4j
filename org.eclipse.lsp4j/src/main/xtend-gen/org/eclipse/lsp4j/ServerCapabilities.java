@@ -161,6 +161,12 @@ public class ServerCapabilities {
   private SemanticHighlightingServerCapabilities semanticHighlighting;
   
   /**
+   * Server capability for calculating super- and subtype hierarchies.
+   * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+   */
+  private Boolean typeHierarchy;
+  
+  /**
    * Experimental server capabilities.
    */
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
@@ -646,6 +652,23 @@ public class ServerCapabilities {
   }
   
   /**
+   * Server capability for calculating super- and subtype hierarchies.
+   * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+   */
+  @Pure
+  public Boolean getTypeHierarchy() {
+    return this.typeHierarchy;
+  }
+  
+  /**
+   * Server capability for calculating super- and subtype hierarchies.
+   * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+   */
+  public void setTypeHierarchy(final Boolean typeHierarchy) {
+    this.typeHierarchy = typeHierarchy;
+  }
+  
+  /**
    * Experimental server capabilities.
    */
   @Pure
@@ -687,6 +710,7 @@ public class ServerCapabilities {
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
     b.add("semanticHighlighting", this.semanticHighlighting);
+    b.add("typeHierarchy", this.typeHierarchy);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -816,6 +840,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
       return false;
+    if (this.typeHierarchy == null) {
+      if (other.typeHierarchy != null)
+        return false;
+    } else if (!this.typeHierarchy.equals(other.typeHierarchy))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -852,6 +881,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
+    result = prime * result + ((this.typeHierarchy== null) ? 0 : this.typeHierarchy.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }
