@@ -172,7 +172,7 @@ public class ServerCapabilities {
    * language feature</a> is not yet part of the official LSP specification.
    */
   @Beta
-  private Boolean typeHierarchy;
+  private Either<Boolean, StaticRegistrationOptions> typeHierarchyProvider;
   
   /**
    * The server provides Call Hierarchy support.
@@ -680,8 +680,8 @@ public class ServerCapabilities {
    * language feature</a> is not yet part of the official LSP specification.
    */
   @Pure
-  public Boolean getTypeHierarchy() {
-    return this.typeHierarchy;
+  public Either<Boolean, StaticRegistrationOptions> getTypeHierarchyProvider() {
+    return this.typeHierarchyProvider;
   }
   
   /**
@@ -693,8 +693,24 @@ public class ServerCapabilities {
    * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
    * language feature</a> is not yet part of the official LSP specification.
    */
-  public void setTypeHierarchy(final Boolean typeHierarchy) {
-    this.typeHierarchy = typeHierarchy;
+  public void setTypeHierarchyProvider(final Either<Boolean, StaticRegistrationOptions> typeHierarchyProvider) {
+    this.typeHierarchyProvider = typeHierarchyProvider;
+  }
+  
+  public void setTypeHierarchyProvider(final Boolean typeHierarchyProvider) {
+    if (typeHierarchyProvider == null) {
+      this.typeHierarchyProvider = null;
+      return;
+    }
+    this.typeHierarchyProvider = Either.forLeft(typeHierarchyProvider);
+  }
+  
+  public void setTypeHierarchyProvider(final StaticRegistrationOptions typeHierarchyProvider) {
+    if (typeHierarchyProvider == null) {
+      this.typeHierarchyProvider = null;
+      return;
+    }
+    this.typeHierarchyProvider = Either.forRight(typeHierarchyProvider);
   }
   
   /**
@@ -780,7 +796,7 @@ public class ServerCapabilities {
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
     b.add("semanticHighlighting", this.semanticHighlighting);
-    b.add("typeHierarchy", this.typeHierarchy);
+    b.add("typeHierarchyProvider", this.typeHierarchyProvider);
     b.add("callHierarchyProvider", this.callHierarchyProvider);
     b.add("experimental", this.experimental);
     return b.toString();
@@ -911,10 +927,10 @@ public class ServerCapabilities {
         return false;
     } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
       return false;
-    if (this.typeHierarchy == null) {
-      if (other.typeHierarchy != null)
+    if (this.typeHierarchyProvider == null) {
+      if (other.typeHierarchyProvider != null)
         return false;
-    } else if (!this.typeHierarchy.equals(other.typeHierarchy))
+    } else if (!this.typeHierarchyProvider.equals(other.typeHierarchyProvider))
       return false;
     if (this.callHierarchyProvider == null) {
       if (other.callHierarchyProvider != null)
@@ -957,7 +973,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
-    result = prime * result + ((this.typeHierarchy== null) ? 0 : this.typeHierarchy.hashCode());
+    result = prime * result + ((this.typeHierarchyProvider== null) ? 0 : this.typeHierarchyProvider.hashCode());
     result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }

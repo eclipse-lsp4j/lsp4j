@@ -775,8 +775,7 @@ class SemanticHighlightingCapabilities {
 }
 
 /**
- * Capabilities specific to the {@code textDocument/typeHierarchy} and the {@code typeHierarchy/resolve}
- * language server methods.
+ * Capabilities specific to the {@code textDocument/typeHierarchy}.
  * 
  * <p>
  * <b>Note:</b> the <a href=
@@ -785,15 +784,13 @@ class SemanticHighlightingCapabilities {
  */
 @Beta
 @JsonRpcData
-class TypeHierarchyCapabilities {
+class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
-	/**
-	 * The language client supports super- and subtype hierarchies.
-	 */
-	Boolean typeHierarchy
+	new() {
+	}
 
-	new(Boolean typeHierarchy) {
-		this.typeHierarchy = typeHierarchy
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
 	}
 
 }
@@ -2060,20 +2057,12 @@ class TypeHierarchyParams extends TextDocumentPositionParams {
 	 * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
 	 */
 	int resolve
-	
+
 	/**
-	 * The direction of the type hierarchy resolution. If not defined, defaults to {@code children}.
-	 * 
-	 * <p>
-	 * The followings are the legal values:
-	 * <ul>
-	 * <li>{@code children},</li>
-	 * <li>{@code parents}, and</li>
-	 * <li>{@code both}.</li>
-	 * </ul>
-	 * </p>
+	 * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
 	 */
-	String direction
+	TypeHierarchyDirection direction
+
 }
 
 /**
@@ -2097,18 +2086,9 @@ class ResolveTypeHierarchyItemParams {
 
 	/**
 	 * The direction of the type hierarchy resolution.
-	 * 
-	 * <p>
-	 * The followings are the legal values:
-	 * <ul>
-	 * <li>{@code children},</li>
-	 * <li>{@code parents}, and</li>
-	 * <li>{@code both}.</li>
-	 * </ul>
-	 * </p>
 	 */
 	@NonNull
-	String direction
+	TypeHierarchyDirection direction
 
 }
 
@@ -2886,7 +2866,7 @@ class ServerCapabilities {
 	 * language feature</a> is not yet part of the official LSP specification.
 	 */
 	@Beta
-	Boolean typeHierarchy
+	Either<Boolean, StaticRegistrationOptions> typeHierarchyProvider
 
 	/**
 	 * The server provides Call Hierarchy support.
@@ -3117,7 +3097,7 @@ class TypeHierarchyItem {
 
 	/**
 	 * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
-	 * like comments. This information is typically used to determine if the the clients cursor is inside the type
+	 * like comments. This information is typically used to determine if the clients cursor is inside the type
 	 * hierarchy item to reveal in the symbol in the UI.
 	 * 
 	 * @see TypeHierarchyItem#selectionRange
@@ -3176,7 +3156,7 @@ class DocumentSymbol {
 
 	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
-	 * like comments. This information is typically used to determine if the the clients cursor is
+	 * like comments. This information is typically used to determine if the clients cursor is
 	 * inside the symbol to reveal in the symbol in the UI.
 	 */
 	@NonNull
@@ -3184,7 +3164,7 @@ class DocumentSymbol {
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-	 * Must be contained by the the `range`.
+	 * Must be contained by the `range`.
 	 */
 	@NonNull
 	Range selectionRange

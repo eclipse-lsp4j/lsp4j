@@ -17,7 +17,7 @@ package org.eclipse.lsp4j;
 public enum DocumentHighlightKind {
 	
 	/**
-	 * A textual occurrance.
+	 * A textual occurrence.
 	 */
 	Text(1),
 	

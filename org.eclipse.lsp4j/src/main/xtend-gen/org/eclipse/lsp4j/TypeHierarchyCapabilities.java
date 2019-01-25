@@ -12,12 +12,12 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Capabilities specific to the {@code textDocument/typeHierarchy} and the {@code typeHierarchy/resolve}
- * language server methods.
+ * Capabilities specific to the {@code textDocument/typeHierarchy}.
  * 
  * <p>
  * <b>Note:</b> the <a href=
@@ -26,36 +26,19 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @Beta
 @SuppressWarnings("all")
-public class TypeHierarchyCapabilities {
-  /**
-   * The language client supports super- and subtype hierarchies.
-   */
-  private Boolean typeHierarchy;
-  
-  public TypeHierarchyCapabilities(final Boolean typeHierarchy) {
-    this.typeHierarchy = typeHierarchy;
+public class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
+  public TypeHierarchyCapabilities() {
   }
   
-  /**
-   * The language client supports super- and subtype hierarchies.
-   */
-  @Pure
-  public Boolean getTypeHierarchy() {
-    return this.typeHierarchy;
-  }
-  
-  /**
-   * The language client supports super- and subtype hierarchies.
-   */
-  public void setTypeHierarchy(final Boolean typeHierarchy) {
-    this.typeHierarchy = typeHierarchy;
+  public TypeHierarchyCapabilities(final Boolean dynamicRegistration) {
+    super(dynamicRegistration);
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("typeHierarchy", this.typeHierarchy);
+    b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
   
@@ -68,11 +51,7 @@ public class TypeHierarchyCapabilities {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    TypeHierarchyCapabilities other = (TypeHierarchyCapabilities) obj;
-    if (this.typeHierarchy == null) {
-      if (other.typeHierarchy != null)
-        return false;
-    } else if (!this.typeHierarchy.equals(other.typeHierarchy))
+    if (!super.equals(obj))
       return false;
     return true;
   }
@@ -80,6 +59,6 @@ public class TypeHierarchyCapabilities {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.typeHierarchy== null) ? 0 : this.typeHierarchy.hashCode());
+    return super.hashCode();
   }
 }

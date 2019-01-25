@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -28,18 +29,9 @@ public class TypeHierarchyParams extends TextDocumentPositionParams {
   private int resolve;
   
   /**
-   * The direction of the type hierarchy resolution. If not defined, defaults to {@code children}.
-   * 
-   * <p>
-   * The followings are the legal values:
-   * <ul>
-   * <li>{@code children},</li>
-   * <li>{@code parents}, and</li>
-   * <li>{@code both}.</li>
-   * </ul>
-   * </p>
+   * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
    */
-  private String direction;
+  private TypeHierarchyDirection direction;
   
   /**
    * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
@@ -57,35 +49,17 @@ public class TypeHierarchyParams extends TextDocumentPositionParams {
   }
   
   /**
-   * The direction of the type hierarchy resolution. If not defined, defaults to {@code children}.
-   * 
-   * <p>
-   * The followings are the legal values:
-   * <ul>
-   * <li>{@code children},</li>
-   * <li>{@code parents}, and</li>
-   * <li>{@code both}.</li>
-   * </ul>
-   * </p>
+   * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
    */
   @Pure
-  public String getDirection() {
+  public TypeHierarchyDirection getDirection() {
     return this.direction;
   }
   
   /**
-   * The direction of the type hierarchy resolution. If not defined, defaults to {@code children}.
-   * 
-   * <p>
-   * The followings are the legal values:
-   * <ul>
-   * <li>{@code children},</li>
-   * <li>{@code parents}, and</li>
-   * <li>{@code both}.</li>
-   * </ul>
-   * </p>
+   * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
    */
-  public void setDirection(final String direction) {
+  public void setDirection(final TypeHierarchyDirection direction) {
     this.direction = direction;
   }
   

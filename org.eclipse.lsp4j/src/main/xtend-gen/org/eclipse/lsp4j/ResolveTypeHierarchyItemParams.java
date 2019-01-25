@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.lsp4j.TypeHierarchyItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -36,18 +37,9 @@ public class ResolveTypeHierarchyItemParams {
   
   /**
    * The direction of the type hierarchy resolution.
-   * 
-   * <p>
-   * The followings are the legal values:
-   * <ul>
-   * <li>{@code children},</li>
-   * <li>{@code parents}, and</li>
-   * <li>{@code both}.</li>
-   * </ul>
-   * </p>
    */
   @NonNull
-  private String direction;
+  private TypeHierarchyDirection direction;
   
   /**
    * The hierarchy item to resolve.
@@ -82,35 +74,17 @@ public class ResolveTypeHierarchyItemParams {
   
   /**
    * The direction of the type hierarchy resolution.
-   * 
-   * <p>
-   * The followings are the legal values:
-   * <ul>
-   * <li>{@code children},</li>
-   * <li>{@code parents}, and</li>
-   * <li>{@code both}.</li>
-   * </ul>
-   * </p>
    */
   @Pure
   @NonNull
-  public String getDirection() {
+  public TypeHierarchyDirection getDirection() {
     return this.direction;
   }
   
   /**
    * The direction of the type hierarchy resolution.
-   * 
-   * <p>
-   * The followings are the legal values:
-   * <ul>
-   * <li>{@code children},</li>
-   * <li>{@code parents}, and</li>
-   * <li>{@code both}.</li>
-   * </ul>
-   * </p>
    */
-  public void setDirection(@NonNull final String direction) {
+  public void setDirection(@NonNull final TypeHierarchyDirection direction) {
     this.direction = direction;
   }
   
