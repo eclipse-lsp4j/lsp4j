@@ -52,6 +52,11 @@ public class CallHierarchyItem {
   private String uri;
   
   /**
+   * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
+   */
+  private Boolean deprecated;
+  
+  /**
    * The range enclosing this symbol not including leading/trailing whitespace but everything else
    * like comments. This information is typically used to determine if the the clients cursor is
    * inside the symbol to reveal in the symbol in the UI.
@@ -67,25 +72,18 @@ public class CallHierarchyItem {
   private Range selectionRange;
   
   /**
-   * The actual location of the call.
+   * The actual locations of incoming (or outgoing) calls to (or from) a callable identified by this item.
    * 
-   * <b>Must be defined</b> in resolved callers/callees.
+   * <b>Note</b>: undefined in root item.
    */
-  private Location callLocation;
+  private List<Location> callLocations;
   
   /**
-   * List of incoming calls.
+   * List of incoming (or outgoing) calls to (or from) a callable identified by this item.
    * 
-   * <i>Note</i>: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
+   * <b>Note</b>: if undefined, this item is unresolved.
    */
-  private List<CallHierarchyItem> callers;
-  
-  /**
-   * List of outgoing calls.
-   * 
-   * *Note*: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
-   */
-  private List<CallHierarchyItem> callees;
+  private List<CallHierarchyItem> calls;
   
   /**
    * Optional data to identify an item in a resolve request.
@@ -157,6 +155,21 @@ public class CallHierarchyItem {
   }
   
   /**
+   * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
+   */
+  @Pure
+  public Boolean getDeprecated() {
+    return this.deprecated;
+  }
+  
+  /**
+   * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
+   */
+  public void setDeprecated(final Boolean deprecated) {
+    this.deprecated = deprecated;
+  }
+  
+  /**
    * The range enclosing this symbol not including leading/trailing whitespace but everything else
    * like comments. This information is typically used to determine if the the clients cursor is
    * inside the symbol to reveal in the symbol in the UI.
@@ -195,60 +208,41 @@ public class CallHierarchyItem {
   }
   
   /**
-   * The actual location of the call.
+   * The actual locations of incoming (or outgoing) calls to (or from) a callable identified by this item.
    * 
-   * <b>Must be defined</b> in resolved callers/callees.
+   * <b>Note</b>: undefined in root item.
    */
   @Pure
-  public Location getCallLocation() {
-    return this.callLocation;
+  public List<Location> getCallLocations() {
+    return this.callLocations;
   }
   
   /**
-   * The actual location of the call.
+   * The actual locations of incoming (or outgoing) calls to (or from) a callable identified by this item.
    * 
-   * <b>Must be defined</b> in resolved callers/callees.
+   * <b>Note</b>: undefined in root item.
    */
-  public void setCallLocation(final Location callLocation) {
-    this.callLocation = callLocation;
+  public void setCallLocations(final List<Location> callLocations) {
+    this.callLocations = callLocations;
   }
   
   /**
-   * List of incoming calls.
+   * List of incoming (or outgoing) calls to (or from) a callable identified by this item.
    * 
-   * <i>Note</i>: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
-   */
-  @Pure
-  public List<CallHierarchyItem> getCallers() {
-    return this.callers;
-  }
-  
-  /**
-   * List of incoming calls.
-   * 
-   * <i>Note</i>: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
-   */
-  public void setCallers(final List<CallHierarchyItem> callers) {
-    this.callers = callers;
-  }
-  
-  /**
-   * List of outgoing calls.
-   * 
-   * *Note*: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
+   * <b>Note</b>: if undefined, this item is unresolved.
    */
   @Pure
-  public List<CallHierarchyItem> getCallees() {
-    return this.callees;
+  public List<CallHierarchyItem> getCalls() {
+    return this.calls;
   }
   
   /**
-   * List of outgoing calls.
+   * List of incoming (or outgoing) calls to (or from) a callable identified by this item.
    * 
-   * *Note*: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
+   * <b>Note</b>: if undefined, this item is unresolved.
    */
-  public void setCallees(final List<CallHierarchyItem> callees) {
-    this.callees = callees;
+  public void setCalls(final List<CallHierarchyItem> calls) {
+    this.calls = calls;
   }
   
   /**
@@ -274,11 +268,11 @@ public class CallHierarchyItem {
     b.add("detail", this.detail);
     b.add("kind", this.kind);
     b.add("uri", this.uri);
+    b.add("deprecated", this.deprecated);
     b.add("range", this.range);
     b.add("selectionRange", this.selectionRange);
-    b.add("callLocation", this.callLocation);
-    b.add("callers", this.callers);
-    b.add("callees", this.callees);
+    b.add("callLocations", this.callLocations);
+    b.add("calls", this.calls);
     b.add("data", this.data);
     return b.toString();
   }
@@ -313,6 +307,11 @@ public class CallHierarchyItem {
         return false;
     } else if (!this.uri.equals(other.uri))
       return false;
+    if (this.deprecated == null) {
+      if (other.deprecated != null)
+        return false;
+    } else if (!this.deprecated.equals(other.deprecated))
+      return false;
     if (this.range == null) {
       if (other.range != null)
         return false;
@@ -323,20 +322,15 @@ public class CallHierarchyItem {
         return false;
     } else if (!this.selectionRange.equals(other.selectionRange))
       return false;
-    if (this.callLocation == null) {
-      if (other.callLocation != null)
+    if (this.callLocations == null) {
+      if (other.callLocations != null)
         return false;
-    } else if (!this.callLocation.equals(other.callLocation))
+    } else if (!this.callLocations.equals(other.callLocations))
       return false;
-    if (this.callers == null) {
-      if (other.callers != null)
+    if (this.calls == null) {
+      if (other.calls != null)
         return false;
-    } else if (!this.callers.equals(other.callers))
-      return false;
-    if (this.callees == null) {
-      if (other.callees != null)
-        return false;
-    } else if (!this.callees.equals(other.callees))
+    } else if (!this.calls.equals(other.calls))
       return false;
     if (this.data == null) {
       if (other.data != null)
@@ -355,11 +349,11 @@ public class CallHierarchyItem {
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
+    result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
-    result = prime * result + ((this.callLocation== null) ? 0 : this.callLocation.hashCode());
-    result = prime * result + ((this.callers== null) ? 0 : this.callers.hashCode());
-    result = prime * result + ((this.callees== null) ? 0 : this.callees.hashCode());
+    result = prime * result + ((this.callLocations== null) ? 0 : this.callLocations.hashCode());
+    result = prime * result + ((this.calls== null) ? 0 : this.calls.hashCode());
     return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

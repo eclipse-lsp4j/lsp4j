@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.CallHierarchyDirection;
 import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -35,11 +36,10 @@ public class ResolveCallHierarchyItemParams {
   private int resolve;
   
   /**
-   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-   * The default is {@code incoming} for callers.
+   * The direction of calls to resolve.
    */
   @NonNull
-  private String direction;
+  private CallHierarchyDirection direction;
   
   /**
    * Unresolved item.
@@ -73,20 +73,18 @@ public class ResolveCallHierarchyItemParams {
   }
   
   /**
-   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-   * The default is {@code incoming} for callers.
+   * The direction of calls to resolve.
    */
   @Pure
   @NonNull
-  public String getDirection() {
+  public CallHierarchyDirection getDirection() {
     return this.direction;
   }
   
   /**
-   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-   * The default is {@code incoming} for callers.
+   * The direction of calls to resolve.
    */
-  public void setDirection(@NonNull final String direction) {
+  public void setDirection(@NonNull final CallHierarchyDirection direction) {
     this.direction = direction;
   }
   

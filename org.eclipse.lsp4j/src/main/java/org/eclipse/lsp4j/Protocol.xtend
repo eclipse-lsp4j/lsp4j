@@ -4651,10 +4651,9 @@ class CallHierarchyParams extends TextDocumentPositionParams {
 	int resolve
 
 	/**
-	 * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-	 * The default is {@code incoming} for callers.
+	 * The direction of calls to resolve.
 	 */
-	String direction
+	CallHierarchyDirection direction
 
 }
 
@@ -4677,11 +4676,10 @@ class ResolveCallHierarchyItemParams {
 	int resolve
 
 	/**
-	 * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-	 * The default is {@code incoming} for callers.
+	 * The direction of calls to resolve.
 	 */
 	@NonNull
-	String direction
+	CallHierarchyDirection direction
 
 }
 
@@ -4716,6 +4714,11 @@ class CallHierarchyItem {
 	String uri
 
 	/**
+	 * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
+	 */
+	Boolean deprecated
+
+	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
 	 * like comments. This information is typically used to determine if the the clients cursor is
 	 * inside the symbol to reveal in the symbol in the UI.
@@ -4731,25 +4734,18 @@ class CallHierarchyItem {
 	Range selectionRange
 
 	/**
-	 * The actual location of the call.
+	 * The actual locations of incoming (or outgoing) calls to (or from) a callable identified by this item.
 	 *
-	 * <b>Must be defined</b> in resolved callers/callees.
+	 * <b>Note</b>: undefined in root item.
 	 */
-	Location callLocation
+	List<Location> callLocations
 
 	/**
-	 * List of incoming calls.
+	 * List of incoming (or outgoing) calls to (or from) a callable identified by this item.
 	 *
-	 * <i>Note</i>: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
+	 * <b>Note</b>: if undefined, this item is unresolved.
 	 */
-	List<CallHierarchyItem> callers
-
-	/**
-	 * List of outgoing calls.
-	 *
-	 * *Note*: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
-	 */
-	List<CallHierarchyItem> callees
+	List<CallHierarchyItem> calls
 
 	/**
 	 * Optional data to identify an item in a resolve request.
