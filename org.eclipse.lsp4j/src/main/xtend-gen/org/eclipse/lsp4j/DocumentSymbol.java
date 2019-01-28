@@ -39,7 +39,7 @@ public class DocumentSymbol {
   
   /**
    * The range enclosing this symbol not including leading/trailing whitespace but everything else
-   * like comments. This information is typically used to determine if the the clients cursor is
+   * like comments. This information is typically used to determine if the clients cursor is
    * inside the symbol to reveal in the symbol in the UI.
    */
   @NonNull
@@ -47,7 +47,7 @@ public class DocumentSymbol {
   
   /**
    * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-   * Must be contained by the the `range`.
+   * Must be contained by the `range`.
    */
   @NonNull
   private Range selectionRange;
@@ -129,7 +129,7 @@ public class DocumentSymbol {
   
   /**
    * The range enclosing this symbol not including leading/trailing whitespace but everything else
-   * like comments. This information is typically used to determine if the the clients cursor is
+   * like comments. This information is typically used to determine if the clients cursor is
    * inside the symbol to reveal in the symbol in the UI.
    */
   @Pure
@@ -140,7 +140,7 @@ public class DocumentSymbol {
   
   /**
    * The range enclosing this symbol not including leading/trailing whitespace but everything else
-   * like comments. This information is typically used to determine if the the clients cursor is
+   * like comments. This information is typically used to determine if the clients cursor is
    * inside the symbol to reveal in the symbol in the UI.
    */
   public void setRange(@NonNull final Range range) {
@@ -149,7 +149,7 @@ public class DocumentSymbol {
   
   /**
    * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-   * Must be contained by the the `range`.
+   * Must be contained by the `range`.
    */
   @Pure
   @NonNull
@@ -159,7 +159,7 @@ public class DocumentSymbol {
   
   /**
    * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-   * Must be contained by the the `range`.
+   * Must be contained by the `range`.
    */
   public void setSelectionRange(@NonNull final Range selectionRange) {
     this.selectionRange = selectionRange;

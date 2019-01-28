@@ -17,6 +17,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Capabilities specific to {@code textDocument/semanticHighlighting}.
+ * 
+ * <p>
+ * <b>Note:</b> the <a href=
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
+ * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @SuppressWarnings("all")

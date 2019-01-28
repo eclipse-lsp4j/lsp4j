@@ -751,10 +751,16 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to {@code textDocument/semanticHighlighting}.
+ * 
+ * <p>
+ * <b>Note:</b> the <a href=
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
+ * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @JsonRpcData
 class SemanticHighlightingCapabilities {
+
 	/**
 	 * The client supports semantic highlighting.
 	 */
@@ -769,23 +775,43 @@ class SemanticHighlightingCapabilities {
 }
 
 /**
- * Capabilities specific to the {@code textDocument/typeHierarchy} and the {@code typeHierarchy/resolve}
- * language server methods.
+ * Capabilities specific to the {@code textDocument/typeHierarchy}.
+ * 
+ * <p>
+ * <b>Note:</b> the <a href=
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+ * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @JsonRpcData
-class TypeHierarchyCapabilities {
-
-	/**
-	 * The language client supports super- and subtype hierarchies.
-	 */
-	Boolean typeHierarchy
+class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 	new() {
 	}
 
-	new(Boolean typeHierarchy) {
-		this.typeHierarchy = typeHierarchy
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+}
+
+/**
+ * Capabilities specific to the {@code textDocument/callHierarchy}.
+ * 
+ * <p>
+ * <b>Note:</b> the <a href=
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+ * language feature</a> is not yet part of the official LSP specification.
+ */
+@Beta
+@JsonRpcData
+class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
 	}
 
 }
@@ -912,6 +938,13 @@ class TextDocumentClientCapabilities {
 	 */
 	@Beta
 	TypeHierarchyCapabilities typeHierarchyCapabilities
+
+	/**
+	 * Capabilities specific to {@code textDocument/callHierarchy}.
+	 */
+	@Beta
+	CallHierarchyCapabilities callHierarchy
+
 }
 
 /**
@@ -2024,20 +2057,12 @@ class TypeHierarchyParams extends TextDocumentPositionParams {
 	 * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
 	 */
 	int resolve
-	
+
 	/**
-	 * The direction of the type hierarchy resolution. If not defined, defaults to {@code children}.
-	 * 
-	 * <p>
-	 * The followings are the legal values:
-	 * <ul>
-	 * <li>{@code children},</li>
-	 * <li>{@code parents}, and</li>
-	 * <li>{@code both}.</li>
-	 * </ul>
-	 * </p>
+	 * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
 	 */
-	String direction
+	TypeHierarchyDirection direction
+
 }
 
 /**
@@ -2061,18 +2086,9 @@ class ResolveTypeHierarchyItemParams {
 
 	/**
 	 * The direction of the type hierarchy resolution.
-	 * 
-	 * <p>
-	 * The followings are the legal values:
-	 * <ul>
-	 * <li>{@code children},</li>
-	 * <li>{@code parents}, and</li>
-	 * <li>{@code both}.</li>
-	 * </ul>
-	 * </p>
 	 */
 	@NonNull
-	String direction
+	TypeHierarchyDirection direction
 
 }
 
@@ -2837,13 +2853,31 @@ class ServerCapabilities {
 	/**
 	 * Semantic highlighting server capabilities.
 	 */
+	@Beta
 	SemanticHighlightingServerCapabilities semanticHighlighting
 	
 	/**
 	 * Server capability for calculating super- and subtype hierarchies.
 	 * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+	 * language feature</a> is not yet part of the official LSP specification.
 	 */
-	Boolean typeHierarchy
+	@Beta
+	Either<Boolean, StaticRegistrationOptions> typeHierarchyProvider
+
+	/**
+	 * The server provides Call Hierarchy support.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
+	 * language feature</a> is not yet part of the official LSP specification.
+	 */
+	@Beta
+	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
 
 	/**
 	 * Experimental server capabilities.
@@ -2875,6 +2909,11 @@ class WorkspaceServerCapabilities {
 
 /**
  * Semantic highlighting server capabilities.
+ * 
+ * <p>
+ * <b>Note:</b> the <a href=
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
+ * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @JsonRpcData
@@ -3058,7 +3097,7 @@ class TypeHierarchyItem {
 
 	/**
 	 * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
-	 * like comments. This information is typically used to determine if the the clients cursor is inside the type
+	 * like comments. This information is typically used to determine if the clients cursor is inside the type
 	 * hierarchy item to reveal in the symbol in the UI.
 	 * 
 	 * @see TypeHierarchyItem#selectionRange
@@ -3117,7 +3156,7 @@ class DocumentSymbol {
 
 	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
-	 * like comments. This information is typically used to determine if the the clients cursor is
+	 * like comments. This information is typically used to determine if the clients cursor is
 	 * inside the symbol to reveal in the symbol in the UI.
 	 */
 	@NonNull
@@ -3125,7 +3164,7 @@ class DocumentSymbol {
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-	 * Must be contained by the the `range`.
+	 * Must be contained by the `range`.
 	 */
 	@NonNull
 	Range selectionRange
@@ -4597,4 +4636,125 @@ class SemanticHighlightingInformation {
 		this.line = line
 		this.tokens = tokens
 	}
+}
+
+/**
+ * The parameters of a {@code textDocument/callHierarchy} request.
+ */
+@Beta
+@JsonRpcData
+class CallHierarchyParams extends TextDocumentPositionParams {
+
+	/**
+	 * The number of levels to resolve.
+	 */
+	int resolve
+
+	/**
+	 * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+	 * The default is {@code incoming} for callers.
+	 */
+	String direction
+
+}
+
+/**
+ * The parameters of a {@code callHierarchy/resolve} request.
+ */
+@Beta
+@JsonRpcData
+class ResolveCallHierarchyItemParams {
+
+	/**
+	 * Unresolved item.
+	 */
+	@NonNull
+	CallHierarchyItem item
+
+	/**
+	 * The number of levels to resolve.
+	 */
+	int resolve
+
+	/**
+	 * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+	 * The default is {@code incoming} for callers.
+	 */
+	@NonNull
+	String direction
+
+}
+
+/**
+ * The result of a {@code textDocument/callHierarchy} request.
+ */
+@Beta
+@JsonRpcData
+class CallHierarchyItem {
+
+	/**
+	 * The name of the symbol targeted by the call hierarchy request.
+	 */
+	@NonNull
+	String name
+
+	/**
+	 * More detail for this symbol, e.g the signature of a function.
+	 */
+	String detail
+
+	/**
+	 * The kind of this symbol.
+	 */
+	@NonNull
+	SymbolKind kind
+
+	/**
+	 * URI of the document containing the symbol.
+	 */
+	@NonNull
+	String uri
+
+	/**
+	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
+	 * like comments. This information is typically used to determine if the the clients cursor is
+	 * inside the symbol to reveal in the symbol in the UI.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
+	 * Must be contained by the the {@code range}.
+	 */
+	@NonNull
+	Range selectionRange
+
+	/**
+	 * The actual location of the call.
+	 *
+	 * <b>Must be defined</b> in resolved callers/callees.
+	 */
+	Location callLocation
+
+	/**
+	 * List of incoming calls.
+	 *
+	 * <i>Note</i>: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
+	 */
+	List<CallHierarchyItem> callers
+
+	/**
+	 * List of outgoing calls.
+	 *
+	 * *Note*: The items is <em>unresolved</em> if {@code callers} and {@code callees} is not defined.
+	 */
+	List<CallHierarchyItem> callees
+
+	/**
+	 * Optional data to identify an item in a resolve request.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
 }

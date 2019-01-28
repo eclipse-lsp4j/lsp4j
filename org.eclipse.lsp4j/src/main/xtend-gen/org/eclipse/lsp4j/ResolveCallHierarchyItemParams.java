@@ -11,54 +11,54 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.TypeHierarchyDirection;
-import org.eclipse.lsp4j.TypeHierarchyItem;
+import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Request to resolve an unresolved {@link TypeHierarchyItem type hierarchy item} which is indicated if the
- * {@link TypeHierarchyItem#getParents parents} or the {@link TypeHierarchyItem#getChildren children} is not
- * defined. If resolved and no {@code parents} or {@code children} are available then an empty list is returned.
+ * The parameters of a {@code callHierarchy/resolve} request.
  */
+@Beta
 @SuppressWarnings("all")
-public class ResolveTypeHierarchyItemParams {
+public class ResolveCallHierarchyItemParams {
   /**
-   * The hierarchy item to resolve.
+   * Unresolved item.
    */
   @NonNull
-  private TypeHierarchyItem item;
+  private CallHierarchyItem item;
   
   /**
-   * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level.
+   * The number of levels to resolve.
    */
   private int resolve;
   
   /**
-   * The direction of the type hierarchy resolution.
+   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+   * The default is {@code incoming} for callers.
    */
   @NonNull
-  private TypeHierarchyDirection direction;
+  private String direction;
   
   /**
-   * The hierarchy item to resolve.
+   * Unresolved item.
    */
   @Pure
   @NonNull
-  public TypeHierarchyItem getItem() {
+  public CallHierarchyItem getItem() {
     return this.item;
   }
   
   /**
-   * The hierarchy item to resolve.
+   * Unresolved item.
    */
-  public void setItem(@NonNull final TypeHierarchyItem item) {
+  public void setItem(@NonNull final CallHierarchyItem item) {
     this.item = item;
   }
   
   /**
-   * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level.
+   * The number of levels to resolve.
    */
   @Pure
   public int getResolve() {
@@ -66,25 +66,27 @@ public class ResolveTypeHierarchyItemParams {
   }
   
   /**
-   * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level.
+   * The number of levels to resolve.
    */
   public void setResolve(final int resolve) {
     this.resolve = resolve;
   }
   
   /**
-   * The direction of the type hierarchy resolution.
+   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+   * The default is {@code incoming} for callers.
    */
   @Pure
   @NonNull
-  public TypeHierarchyDirection getDirection() {
+  public String getDirection() {
     return this.direction;
   }
   
   /**
-   * The direction of the type hierarchy resolution.
+   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+   * The default is {@code incoming} for callers.
    */
-  public void setDirection(@NonNull final TypeHierarchyDirection direction) {
+  public void setDirection(@NonNull final String direction) {
     this.direction = direction;
   }
   
@@ -107,7 +109,7 @@ public class ResolveTypeHierarchyItemParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    ResolveTypeHierarchyItemParams other = (ResolveTypeHierarchyItemParams) obj;
+    ResolveCallHierarchyItemParams other = (ResolveCallHierarchyItemParams) obj;
     if (this.item == null) {
       if (other.item != null)
         return false;

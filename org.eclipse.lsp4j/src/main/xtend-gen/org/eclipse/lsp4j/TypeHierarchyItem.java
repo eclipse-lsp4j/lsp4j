@@ -55,7 +55,7 @@ public class TypeHierarchyItem {
   
   /**
    * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
-   * like comments. This information is typically used to determine if the the clients cursor is inside the type
+   * like comments. This information is typically used to determine if the clients cursor is inside the type
    * hierarchy item to reveal in the symbol in the UI.
    * 
    * @see TypeHierarchyItem#selectionRange
@@ -170,7 +170,7 @@ public class TypeHierarchyItem {
   
   /**
    * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
-   * like comments. This information is typically used to determine if the the clients cursor is inside the type
+   * like comments. This information is typically used to determine if the clients cursor is inside the type
    * hierarchy item to reveal in the symbol in the UI.
    * 
    * @see TypeHierarchyItem#selectionRange
@@ -183,7 +183,7 @@ public class TypeHierarchyItem {
   
   /**
    * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
-   * like comments. This information is typically used to determine if the the clients cursor is inside the type
+   * like comments. This information is typically used to determine if the clients cursor is inside the type
    * hierarchy item to reveal in the symbol in the UI.
    * 
    * @see TypeHierarchyItem#selectionRange

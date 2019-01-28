@@ -17,20 +17,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Capabilities specific to the {@code textDocument/typeHierarchy}.
+ * Capabilities specific to the {@code textDocument/callHierarchy}.
  * 
  * <p>
  * <b>Note:</b> the <a href=
- * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
+ * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
  * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @SuppressWarnings("all")
-public class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
-  public TypeHierarchyCapabilities() {
+public class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
+  public CallHierarchyCapabilities() {
   }
   
-  public TypeHierarchyCapabilities(final Boolean dynamicRegistration) {
+  public CallHierarchyCapabilities(final Boolean dynamicRegistration) {
     super(dynamicRegistration);
   }
   

@@ -11,30 +11,30 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
-import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * The type hierarchy request is sent from the client resolve a {@link TypeHierarchyItem type hierarchy item} for
- * a give cursor location in the text document. The request would also allow to specify if the item should be resolved
- * and whether sub- or supertypes are to be resolved.
+ * The parameters of a {@code textDocument/callHierarchy} request.
  */
+@Beta
 @SuppressWarnings("all")
-public class TypeHierarchyParams extends TextDocumentPositionParams {
+public class CallHierarchyParams extends TextDocumentPositionParams {
   /**
-   * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
+   * The number of levels to resolve.
    */
   private int resolve;
   
   /**
-   * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
+   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+   * The default is {@code incoming} for callers.
    */
-  private TypeHierarchyDirection direction;
+  private String direction;
   
   /**
-   * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
+   * The number of levels to resolve.
    */
   @Pure
   public int getResolve() {
@@ -42,24 +42,26 @@ public class TypeHierarchyParams extends TextDocumentPositionParams {
   }
   
   /**
-   * The number of hierarchy levels to resolve. {@code 0} indicates no hierarchy level. It defaults to {@code 0}.
+   * The number of levels to resolve.
    */
   public void setResolve(final int resolve) {
     this.resolve = resolve;
   }
   
   /**
-   * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
+   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+   * The default is {@code incoming} for callers.
    */
   @Pure
-  public TypeHierarchyDirection getDirection() {
+  public String getDirection() {
     return this.direction;
   }
   
   /**
-   * The direction of the type hierarchy resolution. If not defined, defaults to {@link TypeHierarchyDirection#Children Children}.
+   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
+   * The default is {@code incoming} for callers.
    */
-  public void setDirection(final TypeHierarchyDirection direction) {
+  public void setDirection(final String direction) {
     this.direction = direction;
   }
   
@@ -86,7 +88,7 @@ public class TypeHierarchyParams extends TextDocumentPositionParams {
       return false;
     if (!super.equals(obj))
       return false;
-    TypeHierarchyParams other = (TypeHierarchyParams) obj;
+    CallHierarchyParams other = (CallHierarchyParams) obj;
     if (other.resolve != this.resolve)
       return false;
     if (this.direction == null) {

@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.CallHierarchyCapabilities;
 import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLensCapabilities;
 import org.eclipse.lsp4j.ColorProviderCapabilities;
@@ -159,6 +160,12 @@ public class TextDocumentClientCapabilities {
    */
   @Beta
   private TypeHierarchyCapabilities typeHierarchyCapabilities;
+  
+  /**
+   * Capabilities specific to {@code textDocument/callHierarchy}.
+   */
+  @Beta
+  private CallHierarchyCapabilities callHierarchy;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -502,6 +509,21 @@ public class TextDocumentClientCapabilities {
     this.typeHierarchyCapabilities = typeHierarchyCapabilities;
   }
   
+  /**
+   * Capabilities specific to {@code textDocument/callHierarchy}.
+   */
+  @Pure
+  public CallHierarchyCapabilities getCallHierarchy() {
+    return this.callHierarchy;
+  }
+  
+  /**
+   * Capabilities specific to {@code textDocument/callHierarchy}.
+   */
+  public void setCallHierarchy(final CallHierarchyCapabilities callHierarchy) {
+    this.callHierarchy = callHierarchy;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -528,6 +550,7 @@ public class TextDocumentClientCapabilities {
     b.add("foldingRange", this.foldingRange);
     b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
     b.add("typeHierarchyCapabilities", this.typeHierarchyCapabilities);
+    b.add("callHierarchy", this.callHierarchy);
     return b.toString();
   }
   
@@ -651,6 +674,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.typeHierarchyCapabilities.equals(other.typeHierarchyCapabilities))
       return false;
+    if (this.callHierarchy == null) {
+      if (other.callHierarchy != null)
+        return false;
+    } else if (!this.callHierarchy.equals(other.callHierarchy))
+      return false;
     return true;
   }
   
@@ -680,6 +708,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
     result = prime * result + ((this.foldingRange== null) ? 0 : this.foldingRange.hashCode());
     result = prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
-    return prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
+    result = prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
+    return prime * result + ((this.callHierarchy== null) ? 0 : this.callHierarchy.hashCode());
   }
 }
