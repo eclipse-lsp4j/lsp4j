@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.CallHierarchyDirection;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -28,10 +29,9 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
   private int resolve;
   
   /**
-   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-   * The default is {@code incoming} for callers.
+   * The direction of calls to resolve.
    */
-  private String direction;
+  private CallHierarchyDirection direction;
   
   /**
    * The number of levels to resolve.
@@ -49,19 +49,17 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
   }
   
   /**
-   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-   * The default is {@code incoming} for callers.
+   * The direction of calls to resolve.
    */
   @Pure
-  public String getDirection() {
+  public CallHierarchyDirection getDirection() {
     return this.direction;
   }
   
   /**
-   * Outgoing direction for callees. Valid values are: {@code incoming} and {@code outgoing}.
-   * The default is {@code incoming} for callers.
+   * The direction of calls to resolve.
    */
-  public void setDirection(final String direction) {
+  public void setDirection(final CallHierarchyDirection direction) {
     this.direction = direction;
   }
   
