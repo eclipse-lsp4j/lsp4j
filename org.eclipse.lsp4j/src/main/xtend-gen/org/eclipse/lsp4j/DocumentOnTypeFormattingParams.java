@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -39,7 +39,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   }
   
   public DocumentOnTypeFormattingParams(@NonNull final Position position, @NonNull final String ch) {
-    this.position = Preconditions.<Position>checkNotNull(position);
+    this.position = Preconditions.<Position>checkNotNull(position, "position");
     this.ch = ch;
   }
   
@@ -56,6 +56,9 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The position at which this request was send.
    */
   public void setPosition(@NonNull final Position position) {
+    if (position == null) {
+      throw new IllegalArgumentException("Property must not be null: position");
+    }
     this.position = position;
   }
   
@@ -72,6 +75,9 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The character that has been typed.
    */
   public void setCh(@NonNull final String ch) {
+    if (ch == null) {
+      throw new IllegalArgumentException("Property must not be null: ch");
+    }
     this.ch = ch;
   }
   

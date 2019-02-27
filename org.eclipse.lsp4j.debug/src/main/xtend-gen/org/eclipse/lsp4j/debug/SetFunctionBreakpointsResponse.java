@@ -43,6 +43,9 @@ public class SetFunctionBreakpointsResponse {
    * Information about the breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
    */
   public void setBreakpoints(@NonNull final Breakpoint[] breakpoints) {
+    if (breakpoints == null) {
+      throw new IllegalArgumentException("Property must not be null: breakpoints");
+    }
     this.breakpoints = breakpoints;
   }
   

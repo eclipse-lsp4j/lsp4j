@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentSaveReason;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -36,7 +36,7 @@ public class WillSaveTextDocumentParams {
   }
   
   public WillSaveTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final TextDocumentSaveReason reason) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
     this.reason = reason;
   }
   
@@ -53,6 +53,9 @@ public class WillSaveTextDocumentParams {
    * The document that will be saved.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -69,6 +72,9 @@ public class WillSaveTextDocumentParams {
    * A reason why a text document is saved.
    */
   public void setReason(@NonNull final TextDocumentSaveReason reason) {
+    if (reason == null) {
+      throw new IllegalArgumentException("Property must not be null: reason");
+    }
     this.reason = reason;
   }
   

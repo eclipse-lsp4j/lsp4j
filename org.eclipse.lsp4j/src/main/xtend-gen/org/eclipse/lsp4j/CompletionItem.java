@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
@@ -22,6 +21,7 @@ import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -133,7 +133,7 @@ public class CompletionItem {
   }
   
   public CompletionItem(@NonNull final String label) {
-    this.label = Preconditions.<String>checkNotNull(label);
+    this.label = Preconditions.<String>checkNotNull(label, "label");
   }
   
   /**
@@ -149,6 +149,9 @@ public class CompletionItem {
    * The label of this completion item. By default also the text that is inserted when selecting this completion.
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   

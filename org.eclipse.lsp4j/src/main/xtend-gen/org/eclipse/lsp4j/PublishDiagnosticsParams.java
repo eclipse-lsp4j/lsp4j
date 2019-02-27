@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -42,8 +42,8 @@ public class PublishDiagnosticsParams {
   }
   
   public PublishDiagnosticsParams(@NonNull final String uri, @NonNull final List<Diagnostic> diagnostics) {
-    this.uri = Preconditions.<String>checkNotNull(uri);
-    this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics);
+    this.uri = Preconditions.<String>checkNotNull(uri, "uri");
+    this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics, "diagnostics");
   }
   
   /**
@@ -59,6 +59,9 @@ public class PublishDiagnosticsParams {
    * The URI for which diagnostic information is reported.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   
@@ -75,6 +78,9 @@ public class PublishDiagnosticsParams {
    * An array of diagnostic information items.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
+    if (diagnostics == null) {
+      throw new IllegalArgumentException("Property must not be null: diagnostics");
+    }
     this.diagnostics = diagnostics;
   }
   

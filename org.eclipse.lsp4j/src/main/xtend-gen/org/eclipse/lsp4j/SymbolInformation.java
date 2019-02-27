@@ -11,12 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -69,9 +69,9 @@ public class SymbolInformation {
   }
   
   public SymbolInformation(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Location location) {
-    this.name = Preconditions.<String>checkNotNull(name);
-    this.kind = Preconditions.<SymbolKind>checkNotNull(kind);
-    this.location = Preconditions.<Location>checkNotNull(location);
+    this.name = Preconditions.<String>checkNotNull(name, "name");
+    this.kind = Preconditions.<SymbolKind>checkNotNull(kind, "kind");
+    this.location = Preconditions.<Location>checkNotNull(location, "location");
   }
   
   public SymbolInformation(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Location location, final String containerName) {
@@ -92,6 +92,9 @@ public class SymbolInformation {
    * The name of this symbol.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -108,6 +111,9 @@ public class SymbolInformation {
    * The kind of this symbol.
    */
   public void setKind(@NonNull final SymbolKind kind) {
+    if (kind == null) {
+      throw new IllegalArgumentException("Property must not be null: kind");
+    }
     this.kind = kind;
   }
   
@@ -155,6 +161,9 @@ public class SymbolInformation {
    * the symbols.
    */
   public void setLocation(@NonNull final Location location) {
+    if (location == null) {
+      throw new IllegalArgumentException("Property must not be null: location");
+    }
     this.location = location;
   }
   

@@ -69,6 +69,9 @@ public class SourceArguments {
    * compatibility since old backends do not understand the 'source' attribute.
    */
   public void setSourceReference(@NonNull final Long sourceReference) {
+    if (sourceReference == null) {
+      throw new IllegalArgumentException("Property must not be null: sourceReference");
+    }
     this.sourceReference = sourceReference;
   }
   

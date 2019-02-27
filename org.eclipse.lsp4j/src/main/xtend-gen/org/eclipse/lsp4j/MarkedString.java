@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -41,8 +41,8 @@ public class MarkedString {
   }
   
   public MarkedString(@NonNull final String language, @NonNull final String value) {
-    this.language = Preconditions.<String>checkNotNull(language);
-    this.value = Preconditions.<String>checkNotNull(value);
+    this.language = Preconditions.<String>checkNotNull(language, "language");
+    this.value = Preconditions.<String>checkNotNull(value, "value");
   }
   
   @Pure
@@ -52,6 +52,9 @@ public class MarkedString {
   }
   
   public void setLanguage(@NonNull final String language) {
+    if (language == null) {
+      throw new IllegalArgumentException("Property must not be null: language");
+    }
     this.language = language;
   }
   
@@ -62,6 +65,9 @@ public class MarkedString {
   }
   
   public void setValue(@NonNull final String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Property must not be null: value");
+    }
     this.value = value;
   }
   

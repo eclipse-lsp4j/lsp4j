@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -39,7 +39,7 @@ public class ApplyWorkspaceEditParams {
   }
   
   public ApplyWorkspaceEditParams(@NonNull final WorkspaceEdit edit) {
-    this.edit = Preconditions.<WorkspaceEdit>checkNotNull(edit);
+    this.edit = Preconditions.<WorkspaceEdit>checkNotNull(edit, "edit");
   }
   
   public ApplyWorkspaceEditParams(@NonNull final WorkspaceEdit edit, final String label) {
@@ -60,6 +60,9 @@ public class ApplyWorkspaceEditParams {
    * The edits to apply.
    */
   public void setEdit(@NonNull final WorkspaceEdit edit) {
+    if (edit == null) {
+      throw new IllegalArgumentException("Property must not be null: edit");
+    }
     this.edit = edit;
   }
   

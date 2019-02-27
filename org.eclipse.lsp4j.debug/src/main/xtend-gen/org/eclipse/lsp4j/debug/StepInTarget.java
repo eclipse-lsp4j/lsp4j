@@ -46,6 +46,9 @@ public class StepInTarget {
    * Unique identifier for a stepIn target.
    */
   public void setId(@NonNull final Long id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
@@ -62,6 +65,9 @@ public class StepInTarget {
    * The name of the stepIn target (shown in the UI).
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   

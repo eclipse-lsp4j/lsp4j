@@ -109,6 +109,9 @@ public class OutputEventArguments {
    * The output to report.
    */
   public void setOutput(@NonNull final String output) {
+    if (output == null) {
+      throw new IllegalArgumentException("Property must not be null: output");
+    }
     this.output = output;
   }
   

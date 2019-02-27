@@ -72,6 +72,9 @@ public class SetVariableResponse {
    * The new value of the variable.
    */
   public void setValue(@NonNull final String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Property must not be null: value");
+    }
     this.value = value;
   }
   

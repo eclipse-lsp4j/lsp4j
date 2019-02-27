@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -40,8 +40,8 @@ public class WorkspaceFoldersChangeEvent {
   }
   
   public WorkspaceFoldersChangeEvent(@NonNull final List<WorkspaceFolder> added, @NonNull final List<WorkspaceFolder> removed) {
-    this.added = Preconditions.<List<WorkspaceFolder>>checkNotNull(added);
-    this.removed = Preconditions.<List<WorkspaceFolder>>checkNotNull(removed);
+    this.added = Preconditions.<List<WorkspaceFolder>>checkNotNull(added, "added");
+    this.removed = Preconditions.<List<WorkspaceFolder>>checkNotNull(removed, "removed");
   }
   
   /**
@@ -57,6 +57,9 @@ public class WorkspaceFoldersChangeEvent {
    * The array of added workspace folders
    */
   public void setAdded(@NonNull final List<WorkspaceFolder> added) {
+    if (added == null) {
+      throw new IllegalArgumentException("Property must not be null: added");
+    }
     this.added = added;
   }
   
@@ -73,6 +76,9 @@ public class WorkspaceFoldersChangeEvent {
    * The array of the removed workspace folders
    */
   public void setRemoved(@NonNull final List<WorkspaceFolder> removed) {
+    if (removed == null) {
+      throw new IllegalArgumentException("Property must not be null: removed");
+    }
     this.removed = removed;
   }
   

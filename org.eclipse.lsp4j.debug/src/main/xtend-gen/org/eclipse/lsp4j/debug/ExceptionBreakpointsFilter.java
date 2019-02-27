@@ -54,6 +54,9 @@ public class ExceptionBreakpointsFilter {
    * The internal ID of the filter. This value is passed to the setExceptionBreakpoints request.
    */
   public void setFilter(@NonNull final String filter) {
+    if (filter == null) {
+      throw new IllegalArgumentException("Property must not be null: filter");
+    }
     this.filter = filter;
   }
   
@@ -70,6 +73,9 @@ public class ExceptionBreakpointsFilter {
    * The name of the filter. This will be shown in the UI.
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   

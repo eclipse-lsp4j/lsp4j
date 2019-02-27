@@ -107,6 +107,9 @@ public class RunInTerminalRequestArguments {
    * Working directory of the command.
    */
   public void setCwd(@NonNull final String cwd) {
+    if (cwd == null) {
+      throw new IllegalArgumentException("Property must not be null: cwd");
+    }
     this.cwd = cwd;
   }
   
@@ -123,6 +126,9 @@ public class RunInTerminalRequestArguments {
    * List of arguments. The first argument is the command to run.
    */
   public void setArgs(@NonNull final String[] args) {
+    if (args == null) {
+      throw new IllegalArgumentException("Property must not be null: args");
+    }
     this.args = args;
   }
   

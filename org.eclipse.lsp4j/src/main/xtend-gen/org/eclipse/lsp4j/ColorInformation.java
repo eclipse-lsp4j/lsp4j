@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Color;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -36,8 +36,8 @@ public class ColorInformation {
   }
   
   public ColorInformation(@NonNull final Range range, @NonNull final Color color) {
-    this.range = Preconditions.<Range>checkNotNull(range);
-    this.color = Preconditions.<Color>checkNotNull(color);
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
+    this.color = Preconditions.<Color>checkNotNull(color, "color");
   }
   
   /**
@@ -53,6 +53,9 @@ public class ColorInformation {
    * The range in the document where this color appers.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -69,6 +72,9 @@ public class ColorInformation {
    * The actual color value for this color range.
    */
   public void setColor(@NonNull final Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("Property must not be null: color");
+    }
     this.color = color;
   }
   

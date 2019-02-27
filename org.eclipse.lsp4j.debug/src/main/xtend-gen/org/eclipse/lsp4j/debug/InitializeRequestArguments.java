@@ -142,6 +142,9 @@ public class InitializeRequestArguments {
    * The ID of the debug adapter.
    */
   public void setAdapterID(@NonNull final String adapterID) {
+    if (adapterID == null) {
+      throw new IllegalArgumentException("Property must not be null: adapterID");
+    }
     this.adapterID = adapterID;
   }
   

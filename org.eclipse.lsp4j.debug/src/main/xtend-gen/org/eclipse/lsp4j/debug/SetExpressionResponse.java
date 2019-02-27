@@ -80,6 +80,9 @@ public class SetExpressionResponse {
    * The new value of the expression.
    */
   public void setValue(@NonNull final String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Property must not be null: value");
+    }
     this.value = value;
   }
   

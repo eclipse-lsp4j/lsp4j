@@ -47,6 +47,9 @@ public class ModulesResponse {
    * All modules or range of modules.
    */
   public void setModules(@NonNull final org.eclipse.lsp4j.debug.Module[] modules) {
+    if (modules == null) {
+      throw new IllegalArgumentException("Property must not be null: modules");
+    }
     this.modules = modules;
   }
   

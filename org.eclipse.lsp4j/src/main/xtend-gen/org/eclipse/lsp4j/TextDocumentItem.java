@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -48,10 +48,10 @@ public class TextDocumentItem {
   }
   
   public TextDocumentItem(@NonNull final String uri, @NonNull final String languageId, final int version, @NonNull final String text) {
-    this.uri = Preconditions.<String>checkNotNull(uri);
-    this.languageId = Preconditions.<String>checkNotNull(languageId);
+    this.uri = Preconditions.<String>checkNotNull(uri, "uri");
+    this.languageId = Preconditions.<String>checkNotNull(languageId, "languageId");
     this.version = version;
-    this.text = Preconditions.<String>checkNotNull(text);
+    this.text = Preconditions.<String>checkNotNull(text, "text");
   }
   
   /**
@@ -67,6 +67,9 @@ public class TextDocumentItem {
    * The text document's uri.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   
@@ -83,6 +86,9 @@ public class TextDocumentItem {
    * The text document's language identifier
    */
   public void setLanguageId(@NonNull final String languageId) {
+    if (languageId == null) {
+      throw new IllegalArgumentException("Property must not be null: languageId");
+    }
     this.languageId = languageId;
   }
   
@@ -114,6 +120,9 @@ public class TextDocumentItem {
    * The content of the opened  text document.
    */
   public void setText(@NonNull final String text) {
+    if (text == null) {
+      throw new IllegalArgumentException("Property must not be null: text");
+    }
     this.text = text;
   }
   

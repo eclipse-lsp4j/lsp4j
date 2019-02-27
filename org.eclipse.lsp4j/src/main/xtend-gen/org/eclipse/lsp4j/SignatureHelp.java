@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.SignatureInformation;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -59,7 +59,7 @@ public class SignatureHelp {
   }
   
   public SignatureHelp(@NonNull final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
-    this.signatures = Preconditions.<List<SignatureInformation>>checkNotNull(signatures);
+    this.signatures = Preconditions.<List<SignatureInformation>>checkNotNull(signatures, "signatures");
     this.activeSignature = activeSignature;
     this.activeParameter = activeParameter;
   }
@@ -77,6 +77,9 @@ public class SignatureHelp {
    * One or more signatures.
    */
   public void setSignatures(@NonNull final List<SignatureInformation> signatures) {
+    if (signatures == null) {
+      throw new IllegalArgumentException("Property must not be null: signatures");
+    }
     this.signatures = signatures;
   }
   

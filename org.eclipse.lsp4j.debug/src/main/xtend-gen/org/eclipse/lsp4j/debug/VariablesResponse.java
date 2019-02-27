@@ -41,6 +41,9 @@ public class VariablesResponse {
    * All (or a range) of variables for the given variable reference.
    */
   public void setVariables(@NonNull final Variable[] variables) {
+    if (variables == null) {
+      throw new IllegalArgumentException("Property must not be null: variables");
+    }
     this.variables = variables;
   }
   

@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.MarkedString;
@@ -20,6 +19,7 @@ import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -44,20 +44,20 @@ public class Hover {
   }
   
   public Hover(@NonNull final List<Either<String, MarkedString>> contents) {
-    this.setContents(Preconditions.<List<Either<String, MarkedString>>>checkNotNull(contents));
+    this.setContents(Preconditions.<List<Either<String, MarkedString>>>checkNotNull(contents, "contents"));
   }
   
   public Hover(@NonNull final List<Either<String, MarkedString>> contents, final Range range) {
-    this.setContents(Preconditions.<List<Either<String, MarkedString>>>checkNotNull(contents));
+    this.setContents(Preconditions.<List<Either<String, MarkedString>>>checkNotNull(contents, "contents"));
     this.range = range;
   }
   
   public Hover(@NonNull final MarkupContent contents) {
-    this.setContents(Preconditions.<MarkupContent>checkNotNull(contents));
+    this.setContents(Preconditions.<MarkupContent>checkNotNull(contents, "contents"));
   }
   
   public Hover(@NonNull final MarkupContent contents, final Range range) {
-    this.setContents(Preconditions.<MarkupContent>checkNotNull(contents));
+    this.setContents(Preconditions.<MarkupContent>checkNotNull(contents, "contents"));
     this.range = range;
   }
   
@@ -74,21 +74,22 @@ public class Hover {
    * The hover's content as markdown
    */
   public void setContents(@NonNull final Either<List<Either<String, MarkedString>>, MarkupContent> contents) {
+    if (contents == null) {
+      throw new IllegalArgumentException("Property must not be null: contents");
+    }
     this.contents = contents;
   }
   
   public void setContents(final List<Either<String, MarkedString>> contents) {
     if (contents == null) {
-      this.contents = null;
-      return;
+      throw new IllegalArgumentException("Property must not be null: contents");
     }
     this.contents = Either.forLeft(contents);
   }
   
   public void setContents(final MarkupContent contents) {
     if (contents == null) {
-      this.contents = null;
-      return;
+      throw new IllegalArgumentException("Property must not be null: contents");
     }
     this.contents = Either.forRight(contents);
   }

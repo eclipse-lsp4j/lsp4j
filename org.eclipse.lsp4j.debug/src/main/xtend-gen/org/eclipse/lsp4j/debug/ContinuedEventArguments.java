@@ -51,6 +51,9 @@ public class ContinuedEventArguments {
    * The thread which was continued.
    */
   public void setThreadId(@NonNull final Long threadId) {
+    if (threadId == null) {
+      throw new IllegalArgumentException("Property must not be null: threadId");
+    }
     this.threadId = threadId;
   }
   

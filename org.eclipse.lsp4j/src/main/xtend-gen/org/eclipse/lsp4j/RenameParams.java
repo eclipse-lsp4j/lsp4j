@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -46,9 +46,9 @@ public class RenameParams {
   }
   
   public RenameParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position, @NonNull final String newName) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
-    this.position = Preconditions.<Position>checkNotNull(position);
-    this.newName = Preconditions.<String>checkNotNull(newName);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.position = Preconditions.<Position>checkNotNull(position, "position");
+    this.newName = Preconditions.<String>checkNotNull(newName, "newName");
   }
   
   /**
@@ -64,6 +64,9 @@ public class RenameParams {
    * The document in which to find the symbol.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -80,6 +83,9 @@ public class RenameParams {
    * The position at which this request was send.
    */
   public void setPosition(@NonNull final Position position) {
+    if (position == null) {
+      throw new IllegalArgumentException("Property must not be null: position");
+    }
     this.position = position;
   }
   
@@ -98,6 +104,9 @@ public class RenameParams {
    * ResponseError with an appropriate message set.
    */
   public void setNewName(@NonNull final String newName) {
+    if (newName == null) {
+      throw new IllegalArgumentException("Property must not be null: newName");
+    }
     this.newName = newName;
   }
   

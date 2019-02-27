@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -42,7 +42,7 @@ public class ExecuteCommandParams {
   }
   
   public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments) {
-    this.command = Preconditions.<String>checkNotNull(command);
+    this.command = Preconditions.<String>checkNotNull(command, "command");
     this.arguments = arguments;
   }
   
@@ -59,6 +59,9 @@ public class ExecuteCommandParams {
    * The identifier of the actual command handler.
    */
   public void setCommand(@NonNull final String command) {
+    if (command == null) {
+      throw new IllegalArgumentException("Property must not be null: command");
+    }
     this.command = command;
   }
   

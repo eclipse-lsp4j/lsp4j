@@ -45,6 +45,9 @@ public class Thread {
    * Unique identifier for the thread.
    */
   public void setId(@NonNull final Long id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
@@ -61,6 +64,9 @@ public class Thread {
    * A name of the thread.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   

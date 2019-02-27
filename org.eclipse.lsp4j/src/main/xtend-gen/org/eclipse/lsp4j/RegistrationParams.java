@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Registration;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -36,7 +36,7 @@ public class RegistrationParams {
   }
   
   public RegistrationParams(@NonNull final List<Registration> registrations) {
-    this.registrations = Preconditions.<List<Registration>>checkNotNull(registrations);
+    this.registrations = Preconditions.<List<Registration>>checkNotNull(registrations, "registrations");
   }
   
   @Pure
@@ -46,6 +46,9 @@ public class RegistrationParams {
   }
   
   public void setRegistrations(@NonNull final List<Registration> registrations) {
+    if (registrations == null) {
+      throw new IllegalArgumentException("Property must not be null: registrations");
+    }
     this.registrations = registrations;
   }
   

@@ -61,6 +61,9 @@ public class StackTraceArguments {
    * Retrieve the stacktrace for this thread.
    */
   public void setThreadId(@NonNull final Long threadId) {
+    if (threadId == null) {
+      throw new IllegalArgumentException("Property must not be null: threadId");
+    }
     this.threadId = threadId;
   }
   

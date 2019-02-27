@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Color;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -49,9 +49,9 @@ public class ColorPresentationParams {
   }
   
   public ColorPresentationParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Color color, @NonNull final Range range) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
-    this.color = Preconditions.<Color>checkNotNull(color);
-    this.range = Preconditions.<Range>checkNotNull(range);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.color = Preconditions.<Color>checkNotNull(color, "color");
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
   }
   
   /**
@@ -67,6 +67,9 @@ public class ColorPresentationParams {
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -83,6 +86,9 @@ public class ColorPresentationParams {
    * The color information to request presentations for.
    */
   public void setColor(@NonNull final Color color) {
+    if (color == null) {
+      throw new IllegalArgumentException("Property must not be null: color");
+    }
     this.color = color;
   }
   
@@ -99,6 +105,9 @@ public class ColorPresentationParams {
    * The range where the color would be inserted. Serves as a context.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   

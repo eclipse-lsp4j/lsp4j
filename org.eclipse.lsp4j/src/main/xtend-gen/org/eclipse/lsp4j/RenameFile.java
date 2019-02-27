@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.RenameFileOptions;
 import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.ResourceOperationKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -47,14 +47,14 @@ public class RenameFile extends ResourceOperation {
   
   public RenameFile(@NonNull final String oldUri, @NonNull final String newUri) {
     super(ResourceOperationKind.Rename);
-    this.oldUri = Preconditions.<String>checkNotNull(oldUri);
-    this.newUri = Preconditions.<String>checkNotNull(newUri);
+    this.oldUri = Preconditions.<String>checkNotNull(oldUri, "oldUri");
+    this.newUri = Preconditions.<String>checkNotNull(newUri, "newUri");
   }
   
   public RenameFile(@NonNull final String oldUri, @NonNull final String newUri, final RenameFileOptions options) {
     super(ResourceOperationKind.Rename);
-    this.oldUri = Preconditions.<String>checkNotNull(oldUri);
-    this.newUri = Preconditions.<String>checkNotNull(newUri);
+    this.oldUri = Preconditions.<String>checkNotNull(oldUri, "oldUri");
+    this.newUri = Preconditions.<String>checkNotNull(newUri, "newUri");
     this.options = options;
   }
   
@@ -71,6 +71,9 @@ public class RenameFile extends ResourceOperation {
    * The old (existing) location.
    */
   public void setOldUri(@NonNull final String oldUri) {
+    if (oldUri == null) {
+      throw new IllegalArgumentException("Property must not be null: oldUri");
+    }
     this.oldUri = oldUri;
   }
   
@@ -87,6 +90,9 @@ public class RenameFile extends ResourceOperation {
    * The new location.
    */
   public void setNewUri(@NonNull final String newUri) {
+    if (newUri == null) {
+      throw new IllegalArgumentException("Property must not be null: newUri");
+    }
     this.newUri = newUri;
   }
   

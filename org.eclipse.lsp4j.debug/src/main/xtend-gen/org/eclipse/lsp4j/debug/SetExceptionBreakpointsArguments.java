@@ -48,6 +48,9 @@ public class SetExceptionBreakpointsArguments {
    * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
    */
   public void setFilters(@NonNull final String[] filters) {
+    if (filters == null) {
+      throw new IllegalArgumentException("Property must not be null: filters");
+    }
     this.filters = filters;
   }
   

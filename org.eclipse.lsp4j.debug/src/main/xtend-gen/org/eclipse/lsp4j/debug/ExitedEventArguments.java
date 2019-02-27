@@ -39,6 +39,9 @@ public class ExitedEventArguments {
    * The exit code returned from the debuggee.
    */
   public void setExitCode(@NonNull final Long exitCode) {
+    if (exitCode == null) {
+      throw new IllegalArgumentException("Property must not be null: exitCode");
+    }
     this.exitCode = exitCode;
   }
   

@@ -103,6 +103,9 @@ public class TypeHierarchyItem {
    * The human readable name of the hierarchy item.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -134,6 +137,9 @@ public class TypeHierarchyItem {
    * The kind of the hierarchy item. For instance, class or interface.
    */
   public void setKind(@NonNull final SymbolKind kind) {
+    if (kind == null) {
+      throw new IllegalArgumentException("Property must not be null: kind");
+    }
     this.kind = kind;
   }
   
@@ -165,6 +171,9 @@ public class TypeHierarchyItem {
    * The URI of the text document where this type hierarchy item belongs to.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   
@@ -189,6 +198,9 @@ public class TypeHierarchyItem {
    * @see TypeHierarchyItem#selectionRange
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -211,6 +223,9 @@ public class TypeHierarchyItem {
    * @see TypeHierarchyItem#range
    */
   public void setSelectionRange(@NonNull final Range selectionRange) {
+    if (selectionRange == null) {
+      throw new IllegalArgumentException("Property must not be null: selectionRange");
+    }
     this.selectionRange = selectionRange;
   }
   

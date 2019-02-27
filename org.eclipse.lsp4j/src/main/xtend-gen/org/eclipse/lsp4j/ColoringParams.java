@@ -64,6 +64,9 @@ public class ColoringParams {
    * The URI for which coloring information is reported.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   
@@ -80,6 +83,9 @@ public class ColoringParams {
    * A list of coloring information instances.
    */
   public void setInfos(@NonNull final List<? extends ColoringInformation> infos) {
+    if (infos == null) {
+      throw new IllegalArgumentException("Property must not be null: infos");
+    }
     this.infos = infos;
   }
   

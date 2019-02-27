@@ -39,6 +39,9 @@ public class ExceptionInfoArguments {
    * Thread for which exception information should be retrieved.
    */
   public void setThreadId(@NonNull final Long threadId) {
+    if (threadId == null) {
+      throw new IllegalArgumentException("Property must not be null: threadId");
+    }
     this.threadId = threadId;
   }
   

@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Unregistration;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -33,7 +33,7 @@ public class UnregistrationParams {
   }
   
   public UnregistrationParams(@NonNull final List<Unregistration> unregisterations) {
-    this.unregisterations = Preconditions.<List<Unregistration>>checkNotNull(unregisterations);
+    this.unregisterations = Preconditions.<List<Unregistration>>checkNotNull(unregisterations, "unregisterations");
   }
   
   @Pure
@@ -43,6 +43,9 @@ public class UnregistrationParams {
   }
   
   public void setUnregisterations(@NonNull final List<Unregistration> unregisterations) {
+    if (unregisterations == null) {
+      throw new IllegalArgumentException("Property must not be null: unregisterations");
+    }
     this.unregisterations = unregisterations;
   }
   

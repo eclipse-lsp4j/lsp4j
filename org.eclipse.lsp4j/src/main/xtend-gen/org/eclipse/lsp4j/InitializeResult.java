@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.ServerCapabilities;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -29,7 +29,7 @@ public class InitializeResult {
   }
   
   public InitializeResult(@NonNull final ServerCapabilities capabilities) {
-    this.capabilities = Preconditions.<ServerCapabilities>checkNotNull(capabilities);
+    this.capabilities = Preconditions.<ServerCapabilities>checkNotNull(capabilities, "capabilities");
   }
   
   /**
@@ -45,6 +45,9 @@ public class InitializeResult {
    * The capabilities the language server provides.
    */
   public void setCapabilities(@NonNull final ServerCapabilities capabilities) {
+    if (capabilities == null) {
+      throw new IllegalArgumentException("Property must not be null: capabilities");
+    }
     this.capabilities = capabilities;
   }
   

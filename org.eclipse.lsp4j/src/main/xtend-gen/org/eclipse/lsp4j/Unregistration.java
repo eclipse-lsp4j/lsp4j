@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -38,8 +38,8 @@ public class Unregistration {
   }
   
   public Unregistration(@NonNull final String id, @NonNull final String method) {
-    this.id = Preconditions.<String>checkNotNull(id);
-    this.method = Preconditions.<String>checkNotNull(method);
+    this.id = Preconditions.<String>checkNotNull(id, "id");
+    this.method = Preconditions.<String>checkNotNull(method, "method");
   }
   
   /**
@@ -57,6 +57,9 @@ public class Unregistration {
    * provided during the register request.
    */
   public void setId(@NonNull final String id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
@@ -73,6 +76,9 @@ public class Unregistration {
    * The method / capability to unregister for.
    */
   public void setMethod(@NonNull final String method) {
+    if (method == null) {
+      throw new IllegalArgumentException("Property must not be null: method");
+    }
     this.method = method;
   }
   

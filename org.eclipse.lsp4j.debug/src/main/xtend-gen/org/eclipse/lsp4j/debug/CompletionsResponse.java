@@ -41,6 +41,9 @@ public class CompletionsResponse {
    * The possible completions for .
    */
   public void setTargets(@NonNull final CompletionItem[] targets) {
+    if (targets == null) {
+      throw new IllegalArgumentException("Property must not be null: targets");
+    }
     this.targets = targets;
   }
   

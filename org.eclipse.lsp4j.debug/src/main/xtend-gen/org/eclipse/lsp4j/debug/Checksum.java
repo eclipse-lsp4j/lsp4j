@@ -46,6 +46,9 @@ public class Checksum {
    * The algorithm used to calculate this checksum.
    */
   public void setAlgorithm(@NonNull final ChecksumAlgorithm algorithm) {
+    if (algorithm == null) {
+      throw new IllegalArgumentException("Property must not be null: algorithm");
+    }
     this.algorithm = algorithm;
   }
   
@@ -62,6 +65,9 @@ public class Checksum {
    * Value of the checksum.
    */
   public void setChecksum(@NonNull final String checksum) {
+    if (checksum == null) {
+      throw new IllegalArgumentException("Property must not be null: checksum");
+    }
     this.checksum = checksum;
   }
   

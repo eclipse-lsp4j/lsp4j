@@ -41,6 +41,9 @@ public class LoadedSourcesResponse {
    * Set of loaded sources.
    */
   public void setSources(@NonNull final Source[] sources) {
+    if (sources == null) {
+      throw new IllegalArgumentException("Property must not be null: sources");
+    }
     this.sources = sources;
   }
   

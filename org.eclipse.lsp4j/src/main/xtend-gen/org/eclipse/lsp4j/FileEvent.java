@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.FileChangeType;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -38,8 +38,8 @@ public class FileEvent {
   }
   
   public FileEvent(@NonNull final String uri, @NonNull final FileChangeType type) {
-    this.uri = Preconditions.<String>checkNotNull(uri);
-    this.type = Preconditions.<FileChangeType>checkNotNull(type);
+    this.uri = Preconditions.<String>checkNotNull(uri, "uri");
+    this.type = Preconditions.<FileChangeType>checkNotNull(type, "type");
   }
   
   /**
@@ -55,6 +55,9 @@ public class FileEvent {
    * The file's uri.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   
@@ -71,6 +74,9 @@ public class FileEvent {
    * The change type.
    */
   public void setType(@NonNull final FileChangeType type) {
+    if (type == null) {
+      throw new IllegalArgumentException("Property must not be null: type");
+    }
     this.type = type;
   }
   

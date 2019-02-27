@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -42,8 +42,8 @@ public class TextDocumentEdit {
   }
   
   public TextDocumentEdit(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<TextEdit> edits) {
-    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument);
-    this.edits = Preconditions.<List<TextEdit>>checkNotNull(edits);
+    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.edits = Preconditions.<List<TextEdit>>checkNotNull(edits, "edits");
   }
   
   /**
@@ -59,6 +59,9 @@ public class TextDocumentEdit {
    * The text document to change.
    */
   public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -75,6 +78,9 @@ public class TextDocumentEdit {
    * The edits to be applied
    */
   public void setEdits(@NonNull final List<TextEdit> edits) {
+    if (edits == null) {
+      throw new IllegalArgumentException("Property must not be null: edits");
+    }
     this.edits = edits;
   }
   

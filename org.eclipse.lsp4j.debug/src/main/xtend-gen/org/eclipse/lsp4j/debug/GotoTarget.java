@@ -74,6 +74,9 @@ public class GotoTarget {
    * Unique identifier for a goto target. This is used in the goto request.
    */
   public void setId(@NonNull final Long id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
@@ -90,6 +93,9 @@ public class GotoTarget {
    * The name of the goto target (shown in the UI).
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   
@@ -106,6 +112,9 @@ public class GotoTarget {
    * The line of the goto target.
    */
   public void setLine(@NonNull final Long line) {
+    if (line == null) {
+      throw new IllegalArgumentException("Property must not be null: line");
+    }
     this.line = line;
   }
   

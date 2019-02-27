@@ -34,6 +34,9 @@ public class ModulesViewDescriptor {
   }
   
   public void setColumns(@NonNull final ColumnDescriptor[] columns) {
+    if (columns == null) {
+      throw new IllegalArgumentException("Property must not be null: columns");
+    }
     this.columns = columns;
   }
   

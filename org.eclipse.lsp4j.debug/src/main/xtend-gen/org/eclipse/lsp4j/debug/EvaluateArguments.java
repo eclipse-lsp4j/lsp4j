@@ -64,6 +64,9 @@ public class EvaluateArguments {
    * The expression to evaluate.
    */
   public void setExpression(@NonNull final String expression) {
+    if (expression == null) {
+      throw new IllegalArgumentException("Property must not be null: expression");
+    }
     this.expression = expression;
   }
   

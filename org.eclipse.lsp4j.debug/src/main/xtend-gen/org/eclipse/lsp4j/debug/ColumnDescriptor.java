@@ -70,6 +70,9 @@ public class ColumnDescriptor {
    * Name of the attribute rendered in this column.
    */
   public void setAttributeName(@NonNull final String attributeName) {
+    if (attributeName == null) {
+      throw new IllegalArgumentException("Property must not be null: attributeName");
+    }
     this.attributeName = attributeName;
   }
   
@@ -86,6 +89,9 @@ public class ColumnDescriptor {
    * Header UI label of column.
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   

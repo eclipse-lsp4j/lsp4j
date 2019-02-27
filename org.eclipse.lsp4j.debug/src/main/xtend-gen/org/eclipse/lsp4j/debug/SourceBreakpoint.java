@@ -69,6 +69,9 @@ public class SourceBreakpoint {
    * The source line of the breakpoint or logpoint.
    */
   public void setLine(@NonNull final Long line) {
+    if (line == null) {
+      throw new IllegalArgumentException("Property must not be null: line");
+    }
     this.line = line;
   }
   

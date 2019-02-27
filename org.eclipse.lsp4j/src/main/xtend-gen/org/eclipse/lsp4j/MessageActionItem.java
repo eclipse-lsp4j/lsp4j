@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -33,7 +33,7 @@ public class MessageActionItem {
   }
   
   public MessageActionItem(@NonNull final String title) {
-    this.title = Preconditions.<String>checkNotNull(title);
+    this.title = Preconditions.<String>checkNotNull(title, "title");
   }
   
   /**
@@ -49,6 +49,9 @@ public class MessageActionItem {
    * A short title like 'Retry', 'Open Log' etc.
    */
   public void setTitle(@NonNull final String title) {
+    if (title == null) {
+      throw new IllegalArgumentException("Property must not be null: title");
+    }
     this.title = title;
   }
   

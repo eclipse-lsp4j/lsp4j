@@ -41,6 +41,9 @@ public class StepInTargetsResponse {
    * The possible stepIn targets of the specified source location.
    */
   public void setTargets(@NonNull final StepInTarget[] targets) {
+    if (targets == null) {
+      throw new IllegalArgumentException("Property must not be null: targets");
+    }
     this.targets = targets;
   }
   

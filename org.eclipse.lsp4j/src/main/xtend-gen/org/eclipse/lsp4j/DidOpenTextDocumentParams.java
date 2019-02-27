@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -40,7 +40,7 @@ public class DidOpenTextDocumentParams {
   }
   
   public DidOpenTextDocumentParams(@NonNull final TextDocumentItem textDocument) {
-    this.textDocument = Preconditions.<TextDocumentItem>checkNotNull(textDocument);
+    this.textDocument = Preconditions.<TextDocumentItem>checkNotNull(textDocument, "textDocument");
   }
   
   @Deprecated
@@ -62,6 +62,9 @@ public class DidOpenTextDocumentParams {
    * The document that was opened.
    */
   public void setTextDocument(@NonNull final TextDocumentItem textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   

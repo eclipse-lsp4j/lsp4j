@@ -85,6 +85,9 @@ public class CompletionsArguments {
    * for completion.
    */
   public void setText(@NonNull final String text) {
+    if (text == null) {
+      throw new IllegalArgumentException("Property must not be null: text");
+    }
     this.text = text;
   }
   
@@ -101,6 +104,9 @@ public class CompletionsArguments {
    * The character position for which to determine the completion proposals.
    */
   public void setColumn(@NonNull final Long column) {
+    if (column == null) {
+      throw new IllegalArgumentException("Property must not be null: column");
+    }
     this.column = column;
   }
   

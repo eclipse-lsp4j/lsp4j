@@ -45,6 +45,9 @@ public class GotoArguments {
    * Set the goto target for this thread.
    */
   public void setThreadId(@NonNull final Long threadId) {
+    if (threadId == null) {
+      throw new IllegalArgumentException("Property must not be null: threadId");
+    }
     this.threadId = threadId;
   }
   
@@ -61,6 +64,9 @@ public class GotoArguments {
    * The location where the debuggee will continue to run.
    */
   public void setTargetId(@NonNull final Long targetId) {
+    if (targetId == null) {
+      throw new IllegalArgumentException("Property must not be null: targetId");
+    }
     this.targetId = targetId;
   }
   

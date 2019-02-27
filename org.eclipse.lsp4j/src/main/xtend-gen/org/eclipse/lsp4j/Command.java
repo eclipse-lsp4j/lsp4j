@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -44,8 +44,8 @@ public class Command {
   }
   
   public Command(@NonNull final String title, @NonNull final String command) {
-    this.title = Preconditions.<String>checkNotNull(title);
-    this.command = Preconditions.<String>checkNotNull(command);
+    this.title = Preconditions.<String>checkNotNull(title, "title");
+    this.command = Preconditions.<String>checkNotNull(command, "command");
   }
   
   public Command(@NonNull final String title, @NonNull final String command, final List<Object> arguments) {
@@ -66,6 +66,9 @@ public class Command {
    * Title of the command, like `save`.
    */
   public void setTitle(@NonNull final String title) {
+    if (title == null) {
+      throw new IllegalArgumentException("Property must not be null: title");
+    }
     this.title = title;
   }
   
@@ -82,6 +85,9 @@ public class Command {
    * The identifier of the actual command handler.
    */
   public void setCommand(@NonNull final String command) {
+    if (command == null) {
+      throw new IllegalArgumentException("Property must not be null: command");
+    }
     this.command = command;
   }
   

@@ -11,12 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -50,7 +50,7 @@ public class CodeLens {
   }
   
   public CodeLens(@NonNull final Range range) {
-    this.range = Preconditions.<Range>checkNotNull(range);
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
   }
   
   public CodeLens(@NonNull final Range range, final Command command, final Object data) {
@@ -72,6 +72,9 @@ public class CodeLens {
    * The range in which this code lens is valid. Should only span a single line.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   

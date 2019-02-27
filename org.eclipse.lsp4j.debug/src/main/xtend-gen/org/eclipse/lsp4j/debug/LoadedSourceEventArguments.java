@@ -47,6 +47,9 @@ public class LoadedSourceEventArguments {
    * The reason for the event.
    */
   public void setReason(@NonNull final LoadedSourceEventArgumentsReason reason) {
+    if (reason == null) {
+      throw new IllegalArgumentException("Property must not be null: reason");
+    }
     this.reason = reason;
   }
   
@@ -63,6 +66,9 @@ public class LoadedSourceEventArguments {
    * The new, changed, or removed source.
    */
   public void setSource(@NonNull final Source source) {
+    if (source == null) {
+      throw new IllegalArgumentException("Property must not be null: source");
+    }
     this.source = source;
   }
   

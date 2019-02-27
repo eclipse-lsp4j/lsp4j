@@ -12,11 +12,11 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.SemanticHighlightingInformation;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -42,8 +42,8 @@ public class SemanticHighlightingParams {
   }
   
   public SemanticHighlightingParams(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<SemanticHighlightingInformation> lines) {
-    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument);
-    this.lines = Preconditions.<List<SemanticHighlightingInformation>>checkNotNull(lines);
+    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.lines = Preconditions.<List<SemanticHighlightingInformation>>checkNotNull(lines, "lines");
   }
   
   /**
@@ -59,6 +59,9 @@ public class SemanticHighlightingParams {
    * The text document that has to be decorated with the semantic highlighting information.
    */
   public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -75,6 +78,9 @@ public class SemanticHighlightingParams {
    * An array of semantic highlighting information.
    */
   public void setLines(@NonNull final List<SemanticHighlightingInformation> lines) {
+    if (lines == null) {
+      throw new IllegalArgumentException("Property must not be null: lines");
+    }
     this.lines = lines;
   }
   

@@ -100,6 +100,9 @@ public class StackFrame {
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
   public void setId(@NonNull final Long id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
@@ -116,6 +119,9 @@ public class StackFrame {
    * The name of the stack frame, typically a method name.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -151,6 +157,9 @@ public class StackFrame {
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
   public void setLine(@NonNull final Long line) {
+    if (line == null) {
+      throw new IllegalArgumentException("Property must not be null: line");
+    }
     this.line = line;
   }
   
@@ -167,6 +176,9 @@ public class StackFrame {
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
   public void setColumn(@NonNull final Long column) {
+    if (column == null) {
+      throw new IllegalArgumentException("Property must not be null: column");
+    }
     this.column = column;
   }
   

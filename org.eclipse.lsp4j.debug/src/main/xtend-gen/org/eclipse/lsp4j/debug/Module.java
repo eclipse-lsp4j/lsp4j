@@ -127,21 +127,22 @@ public class Module {
    * Unique identifier for the module.
    */
   public void setId(@NonNull final Either<Long, String> id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
   public void setId(final Long id) {
     if (id == null) {
-      this.id = null;
-      return;
+      throw new IllegalArgumentException("Property must not be null: id");
     }
     this.id = Either.forLeft(id);
   }
   
   public void setId(final String id) {
     if (id == null) {
-      this.id = null;
-      return;
+      throw new IllegalArgumentException("Property must not be null: id");
     }
     this.id = Either.forRight(id);
   }
@@ -159,6 +160,9 @@ public class Module {
    * A name of the module.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   

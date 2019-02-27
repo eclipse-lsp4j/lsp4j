@@ -46,6 +46,9 @@ public class ModuleEventArguments {
    * The reason for the event.
    */
   public void setReason(@NonNull final ModuleEventArgumentsReason reason) {
+    if (reason == null) {
+      throw new IllegalArgumentException("Property must not be null: reason");
+    }
     this.reason = reason;
   }
   
@@ -62,6 +65,9 @@ public class ModuleEventArguments {
    * The new, changed, or removed module. In case of 'removed' only the module id is used.
    */
   public void setModule(@NonNull final org.eclipse.lsp4j.debug.Module module) {
+    if (module == null) {
+      throw new IllegalArgumentException("Property must not be null: module");
+    }
     this.module = module;
   }
   

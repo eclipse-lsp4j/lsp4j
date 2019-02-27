@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.FileSystemWatcher;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -30,7 +30,7 @@ public class DidChangeWatchedFilesRegistrationOptions {
   }
   
   public DidChangeWatchedFilesRegistrationOptions(@NonNull final List<FileSystemWatcher> watchers) {
-    this.watchers = Preconditions.<List<FileSystemWatcher>>checkNotNull(watchers);
+    this.watchers = Preconditions.<List<FileSystemWatcher>>checkNotNull(watchers, "watchers");
   }
   
   /**
@@ -46,6 +46,9 @@ public class DidChangeWatchedFilesRegistrationOptions {
    * The watchers to register.
    */
   public void setWatchers(@NonNull final List<FileSystemWatcher> watchers) {
+    if (watchers == null) {
+      throw new IllegalArgumentException("Property must not be null: watchers");
+    }
     this.watchers = watchers;
   }
   

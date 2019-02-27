@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -46,7 +46,7 @@ public class ParameterInformation {
   }
   
   public ParameterInformation(@NonNull final String label) {
-    this.setLabel(Preconditions.<String>checkNotNull(label));
+    this.setLabel(Preconditions.<String>checkNotNull(label, "label"));
   }
   
   public ParameterInformation(@NonNull final String label, final String documentation) {
@@ -86,21 +86,22 @@ public class ParameterInformation {
    * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
    */
   public void setLabel(@NonNull final Either<String, Tuple.Two<Integer, Integer>> label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   
   public void setLabel(final String label) {
     if (label == null) {
-      this.label = null;
-      return;
+      throw new IllegalArgumentException("Property must not be null: label");
     }
     this.label = Either.forLeft(label);
   }
   
   public void setLabel(final Tuple.Two<Integer, Integer> label) {
     if (label == null) {
-      this.label = null;
-      return;
+      throw new IllegalArgumentException("Property must not be null: label");
     }
     this.label = Either.forRight(label);
   }

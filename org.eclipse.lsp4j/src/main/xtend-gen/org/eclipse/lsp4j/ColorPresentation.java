@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -44,7 +44,7 @@ public class ColorPresentation {
   }
   
   public ColorPresentation(@NonNull final String label) {
-    this.label = Preconditions.<String>checkNotNull(label);
+    this.label = Preconditions.<String>checkNotNull(label, "label");
   }
   
   public ColorPresentation(@NonNull final String label, final TextEdit textEdit) {
@@ -75,6 +75,9 @@ public class ColorPresentation {
    * this color presentation.
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   

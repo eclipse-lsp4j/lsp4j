@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -42,8 +42,8 @@ public class DiagnosticRelatedInformation {
   }
   
   public DiagnosticRelatedInformation(@NonNull final Location location, @NonNull final String message) {
-    this.location = Preconditions.<Location>checkNotNull(location);
-    this.message = Preconditions.<String>checkNotNull(message);
+    this.location = Preconditions.<Location>checkNotNull(location, "location");
+    this.message = Preconditions.<String>checkNotNull(message, "message");
   }
   
   /**
@@ -59,6 +59,9 @@ public class DiagnosticRelatedInformation {
    * The location of this related diagnostic information.
    */
   public void setLocation(@NonNull final Location location) {
+    if (location == null) {
+      throw new IllegalArgumentException("Property must not be null: location");
+    }
     this.location = location;
   }
   
@@ -75,6 +78,9 @@ public class DiagnosticRelatedInformation {
    * The message of this related diagnostic information.
    */
   public void setMessage(@NonNull final String message) {
+    if (message == null) {
+      throw new IllegalArgumentException("Property must not be null: message");
+    }
     this.message = message;
   }
   

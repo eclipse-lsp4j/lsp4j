@@ -39,6 +39,9 @@ public class ScopesArguments {
    * Retrieve the scopes for this stackframe.
    */
   public void setFrameId(@NonNull final Long frameId) {
+    if (frameId == null) {
+      throw new IllegalArgumentException("Property must not be null: frameId");
+    }
     this.frameId = frameId;
   }
   

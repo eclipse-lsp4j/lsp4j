@@ -11,12 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.ParameterInformation;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -46,7 +46,7 @@ public class SignatureInformation {
   }
   
   public SignatureInformation(@NonNull final String label) {
-    this.label = Preconditions.<String>checkNotNull(label);
+    this.label = Preconditions.<String>checkNotNull(label, "label");
   }
   
   public SignatureInformation(@NonNull final String label, final String documentation, final List<ParameterInformation> parameters) {
@@ -74,6 +74,9 @@ public class SignatureInformation {
    * The label of this signature. Will be shown in the UI.
    */
   public void setLabel(@NonNull final String label) {
+    if (label == null) {
+      throw new IllegalArgumentException("Property must not be null: label");
+    }
     this.label = label;
   }
   
