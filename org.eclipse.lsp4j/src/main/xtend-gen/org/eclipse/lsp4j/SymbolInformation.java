@@ -11,8 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.SymbolKind;
+import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -20,6 +22,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Represents information about programming constructs like variables, classes, interfaces etc.
  */
+@JsonAdapter(SymbolInformationTypeAdapter.Factory.class)
 @SuppressWarnings("all")
 public class SymbolInformation {
   /**

@@ -336,6 +336,9 @@ public class TypeAdapterImplProcessor extends AbstractClassProcessor {
       method.setBody(_client);
     };
     impl.addMethod("write", _function_5);
+    final Type booleanType = context.findTypeGlobally(Boolean.class);
+    final Type numberType = context.findTypeGlobally(Number.class);
+    final Type stringType = context.findTypeGlobally(String.class);
     for (final FieldDeclaration field_2 : targetFields) {
       {
         String _firstUpper = StringExtensions.toFirstUpper(field_2.getSimpleName());
@@ -350,8 +353,7 @@ public class TypeAdapterImplProcessor extends AbstractClassProcessor {
             it.addParameter("out", context.newTypeReference("com.google.gson.stream.JsonWriter"));
             it.addParameter("value", field_2.getType());
             it.setExceptions(context.newTypeReference(IOException.class));
-            boolean _isPrimitive = field_2.getType().isPrimitive();
-            if (_isPrimitive) {
+            if ((((field_2.getType().isPrimitive() || booleanType.isAssignableFrom(field_2.getType().getType())) || numberType.isAssignableFrom(field_2.getType().getType())) || stringType.isAssignableFrom(field_2.getType().getType()))) {
               StringConcatenationClient _client = new StringConcatenationClient() {
                 @Override
                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {

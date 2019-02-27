@@ -28,7 +28,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either
 /**
  * A type adapter for the Hover protocol type.
  */
- @TypeAdapterImpl(Hover)
+@TypeAdapterImpl(Hover)
 class HoverTypeAdapter {
 	
 	static val LIST_STRING_MARKEDSTRING = new TypeToken<List<Either<String, MarkedString>>>() {}

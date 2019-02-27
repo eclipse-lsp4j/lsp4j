@@ -137,6 +137,9 @@ class TypeAdapterImplProcessor extends AbstractClassProcessor {
 			'''
 		]
 		
+		val booleanType = Boolean.findTypeGlobally
+		val numberType = Number.findTypeGlobally
+		val stringType = String.findTypeGlobally
 		for (field : targetFields) {
 			val existingMethod = impl.findDeclaredMethod('write' + field.simpleName.toFirstUpper,
 					newTypeReference('com.google.gson.stream.JsonWriter'), field.type)
@@ -146,7 +149,8 @@ class TypeAdapterImplProcessor extends AbstractClassProcessor {
 					addParameter('out', newTypeReference('com.google.gson.stream.JsonWriter'))
 					addParameter('value', field.type)
 					exceptions = newTypeReference(IOException)
-					if (field.type.isPrimitive) {
+					if (field.type.isPrimitive || booleanType.isAssignableFrom(field.type.type) || numberType.isAssignableFrom(field.type.type)
+							|| stringType.isAssignableFrom(field.type.type)) {
 						body = '''
 							out.value(value);
 						'''

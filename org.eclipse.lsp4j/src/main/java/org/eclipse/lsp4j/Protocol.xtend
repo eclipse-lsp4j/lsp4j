@@ -22,6 +22,7 @@ import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
+import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -3225,6 +3226,7 @@ class DocumentSymbol {
  * Represents information about programming constructs like variables, classes, interfaces etc.
  */
 @JsonRpcData
+@JsonAdapter(SymbolInformationTypeAdapter.Factory)
 class SymbolInformation {
 	/**
 	 * The name of this symbol.

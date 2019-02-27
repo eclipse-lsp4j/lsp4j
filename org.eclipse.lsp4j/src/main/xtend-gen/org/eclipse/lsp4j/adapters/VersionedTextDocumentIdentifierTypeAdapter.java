@@ -102,6 +102,6 @@ public class VersionedTextDocumentIdentifierTypeAdapter extends TypeAdapter<Vers
   }
   
   protected void writeUri(final JsonWriter out, final String value) throws IOException {
-    gson.toJson(value, String.class, out);
+    out.value(value);
   }
 }
