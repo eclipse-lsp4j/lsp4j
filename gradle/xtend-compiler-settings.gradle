@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
-xtext.version = versions.xtext
+xtext.version = "[${versions.xtend_lib},3)"
 
 xtend {
 	debugger {
