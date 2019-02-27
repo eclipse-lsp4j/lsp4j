@@ -15,7 +15,7 @@ description = 'Code generator for Language Server Protocol classes'
 
 dependencies {
 	compile project(":org.eclipse.lsp4j.jsonrpc")
-	compile "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtext"
+	compile "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtend_lib"
 }
 
 jar.manifest {
