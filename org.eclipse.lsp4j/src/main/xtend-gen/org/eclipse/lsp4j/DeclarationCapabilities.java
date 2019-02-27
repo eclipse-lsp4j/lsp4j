@@ -16,35 +16,31 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Capabilities specific to the `textDocument/implementation`.
+ * Capabilities specific to the `textDocument/declaration`
  * 
- * Since 3.6.0
+ * Since 3.14.0
  */
 @SuppressWarnings("all")
-public class ImplementationCapabilities extends DynamicRegistrationCapabilities {
+public class DeclarationCapabilities extends DynamicRegistrationCapabilities {
   /**
-   * The client supports additional metadata in the form of definition links.
-   * 
-   * Since 3.14.0
+   * The client supports additional metadata in the form of declaration links.
    */
   private Boolean linkSupport;
   
-  public ImplementationCapabilities() {
+  public DeclarationCapabilities() {
   }
   
-  public ImplementationCapabilities(final Boolean dynamicRegistration) {
+  public DeclarationCapabilities(final Boolean dynamicRegistration) {
     super(dynamicRegistration);
   }
   
-  public ImplementationCapabilities(final Boolean dynamicRegistration, final Boolean linkSupport) {
+  public DeclarationCapabilities(final Boolean dynamicRegistration, final Boolean linkSupport) {
     super(dynamicRegistration);
     this.linkSupport = linkSupport;
   }
   
   /**
-   * The client supports additional metadata in the form of definition links.
-   * 
-   * Since 3.14.0
+   * The client supports additional metadata in the form of declaration links.
    */
   @Pure
   public Boolean getLinkSupport() {
@@ -52,9 +48,7 @@ public class ImplementationCapabilities extends DynamicRegistrationCapabilities 
   }
   
   /**
-   * The client supports additional metadata in the form of definition links.
-   * 
-   * Since 3.14.0
+   * The client supports additional metadata in the form of declaration links.
    */
   public void setLinkSupport(final Boolean linkSupport) {
     this.linkSupport = linkSupport;
@@ -80,7 +74,7 @@ public class ImplementationCapabilities extends DynamicRegistrationCapabilities 
       return false;
     if (!super.equals(obj))
       return false;
-    ImplementationCapabilities other = (ImplementationCapabilities) obj;
+    DeclarationCapabilities other = (DeclarationCapabilities) obj;
     if (this.linkSupport == null) {
       if (other.linkSupport != null)
         return false;

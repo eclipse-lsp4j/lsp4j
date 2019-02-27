@@ -36,7 +36,7 @@ public class PerformanceMeasurement implements Runnable {
   
   public void measureSymbolInformation() {
     abstract class __PerformanceMeasurement_1 implements PerformanceMeasurement.Measurement {
-      final static int SIZE = 100000;
+      static final int SIZE = 100000;
       
       Gson gson;
       

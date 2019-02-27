@@ -26,6 +26,7 @@ import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EnumTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.MessageTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.ThrowableTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.TupleTypeAdapters;
 import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
@@ -79,6 +80,7 @@ public class MessageJsonHandler {
 			.registerTypeAdapterFactory(new CollectionTypeAdapter.Factory())
 			.registerTypeAdapterFactory(new ThrowableTypeAdapter.Factory())
 			.registerTypeAdapterFactory(new EitherTypeAdapter.Factory())
+			.registerTypeAdapterFactory(new TupleTypeAdapters.TwoTypeAdapterFactory())
 			.registerTypeAdapterFactory(new EnumTypeAdapter.Factory())
 			.registerTypeAdapterFactory(new MessageTypeAdapter.Factory(this));
 	}

@@ -173,7 +173,7 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
   }
   
   protected void writeRootPath(final JsonWriter out, final String value) throws IOException {
-    gson.toJson(value, String.class, out);
+    out.value(value);
   }
   
   protected void writeInitializationOptions(final JsonWriter out, final Object value) throws IOException {
@@ -188,11 +188,11 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
   }
   
   protected void writeClientName(final JsonWriter out, final String value) throws IOException {
-    gson.toJson(value, String.class, out);
+    out.value(value);
   }
   
   protected void writeTrace(final JsonWriter out, final String value) throws IOException {
-    gson.toJson(value, String.class, out);
+    out.value(value);
   }
   
   protected void writeWorkspaceFolders(final JsonWriter out, final List<WorkspaceFolder> value) throws IOException {

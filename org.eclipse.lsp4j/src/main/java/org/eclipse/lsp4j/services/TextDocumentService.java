@@ -45,6 +45,7 @@ import org.eclipse.lsp4j.FoldingRange;
 import org.eclipse.lsp4j.FoldingRangeRequestParams;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.Location;
+import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
@@ -62,6 +63,7 @@ import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
 import org.eclipse.lsp4j.adapters.DocumentSymbolResponseAdapter;
+import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -119,16 +121,30 @@ public interface TextDocumentService {
 	default CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
+	
+	/**
+	 * The go to declaration request is sent from the client to the server to resolve
+	 * the declaration location of a symbol at a given text document position.
+	 * 
+	 * Registration Options: TextDocumentRegistrationOptions
+	 * 
+	 * Since version 3.14.0
+	 */
+	@JsonRequest
+	@ResponseJsonAdapter(LocationLinkListAdapter.class)
+	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> declaration(TextDocumentPositionParams params) {
+		throw new UnsupportedOperationException();
+	}
 
 	/**
-	 * The goto definition request is sent from the client to the server to
-	 * resolve the definition location of a symbol at a given text document
-	 * position.
+	 * The goto definition request is sent from the client to the server to resolve
+	 * the definition location of a symbol at a given text document position.
 	 * 
 	 * Registration Options: TextDocumentRegistrationOptions
 	 */
 	@JsonRequest
-	default CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position) {
+	@ResponseJsonAdapter(LocationLinkListAdapter.class)
+	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> definition(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -141,7 +157,8 @@ public interface TextDocumentService {
 	 * Since version 3.6.0
 	 */
 	@JsonRequest
-	default CompletableFuture<List<? extends Location>> typeDefinition(TextDocumentPositionParams position) {
+	@ResponseJsonAdapter(LocationLinkListAdapter.class)
+	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> typeDefinition(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -154,7 +171,8 @@ public interface TextDocumentService {
 	 * Since version 3.6.0
 	 */
 	@JsonRequest
-	default CompletableFuture<List<? extends Location>> implementation(TextDocumentPositionParams position) {
+	@ResponseJsonAdapter(LocationLinkListAdapter.class)
+	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> implementation(TextDocumentPositionParams position) {
 		throw new UnsupportedOperationException();
 	}
 
