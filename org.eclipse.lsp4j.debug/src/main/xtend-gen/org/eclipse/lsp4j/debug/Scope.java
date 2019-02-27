@@ -106,6 +106,9 @@ public class Scope {
    * Name of the scope such as 'Arguments', 'Locals'.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -124,6 +127,9 @@ public class Scope {
    * VariablesRequest.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
+    if (variablesReference == null) {
+      throw new IllegalArgumentException("Property must not be null: variablesReference");
+    }
     this.variablesReference = variablesReference;
   }
   
@@ -186,6 +192,9 @@ public class Scope {
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
   public void setExpensive(@NonNull final Boolean expensive) {
+    if (expensive == null) {
+      throw new IllegalArgumentException("Property must not be null: expensive");
+    }
     this.expensive = expensive;
   }
   

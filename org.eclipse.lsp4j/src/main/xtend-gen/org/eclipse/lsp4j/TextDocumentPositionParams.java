@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -45,15 +45,15 @@ public class TextDocumentPositionParams {
   }
   
   public TextDocumentPositionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
-    this.position = Preconditions.<Position>checkNotNull(position);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.position = Preconditions.<Position>checkNotNull(position, "position");
   }
   
   @Deprecated
   public TextDocumentPositionParams(@NonNull final TextDocumentIdentifier textDocument, final String uri, @NonNull final Position position) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
     this.uri = uri;
-    this.position = Preconditions.<Position>checkNotNull(position);
+    this.position = Preconditions.<Position>checkNotNull(position, "position");
   }
   
   /**
@@ -69,6 +69,9 @@ public class TextDocumentPositionParams {
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -102,6 +105,9 @@ public class TextDocumentPositionParams {
    * The position inside the text document.
    */
   public void setPosition(@NonNull final Position position) {
+    if (position == null) {
+      throw new IllegalArgumentException("Property must not be null: position");
+    }
     this.position = position;
   }
   

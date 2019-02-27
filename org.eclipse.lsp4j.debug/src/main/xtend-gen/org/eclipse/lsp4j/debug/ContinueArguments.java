@@ -42,6 +42,9 @@ public class ContinueArguments {
    * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
    */
   public void setThreadId(@NonNull final Long threadId) {
+    if (threadId == null) {
+      throw new IllegalArgumentException("Property must not be null: threadId");
+    }
     this.threadId = threadId;
   }
   

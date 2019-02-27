@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.FileEvent;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -36,7 +36,7 @@ public class DidChangeWatchedFilesParams {
   }
   
   public DidChangeWatchedFilesParams(@NonNull final List<FileEvent> changes) {
-    this.changes = Preconditions.<List<FileEvent>>checkNotNull(changes);
+    this.changes = Preconditions.<List<FileEvent>>checkNotNull(changes, "changes");
   }
   
   /**
@@ -52,6 +52,9 @@ public class DidChangeWatchedFilesParams {
    * The actual file events.
    */
   public void setChanges(@NonNull final List<FileEvent> changes) {
+    if (changes == null) {
+      throw new IllegalArgumentException("Property must not be null: changes");
+    }
     this.changes = changes;
   }
   

@@ -110,6 +110,9 @@ public class Breakpoint {
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
   public void setVerified(@NonNull final Boolean verified) {
+    if (verified == null) {
+      throw new IllegalArgumentException("Property must not be null: verified");
+    }
     this.verified = verified;
   }
   

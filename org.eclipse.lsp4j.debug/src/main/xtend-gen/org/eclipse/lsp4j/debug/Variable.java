@@ -107,6 +107,9 @@ public class Variable {
    * The variable's name.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -123,6 +126,9 @@ public class Variable {
    * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
    */
   public void setValue(@NonNull final String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Property must not be null: value");
+    }
     this.value = value;
   }
   
@@ -200,6 +206,9 @@ public class Variable {
    * variablesReference to the VariablesRequest.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
+    if (variablesReference == null) {
+      throw new IllegalArgumentException("Property must not be null: variablesReference");
+    }
     this.variablesReference = variablesReference;
   }
   

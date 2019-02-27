@@ -79,6 +79,9 @@ public class EvaluateResponse {
    * The result of the evaluate request.
    */
   public void setResult(@NonNull final String result) {
+    if (result == null) {
+      throw new IllegalArgumentException("Property must not be null: result");
+    }
     this.result = result;
   }
   
@@ -135,6 +138,9 @@ public class EvaluateResponse {
    * variablesReference to the VariablesRequest.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
+    if (variablesReference == null) {
+      throw new IllegalArgumentException("Property must not be null: variablesReference");
+    }
     this.variablesReference = variablesReference;
   }
   

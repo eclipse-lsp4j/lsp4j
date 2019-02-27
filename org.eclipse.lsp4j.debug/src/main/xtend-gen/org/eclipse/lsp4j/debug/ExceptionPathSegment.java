@@ -71,6 +71,9 @@ public class ExceptionPathSegment {
    * Depending on the value of 'negate' the names that should match or not match.
    */
   public void setNames(@NonNull final String[] names) {
+    if (names == null) {
+      throw new IllegalArgumentException("Property must not be null: names");
+    }
     this.names = names;
   }
   

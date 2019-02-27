@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.lsp4j.TypeHierarchyItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -46,9 +46,9 @@ public class ResolveTypeHierarchyItemParams {
   }
   
   public ResolveTypeHierarchyItemParams(@NonNull final TypeHierarchyItem item, final int resolve, @NonNull final TypeHierarchyDirection direction) {
-    this.item = Preconditions.<TypeHierarchyItem>checkNotNull(item);
+    this.item = Preconditions.<TypeHierarchyItem>checkNotNull(item, "item");
     this.resolve = resolve;
-    this.direction = Preconditions.<TypeHierarchyDirection>checkNotNull(direction);
+    this.direction = Preconditions.<TypeHierarchyDirection>checkNotNull(direction, "direction");
   }
   
   /**
@@ -64,6 +64,9 @@ public class ResolveTypeHierarchyItemParams {
    * The hierarchy item to resolve.
    */
   public void setItem(@NonNull final TypeHierarchyItem item) {
+    if (item == null) {
+      throw new IllegalArgumentException("Property must not be null: item");
+    }
     this.item = item;
   }
   
@@ -95,6 +98,9 @@ public class ResolveTypeHierarchyItemParams {
    * The direction of the type hierarchy resolution.
    */
   public void setDirection(@NonNull final TypeHierarchyDirection direction) {
+    if (direction == null) {
+      throw new IllegalArgumentException("Property must not be null: direction");
+    }
     this.direction = direction;
   }
   

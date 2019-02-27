@@ -51,6 +51,9 @@ public class ThreadEventArguments {
    * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
    */
   public void setReason(@NonNull final String reason) {
+    if (reason == null) {
+      throw new IllegalArgumentException("Property must not be null: reason");
+    }
     this.reason = reason;
   }
   
@@ -67,6 +70,9 @@ public class ThreadEventArguments {
    * The identifier of the thread.
    */
   public void setThreadId(@NonNull final Long threadId) {
+    if (threadId == null) {
+      throw new IllegalArgumentException("Property must not be null: threadId");
+    }
     this.threadId = threadId;
   }
   

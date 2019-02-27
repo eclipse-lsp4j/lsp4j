@@ -46,6 +46,9 @@ public class SourceResponse {
    * Content of the source reference.
    */
   public void setContent(@NonNull final String content) {
+    if (content == null) {
+      throw new IllegalArgumentException("Property must not be null: content");
+    }
     this.content = content;
   }
   

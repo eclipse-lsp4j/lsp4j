@@ -61,6 +61,9 @@ public class SetExpressionArguments {
    * The l-value expression to assign to.
    */
   public void setExpression(@NonNull final String expression) {
+    if (expression == null) {
+      throw new IllegalArgumentException("Property must not be null: expression");
+    }
     this.expression = expression;
   }
   
@@ -77,6 +80,9 @@ public class SetExpressionArguments {
    * The value expression to assign to the l-value expression.
    */
   public void setValue(@NonNull final String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Property must not be null: value");
+    }
     this.value = value;
   }
   

@@ -69,6 +69,9 @@ public class VariablesArguments {
    * The Variable reference.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
+    if (variablesReference == null) {
+      throw new IllegalArgumentException("Property must not be null: variablesReference");
+    }
     this.variablesReference = variablesReference;
   }
   

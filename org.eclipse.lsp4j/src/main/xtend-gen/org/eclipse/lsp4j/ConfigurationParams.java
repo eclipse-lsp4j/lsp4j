@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.ConfigurationItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -36,7 +36,7 @@ public class ConfigurationParams {
   }
   
   public ConfigurationParams(@NonNull final List<ConfigurationItem> items) {
-    this.items = Preconditions.<List<ConfigurationItem>>checkNotNull(items);
+    this.items = Preconditions.<List<ConfigurationItem>>checkNotNull(items, "items");
   }
   
   @Pure
@@ -46,6 +46,9 @@ public class ConfigurationParams {
   }
   
   public void setItems(@NonNull final List<ConfigurationItem> items) {
+    if (items == null) {
+      throw new IllegalArgumentException("Property must not be null: items");
+    }
     this.items = items;
   }
   

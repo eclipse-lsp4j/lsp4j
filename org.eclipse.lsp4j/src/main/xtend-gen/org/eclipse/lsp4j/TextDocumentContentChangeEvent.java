@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -43,7 +43,7 @@ public class TextDocumentContentChangeEvent {
   }
   
   public TextDocumentContentChangeEvent(@NonNull final String text) {
-    this.text = Preconditions.<String>checkNotNull(text);
+    this.text = Preconditions.<String>checkNotNull(text, "text");
   }
   
   public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, @NonNull final String text) {
@@ -95,6 +95,9 @@ public class TextDocumentContentChangeEvent {
    * The new text of the range/document.
    */
   public void setText(@NonNull final String text) {
+    if (text == null) {
+      throw new IllegalArgumentException("Property must not be null: text");
+    }
     this.text = text;
   }
   

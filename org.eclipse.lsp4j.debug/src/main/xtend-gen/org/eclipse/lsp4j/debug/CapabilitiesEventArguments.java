@@ -48,6 +48,9 @@ public class CapabilitiesEventArguments {
    * The set of updated capabilities.
    */
   public void setCapabilities(@NonNull final Capabilities capabilities) {
+    if (capabilities == null) {
+      throw new IllegalArgumentException("Property must not be null: capabilities");
+    }
     this.capabilities = capabilities;
   }
   

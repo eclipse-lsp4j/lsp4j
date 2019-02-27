@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -35,7 +35,7 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
   }
   
   public DocumentOnTypeFormattingRegistrationOptions(@NonNull final String firstTriggerCharacter) {
-    this.firstTriggerCharacter = Preconditions.<String>checkNotNull(firstTriggerCharacter);
+    this.firstTriggerCharacter = Preconditions.<String>checkNotNull(firstTriggerCharacter, "firstTriggerCharacter");
   }
   
   public DocumentOnTypeFormattingRegistrationOptions(@NonNull final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
@@ -56,6 +56,9 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
    * A character on which formatting should be triggered, like `}`.
    */
   public void setFirstTriggerCharacter(@NonNull final String firstTriggerCharacter) {
+    if (firstTriggerCharacter == null) {
+      throw new IllegalArgumentException("Property must not be null: firstTriggerCharacter");
+    }
     this.firstTriggerCharacter = firstTriggerCharacter;
   }
   

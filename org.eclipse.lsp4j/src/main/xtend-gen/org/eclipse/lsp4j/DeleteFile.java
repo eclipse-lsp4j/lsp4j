@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.DeleteFileOptions;
 import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.ResourceOperationKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -41,12 +41,12 @@ public class DeleteFile extends ResourceOperation {
   
   public DeleteFile(@NonNull final String uri) {
     super(ResourceOperationKind.Delete);
-    this.uri = Preconditions.<String>checkNotNull(uri);
+    this.uri = Preconditions.<String>checkNotNull(uri, "uri");
   }
   
   public DeleteFile(@NonNull final String uri, final DeleteFileOptions options) {
     super(ResourceOperationKind.Delete);
-    this.uri = Preconditions.<String>checkNotNull(uri);
+    this.uri = Preconditions.<String>checkNotNull(uri, "uri");
     this.options = options;
   }
   
@@ -63,6 +63,9 @@ public class DeleteFile extends ResourceOperation {
    * The file to delete.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   

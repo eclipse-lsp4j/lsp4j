@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -41,8 +41,8 @@ public class MessageParams {
   }
   
   public MessageParams(@NonNull final MessageType type, @NonNull final String message) {
-    this.type = Preconditions.<MessageType>checkNotNull(type);
-    this.message = Preconditions.<String>checkNotNull(message);
+    this.type = Preconditions.<MessageType>checkNotNull(type, "type");
+    this.message = Preconditions.<String>checkNotNull(message, "message");
   }
   
   /**
@@ -58,6 +58,9 @@ public class MessageParams {
    * The message type.
    */
   public void setType(@NonNull final MessageType type) {
+    if (type == null) {
+      throw new IllegalArgumentException("Property must not be null: type");
+    }
     this.type = type;
   }
   
@@ -74,6 +77,9 @@ public class MessageParams {
    * The actual message.
    */
   public void setMessage(@NonNull final String message) {
+    if (message == null) {
+      throw new IllegalArgumentException("Property must not be null: message");
+    }
     this.message = message;
   }
   

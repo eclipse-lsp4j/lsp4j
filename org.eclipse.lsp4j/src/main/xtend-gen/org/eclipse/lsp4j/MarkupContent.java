@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -44,8 +44,8 @@ public class MarkupContent {
   }
   
   public MarkupContent(@NonNull final String kind, @NonNull final String value) {
-    this.kind = Preconditions.<String>checkNotNull(kind);
-    this.value = Preconditions.<String>checkNotNull(value);
+    this.kind = Preconditions.<String>checkNotNull(kind, "kind");
+    this.value = Preconditions.<String>checkNotNull(value, "value");
   }
   
   /**
@@ -61,6 +61,9 @@ public class MarkupContent {
    * The type of the Markup.
    */
   public void setKind(@NonNull final String kind) {
+    if (kind == null) {
+      throw new IllegalArgumentException("Property must not be null: kind");
+    }
     this.kind = kind;
   }
   
@@ -77,6 +80,9 @@ public class MarkupContent {
    * The content itself.
    */
   public void setValue(@NonNull final String value) {
+    if (value == null) {
+      throw new IllegalArgumentException("Property must not be null: value");
+    }
     this.value = value;
   }
   

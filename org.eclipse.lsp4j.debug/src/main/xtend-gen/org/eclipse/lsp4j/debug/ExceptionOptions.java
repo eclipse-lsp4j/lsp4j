@@ -71,6 +71,9 @@ public class ExceptionOptions {
    * Condition when a thrown exception should result in a break.
    */
   public void setBreakMode(@NonNull final ExceptionBreakMode breakMode) {
+    if (breakMode == null) {
+      throw new IllegalArgumentException("Property must not be null: breakMode");
+    }
     this.breakMode = breakMode;
   }
   

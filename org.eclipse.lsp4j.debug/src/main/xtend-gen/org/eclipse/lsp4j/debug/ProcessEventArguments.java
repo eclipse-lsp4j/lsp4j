@@ -65,6 +65,9 @@ public class ProcessEventArguments {
    * /home/example/myproj/program.js.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   

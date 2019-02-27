@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -34,7 +34,7 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
   }
   
   public TextDocumentChangeRegistrationOptions(@NonNull final TextDocumentSyncKind syncKind) {
-    this.syncKind = Preconditions.<TextDocumentSyncKind>checkNotNull(syncKind);
+    this.syncKind = Preconditions.<TextDocumentSyncKind>checkNotNull(syncKind, "syncKind");
   }
   
   /**
@@ -52,6 +52,9 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
    * and TextDocumentSyncKind.Incremental.
    */
   public void setSyncKind(@NonNull final TextDocumentSyncKind syncKind) {
+    if (syncKind == null) {
+      throw new IllegalArgumentException("Property must not be null: syncKind");
+    }
     this.syncKind = syncKind;
   }
   

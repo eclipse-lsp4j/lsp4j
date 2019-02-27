@@ -66,6 +66,9 @@ public class ColoringInformation {
    * The range that should be highlighted on the client-side.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -86,6 +89,9 @@ public class ColoringInformation {
    * applying all styles on the range.
    */
   public void setStyles(@NonNull final List<Integer> styles) {
+    if (styles == null) {
+      throw new IllegalArgumentException("Property must not be null: styles");
+    }
     this.styles = styles;
   }
   

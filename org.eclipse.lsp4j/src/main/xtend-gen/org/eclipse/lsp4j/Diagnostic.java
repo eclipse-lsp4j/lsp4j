@@ -11,12 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.DiagnosticRelatedInformation;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -65,8 +65,8 @@ public class Diagnostic {
   }
   
   public Diagnostic(@NonNull final Range range, @NonNull final String message) {
-    this.range = Preconditions.<Range>checkNotNull(range);
-    this.message = Preconditions.<String>checkNotNull(message);
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
+    this.message = Preconditions.<String>checkNotNull(message, "message");
   }
   
   public Diagnostic(@NonNull final Range range, @NonNull final String message, final DiagnosticSeverity severity, final String source) {
@@ -93,6 +93,9 @@ public class Diagnostic {
    * The range at which the message applies
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -156,6 +159,9 @@ public class Diagnostic {
    * The diagnostic's message.
    */
   public void setMessage(@NonNull final String message) {
+    if (message == null) {
+      throw new IllegalArgumentException("Property must not be null: message");
+    }
     this.message = message;
   }
   

@@ -39,6 +39,9 @@ public class StepInTargetsArguments {
    * The stack frame for which to retrieve the possible stepIn targets.
    */
   public void setFrameId(@NonNull final Long frameId) {
+    if (frameId == null) {
+      throw new IllegalArgumentException("Property must not be null: frameId");
+    }
     this.frameId = frameId;
   }
   

@@ -84,6 +84,9 @@ public class Message {
    * Unique identifier for the message.
    */
   public void setId(@NonNull final Long id) {
+    if (id == null) {
+      throw new IllegalArgumentException("Property must not be null: id");
+    }
     this.id = id;
   }
   
@@ -106,6 +109,9 @@ public class Message {
    * safely used for telemetry purposes.
    */
   public void setFormat(@NonNull final String format) {
+    if (format == null) {
+      throw new IllegalArgumentException("Property must not be null: format");
+    }
     this.format = format;
   }
   

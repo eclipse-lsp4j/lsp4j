@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -39,8 +39,8 @@ public class DocumentFormattingParams {
   }
   
   public DocumentFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
-    this.options = Preconditions.<FormattingOptions>checkNotNull(options);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.options = Preconditions.<FormattingOptions>checkNotNull(options, "options");
   }
   
   /**
@@ -56,6 +56,9 @@ public class DocumentFormattingParams {
    * The document to format.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -72,6 +75,9 @@ public class DocumentFormattingParams {
    * The format options
    */
   public void setOptions(@NonNull final FormattingOptions options) {
+    if (options == null) {
+      throw new IllegalArgumentException("Property must not be null: options");
+    }
     this.options = options;
   }
   

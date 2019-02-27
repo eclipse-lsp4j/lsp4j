@@ -52,6 +52,9 @@ public class BreakpointEventArguments {
    * Possible values include - but not limited to those defined in {@link BreakpointEventArgumentsReason}
    */
   public void setReason(@NonNull final String reason) {
+    if (reason == null) {
+      throw new IllegalArgumentException("Property must not be null: reason");
+    }
     this.reason = reason;
   }
   
@@ -68,6 +71,9 @@ public class BreakpointEventArguments {
    * The breakpoint.
    */
   public void setBreakpoint(@NonNull final Breakpoint breakpoint) {
+    if (breakpoint == null) {
+      throw new IllegalArgumentException("Property must not be null: breakpoint");
+    }
     this.breakpoint = breakpoint;
   }
   

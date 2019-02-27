@@ -54,6 +54,9 @@ public class FunctionBreakpoint {
    * The name of the function.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   

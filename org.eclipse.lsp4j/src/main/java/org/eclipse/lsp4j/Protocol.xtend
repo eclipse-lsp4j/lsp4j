@@ -12,7 +12,6 @@
 package org.eclipse.lsp4j
 
 import com.google.common.annotations.Beta
-import com.google.common.base.Preconditions
 import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
 import java.util.LinkedHashMap
@@ -31,6 +30,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import org.eclipse.lsp4j.util.Preconditions
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -1135,7 +1135,7 @@ class CodeAction {
 	}
 
 	new(@NonNull String title) {
-		this.title = Preconditions.checkNotNull(title)
+		this.title = Preconditions.checkNotNull(title, 'title')
 	}
 
 }
@@ -1165,7 +1165,7 @@ class CodeActionContext {
 	}
 
 	new(@NonNull List<Diagnostic> diagnostics) {
-		this.diagnostics = Preconditions.checkNotNull(diagnostics)
+		this.diagnostics = Preconditions.checkNotNull(diagnostics, 'diagnostics')
 	}
 
 	new(@NonNull List<Diagnostic> diagnostics, List<String> only) {
@@ -1203,9 +1203,9 @@ class CodeActionParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range, @NonNull CodeActionContext context) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.range = Preconditions.checkNotNull(range)
-		this.context = Preconditions.checkNotNull(context)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.context = Preconditions.checkNotNull(context, 'context')
 	}
 }
 
@@ -1239,7 +1239,7 @@ class CodeLens {
 	}
 
 	new(@NonNull Range range) {
-		this.range = Preconditions.checkNotNull(range)
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 
 	new(@NonNull Range range, Command command, Object data) {
@@ -1303,7 +1303,7 @@ class CodeLensParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 }
 
@@ -1334,8 +1334,8 @@ class Command {
 	}
 
 	new(@NonNull String title, @NonNull String command) {
-		this.title = Preconditions.checkNotNull(title)
-		this.command = Preconditions.checkNotNull(command)
+		this.title = Preconditions.checkNotNull(title, 'title')
+		this.command = Preconditions.checkNotNull(command, 'command')
 	}
 
 	new(@NonNull String title, @NonNull String command, List<Object> arguments) {
@@ -1452,7 +1452,7 @@ class CompletionItem {
 	}
 
 	new(@NonNull String label) {
-		this.label = Preconditions.checkNotNull(label)
+		this.label = Preconditions.checkNotNull(label, 'label')
 	}
 }
 
@@ -1477,7 +1477,7 @@ class CompletionList {
 	}
 
 	new(@NonNull List<CompletionItem> items) {
-		this.items = Preconditions.checkNotNull(items)
+		this.items = Preconditions.checkNotNull(items, 'items')
 	}
 
 	new(boolean isIncomplete, @NonNull List<CompletionItem> items) {
@@ -1555,8 +1555,8 @@ class Diagnostic {
 	}
 
 	new(@NonNull Range range, @NonNull String message) {
-		this.range = Preconditions.checkNotNull(range)
-		this.message = Preconditions.checkNotNull(message)
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.message = Preconditions.checkNotNull(message, 'message')
 	}
 
 	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source) {
@@ -1596,8 +1596,8 @@ class DiagnosticRelatedInformation {
 	}
 
 	new(@NonNull Location location, @NonNull String message) {
-		this.location = Preconditions.checkNotNull(location)
-		this.message = Preconditions.checkNotNull(message)
+		this.location = Preconditions.checkNotNull(location, 'location')
+		this.message = Preconditions.checkNotNull(message, 'message')
 	}
 }
 
@@ -1617,7 +1617,7 @@ class DidChangeConfigurationParams {
 	}
 
 	new(@NonNull Object settings) {
-		this.settings = Preconditions.checkNotNull(settings)
+		this.settings = Preconditions.checkNotNull(settings, 'settings')
 	}
 }
 
@@ -1650,8 +1650,8 @@ class DidChangeTextDocumentParams {
 
 	new(@NonNull VersionedTextDocumentIdentifier textDocument,
 		@NonNull List<TextDocumentContentChangeEvent> contentChanges) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.contentChanges = Preconditions.checkNotNull(contentChanges)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.contentChanges = Preconditions.checkNotNull(contentChanges, 'contentChanges')
 	}
 
 	@Deprecated
@@ -1679,7 +1679,7 @@ class DidChangeWatchedFilesParams {
 	}
 
 	new(@NonNull List<FileEvent> changes) {
-		this.changes = Preconditions.checkNotNull(changes)
+		this.changes = Preconditions.checkNotNull(changes, 'changes')
 	}
 }
 
@@ -1695,7 +1695,7 @@ class DidChangeWatchedFilesRegistrationOptions {
 	}
 
 	new(@NonNull List<FileSystemWatcher> watchers) {
-		this.watchers = Preconditions.checkNotNull(watchers)
+		this.watchers = Preconditions.checkNotNull(watchers, 'watchers')
 	}
 }
 
@@ -1718,7 +1718,7 @@ class FileSystemWatcher {
 	}
 
 	new(@NonNull String globPattern) {
-		this.globPattern = Preconditions.checkNotNull(globPattern)
+		this.globPattern = Preconditions.checkNotNull(globPattern, 'globPattern')
 	}
 
 	new(@NonNull String globPattern, Integer kind) {
@@ -1744,7 +1744,7 @@ class DidCloseTextDocumentParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 }
 
@@ -1771,7 +1771,7 @@ class DidOpenTextDocumentParams {
 	}
 
 	new(@NonNull TextDocumentItem textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 
 	@Deprecated
@@ -1802,7 +1802,7 @@ class DidSaveTextDocumentParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, String text) {
@@ -1829,7 +1829,7 @@ class WillSaveTextDocumentParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull TextDocumentSaveReason reason) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.reason = reason
 	}
 }
@@ -1855,8 +1855,8 @@ class DocumentFormattingParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.options = Preconditions.checkNotNull(options)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.options = Preconditions.checkNotNull(options, 'options')
 	}
 }
 
@@ -1881,7 +1881,7 @@ class DocumentHighlight {
 	}
 
 	new(@NonNull Range range) {
-		this.range = Preconditions.checkNotNull(range)
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 
 	new(@NonNull Range range, DocumentHighlightKind kind) {
@@ -1918,7 +1918,7 @@ class DocumentLink {
 	}
 
 	new(@NonNull Range range) {
-		this.range = Preconditions.checkNotNull(range)
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 
 	new(@NonNull Range range, String target) {
@@ -1947,7 +1947,7 @@ class DocumentLinkParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 }
 
@@ -1985,7 +1985,7 @@ class ExecuteCommandOptions {
 	}
 
 	new(@NonNull List<String> commands) {
-		this.commands = Preconditions.checkNotNull(commands)
+		this.commands = Preconditions.checkNotNull(commands, 'commands')
 	}
 }
 
@@ -2100,7 +2100,7 @@ class DocumentOnTypeFormattingOptions {
 	}
 
 	new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
-		this.firstTriggerCharacter = Preconditions.checkNotNull(firstTriggerCharacter)
+		this.firstTriggerCharacter = Preconditions.checkNotNull(firstTriggerCharacter, 'firstTriggerCharacter')
 		this.moreTriggerCharacter = moreTriggerCharacter
 	}
 }
@@ -2126,7 +2126,7 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	}
 
 	new(@NonNull Position position, @NonNull String ch) {
-		this.position = Preconditions.checkNotNull(position)
+		this.position = Preconditions.checkNotNull(position, 'position')
 		this.ch = ch
 	}
 }
@@ -2146,7 +2146,7 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
 	}
 
 	new(@NonNull Range range) {
-		this.range = Preconditions.checkNotNull(range)
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 }
 
@@ -2199,9 +2199,9 @@ class ResolveTypeHierarchyItemParams {
 	}
 	
 	new(@NonNull TypeHierarchyItem item, int resolve, @NonNull TypeHierarchyDirection direction) {
-		this.item = Preconditions.checkNotNull(item)
+		this.item = Preconditions.checkNotNull(item, 'item')
 		this.resolve = resolve
-		this.direction = Preconditions.checkNotNull(direction)
+		this.direction = Preconditions.checkNotNull(direction, 'direction')
 	}
 
 }
@@ -2221,7 +2221,7 @@ class DocumentSymbolParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 }
 
@@ -2246,8 +2246,8 @@ class FileEvent {
 	}
 
 	new(@NonNull String uri, @NonNull FileChangeType type) {
-		this.uri = Preconditions.checkNotNull(uri)
-		this.type = Preconditions.checkNotNull(type)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.type = Preconditions.checkNotNull(type, 'type')
 	}
 }
 
@@ -2388,8 +2388,8 @@ class MarkupContent {
 	}
 	
 	new(@NonNull String kind, @NonNull String value) {
-		this.kind = Preconditions.checkNotNull(kind)
-		this.value = Preconditions.checkNotNull(value)
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.value = Preconditions.checkNotNull(value, 'value')
 	}
 }
 
@@ -2414,20 +2414,20 @@ class Hover {
 	}
 
 	new(@NonNull List<Either<String, MarkedString>> contents) {
-		this.contents = Preconditions.checkNotNull(contents)
+		this.contents = Preconditions.checkNotNull(contents, 'contents')
 	}
 
 	new(@NonNull List<Either<String, MarkedString>> contents, Range range) {
-		this.contents = Preconditions.checkNotNull(contents)
+		this.contents = Preconditions.checkNotNull(contents, 'contents')
 		this.range = range
 	}
 
 	new(@NonNull MarkupContent contents) {
-		this.contents = Preconditions.checkNotNull(contents)
+		this.contents = Preconditions.checkNotNull(contents, 'contents')
 	}
 
 	new(@NonNull MarkupContent contents, Range range) {
-		this.contents = Preconditions.checkNotNull(contents)
+		this.contents = Preconditions.checkNotNull(contents, 'contents')
 		this.range = range
 	}
 }
@@ -2457,8 +2457,8 @@ class MarkedString {
 	}
 
 	new(@NonNull String language, @NonNull String value) {
-		this.language = Preconditions.checkNotNull(language)
-		this.value = Preconditions.checkNotNull(value)
+		this.language = Preconditions.checkNotNull(language, 'language')
+		this.value = Preconditions.checkNotNull(value, 'value')
 	}
 }
 
@@ -2567,7 +2567,7 @@ class InitializeResult {
 	}
 
 	new(@NonNull ServerCapabilities capabilities) {
-		this.capabilities = Preconditions.checkNotNull(capabilities)
+		this.capabilities = Preconditions.checkNotNull(capabilities, 'capabilities')
 	}
 }
 
@@ -2590,8 +2590,8 @@ class Location {
 	}
 
 	new(@NonNull String uri, @NonNull Range range) {
-		this.uri = Preconditions.checkNotNull(uri)
-		this.range = Preconditions.checkNotNull(range)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 }
 
@@ -2647,7 +2647,7 @@ class MessageActionItem {
 	}
 
 	new(@NonNull String title) {
-		this.title = Preconditions.checkNotNull(title)
+		this.title = Preconditions.checkNotNull(title, 'title')
 	}
 }
 
@@ -2675,8 +2675,8 @@ class MessageParams {
 	}
 
 	new(@NonNull MessageType type, @NonNull String message) {
-		this.type = Preconditions.checkNotNull(type)
-		this.message = Preconditions.checkNotNull(message)
+		this.type = Preconditions.checkNotNull(type, 'type')
+		this.message = Preconditions.checkNotNull(message, 'message')
 	}
 }
 
@@ -2707,7 +2707,7 @@ class ParameterInformation {
 	}
 
 	new(@NonNull String label) {
-		this.label = Preconditions.checkNotNull(label)
+		this.label = Preconditions.checkNotNull(label, 'label')
 	}
 
 	new(@NonNull String label, String documentation) {
@@ -2767,8 +2767,8 @@ class PublishDiagnosticsParams {
 	}
 
 	new(@NonNull String uri, @NonNull List<Diagnostic> diagnostics) {
-		this.uri = Preconditions.checkNotNull(uri)
-		this.diagnostics = Preconditions.checkNotNull(diagnostics)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.diagnostics = Preconditions.checkNotNull(diagnostics, 'diagnostics')
 	}
 }
 
@@ -2793,8 +2793,8 @@ class Range {
 	}
 
 	new(@NonNull Position start, @NonNull Position end) {
-		this.start = Preconditions.checkNotNull(start)
-		this.end = Preconditions.checkNotNull(end)
+		this.start = Preconditions.checkNotNull(start, 'start')
+		this.end = Preconditions.checkNotNull(end, 'end')
 	}
 }
 
@@ -2830,7 +2830,7 @@ class ReferenceParams extends TextDocumentPositionParams {
 	}
 
 	new(@NonNull ReferenceContext context) {
-		this.context = Preconditions.checkNotNull(context)
+		this.context = Preconditions.checkNotNull(context, 'context')
 	}
 }
 
@@ -2852,8 +2852,8 @@ class PrepareRenameResult {
 	}
 
 	new(@NonNull Range range, @NonNull String placeholder) {
-		this.range = Preconditions.checkNotNull(range)
-		this.placeholder = Preconditions.checkNotNull(placeholder)
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.placeholder = Preconditions.checkNotNull(placeholder, 'placeholder')
 	}
 }
 
@@ -2885,9 +2885,9 @@ class RenameParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull String newName) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.position = Preconditions.checkNotNull(position)
-		this.newName = Preconditions.checkNotNull(newName)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.position = Preconditions.checkNotNull(position, 'position')
+		this.newName = Preconditions.checkNotNull(newName, 'newName')
 	}
 }
 
@@ -3159,7 +3159,7 @@ class SignatureHelp {
 	}
 
 	new(@NonNull List<SignatureInformation> signatures, Integer activeSignature, Integer activeParameter) {
-		this.signatures = Preconditions.checkNotNull(signatures)
+		this.signatures = Preconditions.checkNotNull(signatures, 'signatures')
 		this.activeSignature = activeSignature
 		this.activeParameter = activeParameter
 	}
@@ -3209,7 +3209,7 @@ class SignatureInformation {
 	}
 
 	new(@NonNull String label) {
-		this.label = Preconditions.checkNotNull(label)
+		this.label = Preconditions.checkNotNull(label, 'label')
 	}
 
 	new(@NonNull String label, String documentation, List<ParameterInformation> parameters) {
@@ -3353,10 +3353,10 @@ class DocumentSymbol {
 	}
 
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange) {
-		this.name = Preconditions.checkNotNull(name)
-		this.kind = Preconditions.checkNotNull(kind)
-		this.range = Preconditions.checkNotNull(range)
-		this.selectionRange = Preconditions.checkNotNull(selectionRange)
+		this.name = Preconditions.checkNotNull(name, 'name')
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.selectionRange = Preconditions.checkNotNull(selectionRange, 'selectionRange')
 	}
 
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Range range, @NonNull Range selectionRange,
@@ -3422,9 +3422,9 @@ class SymbolInformation {
 	}
 
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location) {
-		this.name = Preconditions.checkNotNull(name)
-		this.kind = Preconditions.checkNotNull(kind)
-		this.location = Preconditions.checkNotNull(location)
+		this.name = Preconditions.checkNotNull(name, 'name')
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.location = Preconditions.checkNotNull(location, 'location')
 	}
 
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
@@ -3459,7 +3459,7 @@ class TextDocumentContentChangeEvent {
 	}
 
 	new(@NonNull String text) {
-		this.text = Preconditions.checkNotNull(text)
+		this.text = Preconditions.checkNotNull(text, 'text')
 	}
 
 	new(Range range, Integer rangeLength, @NonNull String text) {
@@ -3484,7 +3484,7 @@ class TextDocumentIdentifier {
 	}
 
 	new(@NonNull String uri) {
-		this.uri = Preconditions.checkNotNull(uri)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 }
 
@@ -3520,10 +3520,10 @@ class TextDocumentItem {
 	}
 
 	new(@NonNull String uri, @NonNull String languageId, int version, @NonNull String text) {
-		this.uri = Preconditions.checkNotNull(uri)
-		this.languageId = Preconditions.checkNotNull(languageId)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.languageId = Preconditions.checkNotNull(languageId, 'languageId')
 		this.version = version
-		this.text = Preconditions.checkNotNull(text)
+		this.text = Preconditions.checkNotNull(text, 'text')
 	}
 }
 
@@ -3554,15 +3554,15 @@ class TextDocumentPositionParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.position = Preconditions.checkNotNull(position)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.position = Preconditions.checkNotNull(position, 'position')
 	}
 
 	@Deprecated
 	new(@NonNull TextDocumentIdentifier textDocument, String uri, @NonNull Position position) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.uri = uri
-		this.position = Preconditions.checkNotNull(position)
+		this.position = Preconditions.checkNotNull(position, 'position')
 	}
 }
 
@@ -3605,7 +3605,7 @@ class CompletionContext {
 	}
 
 	new(@NonNull CompletionTriggerKind triggerKind) {
-		this.triggerKind = Preconditions.checkNotNull(triggerKind)
+		this.triggerKind = Preconditions.checkNotNull(triggerKind, 'triggerKind')
 	}
 
 	new(@NonNull CompletionTriggerKind triggerKind, String triggerCharacter) {
@@ -3635,8 +3635,8 @@ class TextEdit {
 	}
 
 	new(@NonNull Range range, @NonNull String newText) {
-		this.range = Preconditions.checkNotNull(range)
-		this.newText = Preconditions.checkNotNull(newText)
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.newText = Preconditions.checkNotNull(newText, 'newText')
 	}
 }
 
@@ -3692,8 +3692,8 @@ class TextDocumentEdit {
 	}
 
 	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextEdit> edits) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.edits = Preconditions.checkNotNull(edits)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.edits = Preconditions.checkNotNull(edits, 'edits')
 	}
 }
 
@@ -3708,7 +3708,7 @@ abstract class ResourceOperation {
 	}
 
 	new(@NonNull String kind) {
-		this.kind = Preconditions.checkNotNull(kind)
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
 	}
 }
 
@@ -3758,12 +3758,12 @@ class CreateFile extends ResourceOperation {
 
 	new(@NonNull String uri) {
 		super(ResourceOperationKind.Create)
-		this.uri = Preconditions.checkNotNull(uri)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 
 	new(@NonNull String uri, CreateFileOptions options) {
 		super(ResourceOperationKind.Create)
-		this.uri = Preconditions.checkNotNull(uri)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 		this.options = options
 	}
 }
@@ -3818,14 +3818,14 @@ class RenameFile extends ResourceOperation {
 
 	new(@NonNull String oldUri, @NonNull String newUri) {
 		super(ResourceOperationKind.Rename)
-		this.oldUri = Preconditions.checkNotNull(oldUri)
-		this.newUri = Preconditions.checkNotNull(newUri)
+		this.oldUri = Preconditions.checkNotNull(oldUri, 'oldUri')
+		this.newUri = Preconditions.checkNotNull(newUri, 'newUri')
 	}
 
 	new(@NonNull String oldUri, @NonNull String newUri, RenameFileOptions options) {
 		super(ResourceOperationKind.Rename)
-		this.oldUri = Preconditions.checkNotNull(oldUri)
-		this.newUri = Preconditions.checkNotNull(newUri)
+		this.oldUri = Preconditions.checkNotNull(oldUri, 'oldUri')
+		this.newUri = Preconditions.checkNotNull(newUri, 'newUri')
 		this.options = options
 	}
 }
@@ -3874,12 +3874,12 @@ class DeleteFile extends ResourceOperation {
 
 	new(@NonNull String uri) {
 		super(ResourceOperationKind.Delete)
-		this.uri = Preconditions.checkNotNull(uri)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 
 	new(@NonNull String uri, DeleteFileOptions options) {
 		super(ResourceOperationKind.Delete)
-		this.uri = Preconditions.checkNotNull(uri)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 		this.options = options
 	}
 }
@@ -3979,7 +3979,7 @@ class WorkspaceSymbolParams {
 	}
 
 	new(@NonNull String query) {
-		this.query = Preconditions.checkNotNull(query)
+		this.query = Preconditions.checkNotNull(query, 'query')
 	}
 }
 
@@ -4011,8 +4011,8 @@ class Registration {
 	}
 
 	new(@NonNull String id, @NonNull String method) {
-		this.id = Preconditions.checkNotNull(id)
-		this.method = Preconditions.checkNotNull(method)
+		this.id = Preconditions.checkNotNull(id, 'id')
+		this.method = Preconditions.checkNotNull(method, 'method')
 	}
 
 	new(@NonNull String id, @NonNull String method, Object registerOptions) {
@@ -4038,7 +4038,7 @@ class RegistrationParams {
 	}
 
 	new(@NonNull List<Registration> registrations) {
-		this.registrations = Preconditions.checkNotNull(registrations)
+		this.registrations = Preconditions.checkNotNull(registrations, 'registrations')
 	}
 }
 
@@ -4114,8 +4114,8 @@ class Unregistration {
 	}
 
 	new(@NonNull String id, @NonNull String method) {
-		this.id = Preconditions.checkNotNull(id)
-		this.method = Preconditions.checkNotNull(method)
+		this.id = Preconditions.checkNotNull(id, 'id')
+		this.method = Preconditions.checkNotNull(method, 'method')
 	}
 }
 
@@ -4133,7 +4133,7 @@ class UnregistrationParams {
 	}
 
 	new(@NonNull List<Unregistration> unregisterations) {
-		this.unregisterations = Preconditions.checkNotNull(unregisterations)
+		this.unregisterations = Preconditions.checkNotNull(unregisterations, 'unregisterations')
 	}
 }
 
@@ -4153,7 +4153,7 @@ class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOpti
 	}
 
 	new(@NonNull TextDocumentSyncKind syncKind) {
-		this.syncKind = Preconditions.checkNotNull(syncKind)
+		this.syncKind = Preconditions.checkNotNull(syncKind, 'syncKind')
 	}
 }
 
@@ -4262,7 +4262,7 @@ class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrati
 	}
 
 	new(@NonNull String firstTriggerCharacter) {
-		this.firstTriggerCharacter = Preconditions.checkNotNull(firstTriggerCharacter)
+		this.firstTriggerCharacter = Preconditions.checkNotNull(firstTriggerCharacter, 'firstTriggerCharacter')
 	}
 
 	new(@NonNull String firstTriggerCharacter, List<String> moreTriggerCharacter) {
@@ -4296,7 +4296,7 @@ class ExecuteCommandParams {
 	}
 
 	new(@NonNull String command, List<Object> arguments) {
-		this.command = Preconditions.checkNotNull(command)
+		this.command = Preconditions.checkNotNull(command, 'command')
 		this.arguments = arguments
 	}
 }
@@ -4316,7 +4316,7 @@ class ExecuteCommandRegistrationOptions {
 	}
 
 	new(@NonNull List<String> commands) {
-		this.commands = Preconditions.checkNotNull(commands)
+		this.commands = Preconditions.checkNotNull(commands, 'commands')
 	}
 }
 
@@ -4342,7 +4342,7 @@ class ApplyWorkspaceEditParams {
 	}
 
 	new(@NonNull WorkspaceEdit edit) {
-		this.edit = Preconditions.checkNotNull(edit)
+		this.edit = Preconditions.checkNotNull(edit, 'edit')
 	}
 
 	new(@NonNull WorkspaceEdit edit, String label) {
@@ -4412,7 +4412,7 @@ class WorkspaceFolder {
 	}
 
 	new(@NonNull String uri) {
-		this.uri = Preconditions.checkNotNull(uri)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 
 	new(@NonNull String uri, String name) {
@@ -4442,8 +4442,8 @@ class WorkspaceFoldersChangeEvent {
 	}
 
 	new(@NonNull List<WorkspaceFolder> added, @NonNull List<WorkspaceFolder> removed) {
-		this.added = Preconditions.checkNotNull(added)
-		this.removed = Preconditions.checkNotNull(removed)
+		this.added = Preconditions.checkNotNull(added, 'added')
+		this.removed = Preconditions.checkNotNull(removed, 'removed')
 	}
 }
 
@@ -4466,7 +4466,7 @@ class DidChangeWorkspaceFoldersParams {
 	}
 
 	new(@NonNull WorkspaceFoldersChangeEvent event) {
-		this.event = Preconditions.checkNotNull(event)
+		this.event = Preconditions.checkNotNull(event, 'event')
 	}
 }
 
@@ -4488,7 +4488,7 @@ class ConfigurationParams {
 	}
 
 	new(@NonNull List<ConfigurationItem> items) {
-		this.items = Preconditions.checkNotNull(items)
+		this.items = Preconditions.checkNotNull(items, 'items')
 	}
 }
 
@@ -4536,7 +4536,7 @@ class DocumentColorParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 }
 
@@ -4558,8 +4558,8 @@ class ColorInformation {
 	}
 
 	new(@NonNull Range range, @NonNull Color color) {
-		this.range = Preconditions.checkNotNull(range)
-		this.color = Preconditions.checkNotNull(color)
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.color = Preconditions.checkNotNull(color, 'color')
 	}
 }
 
@@ -4629,9 +4629,9 @@ class ColorPresentationParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Color color, @NonNull Range range) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.color = Preconditions.checkNotNull(color)
-		this.range = Preconditions.checkNotNull(range)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.color = Preconditions.checkNotNull(color, 'color')
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 }
 
@@ -4661,7 +4661,7 @@ class ColorPresentation {
 	}
 
 	new(@NonNull String label) {
-		this.label = Preconditions.checkNotNull(label)
+		this.label = Preconditions.checkNotNull(label, 'label')
 	}
 
 	new(@NonNull String label, TextEdit textEdit) {
@@ -4692,7 +4692,7 @@ class FoldingRangeRequestParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
 }
 
@@ -4762,8 +4762,8 @@ class SemanticHighlightingParams {
 	}
 
 	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<SemanticHighlightingInformation> lines) {
-		this.textDocument = Preconditions.checkNotNull(textDocument)
-		this.lines = Preconditions.checkNotNull(lines)
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.lines = Preconditions.checkNotNull(lines, 'lines')
 	}
 }
 

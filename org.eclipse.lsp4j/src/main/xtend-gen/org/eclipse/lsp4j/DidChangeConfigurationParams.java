@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -34,7 +34,7 @@ public class DidChangeConfigurationParams {
   }
   
   public DidChangeConfigurationParams(@NonNull final Object settings) {
-    this.settings = Preconditions.<Object>checkNotNull(settings);
+    this.settings = Preconditions.<Object>checkNotNull(settings, "settings");
   }
   
   /**
@@ -50,6 +50,9 @@ public class DidChangeConfigurationParams {
    * The actual changed settings.
    */
   public void setSettings(@NonNull final Object settings) {
+    if (settings == null) {
+      throw new IllegalArgumentException("Property must not be null: settings");
+    }
     this.settings = settings;
   }
   

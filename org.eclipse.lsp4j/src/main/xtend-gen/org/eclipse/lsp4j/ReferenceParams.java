@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.ReferenceContext;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -31,7 +31,7 @@ public class ReferenceParams extends TextDocumentPositionParams {
   }
   
   public ReferenceParams(@NonNull final ReferenceContext context) {
-    this.context = Preconditions.<ReferenceContext>checkNotNull(context);
+    this.context = Preconditions.<ReferenceContext>checkNotNull(context, "context");
   }
   
   @Pure
@@ -41,6 +41,9 @@ public class ReferenceParams extends TextDocumentPositionParams {
   }
   
   public void setContext(@NonNull final ReferenceContext context) {
+    if (context == null) {
+      throw new IllegalArgumentException("Property must not be null: context");
+    }
     this.context = context;
   }
   

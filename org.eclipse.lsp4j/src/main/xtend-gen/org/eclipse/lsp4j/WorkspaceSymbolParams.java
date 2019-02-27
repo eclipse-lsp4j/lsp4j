@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -31,7 +31,7 @@ public class WorkspaceSymbolParams {
   }
   
   public WorkspaceSymbolParams(@NonNull final String query) {
-    this.query = Preconditions.<String>checkNotNull(query);
+    this.query = Preconditions.<String>checkNotNull(query, "query");
   }
   
   /**
@@ -47,6 +47,9 @@ public class WorkspaceSymbolParams {
    * A non-empty query string
    */
   public void setQuery(@NonNull final String query) {
+    if (query == null) {
+      throw new IllegalArgumentException("Property must not be null: query");
+    }
     this.query = query;
   }
   

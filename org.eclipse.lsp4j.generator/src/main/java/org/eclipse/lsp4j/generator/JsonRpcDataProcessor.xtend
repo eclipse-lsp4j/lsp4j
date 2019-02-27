@@ -70,7 +70,14 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 				impl.findDeclaredMethod(setterName, field.type) => [
 					docComment = field.docComment
 					if (hasNonNull) {
-						parameters.head.addAnnotation(newAnnotationReference(NonNull))
+						val parameter = parameters.head
+						parameter.addAnnotation(newAnnotationReference(NonNull))
+						body = '''
+							if («parameter.simpleName» == null) {
+							  throw new IllegalArgumentException("Property must not be null: «field.simpleName»");
+							}
+							this.«field.simpleName» = «parameter.simpleName»;
+						'''
 					}
 					if (deprecated !== null)
 						addAnnotation(newAnnotationReference(Deprecated))
@@ -110,19 +117,24 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 		MutableFieldDeclaration field,
 		EitherTypeArgument argument,
 		String variableName,
-		extension CompilationContext compilaitonContext,
+		extension CompilationContext compilationContext,
 		extension JsonRpcDataTransformationContext context
 	) {
+		val hasNonNull = field.findAnnotation(NonNull.newTypeReference.type) !== null
 		val newVariableName = '_' + variableName
 		val compileNewEither = '''«eitherType.toJavaCode».for«IF argument.right»Right«ELSE»Left«ENDIF»(«variableName»)'''
 		'''
 			if («variableName» == null) {
-			  this.«field.simpleName» = null;
-			  return;
+			  «IF hasNonNull»
+			  	throw new IllegalArgumentException("Property must not be null: «field.simpleName»");
+			  «ELSE»
+			  	this.«field.simpleName» = null;
+			  	return;
+			  «ENDIF»
 			}
 			«IF argument.parent !== null»
 				final «argument.parent.type.toJavaCode» «newVariableName» = «compileNewEither»;
-				«compileEitherSetterBody(field, argument.parent, newVariableName, compilaitonContext, context)»
+				«compileEitherSetterBody(field, argument.parent, newVariableName, compilationContext, context)»
 			«ELSE»
 				this.«field.simpleName» = «compileNewEither»;
 			«ENDIF»

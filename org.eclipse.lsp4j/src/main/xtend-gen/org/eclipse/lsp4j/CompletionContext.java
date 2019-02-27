@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.CompletionTriggerKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -35,7 +35,7 @@ public class CompletionContext {
   }
   
   public CompletionContext(@NonNull final CompletionTriggerKind triggerKind) {
-    this.triggerKind = Preconditions.<CompletionTriggerKind>checkNotNull(triggerKind);
+    this.triggerKind = Preconditions.<CompletionTriggerKind>checkNotNull(triggerKind, "triggerKind");
   }
   
   public CompletionContext(@NonNull final CompletionTriggerKind triggerKind, final String triggerCharacter) {
@@ -56,6 +56,9 @@ public class CompletionContext {
    * How the completion was triggered.
    */
   public void setTriggerKind(@NonNull final CompletionTriggerKind triggerKind) {
+    if (triggerKind == null) {
+      throw new IllegalArgumentException("Property must not be null: triggerKind");
+    }
     this.triggerKind = triggerKind;
   }
   

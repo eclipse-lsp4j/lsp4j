@@ -40,6 +40,9 @@ public class ThreadsResponse {
    * All threads.
    */
   public void setThreads(@NonNull final org.eclipse.lsp4j.debug.Thread[] threads) {
+    if (threads == null) {
+      throw new IllegalArgumentException("Property must not be null: threads");
+    }
     this.threads = threads;
   }
   

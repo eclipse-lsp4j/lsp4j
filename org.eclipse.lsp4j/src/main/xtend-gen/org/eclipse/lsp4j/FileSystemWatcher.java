@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -35,7 +35,7 @@ public class FileSystemWatcher {
   }
   
   public FileSystemWatcher(@NonNull final String globPattern) {
-    this.globPattern = Preconditions.<String>checkNotNull(globPattern);
+    this.globPattern = Preconditions.<String>checkNotNull(globPattern, "globPattern");
   }
   
   public FileSystemWatcher(@NonNull final String globPattern, final Integer kind) {
@@ -56,6 +56,9 @@ public class FileSystemWatcher {
    * The  glob pattern to watch
    */
   public void setGlobPattern(@NonNull final String globPattern) {
+    if (globPattern == null) {
+      throw new IllegalArgumentException("Property must not be null: globPattern");
+    }
     this.globPattern = globPattern;
   }
   

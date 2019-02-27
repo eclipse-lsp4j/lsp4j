@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -48,9 +48,9 @@ public class CodeActionParams {
   }
   
   public CodeActionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Range range, @NonNull final CodeActionContext context) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
-    this.range = Preconditions.<Range>checkNotNull(range);
-    this.context = Preconditions.<CodeActionContext>checkNotNull(context);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
+    this.context = Preconditions.<CodeActionContext>checkNotNull(context, "context");
   }
   
   /**
@@ -66,6 +66,9 @@ public class CodeActionParams {
    * The document in which the command was invoked.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -82,6 +85,9 @@ public class CodeActionParams {
    * The range for which the command was invoked.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -98,6 +104,9 @@ public class CodeActionParams {
    * Context carrying additional information.
    */
   public void setContext(@NonNull final CodeActionContext context) {
+    if (context == null) {
+      throw new IllegalArgumentException("Property must not be null: context");
+    }
     this.context = context;
   }
   

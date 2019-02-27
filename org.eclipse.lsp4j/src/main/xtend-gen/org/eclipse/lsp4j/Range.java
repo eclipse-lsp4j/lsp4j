@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -38,8 +38,8 @@ public class Range {
   }
   
   public Range(@NonNull final Position start, @NonNull final Position end) {
-    this.start = Preconditions.<Position>checkNotNull(start);
-    this.end = Preconditions.<Position>checkNotNull(end);
+    this.start = Preconditions.<Position>checkNotNull(start, "start");
+    this.end = Preconditions.<Position>checkNotNull(end, "end");
   }
   
   /**
@@ -55,6 +55,9 @@ public class Range {
    * The range's start position
    */
   public void setStart(@NonNull final Position start) {
+    if (start == null) {
+      throw new IllegalArgumentException("Property must not be null: start");
+    }
     this.start = start;
   }
   
@@ -71,6 +74,9 @@ public class Range {
    * The range's end position
    */
   public void setEnd(@NonNull final Position end) {
+    if (end == null) {
+      throw new IllegalArgumentException("Property must not be null: end");
+    }
     this.end = end;
   }
   

@@ -11,12 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -62,7 +62,7 @@ public class CodeAction {
   }
   
   public CodeAction(@NonNull final String title) {
-    this.title = Preconditions.<String>checkNotNull(title);
+    this.title = Preconditions.<String>checkNotNull(title, "title");
   }
   
   /**
@@ -78,6 +78,9 @@ public class CodeAction {
    * A short, human-readable, title for this code action.
    */
   public void setTitle(@NonNull final String title) {
+    if (title == null) {
+      throw new IllegalArgumentException("Property must not be null: title");
+    }
     this.title = title;
   }
   

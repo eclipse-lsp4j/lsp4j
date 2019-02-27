@@ -34,6 +34,7 @@ import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.MutableMethodDeclaration;
+import org.eclipse.xtend.lib.macro.declaration.MutableParameterDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.Type;
 import org.eclipse.xtend.lib.macro.declaration.TypeDeclaration;
 import org.eclipse.xtend.lib.macro.declaration.TypeReference;
@@ -111,7 +112,35 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
         final Procedure1<MutableMethodDeclaration> _function_3 = (MutableMethodDeclaration it) -> {
           it.setDocComment(field.getDocComment());
           if (hasNonNull) {
-            IterableExtensions.head(it.getParameters()).addAnnotation(context.newAnnotationReference(NonNull.class));
+            final MutableParameterDeclaration parameter = IterableExtensions.head(it.getParameters());
+            parameter.addAnnotation(context.newAnnotationReference(NonNull.class));
+            StringConcatenationClient _client = new StringConcatenationClient() {
+              @Override
+              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                _builder.append("if (");
+                String _simpleName = parameter.getSimpleName();
+                _builder.append(_simpleName);
+                _builder.append(" == null) {");
+                _builder.newLineIfNotEmpty();
+                _builder.append("  ");
+                _builder.append("throw new IllegalArgumentException(\"Property must not be null: ");
+                String _simpleName_1 = field.getSimpleName();
+                _builder.append(_simpleName_1, "  ");
+                _builder.append("\");");
+                _builder.newLineIfNotEmpty();
+                _builder.append("}");
+                _builder.newLine();
+                _builder.append("this.");
+                String _simpleName_2 = field.getSimpleName();
+                _builder.append(_simpleName_2);
+                _builder.append(" = ");
+                String _simpleName_3 = parameter.getSimpleName();
+                _builder.append(_simpleName_3);
+                _builder.append(";");
+                _builder.newLineIfNotEmpty();
+              }
+            };
+            it.setBody(_client);
           }
           if ((deprecated != null)) {
             it.addAnnotation(context.newAnnotationReference(Deprecated.class));
@@ -159,12 +188,14 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
     field.getDeclaringType().addMethod(setterName, _function);
   }
   
-  protected CharSequence compileEitherSetterBody(final MutableFieldDeclaration field, final EitherTypeArgument argument, final String variableName, @Extension final CompilationStrategy.CompilationContext compilaitonContext, @Extension final JsonRpcDataTransformationContext context) {
+  protected CharSequence compileEitherSetterBody(final MutableFieldDeclaration field, final EitherTypeArgument argument, final String variableName, @Extension final CompilationStrategy.CompilationContext compilationContext, @Extension final JsonRpcDataTransformationContext context) {
     CharSequence _xblockexpression = null;
     {
+      AnnotationReference _findAnnotation = field.findAnnotation(context.newTypeReference(NonNull.class).getType());
+      final boolean hasNonNull = (_findAnnotation != null);
       final String newVariableName = ("_" + variableName);
       StringConcatenation _builder = new StringConcatenation();
-      String _javaCode = compilaitonContext.toJavaCode(context.getEitherType());
+      String _javaCode = compilationContext.toJavaCode(context.getEitherType());
       _builder.append(_javaCode);
       _builder.append(".for");
       {
@@ -184,15 +215,26 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       _builder_1.append(variableName);
       _builder_1.append(" == null) {");
       _builder_1.newLineIfNotEmpty();
-      _builder_1.append("  ");
-      _builder_1.append("this.");
-      String _simpleName = field.getSimpleName();
-      _builder_1.append(_simpleName, "  ");
-      _builder_1.append(" = null;");
-      _builder_1.newLineIfNotEmpty();
-      _builder_1.append("  ");
-      _builder_1.append("return;");
-      _builder_1.newLine();
+      {
+        if (hasNonNull) {
+          _builder_1.append("  ");
+          _builder_1.append("throw new IllegalArgumentException(\"Property must not be null: ");
+          String _simpleName = field.getSimpleName();
+          _builder_1.append(_simpleName, "  ");
+          _builder_1.append("\");");
+          _builder_1.newLineIfNotEmpty();
+        } else {
+          _builder_1.append("  ");
+          _builder_1.append("this.");
+          String _simpleName_1 = field.getSimpleName();
+          _builder_1.append(_simpleName_1, "  ");
+          _builder_1.append(" = null;");
+          _builder_1.newLineIfNotEmpty();
+          _builder_1.append("  ");
+          _builder_1.append("return;");
+          _builder_1.newLine();
+        }
+      }
       _builder_1.append("}");
       _builder_1.newLine();
       {
@@ -200,7 +242,7 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
         boolean _tripleNotEquals = (_parent != null);
         if (_tripleNotEquals) {
           _builder_1.append("final ");
-          String _javaCode_1 = compilaitonContext.toJavaCode(argument.getParent().getType());
+          String _javaCode_1 = compilationContext.toJavaCode(argument.getParent().getType());
           _builder_1.append(_javaCode_1);
           _builder_1.append(" ");
           _builder_1.append(newVariableName);
@@ -208,13 +250,13 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
           _builder_1.append(compileNewEither);
           _builder_1.append(";");
           _builder_1.newLineIfNotEmpty();
-          CharSequence _compileEitherSetterBody = this.compileEitherSetterBody(field, argument.getParent(), newVariableName, compilaitonContext, context);
+          CharSequence _compileEitherSetterBody = this.compileEitherSetterBody(field, argument.getParent(), newVariableName, compilationContext, context);
           _builder_1.append(_compileEitherSetterBody);
           _builder_1.newLineIfNotEmpty();
         } else {
           _builder_1.append("this.");
-          String _simpleName_1 = field.getSimpleName();
-          _builder_1.append(_simpleName_1);
+          String _simpleName_2 = field.getSimpleName();
+          _builder_1.append(_simpleName_2);
           _builder_1.append(" = ");
           _builder_1.append(compileNewEither);
           _builder_1.append(";");

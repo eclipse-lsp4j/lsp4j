@@ -41,6 +41,9 @@ public class GotoTargetsResponse {
    * The possible goto targets of the specified location.
    */
   public void setTargets(@NonNull final GotoTarget[] targets) {
+    if (targets == null) {
+      throw new IllegalArgumentException("Property must not be null: targets");
+    }
     this.targets = targets;
   }
   

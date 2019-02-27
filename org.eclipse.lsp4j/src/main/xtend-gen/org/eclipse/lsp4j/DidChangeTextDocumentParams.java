@@ -11,12 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -48,8 +48,8 @@ public class DidChangeTextDocumentParams {
   }
   
   public DidChangeTextDocumentParams(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
-    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument);
-    this.contentChanges = Preconditions.<List<TextDocumentContentChangeEvent>>checkNotNull(contentChanges);
+    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.contentChanges = Preconditions.<List<TextDocumentContentChangeEvent>>checkNotNull(contentChanges, "contentChanges");
   }
   
   @Deprecated
@@ -73,6 +73,9 @@ public class DidChangeTextDocumentParams {
    * been applied.
    */
   public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
+    if (textDocument == null) {
+      throw new IllegalArgumentException("Property must not be null: textDocument");
+    }
     this.textDocument = textDocument;
   }
   
@@ -106,6 +109,9 @@ public class DidChangeTextDocumentParams {
    * The actual content changes.
    */
   public void setContentChanges(@NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
+    if (contentChanges == null) {
+      throw new IllegalArgumentException("Property must not be null: contentChanges");
+    }
     this.contentChanges = contentChanges;
   }
   

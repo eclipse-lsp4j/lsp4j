@@ -53,6 +53,9 @@ public class GotoTargetsArguments {
    * The source location for which the goto targets are determined.
    */
   public void setSource(@NonNull final Source source) {
+    if (source == null) {
+      throw new IllegalArgumentException("Property must not be null: source");
+    }
     this.source = source;
   }
   
@@ -69,6 +72,9 @@ public class GotoTargetsArguments {
    * The line location for which the goto targets are determined.
    */
   public void setLine(@NonNull final Long line) {
+    if (line == null) {
+      throw new IllegalArgumentException("Property must not be null: line");
+    }
     this.line = line;
   }
   

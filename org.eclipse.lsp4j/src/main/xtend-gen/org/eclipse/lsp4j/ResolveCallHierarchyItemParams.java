@@ -54,6 +54,9 @@ public class ResolveCallHierarchyItemParams {
    * Unresolved item.
    */
   public void setItem(@NonNull final CallHierarchyItem item) {
+    if (item == null) {
+      throw new IllegalArgumentException("Property must not be null: item");
+    }
     this.item = item;
   }
   
@@ -85,6 +88,9 @@ public class ResolveCallHierarchyItemParams {
    * The direction of calls to resolve.
    */
   public void setDirection(@NonNull final CallHierarchyDirection direction) {
+    if (direction == null) {
+      throw new IllegalArgumentException("Property must not be null: direction");
+    }
     this.direction = direction;
   }
   

@@ -104,6 +104,9 @@ public class CallHierarchyItem {
    * The name of the symbol targeted by the call hierarchy request.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -135,6 +138,9 @@ public class CallHierarchyItem {
    * The kind of this symbol.
    */
   public void setKind(@NonNull final SymbolKind kind) {
+    if (kind == null) {
+      throw new IllegalArgumentException("Property must not be null: kind");
+    }
     this.kind = kind;
   }
   
@@ -151,6 +157,9 @@ public class CallHierarchyItem {
    * URI of the document containing the symbol.
    */
   public void setUri(@NonNull final String uri) {
+    if (uri == null) {
+      throw new IllegalArgumentException("Property must not be null: uri");
+    }
     this.uri = uri;
   }
   
@@ -186,6 +195,9 @@ public class CallHierarchyItem {
    * inside the symbol to reveal in the symbol in the UI.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -204,6 +216,9 @@ public class CallHierarchyItem {
    * Must be contained by the the {@code range}.
    */
   public void setSelectionRange(@NonNull final Range selectionRange) {
+    if (selectionRange == null) {
+      throw new IllegalArgumentException("Property must not be null: selectionRange");
+    }
     this.selectionRange = selectionRange;
   }
   

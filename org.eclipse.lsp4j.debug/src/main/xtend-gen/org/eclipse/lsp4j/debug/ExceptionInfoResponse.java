@@ -61,6 +61,9 @@ public class ExceptionInfoResponse {
    * ID of the exception that was thrown.
    */
   public void setExceptionId(@NonNull final String exceptionId) {
+    if (exceptionId == null) {
+      throw new IllegalArgumentException("Property must not be null: exceptionId");
+    }
     this.exceptionId = exceptionId;
   }
   
@@ -96,6 +99,9 @@ public class ExceptionInfoResponse {
    * Mode that caused the exception notification to be raised.
    */
   public void setBreakMode(@NonNull final ExceptionBreakMode breakMode) {
+    if (breakMode == null) {
+      throw new IllegalArgumentException("Property must not be null: breakMode");
+    }
     this.breakMode = breakMode;
   }
   

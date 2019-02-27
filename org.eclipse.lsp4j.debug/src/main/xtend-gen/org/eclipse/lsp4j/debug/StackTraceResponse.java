@@ -54,6 +54,9 @@ public class StackTraceResponse {
    * This means that there is no location information available.
    */
   public void setStackFrames(@NonNull final StackFrame[] stackFrames) {
+    if (stackFrames == null) {
+      throw new IllegalArgumentException("Property must not be null: stackFrames");
+    }
     this.stackFrames = stackFrames;
   }
   

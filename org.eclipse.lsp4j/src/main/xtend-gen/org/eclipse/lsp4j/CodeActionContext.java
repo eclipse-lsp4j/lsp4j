@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -43,7 +43,7 @@ public class CodeActionContext {
   }
   
   public CodeActionContext(@NonNull final List<Diagnostic> diagnostics) {
-    this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics);
+    this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics, "diagnostics");
   }
   
   public CodeActionContext(@NonNull final List<Diagnostic> diagnostics, final List<String> only) {
@@ -64,6 +64,9 @@ public class CodeActionContext {
    * An array of diagnostics.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
+    if (diagnostics == null) {
+      throw new IllegalArgumentException("Property must not be null: diagnostics");
+    }
     this.diagnostics = diagnostics;
   }
   

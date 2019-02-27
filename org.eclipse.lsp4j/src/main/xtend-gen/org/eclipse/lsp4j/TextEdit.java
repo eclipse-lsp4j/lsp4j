@@ -11,9 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -38,8 +38,8 @@ public class TextEdit {
   }
   
   public TextEdit(@NonNull final Range range, @NonNull final String newText) {
-    this.range = Preconditions.<Range>checkNotNull(range);
-    this.newText = Preconditions.<String>checkNotNull(newText);
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
+    this.newText = Preconditions.<String>checkNotNull(newText, "newText");
   }
   
   /**
@@ -55,6 +55,9 @@ public class TextEdit {
    * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -71,6 +74,9 @@ public class TextEdit {
    * The string to be inserted. For delete operations use an empty string.
    */
   public void setNewText(@NonNull final String newText) {
+    if (newText == null) {
+      throw new IllegalArgumentException("Property must not be null: newText");
+    }
     this.newText = newText;
   }
   

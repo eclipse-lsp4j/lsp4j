@@ -11,10 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -28,7 +28,7 @@ public abstract class ResourceOperation {
   }
   
   public ResourceOperation(@NonNull final String kind) {
-    this.kind = Preconditions.<String>checkNotNull(kind);
+    this.kind = Preconditions.<String>checkNotNull(kind, "kind");
   }
   
   @Pure
@@ -38,6 +38,9 @@ public abstract class ResourceOperation {
   }
   
   public void setKind(@NonNull final String kind) {
+    if (kind == null) {
+      throw new IllegalArgumentException("Property must not be null: kind");
+    }
     this.kind = kind;
   }
   

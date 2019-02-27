@@ -11,11 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -73,10 +73,10 @@ public class DocumentSymbol {
   }
   
   public DocumentSymbol(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Range range, @NonNull final Range selectionRange) {
-    this.name = Preconditions.<String>checkNotNull(name);
-    this.kind = Preconditions.<SymbolKind>checkNotNull(kind);
-    this.range = Preconditions.<Range>checkNotNull(range);
-    this.selectionRange = Preconditions.<Range>checkNotNull(selectionRange);
+    this.name = Preconditions.<String>checkNotNull(name, "name");
+    this.kind = Preconditions.<SymbolKind>checkNotNull(kind, "kind");
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
+    this.selectionRange = Preconditions.<Range>checkNotNull(selectionRange, "selectionRange");
   }
   
   public DocumentSymbol(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Range range, @NonNull final Range selectionRange, final String detail) {
@@ -103,6 +103,9 @@ public class DocumentSymbol {
    * The name of this symbol.
    */
   public void setName(@NonNull final String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Property must not be null: name");
+    }
     this.name = name;
   }
   
@@ -119,6 +122,9 @@ public class DocumentSymbol {
    * The kind of this symbol.
    */
   public void setKind(@NonNull final SymbolKind kind) {
+    if (kind == null) {
+      throw new IllegalArgumentException("Property must not be null: kind");
+    }
     this.kind = kind;
   }
   
@@ -139,6 +145,9 @@ public class DocumentSymbol {
    * inside the symbol to reveal in the symbol in the UI.
    */
   public void setRange(@NonNull final Range range) {
+    if (range == null) {
+      throw new IllegalArgumentException("Property must not be null: range");
+    }
     this.range = range;
   }
   
@@ -157,6 +166,9 @@ public class DocumentSymbol {
    * Must be contained by the `range`.
    */
   public void setSelectionRange(@NonNull final Range selectionRange) {
+    if (selectionRange == null) {
+      throw new IllegalArgumentException("Property must not be null: selectionRange");
+    }
     this.selectionRange = selectionRange;
   }
   

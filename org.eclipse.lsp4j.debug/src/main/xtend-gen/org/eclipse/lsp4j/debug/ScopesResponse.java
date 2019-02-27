@@ -41,6 +41,9 @@ public class ScopesResponse {
    * The scopes of the stackframe. If the array has length zero, there are no scopes available.
    */
   public void setScopes(@NonNull final Scope[] scopes) {
+    if (scopes == null) {
+      throw new IllegalArgumentException("Property must not be null: scopes");
+    }
     this.scopes = scopes;
   }
   
