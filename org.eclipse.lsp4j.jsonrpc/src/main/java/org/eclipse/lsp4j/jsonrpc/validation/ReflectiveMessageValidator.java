@@ -59,22 +59,34 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 
 	@Override
 	public void consume(Message message) throws MessageIssueException, JsonRpcException {
+		List<MessageIssue> issues = validate(message);
+		if (!issues.isEmpty()) {
+			// Sort the messages in order to get a stable order (otherwise it depends on the JVM's reflection implementation)
+			Collections.sort(issues, (issue1, issue2) -> issue1.getText().compareTo(issue2.getText()));
+			throw new MessageIssueException(message, issues);
+		} else if (delegate != null) {
+			delegate.consume(message);
+		}
+	}
+	
+	/**
+	 * Check whether the given object is valid. If it is not valid, its issues are not reported.
+	 */
+	public boolean isValid(Object object) {
+		List<MessageIssue> issues = validate(object);
+		return issues.isEmpty();
+	}
+	
+	protected List<MessageIssue> validate(Object object) {
 		List<MessageIssue> result = new ArrayList<>();
 		try {
-			validate(message, result, new LinkedList<>(), new LinkedList<>());
+			validate(object, result, new LinkedList<>(), new LinkedList<>());
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Error during message validation: " + e.getMessage(), e);
 			result.add(new MessageIssue("Message validation failed, please check the logs of the remote endpoint.",
 					ResponseErrorCode.InvalidParams.getValue()));
 		}
-		
-		if (!result.isEmpty()) {
-			// Sort the messages in order to get a stable order (otherwise it depends on the JVM's reflection implementation)
-			Collections.sort(result, (issue1, issue2) -> issue1.getText().compareTo(issue2.getText()));
-			throw new MessageIssueException(message, result);
-		} else if (delegate != null) {
-			delegate.consume(message);
-		}
+		return result;
 	}
 	
 	/**
