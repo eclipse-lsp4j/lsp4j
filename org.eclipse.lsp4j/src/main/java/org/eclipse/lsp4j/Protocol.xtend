@@ -28,6 +28,7 @@ import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
 @JsonRpcData
@@ -386,12 +387,38 @@ class SignatureInformationCapabilities {
 	 * See {@link MarkupKind} for allowed values.
 	 */
 	List<String> documentationFormat
+	
+	/**
+	 * Client capabilities specific to parameter information.
+	 */
+	ParameterInformationCapabilities parameterInformation
 
 	new() {
 	}
 
 	new(List<String> documentationFormat) {
 		this.documentationFormat = documentationFormat
+	}
+}
+
+/**
+ * Client capabilities specific to parameter information.
+ */
+@JsonRpcData
+class ParameterInformationCapabilities {
+	/**
+	 * The client supports processing label offsets instead of a
+	 * simple label string.
+	 *
+	 * Since 3.14.0
+	 */
+	Boolean labelOffsetSupport
+	
+	new() {
+	}
+	
+	new(Boolean labelOffsetSupport) {
+		this.labelOffsetSupport = labelOffsetSupport
 	}
 }
 
@@ -549,14 +576,51 @@ class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/definition`
+ *
+ * Since 3.14.0
  */
 @JsonRpcData
 class DefinitionCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports additional metadata in the form of definition links.
+	 */
+	Boolean linkSupport
+	
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
+	}
+	
+	new(Boolean dynamicRegistration, Boolean linkSupport) {
+		super(dynamicRegistration)
+		this.linkSupport = linkSupport
+	}
+}
+
+/**
+ * Capabilities specific to the `textDocument/declaration`
+ *
+ * Since 3.14.0
+ */
+@JsonRpcData
+class DeclarationCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports additional metadata in the form of declaration links.
+	 */
+	Boolean linkSupport
+	
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+	
+	new(Boolean dynamicRegistration, Boolean linkSupport) {
+		super(dynamicRegistration)
+		this.linkSupport = linkSupport
 	}
 }
 
@@ -567,11 +631,23 @@ class DefinitionCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports additional metadata in the form of definition links.
+	 *
+	 * Since 3.14.0
+	 */
+	Boolean linkSupport
+	
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
+	}
+	
+	new(Boolean dynamicRegistration, Boolean linkSupport) {
+		super(dynamicRegistration)
+		this.linkSupport = linkSupport
 	}
 }
 
@@ -582,11 +658,23 @@ class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class ImplementationCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports additional metadata in the form of definition links.
+	 *
+	 * Since 3.14.0
+	 */
+	Boolean linkSupport
+	
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
+	}
+	
+	new(Boolean dynamicRegistration, Boolean linkSupport) {
+		super(dynamicRegistration)
+		this.linkSupport = linkSupport
 	}
 }
 
@@ -876,7 +964,16 @@ class TextDocumentClientCapabilities {
 	OnTypeFormattingCapabilities onTypeFormatting
 
 	/**
+	 * Capabilities specific to the `textDocument/declaration`
+	 *
+	 * Since 3.14.0
+	 */
+	DeclarationCapabilities declaration
+
+	/**
 	 * Capabilities specific to the `textDocument/definition`
+	 *
+	 * Since 3.14.0
 	 */
 	DefinitionCapabilities definition
 
@@ -2481,6 +2578,41 @@ class Location {
 }
 
 /**
+ * Represents a link between a source and a target location.
+ */
+@JsonRpcData
+class LocationLink {
+	/**
+	 * Span of the origin of this link.
+	 *
+	 * Used as the underlined span for mouse interaction. Defaults to the word range at
+	 * the mouse position.
+	 */
+	Range originSelectionRange
+
+	/**
+	 * The target resource identifier of this link.
+	 */
+	@NonNull
+	String targetUri
+
+	/**
+	 * The full target range of this link. If the target for example is a symbol then target range is the
+	 * range enclosing this symbol not including leading/trailing whitespace but everything else
+	 * like comments. This information is typically used to highlight the range in the editor.
+	 */
+	@NonNull
+	Range targetRange
+
+	/**
+	 * The range that should be selected and revealed when this link is being followed, e.g the name of a function.
+	 * Must be contained by the the `targetRange`. See also `DocumentSymbol#range`
+	 */
+	@NonNull
+	Range targetSelectionRange
+}
+
+/**
  * The show message request is sent from a server to a client to ask the client to display a particular message in the
  * user class. In addition to the show message notification the request allows to pass actions and to wait for an
  * answer from the client.
@@ -2536,10 +2668,17 @@ class MessageParams {
 @JsonRpcData
 class ParameterInformation {
 	/**
-	 * The label of this signature. Will be shown in the UI.
+	 * The label of this parameter information.
+	 *
+	 * Either a string or an inclusive start and exclusive end offsets within its containing
+	 * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
+	 * string representation as {@code Position} and {@code Range} does.
+	 *
+	 * <em>Note</em>: a label of type string should be a substring of its containing signature label.
+	 * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
 	 */
 	@NonNull
-	String label
+	Either<String, Tuple.Two<Integer, Integer>> label
 
 	/**
 	 * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.

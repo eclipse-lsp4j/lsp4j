@@ -27,7 +27,13 @@ public interface MessageMethods {
   
   public static final String DOC_SIGNATURE_HELP = "textDocument/signatureHelp";
   
+  public static final String DOC_DECLARATION = "textDocument/declaration";
+  
   public static final String DOC_DEFINITION = "textDocument/definition";
+  
+  public static final String DOC_TYPE_DEFINITION = "textDocument/typeDefinition";
+  
+  public static final String DOC_IMPLEMENTATION = "textDocument/implementation";
   
   public static final String DOC_HIGHLIGHT = "textDocument/documentHighlight";
   

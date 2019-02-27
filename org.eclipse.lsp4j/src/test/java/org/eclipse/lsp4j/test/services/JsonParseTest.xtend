@@ -17,6 +17,7 @@ import com.google.gson.internal.LazilyParsedNumber
 import java.util.ArrayList
 import java.util.Collection
 import java.util.HashMap
+import java.util.List
 import org.eclipse.lsp4j.ClientCapabilities
 import org.eclipse.lsp4j.CodeAction
 import org.eclipse.lsp4j.CodeActionCapabilities
@@ -48,10 +49,12 @@ import org.eclipse.lsp4j.HoverCapabilities
 import org.eclipse.lsp4j.ImplementationCapabilities
 import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.Location
+import org.eclipse.lsp4j.LocationLink
 import org.eclipse.lsp4j.MarkedString
 import org.eclipse.lsp4j.MarkupContent
 import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
+import org.eclipse.lsp4j.ParameterInformation
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.Range
@@ -60,7 +63,9 @@ import org.eclipse.lsp4j.ReferencesCapabilities
 import org.eclipse.lsp4j.RenameCapabilities
 import org.eclipse.lsp4j.RenameFile
 import org.eclipse.lsp4j.ResourceOperation
+import org.eclipse.lsp4j.SignatureHelp
 import org.eclipse.lsp4j.SignatureHelpCapabilities
+import org.eclipse.lsp4j.SignatureInformation
 import org.eclipse.lsp4j.SignatureInformationCapabilities
 import org.eclipse.lsp4j.SymbolInformation
 import org.eclipse.lsp4j.SymbolKind
@@ -84,6 +89,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.services.LanguageServer
@@ -392,14 +398,14 @@ class JsonParseTest {
 		]
 		'''
 			{
-			    "jsonrpc": "2.0",
-			    "id": "12",
-			    "result": [
-			        {
-			            "title": "fixme",
-			            "command": "fix"
-			        }
-			    ]
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"title": "fixme",
+						"command": "fix"
+					}
+				]
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
@@ -422,34 +428,34 @@ class JsonParseTest {
 		]
 		'''
 			{
-			    "jsonrpc": "2.0",
-			    "id": "12",
-			    "result": [
-			        {
-			            "title": "fixme",
-			            "kind": "fix",
-			            "diagnostics": [],
-			            "edit": {
-			                "changes": {
-			                    "file:test1533196529126.lspt": [
-			                        {
-			                            "range": {
-			                                "start": {
-			                                    "line": 0,
-			                                    "character": 0
-			                                },
-			                                "end": {
-			                                    "line": 0,
-			                                    "character": 5
-			                                }
-			                            },
-			                            "newText": "fixed"
-			                        }
-			                    ]
-			                }
-			            }
-			        }
-			    ]
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"title": "fixme",
+						"kind": "fix",
+						"diagnostics": [],
+						"edit": {
+							"changes": {
+								"file:test1533196529126.lspt": [
+									{
+										"range": {
+											"start": {
+												"line": 0,
+												"character": 0
+											},
+											"end": {
+												"line": 0,
+												"character": 5
+											}
+										},
+										"newText": "fixed"
+									}
+								]
+							}
+						}
+					}
+				]
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
@@ -572,8 +578,8 @@ class JsonParseTest {
 						},
 						{
 							"kind": "rename",
-						    "oldUri": "file:/foo.txt",
-						    "newUri": "file:/bar.txt"
+							"oldUri": "file:/foo.txt",
+							"newUri": "file:/bar.txt"
 						},
 						{
 							"textDocument": {
@@ -689,24 +695,24 @@ class JsonParseTest {
 		]
 		'''
 			{
-			    "jsonrpc": "2.0",
-			    "id": "12",
-			    "result": {
-			        "range": {
-			            "start": {
-			                "character": 32,
-			                "line": 3
-			            },
-			            "end": {
-			                "character": 35,
-			                "line": 3
-			            }
-			        },
-			        "contents": [
-			            "foo",
-			            "boo shuby doo"
-			        ]
-			    }
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"range": {
+						"start": {
+							"character": 32,
+							"line": 3
+						},
+						"end": {
+							"character": 35,
+							"line": 3
+						}
+					},
+					"contents": [
+						"foo",
+						"boo shuby doo"
+					]
+				}
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
@@ -733,14 +739,14 @@ class JsonParseTest {
 		]
 		'''
 			{
-			    "jsonrpc": "2.0",
-			    "id": "12",
-			    "result": {
-			        "contents": {
-			            "kind": "plaintext",
-			            "value": "foo"
-			        }
-			    }
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"contents": {
+						"kind": "plaintext",
+						"value": "foo"
+					}
+				}
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
@@ -763,11 +769,11 @@ class JsonParseTest {
 		]
 		'''
 			{
-			    "jsonrpc": "2.0",
-			    "id": "12",
-			    "result": {
-			        "contents": "foo"
-			    }
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"contents": "foo"
+				}
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
@@ -787,14 +793,14 @@ class JsonParseTest {
 		]
 		'''
 			{
-			    "jsonrpc": "2.0",
-			    "id": "12",
-			    "result": {
-			        "contents": {
-			            "language": "plaintext",
-			            "value": "foo"
-			        }
-			    }
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"contents": {
+						"language": "plaintext",
+						"value": "foo"
+					}
+				}
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
@@ -869,24 +875,222 @@ class JsonParseTest {
 		assertTrue("Expected a JsonObject in data[2]", data.get(2) instanceof JsonObject)
 		assertEquals("value", (data.get(2) as JsonObject).get("key").asString)
 	}
-    
+
+	@Test
+	def void testDeclarationResponse() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_DECLARATION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"uri": "foo",
+						"range": {
+							"start": {
+								"line": 7,
+								"character": 12
+							},
+							"end": {
+								"line": 8,
+								"character": 16
+							}
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(#[
+				new Location('foo', new Range(new Position(7, 12), new Position(8, 16)))
+			])
+		])
+	}
+
+	@Test
+	def void testDefinitionResponse() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_DEFINITION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"targetUri": "foo",
+						"targetRange": {
+							"start": {
+								"line": 7,
+								"character": 12
+							},
+							"end": {
+								"line": 8,
+								"character": 16
+							}
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.<List<? extends Location>, List<? extends LocationLink>>forRight(#[
+				new LocationLink => [
+					targetUri = 'foo'
+					targetRange = new Range(new Position(7, 12), new Position(8, 16))
+				]
+			])
+		])
+	}
+
+	@Test
+	def void testTypeDefinitionResponse() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_TYPE_DEFINITION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"uri": "foo",
+						"range": {
+							"start": {
+								"line": 7,
+								"character": 12
+							},
+							"end": {
+								"line": 8,
+								"character": 16
+							}
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(#[
+				new Location('foo', new Range(new Position(7, 12), new Position(8, 16)))
+			])
+		])
+	}
+
+	@Test
+	def void testImplementationResponse() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_IMPLEMENTATION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"targetUri": "foo",
+						"targetRange": {
+							"start": {
+								"line": 7,
+								"character": 12
+							},
+							"end": {
+								"line": 8,
+								"character": 16
+							}
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.<List<? extends Location>, List<? extends LocationLink>>forRight(#[
+				new LocationLink => [
+					targetUri = 'foo'
+					targetRange = new Range(new Position(7, 12), new Position(8, 16))
+				]
+			])
+		])
+	}
+
+	@Test
+	def void testSignatureHelpResponse() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_SIGNATURE_HELP
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"signatures": [
+						{
+							"label": "Foo",
+							"parameters": [
+								{
+									"label": "label1"
+								},
+								{
+									"label": [12, 25]
+								}
+							]
+						}
+					]
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new SignatureHelp => [
+				signatures = #[
+					new SignatureInformation => [
+						label = "Foo"
+						parameters = #[
+							new ParameterInformation => [
+								label = Either.forLeft("label1")
+							],
+							new ParameterInformation => [
+								label = Either.forRight(Tuple.two(12, 25))
+							]
+						]
+					]
+				]
+			]
+		])
+	}
+	
 	@Test
 	def void testDocumentFormatting() {
 		'''
 			{
-			  "jsonrpc": "2.0",
-			  "id": "12",
-			  "method": "textDocument/formatting",
-			  "params": {
-			    "textDocument": {
-			      "uri": "file:///tmp/foo"
-			    },
-			    "options": {
-			      "insertSpaces": false,
-			      "tabSize": 4,
-			      "customProperty": -7
-			    }
-			  }
+				"jsonrpc": "2.0",
+				"id": "12",
+				"method": "textDocument/formatting",
+				"params": {
+					"textDocument": {
+						"uri": "file:///tmp/foo"
+					},
+					"options": {
+						"insertSpaces": false,
+						"tabSize": 4,
+						"customProperty": -7
+					}
+				}
 			}
 		'''.assertParse(new RequestMessage => [
 			jsonrpc = "2.0"

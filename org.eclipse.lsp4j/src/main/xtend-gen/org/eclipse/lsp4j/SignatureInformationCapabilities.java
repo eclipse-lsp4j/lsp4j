@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.ParameterInformationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -27,6 +28,11 @@ public class SignatureInformationCapabilities {
    * See {@link MarkupKind} for allowed values.
    */
   private List<String> documentationFormat;
+  
+  /**
+   * Client capabilities specific to parameter information.
+   */
+  private ParameterInformationCapabilities parameterInformation;
   
   public SignatureInformationCapabilities() {
   }
@@ -56,11 +62,27 @@ public class SignatureInformationCapabilities {
     this.documentationFormat = documentationFormat;
   }
   
+  /**
+   * Client capabilities specific to parameter information.
+   */
+  @Pure
+  public ParameterInformationCapabilities getParameterInformation() {
+    return this.parameterInformation;
+  }
+  
+  /**
+   * Client capabilities specific to parameter information.
+   */
+  public void setParameterInformation(final ParameterInformationCapabilities parameterInformation) {
+    this.parameterInformation = parameterInformation;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("documentationFormat", this.documentationFormat);
+    b.add("parameterInformation", this.parameterInformation);
     return b.toString();
   }
   
@@ -79,12 +101,20 @@ public class SignatureInformationCapabilities {
         return false;
     } else if (!this.documentationFormat.equals(other.documentationFormat))
       return false;
+    if (this.parameterInformation == null) {
+      if (other.parameterInformation != null)
+        return false;
+    } else if (!this.parameterInformation.equals(other.parameterInformation))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
+    return prime * result + ((this.parameterInformation== null) ? 0 : this.parameterInformation.hashCode());
   }
 }

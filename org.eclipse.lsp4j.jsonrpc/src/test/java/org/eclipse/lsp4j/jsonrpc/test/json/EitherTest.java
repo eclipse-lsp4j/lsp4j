@@ -32,7 +32,7 @@ public class EitherTest {
 		return new GsonBuilder().registerTypeAdapterFactory(new EitherTypeAdapter.Factory()).create();
 	}
 
-	protected void assertSerialize(Object object, String expected) {
+	protected void assertSerialize(String expected, Object object) {
 		Gson gson = createGson();
 		String actual = gson.toJson(object);
 		Assert.assertEquals(expected, actual);
@@ -48,7 +48,7 @@ public class EitherTest {
 	public void testSerializeEither() {
 		MyObjectA object = new MyObjectA();
 		object.myProperty = Either.forRight(7);
-		assertSerialize(object, "{\"myProperty\":7}");
+		assertSerialize("{\"myProperty\":7}", object);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class EitherTest {
 		MyObjectA object = new MyObjectA();
 		object.myProperty = null;
 		object.otherProperty = "ok";
-		assertSerialize(object, "{\"otherProperty\":\"ok\"}");
+		assertSerialize("{\"otherProperty\":\"ok\"}", object);
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class EitherTest {
 	public void testSerializeEither3() {
 		MyObjectB object = new MyObjectB();
 		object.myProperty = Either3.forSecond(7);
-		assertSerialize(object, "{\"myProperty\":7}");
+		assertSerialize("{\"myProperty\":7}", object);
 	}
 
 	@Test

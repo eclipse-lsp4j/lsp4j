@@ -17,9 +17,16 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Capabilities specific to the `textDocument/definition`
+ * 
+ * Since 3.14.0
  */
 @SuppressWarnings("all")
 public class DefinitionCapabilities extends DynamicRegistrationCapabilities {
+  /**
+   * The client supports additional metadata in the form of definition links.
+   */
+  private Boolean linkSupport;
+  
   public DefinitionCapabilities() {
   }
   
@@ -27,10 +34,31 @@ public class DefinitionCapabilities extends DynamicRegistrationCapabilities {
     super(dynamicRegistration);
   }
   
+  public DefinitionCapabilities(final Boolean dynamicRegistration, final Boolean linkSupport) {
+    super(dynamicRegistration);
+    this.linkSupport = linkSupport;
+  }
+  
+  /**
+   * The client supports additional metadata in the form of definition links.
+   */
+  @Pure
+  public Boolean getLinkSupport() {
+    return this.linkSupport;
+  }
+  
+  /**
+   * The client supports additional metadata in the form of definition links.
+   */
+  public void setLinkSupport(final Boolean linkSupport) {
+    this.linkSupport = linkSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("linkSupport", this.linkSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -46,12 +74,18 @@ public class DefinitionCapabilities extends DynamicRegistrationCapabilities {
       return false;
     if (!super.equals(obj))
       return false;
+    DefinitionCapabilities other = (DefinitionCapabilities) obj;
+    if (this.linkSupport == null) {
+      if (other.linkSupport != null)
+        return false;
+    } else if (!this.linkSupport.equals(other.linkSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return super.hashCode();
+    return 31 * super.hashCode() + ((this.linkSupport== null) ? 0 : this.linkSupport.hashCode());
   }
 }

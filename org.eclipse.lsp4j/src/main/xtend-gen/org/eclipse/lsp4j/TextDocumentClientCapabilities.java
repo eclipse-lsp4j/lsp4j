@@ -17,6 +17,7 @@ import org.eclipse.lsp4j.CodeActionCapabilities;
 import org.eclipse.lsp4j.CodeLensCapabilities;
 import org.eclipse.lsp4j.ColorProviderCapabilities;
 import org.eclipse.lsp4j.CompletionCapabilities;
+import org.eclipse.lsp4j.DeclarationCapabilities;
 import org.eclipse.lsp4j.DefinitionCapabilities;
 import org.eclipse.lsp4j.DocumentHighlightCapabilities;
 import org.eclipse.lsp4j.DocumentLinkCapabilities;
@@ -91,7 +92,16 @@ public class TextDocumentClientCapabilities {
   private OnTypeFormattingCapabilities onTypeFormatting;
   
   /**
+   * Capabilities specific to the `textDocument/declaration`
+   * 
+   * Since 3.14.0
+   */
+  private DeclarationCapabilities declaration;
+  
+  /**
    * Capabilities specific to the `textDocument/definition`
+   * 
+   * Since 3.14.0
    */
   private DefinitionCapabilities definition;
   
@@ -312,7 +322,28 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
+   * Capabilities specific to the `textDocument/declaration`
+   * 
+   * Since 3.14.0
+   */
+  @Pure
+  public DeclarationCapabilities getDeclaration() {
+    return this.declaration;
+  }
+  
+  /**
+   * Capabilities specific to the `textDocument/declaration`
+   * 
+   * Since 3.14.0
+   */
+  public void setDeclaration(final DeclarationCapabilities declaration) {
+    this.declaration = declaration;
+  }
+  
+  /**
    * Capabilities specific to the `textDocument/definition`
+   * 
+   * Since 3.14.0
    */
   @Pure
   public DefinitionCapabilities getDefinition() {
@@ -321,6 +352,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to the `textDocument/definition`
+   * 
+   * Since 3.14.0
    */
   public void setDefinition(final DefinitionCapabilities definition) {
     this.definition = definition;
@@ -538,6 +571,7 @@ public class TextDocumentClientCapabilities {
     b.add("formatting", this.formatting);
     b.add("rangeFormatting", this.rangeFormatting);
     b.add("onTypeFormatting", this.onTypeFormatting);
+    b.add("declaration", this.declaration);
     b.add("definition", this.definition);
     b.add("typeDefinition", this.typeDefinition);
     b.add("implementation", this.implementation);
@@ -613,6 +647,11 @@ public class TextDocumentClientCapabilities {
       if (other.onTypeFormatting != null)
         return false;
     } else if (!this.onTypeFormatting.equals(other.onTypeFormatting))
+      return false;
+    if (this.declaration == null) {
+      if (other.declaration != null)
+        return false;
+    } else if (!this.declaration.equals(other.declaration))
       return false;
     if (this.definition == null) {
       if (other.definition != null)
@@ -697,6 +736,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.formatting== null) ? 0 : this.formatting.hashCode());
     result = prime * result + ((this.rangeFormatting== null) ? 0 : this.rangeFormatting.hashCode());
     result = prime * result + ((this.onTypeFormatting== null) ? 0 : this.onTypeFormatting.hashCode());
+    result = prime * result + ((this.declaration== null) ? 0 : this.declaration.hashCode());
     result = prime * result + ((this.definition== null) ? 0 : this.definition.hashCode());
     result = prime * result + ((this.typeDefinition== null) ? 0 : this.typeDefinition.hashCode());
     result = prime * result + ((this.implementation== null) ? 0 : this.implementation.hashCode());

@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -89,6 +90,32 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 					return expectedType.isInstance(value);
 				else
 					return value != null;
+			}
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * A predicate for the case that a type alternative is a list.
+	 */
+	public static class ListChecker implements Predicate<JsonElement> {
+		
+		private final Predicate<JsonElement> elementChecker;
+		
+		public ListChecker(Predicate<JsonElement> elementChecker) {
+			this.elementChecker = elementChecker;
+		}
+
+		@Override
+		public boolean test(JsonElement t) {
+			if (elementChecker.test(t))
+				return true;
+			if (t.isJsonArray()) {
+				for (JsonElement e : t.getAsJsonArray()) {
+					if (elementChecker.test(e))
+						return true;
+				}
 			}
 			return false;
 		}
@@ -195,7 +222,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		}
 
 		protected JsonToken getExpectedToken(Class<?> rawType) {
-			if (rawType.isArray() || Collection.class.isAssignableFrom(rawType)) {
+			if (rawType.isArray() || Collection.class.isAssignableFrom(rawType) || Tuple.class.isAssignableFrom(rawType)) {
 				return JsonToken.BEGIN_ARRAY;
 			}
 			if (Boolean.class.isAssignableFrom(rawType)) {

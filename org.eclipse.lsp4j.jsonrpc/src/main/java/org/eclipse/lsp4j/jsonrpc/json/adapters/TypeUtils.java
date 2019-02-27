@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -221,6 +222,19 @@ public final class TypeUtils {
 		}
 		if (type instanceof Class) {
 			return Either.class.isAssignableFrom((Class<?>) type);
+		}
+		return false;
+	}
+	
+	/**
+	 * Test whether the given type is a two-tuple (pair).
+	 */
+	public static boolean isTwoTuple(Type type) {
+		if (type instanceof ParameterizedType) {
+			return isTwoTuple(((ParameterizedType) type).getRawType());
+		}
+		if (type instanceof Class) {
+			return Tuple.Two.class.isAssignableFrom((Class<?>) type);
 		}
 		return false;
 	}

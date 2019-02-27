@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -23,10 +24,17 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class ParameterInformation {
   /**
-   * The label of this signature. Will be shown in the UI.
+   * The label of this parameter information.
+   * 
+   * Either a string or an inclusive start and exclusive end offsets within its containing
+   * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
+   * string representation as {@code Position} and {@code Range} does.
+   * 
+   * <em>Note</em>: a label of type string should be a substring of its containing signature label.
+   * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
    */
   @NonNull
-  private String label;
+  private Either<String, Tuple.Two<Integer, Integer>> label;
   
   /**
    * The human-readable doc-comment of this signature. Will be shown in the UI but can be omitted.
@@ -37,33 +45,63 @@ public class ParameterInformation {
   }
   
   public ParameterInformation(@NonNull final String label) {
-    this.label = label;
+    this.setLabel(label);
   }
   
   public ParameterInformation(@NonNull final String label, final String documentation) {
-    this.label = label;
+    this.setLabel(label);
     this.setDocumentation(documentation);
   }
   
   public ParameterInformation(@NonNull final String label, final MarkupContent documentation) {
-    this.label = label;
+    this.setLabel(label);
     this.setDocumentation(documentation);
   }
   
   /**
-   * The label of this signature. Will be shown in the UI.
+   * The label of this parameter information.
+   * 
+   * Either a string or an inclusive start and exclusive end offsets within its containing
+   * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
+   * string representation as {@code Position} and {@code Range} does.
+   * 
+   * <em>Note</em>: a label of type string should be a substring of its containing signature label.
+   * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
    */
   @Pure
   @NonNull
-  public String getLabel() {
+  public Either<String, Tuple.Two<Integer, Integer>> getLabel() {
     return this.label;
   }
   
   /**
-   * The label of this signature. Will be shown in the UI.
+   * The label of this parameter information.
+   * 
+   * Either a string or an inclusive start and exclusive end offsets within its containing
+   * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
+   * string representation as {@code Position} and {@code Range} does.
+   * 
+   * <em>Note</em>: a label of type string should be a substring of its containing signature label.
+   * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
    */
-  public void setLabel(@NonNull final String label) {
+  public void setLabel(@NonNull final Either<String, Tuple.Two<Integer, Integer>> label) {
     this.label = label;
+  }
+  
+  public void setLabel(final String label) {
+    if (label == null) {
+      this.label = null;
+      return;
+    }
+    this.label = Either.forLeft(label);
+  }
+  
+  public void setLabel(final Tuple.Two<Integer, Integer> label) {
+    if (label == null) {
+      this.label = null;
+      return;
+    }
+    this.label = Either.forRight(label);
   }
   
   /**
