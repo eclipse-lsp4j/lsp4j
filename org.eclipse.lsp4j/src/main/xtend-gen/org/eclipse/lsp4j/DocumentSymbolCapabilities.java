@@ -47,6 +47,12 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
     this.symbolKind = symbolKind;
   }
   
+  public DocumentSymbolCapabilities(final SymbolKindCapabilities symbolKind, final Boolean dynamicRegistration, final Boolean hierarchicalDocumentSymbolSupport) {
+    super(dynamicRegistration);
+    this.symbolKind = symbolKind;
+    this.hierarchicalDocumentSymbolSupport = hierarchicalDocumentSymbolSupport;
+  }
+  
   /**
    * Specific capabilities for the `SymbolKind`.
    */
