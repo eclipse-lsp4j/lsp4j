@@ -1,5 +1,18 @@
 ## LSP4J Change Log
 
+### v0.7.0 (Feb. 2018)
+
+ * Implemented LSP version 3.14.0
+ * Support tuple of two types with the `Tuple.Two` class
+
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/11?closed=1
+
+Breaking API changes:
+ * Return type of `textDocument/definition`, `textDocument/typeDefinition` and `textDocument/implementation` changed from `List<? extends Location>` to `Either<List<? extends Location>, List<? extends LocationLink>>`
+ * Type of `ParameterInformation.label` changed from `String` to `Either<String, Tuple.Two<Integer, Integer>>`
+
+-----
+
 ### v0.6.0 (Nov. 2018)
 
  * Implemented LSP version 3.13.0
