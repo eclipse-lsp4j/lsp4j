@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.ConfigurationItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -35,7 +36,7 @@ public class ConfigurationParams {
   }
   
   public ConfigurationParams(@NonNull final List<ConfigurationItem> items) {
-    this.items = items;
+    this.items = Preconditions.<List<ConfigurationItem>>checkNotNull(items);
   }
   
   @Pure

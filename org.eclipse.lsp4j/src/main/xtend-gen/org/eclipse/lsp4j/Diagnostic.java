@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.DiagnosticRelatedInformation;
 import org.eclipse.lsp4j.DiagnosticSeverity;
@@ -64,8 +65,8 @@ public class Diagnostic {
   }
   
   public Diagnostic(@NonNull final Range range, @NonNull final String message) {
-    this.range = range;
-    this.message = message;
+    this.range = Preconditions.<Range>checkNotNull(range);
+    this.message = Preconditions.<String>checkNotNull(message);
   }
   
   public Diagnostic(@NonNull final Range range, @NonNull final String message, final DiagnosticSeverity severity, final String source) {

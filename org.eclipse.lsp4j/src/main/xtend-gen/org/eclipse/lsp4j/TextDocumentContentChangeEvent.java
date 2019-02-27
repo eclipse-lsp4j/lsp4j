@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -42,13 +43,13 @@ public class TextDocumentContentChangeEvent {
   }
   
   public TextDocumentContentChangeEvent(@NonNull final String text) {
-    this.text = text;
+    this.text = Preconditions.<String>checkNotNull(text);
   }
   
   public TextDocumentContentChangeEvent(final Range range, final Integer rangeLength, @NonNull final String text) {
+    this(text);
     this.range = range;
     this.rangeLength = rangeLength;
-    this.text = text;
   }
   
   /**

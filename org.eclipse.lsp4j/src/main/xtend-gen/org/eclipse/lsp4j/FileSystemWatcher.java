@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -34,11 +35,11 @@ public class FileSystemWatcher {
   }
   
   public FileSystemWatcher(@NonNull final String globPattern) {
-    this.globPattern = globPattern;
+    this.globPattern = Preconditions.<String>checkNotNull(globPattern);
   }
   
   public FileSystemWatcher(@NonNull final String globPattern, final Integer kind) {
-    this.globPattern = globPattern;
+    this(globPattern);
     this.kind = kind;
   }
   

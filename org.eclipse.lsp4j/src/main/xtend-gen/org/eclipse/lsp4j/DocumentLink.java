@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
@@ -46,7 +47,7 @@ public class DocumentLink {
   }
   
   public DocumentLink(@NonNull final Range range) {
-    this.range = range;
+    this.range = Preconditions.<Range>checkNotNull(range);
   }
   
   public DocumentLink(@NonNull final Range range, final String target) {

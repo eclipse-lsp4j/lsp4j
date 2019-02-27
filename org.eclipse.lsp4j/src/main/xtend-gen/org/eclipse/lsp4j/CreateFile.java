@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.CreateFileOptions;
 import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.ResourceOperationKind;
@@ -40,12 +41,12 @@ public class CreateFile extends ResourceOperation {
   
   public CreateFile(@NonNull final String uri) {
     super(ResourceOperationKind.Create);
-    this.uri = uri;
+    this.uri = Preconditions.<String>checkNotNull(uri);
   }
   
   public CreateFile(@NonNull final String uri, final CreateFileOptions options) {
     super(ResourceOperationKind.Create);
-    this.uri = uri;
+    this.uri = Preconditions.<String>checkNotNull(uri);
     this.options = options;
   }
   

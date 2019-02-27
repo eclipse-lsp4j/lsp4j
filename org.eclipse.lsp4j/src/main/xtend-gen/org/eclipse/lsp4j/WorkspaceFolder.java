@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -38,11 +39,11 @@ public class WorkspaceFolder {
   }
   
   public WorkspaceFolder(@NonNull final String uri) {
-    this.uri = uri;
+    this.uri = Preconditions.<String>checkNotNull(uri);
   }
   
   public WorkspaceFolder(@NonNull final String uri, final String name) {
-    this.uri = uri;
+    this(uri);
     this.name = name;
   }
   

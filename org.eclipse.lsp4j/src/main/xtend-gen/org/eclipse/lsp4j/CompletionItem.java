@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
@@ -132,7 +133,7 @@ public class CompletionItem {
   }
   
   public CompletionItem(@NonNull final String label) {
-    this.label = label;
+    this.label = Preconditions.<String>checkNotNull(label);
   }
   
   /**

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -47,10 +48,10 @@ public class TextDocumentItem {
   }
   
   public TextDocumentItem(@NonNull final String uri, @NonNull final String languageId, final int version, @NonNull final String text) {
-    this.uri = uri;
-    this.languageId = languageId;
+    this.uri = Preconditions.<String>checkNotNull(uri);
+    this.languageId = Preconditions.<String>checkNotNull(languageId);
     this.version = version;
-    this.text = text;
+    this.text = Preconditions.<String>checkNotNull(text);
   }
   
   /**

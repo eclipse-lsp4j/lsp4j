@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Color;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -35,8 +36,8 @@ public class ColorInformation {
   }
   
   public ColorInformation(@NonNull final Range range, @NonNull final Color color) {
-    this.range = range;
-    this.color = color;
+    this.range = Preconditions.<Range>checkNotNull(range);
+    this.color = Preconditions.<Color>checkNotNull(color);
   }
   
   /**

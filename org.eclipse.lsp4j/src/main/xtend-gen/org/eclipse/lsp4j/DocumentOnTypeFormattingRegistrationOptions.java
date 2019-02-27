@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -34,11 +35,11 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
   }
   
   public DocumentOnTypeFormattingRegistrationOptions(@NonNull final String firstTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
+    this.firstTriggerCharacter = Preconditions.<String>checkNotNull(firstTriggerCharacter);
   }
   
   public DocumentOnTypeFormattingRegistrationOptions(@NonNull final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
+    this(firstTriggerCharacter);
     this.moreTriggerCharacter = moreTriggerCharacter;
   }
   

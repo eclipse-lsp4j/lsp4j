@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.DeleteFileOptions;
 import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.ResourceOperationKind;
@@ -40,12 +41,12 @@ public class DeleteFile extends ResourceOperation {
   
   public DeleteFile(@NonNull final String uri) {
     super(ResourceOperationKind.Delete);
-    this.uri = uri;
+    this.uri = Preconditions.<String>checkNotNull(uri);
   }
   
   public DeleteFile(@NonNull final String uri, final DeleteFileOptions options) {
     super(ResourceOperationKind.Delete);
-    this.uri = uri;
+    this.uri = Preconditions.<String>checkNotNull(uri);
     this.options = options;
   }
   

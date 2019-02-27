@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.FileEvent;
@@ -35,7 +36,7 @@ public class DidChangeWatchedFilesParams {
   }
   
   public DidChangeWatchedFilesParams(@NonNull final List<FileEvent> changes) {
-    this.changes = changes;
+    this.changes = Preconditions.<List<FileEvent>>checkNotNull(changes);
   }
   
   /**

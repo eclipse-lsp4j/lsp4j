@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.SymbolKind;
@@ -68,15 +69,13 @@ public class SymbolInformation {
   }
   
   public SymbolInformation(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Location location) {
-    this.name = name;
-    this.kind = kind;
-    this.location = location;
+    this.name = Preconditions.<String>checkNotNull(name);
+    this.kind = Preconditions.<SymbolKind>checkNotNull(kind);
+    this.location = Preconditions.<Location>checkNotNull(location);
   }
   
   public SymbolInformation(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Location location, final String containerName) {
-    this.name = name;
-    this.kind = kind;
-    this.location = location;
+    this(name, kind, location);
     this.containerName = containerName;
   }
   

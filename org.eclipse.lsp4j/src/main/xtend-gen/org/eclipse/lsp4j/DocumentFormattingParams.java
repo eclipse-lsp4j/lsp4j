@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -38,8 +39,8 @@ public class DocumentFormattingParams {
   }
   
   public DocumentFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options) {
-    this.textDocument = textDocument;
-    this.options = options;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.options = Preconditions.<FormattingOptions>checkNotNull(options);
   }
   
   /**

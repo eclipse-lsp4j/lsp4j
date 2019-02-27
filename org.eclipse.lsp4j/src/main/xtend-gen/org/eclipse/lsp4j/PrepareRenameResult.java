@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -34,8 +35,8 @@ public class PrepareRenameResult {
   }
   
   public PrepareRenameResult(@NonNull final Range range, @NonNull final String placeholder) {
-    this.range = range;
-    this.placeholder = placeholder;
+    this.range = Preconditions.<Range>checkNotNull(range);
+    this.placeholder = Preconditions.<String>checkNotNull(placeholder);
   }
   
   /**

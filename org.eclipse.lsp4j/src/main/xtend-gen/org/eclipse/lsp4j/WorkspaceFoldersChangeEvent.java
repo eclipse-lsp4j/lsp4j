@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.WorkspaceFolder;
@@ -39,8 +40,8 @@ public class WorkspaceFoldersChangeEvent {
   }
   
   public WorkspaceFoldersChangeEvent(@NonNull final List<WorkspaceFolder> added, @NonNull final List<WorkspaceFolder> removed) {
-    this.added = added;
-    this.removed = removed;
+    this.added = Preconditions.<List<WorkspaceFolder>>checkNotNull(added);
+    this.removed = Preconditions.<List<WorkspaceFolder>>checkNotNull(removed);
   }
   
   /**

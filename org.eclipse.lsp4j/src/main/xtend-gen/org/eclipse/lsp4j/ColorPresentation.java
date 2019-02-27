@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -43,16 +44,16 @@ public class ColorPresentation {
   }
   
   public ColorPresentation(@NonNull final String label) {
-    this.label = label;
+    this.label = Preconditions.<String>checkNotNull(label);
   }
   
   public ColorPresentation(@NonNull final String label, final TextEdit textEdit) {
-    this.label = label;
+    this(label);
     this.textEdit = textEdit;
   }
   
   public ColorPresentation(@NonNull final String label, final TextEdit textEdit, final List<TextEdit> additionalTextEdits) {
-    this.label = label;
+    this(label);
     this.textEdit = textEdit;
     this.additionalTextEdits = additionalTextEdits;
   }

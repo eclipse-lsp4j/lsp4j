@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.CompletionItem;
@@ -39,7 +40,7 @@ public class CompletionList {
   }
   
   public CompletionList(@NonNull final List<CompletionItem> items) {
-    this.items = items;
+    this.items = Preconditions.<List<CompletionItem>>checkNotNull(items);
   }
   
   public CompletionList(final boolean isIncomplete, @NonNull final List<CompletionItem> items) {

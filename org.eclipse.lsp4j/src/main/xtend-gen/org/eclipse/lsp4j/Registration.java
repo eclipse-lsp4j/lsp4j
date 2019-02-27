@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -45,13 +46,12 @@ public class Registration {
   }
   
   public Registration(@NonNull final String id, @NonNull final String method) {
-    this.id = id;
-    this.method = method;
+    this.id = Preconditions.<String>checkNotNull(id);
+    this.method = Preconditions.<String>checkNotNull(method);
   }
   
   public Registration(@NonNull final String id, @NonNull final String method, final Object registerOptions) {
-    this.id = id;
-    this.method = method;
+    this(id, method);
     this.registerOptions = registerOptions;
   }
   

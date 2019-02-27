@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -32,7 +33,7 @@ public class MessageActionItem {
   }
   
   public MessageActionItem(@NonNull final String title) {
-    this.title = title;
+    this.title = Preconditions.<String>checkNotNull(title);
   }
   
   /**

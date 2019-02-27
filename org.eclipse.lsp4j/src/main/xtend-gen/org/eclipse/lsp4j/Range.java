@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -37,8 +38,8 @@ public class Range {
   }
   
   public Range(@NonNull final Position start, @NonNull final Position end) {
-    this.start = start;
-    this.end = end;
+    this.start = Preconditions.<Position>checkNotNull(start);
+    this.end = Preconditions.<Position>checkNotNull(end);
   }
   
   /**

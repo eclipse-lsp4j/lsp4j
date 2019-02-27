@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
@@ -41,8 +42,8 @@ public class TextDocumentEdit {
   }
   
   public TextDocumentEdit(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<TextEdit> edits) {
-    this.textDocument = textDocument;
-    this.edits = edits;
+    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument);
+    this.edits = Preconditions.<List<TextEdit>>checkNotNull(edits);
   }
   
   /**

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.RenameFileOptions;
 import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.ResourceOperationKind;
@@ -46,14 +47,14 @@ public class RenameFile extends ResourceOperation {
   
   public RenameFile(@NonNull final String oldUri, @NonNull final String newUri) {
     super(ResourceOperationKind.Rename);
-    this.oldUri = oldUri;
-    this.newUri = newUri;
+    this.oldUri = Preconditions.<String>checkNotNull(oldUri);
+    this.newUri = Preconditions.<String>checkNotNull(newUri);
   }
   
   public RenameFile(@NonNull final String oldUri, @NonNull final String newUri, final RenameFileOptions options) {
     super(ResourceOperationKind.Rename);
-    this.oldUri = oldUri;
-    this.newUri = newUri;
+    this.oldUri = Preconditions.<String>checkNotNull(oldUri);
+    this.newUri = Preconditions.<String>checkNotNull(newUri);
     this.options = options;
   }
   

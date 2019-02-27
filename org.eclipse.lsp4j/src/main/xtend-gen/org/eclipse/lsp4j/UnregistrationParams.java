@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Unregistration;
@@ -32,7 +33,7 @@ public class UnregistrationParams {
   }
   
   public UnregistrationParams(@NonNull final List<Unregistration> unregisterations) {
-    this.unregisterations = unregisterations;
+    this.unregisterations = Preconditions.<List<Unregistration>>checkNotNull(unregisterations);
   }
   
   @Pure

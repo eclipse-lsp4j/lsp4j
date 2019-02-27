@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -45,9 +46,9 @@ public class RenameParams {
   }
   
   public RenameParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position, @NonNull final String newName) {
-    this.textDocument = textDocument;
-    this.position = position;
-    this.newName = newName;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.position = Preconditions.<Position>checkNotNull(position);
+    this.newName = Preconditions.<String>checkNotNull(newName);
   }
   
   /**
