@@ -29,7 +29,7 @@ def configurePom = { pom ->
 			developer {
 				name 'Sven Efftinge'
 				email 'sven.efftinge@typefox.io'
-				organizationUrl 'http://typefox.io'
+				organizationUrl 'https://typefox.io'
 			}
 			developer {
 				name 'Jonah Graham'
@@ -39,17 +39,27 @@ def configurePom = { pom ->
 			developer {
 				name 'Dennis Hübner'
 				email 'dennis.huebner@typefox.io'
-				organizationUrl 'http://typefox.io'
+				organizationUrl 'https://typefox.io'
+			}
+			developer {
+				name 'Akos Kitta'
+				email 'kittaakos@typefox.io'
+				organizationUrl 'https://typefox.io'
 			}
 			developer {
 				name 'Anton Kosyakov'
 				email 'anton.kosyakov@typefox.io'
-				organizationUrl 'http://typefox.io'
+				organizationUrl 'https://typefox.io'
 			}
 			developer {
 				name 'Miro Spönemann'
 				email 'miro.spoenemann@typefox.io'
-				organizationUrl 'http://typefox.io'
+				organizationUrl 'https://typefox.io'
+			}
+			developer {
+				name 'Yaohai Zheng'
+				email 'yaozheng@microsoft.com'
+				organizationUrl 'https://www.microsoft.com/'
 			}
 		}
 		scm {
