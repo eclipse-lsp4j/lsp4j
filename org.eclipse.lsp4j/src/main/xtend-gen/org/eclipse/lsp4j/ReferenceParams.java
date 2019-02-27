@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.ReferenceContext;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -30,7 +31,7 @@ public class ReferenceParams extends TextDocumentPositionParams {
   }
   
   public ReferenceParams(@NonNull final ReferenceContext context) {
-    this.context = context;
+    this.context = Preconditions.<ReferenceContext>checkNotNull(context);
   }
   
   @Pure

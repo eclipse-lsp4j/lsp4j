@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
@@ -47,8 +48,8 @@ public class DidChangeTextDocumentParams {
   }
   
   public DidChangeTextDocumentParams(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
-    this.textDocument = textDocument;
-    this.contentChanges = contentChanges;
+    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument);
+    this.contentChanges = Preconditions.<List<TextDocumentContentChangeEvent>>checkNotNull(contentChanges);
   }
   
   @Deprecated

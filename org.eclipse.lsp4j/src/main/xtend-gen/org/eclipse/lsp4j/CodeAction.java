@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.Diagnostic;
@@ -61,7 +62,7 @@ public class CodeAction {
   }
   
   public CodeAction(@NonNull final String title) {
-    this.title = title;
+    this.title = Preconditions.<String>checkNotNull(title);
   }
   
   /**

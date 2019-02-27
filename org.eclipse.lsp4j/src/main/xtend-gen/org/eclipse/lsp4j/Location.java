@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -31,8 +32,8 @@ public class Location {
   }
   
   public Location(@NonNull final String uri, @NonNull final Range range) {
-    this.uri = uri;
-    this.range = range;
+    this.uri = Preconditions.<String>checkNotNull(uri);
+    this.range = Preconditions.<Range>checkNotNull(range);
   }
   
   @Pure

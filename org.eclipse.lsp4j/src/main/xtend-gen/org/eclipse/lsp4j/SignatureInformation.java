@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.ParameterInformation;
@@ -45,17 +46,17 @@ public class SignatureInformation {
   }
   
   public SignatureInformation(@NonNull final String label) {
-    this.label = label;
+    this.label = Preconditions.<String>checkNotNull(label);
   }
   
   public SignatureInformation(@NonNull final String label, final String documentation, final List<ParameterInformation> parameters) {
-    this.label = label;
+    this(label);
     this.setDocumentation(documentation);
     this.parameters = parameters;
   }
   
   public SignatureInformation(@NonNull final String label, final MarkupContent documentation, final List<ParameterInformation> parameters) {
-    this.label = label;
+    this(label);
     this.setDocumentation(documentation);
     this.parameters = parameters;
   }

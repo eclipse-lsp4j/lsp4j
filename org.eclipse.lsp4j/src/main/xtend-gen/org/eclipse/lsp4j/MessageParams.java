@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -40,8 +41,8 @@ public class MessageParams {
   }
   
   public MessageParams(@NonNull final MessageType type, @NonNull final String message) {
-    this.type = type;
-    this.message = message;
+    this.type = Preconditions.<MessageType>checkNotNull(type);
+    this.message = Preconditions.<String>checkNotNull(message);
   }
   
   /**

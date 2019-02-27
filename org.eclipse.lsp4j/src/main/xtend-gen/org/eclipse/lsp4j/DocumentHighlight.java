@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.DocumentHighlightKind;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -38,7 +39,7 @@ public class DocumentHighlight {
   }
   
   public DocumentHighlight(@NonNull final Range range) {
-    this.range = range;
+    this.range = Preconditions.<Range>checkNotNull(range);
   }
   
   public DocumentHighlight(@NonNull final Range range, final DocumentHighlightKind kind) {

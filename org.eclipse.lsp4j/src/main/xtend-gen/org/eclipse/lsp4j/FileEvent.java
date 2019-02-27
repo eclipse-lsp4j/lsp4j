@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.FileChangeType;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -37,8 +38,8 @@ public class FileEvent {
   }
   
   public FileEvent(@NonNull final String uri, @NonNull final FileChangeType type) {
-    this.uri = uri;
-    this.type = type;
+    this.uri = Preconditions.<String>checkNotNull(uri);
+    this.type = Preconditions.<FileChangeType>checkNotNull(type);
   }
   
   /**

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -30,7 +31,7 @@ public class WorkspaceSymbolParams {
   }
   
   public WorkspaceSymbolParams(@NonNull final String query) {
-    this.query = query;
+    this.query = Preconditions.<String>checkNotNull(query);
   }
   
   /**

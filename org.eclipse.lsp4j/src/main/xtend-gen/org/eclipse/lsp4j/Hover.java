@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.MarkedString;
@@ -43,20 +44,20 @@ public class Hover {
   }
   
   public Hover(@NonNull final List<Either<String, MarkedString>> contents) {
-    this.setContents(contents);
+    this.setContents(Preconditions.<List<Either<String, MarkedString>>>checkNotNull(contents));
   }
   
   public Hover(@NonNull final List<Either<String, MarkedString>> contents, final Range range) {
-    this.setContents(contents);
+    this.setContents(Preconditions.<List<Either<String, MarkedString>>>checkNotNull(contents));
     this.range = range;
   }
   
   public Hover(@NonNull final MarkupContent contents) {
-    this.setContents(contents);
+    this.setContents(Preconditions.<MarkupContent>checkNotNull(contents));
   }
   
   public Hover(@NonNull final MarkupContent contents, final Range range) {
-    this.setContents(contents);
+    this.setContents(Preconditions.<MarkupContent>checkNotNull(contents));
     this.range = range;
   }
   

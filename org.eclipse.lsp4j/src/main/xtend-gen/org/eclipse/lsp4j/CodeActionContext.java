@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -42,7 +43,7 @@ public class CodeActionContext {
   }
   
   public CodeActionContext(@NonNull final List<Diagnostic> diagnostics) {
-    this.diagnostics = diagnostics;
+    this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics);
   }
   
   public CodeActionContext(@NonNull final List<Diagnostic> diagnostics, final List<String> only) {

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.SignatureInformation;
@@ -58,7 +59,7 @@ public class SignatureHelp {
   }
   
   public SignatureHelp(@NonNull final List<SignatureInformation> signatures, final Integer activeSignature, final Integer activeParameter) {
-    this.signatures = signatures;
+    this.signatures = Preconditions.<List<SignatureInformation>>checkNotNull(signatures);
     this.activeSignature = activeSignature;
     this.activeParameter = activeParameter;
   }

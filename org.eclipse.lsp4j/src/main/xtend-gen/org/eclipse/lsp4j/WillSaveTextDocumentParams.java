@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextDocumentSaveReason;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -35,7 +36,7 @@ public class WillSaveTextDocumentParams {
   }
   
   public WillSaveTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final TextDocumentSaveReason reason) {
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
     this.reason = reason;
   }
   

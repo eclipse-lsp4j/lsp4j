@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Color;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
@@ -48,9 +49,9 @@ public class ColorPresentationParams {
   }
   
   public ColorPresentationParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Color color, @NonNull final Range range) {
-    this.textDocument = textDocument;
-    this.color = color;
-    this.range = range;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.color = Preconditions.<Color>checkNotNull(color);
+    this.range = Preconditions.<Range>checkNotNull(range);
   }
   
   /**

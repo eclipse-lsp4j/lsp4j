@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -33,7 +34,7 @@ public class DidChangeConfigurationParams {
   }
   
   public DidChangeConfigurationParams(@NonNull final Object settings) {
-    this.settings = settings;
+    this.settings = Preconditions.<Object>checkNotNull(settings);
   }
   
   /**

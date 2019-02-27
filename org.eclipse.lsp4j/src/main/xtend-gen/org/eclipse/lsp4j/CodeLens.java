@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.Range;
@@ -49,7 +50,7 @@ public class CodeLens {
   }
   
   public CodeLens(@NonNull final Range range) {
-    this.range = range;
+    this.range = Preconditions.<Range>checkNotNull(range);
   }
   
   public CodeLens(@NonNull final Range range, final Command command, final Object data) {

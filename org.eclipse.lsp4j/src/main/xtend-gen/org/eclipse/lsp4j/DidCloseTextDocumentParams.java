@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -33,7 +34,7 @@ public class DidCloseTextDocumentParams {
   }
   
   public DidCloseTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
   }
   
   /**

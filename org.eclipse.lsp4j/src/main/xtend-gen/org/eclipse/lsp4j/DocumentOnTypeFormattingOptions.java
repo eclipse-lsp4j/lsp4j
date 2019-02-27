@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -40,7 +41,7 @@ public class DocumentOnTypeFormattingOptions {
   }
   
   public DocumentOnTypeFormattingOptions(@NonNull final String firstTriggerCharacter, final List<String> moreTriggerCharacter) {
-    this.firstTriggerCharacter = firstTriggerCharacter;
+    this.firstTriggerCharacter = Preconditions.<String>checkNotNull(firstTriggerCharacter);
     this.moreTriggerCharacter = moreTriggerCharacter;
   }
   

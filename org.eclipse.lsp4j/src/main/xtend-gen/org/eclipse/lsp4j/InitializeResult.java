@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.ServerCapabilities;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -28,7 +29,7 @@ public class InitializeResult {
   }
   
   public InitializeResult(@NonNull final ServerCapabilities capabilities) {
-    this.capabilities = capabilities;
+    this.capabilities = Preconditions.<ServerCapabilities>checkNotNull(capabilities);
   }
   
   /**

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.lsp4j.TypeHierarchyItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -40,6 +41,15 @@ public class ResolveTypeHierarchyItemParams {
    */
   @NonNull
   private TypeHierarchyDirection direction;
+  
+  public ResolveTypeHierarchyItemParams() {
+  }
+  
+  public ResolveTypeHierarchyItemParams(@NonNull final TypeHierarchyItem item, final int resolve, @NonNull final TypeHierarchyDirection direction) {
+    this.item = Preconditions.<TypeHierarchyItem>checkNotNull(item);
+    this.resolve = resolve;
+    this.direction = Preconditions.<TypeHierarchyDirection>checkNotNull(direction);
+  }
   
   /**
    * The hierarchy item to resolve.

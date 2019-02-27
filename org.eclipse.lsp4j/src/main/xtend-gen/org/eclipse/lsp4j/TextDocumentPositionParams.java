@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -44,15 +45,15 @@ public class TextDocumentPositionParams {
   }
   
   public TextDocumentPositionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position) {
-    this.textDocument = textDocument;
-    this.position = position;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.position = Preconditions.<Position>checkNotNull(position);
   }
   
   @Deprecated
   public TextDocumentPositionParams(@NonNull final TextDocumentIdentifier textDocument, final String uri, @NonNull final Position position) {
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
     this.uri = uri;
-    this.position = position;
+    this.position = Preconditions.<Position>checkNotNull(position);
   }
   
   /**

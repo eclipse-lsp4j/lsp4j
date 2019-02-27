@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
@@ -45,16 +46,16 @@ public class ParameterInformation {
   }
   
   public ParameterInformation(@NonNull final String label) {
-    this.setLabel(label);
+    this.setLabel(Preconditions.<String>checkNotNull(label));
   }
   
   public ParameterInformation(@NonNull final String label, final String documentation) {
-    this.setLabel(label);
+    this(label);
     this.setDocumentation(documentation);
   }
   
   public ParameterInformation(@NonNull final String label, final MarkupContent documentation) {
-    this.setLabel(label);
+    this(label);
     this.setDocumentation(documentation);
   }
   

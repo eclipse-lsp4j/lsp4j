@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -33,7 +34,7 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
   }
   
   public TextDocumentChangeRegistrationOptions(@NonNull final TextDocumentSyncKind syncKind) {
-    this.syncKind = syncKind;
+    this.syncKind = Preconditions.<TextDocumentSyncKind>checkNotNull(syncKind);
   }
   
   /**

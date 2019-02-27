@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -41,7 +42,7 @@ public class ExecuteCommandParams {
   }
   
   public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments) {
-    this.command = command;
+    this.command = Preconditions.<String>checkNotNull(command);
     this.arguments = arguments;
   }
   

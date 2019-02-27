@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
@@ -47,9 +48,9 @@ public class CodeActionParams {
   }
   
   public CodeActionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Range range, @NonNull final CodeActionContext context) {
-    this.textDocument = textDocument;
-    this.range = range;
-    this.context = context;
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
+    this.range = Preconditions.<Range>checkNotNull(range);
+    this.context = Preconditions.<CodeActionContext>checkNotNull(context);
   }
   
   /**

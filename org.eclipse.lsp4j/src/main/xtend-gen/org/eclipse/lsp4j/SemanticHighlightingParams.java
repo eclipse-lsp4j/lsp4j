@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.SemanticHighlightingInformation;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
@@ -41,8 +42,8 @@ public class SemanticHighlightingParams {
   }
   
   public SemanticHighlightingParams(@NonNull final VersionedTextDocumentIdentifier textDocument, @NonNull final List<SemanticHighlightingInformation> lines) {
-    this.textDocument = textDocument;
-    this.lines = lines;
+    this.textDocument = Preconditions.<VersionedTextDocumentIdentifier>checkNotNull(textDocument);
+    this.lines = Preconditions.<List<SemanticHighlightingInformation>>checkNotNull(lines);
   }
   
   /**

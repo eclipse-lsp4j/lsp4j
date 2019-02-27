@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -27,7 +28,7 @@ public abstract class ResourceOperation {
   }
   
   public ResourceOperation(@NonNull final String kind) {
-    this.kind = kind;
+    this.kind = Preconditions.<String>checkNotNull(kind);
   }
   
   @Pure

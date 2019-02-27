@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -38,7 +39,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   }
   
   public DocumentOnTypeFormattingParams(@NonNull final Position position, @NonNull final String ch) {
-    this.position = position;
+    this.position = Preconditions.<Position>checkNotNull(position);
     this.ch = ch;
   }
   

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -38,11 +39,11 @@ public class ApplyWorkspaceEditParams {
   }
   
   public ApplyWorkspaceEditParams(@NonNull final WorkspaceEdit edit) {
-    this.edit = edit;
+    this.edit = Preconditions.<WorkspaceEdit>checkNotNull(edit);
   }
   
   public ApplyWorkspaceEditParams(@NonNull final WorkspaceEdit edit, final String label) {
-    this.edit = edit;
+    this(edit);
     this.label = label;
   }
   

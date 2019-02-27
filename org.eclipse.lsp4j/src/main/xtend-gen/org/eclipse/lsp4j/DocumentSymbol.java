@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
@@ -72,25 +73,19 @@ public class DocumentSymbol {
   }
   
   public DocumentSymbol(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Range range, @NonNull final Range selectionRange) {
-    this.name = name;
-    this.kind = kind;
-    this.range = range;
-    this.selectionRange = selectionRange;
+    this.name = Preconditions.<String>checkNotNull(name);
+    this.kind = Preconditions.<SymbolKind>checkNotNull(kind);
+    this.range = Preconditions.<Range>checkNotNull(range);
+    this.selectionRange = Preconditions.<Range>checkNotNull(selectionRange);
   }
   
   public DocumentSymbol(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Range range, @NonNull final Range selectionRange, final String detail) {
-    this.name = name;
-    this.kind = kind;
-    this.range = range;
-    this.selectionRange = selectionRange;
+    this(name, kind, range, selectionRange);
     this.detail = detail;
   }
   
   public DocumentSymbol(@NonNull final String name, @NonNull final SymbolKind kind, @NonNull final Range range, @NonNull final Range selectionRange, final String detail, final List<DocumentSymbol> children) {
-    this.name = name;
-    this.kind = kind;
-    this.range = range;
-    this.selectionRange = selectionRange;
+    this(name, kind, range, selectionRange);
     this.detail = detail;
     this.children = children;
   }

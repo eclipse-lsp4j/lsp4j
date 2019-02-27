@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -31,8 +32,8 @@ public class FoldingRangeRequestParams {
   public FoldingRangeRequestParams() {
   }
   
-  public FoldingRangeRequestParams(final TextDocumentIdentifier textDocument) {
-    this.textDocument = textDocument;
+  public FoldingRangeRequestParams(@NonNull final TextDocumentIdentifier textDocument) {
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument);
   }
   
   /**

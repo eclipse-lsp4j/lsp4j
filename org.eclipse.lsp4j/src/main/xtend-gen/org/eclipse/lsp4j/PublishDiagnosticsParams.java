@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Diagnostic;
@@ -41,8 +42,8 @@ public class PublishDiagnosticsParams {
   }
   
   public PublishDiagnosticsParams(@NonNull final String uri, @NonNull final List<Diagnostic> diagnostics) {
-    this.uri = uri;
-    this.diagnostics = diagnostics;
+    this.uri = Preconditions.<String>checkNotNull(uri);
+    this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics);
   }
   
   /**
