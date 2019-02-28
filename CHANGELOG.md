@@ -10,6 +10,7 @@ Fixed issues: https://github.com/eclipse/lsp4j/milestone/11?closed=1
 Breaking API changes:
  * Return type of `textDocument/definition`, `textDocument/typeDefinition` and `textDocument/implementation` changed from `List<? extends Location>` to `Either<List<? extends Location>, List<? extends LocationLink>>`
  * Type of `ParameterInformation.label` changed from `String` to `Either<String, Tuple.Two<Integer, Integer>>`
+ * Setters and constructors of protocol classes throw `IllegalArgumentException` if given `null` for properties marked with `@NonNull`
 
 -----
 
