@@ -1,2 +1,2 @@
 tasks:
-  - command: "./gradlew build"
+  - init: ./gradlew build
