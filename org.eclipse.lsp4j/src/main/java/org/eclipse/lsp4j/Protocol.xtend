@@ -2628,6 +2628,20 @@ class LocationLink {
 	 */
 	@NonNull
 	Range targetSelectionRange
+	
+	new() {
+	}
+	
+	new(@NonNull String targetUri, @NonNull Range targetRange, @NonNull Range targetSelectionRange) {
+		this.targetUri = Preconditions.checkNotNull(targetUri, 'targetUri')
+		this.targetRange = Preconditions.checkNotNull(targetRange, 'targetRange')
+		this.targetSelectionRange = Preconditions.checkNotNull(targetSelectionRange, 'targetSelectionRange')
+	}
+	
+	new(@NonNull String targetUri, @NonNull Range targetRange, @NonNull Range targetSelectionRange, Range originSelectionRange) {
+		this(targetUri, targetRange, targetSelectionRange)
+		this.originSelectionRange = originSelectionRange
+	}
 }
 
 /**

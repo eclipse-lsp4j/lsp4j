@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -49,6 +50,20 @@ public class LocationLink {
    */
   @NonNull
   private Range targetSelectionRange;
+  
+  public LocationLink() {
+  }
+  
+  public LocationLink(@NonNull final String targetUri, @NonNull final Range targetRange, @NonNull final Range targetSelectionRange) {
+    this.targetUri = Preconditions.<String>checkNotNull(targetUri, "targetUri");
+    this.targetRange = Preconditions.<Range>checkNotNull(targetRange, "targetRange");
+    this.targetSelectionRange = Preconditions.<Range>checkNotNull(targetSelectionRange, "targetSelectionRange");
+  }
+  
+  public LocationLink(@NonNull final String targetUri, @NonNull final Range targetRange, @NonNull final Range targetSelectionRange, final Range originSelectionRange) {
+    this(targetUri, targetRange, targetSelectionRange);
+    this.originSelectionRange = originSelectionRange;
+  }
   
   /**
    * Span of the origin of this link.
