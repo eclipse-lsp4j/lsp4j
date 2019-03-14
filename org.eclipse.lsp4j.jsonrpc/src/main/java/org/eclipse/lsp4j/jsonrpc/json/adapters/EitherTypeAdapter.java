@@ -22,6 +22,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -102,9 +103,15 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 	public static class ListChecker implements Predicate<JsonElement> {
 		
 		private final Predicate<JsonElement> elementChecker;
+		private final boolean resultIfEmpty;
 		
 		public ListChecker(Predicate<JsonElement> elementChecker) {
+			this(elementChecker, false);
+		}
+		
+		public ListChecker(Predicate<JsonElement> elementChecker, boolean resultIfEmpty) {
 			this.elementChecker = elementChecker;
+			this.resultIfEmpty = resultIfEmpty;
 		}
 
 		@Override
@@ -112,7 +119,10 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			if (elementChecker.test(t))
 				return true;
 			if (t.isJsonArray()) {
-				for (JsonElement e : t.getAsJsonArray()) {
+				JsonArray array = t.getAsJsonArray();
+				if (array.size() == 0)
+					return resultIfEmpty;
+				for (JsonElement e : array) {
 					if (elementChecker.test(e))
 						return true;
 				}

@@ -1912,7 +1912,7 @@ public class JsonParseTest {
   }
   
   @Test
-  public void testDefinitionResponse() {
+  public void testDefinitionResponse1() {
     final MethodProvider _function = (String id) -> {
       String _switchResult = null;
       if (id != null) {
@@ -1996,6 +1996,44 @@ public class JsonParseTest {
       LocationLink _doubleArrow = ObjectExtensions.<LocationLink>operator_doubleArrow(_locationLink, _function_2);
       it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forRight(
         Collections.<LocationLink>unmodifiableList(CollectionLiterals.<LocationLink>newArrayList(_doubleArrow))));
+    };
+    ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
+    this.assertParse(_builder, _doubleArrow);
+  }
+  
+  @Test
+  public void testDefinitionResponse2() {
+    final MethodProvider _function = (String id) -> {
+      String _switchResult = null;
+      if (id != null) {
+        switch (id) {
+          case "12":
+            _switchResult = MessageMethods.DOC_DEFINITION;
+            break;
+        }
+      }
+      return _switchResult;
+    };
+    this.jsonHandler.setMethodProvider(_function);
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("{");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"jsonrpc\": \"2.0\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"id\": \"12\",");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("\"result\": []");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    ResponseMessage _responseMessage = new ResponseMessage();
+    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
+      it.setJsonrpc("2.0");
+      it.setId("12");
+      it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(CollectionLiterals.<Location>emptyList()));
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
