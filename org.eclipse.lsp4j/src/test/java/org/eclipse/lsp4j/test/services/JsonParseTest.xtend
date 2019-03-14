@@ -913,7 +913,7 @@ class JsonParseTest {
 	}
 
 	@Test
-	def void testDefinitionResponse() {
+	def void testDefinitionResponse1() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.DOC_DEFINITION
@@ -948,6 +948,26 @@ class JsonParseTest {
 					targetRange = new Range(new Position(7, 12), new Position(8, 16))
 				]
 			])
+		])
+	}
+
+	@Test
+	def void testDefinitionResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_DEFINITION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": []
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(emptyList)
 		])
 	}
 

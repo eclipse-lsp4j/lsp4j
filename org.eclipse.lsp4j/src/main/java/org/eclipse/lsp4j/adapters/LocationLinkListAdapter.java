@@ -22,8 +22,8 @@ public class LocationLinkListAdapter implements TypeAdapterFactory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-		ListChecker leftChecker = new ListChecker(new PropertyChecker("uri"));
-		ListChecker rightChecker = new ListChecker(new PropertyChecker("targetUri"));
+		ListChecker leftChecker = new ListChecker(new PropertyChecker("uri"), true);
+		ListChecker rightChecker = new ListChecker(new PropertyChecker("targetUri"), false);
 		return (TypeAdapter<T>) new EitherTypeAdapter<>(gson, EITHER_TYPE, leftChecker, rightChecker);
 	}
 
