@@ -15,7 +15,7 @@ version = '0.8.0-SNAPSHOT'
 ext.versions = [
 	'xtend_lib': '2.16.0',
 	'guava': '[14.0,22)',
-	'gson': '2.7',
-	'gson_orbit': '2.7.0.v20170129-0911',
+	'gson': '2.8.2',
+	'gson_orbit': '2.8.2.v20180104-1110',
 	'junit': '4.12'
 ]
