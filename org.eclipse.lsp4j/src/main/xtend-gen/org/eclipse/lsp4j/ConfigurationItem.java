@@ -15,14 +15,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * A ConfigurationItem consist of the configuration section to ask for and an additional scope URI.
- * The configuration section ask for is defined by the server and doesn’t necessarily need to
- * correspond to the configuration store used be the client. So a server might ask for a configuration
+ * A ConfigurationItem consists of the configuration section to ask for and an additional scope URI.
+ * The configuration section is defined by the server and doesn’t necessarily need to
+ * correspond to the configuration store used by the client. So a server might ask for a configuration
  * cpp.formatterOptions but the client stores the configuration in a XML store layout differently.
- * It is up to the client to do the necessary conversion. If a scope URI is provided the client
- * should return the setting scoped to the provided resource. If the client for example uses
- * EditorConfig to manage its settings the configuration should be returned for the passed resource
- * URI. If the client can’t provide a configuration setting for a given scope then null need to be
+ * It is up to the client to do the necessary conversion. If a scope URI is provided, the client
+ * should return the setting scoped to the provided resource. If the client, for example, uses
+ * EditorConfig to manage their settings, the configuration should be returned for the passed resource
+ * URI. If the client can’t provide a configuration setting for a given scope then null must be
  * present in the returned array.
  * 
  * Since 3.6.0
