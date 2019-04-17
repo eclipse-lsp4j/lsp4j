@@ -38,6 +38,8 @@ import com.google.gson.GsonBuilder;
 /**
  * This is the entry point for applications that use LSP4J. A Launcher does all the wiring that is necessary to connect
  * your endpoint via an input stream and an output stream.
+ * 
+ * @param <T> remote service interface type
  */
 public interface Launcher<T> {
 	
@@ -217,6 +219,8 @@ public interface Launcher<T> {
 	
 	/**
 	 * The launcher builder wires up all components for JSON-RPC communication.
+	 * 
+	 * @param <T> remote service interface type
 	 */
 	public static class Builder<T> {
 		
@@ -291,7 +295,6 @@ public interface Launcher<T> {
 			return this;
 		}
 
-		@SuppressWarnings("unchecked")
 		public Launcher<T> create() {
 			// Validate input
 			if (input == null)
@@ -303,27 +306,63 @@ public interface Launcher<T> {
 			if (remoteInterfaces == null)
 				throw new IllegalStateException("Remote interface must be configured.");
 			
-			// Create proxy and endpoints
+			// Create the JSON handler, remote endpoint and remote proxy
 			MessageJsonHandler jsonHandler = createJsonHandler();
 			RemoteEndpoint remoteEndpoint = createRemoteEndpoint(jsonHandler);
-			T remoteProxy;
-			if (localServices.size() == 1 && remoteInterfaces.size() == 1) {
-				remoteProxy = ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterfaces.iterator().next());
-			} else {
-				remoteProxy = (T) ServiceEndpoints.toServiceObject(remoteEndpoint, (Collection<Class<?>>) (Object) remoteInterfaces, classLoader);
-			}
+			T remoteProxy = createProxy(remoteEndpoint);
 			
-			// create the message processor
+			// Create the message processor
 			StreamMessageProducer reader = new StreamMessageProducer(input, jsonHandler, remoteEndpoint);
 			MessageConsumer messageConsumer = wrapMessageConsumer(remoteEndpoint);
-			ExecutorService execService = executorService != null ? executorService : Executors.newCachedThreadPool();
 			ConcurrentMessageProcessor msgProcessor = createMessageProcessor(reader, messageConsumer, remoteProxy);
-			
-			return createLauncher(reader, messageConsumer, execService, remoteProxy, remoteEndpoint, msgProcessor);
+			ExecutorService execService = executorService != null ? executorService : Executors.newCachedThreadPool();
+			return createLauncher(execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
-		protected Launcher<T> createLauncher(StreamMessageProducer reader, MessageConsumer messageConsumer,
-				ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint, ConcurrentMessageProcessor msgProcessor) {
+		/**
+		 * Create the JSON handler for messages between the local and remote services.
+		 */
+		protected MessageJsonHandler createJsonHandler() {
+			Map<String, JsonRpcMethod> supportedMethods = getSupportedMethods();
+			if (configureGson != null)
+				return new MessageJsonHandler(supportedMethods, configureGson);
+			else
+				return new MessageJsonHandler(supportedMethods);
+		}
+		
+		/**
+		 * Create the remote endpoint that communicates with the local services.
+		 */
+		protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
+			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
+			outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
+			RemoteEndpoint remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, ServiceEndpoints.toEndpoint(localServices));
+			jsonHandler.setMethodProvider(remoteEndpoint);
+			return remoteEndpoint;
+		}
+		
+		/**
+		 * Create the proxy for calling methods on the remote service.
+		 */
+		@SuppressWarnings("unchecked")
+		protected T createProxy(RemoteEndpoint remoteEndpoint) {
+			if (localServices.size() == 1 && remoteInterfaces.size() == 1) {
+				return ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterfaces.iterator().next());
+			} else {
+				return (T) ServiceEndpoints.toServiceObject(remoteEndpoint, (Collection<Class<?>>) (Object) remoteInterfaces, classLoader);
+			}
+		}
+		
+		/**
+		 * Create the message processor that listens to the input stream. 
+		 */
+		protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
+				MessageConsumer messageConsumer, T remoteProxy) {
+			return new ConcurrentMessageProcessor(reader, messageConsumer);
+		}
+		
+		protected Launcher<T> createLauncher(ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint,
+				ConcurrentMessageProcessor msgProcessor) {
 			return new StandardLauncher<T>(execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
@@ -367,44 +406,6 @@ public interface Launcher<T> {
 			}
 			
 			return supportedMethods;
-		}
-		
-		/**
-		 * Create the JSON handler for messages between the local and remote services.
-		 */
-		protected MessageJsonHandler createJsonHandler() {
-			Map<String, JsonRpcMethod> supportedMethods = getSupportedMethods();
-			if (configureGson != null)
-				return new MessageJsonHandler(supportedMethods, configureGson);
-			else
-				return new MessageJsonHandler(supportedMethods);
-		}
-		
-		/**
-		 * Create a message processor given the provided parameters. 
-		 * 
-		 * Clients may override this method to create a message processor
-		 * with an expanded feature set.
-		 * 
-		 * @param reader - A message producer capable of receiving messages from clients
-		 * @param messageConsumer - A message consumer capable of passing completed messages to the local service 
-		 * @param remoteProxy - The remote proxy for communicating with the connecting client
-		 * @return A ConcurrentMessageProcessor capable of linking an incoming request to the local service's implementation
-		 */
-		protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
-				MessageConsumer messageConsumer, T remoteProxy) {
-			return  new ConcurrentMessageProcessor(reader, messageConsumer);
-		}
-		
-		/**
-		 * Create the remote endpoint that communicates with the local services.
-		 */
-		protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
-			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
-			outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
-			RemoteEndpoint remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, ServiceEndpoints.toEndpoint(localServices));
-			jsonHandler.setMethodProvider(remoteEndpoint);
-			return remoteEndpoint;
 		}
 	}
 	

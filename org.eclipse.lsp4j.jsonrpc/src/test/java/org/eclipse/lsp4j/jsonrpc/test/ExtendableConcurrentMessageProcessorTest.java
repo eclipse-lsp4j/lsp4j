@@ -93,6 +93,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 */
 	static <T> Builder<T> createBuilder(MessageContextStore<T> store) {
 		return new Builder<T>() {
+			@Override
 			protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
 					MessageConsumer messageConsumer, T remoteProxy) {
 				return new CustomConcurrentMessageProcessor<T>(reader, messageConsumer, remoteProxy, store);
