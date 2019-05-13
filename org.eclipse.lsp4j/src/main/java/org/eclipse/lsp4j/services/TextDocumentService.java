@@ -14,8 +14,8 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.CallHierarchyParams;
+import org.eclipse.lsp4j.CallHierarchySymbol;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionParams;
 import org.eclipse.lsp4j.CodeLens;
@@ -50,7 +50,6 @@ import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
-import org.eclipse.lsp4j.ResolveCallHierarchyItemParams;
 import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SymbolInformation;
@@ -467,37 +466,12 @@ public interface TextDocumentService {
 	}
 
 	/**
-	 * Request to request the call hierarchy at a given text document position.
-	 *
-	 * The optional request's parameter defines the maximum number of levels to
-	 * {@link CallHierarchyParams#getResolve() resolve} by this request. Unresolved
-	 * items can be resolved in subsequent {@code callHierarchy/resolve} requests.
-	 * 
-	 * <p>
-	 * <b>Note:</b> the <a href=
-	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
-	 * language feature</a> is not yet part of the official LSP specification.
+	 * The {@code textDocument/callHierarchy} request is sent from the client to the server to request
+	 * the call hierarchy for a symbol defined (or referenced) at the given text document position.
 	 */
 	@Beta
 	@JsonRequest
-	default CompletableFuture<CallHierarchyItem> callHierarchy(CallHierarchyParams params) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Request to resolve a call hierarchy item.
-	 *
-	 * The request's parameter is of type {@link ResolveCallHierarchyItemParams}.
-	 * The response is of type {@link CallHierarchyItem}.
-	 * 
-	 * <p>
-	 * <b>Note:</b> the <a href=
-	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
-	 * language feature</a> is not yet part of the official LSP specification.
-	 */
-	@Beta
-	@JsonRequest(value = "callHierarchy/resolve", useSegment = false)
-	default CompletableFuture<CallHierarchyItem> resolveCallHierarchy(ResolveCallHierarchyItemParams params) {
+	default CompletableFuture<CallHierarchySymbol> callHierarchy(CallHierarchyParams params) {
 		throw new UnsupportedOperationException();
 	}
 
