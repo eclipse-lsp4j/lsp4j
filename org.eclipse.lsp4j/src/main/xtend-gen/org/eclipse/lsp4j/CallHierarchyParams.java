@@ -14,44 +14,27 @@ package org.eclipse.lsp4j;
 import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CallHierarchyDirection;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * The parameters of a {@code textDocument/callHierarchy} request.
+ * Returns a collection of calls from one symbol to another.
  */
 @Beta
 @SuppressWarnings("all")
 public class CallHierarchyParams extends TextDocumentPositionParams {
   /**
-   * The number of levels to resolve.
-   */
-  private int resolve;
-  
-  /**
    * The direction of calls to resolve.
    */
+  @NonNull
   private CallHierarchyDirection direction;
   
   /**
-   * The number of levels to resolve.
-   */
-  @Pure
-  public int getResolve() {
-    return this.resolve;
-  }
-  
-  /**
-   * The number of levels to resolve.
-   */
-  public void setResolve(final int resolve) {
-    this.resolve = resolve;
-  }
-  
-  /**
    * The direction of calls to resolve.
    */
   @Pure
+  @NonNull
   public CallHierarchyDirection getDirection() {
     return this.direction;
   }
@@ -59,7 +42,10 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
   /**
    * The direction of calls to resolve.
    */
-  public void setDirection(final CallHierarchyDirection direction) {
+  public void setDirection(@NonNull final CallHierarchyDirection direction) {
+    if (direction == null) {
+      throw new IllegalArgumentException("Property must not be null: direction");
+    }
     this.direction = direction;
   }
   
@@ -67,7 +53,6 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("resolve", this.resolve);
     b.add("direction", this.direction);
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
@@ -87,8 +72,6 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
     if (!super.equals(obj))
       return false;
     CallHierarchyParams other = (CallHierarchyParams) obj;
-    if (other.resolve != this.resolve)
-      return false;
     if (this.direction == null) {
       if (other.direction != null)
         return false;
@@ -100,9 +83,6 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + this.resolve;
-    return prime * result + ((this.direction== null) ? 0 : this.direction.hashCode());
+    return 31 * super.hashCode() + ((this.direction== null) ? 0 : this.direction.hashCode());
   }
 }
