@@ -893,11 +893,6 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the {@code textDocument/callHierarchy}.
- * 
- * <p>
- * <b>Note:</b> the <a href=
- * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
- * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @JsonRpcData
@@ -3048,11 +3043,6 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides Call Hierarchy support.
-	 * 
-	 * <p>
-	 * <b>Note:</b> the <a href=
-	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
-	 * language feature</a> is not yet part of the official LSP specification.
 	 */
 	@Beta
 	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
@@ -4809,47 +4799,44 @@ class SemanticHighlightingInformation {
 }
 
 /**
- * The parameters of a {@code textDocument/callHierarchy} request.
+ * Returns a collection of calls from one symbol to another.
  */
 @Beta
 @JsonRpcData
 class CallHierarchyParams extends TextDocumentPositionParams {
 
 	/**
-	 * The number of levels to resolve.
-	 */
-	int resolve
-
-	/**
 	 * The direction of calls to resolve.
 	 */
+	@NonNull
 	CallHierarchyDirection direction
-	
+
 }
 
 /**
- * The parameters of a {@code callHierarchy/resolve} request.
+ * Each {@code CallHierarchyCall} object defines a call from one {@code CallHierarchySymbol} to another.
  */
 @Beta
 @JsonRpcData
-class ResolveCallHierarchyItemParams {
+class CallHierarchyCall {
 
 	/**
-	 * Unresolved item.
+	 * The source range of the reference. The range is a sub range of the {@link CallHierarchyCall#getFrom from} symbol range.
 	 */
 	@NonNull
-	CallHierarchyItem item
+	Range range
 
 	/**
-	 * The number of levels to resolve.
-	 */
-	int resolve
-
-	/**
-	 * The direction of calls to resolve.
+	 * The symbol that contains the reference.
 	 */
 	@NonNull
-	CallHierarchyDirection direction
+	CallHierarchySymbol from
+
+	/**
+	 * The symbol that is referenced.
+	 */
+	@NonNull
+	CallHierarchySymbol to
 
 }
 
@@ -4858,7 +4845,7 @@ class ResolveCallHierarchyItemParams {
  */
 @Beta
 @JsonRpcData
-class CallHierarchyItem {
+class CallHierarchySymbol {
 
 	/**
 	 * The name of the symbol targeted by the call hierarchy request.
@@ -4884,11 +4871,6 @@ class CallHierarchyItem {
 	String uri
 
 	/**
-	 * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
-	 */
-	Boolean deprecated
-
-	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
 	 * like comments. This information is typically used to determine if the the clients cursor is
 	 * inside the symbol to reveal in the symbol in the UI.
@@ -4898,29 +4880,9 @@ class CallHierarchyItem {
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-	 * Must be contained by the the {@code range}.
+	 * Must be contained by the the {@link CallHierarchySymbol#getRange range}.
 	 */
 	@NonNull
 	Range selectionRange
-
-	/**
-	 * The actual locations of incoming (or outgoing) calls to (or from) a callable identified by this item.
-	 *
-	 * <b>Note</b>: undefined in root item.
-	 */
-	List<Location> callLocations
-
-	/**
-	 * List of incoming (or outgoing) calls to (or from) a callable identified by this item.
-	 *
-	 * <b>Note</b>: if undefined, this item is unresolved.
-	 */
-	List<CallHierarchyItem> calls
-
-	/**
-	 * Optional data to identify an item in a resolve request.
-	 */
-	@JsonAdapter(JsonElementTypeAdapter.Factory)
-	Object data
 
 }

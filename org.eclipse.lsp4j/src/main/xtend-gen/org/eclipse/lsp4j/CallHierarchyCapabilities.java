@@ -18,11 +18,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Capabilities specific to the {@code textDocument/callHierarchy}.
- * 
- * <p>
- * <b>Note:</b> the <a href=
- * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
- * language feature</a> is not yet part of the official LSP specification.
  */
 @Beta
 @SuppressWarnings("all")

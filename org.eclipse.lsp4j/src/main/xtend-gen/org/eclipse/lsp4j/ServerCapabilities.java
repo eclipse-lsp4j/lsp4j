@@ -176,11 +176,6 @@ public class ServerCapabilities {
   
   /**
    * The server provides Call Hierarchy support.
-   * 
-   * <p>
-   * <b>Note:</b> the <a href=
-   * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
-   * language feature</a> is not yet part of the official LSP specification.
    */
   @Beta
   private Either<Boolean, StaticRegistrationOptions> callHierarchyProvider;
@@ -715,11 +710,6 @@ public class ServerCapabilities {
   
   /**
    * The server provides Call Hierarchy support.
-   * 
-   * <p>
-   * <b>Note:</b> the <a href=
-   * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
-   * language feature</a> is not yet part of the official LSP specification.
    */
   @Pure
   public Either<Boolean, StaticRegistrationOptions> getCallHierarchyProvider() {
@@ -728,11 +718,6 @@ public class ServerCapabilities {
   
   /**
    * The server provides Call Hierarchy support.
-   * 
-   * <p>
-   * <b>Note:</b> the <a href=
-   * "https://github.com/Microsoft/vscode-languageserver-node/pull/420">{@code textDocument/callHierarchy}
-   * language feature</a> is not yet part of the official LSP specification.
    */
   public void setCallHierarchyProvider(final Either<Boolean, StaticRegistrationOptions> callHierarchyProvider) {
     this.callHierarchyProvider = callHierarchyProvider;
