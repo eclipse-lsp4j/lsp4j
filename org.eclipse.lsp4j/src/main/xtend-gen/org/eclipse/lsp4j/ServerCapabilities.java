@@ -181,6 +181,12 @@ public class ServerCapabilities {
   private Either<Boolean, StaticRegistrationOptions> callHierarchyProvider;
   
   /**
+   * The server provides selection range support.
+   */
+  @Beta
+  private Either<Boolean, StaticRegistrationOptions> selectionRangeProvider;
+  
+  /**
    * Experimental server capabilities.
    */
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
@@ -740,6 +746,37 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides selection range support.
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getSelectionRangeProvider() {
+    return this.selectionRangeProvider;
+  }
+  
+  /**
+   * The server provides selection range support.
+   */
+  public void setSelectionRangeProvider(final Either<Boolean, StaticRegistrationOptions> selectionRangeProvider) {
+    this.selectionRangeProvider = selectionRangeProvider;
+  }
+  
+  public void setSelectionRangeProvider(final Boolean selectionRangeProvider) {
+    if (selectionRangeProvider == null) {
+      this.selectionRangeProvider = null;
+      return;
+    }
+    this.selectionRangeProvider = Either.forLeft(selectionRangeProvider);
+  }
+  
+  public void setSelectionRangeProvider(final StaticRegistrationOptions selectionRangeProvider) {
+    if (selectionRangeProvider == null) {
+      this.selectionRangeProvider = null;
+      return;
+    }
+    this.selectionRangeProvider = Either.forRight(selectionRangeProvider);
+  }
+  
+  /**
    * Experimental server capabilities.
    */
   @Pure
@@ -783,6 +820,7 @@ public class ServerCapabilities {
     b.add("semanticHighlighting", this.semanticHighlighting);
     b.add("typeHierarchyProvider", this.typeHierarchyProvider);
     b.add("callHierarchyProvider", this.callHierarchyProvider);
+    b.add("selectionRangeProvider", this.selectionRangeProvider);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -922,6 +960,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.callHierarchyProvider.equals(other.callHierarchyProvider))
       return false;
+    if (this.selectionRangeProvider == null) {
+      if (other.selectionRangeProvider != null)
+        return false;
+    } else if (!this.selectionRangeProvider.equals(other.selectionRangeProvider))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -960,6 +1003,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
     result = prime * result + ((this.typeHierarchyProvider== null) ? 0 : this.typeHierarchyProvider.hashCode());
     result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
+    result = prime * result + ((this.selectionRangeProvider== null) ? 0 : this.selectionRangeProvider.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }
