@@ -3,5 +3,11 @@
 	<feature id="org.eclipse.lsp4j.sdk" version="0.8.0.qualifier">
 		<category name="lsp4j"/>
 	</feature>
+	<bundle id="org.eclipse.lsp4j.websocket" version="0.8.0.qualifier">
+		<category name="lsp4j"/>
+	</bundle>
+	<bundle id="org.eclipse.lsp4j.websocket.source" version="0.8.0.qualifier">
+		<category name="lsp4j"/>
+	</bundle>
    <category-def name="lsp4j" label="Lsp4j"/>
 </site>
