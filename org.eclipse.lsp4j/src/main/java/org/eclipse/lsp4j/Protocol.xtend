@@ -1063,6 +1063,7 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to `textDocument/selectionRange` requests
 	 */
+	@Beta
 	SelectionRangeCapabilities  selectionRange
 }
 
@@ -4913,6 +4914,9 @@ class CallHierarchySymbol {
 
 }
 
+/**
+ * A parameter literal used in selection range requests.
+ */
 @Beta
 @JsonRpcData
 class SelectionRangeParams {
@@ -4939,6 +4943,10 @@ class SelectionRangeParams {
 	}
 }
 
+/**
+ * A selection range represents a part of a selection hierarchy. A selection range
+ * may have a parent selection range that contains it.
+ */
 @Beta
 @JsonRpcData
 class SelectionRange {
