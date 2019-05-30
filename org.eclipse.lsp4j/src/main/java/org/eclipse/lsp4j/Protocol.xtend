@@ -908,6 +908,21 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
+ * Capabilities specific to `textDocument/selectionRange` requests
+ */
+@Beta
+@JsonRpcData
+class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
+	
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}	
+}
+
+/**
  * Text document specific client capabilities.
  */
 @JsonRpcData
@@ -1044,7 +1059,12 @@ class TextDocumentClientCapabilities {
 	 */
 	@Beta
 	CallHierarchyCapabilities callHierarchy
-
+	
+	/**
+	 * Capabilities specific to `textDocument/selectionRange` requests
+	 */
+	@Beta
+	SelectionRangeCapabilities  selectionRange
 }
 
 /**
@@ -3046,6 +3066,13 @@ class ServerCapabilities {
 	 */
 	@Beta
 	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
+	
+	
+	/**
+	 * The server provides selection range support.
+	 */
+	@Beta
+	Either<Boolean, StaticRegistrationOptions> selectionRangeProvider
 
 	/**
 	 * Experimental server capabilities.
@@ -4885,4 +4912,63 @@ class CallHierarchySymbol {
 	@NonNull
 	Range selectionRange
 
+}
+
+/**
+ * A parameter literal used in selection range requests.
+ */
+@Beta
+@JsonRpcData
+class SelectionRangeParams {
+	
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+	
+	/**
+	 * The positions inside the text document.
+	 */
+	@NonNull
+	List<Position> positions
+	
+	
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull List<Position> positions) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.positions = Preconditions.checkNotNull(positions, 'positions')
+	}
+}
+
+/**
+ * A selection range represents a part of a selection hierarchy. A selection range
+ * may have a parent selection range that contains it.
+ */
+@Beta
+@JsonRpcData
+class SelectionRange {
+	
+	/**
+	 * The [range](#Range) of this selection range.
+	 */
+	@NonNull
+	Range range
+	
+	/**
+	 * The parent selection range containing this range. Therefore `parent.range` must contain `this.range`.
+	 */
+	SelectionRange parent
+	
+	
+	
+	new() {
+	}
+
+	new(@NonNull Range range, SelectionRange parent) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.parent = parent
+	}
 }

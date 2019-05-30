@@ -51,6 +51,8 @@ import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
+import org.eclipse.lsp4j.SelectionRange;
+import org.eclipse.lsp4j.SelectionRangeParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
@@ -475,4 +477,15 @@ public interface TextDocumentService {
 		throw new UnsupportedOperationException();
 	}
 
+	
+	/**
+	 * The {@code textDocument/selectionRange} request is sent from the client to the server to return
+	 * suggested selection ranges at an array of given positions. A selection range is a range around
+	 * the cursor position which the user might be interested in selecting.
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<List<SelectionRange>> selectionRange(SelectionRangeParams params) {
+		throw new UnsupportedOperationException();
+	}
 }

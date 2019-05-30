@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.PublishDiagnosticsCapabilities;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
+import org.eclipse.lsp4j.SelectionRangeCapabilities;
 import org.eclipse.lsp4j.SemanticHighlightingCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
@@ -176,6 +177,12 @@ public class TextDocumentClientCapabilities {
    */
   @Beta
   private CallHierarchyCapabilities callHierarchy;
+  
+  /**
+   * Capabilities specific to `textDocument/selectionRange` requests
+   */
+  @Beta
+  private SelectionRangeCapabilities selectionRange;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -557,6 +564,21 @@ public class TextDocumentClientCapabilities {
     this.callHierarchy = callHierarchy;
   }
   
+  /**
+   * Capabilities specific to `textDocument/selectionRange` requests
+   */
+  @Pure
+  public SelectionRangeCapabilities getSelectionRange() {
+    return this.selectionRange;
+  }
+  
+  /**
+   * Capabilities specific to `textDocument/selectionRange` requests
+   */
+  public void setSelectionRange(final SelectionRangeCapabilities selectionRange) {
+    this.selectionRange = selectionRange;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -585,6 +607,7 @@ public class TextDocumentClientCapabilities {
     b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
     b.add("typeHierarchyCapabilities", this.typeHierarchyCapabilities);
     b.add("callHierarchy", this.callHierarchy);
+    b.add("selectionRange", this.selectionRange);
     return b.toString();
   }
   
@@ -718,6 +741,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.callHierarchy.equals(other.callHierarchy))
       return false;
+    if (this.selectionRange == null) {
+      if (other.selectionRange != null)
+        return false;
+    } else if (!this.selectionRange.equals(other.selectionRange))
+      return false;
     return true;
   }
   
@@ -749,6 +777,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.foldingRange== null) ? 0 : this.foldingRange.hashCode());
     result = prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
     result = prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
-    return prime * result + ((this.callHierarchy== null) ? 0 : this.callHierarchy.hashCode());
+    result = prime * result + ((this.callHierarchy== null) ? 0 : this.callHierarchy.hashCode());
+    return prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
   }
 }
