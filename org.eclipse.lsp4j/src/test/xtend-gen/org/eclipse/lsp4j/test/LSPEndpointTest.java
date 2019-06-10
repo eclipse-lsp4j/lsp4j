@@ -41,24 +41,19 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class LSPEndpointTest {
   private static class DummyClient implements LanguageClient {
-    @Override
     public void logMessage(final MessageParams message) {
     }
     
-    @Override
     public void publishDiagnostics(final PublishDiagnosticsParams diagnostics) {
     }
     
-    @Override
     public void showMessage(final MessageParams messageParams) {
     }
     
-    @Override
     public CompletableFuture<MessageActionItem> showMessageRequest(final ShowMessageRequestParams requestParams) {
       return null;
     }
     
-    @Override
     public void telemetryEvent(final Object object) {
     }
   }
@@ -75,11 +70,13 @@ public class LSPEndpointTest {
     final Future<Void> future = launcher.startListening();
     TextDocumentService _textDocumentService = launcher.getRemoteProxy().getTextDocumentService();
     TextDocumentPositionParams _textDocumentPositionParams = new TextDocumentPositionParams();
-    final Procedure1<TextDocumentPositionParams> _function = (TextDocumentPositionParams it) -> {
-      TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier("foo");
-      it.setTextDocument(_textDocumentIdentifier);
-      Position _position = new Position(0, 0);
-      it.setPosition(_position);
+    final Procedure1<TextDocumentPositionParams> _function = new Procedure1<TextDocumentPositionParams>() {
+      public void apply(final TextDocumentPositionParams it) {
+        TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier("foo");
+        it.setTextDocument(_textDocumentIdentifier);
+        Position _position = new Position(0, 0);
+        it.setPosition(_position);
+      }
     };
     TextDocumentPositionParams _doubleArrow = ObjectExtensions.<TextDocumentPositionParams>operator_doubleArrow(_textDocumentPositionParams, _function);
     final CompletableFuture<Hover> hoverResult = _textDocumentService.hover(_doubleArrow);

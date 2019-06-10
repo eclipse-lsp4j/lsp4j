@@ -29,7 +29,6 @@ public class PerformanceMeasurement implements Runnable {
   
   private final Random random = new Random(0);
   
-  @Override
   public void run() {
     this.measureSymbolInformation();
   }
@@ -44,36 +43,41 @@ public class PerformanceMeasurement implements Runnable {
     }
     
     __PerformanceMeasurement_1 ___PerformanceMeasurement_1 = new __PerformanceMeasurement_1() {
-      @Override
       public void prepare() {
         ArrayList<SymbolInformation> _arrayList = new ArrayList<SymbolInformation>(__PerformanceMeasurement_1.SIZE);
         this.data = _arrayList;
         for (int i = 0; (i < __PerformanceMeasurement_1.SIZE); i++) {
           SymbolInformation _symbolInformation = new SymbolInformation();
-          final Procedure1<SymbolInformation> _function = (SymbolInformation it) -> {
-            it.setName(PerformanceMeasurement.this.randomString());
-            int _nextInt = PerformanceMeasurement.this.random.nextInt(SymbolKind.values().length);
-            int _plus = (_nextInt + 1);
-            it.setKind(SymbolKind.forValue(_plus));
-            Location _location = new Location();
-            final Procedure1<Location> _function_1 = (Location it_1) -> {
-              it_1.setUri(PerformanceMeasurement.this.randomString());
-              Range _range = new Range();
-              final Procedure1<Range> _function_2 = (Range it_2) -> {
-                int _nextInt_1 = PerformanceMeasurement.this.random.nextInt(100);
-                int _nextInt_2 = PerformanceMeasurement.this.random.nextInt(100);
-                Position _position = new Position(_nextInt_1, _nextInt_2);
-                it_2.setStart(_position);
-                int _nextInt_3 = PerformanceMeasurement.this.random.nextInt(100);
-                int _nextInt_4 = PerformanceMeasurement.this.random.nextInt(100);
-                Position _position_1 = new Position(_nextInt_3, _nextInt_4);
-                it_2.setEnd(_position_1);
+          final Procedure1<SymbolInformation> _function = new Procedure1<SymbolInformation>() {
+            public void apply(final SymbolInformation it) {
+              it.setName(PerformanceMeasurement.this.randomString());
+              int _nextInt = PerformanceMeasurement.this.random.nextInt(SymbolKind.values().length);
+              int _plus = (_nextInt + 1);
+              it.setKind(SymbolKind.forValue(_plus));
+              Location _location = new Location();
+              final Procedure1<Location> _function = new Procedure1<Location>() {
+                public void apply(final Location it) {
+                  it.setUri(PerformanceMeasurement.this.randomString());
+                  Range _range = new Range();
+                  final Procedure1<Range> _function = new Procedure1<Range>() {
+                    public void apply(final Range it) {
+                      int _nextInt = PerformanceMeasurement.this.random.nextInt(100);
+                      int _nextInt_1 = PerformanceMeasurement.this.random.nextInt(100);
+                      Position _position = new Position(_nextInt, _nextInt_1);
+                      it.setStart(_position);
+                      int _nextInt_2 = PerformanceMeasurement.this.random.nextInt(100);
+                      int _nextInt_3 = PerformanceMeasurement.this.random.nextInt(100);
+                      Position _position_1 = new Position(_nextInt_2, _nextInt_3);
+                      it.setEnd(_position_1);
+                    }
+                  };
+                  Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                  it.setRange(_doubleArrow);
+                }
               };
-              Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_2);
-              it_1.setRange(_doubleArrow);
-            };
-            Location _doubleArrow = ObjectExtensions.<Location>operator_doubleArrow(_location, _function_1);
-            it.setLocation(_doubleArrow);
+              Location _doubleArrow = ObjectExtensions.<Location>operator_doubleArrow(_location, _function);
+              it.setLocation(_doubleArrow);
+            }
           };
           SymbolInformation _doubleArrow = ObjectExtensions.<SymbolInformation>operator_doubleArrow(_symbolInformation, _function);
           this.data.add(_doubleArrow);
@@ -82,7 +86,6 @@ public class PerformanceMeasurement implements Runnable {
         this.gson = new MessageJsonHandler(_emptyMap).getGson();
       }
       
-      @Override
       public void run() {
         this.gson.toJson(this.data);
       }

@@ -4007,6 +4007,7 @@ class WorkspaceSymbolParams {
 	String query
 
 	new() {
+		this.query = '';
 	}
 
 	new(@NonNull String query) {

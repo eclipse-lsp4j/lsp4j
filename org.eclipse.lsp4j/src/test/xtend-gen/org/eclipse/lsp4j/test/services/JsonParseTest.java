@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.test.services;
 
+import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -121,27 +122,22 @@ public class JsonParseTest {
   private static class MyInteger extends Number {
     private final int value;
     
-    @Override
     public double doubleValue() {
       return this.value;
     }
     
-    @Override
     public float floatValue() {
       return this.value;
     }
     
-    @Override
     public int intValue() {
       return this.value;
     }
     
-    @Override
     public long longValue() {
       return this.value;
     }
     
-    @Override
     public boolean equals(final Object obj) {
       if ((obj instanceof Number)) {
         double _doubleValue = ((Number)obj).doubleValue();
@@ -150,12 +146,10 @@ public class JsonParseTest {
       return false;
     }
     
-    @Override
     public int hashCode() {
       return Integer.hashCode(this.value);
     }
     
-    @Override
     public String toString() {
       return Integer.toString(this.value);
     }
@@ -229,28 +223,36 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     RequestMessage _requestMessage = new RequestMessage();
-    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId(1);
-      it.setMethod(MessageMethods.DOC_COMPLETION);
-      CompletionParams _completionParams = new CompletionParams();
-      final Procedure1<CompletionParams> _function_1 = (CompletionParams it_1) -> {
-        TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier();
-        final Procedure1<TextDocumentIdentifier> _function_2 = (TextDocumentIdentifier it_2) -> {
-          it_2.setUri("file:///tmp/foo");
+    final Procedure1<RequestMessage> _function = new Procedure1<RequestMessage>() {
+      public void apply(final RequestMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId(1);
+        it.setMethod(MessageMethods.DOC_COMPLETION);
+        CompletionParams _completionParams = new CompletionParams();
+        final Procedure1<CompletionParams> _function = new Procedure1<CompletionParams>() {
+          public void apply(final CompletionParams it) {
+            TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier();
+            final Procedure1<TextDocumentIdentifier> _function = new Procedure1<TextDocumentIdentifier>() {
+              public void apply(final TextDocumentIdentifier it) {
+                it.setUri("file:///tmp/foo");
+              }
+            };
+            TextDocumentIdentifier _doubleArrow = ObjectExtensions.<TextDocumentIdentifier>operator_doubleArrow(_textDocumentIdentifier, _function);
+            it.setTextDocument(_doubleArrow);
+            Position _position = new Position();
+            final Procedure1<Position> _function_1 = new Procedure1<Position>() {
+              public void apply(final Position it) {
+                it.setLine(4);
+                it.setCharacter(22);
+              }
+            };
+            Position _doubleArrow_1 = ObjectExtensions.<Position>operator_doubleArrow(_position, _function_1);
+            it.setPosition(_doubleArrow_1);
+          }
         };
-        TextDocumentIdentifier _doubleArrow = ObjectExtensions.<TextDocumentIdentifier>operator_doubleArrow(_textDocumentIdentifier, _function_2);
-        it_1.setTextDocument(_doubleArrow);
-        Position _position = new Position();
-        final Procedure1<Position> _function_3 = (Position it_2) -> {
-          it_2.setLine(4);
-          it_2.setCharacter(22);
-        };
-        Position _doubleArrow_1 = ObjectExtensions.<Position>operator_doubleArrow(_position, _function_3);
-        it_1.setPosition(_doubleArrow_1);
-      };
-      CompletionParams _doubleArrow = ObjectExtensions.<CompletionParams>operator_doubleArrow(_completionParams, _function_1);
-      it.setParams(_doubleArrow);
+        CompletionParams _doubleArrow = ObjectExtensions.<CompletionParams>operator_doubleArrow(_completionParams, _function);
+        it.setParams(_doubleArrow);
+      }
     };
     RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -336,42 +338,54 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     NotificationMessage _notificationMessage = new NotificationMessage();
-    final Procedure1<NotificationMessage> _function = (NotificationMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setMethod(MessageMethods.DID_CHANGE_DOC);
-      DidChangeTextDocumentParams _didChangeTextDocumentParams = new DidChangeTextDocumentParams();
-      final Procedure1<DidChangeTextDocumentParams> _function_1 = (DidChangeTextDocumentParams it_1) -> {
-        VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier();
-        final Procedure1<VersionedTextDocumentIdentifier> _function_2 = (VersionedTextDocumentIdentifier it_2) -> {
-          it_2.setUri("file:///tmp/foo");
-          it_2.setVersion(Integer.valueOf(1234));
-        };
-        VersionedTextDocumentIdentifier _doubleArrow = ObjectExtensions.<VersionedTextDocumentIdentifier>operator_doubleArrow(_versionedTextDocumentIdentifier, _function_2);
-        it_1.setTextDocument(_doubleArrow);
-        ArrayList<TextDocumentContentChangeEvent> _arrayList = new ArrayList<TextDocumentContentChangeEvent>();
-        final Procedure1<ArrayList<TextDocumentContentChangeEvent>> _function_3 = (ArrayList<TextDocumentContentChangeEvent> it_2) -> {
-          TextDocumentContentChangeEvent _textDocumentContentChangeEvent = new TextDocumentContentChangeEvent();
-          final Procedure1<TextDocumentContentChangeEvent> _function_4 = (TextDocumentContentChangeEvent it_3) -> {
-            Range _range = new Range();
-            final Procedure1<Range> _function_5 = (Range it_4) -> {
-              Position _position = new Position(7, 12);
-              it_4.setStart(_position);
-              Position _position_1 = new Position(8, 16);
-              it_4.setEnd(_position_1);
+    final Procedure1<NotificationMessage> _function = new Procedure1<NotificationMessage>() {
+      public void apply(final NotificationMessage it) {
+        it.setJsonrpc("2.0");
+        it.setMethod(MessageMethods.DID_CHANGE_DOC);
+        DidChangeTextDocumentParams _didChangeTextDocumentParams = new DidChangeTextDocumentParams();
+        final Procedure1<DidChangeTextDocumentParams> _function = new Procedure1<DidChangeTextDocumentParams>() {
+          public void apply(final DidChangeTextDocumentParams it) {
+            VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier();
+            final Procedure1<VersionedTextDocumentIdentifier> _function = new Procedure1<VersionedTextDocumentIdentifier>() {
+              public void apply(final VersionedTextDocumentIdentifier it) {
+                it.setUri("file:///tmp/foo");
+                it.setVersion(Integer.valueOf(1234));
+              }
             };
-            Range _doubleArrow_1 = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_5);
-            it_3.setRange(_doubleArrow_1);
-            it_3.setRangeLength(Integer.valueOf(20));
-            it_3.setText("bar");
-          };
-          TextDocumentContentChangeEvent _doubleArrow_1 = ObjectExtensions.<TextDocumentContentChangeEvent>operator_doubleArrow(_textDocumentContentChangeEvent, _function_4);
-          it_2.add(_doubleArrow_1);
+            VersionedTextDocumentIdentifier _doubleArrow = ObjectExtensions.<VersionedTextDocumentIdentifier>operator_doubleArrow(_versionedTextDocumentIdentifier, _function);
+            it.setTextDocument(_doubleArrow);
+            ArrayList<TextDocumentContentChangeEvent> _arrayList = new ArrayList<TextDocumentContentChangeEvent>();
+            final Procedure1<ArrayList<TextDocumentContentChangeEvent>> _function_1 = new Procedure1<ArrayList<TextDocumentContentChangeEvent>>() {
+              public void apply(final ArrayList<TextDocumentContentChangeEvent> it) {
+                TextDocumentContentChangeEvent _textDocumentContentChangeEvent = new TextDocumentContentChangeEvent();
+                final Procedure1<TextDocumentContentChangeEvent> _function = new Procedure1<TextDocumentContentChangeEvent>() {
+                  public void apply(final TextDocumentContentChangeEvent it) {
+                    Range _range = new Range();
+                    final Procedure1<Range> _function = new Procedure1<Range>() {
+                      public void apply(final Range it) {
+                        Position _position = new Position(7, 12);
+                        it.setStart(_position);
+                        Position _position_1 = new Position(8, 16);
+                        it.setEnd(_position_1);
+                      }
+                    };
+                    Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                    it.setRange(_doubleArrow);
+                    it.setRangeLength(Integer.valueOf(20));
+                    it.setText("bar");
+                  }
+                };
+                TextDocumentContentChangeEvent _doubleArrow = ObjectExtensions.<TextDocumentContentChangeEvent>operator_doubleArrow(_textDocumentContentChangeEvent, _function);
+                it.add(_doubleArrow);
+              }
+            };
+            ArrayList<TextDocumentContentChangeEvent> _doubleArrow_1 = ObjectExtensions.<ArrayList<TextDocumentContentChangeEvent>>operator_doubleArrow(_arrayList, _function_1);
+            it.setContentChanges(_doubleArrow_1);
+          }
         };
-        ArrayList<TextDocumentContentChangeEvent> _doubleArrow_1 = ObjectExtensions.<ArrayList<TextDocumentContentChangeEvent>>operator_doubleArrow(_arrayList, _function_3);
-        it_1.setContentChanges(_doubleArrow_1);
-      };
-      DidChangeTextDocumentParams _doubleArrow = ObjectExtensions.<DidChangeTextDocumentParams>operator_doubleArrow(_didChangeTextDocumentParams, _function_1);
-      it.setParams(_doubleArrow);
+        DidChangeTextDocumentParams _doubleArrow = ObjectExtensions.<DidChangeTextDocumentParams>operator_doubleArrow(_didChangeTextDocumentParams, _function);
+        it.setParams(_doubleArrow);
+      }
     };
     NotificationMessage _doubleArrow = ObjectExtensions.<NotificationMessage>operator_doubleArrow(_notificationMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -448,36 +462,46 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     NotificationMessage _notificationMessage = new NotificationMessage();
-    final Procedure1<NotificationMessage> _function = (NotificationMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setMethod(MessageMethods.SHOW_DIAGNOSTICS);
-      PublishDiagnosticsParams _publishDiagnosticsParams = new PublishDiagnosticsParams();
-      final Procedure1<PublishDiagnosticsParams> _function_1 = (PublishDiagnosticsParams it_1) -> {
-        it_1.setUri("file:///tmp/foo");
-        ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
-        final Procedure1<ArrayList<Diagnostic>> _function_2 = (ArrayList<Diagnostic> it_2) -> {
-          Diagnostic _diagnostic = new Diagnostic();
-          final Procedure1<Diagnostic> _function_3 = (Diagnostic it_3) -> {
-            Range _range = new Range();
-            final Procedure1<Range> _function_4 = (Range it_4) -> {
-              Position _position = new Position(4, 22);
-              it_4.setStart(_position);
-              Position _position_1 = new Position(4, 25);
-              it_4.setEnd(_position_1);
+    final Procedure1<NotificationMessage> _function = new Procedure1<NotificationMessage>() {
+      public void apply(final NotificationMessage it) {
+        it.setJsonrpc("2.0");
+        it.setMethod(MessageMethods.SHOW_DIAGNOSTICS);
+        PublishDiagnosticsParams _publishDiagnosticsParams = new PublishDiagnosticsParams();
+        final Procedure1<PublishDiagnosticsParams> _function = new Procedure1<PublishDiagnosticsParams>() {
+          public void apply(final PublishDiagnosticsParams it) {
+            it.setUri("file:///tmp/foo");
+            ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
+            final Procedure1<ArrayList<Diagnostic>> _function = new Procedure1<ArrayList<Diagnostic>>() {
+              public void apply(final ArrayList<Diagnostic> it) {
+                Diagnostic _diagnostic = new Diagnostic();
+                final Procedure1<Diagnostic> _function = new Procedure1<Diagnostic>() {
+                  public void apply(final Diagnostic it) {
+                    Range _range = new Range();
+                    final Procedure1<Range> _function = new Procedure1<Range>() {
+                      public void apply(final Range it) {
+                        Position _position = new Position(4, 22);
+                        it.setStart(_position);
+                        Position _position_1 = new Position(4, 25);
+                        it.setEnd(_position_1);
+                      }
+                    };
+                    Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                    it.setRange(_doubleArrow);
+                    it.setSeverity(DiagnosticSeverity.Error);
+                    it.setMessage("Couldn\'t resolve reference to State \'bar\'.");
+                  }
+                };
+                Diagnostic _doubleArrow = ObjectExtensions.<Diagnostic>operator_doubleArrow(_diagnostic, _function);
+                it.add(_doubleArrow);
+              }
             };
-            Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_4);
-            it_3.setRange(_doubleArrow);
-            it_3.setSeverity(DiagnosticSeverity.Error);
-            it_3.setMessage("Couldn\'t resolve reference to State \'bar\'.");
-          };
-          Diagnostic _doubleArrow = ObjectExtensions.<Diagnostic>operator_doubleArrow(_diagnostic, _function_3);
-          it_2.add(_doubleArrow);
+            ArrayList<Diagnostic> _doubleArrow = ObjectExtensions.<ArrayList<Diagnostic>>operator_doubleArrow(_arrayList, _function);
+            it.setDiagnostics(_doubleArrow);
+          }
         };
-        ArrayList<Diagnostic> _doubleArrow = ObjectExtensions.<ArrayList<Diagnostic>>operator_doubleArrow(_arrayList, _function_2);
-        it_1.setDiagnostics(_doubleArrow);
-      };
-      PublishDiagnosticsParams _doubleArrow = ObjectExtensions.<PublishDiagnosticsParams>operator_doubleArrow(_publishDiagnosticsParams, _function_1);
-      it.setParams(_doubleArrow);
+        PublishDiagnosticsParams _doubleArrow = ObjectExtensions.<PublishDiagnosticsParams>operator_doubleArrow(_publishDiagnosticsParams, _function);
+        it.setParams(_doubleArrow);
+      }
     };
     NotificationMessage _doubleArrow = ObjectExtensions.<NotificationMessage>operator_doubleArrow(_notificationMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -485,16 +509,16 @@ public class JsonParseTest {
   
   @Test
   public void testDocumentSymbolResponse1() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_SYMBOL;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_SYMBOL;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -566,32 +590,40 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      SymbolInformation _symbolInformation = new SymbolInformation();
-      final Procedure1<SymbolInformation> _function_2 = (SymbolInformation it_1) -> {
-        it_1.setName("foobar");
-        it_1.setKind(SymbolKind.Constructor);
-        Location _location = new Location();
-        final Procedure1<Location> _function_3 = (Location it_2) -> {
-          it_2.setUri("file:/baz.txt");
-          Range _range = new Range();
-          final Procedure1<Range> _function_4 = (Range it_3) -> {
-            Position _position = new Position(4, 22);
-            it_3.setStart(_position);
-            Position _position_1 = new Position(4, 25);
-            it_3.setEnd(_position_1);
-          };
-          Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_4);
-          it_2.setRange(_doubleArrow);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        SymbolInformation _symbolInformation = new SymbolInformation();
+        final Procedure1<SymbolInformation> _function = new Procedure1<SymbolInformation>() {
+          public void apply(final SymbolInformation it) {
+            it.setName("foobar");
+            it.setKind(SymbolKind.Constructor);
+            Location _location = new Location();
+            final Procedure1<Location> _function = new Procedure1<Location>() {
+              public void apply(final Location it) {
+                it.setUri("file:/baz.txt");
+                Range _range = new Range();
+                final Procedure1<Range> _function = new Procedure1<Range>() {
+                  public void apply(final Range it) {
+                    Position _position = new Position(4, 22);
+                    it.setStart(_position);
+                    Position _position_1 = new Position(4, 25);
+                    it.setEnd(_position_1);
+                  }
+                };
+                Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                it.setRange(_doubleArrow);
+              }
+            };
+            Location _doubleArrow = ObjectExtensions.<Location>operator_doubleArrow(_location, _function);
+            it.setLocation(_doubleArrow);
+          }
         };
-        Location _doubleArrow = ObjectExtensions.<Location>operator_doubleArrow(_location, _function_3);
-        it_1.setLocation(_doubleArrow);
-      };
-      SymbolInformation _doubleArrow = ObjectExtensions.<SymbolInformation>operator_doubleArrow(_symbolInformation, _function_2);
-      it.setResult(CollectionLiterals.<Either<SymbolInformation, Object>>newArrayList(
-        Either.<SymbolInformation, Object>forLeft(_doubleArrow)));
+        SymbolInformation _doubleArrow = ObjectExtensions.<SymbolInformation>operator_doubleArrow(_symbolInformation, _function);
+        it.setResult(CollectionLiterals.<Either<SymbolInformation, Object>>newArrayList(
+          Either.<SymbolInformation, Object>forLeft(_doubleArrow)));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -599,16 +631,16 @@ public class JsonParseTest {
   
   @Test
   public void testDocumentSymbolResponse2() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_SYMBOL;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_SYMBOL;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -701,35 +733,43 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      DocumentSymbol _documentSymbol = new DocumentSymbol();
-      final Procedure1<DocumentSymbol> _function_2 = (DocumentSymbol it_1) -> {
-        it_1.setName("foobar");
-        it_1.setKind(SymbolKind.Constructor);
-        Range _range = new Range();
-        final Procedure1<Range> _function_3 = (Range it_2) -> {
-          Position _position = new Position(4, 22);
-          it_2.setStart(_position);
-          Position _position_1 = new Position(4, 25);
-          it_2.setEnd(_position_1);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        DocumentSymbol _documentSymbol = new DocumentSymbol();
+        final Procedure1<DocumentSymbol> _function = new Procedure1<DocumentSymbol>() {
+          public void apply(final DocumentSymbol it) {
+            it.setName("foobar");
+            it.setKind(SymbolKind.Constructor);
+            Range _range = new Range();
+            final Procedure1<Range> _function = new Procedure1<Range>() {
+              public void apply(final Range it) {
+                Position _position = new Position(4, 22);
+                it.setStart(_position);
+                Position _position_1 = new Position(4, 25);
+                it.setEnd(_position_1);
+              }
+            };
+            Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+            it.setRange(_doubleArrow);
+            Range _range_1 = new Range();
+            final Procedure1<Range> _function_1 = new Procedure1<Range>() {
+              public void apply(final Range it) {
+                Position _position = new Position(4, 22);
+                it.setStart(_position);
+                Position _position_1 = new Position(4, 25);
+                it.setEnd(_position_1);
+              }
+            };
+            Range _doubleArrow_1 = ObjectExtensions.<Range>operator_doubleArrow(_range_1, _function_1);
+            it.setSelectionRange(_doubleArrow_1);
+          }
         };
-        Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_3);
-        it_1.setRange(_doubleArrow);
-        Range _range_1 = new Range();
-        final Procedure1<Range> _function_4 = (Range it_2) -> {
-          Position _position = new Position(4, 22);
-          it_2.setStart(_position);
-          Position _position_1 = new Position(4, 25);
-          it_2.setEnd(_position_1);
-        };
-        Range _doubleArrow_1 = ObjectExtensions.<Range>operator_doubleArrow(_range_1, _function_4);
-        it_1.setSelectionRange(_doubleArrow_1);
-      };
-      DocumentSymbol _doubleArrow = ObjectExtensions.<DocumentSymbol>operator_doubleArrow(_documentSymbol, _function_2);
-      it.setResult(CollectionLiterals.<Either<Object, DocumentSymbol>>newArrayList(
-        Either.<Object, DocumentSymbol>forRight(_doubleArrow)));
+        DocumentSymbol _doubleArrow = ObjectExtensions.<DocumentSymbol>operator_doubleArrow(_documentSymbol, _function);
+        it.setResult(CollectionLiterals.<Either<Object, DocumentSymbol>>newArrayList(
+          Either.<Object, DocumentSymbol>forRight(_doubleArrow)));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -737,16 +777,16 @@ public class JsonParseTest {
   
   @Test
   public void testCodeActionResponse1() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_CODE_ACTION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_CODE_ACTION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -779,17 +819,21 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Command _command = new Command();
-      final Procedure1<Command> _function_2 = (Command it_1) -> {
-        it_1.setTitle("fixme");
-        it_1.setCommand("fix");
-      };
-      Command _doubleArrow = ObjectExtensions.<Command>operator_doubleArrow(_command, _function_2);
-      it.setResult(CollectionLiterals.<Either<Command, Object>>newArrayList(
-        Either.<Command, Object>forLeft(_doubleArrow)));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Command _command = new Command();
+        final Procedure1<Command> _function = new Procedure1<Command>() {
+          public void apply(final Command it) {
+            it.setTitle("fixme");
+            it.setCommand("fix");
+          }
+        };
+        Command _doubleArrow = ObjectExtensions.<Command>operator_doubleArrow(_command, _function);
+        it.setResult(CollectionLiterals.<Either<Command, Object>>newArrayList(
+          Either.<Command, Object>forLeft(_doubleArrow)));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -797,16 +841,16 @@ public class JsonParseTest {
   
   @Test
   public void testCodeActionResponse2() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_CODE_ACTION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_CODE_ACTION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -899,38 +943,48 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      CodeAction _codeAction = new CodeAction();
-      final Procedure1<CodeAction> _function_2 = (CodeAction it_1) -> {
-        it_1.setTitle("fixme");
-        it_1.setKind("fix");
-        it_1.setDiagnostics(CollectionLiterals.<Diagnostic>newArrayList());
-        WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
-        final Procedure1<WorkspaceEdit> _function_3 = (WorkspaceEdit it_2) -> {
-          TextEdit _textEdit = new TextEdit();
-          final Procedure1<TextEdit> _function_4 = (TextEdit it_3) -> {
-            Range _range = new Range();
-            final Procedure1<Range> _function_5 = (Range it_4) -> {
-              Position _position = new Position(0, 0);
-              it_4.setStart(_position);
-              Position _position_1 = new Position(0, 5);
-              it_4.setEnd(_position_1);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        CodeAction _codeAction = new CodeAction();
+        final Procedure1<CodeAction> _function = new Procedure1<CodeAction>() {
+          public void apply(final CodeAction it) {
+            it.setTitle("fixme");
+            it.setKind("fix");
+            it.setDiagnostics(CollectionLiterals.<Diagnostic>newArrayList());
+            WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
+            final Procedure1<WorkspaceEdit> _function = new Procedure1<WorkspaceEdit>() {
+              public void apply(final WorkspaceEdit it) {
+                TextEdit _textEdit = new TextEdit();
+                final Procedure1<TextEdit> _function = new Procedure1<TextEdit>() {
+                  public void apply(final TextEdit it) {
+                    Range _range = new Range();
+                    final Procedure1<Range> _function = new Procedure1<Range>() {
+                      public void apply(final Range it) {
+                        Position _position = new Position(0, 0);
+                        it.setStart(_position);
+                        Position _position_1 = new Position(0, 5);
+                        it.setEnd(_position_1);
+                      }
+                    };
+                    Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                    it.setRange(_doubleArrow);
+                    it.setNewText("fixed");
+                  }
+                };
+                TextEdit _doubleArrow = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function);
+                it.getChanges().put("file:test1533196529126.lspt", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow));
+              }
             };
-            Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_5);
-            it_3.setRange(_doubleArrow);
-            it_3.setNewText("fixed");
-          };
-          TextEdit _doubleArrow = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function_4);
-          it_2.getChanges().put("file:test1533196529126.lspt", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow));
+            WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function);
+            it.setEdit(_doubleArrow);
+          }
         };
-        WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_3);
-        it_1.setEdit(_doubleArrow);
-      };
-      CodeAction _doubleArrow = ObjectExtensions.<CodeAction>operator_doubleArrow(_codeAction, _function_2);
-      it.setResult(CollectionLiterals.<Either<Object, CodeAction>>newArrayList(
-        Either.<Object, CodeAction>forRight(_doubleArrow)));
+        CodeAction _doubleArrow = ObjectExtensions.<CodeAction>operator_doubleArrow(_codeAction, _function);
+        it.setResult(CollectionLiterals.<Either<Object, CodeAction>>newArrayList(
+          Either.<Object, CodeAction>forRight(_doubleArrow)));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -938,16 +992,16 @@ public class JsonParseTest {
   
   @Test
   public void testRenameResponse1() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_RENAME;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_RENAME;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1058,48 +1112,62 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
-      final Procedure1<WorkspaceEdit> _function_2 = (WorkspaceEdit it_1) -> {
-        HashMap<String, List<TextEdit>> _hashMap = new HashMap<String, List<TextEdit>>();
-        final Procedure1<HashMap<String, List<TextEdit>>> _function_3 = (HashMap<String, List<TextEdit>> it_2) -> {
-          TextEdit _textEdit = new TextEdit();
-          final Procedure1<TextEdit> _function_4 = (TextEdit it_3) -> {
-            Range _range = new Range();
-            final Procedure1<Range> _function_5 = (Range it_4) -> {
-              Position _position = new Position(3, 32);
-              it_4.setStart(_position);
-              Position _position_1 = new Position(3, 35);
-              it_4.setEnd(_position_1);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
+        final Procedure1<WorkspaceEdit> _function = new Procedure1<WorkspaceEdit>() {
+          public void apply(final WorkspaceEdit it) {
+            HashMap<String, List<TextEdit>> _hashMap = new HashMap<String, List<TextEdit>>();
+            final Procedure1<HashMap<String, List<TextEdit>>> _function = new Procedure1<HashMap<String, List<TextEdit>>>() {
+              public void apply(final HashMap<String, List<TextEdit>> it) {
+                TextEdit _textEdit = new TextEdit();
+                final Procedure1<TextEdit> _function = new Procedure1<TextEdit>() {
+                  public void apply(final TextEdit it) {
+                    Range _range = new Range();
+                    final Procedure1<Range> _function = new Procedure1<Range>() {
+                      public void apply(final Range it) {
+                        Position _position = new Position(3, 32);
+                        it.setStart(_position);
+                        Position _position_1 = new Position(3, 35);
+                        it.setEnd(_position_1);
+                      }
+                    };
+                    Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                    it.setRange(_doubleArrow);
+                    it.setNewText("foobar");
+                  }
+                };
+                TextEdit _doubleArrow = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function);
+                TextEdit _textEdit_1 = new TextEdit();
+                final Procedure1<TextEdit> _function_1 = new Procedure1<TextEdit>() {
+                  public void apply(final TextEdit it) {
+                    Range _range = new Range();
+                    final Procedure1<Range> _function = new Procedure1<Range>() {
+                      public void apply(final Range it) {
+                        Position _position = new Position(4, 22);
+                        it.setStart(_position);
+                        Position _position_1 = new Position(4, 25);
+                        it.setEnd(_position_1);
+                      }
+                    };
+                    Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                    it.setRange(_doubleArrow);
+                    it.setNewText("foobar");
+                  }
+                };
+                TextEdit _doubleArrow_1 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit_1, _function_1);
+                it.put("file:///tmp/foo", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow, _doubleArrow_1));
+              }
             };
-            Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_5);
-            it_3.setRange(_doubleArrow);
-            it_3.setNewText("foobar");
-          };
-          TextEdit _doubleArrow = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function_4);
-          TextEdit _textEdit_1 = new TextEdit();
-          final Procedure1<TextEdit> _function_5 = (TextEdit it_3) -> {
-            Range _range = new Range();
-            final Procedure1<Range> _function_6 = (Range it_4) -> {
-              Position _position = new Position(4, 22);
-              it_4.setStart(_position);
-              Position _position_1 = new Position(4, 25);
-              it_4.setEnd(_position_1);
-            };
-            Range _doubleArrow_1 = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_6);
-            it_3.setRange(_doubleArrow_1);
-            it_3.setNewText("foobar");
-          };
-          TextEdit _doubleArrow_1 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit_1, _function_5);
-          it_2.put("file:///tmp/foo", CollectionLiterals.<TextEdit>newArrayList(_doubleArrow, _doubleArrow_1));
+            HashMap<String, List<TextEdit>> _doubleArrow = ObjectExtensions.<HashMap<String, List<TextEdit>>>operator_doubleArrow(_hashMap, _function);
+            it.setChanges(_doubleArrow);
+          }
         };
-        HashMap<String, List<TextEdit>> _doubleArrow = ObjectExtensions.<HashMap<String, List<TextEdit>>>operator_doubleArrow(_hashMap, _function_3);
-        it_1.setChanges(_doubleArrow);
-      };
-      WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_2);
-      it.setResult(_doubleArrow);
+        WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1107,16 +1175,16 @@ public class JsonParseTest {
   
   @Test
   public void testRenameResponse3() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_RENAME;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_RENAME;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1257,63 +1325,81 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
-      final Procedure1<WorkspaceEdit> _function_2 = (WorkspaceEdit it_1) -> {
-        CreateFile _createFile = new CreateFile();
-        final Procedure1<CreateFile> _function_3 = (CreateFile it_2) -> {
-          it_2.setUri("file:/foo.txt");
-          CreateFileOptions _createFileOptions = new CreateFileOptions();
-          final Procedure1<CreateFileOptions> _function_4 = (CreateFileOptions it_3) -> {
-            it_3.setOverwrite(Boolean.valueOf(true));
-            it_3.setIgnoreIfExists(Boolean.valueOf(true));
-          };
-          CreateFileOptions _doubleArrow = ObjectExtensions.<CreateFileOptions>operator_doubleArrow(_createFileOptions, _function_4);
-          it_2.setOptions(_doubleArrow);
-        };
-        CreateFile _doubleArrow = ObjectExtensions.<CreateFile>operator_doubleArrow(_createFile, _function_3);
-        DeleteFile _deleteFile = new DeleteFile();
-        final Procedure1<DeleteFile> _function_4 = (DeleteFile it_2) -> {
-          it_2.setUri("file:/foo.txt");
-        };
-        DeleteFile _doubleArrow_1 = ObjectExtensions.<DeleteFile>operator_doubleArrow(_deleteFile, _function_4);
-        RenameFile _renameFile = new RenameFile();
-        final Procedure1<RenameFile> _function_5 = (RenameFile it_2) -> {
-          it_2.setOldUri("file:/foo.txt");
-          it_2.setNewUri("file:/bar.txt");
-        };
-        RenameFile _doubleArrow_2 = ObjectExtensions.<RenameFile>operator_doubleArrow(_renameFile, _function_5);
-        TextDocumentEdit _textDocumentEdit = new TextDocumentEdit();
-        final Procedure1<TextDocumentEdit> _function_6 = (TextDocumentEdit it_2) -> {
-          VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier("file:/baz.txt", Integer.valueOf(17));
-          it_2.setTextDocument(_versionedTextDocumentIdentifier);
-          TextEdit _textEdit = new TextEdit();
-          final Procedure1<TextEdit> _function_7 = (TextEdit it_3) -> {
-            Range _range = new Range();
-            final Procedure1<Range> _function_8 = (Range it_4) -> {
-              Position _position = new Position(3, 32);
-              it_4.setStart(_position);
-              Position _position_1 = new Position(3, 35);
-              it_4.setEnd(_position_1);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        WorkspaceEdit _workspaceEdit = new WorkspaceEdit();
+        final Procedure1<WorkspaceEdit> _function = new Procedure1<WorkspaceEdit>() {
+          public void apply(final WorkspaceEdit it) {
+            CreateFile _createFile = new CreateFile();
+            final Procedure1<CreateFile> _function = new Procedure1<CreateFile>() {
+              public void apply(final CreateFile it) {
+                it.setUri("file:/foo.txt");
+                CreateFileOptions _createFileOptions = new CreateFileOptions();
+                final Procedure1<CreateFileOptions> _function = new Procedure1<CreateFileOptions>() {
+                  public void apply(final CreateFileOptions it) {
+                    it.setOverwrite(Boolean.valueOf(true));
+                    it.setIgnoreIfExists(Boolean.valueOf(true));
+                  }
+                };
+                CreateFileOptions _doubleArrow = ObjectExtensions.<CreateFileOptions>operator_doubleArrow(_createFileOptions, _function);
+                it.setOptions(_doubleArrow);
+              }
             };
-            Range _doubleArrow_3 = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_8);
-            it_3.setRange(_doubleArrow_3);
-            it_3.setNewText("asdfqweryxcv");
-          };
-          TextEdit _doubleArrow_3 = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function_7);
-          it_2.setEdits(CollectionLiterals.<TextEdit>newArrayList(_doubleArrow_3));
+            CreateFile _doubleArrow = ObjectExtensions.<CreateFile>operator_doubleArrow(_createFile, _function);
+            DeleteFile _deleteFile = new DeleteFile();
+            final Procedure1<DeleteFile> _function_1 = new Procedure1<DeleteFile>() {
+              public void apply(final DeleteFile it) {
+                it.setUri("file:/foo.txt");
+              }
+            };
+            DeleteFile _doubleArrow_1 = ObjectExtensions.<DeleteFile>operator_doubleArrow(_deleteFile, _function_1);
+            RenameFile _renameFile = new RenameFile();
+            final Procedure1<RenameFile> _function_2 = new Procedure1<RenameFile>() {
+              public void apply(final RenameFile it) {
+                it.setOldUri("file:/foo.txt");
+                it.setNewUri("file:/bar.txt");
+              }
+            };
+            RenameFile _doubleArrow_2 = ObjectExtensions.<RenameFile>operator_doubleArrow(_renameFile, _function_2);
+            TextDocumentEdit _textDocumentEdit = new TextDocumentEdit();
+            final Procedure1<TextDocumentEdit> _function_3 = new Procedure1<TextDocumentEdit>() {
+              public void apply(final TextDocumentEdit it) {
+                VersionedTextDocumentIdentifier _versionedTextDocumentIdentifier = new VersionedTextDocumentIdentifier("file:/baz.txt", Integer.valueOf(17));
+                it.setTextDocument(_versionedTextDocumentIdentifier);
+                TextEdit _textEdit = new TextEdit();
+                final Procedure1<TextEdit> _function = new Procedure1<TextEdit>() {
+                  public void apply(final TextEdit it) {
+                    Range _range = new Range();
+                    final Procedure1<Range> _function = new Procedure1<Range>() {
+                      public void apply(final Range it) {
+                        Position _position = new Position(3, 32);
+                        it.setStart(_position);
+                        Position _position_1 = new Position(3, 35);
+                        it.setEnd(_position_1);
+                      }
+                    };
+                    Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+                    it.setRange(_doubleArrow);
+                    it.setNewText("asdfqweryxcv");
+                  }
+                };
+                TextEdit _doubleArrow = ObjectExtensions.<TextEdit>operator_doubleArrow(_textEdit, _function);
+                it.setEdits(CollectionLiterals.<TextEdit>newArrayList(_doubleArrow));
+              }
+            };
+            TextDocumentEdit _doubleArrow_3 = ObjectExtensions.<TextDocumentEdit>operator_doubleArrow(_textDocumentEdit, _function_3);
+            it.setDocumentChanges(CollectionLiterals.<Either<TextDocumentEdit, ResourceOperation>>newArrayList(
+              Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow)), 
+              Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow_1)), 
+              Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow_2)), 
+              Either.<TextDocumentEdit, ResourceOperation>forLeft(_doubleArrow_3)));
+          }
         };
-        TextDocumentEdit _doubleArrow_3 = ObjectExtensions.<TextDocumentEdit>operator_doubleArrow(_textDocumentEdit, _function_6);
-        it_1.setDocumentChanges(CollectionLiterals.<Either<TextDocumentEdit, ResourceOperation>>newArrayList(
-          Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow)), 
-          Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow_1)), 
-          Either.<TextDocumentEdit, ResourceOperation>forRight(((ResourceOperation) _doubleArrow_2)), 
-          Either.<TextDocumentEdit, ResourceOperation>forLeft(_doubleArrow_3)));
-      };
-      WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function_2);
-      it.setResult(_doubleArrow);
+        WorkspaceEdit _doubleArrow = ObjectExtensions.<WorkspaceEdit>operator_doubleArrow(_workspaceEdit, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1321,16 +1407,16 @@ public class JsonParseTest {
   
   @Test
   public void testResponseError() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = "textDocument/rename";
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = "textDocument/rename";
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1357,16 +1443,20 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      ResponseError _responseError = new ResponseError();
-      final Procedure1<ResponseError> _function_2 = (ResponseError it_1) -> {
-        it_1.setCode(ResponseErrorCode.InvalidRequest);
-        it_1.setMessage("Could not parse request.");
-      };
-      ResponseError _doubleArrow = ObjectExtensions.<ResponseError>operator_doubleArrow(_responseError, _function_2);
-      it.setError(_doubleArrow);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        ResponseError _responseError = new ResponseError();
+        final Procedure1<ResponseError> _function = new Procedure1<ResponseError>() {
+          public void apply(final ResponseError it) {
+            it.setCode(ResponseErrorCode.InvalidRequest);
+            it.setMessage("Could not parse request.");
+          }
+        };
+        ResponseError _doubleArrow = ObjectExtensions.<ResponseError>operator_doubleArrow(_responseError, _function);
+        it.setError(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1398,12 +1488,14 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     NotificationMessage _notificationMessage = new NotificationMessage();
-    final Procedure1<NotificationMessage> _function = (NotificationMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setMethod(MessageMethods.TELEMETRY_EVENT);
-      Pair<String, Double> _mappedTo = Pair.<String, Double>of("foo", Double.valueOf(12.3));
-      Pair<String, String> _mappedTo_1 = Pair.<String, String>of("bar", "qwertz");
-      it.setParams(CollectionLiterals.<String, Object>newLinkedHashMap(_mappedTo, _mappedTo_1));
+    final Procedure1<NotificationMessage> _function = new Procedure1<NotificationMessage>() {
+      public void apply(final NotificationMessage it) {
+        it.setJsonrpc("2.0");
+        it.setMethod(MessageMethods.TELEMETRY_EVENT);
+        Pair<String, Double> _mappedTo = Pair.<String, Double>of("foo", Double.valueOf(12.3));
+        Pair<String, String> _mappedTo_1 = Pair.<String, String>of("bar", "qwertz");
+        it.setParams(CollectionLiterals.<String, Object>newLinkedHashMap(_mappedTo, _mappedTo_1));
+      }
     };
     NotificationMessage _doubleArrow = ObjectExtensions.<NotificationMessage>operator_doubleArrow(_notificationMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -1411,16 +1503,16 @@ public class JsonParseTest {
   
   @Test
   public void testHoverResponse1() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_HOVER;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1483,26 +1575,32 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Hover _hover = new Hover();
-      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
-        Range _range = new Range();
-        final Procedure1<Range> _function_3 = (Range it_2) -> {
-          Position _position = new Position(3, 32);
-          it_2.setStart(_position);
-          Position _position_1 = new Position(3, 35);
-          it_2.setEnd(_position_1);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Hover _hover = new Hover();
+        final Procedure1<Hover> _function = new Procedure1<Hover>() {
+          public void apply(final Hover it) {
+            Range _range = new Range();
+            final Procedure1<Range> _function = new Procedure1<Range>() {
+              public void apply(final Range it) {
+                Position _position = new Position(3, 32);
+                it.setStart(_position);
+                Position _position_1 = new Position(3, 35);
+                it.setEnd(_position_1);
+              }
+            };
+            Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function);
+            it.setRange(_doubleArrow);
+            it.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(
+              Either.<String, MarkedString>forLeft("foo"), 
+              Either.<String, MarkedString>forLeft("boo shuby doo")));
+          }
         };
-        Range _doubleArrow = ObjectExtensions.<Range>operator_doubleArrow(_range, _function_3);
-        it_1.setRange(_doubleArrow);
-        it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(
-          Either.<String, MarkedString>forLeft("foo"), 
-          Either.<String, MarkedString>forLeft("boo shuby doo")));
-      };
-      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
-      it.setResult(_doubleArrow);
+        Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1510,16 +1608,16 @@ public class JsonParseTest {
   
   @Test
   public void testHoverResponse2() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_HOVER;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1552,21 +1650,27 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Hover _hover = new Hover();
-      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
-        MarkupContent _markupContent = new MarkupContent();
-        final Procedure1<MarkupContent> _function_3 = (MarkupContent it_2) -> {
-          it_2.setKind("plaintext");
-          it_2.setValue("foo");
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Hover _hover = new Hover();
+        final Procedure1<Hover> _function = new Procedure1<Hover>() {
+          public void apply(final Hover it) {
+            MarkupContent _markupContent = new MarkupContent();
+            final Procedure1<MarkupContent> _function = new Procedure1<MarkupContent>() {
+              public void apply(final MarkupContent it) {
+                it.setKind("plaintext");
+                it.setValue("foo");
+              }
+            };
+            MarkupContent _doubleArrow = ObjectExtensions.<MarkupContent>operator_doubleArrow(_markupContent, _function);
+            it.setContents(_doubleArrow);
+          }
         };
-        MarkupContent _doubleArrow = ObjectExtensions.<MarkupContent>operator_doubleArrow(_markupContent, _function_3);
-        it_1.setContents(_doubleArrow);
-      };
-      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
-      it.setResult(_doubleArrow);
+        Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1574,16 +1678,16 @@ public class JsonParseTest {
   
   @Test
   public void testHoverResponse3() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_HOVER;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1607,15 +1711,19 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Hover _hover = new Hover();
-      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
-        it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(Either.<String, MarkedString>forLeft("foo")));
-      };
-      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
-      it.setResult(_doubleArrow);
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Hover _hover = new Hover();
+        final Procedure1<Hover> _function = new Procedure1<Hover>() {
+          public void apply(final Hover it) {
+            it.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(Either.<String, MarkedString>forLeft("foo")));
+          }
+        };
+        Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1623,16 +1731,16 @@ public class JsonParseTest {
   
   @Test
   public void testHoverResponse4() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_HOVER;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_HOVER;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1665,21 +1773,27 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Hover _hover = new Hover();
-      final Procedure1<Hover> _function_2 = (Hover it_1) -> {
-        MarkedString _markedString = new MarkedString();
-        final Procedure1<MarkedString> _function_3 = (MarkedString it_2) -> {
-          it_2.setLanguage("plaintext");
-          it_2.setValue("foo");
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Hover _hover = new Hover();
+        final Procedure1<Hover> _function = new Procedure1<Hover>() {
+          public void apply(final Hover it) {
+            MarkedString _markedString = new MarkedString();
+            final Procedure1<MarkedString> _function = new Procedure1<MarkedString>() {
+              public void apply(final MarkedString it) {
+                it.setLanguage("plaintext");
+                it.setValue("foo");
+              }
+            };
+            MarkedString _doubleArrow = ObjectExtensions.<MarkedString>operator_doubleArrow(_markedString, _function);
+            it.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(Either.<String, MarkedString>forRight(_doubleArrow)));
+          }
         };
-        MarkedString _doubleArrow = ObjectExtensions.<MarkedString>operator_doubleArrow(_markedString, _function_3);
-        it_1.setContents(CollectionLiterals.<Either<String, MarkedString>>newArrayList(Either.<String, MarkedString>forRight(_doubleArrow)));
-      };
-      Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function_2);
-      it.setResult(_doubleArrow);
+        Hover _doubleArrow = ObjectExtensions.<Hover>operator_doubleArrow(_hover, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1786,16 +1900,16 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     final String json = _builder.toString();
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_CODE_LENS;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_CODE_LENS;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     final Message message = this.jsonHandler.parseMessage(json);
@@ -1828,16 +1942,16 @@ public class JsonParseTest {
   
   @Test
   public void testDeclarationResponse() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_DECLARATION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_DECLARATION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1897,15 +2011,17 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Position _position = new Position(7, 12);
-      Position _position_1 = new Position(8, 16);
-      Range _range = new Range(_position, _position_1);
-      Location _location = new Location("foo", _range);
-      it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(
-        Collections.<Location>unmodifiableList(CollectionLiterals.<Location>newArrayList(_location))));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Position _position = new Position(7, 12);
+        Position _position_1 = new Position(8, 16);
+        Range _range = new Range(_position, _position_1);
+        Location _location = new Location("foo", _range);
+        it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(
+          Collections.<Location>unmodifiableList(CollectionLiterals.<Location>newArrayList(_location))));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -1913,16 +2029,16 @@ public class JsonParseTest {
   
   @Test
   public void testDefinitionResponse1() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_DEFINITION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_DEFINITION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -1982,20 +2098,24 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      LocationLink _locationLink = new LocationLink();
-      final Procedure1<LocationLink> _function_2 = (LocationLink it_1) -> {
-        it_1.setTargetUri("foo");
-        Position _position = new Position(7, 12);
-        Position _position_1 = new Position(8, 16);
-        Range _range = new Range(_position, _position_1);
-        it_1.setTargetRange(_range);
-      };
-      LocationLink _doubleArrow = ObjectExtensions.<LocationLink>operator_doubleArrow(_locationLink, _function_2);
-      it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forRight(
-        Collections.<LocationLink>unmodifiableList(CollectionLiterals.<LocationLink>newArrayList(_doubleArrow))));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        LocationLink _locationLink = new LocationLink();
+        final Procedure1<LocationLink> _function = new Procedure1<LocationLink>() {
+          public void apply(final LocationLink it) {
+            it.setTargetUri("foo");
+            Position _position = new Position(7, 12);
+            Position _position_1 = new Position(8, 16);
+            Range _range = new Range(_position, _position_1);
+            it.setTargetRange(_range);
+          }
+        };
+        LocationLink _doubleArrow = ObjectExtensions.<LocationLink>operator_doubleArrow(_locationLink, _function);
+        it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forRight(
+          Collections.<LocationLink>unmodifiableList(CollectionLiterals.<LocationLink>newArrayList(_doubleArrow))));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -2003,16 +2123,16 @@ public class JsonParseTest {
   
   @Test
   public void testDefinitionResponse2() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_DEFINITION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_DEFINITION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -2030,10 +2150,12 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(CollectionLiterals.<Location>emptyList()));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(CollectionLiterals.<Location>emptyList()));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -2041,16 +2163,16 @@ public class JsonParseTest {
   
   @Test
   public void testTypeDefinitionResponse() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_TYPE_DEFINITION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_TYPE_DEFINITION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -2110,15 +2232,17 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      Position _position = new Position(7, 12);
-      Position _position_1 = new Position(8, 16);
-      Range _range = new Range(_position, _position_1);
-      Location _location = new Location("foo", _range);
-      it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(
-        Collections.<Location>unmodifiableList(CollectionLiterals.<Location>newArrayList(_location))));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        Position _position = new Position(7, 12);
+        Position _position_1 = new Position(8, 16);
+        Range _range = new Range(_position, _position_1);
+        Location _location = new Location("foo", _range);
+        it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(
+          Collections.<Location>unmodifiableList(CollectionLiterals.<Location>newArrayList(_location))));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -2126,16 +2250,16 @@ public class JsonParseTest {
   
   @Test
   public void testImplementationResponse() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_IMPLEMENTATION;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_IMPLEMENTATION;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -2195,20 +2319,24 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      LocationLink _locationLink = new LocationLink();
-      final Procedure1<LocationLink> _function_2 = (LocationLink it_1) -> {
-        it_1.setTargetUri("foo");
-        Position _position = new Position(7, 12);
-        Position _position_1 = new Position(8, 16);
-        Range _range = new Range(_position, _position_1);
-        it_1.setTargetRange(_range);
-      };
-      LocationLink _doubleArrow = ObjectExtensions.<LocationLink>operator_doubleArrow(_locationLink, _function_2);
-      it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forRight(
-        Collections.<LocationLink>unmodifiableList(CollectionLiterals.<LocationLink>newArrayList(_doubleArrow))));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        LocationLink _locationLink = new LocationLink();
+        final Procedure1<LocationLink> _function = new Procedure1<LocationLink>() {
+          public void apply(final LocationLink it) {
+            it.setTargetUri("foo");
+            Position _position = new Position(7, 12);
+            Position _position_1 = new Position(8, 16);
+            Range _range = new Range(_position, _position_1);
+            it.setTargetRange(_range);
+          }
+        };
+        LocationLink _doubleArrow = ObjectExtensions.<LocationLink>operator_doubleArrow(_locationLink, _function);
+        it.setResult(Either.<List<? extends Location>, List<? extends LocationLink>>forRight(
+          Collections.<LocationLink>unmodifiableList(CollectionLiterals.<LocationLink>newArrayList(_doubleArrow))));
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -2216,16 +2344,16 @@ public class JsonParseTest {
   
   @Test
   public void testSignatureHelpResponse() {
-    final MethodProvider _function = (String id) -> {
-      String _switchResult = null;
-      if (id != null) {
-        switch (id) {
-          case "12":
-            _switchResult = MessageMethods.DOC_SIGNATURE_HELP;
-            break;
+    final MethodProvider _function = new MethodProvider() {
+      public String resolveMethod(final String id) {
+        String _switchResult = null;
+        boolean _matched = false;
+        if (Objects.equal(id, "12")) {
+          _matched=true;
+          _switchResult = MessageMethods.DOC_SIGNATURE_HELP;
         }
+        return _switchResult;
       }
-      return _switchResult;
     };
     this.jsonHandler.setMethodProvider(_function);
     StringConcatenation _builder = new StringConcatenation();
@@ -2285,31 +2413,41 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     ResponseMessage _responseMessage = new ResponseMessage();
-    final Procedure1<ResponseMessage> _function_1 = (ResponseMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      SignatureHelp _signatureHelp = new SignatureHelp();
-      final Procedure1<SignatureHelp> _function_2 = (SignatureHelp it_1) -> {
-        SignatureInformation _signatureInformation = new SignatureInformation();
-        final Procedure1<SignatureInformation> _function_3 = (SignatureInformation it_2) -> {
-          it_2.setLabel("Foo");
-          ParameterInformation _parameterInformation = new ParameterInformation();
-          final Procedure1<ParameterInformation> _function_4 = (ParameterInformation it_3) -> {
-            it_3.setLabel(Either.<String, Tuple.Two<Integer, Integer>>forLeft("label1"));
-          };
-          ParameterInformation _doubleArrow = ObjectExtensions.<ParameterInformation>operator_doubleArrow(_parameterInformation, _function_4);
-          ParameterInformation _parameterInformation_1 = new ParameterInformation();
-          final Procedure1<ParameterInformation> _function_5 = (ParameterInformation it_3) -> {
-            it_3.setLabel(Either.<String, Tuple.Two<Integer, Integer>>forRight(Tuple.<Integer, Integer>two(Integer.valueOf(12), Integer.valueOf(25))));
-          };
-          ParameterInformation _doubleArrow_1 = ObjectExtensions.<ParameterInformation>operator_doubleArrow(_parameterInformation_1, _function_5);
-          it_2.setParameters(Collections.<ParameterInformation>unmodifiableList(CollectionLiterals.<ParameterInformation>newArrayList(_doubleArrow, _doubleArrow_1)));
+    final Procedure1<ResponseMessage> _function_1 = new Procedure1<ResponseMessage>() {
+      public void apply(final ResponseMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        SignatureHelp _signatureHelp = new SignatureHelp();
+        final Procedure1<SignatureHelp> _function = new Procedure1<SignatureHelp>() {
+          public void apply(final SignatureHelp it) {
+            SignatureInformation _signatureInformation = new SignatureInformation();
+            final Procedure1<SignatureInformation> _function = new Procedure1<SignatureInformation>() {
+              public void apply(final SignatureInformation it) {
+                it.setLabel("Foo");
+                ParameterInformation _parameterInformation = new ParameterInformation();
+                final Procedure1<ParameterInformation> _function = new Procedure1<ParameterInformation>() {
+                  public void apply(final ParameterInformation it) {
+                    it.setLabel(Either.<String, Tuple.Two<Integer, Integer>>forLeft("label1"));
+                  }
+                };
+                ParameterInformation _doubleArrow = ObjectExtensions.<ParameterInformation>operator_doubleArrow(_parameterInformation, _function);
+                ParameterInformation _parameterInformation_1 = new ParameterInformation();
+                final Procedure1<ParameterInformation> _function_1 = new Procedure1<ParameterInformation>() {
+                  public void apply(final ParameterInformation it) {
+                    it.setLabel(Either.<String, Tuple.Two<Integer, Integer>>forRight(Tuple.<Integer, Integer>two(Integer.valueOf(12), Integer.valueOf(25))));
+                  }
+                };
+                ParameterInformation _doubleArrow_1 = ObjectExtensions.<ParameterInformation>operator_doubleArrow(_parameterInformation_1, _function_1);
+                it.setParameters(Collections.<ParameterInformation>unmodifiableList(CollectionLiterals.<ParameterInformation>newArrayList(_doubleArrow, _doubleArrow_1)));
+              }
+            };
+            SignatureInformation _doubleArrow = ObjectExtensions.<SignatureInformation>operator_doubleArrow(_signatureInformation, _function);
+            it.setSignatures(Collections.<SignatureInformation>unmodifiableList(CollectionLiterals.<SignatureInformation>newArrayList(_doubleArrow)));
+          }
         };
-        SignatureInformation _doubleArrow = ObjectExtensions.<SignatureInformation>operator_doubleArrow(_signatureInformation, _function_3);
-        it_1.setSignatures(Collections.<SignatureInformation>unmodifiableList(CollectionLiterals.<SignatureInformation>newArrayList(_doubleArrow)));
-      };
-      SignatureHelp _doubleArrow = ObjectExtensions.<SignatureHelp>operator_doubleArrow(_signatureHelp, _function_2);
-      it.setResult(_doubleArrow);
+        SignatureHelp _doubleArrow = ObjectExtensions.<SignatureHelp>operator_doubleArrow(_signatureHelp, _function);
+        it.setResult(_doubleArrow);
+      }
     };
     ResponseMessage _doubleArrow = ObjectExtensions.<ResponseMessage>operator_doubleArrow(_responseMessage, _function_1);
     this.assertParse(_builder, _doubleArrow);
@@ -2362,27 +2500,33 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     RequestMessage _requestMessage = new RequestMessage();
-    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("12");
-      it.setMethod(MessageMethods.DOC_FORMATTING);
-      DocumentFormattingParams _documentFormattingParams = new DocumentFormattingParams();
-      final Procedure1<DocumentFormattingParams> _function_1 = (DocumentFormattingParams it_1) -> {
-        TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier("file:///tmp/foo");
-        it_1.setTextDocument(_textDocumentIdentifier);
-        FormattingOptions _formattingOptions = new FormattingOptions();
-        final Procedure1<FormattingOptions> _function_2 = (FormattingOptions it_2) -> {
-          it_2.setInsertSpaces(false);
-          JsonParseTest.MyInteger _myInteger = new JsonParseTest.MyInteger(4);
-          it_2.putNumber("tabSize", _myInteger);
-          JsonParseTest.MyInteger _myInteger_1 = new JsonParseTest.MyInteger((-7));
-          it_2.putNumber("customProperty", _myInteger_1);
+    final Procedure1<RequestMessage> _function = new Procedure1<RequestMessage>() {
+      public void apply(final RequestMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("12");
+        it.setMethod(MessageMethods.DOC_FORMATTING);
+        DocumentFormattingParams _documentFormattingParams = new DocumentFormattingParams();
+        final Procedure1<DocumentFormattingParams> _function = new Procedure1<DocumentFormattingParams>() {
+          public void apply(final DocumentFormattingParams it) {
+            TextDocumentIdentifier _textDocumentIdentifier = new TextDocumentIdentifier("file:///tmp/foo");
+            it.setTextDocument(_textDocumentIdentifier);
+            FormattingOptions _formattingOptions = new FormattingOptions();
+            final Procedure1<FormattingOptions> _function = new Procedure1<FormattingOptions>() {
+              public void apply(final FormattingOptions it) {
+                it.setInsertSpaces(false);
+                JsonParseTest.MyInteger _myInteger = new JsonParseTest.MyInteger(4);
+                it.putNumber("tabSize", _myInteger);
+                JsonParseTest.MyInteger _myInteger_1 = new JsonParseTest.MyInteger((-7));
+                it.putNumber("customProperty", _myInteger_1);
+              }
+            };
+            FormattingOptions _doubleArrow = ObjectExtensions.<FormattingOptions>operator_doubleArrow(_formattingOptions, _function);
+            it.setOptions(_doubleArrow);
+          }
         };
-        FormattingOptions _doubleArrow = ObjectExtensions.<FormattingOptions>operator_doubleArrow(_formattingOptions, _function_2);
-        it_1.setOptions(_doubleArrow);
-      };
-      DocumentFormattingParams _doubleArrow = ObjectExtensions.<DocumentFormattingParams>operator_doubleArrow(_documentFormattingParams, _function_1);
-      it.setParams(_doubleArrow);
+        DocumentFormattingParams _doubleArrow = ObjectExtensions.<DocumentFormattingParams>operator_doubleArrow(_documentFormattingParams, _function);
+        it.setParams(_doubleArrow);
+      }
     };
     RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -2453,16 +2597,20 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     RequestMessage _requestMessage = new RequestMessage();
-    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("1");
-      it.setMethod(MessageMethods.INITIALIZE);
-      InitializeParams _initializeParams = new InitializeParams();
-      final Procedure1<InitializeParams> _function_1 = (InitializeParams it_1) -> {
-        it_1.setRootUri("file:///tmp/foo");
-      };
-      InitializeParams _doubleArrow = ObjectExtensions.<InitializeParams>operator_doubleArrow(_initializeParams, _function_1);
-      it.setParams(_doubleArrow);
+    final Procedure1<RequestMessage> _function = new Procedure1<RequestMessage>() {
+      public void apply(final RequestMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("1");
+        it.setMethod(MessageMethods.INITIALIZE);
+        InitializeParams _initializeParams = new InitializeParams();
+        final Procedure1<InitializeParams> _function = new Procedure1<InitializeParams>() {
+          public void apply(final InitializeParams it) {
+            it.setRootUri("file:///tmp/foo");
+          }
+        };
+        InitializeParams _doubleArrow = ObjectExtensions.<InitializeParams>operator_doubleArrow(_initializeParams, _function);
+        it.setParams(_doubleArrow);
+      }
     };
     RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     this.assertParse(_builder, _doubleArrow);
@@ -2728,167 +2876,219 @@ public class JsonParseTest {
     _builder.append("}");
     _builder.newLine();
     RequestMessage _requestMessage = new RequestMessage();
-    final Procedure1<RequestMessage> _function = (RequestMessage it) -> {
-      it.setJsonrpc("2.0");
-      it.setId("1");
-      it.setMethod(MessageMethods.INITIALIZE);
-      InitializeParams _initializeParams = new InitializeParams();
-      final Procedure1<InitializeParams> _function_1 = (InitializeParams it_1) -> {
-        it_1.setRootUri("file:///tmp/foo");
-        ClientCapabilities _clientCapabilities = new ClientCapabilities();
-        final Procedure1<ClientCapabilities> _function_2 = (ClientCapabilities it_2) -> {
-          TextDocumentClientCapabilities _textDocumentClientCapabilities = new TextDocumentClientCapabilities();
-          final Procedure1<TextDocumentClientCapabilities> _function_3 = (TextDocumentClientCapabilities it_3) -> {
-            SynchronizationCapabilities _synchronizationCapabilities = new SynchronizationCapabilities();
-            final Procedure1<SynchronizationCapabilities> _function_4 = (SynchronizationCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-              it_4.setWillSave(Boolean.valueOf(true));
-              it_4.setWillSaveWaitUntil(Boolean.valueOf(false));
-              it_4.setDidSave(Boolean.valueOf(true));
+    final Procedure1<RequestMessage> _function = new Procedure1<RequestMessage>() {
+      public void apply(final RequestMessage it) {
+        it.setJsonrpc("2.0");
+        it.setId("1");
+        it.setMethod(MessageMethods.INITIALIZE);
+        InitializeParams _initializeParams = new InitializeParams();
+        final Procedure1<InitializeParams> _function = new Procedure1<InitializeParams>() {
+          public void apply(final InitializeParams it) {
+            it.setRootUri("file:///tmp/foo");
+            ClientCapabilities _clientCapabilities = new ClientCapabilities();
+            final Procedure1<ClientCapabilities> _function = new Procedure1<ClientCapabilities>() {
+              public void apply(final ClientCapabilities it) {
+                TextDocumentClientCapabilities _textDocumentClientCapabilities = new TextDocumentClientCapabilities();
+                final Procedure1<TextDocumentClientCapabilities> _function = new Procedure1<TextDocumentClientCapabilities>() {
+                  public void apply(final TextDocumentClientCapabilities it) {
+                    SynchronizationCapabilities _synchronizationCapabilities = new SynchronizationCapabilities();
+                    final Procedure1<SynchronizationCapabilities> _function = new Procedure1<SynchronizationCapabilities>() {
+                      public void apply(final SynchronizationCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                        it.setWillSave(Boolean.valueOf(true));
+                        it.setWillSaveWaitUntil(Boolean.valueOf(false));
+                        it.setDidSave(Boolean.valueOf(true));
+                      }
+                    };
+                    SynchronizationCapabilities _doubleArrow = ObjectExtensions.<SynchronizationCapabilities>operator_doubleArrow(_synchronizationCapabilities, _function);
+                    it.setSynchronization(_doubleArrow);
+                    CompletionCapabilities _completionCapabilities = new CompletionCapabilities();
+                    final Procedure1<CompletionCapabilities> _function_1 = new Procedure1<CompletionCapabilities>() {
+                      public void apply(final CompletionCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                        CompletionItemCapabilities _completionItemCapabilities = new CompletionItemCapabilities();
+                        final Procedure1<CompletionItemCapabilities> _function = new Procedure1<CompletionItemCapabilities>() {
+                          public void apply(final CompletionItemCapabilities it) {
+                            it.setSnippetSupport(Boolean.valueOf(true));
+                            it.setCommitCharactersSupport(Boolean.valueOf(true));
+                            it.setDocumentationFormat(Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN)));
+                          }
+                        };
+                        CompletionItemCapabilities _doubleArrow = ObjectExtensions.<CompletionItemCapabilities>operator_doubleArrow(_completionItemCapabilities, _function);
+                        it.setCompletionItem(_doubleArrow);
+                        CompletionItemKindCapabilities _completionItemKindCapabilities = new CompletionItemKindCapabilities();
+                        final Procedure1<CompletionItemKindCapabilities> _function_1 = new Procedure1<CompletionItemKindCapabilities>() {
+                          public void apply(final CompletionItemKindCapabilities it) {
+                            it.setValueSet(Collections.<CompletionItemKind>unmodifiableList(CollectionLiterals.<CompletionItemKind>newArrayList(CompletionItemKind.Method, CompletionItemKind.Function)));
+                          }
+                        };
+                        CompletionItemKindCapabilities _doubleArrow_1 = ObjectExtensions.<CompletionItemKindCapabilities>operator_doubleArrow(_completionItemKindCapabilities, _function_1);
+                        it.setCompletionItemKind(_doubleArrow_1);
+                        it.setContextSupport(Boolean.valueOf(false));
+                      }
+                    };
+                    CompletionCapabilities _doubleArrow_1 = ObjectExtensions.<CompletionCapabilities>operator_doubleArrow(_completionCapabilities, _function_1);
+                    it.setCompletion(_doubleArrow_1);
+                    HoverCapabilities _hoverCapabilities = new HoverCapabilities();
+                    final Procedure1<HoverCapabilities> _function_2 = new Procedure1<HoverCapabilities>() {
+                      public void apply(final HoverCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                        it.setContentFormat(Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN)));
+                      }
+                    };
+                    HoverCapabilities _doubleArrow_2 = ObjectExtensions.<HoverCapabilities>operator_doubleArrow(_hoverCapabilities, _function_2);
+                    it.setHover(_doubleArrow_2);
+                    SignatureHelpCapabilities _signatureHelpCapabilities = new SignatureHelpCapabilities();
+                    final Procedure1<SignatureHelpCapabilities> _function_3 = new Procedure1<SignatureHelpCapabilities>() {
+                      public void apply(final SignatureHelpCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                        SignatureInformationCapabilities _signatureInformationCapabilities = new SignatureInformationCapabilities();
+                        final Procedure1<SignatureInformationCapabilities> _function = new Procedure1<SignatureInformationCapabilities>() {
+                          public void apply(final SignatureInformationCapabilities it) {
+                            it.setDocumentationFormat(Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN)));
+                          }
+                        };
+                        SignatureInformationCapabilities _doubleArrow = ObjectExtensions.<SignatureInformationCapabilities>operator_doubleArrow(_signatureInformationCapabilities, _function);
+                        it.setSignatureInformation(_doubleArrow);
+                      }
+                    };
+                    SignatureHelpCapabilities _doubleArrow_3 = ObjectExtensions.<SignatureHelpCapabilities>operator_doubleArrow(_signatureHelpCapabilities, _function_3);
+                    it.setSignatureHelp(_doubleArrow_3);
+                    ReferencesCapabilities _referencesCapabilities = new ReferencesCapabilities();
+                    final Procedure1<ReferencesCapabilities> _function_4 = new Procedure1<ReferencesCapabilities>() {
+                      public void apply(final ReferencesCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    ReferencesCapabilities _doubleArrow_4 = ObjectExtensions.<ReferencesCapabilities>operator_doubleArrow(_referencesCapabilities, _function_4);
+                    it.setReferences(_doubleArrow_4);
+                    DocumentHighlightCapabilities _documentHighlightCapabilities = new DocumentHighlightCapabilities();
+                    final Procedure1<DocumentHighlightCapabilities> _function_5 = new Procedure1<DocumentHighlightCapabilities>() {
+                      public void apply(final DocumentHighlightCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    DocumentHighlightCapabilities _doubleArrow_5 = ObjectExtensions.<DocumentHighlightCapabilities>operator_doubleArrow(_documentHighlightCapabilities, _function_5);
+                    it.setDocumentHighlight(_doubleArrow_5);
+                    DocumentSymbolCapabilities _documentSymbolCapabilities = new DocumentSymbolCapabilities();
+                    final Procedure1<DocumentSymbolCapabilities> _function_6 = new Procedure1<DocumentSymbolCapabilities>() {
+                      public void apply(final DocumentSymbolCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                        SymbolKindCapabilities _symbolKindCapabilities = new SymbolKindCapabilities();
+                        final Procedure1<SymbolKindCapabilities> _function = new Procedure1<SymbolKindCapabilities>() {
+                          public void apply(final SymbolKindCapabilities it) {
+                            it.setValueSet(Collections.<SymbolKind>unmodifiableList(CollectionLiterals.<SymbolKind>newArrayList(SymbolKind.Module, SymbolKind.Namespace, SymbolKind.Package, SymbolKind.Class)));
+                          }
+                        };
+                        SymbolKindCapabilities _doubleArrow = ObjectExtensions.<SymbolKindCapabilities>operator_doubleArrow(_symbolKindCapabilities, _function);
+                        it.setSymbolKind(_doubleArrow);
+                      }
+                    };
+                    DocumentSymbolCapabilities _doubleArrow_6 = ObjectExtensions.<DocumentSymbolCapabilities>operator_doubleArrow(_documentSymbolCapabilities, _function_6);
+                    it.setDocumentSymbol(_doubleArrow_6);
+                    FormattingCapabilities _formattingCapabilities = new FormattingCapabilities();
+                    final Procedure1<FormattingCapabilities> _function_7 = new Procedure1<FormattingCapabilities>() {
+                      public void apply(final FormattingCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    FormattingCapabilities _doubleArrow_7 = ObjectExtensions.<FormattingCapabilities>operator_doubleArrow(_formattingCapabilities, _function_7);
+                    it.setFormatting(_doubleArrow_7);
+                    RangeFormattingCapabilities _rangeFormattingCapabilities = new RangeFormattingCapabilities();
+                    final Procedure1<RangeFormattingCapabilities> _function_8 = new Procedure1<RangeFormattingCapabilities>() {
+                      public void apply(final RangeFormattingCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    RangeFormattingCapabilities _doubleArrow_8 = ObjectExtensions.<RangeFormattingCapabilities>operator_doubleArrow(_rangeFormattingCapabilities, _function_8);
+                    it.setRangeFormatting(_doubleArrow_8);
+                    OnTypeFormattingCapabilities _onTypeFormattingCapabilities = new OnTypeFormattingCapabilities();
+                    final Procedure1<OnTypeFormattingCapabilities> _function_9 = new Procedure1<OnTypeFormattingCapabilities>() {
+                      public void apply(final OnTypeFormattingCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    OnTypeFormattingCapabilities _doubleArrow_9 = ObjectExtensions.<OnTypeFormattingCapabilities>operator_doubleArrow(_onTypeFormattingCapabilities, _function_9);
+                    it.setOnTypeFormatting(_doubleArrow_9);
+                    DefinitionCapabilities _definitionCapabilities = new DefinitionCapabilities();
+                    final Procedure1<DefinitionCapabilities> _function_10 = new Procedure1<DefinitionCapabilities>() {
+                      public void apply(final DefinitionCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    DefinitionCapabilities _doubleArrow_10 = ObjectExtensions.<DefinitionCapabilities>operator_doubleArrow(_definitionCapabilities, _function_10);
+                    it.setDefinition(_doubleArrow_10);
+                    TypeDefinitionCapabilities _typeDefinitionCapabilities = new TypeDefinitionCapabilities();
+                    final Procedure1<TypeDefinitionCapabilities> _function_11 = new Procedure1<TypeDefinitionCapabilities>() {
+                      public void apply(final TypeDefinitionCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    TypeDefinitionCapabilities _doubleArrow_11 = ObjectExtensions.<TypeDefinitionCapabilities>operator_doubleArrow(_typeDefinitionCapabilities, _function_11);
+                    it.setTypeDefinition(_doubleArrow_11);
+                    ImplementationCapabilities _implementationCapabilities = new ImplementationCapabilities();
+                    final Procedure1<ImplementationCapabilities> _function_12 = new Procedure1<ImplementationCapabilities>() {
+                      public void apply(final ImplementationCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    ImplementationCapabilities _doubleArrow_12 = ObjectExtensions.<ImplementationCapabilities>operator_doubleArrow(_implementationCapabilities, _function_12);
+                    it.setImplementation(_doubleArrow_12);
+                    CodeActionCapabilities _codeActionCapabilities = new CodeActionCapabilities();
+                    final Procedure1<CodeActionCapabilities> _function_13 = new Procedure1<CodeActionCapabilities>() {
+                      public void apply(final CodeActionCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    CodeActionCapabilities _doubleArrow_13 = ObjectExtensions.<CodeActionCapabilities>operator_doubleArrow(_codeActionCapabilities, _function_13);
+                    it.setCodeAction(_doubleArrow_13);
+                    CodeLensCapabilities _codeLensCapabilities = new CodeLensCapabilities();
+                    final Procedure1<CodeLensCapabilities> _function_14 = new Procedure1<CodeLensCapabilities>() {
+                      public void apply(final CodeLensCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    CodeLensCapabilities _doubleArrow_14 = ObjectExtensions.<CodeLensCapabilities>operator_doubleArrow(_codeLensCapabilities, _function_14);
+                    it.setCodeLens(_doubleArrow_14);
+                    DocumentLinkCapabilities _documentLinkCapabilities = new DocumentLinkCapabilities();
+                    final Procedure1<DocumentLinkCapabilities> _function_15 = new Procedure1<DocumentLinkCapabilities>() {
+                      public void apply(final DocumentLinkCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    DocumentLinkCapabilities _doubleArrow_15 = ObjectExtensions.<DocumentLinkCapabilities>operator_doubleArrow(_documentLinkCapabilities, _function_15);
+                    it.setDocumentLink(_doubleArrow_15);
+                    ColorProviderCapabilities _colorProviderCapabilities = new ColorProviderCapabilities();
+                    final Procedure1<ColorProviderCapabilities> _function_16 = new Procedure1<ColorProviderCapabilities>() {
+                      public void apply(final ColorProviderCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    ColorProviderCapabilities _doubleArrow_16 = ObjectExtensions.<ColorProviderCapabilities>operator_doubleArrow(_colorProviderCapabilities, _function_16);
+                    it.setColorProvider(_doubleArrow_16);
+                    RenameCapabilities _renameCapabilities = new RenameCapabilities();
+                    final Procedure1<RenameCapabilities> _function_17 = new Procedure1<RenameCapabilities>() {
+                      public void apply(final RenameCapabilities it) {
+                        it.setDynamicRegistration(Boolean.valueOf(false));
+                      }
+                    };
+                    RenameCapabilities _doubleArrow_17 = ObjectExtensions.<RenameCapabilities>operator_doubleArrow(_renameCapabilities, _function_17);
+                    it.setRename(_doubleArrow_17);
+                  }
+                };
+                TextDocumentClientCapabilities _doubleArrow = ObjectExtensions.<TextDocumentClientCapabilities>operator_doubleArrow(_textDocumentClientCapabilities, _function);
+                it.setTextDocument(_doubleArrow);
+                WorkspaceClientCapabilities _workspaceClientCapabilities = new WorkspaceClientCapabilities();
+                it.setWorkspace(_workspaceClientCapabilities);
+              }
             };
-            SynchronizationCapabilities _doubleArrow = ObjectExtensions.<SynchronizationCapabilities>operator_doubleArrow(_synchronizationCapabilities, _function_4);
-            it_3.setSynchronization(_doubleArrow);
-            CompletionCapabilities _completionCapabilities = new CompletionCapabilities();
-            final Procedure1<CompletionCapabilities> _function_5 = (CompletionCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-              CompletionItemCapabilities _completionItemCapabilities = new CompletionItemCapabilities();
-              final Procedure1<CompletionItemCapabilities> _function_6 = (CompletionItemCapabilities it_5) -> {
-                it_5.setSnippetSupport(Boolean.valueOf(true));
-                it_5.setCommitCharactersSupport(Boolean.valueOf(true));
-                it_5.setDocumentationFormat(Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN)));
-              };
-              CompletionItemCapabilities _doubleArrow_1 = ObjectExtensions.<CompletionItemCapabilities>operator_doubleArrow(_completionItemCapabilities, _function_6);
-              it_4.setCompletionItem(_doubleArrow_1);
-              CompletionItemKindCapabilities _completionItemKindCapabilities = new CompletionItemKindCapabilities();
-              final Procedure1<CompletionItemKindCapabilities> _function_7 = (CompletionItemKindCapabilities it_5) -> {
-                it_5.setValueSet(Collections.<CompletionItemKind>unmodifiableList(CollectionLiterals.<CompletionItemKind>newArrayList(CompletionItemKind.Method, CompletionItemKind.Function)));
-              };
-              CompletionItemKindCapabilities _doubleArrow_2 = ObjectExtensions.<CompletionItemKindCapabilities>operator_doubleArrow(_completionItemKindCapabilities, _function_7);
-              it_4.setCompletionItemKind(_doubleArrow_2);
-              it_4.setContextSupport(Boolean.valueOf(false));
-            };
-            CompletionCapabilities _doubleArrow_1 = ObjectExtensions.<CompletionCapabilities>operator_doubleArrow(_completionCapabilities, _function_5);
-            it_3.setCompletion(_doubleArrow_1);
-            HoverCapabilities _hoverCapabilities = new HoverCapabilities();
-            final Procedure1<HoverCapabilities> _function_6 = (HoverCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-              it_4.setContentFormat(Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN)));
-            };
-            HoverCapabilities _doubleArrow_2 = ObjectExtensions.<HoverCapabilities>operator_doubleArrow(_hoverCapabilities, _function_6);
-            it_3.setHover(_doubleArrow_2);
-            SignatureHelpCapabilities _signatureHelpCapabilities = new SignatureHelpCapabilities();
-            final Procedure1<SignatureHelpCapabilities> _function_7 = (SignatureHelpCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-              SignatureInformationCapabilities _signatureInformationCapabilities = new SignatureInformationCapabilities();
-              final Procedure1<SignatureInformationCapabilities> _function_8 = (SignatureInformationCapabilities it_5) -> {
-                it_5.setDocumentationFormat(Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList(MarkupKind.PLAINTEXT, MarkupKind.MARKDOWN)));
-              };
-              SignatureInformationCapabilities _doubleArrow_3 = ObjectExtensions.<SignatureInformationCapabilities>operator_doubleArrow(_signatureInformationCapabilities, _function_8);
-              it_4.setSignatureInformation(_doubleArrow_3);
-            };
-            SignatureHelpCapabilities _doubleArrow_3 = ObjectExtensions.<SignatureHelpCapabilities>operator_doubleArrow(_signatureHelpCapabilities, _function_7);
-            it_3.setSignatureHelp(_doubleArrow_3);
-            ReferencesCapabilities _referencesCapabilities = new ReferencesCapabilities();
-            final Procedure1<ReferencesCapabilities> _function_8 = (ReferencesCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            ReferencesCapabilities _doubleArrow_4 = ObjectExtensions.<ReferencesCapabilities>operator_doubleArrow(_referencesCapabilities, _function_8);
-            it_3.setReferences(_doubleArrow_4);
-            DocumentHighlightCapabilities _documentHighlightCapabilities = new DocumentHighlightCapabilities();
-            final Procedure1<DocumentHighlightCapabilities> _function_9 = (DocumentHighlightCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            DocumentHighlightCapabilities _doubleArrow_5 = ObjectExtensions.<DocumentHighlightCapabilities>operator_doubleArrow(_documentHighlightCapabilities, _function_9);
-            it_3.setDocumentHighlight(_doubleArrow_5);
-            DocumentSymbolCapabilities _documentSymbolCapabilities = new DocumentSymbolCapabilities();
-            final Procedure1<DocumentSymbolCapabilities> _function_10 = (DocumentSymbolCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-              SymbolKindCapabilities _symbolKindCapabilities = new SymbolKindCapabilities();
-              final Procedure1<SymbolKindCapabilities> _function_11 = (SymbolKindCapabilities it_5) -> {
-                it_5.setValueSet(Collections.<SymbolKind>unmodifiableList(CollectionLiterals.<SymbolKind>newArrayList(SymbolKind.Module, SymbolKind.Namespace, SymbolKind.Package, SymbolKind.Class)));
-              };
-              SymbolKindCapabilities _doubleArrow_6 = ObjectExtensions.<SymbolKindCapabilities>operator_doubleArrow(_symbolKindCapabilities, _function_11);
-              it_4.setSymbolKind(_doubleArrow_6);
-            };
-            DocumentSymbolCapabilities _doubleArrow_6 = ObjectExtensions.<DocumentSymbolCapabilities>operator_doubleArrow(_documentSymbolCapabilities, _function_10);
-            it_3.setDocumentSymbol(_doubleArrow_6);
-            FormattingCapabilities _formattingCapabilities = new FormattingCapabilities();
-            final Procedure1<FormattingCapabilities> _function_11 = (FormattingCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            FormattingCapabilities _doubleArrow_7 = ObjectExtensions.<FormattingCapabilities>operator_doubleArrow(_formattingCapabilities, _function_11);
-            it_3.setFormatting(_doubleArrow_7);
-            RangeFormattingCapabilities _rangeFormattingCapabilities = new RangeFormattingCapabilities();
-            final Procedure1<RangeFormattingCapabilities> _function_12 = (RangeFormattingCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            RangeFormattingCapabilities _doubleArrow_8 = ObjectExtensions.<RangeFormattingCapabilities>operator_doubleArrow(_rangeFormattingCapabilities, _function_12);
-            it_3.setRangeFormatting(_doubleArrow_8);
-            OnTypeFormattingCapabilities _onTypeFormattingCapabilities = new OnTypeFormattingCapabilities();
-            final Procedure1<OnTypeFormattingCapabilities> _function_13 = (OnTypeFormattingCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            OnTypeFormattingCapabilities _doubleArrow_9 = ObjectExtensions.<OnTypeFormattingCapabilities>operator_doubleArrow(_onTypeFormattingCapabilities, _function_13);
-            it_3.setOnTypeFormatting(_doubleArrow_9);
-            DefinitionCapabilities _definitionCapabilities = new DefinitionCapabilities();
-            final Procedure1<DefinitionCapabilities> _function_14 = (DefinitionCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            DefinitionCapabilities _doubleArrow_10 = ObjectExtensions.<DefinitionCapabilities>operator_doubleArrow(_definitionCapabilities, _function_14);
-            it_3.setDefinition(_doubleArrow_10);
-            TypeDefinitionCapabilities _typeDefinitionCapabilities = new TypeDefinitionCapabilities();
-            final Procedure1<TypeDefinitionCapabilities> _function_15 = (TypeDefinitionCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            TypeDefinitionCapabilities _doubleArrow_11 = ObjectExtensions.<TypeDefinitionCapabilities>operator_doubleArrow(_typeDefinitionCapabilities, _function_15);
-            it_3.setTypeDefinition(_doubleArrow_11);
-            ImplementationCapabilities _implementationCapabilities = new ImplementationCapabilities();
-            final Procedure1<ImplementationCapabilities> _function_16 = (ImplementationCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            ImplementationCapabilities _doubleArrow_12 = ObjectExtensions.<ImplementationCapabilities>operator_doubleArrow(_implementationCapabilities, _function_16);
-            it_3.setImplementation(_doubleArrow_12);
-            CodeActionCapabilities _codeActionCapabilities = new CodeActionCapabilities();
-            final Procedure1<CodeActionCapabilities> _function_17 = (CodeActionCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            CodeActionCapabilities _doubleArrow_13 = ObjectExtensions.<CodeActionCapabilities>operator_doubleArrow(_codeActionCapabilities, _function_17);
-            it_3.setCodeAction(_doubleArrow_13);
-            CodeLensCapabilities _codeLensCapabilities = new CodeLensCapabilities();
-            final Procedure1<CodeLensCapabilities> _function_18 = (CodeLensCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            CodeLensCapabilities _doubleArrow_14 = ObjectExtensions.<CodeLensCapabilities>operator_doubleArrow(_codeLensCapabilities, _function_18);
-            it_3.setCodeLens(_doubleArrow_14);
-            DocumentLinkCapabilities _documentLinkCapabilities = new DocumentLinkCapabilities();
-            final Procedure1<DocumentLinkCapabilities> _function_19 = (DocumentLinkCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            DocumentLinkCapabilities _doubleArrow_15 = ObjectExtensions.<DocumentLinkCapabilities>operator_doubleArrow(_documentLinkCapabilities, _function_19);
-            it_3.setDocumentLink(_doubleArrow_15);
-            ColorProviderCapabilities _colorProviderCapabilities = new ColorProviderCapabilities();
-            final Procedure1<ColorProviderCapabilities> _function_20 = (ColorProviderCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            ColorProviderCapabilities _doubleArrow_16 = ObjectExtensions.<ColorProviderCapabilities>operator_doubleArrow(_colorProviderCapabilities, _function_20);
-            it_3.setColorProvider(_doubleArrow_16);
-            RenameCapabilities _renameCapabilities = new RenameCapabilities();
-            final Procedure1<RenameCapabilities> _function_21 = (RenameCapabilities it_4) -> {
-              it_4.setDynamicRegistration(Boolean.valueOf(false));
-            };
-            RenameCapabilities _doubleArrow_17 = ObjectExtensions.<RenameCapabilities>operator_doubleArrow(_renameCapabilities, _function_21);
-            it_3.setRename(_doubleArrow_17);
-          };
-          TextDocumentClientCapabilities _doubleArrow = ObjectExtensions.<TextDocumentClientCapabilities>operator_doubleArrow(_textDocumentClientCapabilities, _function_3);
-          it_2.setTextDocument(_doubleArrow);
-          WorkspaceClientCapabilities _workspaceClientCapabilities = new WorkspaceClientCapabilities();
-          it_2.setWorkspace(_workspaceClientCapabilities);
+            ClientCapabilities _doubleArrow = ObjectExtensions.<ClientCapabilities>operator_doubleArrow(_clientCapabilities, _function);
+            it.setCapabilities(_doubleArrow);
+          }
         };
-        ClientCapabilities _doubleArrow = ObjectExtensions.<ClientCapabilities>operator_doubleArrow(_clientCapabilities, _function_2);
-        it_1.setCapabilities(_doubleArrow);
-      };
-      InitializeParams _doubleArrow = ObjectExtensions.<InitializeParams>operator_doubleArrow(_initializeParams, _function_1);
-      it.setParams(_doubleArrow);
+        InitializeParams _doubleArrow = ObjectExtensions.<InitializeParams>operator_doubleArrow(_initializeParams, _function);
+        it.setParams(_doubleArrow);
+      }
     };
     RequestMessage _doubleArrow = ObjectExtensions.<RequestMessage>operator_doubleArrow(_requestMessage, _function);
     this.assertParse(_builder, _doubleArrow);
