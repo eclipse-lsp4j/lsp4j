@@ -231,9 +231,9 @@ public interface Launcher<T> {
 		protected ExecutorService executorService;
 		protected Function<MessageConsumer, MessageConsumer> messageWrapper;
 		protected boolean validateMessages;
-		protected PrintWriter messageTracer;
 		protected Consumer<GsonBuilder> configureGson;
 		protected ClassLoader classLoader;
+		protected MessageTracer messageTracer;
 		
 		public Builder<T> setLocalService(Object localService) {
 			this.localServices = Collections.singletonList(localService);
@@ -286,7 +286,9 @@ public interface Launcher<T> {
 		}
 		
 		public Builder<T> traceMessages(PrintWriter tracer) {
-			this.messageTracer = tracer;
+			if (tracer != null) {
+				this.messageTracer = new MessageTracer(tracer);
+			}
 			return this;
 		}
 
@@ -369,12 +371,7 @@ public interface Launcher<T> {
 		protected MessageConsumer wrapMessageConsumer(MessageConsumer consumer) {
 			MessageConsumer result = consumer;
 			if (messageTracer != null) {
-				final PrintWriter tracer = messageTracer;
-				result = message -> {
-					tracer.println(message);
-					tracer.flush();
-					consumer.consume(message);
-				};
+				result = messageTracer.apply(consumer);
 			}
 			if (validateMessages) {
 				result = new ReflectiveMessageValidator(result);
