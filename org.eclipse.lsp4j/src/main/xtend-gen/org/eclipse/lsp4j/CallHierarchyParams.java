@@ -25,13 +25,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class CallHierarchyParams extends TextDocumentPositionParams {
   /**
-   * The direction of calls to resolve.
+   * The direction of calls to provide.
    */
   @NonNull
   private CallHierarchyDirection direction;
   
   /**
-   * The direction of calls to resolve.
+   * The direction of calls to provide.
    */
   @Pure
   @NonNull
@@ -40,7 +40,7 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
   }
   
   /**
-   * The direction of calls to resolve.
+   * The direction of calls to provide.
    */
   public void setDirection(@NonNull final CallHierarchyDirection direction) {
     if (direction == null) {

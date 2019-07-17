@@ -14,6 +14,7 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.lsp4j.CallHierarchyCall;
 import org.eclipse.lsp4j.CallHierarchyParams;
 import org.eclipse.lsp4j.CallHierarchySymbol;
 import org.eclipse.lsp4j.CodeAction;
@@ -468,12 +469,17 @@ public interface TextDocumentService {
 	}
 
 	/**
-	 * The {@code textDocument/callHierarchy} request is sent from the client to the server to request
-	 * the call hierarchy for a symbol defined (or referenced) at the given text document position.
+	 * The {@code textDocument/callHierarchy} request is sent from the client to the
+	 * server to request the call hierarchy for a symbol defined (or referenced) at
+	 * the given text document position. Returns a collection of calls from one
+	 * symbol to another. The server will send a collection of
+	 * {@link CallHierarchyCall} objects, or {@code null} if no callable symbol is
+	 * found at the given document position. Each {@code CallHierarchyCall} object
+	 * defines a call from one {@link CallHierarchySymbol} to another.
 	 */
 	@Beta
 	@JsonRequest
-	default CompletableFuture<CallHierarchySymbol> callHierarchy(CallHierarchyParams params) {
+	default CompletableFuture<List<CallHierarchyCall>> callHierarchy(CallHierarchyParams params) {
 		throw new UnsupportedOperationException();
 	}
 
