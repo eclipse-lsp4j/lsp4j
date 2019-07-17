@@ -4833,7 +4833,7 @@ class SemanticHighlightingInformation {
 class CallHierarchyParams extends TextDocumentPositionParams {
 
 	/**
-	 * The direction of calls to resolve.
+	 * The direction of calls to provide.
 	 */
 	@NonNull
 	CallHierarchyDirection direction

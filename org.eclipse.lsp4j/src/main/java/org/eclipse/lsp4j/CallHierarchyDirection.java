@@ -16,15 +16,9 @@ package org.eclipse.lsp4j;
  */
 public enum CallHierarchyDirection {
 
-	/**
-	 * The callers of a symbol.
-	 */
-	Incoming(1),
+	CallsFrom(1),
 
-	/**
-	 * The callees of a symbol.
-	 */
-	Outgoing(2);
+	CallsTo(2);
 
 	private final int value;
 
@@ -38,8 +32,9 @@ public enum CallHierarchyDirection {
 
 	public static InsertTextFormat forValue(int value) {
 		InsertTextFormat[] allValues = InsertTextFormat.values();
-		if (value < 1 || value > allValues.length)
+		if (value < 1 || value > allValues.length) {
 			throw new IllegalArgumentException("Illegal enum value: " + value);
+		}
 		return allValues[value - 1];
 	}
 
