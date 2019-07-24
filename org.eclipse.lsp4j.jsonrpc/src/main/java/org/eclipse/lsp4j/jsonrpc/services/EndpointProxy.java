@@ -95,11 +95,13 @@ public class EndpointProxy implements InvocationHandler {
 			return delegateInfo.delegate;
 		}
 		if (object_equals.equals(method) && args.length == 1) {
-			try {
-				return this.equals(Proxy.getInvocationHandler(args[0]));
-			} catch (IllegalArgumentException exception) {
-				return this.equals(args[0]);
+			if(args[0] != null ) {
+				try {
+					return this.equals(Proxy.getInvocationHandler(args[0]));
+				} catch (IllegalArgumentException exception) {
+				}
 			}
+			return this.equals(args[0]);
 		}
 		if (object_hashCode.equals(method)) {
 			return this.hashCode();
