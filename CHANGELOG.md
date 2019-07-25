@@ -1,16 +1,20 @@
 ## LSP4J Change Log
 
-### v0.7.2 (May 2018)
+### v0.7.2 (May 2019)
 
  * Updated `textDocument/callHierarchy` according to latest proposal (note: changes to classes and methods marked with `@Beta` are _not_ regarded as API-breaking).
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/14?closed=1
 
-### v0.7.1 (Apr. 2018)
+-----
+
+### v0.7.1 (Apr. 2019)
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/13?closed=1
 
-### v0.7.0 (Feb. 2018)
+-----
+
+### v0.7.0 (Feb. 2019)
 
  * Implemented LSP version 3.14.0
  * Support tuple of two types with the `Tuple.Two` class
