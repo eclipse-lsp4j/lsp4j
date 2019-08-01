@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import javax.websocket.Session;
 
+import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
@@ -57,7 +58,12 @@ public class WebSocketLauncherBuilder<T> extends Launcher.Builder<T> {
 	protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
 		MessageConsumer outgoingMessageStream = new WebSocketMessageConsumer(session, jsonHandler);
 		outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
-		RemoteEndpoint remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, ServiceEndpoints.toEndpoint(localServices));
+		Endpoint localEndpoint = ServiceEndpoints.toEndpoint(localServices);
+		RemoteEndpoint remoteEndpoint;
+		if (exceptionHandler == null)
+			remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, localEndpoint);
+		else
+			remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
 		jsonHandler.setMethodProvider(remoteEndpoint);
 		return remoteEndpoint;
 	}
