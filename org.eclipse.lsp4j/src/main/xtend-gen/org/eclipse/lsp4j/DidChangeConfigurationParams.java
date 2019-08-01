@@ -50,10 +50,7 @@ public class DidChangeConfigurationParams {
    * The actual changed settings.
    */
   public void setSettings(@NonNull final Object settings) {
-    if (settings == null) {
-      throw new IllegalArgumentException("Property must not be null: settings");
-    }
-    this.settings = settings;
+    this.settings = Preconditions.checkNotNull(settings, "settings");
   }
   
   @Override

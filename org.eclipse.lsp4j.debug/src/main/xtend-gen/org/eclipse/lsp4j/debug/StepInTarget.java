@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -46,10 +47,7 @@ public class StepInTarget {
    * Unique identifier for a stepIn target.
    */
   public void setId(@NonNull final Long id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
-    }
-    this.id = id;
+    this.id = Preconditions.checkNotNull(id, "id");
   }
   
   /**
@@ -65,10 +63,7 @@ public class StepInTarget {
    * The name of the stepIn target (shown in the UI).
    */
   public void setLabel(@NonNull final String label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   @Override

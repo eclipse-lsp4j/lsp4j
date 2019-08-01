@@ -117,26 +117,19 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
             StringConcatenationClient _client = new StringConcatenationClient() {
               @Override
               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                _builder.append("if (");
-                String _simpleName = parameter.getSimpleName();
-                _builder.append(_simpleName);
-                _builder.append(" == null) {");
-                _builder.newLineIfNotEmpty();
-                _builder.append("  ");
-                _builder.append("throw new IllegalArgumentException(\"Property must not be null: ");
-                String _simpleName_1 = field.getSimpleName();
-                _builder.append(_simpleName_1, "  ");
-                _builder.append("\");");
-                _builder.newLineIfNotEmpty();
-                _builder.append("}");
-                _builder.newLine();
                 _builder.append("this.");
+                String _simpleName = field.getSimpleName();
+                _builder.append(_simpleName);
+                _builder.append(" = ");
+                TypeReference _preconditionsUtil = JsonRpcDataProcessor.this.getPreconditionsUtil(impl, context);
+                _builder.append(_preconditionsUtil);
+                _builder.append(".checkNotNull(");
+                String _simpleName_1 = parameter.getSimpleName();
+                _builder.append(_simpleName_1);
+                _builder.append(", \"");
                 String _simpleName_2 = field.getSimpleName();
                 _builder.append(_simpleName_2);
-                _builder.append(" = ");
-                String _simpleName_3 = parameter.getSimpleName();
-                _builder.append(_simpleName_3);
-                _builder.append(";");
+                _builder.append("\");");
                 _builder.newLineIfNotEmpty();
               }
             };
@@ -209,7 +202,7 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       _builder.append("(");
       _builder.append(variableName);
       _builder.append(")");
-      final String compileNewEither = _builder.toString();
+      final CharSequence compileNewEither = _builder;
       StringConcatenation _builder_1 = new StringConcatenation();
       _builder_1.append("if (");
       _builder_1.append(variableName);
@@ -218,23 +211,26 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       {
         if (hasNonNull) {
           _builder_1.append("  ");
-          _builder_1.append("throw new IllegalArgumentException(\"Property must not be null: ");
+          TypeReference _preconditionsUtil = this.getPreconditionsUtil(field.getDeclaringType(), context);
+          _builder_1.append(_preconditionsUtil, "  ");
+          _builder_1.append(".checkNotNull(");
+          _builder_1.append(variableName, "  ");
+          _builder_1.append(", \"");
           String _simpleName = field.getSimpleName();
           _builder_1.append(_simpleName, "  ");
           _builder_1.append("\");");
           _builder_1.newLineIfNotEmpty();
-        } else {
-          _builder_1.append("  ");
-          _builder_1.append("this.");
-          String _simpleName_1 = field.getSimpleName();
-          _builder_1.append(_simpleName_1, "  ");
-          _builder_1.append(" = null;");
-          _builder_1.newLineIfNotEmpty();
-          _builder_1.append("  ");
-          _builder_1.append("return;");
-          _builder_1.newLine();
         }
       }
+      _builder_1.append("  ");
+      _builder_1.append("this.");
+      String _simpleName_1 = field.getSimpleName();
+      _builder_1.append(_simpleName_1, "  ");
+      _builder_1.append(" = null;");
+      _builder_1.newLineIfNotEmpty();
+      _builder_1.append("  ");
+      _builder_1.append("return;");
+      _builder_1.newLine();
       _builder_1.append("}");
       _builder_1.newLine();
       {
@@ -330,5 +326,16 @@ public class JsonRpcDataProcessor extends AbstractClassProcessor {
       _xblockexpression = impl.addMethod("toString", _function);
     }
     return _xblockexpression;
+  }
+  
+  private TypeReference getPreconditionsUtil(final Type type, @Extension final TransformationContext context) {
+    TypeReference _xifexpression = null;
+    boolean _startsWith = type.getQualifiedName().startsWith("org.eclipse.lsp4j.debug");
+    if (_startsWith) {
+      _xifexpression = context.newTypeReference("org.eclipse.lsp4j.debug.util.Preconditions");
+    } else {
+      _xifexpression = context.newTypeReference("org.eclipse.lsp4j.util.Preconditions");
+    }
+    return _xifexpression;
   }
 }

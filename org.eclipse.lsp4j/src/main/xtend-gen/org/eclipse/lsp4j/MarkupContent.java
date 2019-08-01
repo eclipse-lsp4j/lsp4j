@@ -61,10 +61,7 @@ public class MarkupContent {
    * The type of the Markup.
    */
   public void setKind(@NonNull final String kind) {
-    if (kind == null) {
-      throw new IllegalArgumentException("Property must not be null: kind");
-    }
-    this.kind = kind;
+    this.kind = Preconditions.checkNotNull(kind, "kind");
   }
   
   /**
@@ -80,10 +77,7 @@ public class MarkupContent {
    * The content itself.
    */
   public void setValue(@NonNull final String value) {
-    if (value == null) {
-      throw new IllegalArgumentException("Property must not be null: value");
-    }
-    this.value = value;
+    this.value = Preconditions.checkNotNull(value, "value");
   }
   
   @Override

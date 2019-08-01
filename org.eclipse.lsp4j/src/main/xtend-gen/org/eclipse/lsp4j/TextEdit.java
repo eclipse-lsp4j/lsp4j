@@ -55,10 +55,7 @@ public class TextEdit {
    * The range of the text document to be manipulated. To insert text into a document create a range where start === end.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -74,10 +71,7 @@ public class TextEdit {
    * The string to be inserted. For delete operations use an empty string.
    */
   public void setNewText(@NonNull final String newText) {
-    if (newText == null) {
-      throw new IllegalArgumentException("Property must not be null: newText");
-    }
-    this.newText = newText;
+    this.newText = Preconditions.checkNotNull(newText, "newText");
   }
   
   @Override

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -66,10 +67,7 @@ public class ColoringInformation {
    * The range that should be highlighted on the client-side.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -89,10 +87,7 @@ public class ColoringInformation {
    * applying all styles on the range.
    */
   public void setStyles(@NonNull final List<Integer> styles) {
-    if (styles == null) {
-      throw new IllegalArgumentException("Property must not be null: styles");
-    }
-    this.styles = styles;
+    this.styles = Preconditions.checkNotNull(styles, "styles");
   }
   
   @Override

@@ -67,10 +67,7 @@ public class ColorPresentationParams {
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -86,10 +83,7 @@ public class ColorPresentationParams {
    * The color information to request presentations for.
    */
   public void setColor(@NonNull final Color color) {
-    if (color == null) {
-      throw new IllegalArgumentException("Property must not be null: color");
-    }
-    this.color = color;
+    this.color = Preconditions.checkNotNull(color, "color");
   }
   
   /**
@@ -105,10 +99,7 @@ public class ColorPresentationParams {
    * The range where the color would be inserted. Serves as a context.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   @Override

@@ -78,10 +78,7 @@ public class CodeAction {
    * A short, human-readable, title for this code action.
    */
   public void setTitle(@NonNull final String title) {
-    if (title == null) {
-      throw new IllegalArgumentException("Property must not be null: title");
-    }
-    this.title = title;
+    this.title = Preconditions.checkNotNull(title, "title");
   }
   
   /**

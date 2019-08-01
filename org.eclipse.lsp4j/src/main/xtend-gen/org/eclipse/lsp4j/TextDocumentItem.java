@@ -67,10 +67,7 @@ public class TextDocumentItem {
    * The text document's uri.
    */
   public void setUri(@NonNull final String uri) {
-    if (uri == null) {
-      throw new IllegalArgumentException("Property must not be null: uri");
-    }
-    this.uri = uri;
+    this.uri = Preconditions.checkNotNull(uri, "uri");
   }
   
   /**
@@ -86,10 +83,7 @@ public class TextDocumentItem {
    * The text document's language identifier
    */
   public void setLanguageId(@NonNull final String languageId) {
-    if (languageId == null) {
-      throw new IllegalArgumentException("Property must not be null: languageId");
-    }
-    this.languageId = languageId;
+    this.languageId = Preconditions.checkNotNull(languageId, "languageId");
   }
   
   /**
@@ -120,10 +114,7 @@ public class TextDocumentItem {
    * The content of the opened  text document.
    */
   public void setText(@NonNull final String text) {
-    if (text == null) {
-      throw new IllegalArgumentException("Property must not be null: text");
-    }
-    this.text = text;
+    this.text = Preconditions.checkNotNull(text, "text");
   }
   
   @Override

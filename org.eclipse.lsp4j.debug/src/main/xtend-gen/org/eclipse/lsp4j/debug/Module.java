@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -127,22 +128,23 @@ public class Module {
    * Unique identifier for the module.
    */
   public void setId(@NonNull final Either<Long, String> id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
-    }
-    this.id = id;
+    this.id = Preconditions.checkNotNull(id, "id");
   }
   
   public void setId(final Long id) {
     if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
+      Preconditions.checkNotNull(id, "id");
+      this.id = null;
+      return;
     }
     this.id = Either.forLeft(id);
   }
   
   public void setId(final String id) {
     if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
+      Preconditions.checkNotNull(id, "id");
+      this.id = null;
+      return;
     }
     this.id = Either.forRight(id);
   }
@@ -160,10 +162,7 @@ public class Module {
    * A name of the module.
    */
   public void setName(@NonNull final String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Property must not be null: name");
-    }
-    this.name = name;
+    this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**

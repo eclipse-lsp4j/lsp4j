@@ -45,10 +45,7 @@ public class InitializeResult {
    * The capabilities the language server provides.
    */
   public void setCapabilities(@NonNull final ServerCapabilities capabilities) {
-    if (capabilities == null) {
-      throw new IllegalArgumentException("Property must not be null: capabilities");
-    }
-    this.capabilities = capabilities;
+    this.capabilities = Preconditions.checkNotNull(capabilities, "capabilities");
   }
   
   @Override

@@ -64,10 +64,7 @@ public class CodeActionContext {
    * An array of diagnostics.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
-    if (diagnostics == null) {
-      throw new IllegalArgumentException("Property must not be null: diagnostics");
-    }
-    this.diagnostics = diagnostics;
+    this.diagnostics = Preconditions.checkNotNull(diagnostics, "diagnostics");
   }
   
   /**

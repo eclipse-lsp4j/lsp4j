@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -53,10 +54,7 @@ public class GotoTargetsArguments {
    * The source location for which the goto targets are determined.
    */
   public void setSource(@NonNull final Source source) {
-    if (source == null) {
-      throw new IllegalArgumentException("Property must not be null: source");
-    }
-    this.source = source;
+    this.source = Preconditions.checkNotNull(source, "source");
   }
   
   /**
@@ -72,10 +70,7 @@ public class GotoTargetsArguments {
    * The line location for which the goto targets are determined.
    */
   public void setLine(@NonNull final Long line) {
-    if (line == null) {
-      throw new IllegalArgumentException("Property must not be null: line");
-    }
-    this.line = line;
+    this.line = Preconditions.checkNotNull(line, "line");
   }
   
   /**

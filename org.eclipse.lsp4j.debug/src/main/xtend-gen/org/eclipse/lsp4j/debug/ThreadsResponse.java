@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -40,10 +41,7 @@ public class ThreadsResponse {
    * All threads.
    */
   public void setThreads(@NonNull final org.eclipse.lsp4j.debug.Thread[] threads) {
-    if (threads == null) {
-      throw new IllegalArgumentException("Property must not be null: threads");
-    }
-    this.threads = threads;
+    this.threads = Preconditions.checkNotNull(threads, "threads");
   }
   
   @Override

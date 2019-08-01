@@ -56,10 +56,7 @@ public class CompletionContext {
    * How the completion was triggered.
    */
   public void setTriggerKind(@NonNull final CompletionTriggerKind triggerKind) {
-    if (triggerKind == null) {
-      throw new IllegalArgumentException("Property must not be null: triggerKind");
-    }
-    this.triggerKind = triggerKind;
+    this.triggerKind = Preconditions.checkNotNull(triggerKind, "triggerKind");
   }
   
   /**

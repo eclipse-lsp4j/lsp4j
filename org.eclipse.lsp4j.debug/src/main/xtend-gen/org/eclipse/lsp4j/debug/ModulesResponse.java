@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -47,10 +48,7 @@ public class ModulesResponse {
    * All modules or range of modules.
    */
   public void setModules(@NonNull final org.eclipse.lsp4j.debug.Module[] modules) {
-    if (modules == null) {
-      throw new IllegalArgumentException("Property must not be null: modules");
-    }
-    this.modules = modules;
+    this.modules = Preconditions.checkNotNull(modules, "modules");
   }
   
   /**

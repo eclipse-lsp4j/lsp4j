@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.GotoTarget;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -41,10 +42,7 @@ public class GotoTargetsResponse {
    * The possible goto targets of the specified location.
    */
   public void setTargets(@NonNull final GotoTarget[] targets) {
-    if (targets == null) {
-      throw new IllegalArgumentException("Property must not be null: targets");
-    }
-    this.targets = targets;
+    this.targets = Preconditions.checkNotNull(targets, "targets");
   }
   
   @Override

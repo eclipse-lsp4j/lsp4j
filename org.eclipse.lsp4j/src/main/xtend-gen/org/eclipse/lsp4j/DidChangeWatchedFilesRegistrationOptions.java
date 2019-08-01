@@ -46,10 +46,7 @@ public class DidChangeWatchedFilesRegistrationOptions {
    * The watchers to register.
    */
   public void setWatchers(@NonNull final List<FileSystemWatcher> watchers) {
-    if (watchers == null) {
-      throw new IllegalArgumentException("Property must not be null: watchers");
-    }
-    this.watchers = watchers;
+    this.watchers = Preconditions.checkNotNull(watchers, "watchers");
   }
   
   @Override

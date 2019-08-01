@@ -46,10 +46,7 @@ public class RegistrationParams {
   }
   
   public void setRegistrations(@NonNull final List<Registration> registrations) {
-    if (registrations == null) {
-      throw new IllegalArgumentException("Property must not be null: registrations");
-    }
-    this.registrations = registrations;
+    this.registrations = Preconditions.checkNotNull(registrations, "registrations");
   }
   
   @Override

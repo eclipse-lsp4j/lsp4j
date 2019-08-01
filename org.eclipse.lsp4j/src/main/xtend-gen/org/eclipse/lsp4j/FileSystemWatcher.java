@@ -56,10 +56,7 @@ public class FileSystemWatcher {
    * The  glob pattern to watch
    */
   public void setGlobPattern(@NonNull final String globPattern) {
-    if (globPattern == null) {
-      throw new IllegalArgumentException("Property must not be null: globPattern");
-    }
-    this.globPattern = globPattern;
+    this.globPattern = Preconditions.checkNotNull(globPattern, "globPattern");
   }
   
   /**

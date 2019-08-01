@@ -66,10 +66,7 @@ public class CodeActionParams {
    * The document in which the command was invoked.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -85,10 +82,7 @@ public class CodeActionParams {
    * The range for which the command was invoked.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -104,10 +98,7 @@ public class CodeActionParams {
    * Context carrying additional information.
    */
   public void setContext(@NonNull final CodeActionContext context) {
-    if (context == null) {
-      throw new IllegalArgumentException("Property must not be null: context");
-    }
-    this.context = context;
+    this.context = Preconditions.checkNotNull(context, "context");
   }
   
   @Override

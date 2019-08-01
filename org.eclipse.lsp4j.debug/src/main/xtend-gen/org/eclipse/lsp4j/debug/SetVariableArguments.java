@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -59,10 +60,7 @@ public class SetVariableArguments {
    * The reference of the variable container.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
-    if (variablesReference == null) {
-      throw new IllegalArgumentException("Property must not be null: variablesReference");
-    }
-    this.variablesReference = variablesReference;
+    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
   }
   
   /**
@@ -78,10 +76,7 @@ public class SetVariableArguments {
    * The name of the variable.
    */
   public void setName(@NonNull final String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Property must not be null: name");
-    }
-    this.name = name;
+    this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**
@@ -97,10 +92,7 @@ public class SetVariableArguments {
    * The value of the variable.
    */
   public void setValue(@NonNull final String value) {
-    if (value == null) {
-      throw new IllegalArgumentException("Property must not be null: value");
-    }
-    this.value = value;
+    this.value = Preconditions.checkNotNull(value, "value");
   }
   
   /**

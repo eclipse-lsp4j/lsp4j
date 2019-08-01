@@ -15,6 +15,7 @@ import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -75,10 +76,7 @@ public class CallHierarchySymbol {
    * The name of the symbol targeted by the call hierarchy request.
    */
   public void setName(@NonNull final String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Property must not be null: name");
-    }
-    this.name = name;
+    this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**
@@ -109,10 +107,7 @@ public class CallHierarchySymbol {
    * The kind of this symbol.
    */
   public void setKind(@NonNull final SymbolKind kind) {
-    if (kind == null) {
-      throw new IllegalArgumentException("Property must not be null: kind");
-    }
-    this.kind = kind;
+    this.kind = Preconditions.checkNotNull(kind, "kind");
   }
   
   /**
@@ -128,10 +123,7 @@ public class CallHierarchySymbol {
    * URI of the document containing the symbol.
    */
   public void setUri(@NonNull final String uri) {
-    if (uri == null) {
-      throw new IllegalArgumentException("Property must not be null: uri");
-    }
-    this.uri = uri;
+    this.uri = Preconditions.checkNotNull(uri, "uri");
   }
   
   /**
@@ -151,10 +143,7 @@ public class CallHierarchySymbol {
    * inside the symbol to reveal in the symbol in the UI.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -172,10 +161,7 @@ public class CallHierarchySymbol {
    * Must be contained by the the {@link CallHierarchySymbol#getRange range}.
    */
   public void setSelectionRange(@NonNull final Range selectionRange) {
-    if (selectionRange == null) {
-      throw new IllegalArgumentException("Property must not be null: selectionRange");
-    }
-    this.selectionRange = selectionRange;
+    this.selectionRange = Preconditions.checkNotNull(selectionRange, "selectionRange");
   }
   
   @Override

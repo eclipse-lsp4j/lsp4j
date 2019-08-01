@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -45,10 +46,7 @@ public class GotoArguments {
    * Set the goto target for this thread.
    */
   public void setThreadId(@NonNull final Long threadId) {
-    if (threadId == null) {
-      throw new IllegalArgumentException("Property must not be null: threadId");
-    }
-    this.threadId = threadId;
+    this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   
   /**
@@ -64,10 +62,7 @@ public class GotoArguments {
    * The location where the debuggee will continue to run.
    */
   public void setTargetId(@NonNull final Long targetId) {
-    if (targetId == null) {
-      throw new IllegalArgumentException("Property must not be null: targetId");
-    }
-    this.targetId = targetId;
+    this.targetId = Preconditions.checkNotNull(targetId, "targetId");
   }
   
   @Override

@@ -52,10 +52,7 @@ public class PrepareRenameResult {
    * The range of the string to rename
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -71,10 +68,7 @@ public class PrepareRenameResult {
    * A placeholder text of the string content to be renamed.
    */
   public void setPlaceholder(@NonNull final String placeholder) {
-    if (placeholder == null) {
-      throw new IllegalArgumentException("Property must not be null: placeholder");
-    }
-    this.placeholder = placeholder;
+    this.placeholder = Preconditions.checkNotNull(placeholder, "placeholder");
   }
   
   @Override

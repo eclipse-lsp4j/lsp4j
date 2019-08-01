@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -74,10 +75,7 @@ public class GotoTarget {
    * Unique identifier for a goto target. This is used in the goto request.
    */
   public void setId(@NonNull final Long id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
-    }
-    this.id = id;
+    this.id = Preconditions.checkNotNull(id, "id");
   }
   
   /**
@@ -93,10 +91,7 @@ public class GotoTarget {
    * The name of the goto target (shown in the UI).
    */
   public void setLabel(@NonNull final String label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   /**
@@ -112,10 +107,7 @@ public class GotoTarget {
    * The line of the goto target.
    */
   public void setLine(@NonNull final Long line) {
-    if (line == null) {
-      throw new IllegalArgumentException("Property must not be null: line");
-    }
-    this.line = line;
+    this.line = Preconditions.checkNotNull(line, "line");
   }
   
   /**

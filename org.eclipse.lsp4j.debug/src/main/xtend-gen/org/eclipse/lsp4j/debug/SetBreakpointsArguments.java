@@ -14,6 +14,7 @@ package org.eclipse.lsp4j.debug;
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.SourceBreakpoint;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -64,10 +65,7 @@ public class SetBreakpointsArguments {
    * The source location of the breakpoints; either 'source.path' or 'source.reference' must be specified.
    */
   public void setSource(@NonNull final Source source) {
-    if (source == null) {
-      throw new IllegalArgumentException("Property must not be null: source");
-    }
-    this.source = source;
+    this.source = Preconditions.checkNotNull(source, "source");
   }
   
   /**

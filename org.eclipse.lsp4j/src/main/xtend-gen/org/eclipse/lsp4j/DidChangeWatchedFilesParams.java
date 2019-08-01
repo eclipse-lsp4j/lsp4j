@@ -52,10 +52,7 @@ public class DidChangeWatchedFilesParams {
    * The actual file events.
    */
   public void setChanges(@NonNull final List<FileEvent> changes) {
-    if (changes == null) {
-      throw new IllegalArgumentException("Property must not be null: changes");
-    }
-    this.changes = changes;
+    this.changes = Preconditions.checkNotNull(changes, "changes");
   }
   
   @Override

@@ -15,6 +15,7 @@ import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CallHierarchyDirection;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -43,10 +44,7 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
    * The direction of calls to provide.
    */
   public void setDirection(@NonNull final CallHierarchyDirection direction) {
-    if (direction == null) {
-      throw new IllegalArgumentException("Property must not be null: direction");
-    }
-    this.direction = direction;
+    this.direction = Preconditions.checkNotNull(direction, "direction");
   }
   
   @Override

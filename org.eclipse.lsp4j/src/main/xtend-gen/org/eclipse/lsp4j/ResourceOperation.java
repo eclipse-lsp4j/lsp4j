@@ -38,10 +38,7 @@ public abstract class ResourceOperation {
   }
   
   public void setKind(@NonNull final String kind) {
-    if (kind == null) {
-      throw new IllegalArgumentException("Property must not be null: kind");
-    }
-    this.kind = kind;
+    this.kind = Preconditions.checkNotNull(kind, "kind");
   }
   
   @Override

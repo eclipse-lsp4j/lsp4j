@@ -52,10 +52,7 @@ public class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrat
    * and TextDocumentSyncKind.Incremental.
    */
   public void setSyncKind(@NonNull final TextDocumentSyncKind syncKind) {
-    if (syncKind == null) {
-      throw new IllegalArgumentException("Property must not be null: syncKind");
-    }
-    this.syncKind = syncKind;
+    this.syncKind = Preconditions.checkNotNull(syncKind, "syncKind");
   }
   
   @Override

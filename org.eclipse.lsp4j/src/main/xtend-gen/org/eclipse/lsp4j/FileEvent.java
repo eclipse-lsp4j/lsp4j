@@ -55,10 +55,7 @@ public class FileEvent {
    * The file's uri.
    */
   public void setUri(@NonNull final String uri) {
-    if (uri == null) {
-      throw new IllegalArgumentException("Property must not be null: uri");
-    }
-    this.uri = uri;
+    this.uri = Preconditions.checkNotNull(uri, "uri");
   }
   
   /**
@@ -74,10 +71,7 @@ public class FileEvent {
    * The change type.
    */
   public void setType(@NonNull final FileChangeType type) {
-    if (type == null) {
-      throw new IllegalArgumentException("Property must not be null: type");
-    }
-    this.type = type;
+    this.type = Preconditions.checkNotNull(type, "type");
   }
   
   @Override

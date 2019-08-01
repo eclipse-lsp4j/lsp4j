@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.ExceptionOptions;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -48,10 +49,7 @@ public class SetExceptionBreakpointsArguments {
    * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
    */
   public void setFilters(@NonNull final String[] filters) {
-    if (filters == null) {
-      throw new IllegalArgumentException("Property must not be null: filters");
-    }
-    this.filters = filters;
+    this.filters = Preconditions.checkNotNull(filters, "filters");
   }
   
   /**

@@ -47,10 +47,7 @@ public class WorkspaceSymbolParams {
    * A non-empty query string
    */
   public void setQuery(@NonNull final String query) {
-    if (query == null) {
-      throw new IllegalArgumentException("Property must not be null: query");
-    }
-    this.query = query;
+    this.query = Preconditions.checkNotNull(query, "query");
   }
   
   @Override

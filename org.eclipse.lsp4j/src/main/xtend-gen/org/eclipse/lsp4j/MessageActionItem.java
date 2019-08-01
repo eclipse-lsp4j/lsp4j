@@ -49,10 +49,7 @@ public class MessageActionItem {
    * A short title like 'Retry', 'Open Log' etc.
    */
   public void setTitle(@NonNull final String title) {
-    if (title == null) {
-      throw new IllegalArgumentException("Property must not be null: title");
-    }
-    this.title = title;
+    this.title = Preconditions.checkNotNull(title, "title");
   }
   
   @Override

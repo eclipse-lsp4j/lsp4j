@@ -59,10 +59,7 @@ public class DiagnosticRelatedInformation {
    * The location of this related diagnostic information.
    */
   public void setLocation(@NonNull final Location location) {
-    if (location == null) {
-      throw new IllegalArgumentException("Property must not be null: location");
-    }
-    this.location = location;
+    this.location = Preconditions.checkNotNull(location, "location");
   }
   
   /**
@@ -78,10 +75,7 @@ public class DiagnosticRelatedInformation {
    * The message of this related diagnostic information.
    */
   public void setMessage(@NonNull final String message) {
-    if (message == null) {
-      throw new IllegalArgumentException("Property must not be null: message");
-    }
-    this.message = message;
+    this.message = Preconditions.checkNotNull(message, "message");
   }
   
   @Override

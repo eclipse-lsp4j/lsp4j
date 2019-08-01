@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Map;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -84,10 +85,7 @@ public class Message {
    * Unique identifier for the message.
    */
   public void setId(@NonNull final Long id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
-    }
-    this.id = id;
+    this.id = Preconditions.checkNotNull(id, "id");
   }
   
   /**
@@ -109,10 +107,7 @@ public class Message {
    * safely used for telemetry purposes.
    */
   public void setFormat(@NonNull final String format) {
-    if (format == null) {
-      throw new IllegalArgumentException("Property must not be null: format");
-    }
-    this.format = format;
+    this.format = Preconditions.checkNotNull(format, "format");
   }
   
   /**

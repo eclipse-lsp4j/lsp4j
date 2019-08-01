@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -69,10 +70,7 @@ public class SourceBreakpoint {
    * The source line of the breakpoint or logpoint.
    */
   public void setLine(@NonNull final Long line) {
-    if (line == null) {
-      throw new IllegalArgumentException("Property must not be null: line");
-    }
-    this.line = line;
+    this.line = Preconditions.checkNotNull(line, "line");
   }
   
   /**

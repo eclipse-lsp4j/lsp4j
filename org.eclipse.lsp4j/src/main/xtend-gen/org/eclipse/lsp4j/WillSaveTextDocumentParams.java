@@ -53,10 +53,7 @@ public class WillSaveTextDocumentParams {
    * The document that will be saved.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -72,10 +69,7 @@ public class WillSaveTextDocumentParams {
    * A reason why a text document is saved.
    */
   public void setReason(@NonNull final TextDocumentSaveReason reason) {
-    if (reason == null) {
-      throw new IllegalArgumentException("Property must not be null: reason");
-    }
-    this.reason = reason;
+    this.reason = Preconditions.checkNotNull(reason, "reason");
   }
   
   @Override

@@ -69,10 +69,7 @@ public class TextDocumentPositionParams {
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -105,10 +102,7 @@ public class TextDocumentPositionParams {
    * The position inside the text document.
    */
   public void setPosition(@NonNull final Position position) {
-    if (position == null) {
-      throw new IllegalArgumentException("Property must not be null: position");
-    }
-    this.position = position;
+    this.position = Preconditions.checkNotNull(position, "position");
   }
   
   @Override

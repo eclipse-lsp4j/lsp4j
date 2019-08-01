@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ProcessEventArgumentsStartMethod;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -65,10 +66,7 @@ public class ProcessEventArguments {
    * /home/example/myproj/program.js.
    */
   public void setName(@NonNull final String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Property must not be null: name");
-    }
-    this.name = name;
+    this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**

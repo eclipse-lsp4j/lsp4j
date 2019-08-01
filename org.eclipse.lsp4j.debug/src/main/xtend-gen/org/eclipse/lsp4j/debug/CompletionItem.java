@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.CompletionItemType;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -76,10 +77,7 @@ public class CompletionItem {
    * completion.
    */
   public void setLabel(@NonNull final String label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   /**

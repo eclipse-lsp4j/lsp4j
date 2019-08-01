@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ChecksumAlgorithm;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -46,10 +47,7 @@ public class Checksum {
    * The algorithm used to calculate this checksum.
    */
   public void setAlgorithm(@NonNull final ChecksumAlgorithm algorithm) {
-    if (algorithm == null) {
-      throw new IllegalArgumentException("Property must not be null: algorithm");
-    }
-    this.algorithm = algorithm;
+    this.algorithm = Preconditions.checkNotNull(algorithm, "algorithm");
   }
   
   /**
@@ -65,10 +63,7 @@ public class Checksum {
    * Value of the checksum.
    */
   public void setChecksum(@NonNull final String checksum) {
-    if (checksum == null) {
-      throw new IllegalArgumentException("Property must not be null: checksum");
-    }
-    this.checksum = checksum;
+    this.checksum = Preconditions.checkNotNull(checksum, "checksum");
   }
   
   @Override

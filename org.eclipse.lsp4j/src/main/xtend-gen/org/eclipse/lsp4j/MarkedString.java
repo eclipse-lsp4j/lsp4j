@@ -52,10 +52,7 @@ public class MarkedString {
   }
   
   public void setLanguage(@NonNull final String language) {
-    if (language == null) {
-      throw new IllegalArgumentException("Property must not be null: language");
-    }
-    this.language = language;
+    this.language = Preconditions.checkNotNull(language, "language");
   }
   
   @Pure
@@ -65,10 +62,7 @@ public class MarkedString {
   }
   
   public void setValue(@NonNull final String value) {
-    if (value == null) {
-      throw new IllegalArgumentException("Property must not be null: value");
-    }
-    this.value = value;
+    this.value = Preconditions.checkNotNull(value, "value");
   }
   
   @Override

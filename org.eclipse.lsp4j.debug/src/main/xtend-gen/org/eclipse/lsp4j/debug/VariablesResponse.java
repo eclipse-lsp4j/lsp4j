@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.Variable;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -41,10 +42,7 @@ public class VariablesResponse {
    * All (or a range) of variables for the given variable reference.
    */
   public void setVariables(@NonNull final Variable[] variables) {
-    if (variables == null) {
-      throw new IllegalArgumentException("Property must not be null: variables");
-    }
-    this.variables = variables;
+    this.variables = Preconditions.checkNotNull(variables, "variables");
   }
   
   @Override

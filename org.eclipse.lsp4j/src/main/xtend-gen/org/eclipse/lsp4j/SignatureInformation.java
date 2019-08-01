@@ -74,10 +74,7 @@ public class SignatureInformation {
    * The label of this signature. Will be shown in the UI.
    */
   public void setLabel(@NonNull final String label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   /**

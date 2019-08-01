@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Capabilities;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -48,10 +49,7 @@ public class CapabilitiesEventArguments {
    * The set of updated capabilities.
    */
   public void setCapabilities(@NonNull final Capabilities capabilities) {
-    if (capabilities == null) {
-      throw new IllegalArgumentException("Property must not be null: capabilities");
-    }
-    this.capabilities = capabilities;
+    this.capabilities = Preconditions.checkNotNull(capabilities, "capabilities");
   }
   
   @Override

@@ -86,22 +86,23 @@ public class ParameterInformation {
    * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
    */
   public void setLabel(@NonNull final Either<String, Tuple.Two<Integer, Integer>> label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   public void setLabel(final String label) {
     if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
+      Preconditions.checkNotNull(label, "label");
+      this.label = null;
+      return;
     }
     this.label = Either.forLeft(label);
   }
   
   public void setLabel(final Tuple.Two<Integer, Integer> label) {
     if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
+      Preconditions.checkNotNull(label, "label");
+      this.label = null;
+      return;
     }
     this.label = Either.forRight(label);
   }

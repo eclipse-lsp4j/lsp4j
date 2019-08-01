@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ColumnDescriptorType;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -70,10 +71,7 @@ public class ColumnDescriptor {
    * Name of the attribute rendered in this column.
    */
   public void setAttributeName(@NonNull final String attributeName) {
-    if (attributeName == null) {
-      throw new IllegalArgumentException("Property must not be null: attributeName");
-    }
-    this.attributeName = attributeName;
+    this.attributeName = Preconditions.checkNotNull(attributeName, "attributeName");
   }
   
   /**
@@ -89,10 +87,7 @@ public class ColumnDescriptor {
    * Header UI label of column.
    */
   public void setLabel(@NonNull final String label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   /**

@@ -64,10 +64,7 @@ public class RenameParams {
    * The document in which to find the symbol.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -83,10 +80,7 @@ public class RenameParams {
    * The position at which this request was send.
    */
   public void setPosition(@NonNull final Position position) {
-    if (position == null) {
-      throw new IllegalArgumentException("Property must not be null: position");
-    }
-    this.position = position;
+    this.position = Preconditions.checkNotNull(position, "position");
   }
   
   /**
@@ -104,10 +98,7 @@ public class RenameParams {
    * ResponseError with an appropriate message set.
    */
   public void setNewName(@NonNull final String newName) {
-    if (newName == null) {
-      throw new IllegalArgumentException("Property must not be null: newName");
-    }
-    this.newName = newName;
+    this.newName = Preconditions.checkNotNull(newName, "newName");
   }
   
   @Override

@@ -59,10 +59,7 @@ public class TextDocumentEdit {
    * The text document to change.
    */
   public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -78,10 +75,7 @@ public class TextDocumentEdit {
    * The edits to be applied
    */
   public void setEdits(@NonNull final List<TextEdit> edits) {
-    if (edits == null) {
-      throw new IllegalArgumentException("Property must not be null: edits");
-    }
-    this.edits = edits;
+    this.edits = Preconditions.checkNotNull(edits, "edits");
   }
   
   @Override

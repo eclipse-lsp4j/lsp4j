@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.StackFrame;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -54,10 +55,7 @@ public class StackTraceResponse {
    * This means that there is no location information available.
    */
   public void setStackFrames(@NonNull final StackFrame[] stackFrames) {
-    if (stackFrames == null) {
-      throw new IllegalArgumentException("Property must not be null: stackFrames");
-    }
-    this.stackFrames = stackFrames;
+    this.stackFrames = Preconditions.checkNotNull(stackFrames, "stackFrames");
   }
   
   /**
