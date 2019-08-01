@@ -17,6 +17,7 @@ group = 'org.eclipse.lsp4j'
 p2gen {
 	zipRepository true
 	feature 'lsp4j-feature'
+	tychoVersion '1.4.0'
 	
 	dependencies {
 		repositoryUrl 'http://download.eclipse.org/releases/luna/201502271000/'
