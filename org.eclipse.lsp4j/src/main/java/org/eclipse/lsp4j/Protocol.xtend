@@ -3032,6 +3032,13 @@ class ServerCapabilities {
 	 * Since 3.10.0
 	 */
 	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
+	
+	/**
+	 * The server provides go to declaration support.
+	 *
+	 * Since 3.14.0
+	 */
+	Either<Boolean, StaticRegistrationOptions> declarationProvider
 
 	/**
 	 * The server provides execute command support.

@@ -147,6 +147,13 @@ public class ServerCapabilities {
   private Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider;
   
   /**
+   * The server provides go to declaration support.
+   * 
+   * Since 3.14.0
+   */
+  private Either<Boolean, StaticRegistrationOptions> declarationProvider;
+  
+  /**
    * The server provides execute command support.
    */
   private ExecuteCommandOptions executeCommandProvider;
@@ -627,6 +634,41 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides go to declaration support.
+   * 
+   * Since 3.14.0
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getDeclarationProvider() {
+    return this.declarationProvider;
+  }
+  
+  /**
+   * The server provides go to declaration support.
+   * 
+   * Since 3.14.0
+   */
+  public void setDeclarationProvider(final Either<Boolean, StaticRegistrationOptions> declarationProvider) {
+    this.declarationProvider = declarationProvider;
+  }
+  
+  public void setDeclarationProvider(final Boolean declarationProvider) {
+    if (declarationProvider == null) {
+      this.declarationProvider = null;
+      return;
+    }
+    this.declarationProvider = Either.forLeft(declarationProvider);
+  }
+  
+  public void setDeclarationProvider(final StaticRegistrationOptions declarationProvider) {
+    if (declarationProvider == null) {
+      this.declarationProvider = null;
+      return;
+    }
+    this.declarationProvider = Either.forRight(declarationProvider);
+  }
+  
+  /**
    * The server provides execute command support.
    */
   @Pure
@@ -815,6 +857,7 @@ public class ServerCapabilities {
     b.add("documentLinkProvider", this.documentLinkProvider);
     b.add("colorProvider", this.colorProvider);
     b.add("foldingRangeProvider", this.foldingRangeProvider);
+    b.add("declarationProvider", this.declarationProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
     b.add("semanticHighlighting", this.semanticHighlighting);
@@ -935,6 +978,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.foldingRangeProvider.equals(other.foldingRangeProvider))
       return false;
+    if (this.declarationProvider == null) {
+      if (other.declarationProvider != null)
+        return false;
+    } else if (!this.declarationProvider.equals(other.declarationProvider))
+      return false;
     if (this.executeCommandProvider == null) {
       if (other.executeCommandProvider != null)
         return false;
@@ -998,6 +1046,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.documentLinkProvider== null) ? 0 : this.documentLinkProvider.hashCode());
     result = prime * result + ((this.colorProvider== null) ? 0 : this.colorProvider.hashCode());
     result = prime * result + ((this.foldingRangeProvider== null) ? 0 : this.foldingRangeProvider.hashCode());
+    result = prime * result + ((this.declarationProvider== null) ? 0 : this.declarationProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
