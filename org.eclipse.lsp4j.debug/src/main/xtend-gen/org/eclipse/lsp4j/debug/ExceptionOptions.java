@@ -14,6 +14,7 @@ package org.eclipse.lsp4j.debug;
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.ExceptionBreakMode;
 import org.eclipse.lsp4j.debug.ExceptionPathSegment;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -71,10 +72,7 @@ public class ExceptionOptions {
    * Condition when a thrown exception should result in a break.
    */
   public void setBreakMode(@NonNull final ExceptionBreakMode breakMode) {
-    if (breakMode == null) {
-      throw new IllegalArgumentException("Property must not be null: breakMode");
-    }
-    this.breakMode = breakMode;
+    this.breakMode = Preconditions.checkNotNull(breakMode, "breakMode");
   }
   
   @Override

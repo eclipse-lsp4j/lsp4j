@@ -46,10 +46,7 @@ public class ConfigurationParams {
   }
   
   public void setItems(@NonNull final List<ConfigurationItem> items) {
-    if (items == null) {
-      throw new IllegalArgumentException("Property must not be null: items");
-    }
-    this.items = items;
+    this.items = Preconditions.checkNotNull(items, "items");
   }
   
   @Override

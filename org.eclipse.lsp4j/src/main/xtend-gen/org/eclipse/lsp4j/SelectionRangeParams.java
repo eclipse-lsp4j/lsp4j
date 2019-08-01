@@ -59,10 +59,7 @@ public class SelectionRangeParams {
    * The text document.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -78,10 +75,7 @@ public class SelectionRangeParams {
    * The positions inside the text document.
    */
   public void setPositions(@NonNull final List<Position> positions) {
-    if (positions == null) {
-      throw new IllegalArgumentException("Property must not be null: positions");
-    }
-    this.positions = positions;
+    this.positions = Preconditions.checkNotNull(positions, "positions");
   }
   
   @Override

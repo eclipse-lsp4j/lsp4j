@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -51,10 +52,7 @@ public class ThreadEventArguments {
    * Possible values include - but not limited to those defined in {@link ThreadEventArgumentsReason}
    */
   public void setReason(@NonNull final String reason) {
-    if (reason == null) {
-      throw new IllegalArgumentException("Property must not be null: reason");
-    }
-    this.reason = reason;
+    this.reason = Preconditions.checkNotNull(reason, "reason");
   }
   
   /**
@@ -70,10 +68,7 @@ public class ThreadEventArguments {
    * The identifier of the thread.
    */
   public void setThreadId(@NonNull final Long threadId) {
-    if (threadId == null) {
-      throw new IllegalArgumentException("Property must not be null: threadId");
-    }
-    this.threadId = threadId;
+    this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   
   @Override

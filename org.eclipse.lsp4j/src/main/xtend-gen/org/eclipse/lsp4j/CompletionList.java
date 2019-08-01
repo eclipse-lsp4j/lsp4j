@@ -76,10 +76,7 @@ public class CompletionList {
    * The completion items.
    */
   public void setItems(@NonNull final List<CompletionItem> items) {
-    if (items == null) {
-      throw new IllegalArgumentException("Property must not be null: items");
-    }
-    this.items = items;
+    this.items = Preconditions.checkNotNull(items, "items");
   }
   
   @Override

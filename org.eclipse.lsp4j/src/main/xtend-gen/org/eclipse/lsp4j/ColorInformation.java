@@ -53,10 +53,7 @@ public class ColorInformation {
    * The range in the document where this color appers.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -72,10 +69,7 @@ public class ColorInformation {
    * The actual color value for this color range.
    */
   public void setColor(@NonNull final Color color) {
-    if (color == null) {
-      throw new IllegalArgumentException("Property must not be null: color");
-    }
-    this.color = color;
+    this.color = Preconditions.checkNotNull(color, "color");
   }
   
   @Override

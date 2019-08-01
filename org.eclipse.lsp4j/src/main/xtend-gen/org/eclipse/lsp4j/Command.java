@@ -66,10 +66,7 @@ public class Command {
    * Title of the command, like `save`.
    */
   public void setTitle(@NonNull final String title) {
-    if (title == null) {
-      throw new IllegalArgumentException("Property must not be null: title");
-    }
-    this.title = title;
+    this.title = Preconditions.checkNotNull(title, "title");
   }
   
   /**
@@ -85,10 +82,7 @@ public class Command {
    * The identifier of the actual command handler.
    */
   public void setCommand(@NonNull final String command) {
-    if (command == null) {
-      throw new IllegalArgumentException("Property must not be null: command");
-    }
-    this.command = command;
+    this.command = Preconditions.checkNotNull(command, "command");
   }
   
   /**

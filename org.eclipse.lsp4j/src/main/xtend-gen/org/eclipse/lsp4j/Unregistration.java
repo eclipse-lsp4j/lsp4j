@@ -57,10 +57,7 @@ public class Unregistration {
    * provided during the register request.
    */
   public void setId(@NonNull final String id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
-    }
-    this.id = id;
+    this.id = Preconditions.checkNotNull(id, "id");
   }
   
   /**
@@ -76,10 +73,7 @@ public class Unregistration {
    * The method / capability to unregister for.
    */
   public void setMethod(@NonNull final String method) {
-    if (method == null) {
-      throw new IllegalArgumentException("Property must not be null: method");
-    }
-    this.method = method;
+    this.method = Preconditions.checkNotNull(method, "method");
   }
   
   @Override

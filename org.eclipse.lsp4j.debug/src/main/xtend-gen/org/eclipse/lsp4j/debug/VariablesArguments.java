@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
 import org.eclipse.lsp4j.debug.VariablesArgumentsFilter;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -69,10 +70,7 @@ public class VariablesArguments {
    * The Variable reference.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
-    if (variablesReference == null) {
-      throw new IllegalArgumentException("Property must not be null: variablesReference");
-    }
-    this.variablesReference = variablesReference;
+    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
   }
   
   /**

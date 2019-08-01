@@ -71,10 +71,7 @@ public class RenameFile extends ResourceOperation {
    * The old (existing) location.
    */
   public void setOldUri(@NonNull final String oldUri) {
-    if (oldUri == null) {
-      throw new IllegalArgumentException("Property must not be null: oldUri");
-    }
-    this.oldUri = oldUri;
+    this.oldUri = Preconditions.checkNotNull(oldUri, "oldUri");
   }
   
   /**
@@ -90,10 +87,7 @@ public class RenameFile extends ResourceOperation {
    * The new location.
    */
   public void setNewUri(@NonNull final String newUri) {
-    if (newUri == null) {
-      throw new IllegalArgumentException("Property must not be null: newUri");
-    }
-    this.newUri = newUri;
+    this.newUri = Preconditions.checkNotNull(newUri, "newUri");
   }
   
   /**

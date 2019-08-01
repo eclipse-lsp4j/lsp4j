@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ExceptionBreakMode;
 import org.eclipse.lsp4j.debug.ExceptionDetails;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -61,10 +62,7 @@ public class ExceptionInfoResponse {
    * ID of the exception that was thrown.
    */
   public void setExceptionId(@NonNull final String exceptionId) {
-    if (exceptionId == null) {
-      throw new IllegalArgumentException("Property must not be null: exceptionId");
-    }
-    this.exceptionId = exceptionId;
+    this.exceptionId = Preconditions.checkNotNull(exceptionId, "exceptionId");
   }
   
   /**
@@ -99,10 +97,7 @@ public class ExceptionInfoResponse {
    * Mode that caused the exception notification to be raised.
    */
   public void setBreakMode(@NonNull final ExceptionBreakMode breakMode) {
-    if (breakMode == null) {
-      throw new IllegalArgumentException("Property must not be null: breakMode");
-    }
-    this.breakMode = breakMode;
+    this.breakMode = Preconditions.checkNotNull(breakMode, "breakMode");
   }
   
   /**

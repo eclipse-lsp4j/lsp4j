@@ -77,10 +77,7 @@ public class SignatureHelp {
    * One or more signatures.
    */
   public void setSignatures(@NonNull final List<SignatureInformation> signatures) {
-    if (signatures == null) {
-      throw new IllegalArgumentException("Property must not be null: signatures");
-    }
-    this.signatures = signatures;
+    this.signatures = Preconditions.checkNotNull(signatures, "signatures");
   }
   
   /**

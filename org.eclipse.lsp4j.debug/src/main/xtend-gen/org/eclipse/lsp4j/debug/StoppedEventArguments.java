@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -99,10 +100,7 @@ public class StoppedEventArguments {
    * Possible values include - but not limited to those defined in {@link StoppedEventArgumentsReason}
    */
   public void setReason(@NonNull final String reason) {
-    if (reason == null) {
-      throw new IllegalArgumentException("Property must not be null: reason");
-    }
-    this.reason = reason;
+    this.reason = Preconditions.checkNotNull(reason, "reason");
   }
   
   /**

@@ -73,10 +73,7 @@ public class DidChangeTextDocumentParams {
    * been applied.
    */
   public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -109,10 +106,7 @@ public class DidChangeTextDocumentParams {
    * The actual content changes.
    */
   public void setContentChanges(@NonNull final List<TextDocumentContentChangeEvent> contentChanges) {
-    if (contentChanges == null) {
-      throw new IllegalArgumentException("Property must not be null: contentChanges");
-    }
-    this.contentChanges = contentChanges;
+    this.contentChanges = Preconditions.checkNotNull(contentChanges, "contentChanges");
   }
   
   @Override

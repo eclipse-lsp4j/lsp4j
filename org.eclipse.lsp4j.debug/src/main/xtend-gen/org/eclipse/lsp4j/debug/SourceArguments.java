@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -69,10 +70,7 @@ public class SourceArguments {
    * compatibility since old backends do not understand the 'source' attribute.
    */
   public void setSourceReference(@NonNull final Long sourceReference) {
-    if (sourceReference == null) {
-      throw new IllegalArgumentException("Property must not be null: sourceReference");
-    }
-    this.sourceReference = sourceReference;
+    this.sourceReference = Preconditions.checkNotNull(sourceReference, "sourceReference");
   }
   
   @Override

@@ -59,10 +59,7 @@ public class ExecuteCommandParams {
    * The identifier of the actual command handler.
    */
   public void setCommand(@NonNull final String command) {
-    if (command == null) {
-      throw new IllegalArgumentException("Property must not be null: command");
-    }
-    this.command = command;
+    this.command = Preconditions.checkNotNull(command, "command");
   }
   
   /**

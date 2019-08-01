@@ -20,6 +20,7 @@ import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.CompilationStrategy.CompilationContext
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
+import org.eclipse.xtend.lib.macro.declaration.Type
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
 
@@ -73,10 +74,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 						val parameter = parameters.head
 						parameter.addAnnotation(newAnnotationReference(NonNull))
 						body = '''
-							if («parameter.simpleName» == null) {
-							  throw new IllegalArgumentException("Property must not be null: «field.simpleName»");
-							}
-							this.«field.simpleName» = «parameter.simpleName»;
+							this.«field.simpleName» = «getPreconditionsUtil(impl, context)».checkNotNull(«parameter.simpleName», "«field.simpleName»");
 						'''
 					}
 					if (deprecated !== null)
@@ -122,15 +120,14 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 	) {
 		val hasNonNull = field.findAnnotation(NonNull.newTypeReference.type) !== null
 		val newVariableName = '_' + variableName
-		val compileNewEither = '''«eitherType.toJavaCode».for«IF argument.right»Right«ELSE»Left«ENDIF»(«variableName»)'''
+		val CharSequence compileNewEither = '''«eitherType.toJavaCode».for«IF argument.right»Right«ELSE»Left«ENDIF»(«variableName»)'''
 		'''
 			if («variableName» == null) {
 			  «IF hasNonNull»
-			  	throw new IllegalArgumentException("Property must not be null: «field.simpleName»");
-			  «ELSE»
-			  	this.«field.simpleName» = null;
-			  	return;
+			  	«getPreconditionsUtil(field.declaringType, context)».checkNotNull(«variableName», "«field.simpleName»");
 			  «ENDIF»
+			  this.«field.simpleName» = null;
+			  return;
 			}
 			«IF argument.parent !== null»
 				final «argument.parent.type.toJavaCode» «newVariableName» = «compileNewEither»;
@@ -162,6 +159,13 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 				return b.toString();
 			'''
 		]
+	}
+	
+	private def getPreconditionsUtil(Type type, extension TransformationContext context) {
+		if (type.qualifiedName.startsWith('org.eclipse.lsp4j.debug'))
+			newTypeReference('org.eclipse.lsp4j.debug.util.Preconditions')
+		else
+			newTypeReference('org.eclipse.lsp4j.util.Preconditions')
 	}
 
 }

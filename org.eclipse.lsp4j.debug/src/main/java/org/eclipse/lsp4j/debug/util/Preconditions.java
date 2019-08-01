@@ -9,7 +9,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.util;
+package org.eclipse.lsp4j.debug.util;
 
 /**
  * Utilities for checking method and constructor arguments.

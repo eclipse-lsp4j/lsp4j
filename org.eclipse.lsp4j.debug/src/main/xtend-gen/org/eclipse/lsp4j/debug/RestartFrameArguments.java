@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -39,10 +40,7 @@ public class RestartFrameArguments {
    * Restart this stackframe.
    */
   public void setFrameId(@NonNull final Long frameId) {
-    if (frameId == null) {
-      throw new IllegalArgumentException("Property must not be null: frameId");
-    }
-    this.frameId = frameId;
+    this.frameId = Preconditions.checkNotNull(frameId, "frameId");
   }
   
   @Override

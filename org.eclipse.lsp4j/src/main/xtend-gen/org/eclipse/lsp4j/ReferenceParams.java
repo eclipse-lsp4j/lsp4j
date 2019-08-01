@@ -41,10 +41,7 @@ public class ReferenceParams extends TextDocumentPositionParams {
   }
   
   public void setContext(@NonNull final ReferenceContext context) {
-    if (context == null) {
-      throw new IllegalArgumentException("Property must not be null: context");
-    }
-    this.context = context;
+    this.context = Preconditions.checkNotNull(context, "context");
   }
   
   @Override

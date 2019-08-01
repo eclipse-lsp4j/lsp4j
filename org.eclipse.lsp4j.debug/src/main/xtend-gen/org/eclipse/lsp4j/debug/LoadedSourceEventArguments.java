@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.LoadedSourceEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -47,10 +48,7 @@ public class LoadedSourceEventArguments {
    * The reason for the event.
    */
   public void setReason(@NonNull final LoadedSourceEventArgumentsReason reason) {
-    if (reason == null) {
-      throw new IllegalArgumentException("Property must not be null: reason");
-    }
-    this.reason = reason;
+    this.reason = Preconditions.checkNotNull(reason, "reason");
   }
   
   /**
@@ -66,10 +64,7 @@ public class LoadedSourceEventArguments {
    * The new, changed, or removed source.
    */
   public void setSource(@NonNull final Source source) {
-    if (source == null) {
-      throw new IllegalArgumentException("Property must not be null: source");
-    }
-    this.source = source;
+    this.source = Preconditions.checkNotNull(source, "source");
   }
   
   @Override

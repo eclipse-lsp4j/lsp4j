@@ -92,10 +92,7 @@ public class SymbolInformation {
    * The name of this symbol.
    */
   public void setName(@NonNull final String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Property must not be null: name");
-    }
-    this.name = name;
+    this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**
@@ -111,10 +108,7 @@ public class SymbolInformation {
    * The kind of this symbol.
    */
   public void setKind(@NonNull final SymbolKind kind) {
-    if (kind == null) {
-      throw new IllegalArgumentException("Property must not be null: kind");
-    }
-    this.kind = kind;
+    this.kind = Preconditions.checkNotNull(kind, "kind");
   }
   
   /**
@@ -161,10 +155,7 @@ public class SymbolInformation {
    * the symbols.
    */
   public void setLocation(@NonNull final Location location) {
-    if (location == null) {
-      throw new IllegalArgumentException("Property must not be null: location");
-    }
-    this.location = location;
+    this.location = Preconditions.checkNotNull(location, "location");
   }
   
   /**

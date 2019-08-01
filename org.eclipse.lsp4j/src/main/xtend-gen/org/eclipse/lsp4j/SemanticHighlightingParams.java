@@ -59,10 +59,7 @@ public class SemanticHighlightingParams {
    * The text document that has to be decorated with the semantic highlighting information.
    */
   public void setTextDocument(@NonNull final VersionedTextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -78,10 +75,7 @@ public class SemanticHighlightingParams {
    * An array of semantic highlighting information.
    */
   public void setLines(@NonNull final List<SemanticHighlightingInformation> lines) {
-    if (lines == null) {
-      throw new IllegalArgumentException("Property must not be null: lines");
-    }
-    this.lines = lines;
+    this.lines = Preconditions.checkNotNull(lines, "lines");
   }
   
   @Override

@@ -72,10 +72,7 @@ public class CodeLens {
    * The range in which this code lens is valid. Should only span a single line.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**

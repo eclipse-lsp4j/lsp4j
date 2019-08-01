@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -71,10 +72,7 @@ public class ExceptionPathSegment {
    * Depending on the value of 'negate' the names that should match or not match.
    */
   public void setNames(@NonNull final String[] names) {
-    if (names == null) {
-      throw new IllegalArgumentException("Property must not be null: names");
-    }
-    this.names = names;
+    this.names = Preconditions.checkNotNull(names, "names");
   }
   
   @Override

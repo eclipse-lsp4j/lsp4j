@@ -93,10 +93,7 @@ public class Diagnostic {
    * The range at which the message applies
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -159,10 +156,7 @@ public class Diagnostic {
    * The diagnostic's message.
    */
   public void setMessage(@NonNull final String message) {
-    if (message == null) {
-      throw new IllegalArgumentException("Property must not be null: message");
-    }
-    this.message = message;
+    this.message = Preconditions.checkNotNull(message, "message");
   }
   
   /**

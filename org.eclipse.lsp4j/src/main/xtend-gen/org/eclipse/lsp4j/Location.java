@@ -43,10 +43,7 @@ public class Location {
   }
   
   public void setUri(@NonNull final String uri) {
-    if (uri == null) {
-      throw new IllegalArgumentException("Property must not be null: uri");
-    }
-    this.uri = uri;
+    this.uri = Preconditions.checkNotNull(uri, "uri");
   }
   
   @Pure
@@ -56,10 +53,7 @@ public class Location {
   }
   
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   @Override

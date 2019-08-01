@@ -95,10 +95,7 @@ public class TextDocumentContentChangeEvent {
    * The new text of the range/document.
    */
   public void setText(@NonNull final String text) {
-    if (text == null) {
-      throw new IllegalArgumentException("Property must not be null: text");
-    }
-    this.text = text;
+    this.text = Preconditions.checkNotNull(text, "text");
   }
   
   @Override

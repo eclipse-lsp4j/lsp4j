@@ -59,10 +59,7 @@ public class PublishDiagnosticsParams {
    * The URI for which diagnostic information is reported.
    */
   public void setUri(@NonNull final String uri) {
-    if (uri == null) {
-      throw new IllegalArgumentException("Property must not be null: uri");
-    }
-    this.uri = uri;
+    this.uri = Preconditions.checkNotNull(uri, "uri");
   }
   
   /**
@@ -78,10 +75,7 @@ public class PublishDiagnosticsParams {
    * An array of diagnostic information items.
    */
   public void setDiagnostics(@NonNull final List<Diagnostic> diagnostics) {
-    if (diagnostics == null) {
-      throw new IllegalArgumentException("Property must not be null: diagnostics");
-    }
-    this.diagnostics = diagnostics;
+    this.diagnostics = Preconditions.checkNotNull(diagnostics, "diagnostics");
   }
   
   @Override

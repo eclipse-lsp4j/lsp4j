@@ -60,10 +60,7 @@ public class DocumentHighlight {
    * The range this highlight applies to.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**

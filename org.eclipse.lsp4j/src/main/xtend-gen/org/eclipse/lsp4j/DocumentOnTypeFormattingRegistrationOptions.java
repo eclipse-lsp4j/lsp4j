@@ -56,10 +56,7 @@ public class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentReg
    * A character on which formatting should be triggered, like `}`.
    */
   public void setFirstTriggerCharacter(@NonNull final String firstTriggerCharacter) {
-    if (firstTriggerCharacter == null) {
-      throw new IllegalArgumentException("Property must not be null: firstTriggerCharacter");
-    }
-    this.firstTriggerCharacter = firstTriggerCharacter;
+    this.firstTriggerCharacter = Preconditions.checkNotNull(firstTriggerCharacter, "firstTriggerCharacter");
   }
   
   /**

@@ -64,10 +64,7 @@ public class ResolveTypeHierarchyItemParams {
    * The hierarchy item to resolve.
    */
   public void setItem(@NonNull final TypeHierarchyItem item) {
-    if (item == null) {
-      throw new IllegalArgumentException("Property must not be null: item");
-    }
-    this.item = item;
+    this.item = Preconditions.checkNotNull(item, "item");
   }
   
   /**
@@ -98,10 +95,7 @@ public class ResolveTypeHierarchyItemParams {
    * The direction of the type hierarchy resolution.
    */
   public void setDirection(@NonNull final TypeHierarchyDirection direction) {
-    if (direction == null) {
-      throw new IllegalArgumentException("Property must not be null: direction");
-    }
-    this.direction = direction;
+    this.direction = Preconditions.checkNotNull(direction, "direction");
   }
   
   @Override

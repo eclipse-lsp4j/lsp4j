@@ -149,10 +149,7 @@ public class CompletionItem {
    * The label of this completion item. By default also the text that is inserted when selecting this completion.
    */
   public void setLabel(@NonNull final String label) {
-    if (label == null) {
-      throw new IllegalArgumentException("Property must not be null: label");
-    }
-    this.label = label;
+    this.label = Preconditions.checkNotNull(label, "label");
   }
   
   /**

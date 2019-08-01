@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.VariablePresentationHint;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -87,10 +88,7 @@ public class EvaluateResponse {
    * The result of the evaluate request.
    */
   public void setResult(@NonNull final String result) {
-    if (result == null) {
-      throw new IllegalArgumentException("Property must not be null: result");
-    }
-    this.result = result;
+    this.result = Preconditions.checkNotNull(result, "result");
   }
   
   /**
@@ -146,10 +144,7 @@ public class EvaluateResponse {
    * variablesReference to the VariablesRequest.
    */
   public void setVariablesReference(@NonNull final Long variablesReference) {
-    if (variablesReference == null) {
-      throw new IllegalArgumentException("Property must not be null: variablesReference");
-    }
-    this.variablesReference = variablesReference;
+    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
   }
   
   /**

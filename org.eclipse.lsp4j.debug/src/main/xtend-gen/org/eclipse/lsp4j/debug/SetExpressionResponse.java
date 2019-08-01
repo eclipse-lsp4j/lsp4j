@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.VariablePresentationHint;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -80,10 +81,7 @@ public class SetExpressionResponse {
    * The new value of the expression.
    */
   public void setValue(@NonNull final String value) {
-    if (value == null) {
-      throw new IllegalArgumentException("Property must not be null: value");
-    }
-    this.value = value;
+    this.value = Preconditions.checkNotNull(value, "value");
   }
   
   /**

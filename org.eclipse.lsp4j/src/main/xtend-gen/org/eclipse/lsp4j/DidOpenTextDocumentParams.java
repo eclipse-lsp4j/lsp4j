@@ -62,10 +62,7 @@ public class DidOpenTextDocumentParams {
    * The document that was opened.
    */
   public void setTextDocument(@NonNull final TextDocumentItem textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**

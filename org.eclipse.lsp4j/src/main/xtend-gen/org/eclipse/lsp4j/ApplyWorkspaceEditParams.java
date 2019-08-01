@@ -60,10 +60,7 @@ public class ApplyWorkspaceEditParams {
    * The edits to apply.
    */
   public void setEdit(@NonNull final WorkspaceEdit edit) {
-    if (edit == null) {
-      throw new IllegalArgumentException("Property must not be null: edit");
-    }
-    this.edit = edit;
+    this.edit = Preconditions.checkNotNull(edit, "edit");
   }
   
   /**

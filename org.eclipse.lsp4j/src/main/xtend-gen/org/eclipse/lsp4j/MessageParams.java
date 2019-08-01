@@ -58,10 +58,7 @@ public class MessageParams {
    * The message type.
    */
   public void setType(@NonNull final MessageType type) {
-    if (type == null) {
-      throw new IllegalArgumentException("Property must not be null: type");
-    }
-    this.type = type;
+    this.type = Preconditions.checkNotNull(type, "type");
   }
   
   /**
@@ -77,10 +74,7 @@ public class MessageParams {
    * The actual message.
    */
   public void setMessage(@NonNull final String message) {
-    if (message == null) {
-      throw new IllegalArgumentException("Property must not be null: message");
-    }
-    this.message = message;
+    this.message = Preconditions.checkNotNull(message, "message");
   }
   
   @Override

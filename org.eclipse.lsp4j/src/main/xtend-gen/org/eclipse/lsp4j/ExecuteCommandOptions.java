@@ -50,10 +50,7 @@ public class ExecuteCommandOptions {
    * The commands to be executed on the server
    */
   public void setCommands(@NonNull final List<String> commands) {
-    if (commands == null) {
-      throw new IllegalArgumentException("Property must not be null: commands");
-    }
-    this.commands = commands;
+    this.commands = Preconditions.checkNotNull(commands, "commands");
   }
   
   @Override

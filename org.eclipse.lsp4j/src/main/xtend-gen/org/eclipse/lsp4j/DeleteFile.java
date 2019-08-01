@@ -63,10 +63,7 @@ public class DeleteFile extends ResourceOperation {
    * The file to delete.
    */
   public void setUri(@NonNull final String uri) {
-    if (uri == null) {
-      throw new IllegalArgumentException("Property must not be null: uri");
-    }
-    this.uri = uri;
+    this.uri = Preconditions.checkNotNull(uri, "uri");
   }
   
   /**

@@ -55,10 +55,7 @@ public class Range {
    * The range's start position
    */
   public void setStart(@NonNull final Position start) {
-    if (start == null) {
-      throw new IllegalArgumentException("Property must not be null: start");
-    }
-    this.start = start;
+    this.start = Preconditions.checkNotNull(start, "start");
   }
   
   /**
@@ -74,10 +71,7 @@ public class Range {
    * The range's end position
    */
   public void setEnd(@NonNull final Position end) {
-    if (end == null) {
-      throw new IllegalArgumentException("Property must not be null: end");
-    }
-    this.end = end;
+    this.end = Preconditions.checkNotNull(end, "end");
   }
   
   @Override

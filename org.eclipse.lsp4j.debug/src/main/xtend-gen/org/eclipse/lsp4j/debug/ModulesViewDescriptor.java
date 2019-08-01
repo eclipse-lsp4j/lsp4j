@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.ColumnDescriptor;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -34,10 +35,7 @@ public class ModulesViewDescriptor {
   }
   
   public void setColumns(@NonNull final ColumnDescriptor[] columns) {
-    if (columns == null) {
-      throw new IllegalArgumentException("Property must not be null: columns");
-    }
-    this.columns = columns;
+    this.columns = Preconditions.checkNotNull(columns, "columns");
   }
   
   @Override

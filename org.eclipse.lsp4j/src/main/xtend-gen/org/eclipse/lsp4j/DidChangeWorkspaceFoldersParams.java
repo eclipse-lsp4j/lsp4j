@@ -52,10 +52,7 @@ public class DidChangeWorkspaceFoldersParams {
    * The actual workspace folder change event.
    */
   public void setEvent(@NonNull final WorkspaceFoldersChangeEvent event) {
-    if (event == null) {
-      throw new IllegalArgumentException("Property must not be null: event");
-    }
-    this.event = event;
+    this.event = Preconditions.checkNotNull(event, "event");
   }
   
   @Override

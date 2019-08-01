@@ -15,6 +15,7 @@ import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CallHierarchySymbol;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -55,10 +56,7 @@ public class CallHierarchyCall {
    * The source range of the reference. The range is a sub range of the {@link CallHierarchyCall#getFrom from} symbol range.
    */
   public void setRange(@NonNull final Range range) {
-    if (range == null) {
-      throw new IllegalArgumentException("Property must not be null: range");
-    }
-    this.range = range;
+    this.range = Preconditions.checkNotNull(range, "range");
   }
   
   /**
@@ -74,10 +72,7 @@ public class CallHierarchyCall {
    * The symbol that contains the reference.
    */
   public void setFrom(@NonNull final CallHierarchySymbol from) {
-    if (from == null) {
-      throw new IllegalArgumentException("Property must not be null: from");
-    }
-    this.from = from;
+    this.from = Preconditions.checkNotNull(from, "from");
   }
   
   /**
@@ -93,10 +88,7 @@ public class CallHierarchyCall {
    * The symbol that is referenced.
    */
   public void setTo(@NonNull final CallHierarchySymbol to) {
-    if (to == null) {
-      throw new IllegalArgumentException("Property must not be null: to");
-    }
-    this.to = to;
+    this.to = Preconditions.checkNotNull(to, "to");
   }
   
   @Override

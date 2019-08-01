@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.FunctionBreakpoint;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -41,10 +42,7 @@ public class SetFunctionBreakpointsArguments {
    * The function names of the breakpoints.
    */
   public void setBreakpoints(@NonNull final FunctionBreakpoint[] breakpoints) {
-    if (breakpoints == null) {
-      throw new IllegalArgumentException("Property must not be null: breakpoints");
-    }
-    this.breakpoints = breakpoints;
+    this.breakpoints = Preconditions.checkNotNull(breakpoints, "breakpoints");
   }
   
   @Override

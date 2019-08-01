@@ -56,10 +56,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The position at which this request was send.
    */
   public void setPosition(@NonNull final Position position) {
-    if (position == null) {
-      throw new IllegalArgumentException("Property must not be null: position");
-    }
-    this.position = position;
+    this.position = Preconditions.checkNotNull(position, "position");
   }
   
   /**
@@ -75,10 +72,7 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
    * The character that has been typed.
    */
   public void setCh(@NonNull final String ch) {
-    if (ch == null) {
-      throw new IllegalArgumentException("Property must not be null: ch");
-    }
-    this.ch = ch;
+    this.ch = Preconditions.checkNotNull(ch, "ch");
   }
   
   @Override

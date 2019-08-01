@@ -56,10 +56,7 @@ public class DocumentFormattingParams {
    * The document to format.
    */
   public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    if (textDocument == null) {
-      throw new IllegalArgumentException("Property must not be null: textDocument");
-    }
-    this.textDocument = textDocument;
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
   }
   
   /**
@@ -75,10 +72,7 @@ public class DocumentFormattingParams {
    * The format options
    */
   public void setOptions(@NonNull final FormattingOptions options) {
-    if (options == null) {
-      throw new IllegalArgumentException("Property must not be null: options");
-    }
-    this.options = options;
+    this.options = Preconditions.checkNotNull(options, "options");
   }
   
   @Override

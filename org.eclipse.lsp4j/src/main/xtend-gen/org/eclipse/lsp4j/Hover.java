@@ -74,22 +74,23 @@ public class Hover {
    * The hover's content as markdown
    */
   public void setContents(@NonNull final Either<List<Either<String, MarkedString>>, MarkupContent> contents) {
-    if (contents == null) {
-      throw new IllegalArgumentException("Property must not be null: contents");
-    }
-    this.contents = contents;
+    this.contents = Preconditions.checkNotNull(contents, "contents");
   }
   
   public void setContents(final List<Either<String, MarkedString>> contents) {
     if (contents == null) {
-      throw new IllegalArgumentException("Property must not be null: contents");
+      Preconditions.checkNotNull(contents, "contents");
+      this.contents = null;
+      return;
     }
     this.contents = Either.forLeft(contents);
   }
   
   public void setContents(final MarkupContent contents) {
     if (contents == null) {
-      throw new IllegalArgumentException("Property must not be null: contents");
+      Preconditions.checkNotNull(contents, "contents");
+      this.contents = null;
+      return;
     }
     this.contents = Either.forRight(contents);
   }

@@ -43,10 +43,7 @@ public class UnregistrationParams {
   }
   
   public void setUnregisterations(@NonNull final List<Unregistration> unregisterations) {
-    if (unregisterations == null) {
-      throw new IllegalArgumentException("Property must not be null: unregisterations");
-    }
-    this.unregisterations = unregisterations;
+    this.unregisterations = Preconditions.checkNotNull(unregisterations, "unregisterations");
   }
   
   @Override

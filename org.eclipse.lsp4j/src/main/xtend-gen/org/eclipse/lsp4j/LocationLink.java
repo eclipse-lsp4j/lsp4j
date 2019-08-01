@@ -99,10 +99,7 @@ public class LocationLink {
    * The target resource identifier of this link.
    */
   public void setTargetUri(@NonNull final String targetUri) {
-    if (targetUri == null) {
-      throw new IllegalArgumentException("Property must not be null: targetUri");
-    }
-    this.targetUri = targetUri;
+    this.targetUri = Preconditions.checkNotNull(targetUri, "targetUri");
   }
   
   /**
@@ -122,10 +119,7 @@ public class LocationLink {
    * like comments. This information is typically used to highlight the range in the editor.
    */
   public void setTargetRange(@NonNull final Range targetRange) {
-    if (targetRange == null) {
-      throw new IllegalArgumentException("Property must not be null: targetRange");
-    }
-    this.targetRange = targetRange;
+    this.targetRange = Preconditions.checkNotNull(targetRange, "targetRange");
   }
   
   /**
@@ -143,10 +137,7 @@ public class LocationLink {
    * Must be contained by the the `targetRange`. See also `DocumentSymbol#range`
    */
   public void setTargetSelectionRange(@NonNull final Range targetSelectionRange) {
-    if (targetSelectionRange == null) {
-      throw new IllegalArgumentException("Property must not be null: targetSelectionRange");
-    }
-    this.targetSelectionRange = targetSelectionRange;
+    this.targetSelectionRange = Preconditions.checkNotNull(targetSelectionRange, "targetSelectionRange");
   }
   
   @Override

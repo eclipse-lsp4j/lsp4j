@@ -70,10 +70,7 @@ public class Registration {
    * the request again.
    */
   public void setId(@NonNull final String id) {
-    if (id == null) {
-      throw new IllegalArgumentException("Property must not be null: id");
-    }
-    this.id = id;
+    this.id = Preconditions.checkNotNull(id, "id");
   }
   
   /**
@@ -89,10 +86,7 @@ public class Registration {
    * The method / capability to register for.
    */
   public void setMethod(@NonNull final String method) {
-    if (method == null) {
-      throw new IllegalArgumentException("Property must not be null: method");
-    }
-    this.method = method;
+    this.method = Preconditions.checkNotNull(method, "method");
   }
   
   /**

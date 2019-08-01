@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -113,10 +114,7 @@ public class Breakpoint {
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
   public void setVerified(@NonNull final Boolean verified) {
-    if (verified == null) {
-      throw new IllegalArgumentException("Property must not be null: verified");
-    }
-    this.verified = verified;
+    this.verified = Preconditions.checkNotNull(verified, "verified");
   }
   
   /**

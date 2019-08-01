@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -64,10 +65,7 @@ public class EvaluateArguments {
    * The expression to evaluate.
    */
   public void setExpression(@NonNull final String expression) {
-    if (expression == null) {
-      throw new IllegalArgumentException("Property must not be null: expression");
-    }
-    this.expression = expression;
+    this.expression = Preconditions.checkNotNull(expression, "expression");
   }
   
   /**
