@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
@@ -210,7 +211,12 @@ public final class DebugLauncher {
 		protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
 			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
 			outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
-			RemoteEndpoint remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, ServiceEndpoints.toEndpoint(localServices));
+			Endpoint localEndpoint = ServiceEndpoints.toEndpoint(localServices);
+			RemoteEndpoint remoteEndpoint;
+			if (exceptionHandler == null)
+				remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, localEndpoint);
+			else
+				remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
 			jsonHandler.setMethodProvider(remoteEndpoint);
 			return remoteEndpoint;
 		}

@@ -30,6 +30,7 @@ import org.eclipse.lsp4j.jsonrpc.json.JsonRpcMethodProvider;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.jsonrpc.validation.ReflectiveMessageValidator;
 
@@ -230,6 +231,7 @@ public interface Launcher<T> {
 		protected OutputStream output;
 		protected ExecutorService executorService;
 		protected Function<MessageConsumer, MessageConsumer> messageWrapper;
+		protected Function<Throwable, ResponseError> exceptionHandler;
 		protected boolean validateMessages;
 		protected Consumer<GsonBuilder> configureGson;
 		protected ClassLoader classLoader;
@@ -277,6 +279,11 @@ public interface Launcher<T> {
 
 		public Builder<T> wrapMessages(Function<MessageConsumer, MessageConsumer> wrapper) {
 			this.messageWrapper = wrapper;
+			return this;
+		}
+		
+		public Builder<T> setExceptionHandler(Function<Throwable, ResponseError> exceptionHandler) {
+			this.exceptionHandler = exceptionHandler;
 			return this;
 		}
 		
@@ -338,7 +345,12 @@ public interface Launcher<T> {
 		protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
 			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
 			outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
-			RemoteEndpoint remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, ServiceEndpoints.toEndpoint(localServices));
+			Endpoint localEndpoint = ServiceEndpoints.toEndpoint(localServices);
+			RemoteEndpoint remoteEndpoint;
+			if (exceptionHandler == null)
+				remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, localEndpoint);
+			else
+				remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
 			jsonHandler.setMethodProvider(remoteEndpoint);
 			return remoteEndpoint;
 		}
