@@ -2,7 +2,7 @@
 
 The project is build with Gradle and written in Java 8.
 
-To start working on it simply clone and run `./gradlew build`.
+To start working on it simply clone and run `./gradlew build`. See the section [below](#Eclipse) on building and editing with Eclipse for step-by-step instructions.
 
 # ECA
 

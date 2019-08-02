@@ -43,6 +43,10 @@ Also, you can get them directly from the TypeFox Jenkins server:
  * LSP4J 0.4.x &rarr; DAP 1.25.0
  * LSP4J before 0.4.x did not support DAP
 
+### Building and Contributing
+
+To build and contribute to LSP4J please consult the [Contribution Guide](https://github.com/eclipse/lsp4j/blob/master/Contributing.md).
+
 ### Licenses
 
 LSP4J is published under two licenses:
