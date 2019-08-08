@@ -20,5 +20,5 @@ public class DebugProtcol {
   /**
    * Version of Debug Protocol
    */
-  public static final String SCHEMA_VERSION = "1.31.0";
+  public static final String SCHEMA_VERSION = "1.32.0";
 }
