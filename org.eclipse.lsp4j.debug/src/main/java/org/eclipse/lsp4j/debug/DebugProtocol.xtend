@@ -595,6 +595,11 @@ class RestartArguments {
  */
 @JsonRpcData
 class DisconnectArguments {
+    /**
+     * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+     */
+    Boolean restart;
+
 	/**
 	 * Indicates whether the debuggee should be terminated when the debugger is disconnected.
 	 * <p>
