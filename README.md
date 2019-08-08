@@ -39,6 +39,7 @@ Also, you can get them directly from the TypeFox Jenkins server:
 
 ### Supported DAP Versions
 
+ * LSP4J 0.8.x &rarr; DAP 1.32.0
  * LSP4J 0.5.x &rarr; DAP 1.31.0
  * LSP4J 0.4.x &rarr; DAP 1.25.0
  * LSP4J before 0.4.x did not support DAP

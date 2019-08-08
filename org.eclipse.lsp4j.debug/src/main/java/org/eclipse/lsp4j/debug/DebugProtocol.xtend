@@ -26,7 +26,7 @@ class DebugProtcol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.31.0";
+	public static final String SCHEMA_VERSION = "1.32.0";
 }
 
 /**
@@ -595,6 +595,11 @@ class RestartArguments {
  */
 @JsonRpcData
 class DisconnectArguments {
+    /**
+     * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+     */
+    Boolean restart;
+
 	/**
 	 * Indicates whether the debuggee should be terminated when the debugger is disconnected.
 	 * <p>
@@ -613,6 +618,10 @@ class DisconnectArguments {
  */
 @JsonRpcData
 class TerminateArguments {
+  /**
+   * A value of true indicates that this 'terminate' request is part of a restart sequence.
+   */
+   Boolean restart;
 }
 
 /**

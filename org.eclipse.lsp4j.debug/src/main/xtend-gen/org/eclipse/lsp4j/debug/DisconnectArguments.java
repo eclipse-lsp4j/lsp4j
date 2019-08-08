@@ -20,6 +20,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class DisconnectArguments {
   /**
+   * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+   */
+  private Boolean restart;
+  
+  /**
    * Indicates whether the debuggee should be terminated when the debugger is disconnected.
    * <p>
    * If unspecified, the debug adapter is free to do whatever it thinks is best.
@@ -30,6 +35,21 @@ public class DisconnectArguments {
    * This is an optional property.
    */
   private Boolean terminateDebuggee;
+  
+  /**
+   * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+   */
+  @Pure
+  public Boolean getRestart() {
+    return this.restart;
+  }
+  
+  /**
+   * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+   */
+  public void setRestart(final Boolean restart) {
+    this.restart = restart;
+  }
   
   /**
    * Indicates whether the debuggee should be terminated when the debugger is disconnected.
@@ -64,6 +84,7 @@ public class DisconnectArguments {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("restart", this.restart);
     b.add("terminateDebuggee", this.terminateDebuggee);
     return b.toString();
   }
@@ -78,6 +99,11 @@ public class DisconnectArguments {
     if (getClass() != obj.getClass())
       return false;
     DisconnectArguments other = (DisconnectArguments) obj;
+    if (this.restart == null) {
+      if (other.restart != null)
+        return false;
+    } else if (!this.restart.equals(other.restart))
+      return false;
     if (this.terminateDebuggee == null) {
       if (other.terminateDebuggee != null)
         return false;
@@ -89,6 +115,9 @@ public class DisconnectArguments {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.terminateDebuggee== null) ? 0 : this.terminateDebuggee.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.restart== null) ? 0 : this.restart.hashCode());
+    return prime * result + ((this.terminateDebuggee== null) ? 0 : this.terminateDebuggee.hashCode());
   }
 }

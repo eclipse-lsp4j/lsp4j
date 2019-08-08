@@ -34,7 +34,7 @@ public interface IDebugProtocolClient {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.31.0";
+	public static final String SCHEMA_VERSION = "1.32.0";
 
 	/**
 	 * This event indicates that the debug adapter is ready to accept configuration
