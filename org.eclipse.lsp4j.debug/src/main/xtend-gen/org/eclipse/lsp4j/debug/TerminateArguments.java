@@ -19,10 +19,31 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class TerminateArguments {
+  /**
+   * A value of true indicates that this 'terminate' request is part of a restart sequence.
+   */
+  private Boolean restart;
+  
+  /**
+   * A value of true indicates that this 'terminate' request is part of a restart sequence.
+   */
+  @Pure
+  public Boolean getRestart() {
+    return this.restart;
+  }
+  
+  /**
+   * A value of true indicates that this 'terminate' request is part of a restart sequence.
+   */
+  public void setRestart(final Boolean restart) {
+    this.restart = restart;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("restart", this.restart);
     return b.toString();
   }
   
@@ -35,12 +56,18 @@ public class TerminateArguments {
       return false;
     if (getClass() != obj.getClass())
       return false;
+    TerminateArguments other = (TerminateArguments) obj;
+    if (this.restart == null) {
+      if (other.restart != null)
+        return false;
+    } else if (!this.restart.equals(other.restart))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 1;
+    return 31 * 1 + ((this.restart== null) ? 0 : this.restart.hashCode());
   }
 }
