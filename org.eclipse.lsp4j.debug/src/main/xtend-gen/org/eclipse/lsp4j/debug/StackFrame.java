@@ -70,6 +70,13 @@ public class StackFrame {
   private Long endColumn;
   
   /**
+   * Optional memory reference for the current instruction pointer in this frame.
+   * <p>
+   * This is an optional property.
+   */
+  private String instructionPointerReference;
+  
+  /**
    * The module associated with this frame, if any.
    * <p>
    * This is an optional property.
@@ -221,6 +228,25 @@ public class StackFrame {
   }
   
   /**
+   * Optional memory reference for the current instruction pointer in this frame.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getInstructionPointerReference() {
+    return this.instructionPointerReference;
+  }
+  
+  /**
+   * Optional memory reference for the current instruction pointer in this frame.
+   * <p>
+   * This is an optional property.
+   */
+  public void setInstructionPointerReference(final String instructionPointerReference) {
+    this.instructionPointerReference = instructionPointerReference;
+  }
+  
+  /**
    * The module associated with this frame, if any.
    * <p>
    * This is an optional property.
@@ -289,6 +315,7 @@ public class StackFrame {
     b.add("column", this.column);
     b.add("endLine", this.endLine);
     b.add("endColumn", this.endColumn);
+    b.add("instructionPointerReference", this.instructionPointerReference);
     b.add("moduleId", this.moduleId);
     b.add("presentationHint", this.presentationHint);
     return b.toString();
@@ -339,6 +366,11 @@ public class StackFrame {
         return false;
     } else if (!this.endColumn.equals(other.endColumn))
       return false;
+    if (this.instructionPointerReference == null) {
+      if (other.instructionPointerReference != null)
+        return false;
+    } else if (!this.instructionPointerReference.equals(other.instructionPointerReference))
+      return false;
     if (this.moduleId == null) {
       if (other.moduleId != null)
         return false;
@@ -364,6 +396,7 @@ public class StackFrame {
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
     result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
+    result = prime * result + ((this.instructionPointerReference== null) ? 0 : this.instructionPointerReference.hashCode());
     result = prime * result + ((this.moduleId== null) ? 0 : this.moduleId.hashCode());
     return prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
   }

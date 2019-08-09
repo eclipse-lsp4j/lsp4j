@@ -12,23 +12,13 @@
 package org.eclipse.lsp4j.debug;
 
 /**
- * This enumeration defines all possible conditions when a thrown exception should result in a break.
- * <p>
- * never: never breaks,
- * <p>
- * always: always breaks,
- * <p>
- * unhandled: breaks when exception unhandled,
- * <p>
- * userUnhandled: breaks if the exception is not handled by user code.
+ * Declaration of parameters, response bodies, and event bodies for
+ * the <a href="https://microsoft.github.io/debug-adapter-protocol/">Debug Adapter Protocol</a>
  */
 @SuppressWarnings("all")
-public enum ExceptionBreakMode {
-  NEVER,
-  
-  ALWAYS,
-  
-  UNHANDLED,
-  
-  USER_UNHANDLED;
+public class DebugProtocol {
+  /**
+   * Version of Debug Protocol
+   */
+  public static final String SCHEMA_VERSION = "1.35.0";
 }

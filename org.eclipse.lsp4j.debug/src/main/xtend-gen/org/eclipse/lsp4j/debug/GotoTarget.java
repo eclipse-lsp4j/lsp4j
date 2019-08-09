@@ -62,6 +62,13 @@ public class GotoTarget {
   private Long endColumn;
   
   /**
+   * Optional memory reference for the instruction pointer value represented by this target.
+   * <p>
+   * This is an optional property.
+   */
+  private String instructionPointerReference;
+  
+  /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
   @Pure
@@ -175,6 +182,25 @@ public class GotoTarget {
     this.endColumn = endColumn;
   }
   
+  /**
+   * Optional memory reference for the instruction pointer value represented by this target.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getInstructionPointerReference() {
+    return this.instructionPointerReference;
+  }
+  
+  /**
+   * Optional memory reference for the instruction pointer value represented by this target.
+   * <p>
+   * This is an optional property.
+   */
+  public void setInstructionPointerReference(final String instructionPointerReference) {
+    this.instructionPointerReference = instructionPointerReference;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -185,6 +211,7 @@ public class GotoTarget {
     b.add("column", this.column);
     b.add("endLine", this.endLine);
     b.add("endColumn", this.endColumn);
+    b.add("instructionPointerReference", this.instructionPointerReference);
     return b.toString();
   }
   
@@ -228,6 +255,11 @@ public class GotoTarget {
         return false;
     } else if (!this.endColumn.equals(other.endColumn))
       return false;
+    if (this.instructionPointerReference == null) {
+      if (other.instructionPointerReference != null)
+        return false;
+    } else if (!this.instructionPointerReference.equals(other.instructionPointerReference))
+      return false;
     return true;
   }
   
@@ -241,6 +273,7 @@ public class GotoTarget {
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
-    return prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
+    result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
+    return prime * result + ((this.instructionPointerReference== null) ? 0 : this.instructionPointerReference.hashCode());
   }
 }

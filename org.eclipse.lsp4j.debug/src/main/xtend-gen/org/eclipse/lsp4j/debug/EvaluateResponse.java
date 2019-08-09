@@ -67,6 +67,14 @@ public class EvaluateResponse {
   private Long indexedVariables;
   
   /**
+   * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
+   * reference to the memory address contained in the pointer.
+   * <p>
+   * This is an optional property.
+   */
+  private Long memoryReference;
+  
+  /**
    * The result of the evaluate request.
    */
   @Pure
@@ -190,6 +198,27 @@ public class EvaluateResponse {
     this.indexedVariables = indexedVariables;
   }
   
+  /**
+   * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
+   * reference to the memory address contained in the pointer.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Long getMemoryReference() {
+    return this.memoryReference;
+  }
+  
+  /**
+   * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
+   * reference to the memory address contained in the pointer.
+   * <p>
+   * This is an optional property.
+   */
+  public void setMemoryReference(final Long memoryReference) {
+    this.memoryReference = memoryReference;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -200,6 +229,7 @@ public class EvaluateResponse {
     b.add("variablesReference", this.variablesReference);
     b.add("namedVariables", this.namedVariables);
     b.add("indexedVariables", this.indexedVariables);
+    b.add("memoryReference", this.memoryReference);
     return b.toString();
   }
   
@@ -243,6 +273,11 @@ public class EvaluateResponse {
         return false;
     } else if (!this.indexedVariables.equals(other.indexedVariables))
       return false;
+    if (this.memoryReference == null) {
+      if (other.memoryReference != null)
+        return false;
+    } else if (!this.memoryReference.equals(other.memoryReference))
+      return false;
     return true;
   }
   
@@ -256,6 +291,7 @@ public class EvaluateResponse {
     result = prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
     result = prime * result + ((this.namedVariables== null) ? 0 : this.namedVariables.hashCode());
-    return prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
+    result = prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
+    return prime * result + ((this.memoryReference== null) ? 0 : this.memoryReference.hashCode());
   }
 }
