@@ -22,11 +22,11 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull
  * Declaration of parameters, response bodies, and event bodies for
  * the <a href="https://microsoft.github.io/debug-adapter-protocol/">Debug Adapter Protocol</a>
  */
-class DebugProtcol {
+class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.32.0";
+	public static final String SCHEMA_VERSION = "1.35.0";
 }
 
 /**
@@ -101,6 +101,8 @@ interface StoppedEventArgumentsReason {
 	public static final String PAUSE = "pause";
 	public static final String ENTRY = "entry";
 	public static final String GOTO = "goto";
+	public static final String FUNCTION_BREAKPOINT = "function breakpoint";
+	public static final String DATA_BREAKPOINT = "data breakpoint";
 }
 
 /**
@@ -361,6 +363,13 @@ class ProcessEventArguments {
 	 * This is an optional property.
 	 */
 	ProcessEventArgumentsStartMethod startMethod;
+	/**
+	 * The size of a pointer or address for this process, in bits. This value may be used by clients when formatting
+	 * addresses for display.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long pointerSize;
 }
 
 /**
@@ -413,6 +422,12 @@ class RunInTerminalResponse {
 	 * This is an optional property.
 	 */
 	Long processId;
+	/**
+	 * The process ID of the terminal shell.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long shellProcessId;
 }
 
 /**
@@ -524,6 +539,12 @@ class InitializeRequestArguments {
 	 * This is an optional property.
 	 */
 	Boolean supportsRunInTerminalRequest;
+	/**
+	 * Client supports memory references.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsMemoryReferences;
 }
 
 /**
@@ -595,11 +616,10 @@ class RestartArguments {
  */
 @JsonRpcData
 class DisconnectArguments {
-    /**
-     * A value of true indicates that this 'disconnect' request is part of a restart sequence.
-     */
-    Boolean restart;
-
+	/**
+	 * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+	 */
+	Boolean restart;
 	/**
 	 * Indicates whether the debuggee should be terminated when the debugger is disconnected.
 	 * <p>
@@ -618,10 +638,10 @@ class DisconnectArguments {
  */
 @JsonRpcData
 class TerminateArguments {
-  /**
-   * A value of true indicates that this 'terminate' request is part of a restart sequence.
-   */
-   Boolean restart;
+	/**
+	 * A value of true indicates that this 'terminate' request is part of a restart sequence.
+	 */
+	Boolean restart;
 }
 
 /**
@@ -718,6 +738,81 @@ class SetExceptionBreakpointsArguments {
 	 * This is an optional property.
 	 */
 	ExceptionOptions[] exceptionOptions;
+}
+
+/**
+ * Response to 'dataBreakpointInfo' request.
+ */
+@JsonRpcData
+class DataBreakpointInfoResponse {
+	/**
+	 * An identifier for the data on which a data breakpoint can be registered with the setDataBreakpoints request or
+	 * null if no data breakpoint is available.
+	 */
+	String dataId;
+	/**
+	 * UI string that describes on what data the breakpoint is set on or why a data breakpoint is not available.
+	 */
+	@NonNull
+	String description;
+	/**
+	 * Optional attribute listing the available access types for a potential data breakpoint. A UI frontend could
+	 * surface this information.
+	 * <p>
+	 * This is an optional property.
+	 */
+	DataBreakpointAccessType[] accessTypes;
+	/**
+	 * Optional attribute indicating that a potential data breakpoint could be persisted across sessions.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean canPersist;
+}
+
+/**
+ * Arguments for 'dataBreakpointInfo' request.
+ */
+@JsonRpcData
+class DataBreakpointInfoArguments {
+	/**
+	 * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+	 * <p>
+	 * This is an optional property.
+	*/
+	Long variablesReference;
+	/**
+	 * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
+	 * this can be an expression.
+	 */
+	@NonNull
+	String name;
+}
+
+/**
+ * Response to 'setDataBreakpoints' request.
+ * <p>
+ * Returned is information about each breakpoint created by this request.
+ */
+@JsonRpcData
+class SetDataBreakpointsResponse {
+	/**
+	 * Information about the data breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
+	 */
+	@NonNull
+	Breakpoint[] breakpoints;
+}
+
+/**
+ * Arguments for 'setDataBreakpoints' request.
+ */
+@JsonRpcData
+class SetDataBreakpointsArguments {
+	/**
+	 * The contents of this array replaces all existing data breakpoints. An empty array clears all data breakpoints.
+	 */
+	@NonNull
+	DataBreakpoint[] breakpoints;
 }
 
 /**
@@ -951,7 +1046,7 @@ class VariablesArguments {
 	@NonNull
 	Long variablesReference;
 	/**
-	 * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
+	 * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -977,7 +1072,7 @@ class VariablesArguments {
 }
 
 /**
- * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
+ * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
  */
 enum VariablesArgumentsFilter {
 	INDEXED,
@@ -1036,7 +1131,7 @@ class SetVariableArguments {
 	@NonNull
 	Long variablesReference;
 	/**
-	 * The name of the variable.
+	 * The name of the variable in the container.
 	 */
 	@NonNull
 	String name;
@@ -1215,6 +1310,13 @@ class EvaluateResponse {
 	 * This is an optional property.
 	 */
 	Long indexedVariables;
+	/**
+	 * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
+	 * reference to the memory address contained in the pointer.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long memoryReference;
 }
 
 /**
@@ -1492,6 +1594,106 @@ class ExceptionInfoArguments {
 }
 
 /**
+ * Response to 'readMemory' request.
+ */
+@JsonRpcData
+class ReadMemoryResponse {
+	/**
+	 * The address of the first byte of data returned. Treated as a hex value if prefixed with '0x', or as a
+	 * decimal value otherwise.
+	 */
+	@NonNull
+	String address;
+	/**
+	 * The number of unreadable bytes encountered after the last successfully read byte. This can be used to
+	 * determine the number of bytes that must be skipped before a subsequent 'readMemory' request will succeed.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long unreadableBytes;
+	/**
+	 * The bytes read from memory, encoded using base64.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String data;
+}
+
+/**
+ * Arguments for 'readMemory' request.
+ */
+@JsonRpcData
+class ReadMemoryArguments {
+	/**
+	 * Memory reference to the base location from which data should be read.
+	 */
+	@NonNull
+	String memoryReference;
+	/**
+	 * Optional offset (in bytes) to be applied to the reference location before reading data. Can be negative.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long offset;
+	/**
+	 * Number of bytes to read at the specified location and offset.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long count;
+}
+
+/**
+ * Response to 'disassemble' request.
+ */
+@JsonRpcData
+class DisassembleResponse {
+	/**
+	 * The list of disassembled instructions.
+	 */
+	@NonNull
+	DisassembledInstruction[] instructions;
+}
+
+/**
+ * Arguments for 'disassemble' request.
+ */
+@JsonRpcData
+class DisassembleArguments {
+	/**
+	 * Memory reference to the base location containing the instructions to disassemble.
+	 */
+	@NonNull
+	String memoryReference;
+	/**
+	 * Optional offset (in bytes) to be applied to the reference location before disassembling. Can be negative.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long offset;
+	/**
+	 * Optional offset (in instructions) to be applied after the byte offset (if any) before disassembling. Can be
+	 * negative.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long instructionOffset;
+	/**
+	 * Number of instructions to disassemble starting at the specified location and offset. An adapter must return
+	 * exactly this number of instructions - any unavailable instructions should be replaced with an
+	 * implementation-defined 'invalid instruction' value.
+	 */
+	@NonNull
+	Long instructionCount;
+	/**
+	 * If true, the adapter should attempt to resolve memory addresses and other values to symbolic names.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean resolveSymbols;
+}
+
+/**
  * Information about the capabilities of a debug adapter.
  */
 @JsonRpcData
@@ -1655,6 +1857,24 @@ class Capabilities {
 	 * This is an optional property.
 	 */
 	Boolean supportsTerminateRequest;
+	/**
+	 * The debug adapter supports data breakpoints.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsDataBreakpoints;
+	/**
+	 * The debug adapter supports the 'readMemory' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsReadMemoryRequest;
+	/**
+	 * The debug adapter supports the 'disassemble' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsDisassembleRequest;
 }
 
 /**
@@ -2019,6 +2239,12 @@ class StackFrame {
 	 */
 	Long endColumn;
 	/**
+	 * Optional memory reference for the current instruction pointer in this frame.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String instructionPointerReference;
+	/**
 	 * The module associated with this frame, if any.
 	 * <p>
 	 * This is an optional property.
@@ -2051,10 +2277,18 @@ enum StackFramePresentationHint {
 @JsonRpcData
 class Scope {
 	/**
-	 * Name of the scope such as 'Arguments', 'Locals'.
+	 * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
+	 * UI as is and can be translated.
 	 */
 	@NonNull
 	String name;
+	/**
+	 * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
+	 * generic UI.
+	 * <p>
+	 * This is an optional property.
+	 */
+	ScopePresentationHint presentationHint;
 	/**
 	 * The variables of this scope can be retrieved by passing the value of variablesReference to the
 	 * VariablesRequest.
@@ -2112,6 +2346,25 @@ class Scope {
 	 * This is an optional property.
 	 */
 	Long endColumn;
+}
+
+/**
+ * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
+ * generic UI.
+ */
+enum ScopePresentationHint {
+	/**
+	 * Scope contains method arguments.
+	 */
+	ARGUMENTS,
+	/**
+	 * Scope contains local variables.
+	 */
+	LOCALS,
+	/**
+	 * Scope contains registers. Only a single 'registers' scope should be returned from a 'scopes' request.
+	 */
+	REGISTERS
 }
 
 /**
@@ -2184,6 +2437,12 @@ class Variable {
 	 * This is an optional property.
 	 */
 	Long indexedVariables;
+	/**
+	 * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String memoryReference;
 }
 
 /**
@@ -2265,6 +2524,10 @@ interface VariablePresentationHintKind {
 	 * rendering purposes, e.g. an index range for large arrays.
 	 */
 	public static final String VIRTUAL = "virtual";
+	/**
+	 * Indicates that a data breakpoint is registered for the object.
+	 */
+	public static final String DATA_BREAKPOINT = "dataBreakpoint";
 }
 
 /**
@@ -2380,12 +2643,54 @@ class FunctionBreakpoint {
 }
 
 /**
+ * This enumeration defines all possible access types for data breakpoints.
+ */
+enum DataBreakpointAccessType {
+	READ,
+	WRITE,
+	@SerializedName("readWrite")
+	READ_WRITE
+}
+
+/**
+ * Properties of a data breakpoint passed to the setDataBreakpoints request.
+ */
+@JsonRpcData
+class DataBreakpoint {
+	/**
+	 * An id representing the data. This id is returned from the dataBreakpointInfo request.
+	 */
+	@NonNull
+	String dataId;
+	/**
+	 * The access type of the data.
+	 * <p>
+	 * This is an optional property.
+	 */
+	DataBreakpointAccessType accessType;
+	/**
+	 * An optional expression for conditional breakpoints.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String condition;
+	/**
+	 * An optional expression that controls how many hits of the breakpoint are ignored. The backend is expected to
+	 * interpret the expression as needed.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String hitCondition;
+}
+
+/**
  * Information about a Breakpoint created in setBreakpoints or setFunctionBreakpoints.
  */
 @JsonRpcData
 class Breakpoint {
 	/**
-	 * An optional unique identifier for the breakpoint.
+	 * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+	 * breakpoints.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2493,6 +2798,12 @@ class GotoTarget {
 	 * This is an optional property.
 	 */
 	Long endColumn;
+	/**
+	* Optional memory reference for the instruction pointer value represented by this target.
+	* <p>
+	* This is an optional property.
+	*/
+	String instructionPointerReference;
 }
 
 /**
@@ -2681,7 +2992,7 @@ class ExceptionOptions {
  * <p>
  * always: always breaks,
  * <p>
- * unhandled: breaks when excpetion unhandled,
+ * unhandled: breaks when exception unhandled,
  * <p>
  * userUnhandled: breaks if the exception is not handled by user code.
  */
@@ -2754,4 +3065,65 @@ class ExceptionDetails {
 	 * This is an optional property.
 	 */
 	ExceptionDetails[] innerException;
+}
+
+/**
+ * Represents a single disassembled instruction.
+ */
+@JsonRpcData
+class DisassembledInstruction {
+	/**
+	 * The address of the instruction. Treated as a hex value if prefixed with '0x', or as a decimal value otherwise.
+	 */
+	@NonNull
+	String address;
+	/**
+	 * Optional raw bytes representing the instruction and its operands, in an implementation-defined format.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String instructionBytes;
+	/**
+	 * Text representing the instruction and its operands, in an implementation-defined format.
+	 */
+	@NonNull
+	String instruction;
+	/**
+	 * Name of the symbol that corresponds with the location of this instruction, if any.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String symbol;
+	/**
+	 * Source location that corresponds to this instruction, if any. Should always be set (if available) on the first
+	 * instruction returned, but can be omitted afterwards if this instruction maps to the same source file as the
+	 * previous instruction.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Source location;
+	/**
+	 * The line within the source location that corresponds to this instruction, if any.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long line;
+	/**
+	 * The column within the line that corresponds to this instruction, if any.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long column;
+	/**
+	 * The end line of the range that corresponds to this instruction, if any.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long endLine;
+	/**
+	 * The end column of the range that corresponds to this instruction, if any.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long endColumn;
 }

@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.ScopePresentationHint;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -22,10 +23,19 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class Scope {
   /**
-   * Name of the scope such as 'Arguments', 'Locals'.
+   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
+   * UI as is and can be translated.
    */
   @NonNull
   private String name;
+  
+  /**
+   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
+   * generic UI.
+   * <p>
+   * This is an optional property.
+   */
+  private ScopePresentationHint presentationHint;
   
   /**
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
@@ -94,7 +104,8 @@ public class Scope {
   private Long endColumn;
   
   /**
-   * Name of the scope such as 'Arguments', 'Locals'.
+   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
+   * UI as is and can be translated.
    */
   @Pure
   @NonNull
@@ -103,13 +114,35 @@ public class Scope {
   }
   
   /**
-   * Name of the scope such as 'Arguments', 'Locals'.
+   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
+   * UI as is and can be translated.
    */
   public void setName(@NonNull final String name) {
     if (name == null) {
       throw new IllegalArgumentException("Property must not be null: name");
     }
     this.name = name;
+  }
+  
+  /**
+   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
+   * generic UI.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public ScopePresentationHint getPresentationHint() {
+    return this.presentationHint;
+  }
+  
+  /**
+   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
+   * generic UI.
+   * <p>
+   * This is an optional property.
+   */
+  public void setPresentationHint(final ScopePresentationHint presentationHint) {
+    this.presentationHint = presentationHint;
   }
   
   /**
@@ -298,6 +331,7 @@ public class Scope {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("name", this.name);
+    b.add("presentationHint", this.presentationHint);
     b.add("variablesReference", this.variablesReference);
     b.add("namedVariables", this.namedVariables);
     b.add("indexedVariables", this.indexedVariables);
@@ -324,6 +358,11 @@ public class Scope {
       if (other.name != null)
         return false;
     } else if (!this.name.equals(other.name))
+      return false;
+    if (this.presentationHint == null) {
+      if (other.presentationHint != null)
+        return false;
+    } else if (!this.presentationHint.equals(other.presentationHint))
       return false;
     if (this.variablesReference == null) {
       if (other.variablesReference != null)
@@ -379,6 +418,7 @@ public class Scope {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
+    result = prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
     result = prime * result + ((this.namedVariables== null) ? 0 : this.namedVariables.hashCode());
     result = prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());

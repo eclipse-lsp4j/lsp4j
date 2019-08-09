@@ -68,4 +68,9 @@ public interface VariablePresentationHintKind {
    * rendering purposes, e.g. an index range for large arrays.
    */
   public static final String VIRTUAL = "virtual";
+  
+  /**
+   * Indicates that a data breakpoint is registered for the object.
+   */
+  public static final String DATA_BREAKPOINT = "dataBreakpoint";
 }

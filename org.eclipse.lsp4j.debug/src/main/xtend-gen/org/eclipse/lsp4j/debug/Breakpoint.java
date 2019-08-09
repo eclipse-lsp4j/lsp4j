@@ -22,7 +22,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class Breakpoint {
   /**
-   * An optional unique identifier for the breakpoint.
+   * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+   * breakpoints.
    * <p>
    * This is an optional property.
    */
@@ -79,7 +80,8 @@ public class Breakpoint {
   private Long endColumn;
   
   /**
-   * An optional unique identifier for the breakpoint.
+   * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+   * breakpoints.
    * <p>
    * This is an optional property.
    */
@@ -89,7 +91,8 @@ public class Breakpoint {
   }
   
   /**
-   * An optional unique identifier for the breakpoint.
+   * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+   * breakpoints.
    * <p>
    * This is an optional property.
    */

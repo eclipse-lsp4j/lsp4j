@@ -12,13 +12,23 @@
 package org.eclipse.lsp4j.debug;
 
 /**
- * Declaration of parameters, response bodies, and event bodies for
- * the <a href="https://microsoft.github.io/debug-adapter-protocol/">Debug Adapter Protocol</a>
+ * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
+ * generic UI.
  */
 @SuppressWarnings("all")
-public class DebugProtcol {
+public enum ScopePresentationHint {
   /**
-   * Version of Debug Protocol
+   * Scope contains method arguments.
    */
-  public static final String SCHEMA_VERSION = "1.32.0";
+  ARGUMENTS,
+  
+  /**
+   * Scope contains local variables.
+   */
+  LOCALS,
+  
+  /**
+   * Scope contains registers. Only a single 'registers' scope should be returned from a 'scopes' request.
+   */
+  REGISTERS;
 }

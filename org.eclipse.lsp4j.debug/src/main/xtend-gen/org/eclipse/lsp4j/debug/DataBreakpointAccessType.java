@@ -11,24 +11,17 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
- * This enumeration defines all possible conditions when a thrown exception should result in a break.
- * <p>
- * never: never breaks,
- * <p>
- * always: always breaks,
- * <p>
- * unhandled: breaks when exception unhandled,
- * <p>
- * userUnhandled: breaks if the exception is not handled by user code.
+ * This enumeration defines all possible access types for data breakpoints.
  */
 @SuppressWarnings("all")
-public enum ExceptionBreakMode {
-  NEVER,
+public enum DataBreakpointAccessType {
+  READ,
   
-  ALWAYS,
+  WRITE,
   
-  UNHANDLED,
-  
-  USER_UNHANDLED;
+  @SerializedName("readWrite")
+  READ_WRITE;
 }
