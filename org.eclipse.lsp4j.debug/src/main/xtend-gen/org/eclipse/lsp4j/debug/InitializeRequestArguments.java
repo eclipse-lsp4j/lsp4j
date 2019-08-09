@@ -92,6 +92,13 @@ public class InitializeRequestArguments {
   private Boolean supportsRunInTerminalRequest;
   
   /**
+   * Client supports memory references.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsMemoryReferences;
+  
+  /**
    * The ID of the (frontend) client using this adapter.
    * <p>
    * This is an optional property.
@@ -285,6 +292,25 @@ public class InitializeRequestArguments {
     this.supportsRunInTerminalRequest = supportsRunInTerminalRequest;
   }
   
+  /**
+   * Client supports memory references.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsMemoryReferences() {
+    return this.supportsMemoryReferences;
+  }
+  
+  /**
+   * Client supports memory references.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsMemoryReferences(final Boolean supportsMemoryReferences) {
+    this.supportsMemoryReferences = supportsMemoryReferences;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -299,6 +325,7 @@ public class InitializeRequestArguments {
     b.add("supportsVariableType", this.supportsVariableType);
     b.add("supportsVariablePaging", this.supportsVariablePaging);
     b.add("supportsRunInTerminalRequest", this.supportsRunInTerminalRequest);
+    b.add("supportsMemoryReferences", this.supportsMemoryReferences);
     return b.toString();
   }
   
@@ -362,6 +389,11 @@ public class InitializeRequestArguments {
         return false;
     } else if (!this.supportsRunInTerminalRequest.equals(other.supportsRunInTerminalRequest))
       return false;
+    if (this.supportsMemoryReferences == null) {
+      if (other.supportsMemoryReferences != null)
+        return false;
+    } else if (!this.supportsMemoryReferences.equals(other.supportsMemoryReferences))
+      return false;
     return true;
   }
   
@@ -379,6 +411,7 @@ public class InitializeRequestArguments {
     result = prime * result + ((this.pathFormat== null) ? 0 : this.pathFormat.hashCode());
     result = prime * result + ((this.supportsVariableType== null) ? 0 : this.supportsVariableType.hashCode());
     result = prime * result + ((this.supportsVariablePaging== null) ? 0 : this.supportsVariablePaging.hashCode());
-    return prime * result + ((this.supportsRunInTerminalRequest== null) ? 0 : this.supportsRunInTerminalRequest.hashCode());
+    result = prime * result + ((this.supportsRunInTerminalRequest== null) ? 0 : this.supportsRunInTerminalRequest.hashCode());
+    return prime * result + ((this.supportsMemoryReferences== null) ? 0 : this.supportsMemoryReferences.hashCode());
   }
 }

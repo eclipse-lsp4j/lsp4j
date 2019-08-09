@@ -21,6 +21,10 @@ import org.eclipse.lsp4j.debug.CompletionsResponse;
 import org.eclipse.lsp4j.debug.ConfigurationDoneArguments;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.ContinueResponse;
+import org.eclipse.lsp4j.debug.DataBreakpointInfoArguments;
+import org.eclipse.lsp4j.debug.DataBreakpointInfoResponse;
+import org.eclipse.lsp4j.debug.DisassembleArguments;
+import org.eclipse.lsp4j.debug.DisassembleResponse;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
 import org.eclipse.lsp4j.debug.EvaluateArguments;
 import org.eclipse.lsp4j.debug.EvaluateResponse;
@@ -36,6 +40,8 @@ import org.eclipse.lsp4j.debug.ModulesArguments;
 import org.eclipse.lsp4j.debug.ModulesResponse;
 import org.eclipse.lsp4j.debug.NextArguments;
 import org.eclipse.lsp4j.debug.PauseArguments;
+import org.eclipse.lsp4j.debug.ReadMemoryArguments;
+import org.eclipse.lsp4j.debug.ReadMemoryResponse;
 import org.eclipse.lsp4j.debug.RestartArguments;
 import org.eclipse.lsp4j.debug.RestartFrameArguments;
 import org.eclipse.lsp4j.debug.ReverseContinueArguments;
@@ -45,6 +51,8 @@ import org.eclipse.lsp4j.debug.ScopesArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
+import org.eclipse.lsp4j.debug.SetDataBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetDataBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetExpressionArguments;
 import org.eclipse.lsp4j.debug.SetExpressionResponse;
@@ -77,7 +85,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.32.0";
+	public static final String SCHEMA_VERSION = "1.35.0";
 
 	/**
 	 * This request is sent from the debug adapter to the client to run a command in
@@ -192,12 +200,11 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Sets multiple function breakpoints and clears all previous function
-	 * breakpoints.
+	 * Replaces all existing function breakpoints with new breakpoints.
 	 * <p>
-	 * To clear all function breakpoint, specify an empty array.
+	 * To clear all function breakpoints, specify an empty array.
 	 * <p>
-	 * When a function breakpoint is hit, a 'stopped' event (event type 'function
+	 * When a function breakpoint is hit, a 'stopped' event (with reason 'function
 	 * breakpoint') is generated.
 	 */
 	@JsonRequest
@@ -213,6 +220,28 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Obtains information on a possible data breakpoint that could be set on an
+	 * expression or variable.
+	 */
+	@JsonRequest
+	default CompletableFuture<DataBreakpointInfoResponse> dataBreakpointInfo(DataBreakpointInfoArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Replaces all existing data breakpoints with new breakpoints.
+	 * <p>
+	 * To clear all data breakpoints, specify an empty array.
+	 * <p>
+	 * When a data breakpoint is hit, a 'stopped' event (with reason 'data
+	 * breakpoint') is generated.
+	 */
+	@JsonRequest
+	default CompletableFuture<SetDataBreakpointsResponse> setDataBreakpoints(SetDataBreakpointsArguments args) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -471,6 +500,22 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Reads bytes from memory at the provided location.
+	 */
+	@JsonRequest
+	default CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Disassembles code stored at the provided location.
+	 */
+	@JsonRequest
+	default CompletableFuture<DisassembleResponse> disassemble(DisassembleArguments args) {
 		throw new UnsupportedOperationException();
 	}
 }

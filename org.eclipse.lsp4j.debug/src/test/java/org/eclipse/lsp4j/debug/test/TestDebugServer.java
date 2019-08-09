@@ -9,6 +9,10 @@ import org.eclipse.lsp4j.debug.CompletionsResponse;
 import org.eclipse.lsp4j.debug.ConfigurationDoneArguments;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.ContinueResponse;
+import org.eclipse.lsp4j.debug.DataBreakpointInfoArguments;
+import org.eclipse.lsp4j.debug.DataBreakpointInfoResponse;
+import org.eclipse.lsp4j.debug.DisassembleArguments;
+import org.eclipse.lsp4j.debug.DisassembleResponse;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
 import org.eclipse.lsp4j.debug.EvaluateArguments;
 import org.eclipse.lsp4j.debug.EvaluateResponse;
@@ -24,6 +28,8 @@ import org.eclipse.lsp4j.debug.ModulesArguments;
 import org.eclipse.lsp4j.debug.ModulesResponse;
 import org.eclipse.lsp4j.debug.NextArguments;
 import org.eclipse.lsp4j.debug.PauseArguments;
+import org.eclipse.lsp4j.debug.ReadMemoryArguments;
+import org.eclipse.lsp4j.debug.ReadMemoryResponse;
 import org.eclipse.lsp4j.debug.RestartArguments;
 import org.eclipse.lsp4j.debug.RestartFrameArguments;
 import org.eclipse.lsp4j.debug.ReverseContinueArguments;
@@ -33,6 +39,8 @@ import org.eclipse.lsp4j.debug.ScopesArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
+import org.eclipse.lsp4j.debug.SetDataBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetDataBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetExpressionArguments;
 import org.eclipse.lsp4j.debug.SetExpressionResponse;
@@ -105,6 +113,16 @@ public class TestDebugServer implements IDebugProtocolServer {
 
 	@Override
 	public CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<DataBreakpointInfoResponse> dataBreakpointInfo(DataBreakpointInfoArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<SetDataBreakpointsResponse> setDataBreakpoints(SetDataBreakpointsArguments args) {
 		return CompletableFuture.completedFuture(null);
 	}
 
@@ -233,4 +251,13 @@ public class TestDebugServer implements IDebugProtocolServer {
 		return CompletableFuture.completedFuture(null);
 	}
 
+	@Override
+	public CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<DisassembleResponse> disassemble(DisassembleArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
 }

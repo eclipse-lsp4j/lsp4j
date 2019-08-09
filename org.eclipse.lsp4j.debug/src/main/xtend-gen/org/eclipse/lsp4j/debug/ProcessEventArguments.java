@@ -51,6 +51,14 @@ public class ProcessEventArguments {
   private ProcessEventArgumentsStartMethod startMethod;
   
   /**
+   * The size of a pointer or address for this process, in bits. This value may be used by clients when formatting
+   * addresses for display.
+   * <p>
+   * This is an optional property.
+   */
+  private Long pointerSize;
+  
+  /**
    * The logical name of the process. This is usually the full path to process's executable file. Example:
    * /home/example/myproj/program.js.
    */
@@ -128,6 +136,27 @@ public class ProcessEventArguments {
     this.startMethod = startMethod;
   }
   
+  /**
+   * The size of a pointer or address for this process, in bits. This value may be used by clients when formatting
+   * addresses for display.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Long getPointerSize() {
+    return this.pointerSize;
+  }
+  
+  /**
+   * The size of a pointer or address for this process, in bits. This value may be used by clients when formatting
+   * addresses for display.
+   * <p>
+   * This is an optional property.
+   */
+  public void setPointerSize(final Long pointerSize) {
+    this.pointerSize = pointerSize;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -136,6 +165,7 @@ public class ProcessEventArguments {
     b.add("systemProcessId", this.systemProcessId);
     b.add("isLocalProcess", this.isLocalProcess);
     b.add("startMethod", this.startMethod);
+    b.add("pointerSize", this.pointerSize);
     return b.toString();
   }
   
@@ -169,6 +199,11 @@ public class ProcessEventArguments {
         return false;
     } else if (!this.startMethod.equals(other.startMethod))
       return false;
+    if (this.pointerSize == null) {
+      if (other.pointerSize != null)
+        return false;
+    } else if (!this.pointerSize.equals(other.pointerSize))
+      return false;
     return true;
   }
   
@@ -180,6 +215,7 @@ public class ProcessEventArguments {
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.systemProcessId== null) ? 0 : this.systemProcessId.hashCode());
     result = prime * result + ((this.isLocalProcess== null) ? 0 : this.isLocalProcess.hashCode());
-    return prime * result + ((this.startMethod== null) ? 0 : this.startMethod.hashCode());
+    result = prime * result + ((this.startMethod== null) ? 0 : this.startMethod.hashCode());
+    return prime * result + ((this.pointerSize== null) ? 0 : this.pointerSize.hashCode());
   }
 }

@@ -95,6 +95,13 @@ public class Variable {
   private Long indexedVariables;
   
   /**
+   * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+   * <p>
+   * This is an optional property.
+   */
+  private String memoryReference;
+  
+  /**
    * The variable's name.
    */
   @Pure
@@ -258,6 +265,25 @@ public class Variable {
     this.indexedVariables = indexedVariables;
   }
   
+  /**
+   * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getMemoryReference() {
+    return this.memoryReference;
+  }
+  
+  /**
+   * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+   * <p>
+   * This is an optional property.
+   */
+  public void setMemoryReference(final String memoryReference) {
+    this.memoryReference = memoryReference;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -270,6 +296,7 @@ public class Variable {
     b.add("variablesReference", this.variablesReference);
     b.add("namedVariables", this.namedVariables);
     b.add("indexedVariables", this.indexedVariables);
+    b.add("memoryReference", this.memoryReference);
     return b.toString();
   }
   
@@ -323,6 +350,11 @@ public class Variable {
         return false;
     } else if (!this.indexedVariables.equals(other.indexedVariables))
       return false;
+    if (this.memoryReference == null) {
+      if (other.memoryReference != null)
+        return false;
+    } else if (!this.memoryReference.equals(other.memoryReference))
+      return false;
     return true;
   }
   
@@ -338,6 +370,7 @@ public class Variable {
     result = prime * result + ((this.evaluateName== null) ? 0 : this.evaluateName.hashCode());
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
     result = prime * result + ((this.namedVariables== null) ? 0 : this.namedVariables.hashCode());
-    return prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
+    result = prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
+    return prime * result + ((this.memoryReference== null) ? 0 : this.memoryReference.hashCode());
   }
 }

@@ -11,62 +11,51 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.ValueFormat;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Arguments for 'setVariable' request.
+ * Arguments for 'dataBreakpointInfo' request.
  */
 @SuppressWarnings("all")
-public class SetVariableArguments {
+public class DataBreakpointInfoArguments {
   /**
-   * The reference of the variable container.
+   * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+   * <p>
+   * This is an optional property.
    */
-  @NonNull
   private Long variablesReference;
   
   /**
-   * The name of the variable in the container.
+   * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
+   * this can be an expression.
    */
   @NonNull
   private String name;
   
   /**
-   * The value of the variable.
-   */
-  @NonNull
-  private String value;
-  
-  /**
-   * Specifies details on how to format the response value.
+   * Reference to the Variable container if the data breakpoint is requested for a child of the container.
    * <p>
    * This is an optional property.
    */
-  private ValueFormat format;
-  
-  /**
-   * The reference of the variable container.
-   */
   @Pure
-  @NonNull
   public Long getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
-   * The reference of the variable container.
+   * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+   * <p>
+   * This is an optional property.
    */
-  public void setVariablesReference(@NonNull final Long variablesReference) {
-    if (variablesReference == null) {
-      throw new IllegalArgumentException("Property must not be null: variablesReference");
-    }
+  public void setVariablesReference(final Long variablesReference) {
     this.variablesReference = variablesReference;
   }
   
   /**
-   * The name of the variable in the container.
+   * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
+   * this can be an expression.
    */
   @Pure
   @NonNull
@@ -75,7 +64,8 @@ public class SetVariableArguments {
   }
   
   /**
-   * The name of the variable in the container.
+   * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
+   * this can be an expression.
    */
   public void setName(@NonNull final String name) {
     if (name == null) {
@@ -84,52 +74,12 @@ public class SetVariableArguments {
     this.name = name;
   }
   
-  /**
-   * The value of the variable.
-   */
-  @Pure
-  @NonNull
-  public String getValue() {
-    return this.value;
-  }
-  
-  /**
-   * The value of the variable.
-   */
-  public void setValue(@NonNull final String value) {
-    if (value == null) {
-      throw new IllegalArgumentException("Property must not be null: value");
-    }
-    this.value = value;
-  }
-  
-  /**
-   * Specifies details on how to format the response value.
-   * <p>
-   * This is an optional property.
-   */
-  @Pure
-  public ValueFormat getFormat() {
-    return this.format;
-  }
-  
-  /**
-   * Specifies details on how to format the response value.
-   * <p>
-   * This is an optional property.
-   */
-  public void setFormat(final ValueFormat format) {
-    this.format = format;
-  }
-  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("variablesReference", this.variablesReference);
     b.add("name", this.name);
-    b.add("value", this.value);
-    b.add("format", this.format);
     return b.toString();
   }
   
@@ -142,7 +92,7 @@ public class SetVariableArguments {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    SetVariableArguments other = (SetVariableArguments) obj;
+    DataBreakpointInfoArguments other = (DataBreakpointInfoArguments) obj;
     if (this.variablesReference == null) {
       if (other.variablesReference != null)
         return false;
@@ -153,16 +103,6 @@ public class SetVariableArguments {
         return false;
     } else if (!this.name.equals(other.name))
       return false;
-    if (this.value == null) {
-      if (other.value != null)
-        return false;
-    } else if (!this.value.equals(other.value))
-      return false;
-    if (this.format == null) {
-      if (other.format != null)
-        return false;
-    } else if (!this.format.equals(other.format))
-      return false;
     return true;
   }
   
@@ -172,8 +112,6 @@ public class SetVariableArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
-    result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
-    result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
-    return prime * result + ((this.format== null) ? 0 : this.format.hashCode());
+    return prime * result + ((this.name== null) ? 0 : this.name.hashCode());
   }
 }

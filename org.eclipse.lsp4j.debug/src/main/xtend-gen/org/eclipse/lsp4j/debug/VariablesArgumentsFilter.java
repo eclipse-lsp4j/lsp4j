@@ -12,7 +12,7 @@
 package org.eclipse.lsp4j.debug;
 
 /**
- * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
+ * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
  */
 @SuppressWarnings("all")
 public enum VariablesArgumentsFilter {

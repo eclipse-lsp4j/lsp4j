@@ -32,4 +32,8 @@ public interface StoppedEventArgumentsReason {
   public static final String ENTRY = "entry";
   
   public static final String GOTO = "goto";
+  
+  public static final String FUNCTION_BREAKPOINT = "function breakpoint";
+  
+  public static final String DATA_BREAKPOINT = "data breakpoint";
 }

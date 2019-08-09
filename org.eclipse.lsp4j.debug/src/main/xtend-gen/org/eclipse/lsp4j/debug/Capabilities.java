@@ -209,6 +209,27 @@ public class Capabilities {
   private Boolean supportsTerminateRequest;
   
   /**
+   * The debug adapter supports data breakpoints.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsDataBreakpoints;
+  
+  /**
+   * The debug adapter supports the 'readMemory' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsReadMemoryRequest;
+  
+  /**
+   * The debug adapter supports the 'disassemble' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsDisassembleRequest;
+  
+  /**
    * The debug adapter supports the 'configurationDone' request.
    * <p>
    * This is an optional property.
@@ -708,6 +729,63 @@ public class Capabilities {
     this.supportsTerminateRequest = supportsTerminateRequest;
   }
   
+  /**
+   * The debug adapter supports data breakpoints.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsDataBreakpoints() {
+    return this.supportsDataBreakpoints;
+  }
+  
+  /**
+   * The debug adapter supports data breakpoints.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsDataBreakpoints(final Boolean supportsDataBreakpoints) {
+    this.supportsDataBreakpoints = supportsDataBreakpoints;
+  }
+  
+  /**
+   * The debug adapter supports the 'readMemory' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsReadMemoryRequest() {
+    return this.supportsReadMemoryRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'readMemory' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsReadMemoryRequest(final Boolean supportsReadMemoryRequest) {
+    this.supportsReadMemoryRequest = supportsReadMemoryRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'disassemble' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsDisassembleRequest() {
+    return this.supportsDisassembleRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'disassemble' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsDisassembleRequest(final Boolean supportsDisassembleRequest) {
+    this.supportsDisassembleRequest = supportsDisassembleRequest;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -738,6 +816,9 @@ public class Capabilities {
     b.add("supportsTerminateThreadsRequest", this.supportsTerminateThreadsRequest);
     b.add("supportsSetExpression", this.supportsSetExpression);
     b.add("supportsTerminateRequest", this.supportsTerminateRequest);
+    b.add("supportsDataBreakpoints", this.supportsDataBreakpoints);
+    b.add("supportsReadMemoryRequest", this.supportsReadMemoryRequest);
+    b.add("supportsDisassembleRequest", this.supportsDisassembleRequest);
     return b.toString();
   }
   
@@ -881,6 +962,21 @@ public class Capabilities {
         return false;
     } else if (!this.supportsTerminateRequest.equals(other.supportsTerminateRequest))
       return false;
+    if (this.supportsDataBreakpoints == null) {
+      if (other.supportsDataBreakpoints != null)
+        return false;
+    } else if (!this.supportsDataBreakpoints.equals(other.supportsDataBreakpoints))
+      return false;
+    if (this.supportsReadMemoryRequest == null) {
+      if (other.supportsReadMemoryRequest != null)
+        return false;
+    } else if (!this.supportsReadMemoryRequest.equals(other.supportsReadMemoryRequest))
+      return false;
+    if (this.supportsDisassembleRequest == null) {
+      if (other.supportsDisassembleRequest != null)
+        return false;
+    } else if (!this.supportsDisassembleRequest.equals(other.supportsDisassembleRequest))
+      return false;
     return true;
   }
   
@@ -914,6 +1010,9 @@ public class Capabilities {
     result = prime * result + ((this.supportsLogPoints== null) ? 0 : this.supportsLogPoints.hashCode());
     result = prime * result + ((this.supportsTerminateThreadsRequest== null) ? 0 : this.supportsTerminateThreadsRequest.hashCode());
     result = prime * result + ((this.supportsSetExpression== null) ? 0 : this.supportsSetExpression.hashCode());
-    return prime * result + ((this.supportsTerminateRequest== null) ? 0 : this.supportsTerminateRequest.hashCode());
+    result = prime * result + ((this.supportsTerminateRequest== null) ? 0 : this.supportsTerminateRequest.hashCode());
+    result = prime * result + ((this.supportsDataBreakpoints== null) ? 0 : this.supportsDataBreakpoints.hashCode());
+    result = prime * result + ((this.supportsReadMemoryRequest== null) ? 0 : this.supportsReadMemoryRequest.hashCode());
+    return prime * result + ((this.supportsDisassembleRequest== null) ? 0 : this.supportsDisassembleRequest.hashCode());
   }
 }

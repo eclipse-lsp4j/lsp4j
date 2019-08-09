@@ -29,7 +29,7 @@ public class VariablesArguments {
   private Long variablesReference;
   
   /**
-   * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
+   * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
    * <p>
    * This is an optional property.
    */
@@ -76,7 +76,7 @@ public class VariablesArguments {
   }
   
   /**
-   * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
+   * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
    * <p>
    * This is an optional property.
    */
@@ -86,7 +86,7 @@ public class VariablesArguments {
   }
   
   /**
-   * Optional filter to limit the child variables to either named or indexed. If ommited, both types are fetched.
+   * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
    * <p>
    * This is an optional property.
    */

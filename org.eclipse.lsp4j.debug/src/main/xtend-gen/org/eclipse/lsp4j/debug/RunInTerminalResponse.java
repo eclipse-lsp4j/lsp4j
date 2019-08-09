@@ -27,6 +27,13 @@ public class RunInTerminalResponse {
   private Long processId;
   
   /**
+   * The process ID of the terminal shell.
+   * <p>
+   * This is an optional property.
+   */
+  private Long shellProcessId;
+  
+  /**
    * The process ID.
    * <p>
    * This is an optional property.
@@ -45,11 +52,31 @@ public class RunInTerminalResponse {
     this.processId = processId;
   }
   
+  /**
+   * The process ID of the terminal shell.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Long getShellProcessId() {
+    return this.shellProcessId;
+  }
+  
+  /**
+   * The process ID of the terminal shell.
+   * <p>
+   * This is an optional property.
+   */
+  public void setShellProcessId(final Long shellProcessId) {
+    this.shellProcessId = shellProcessId;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("processId", this.processId);
+    b.add("shellProcessId", this.shellProcessId);
     return b.toString();
   }
   
@@ -68,12 +95,20 @@ public class RunInTerminalResponse {
         return false;
     } else if (!this.processId.equals(other.processId))
       return false;
+    if (this.shellProcessId == null) {
+      if (other.shellProcessId != null)
+        return false;
+    } else if (!this.shellProcessId.equals(other.shellProcessId))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.processId== null) ? 0 : this.processId.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.processId== null) ? 0 : this.processId.hashCode());
+    return prime * result + ((this.shellProcessId== null) ? 0 : this.shellProcessId.hashCode());
   }
 }
