@@ -15,20 +15,36 @@ import java.io.ByteArrayOutputStream
 import java.io.OutputStreamWriter
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionException
+import java.util.concurrent.TimeUnit
+import org.eclipse.lsp4j.DidChangeConfigurationParams
+import org.eclipse.lsp4j.DidChangeTextDocumentParams
+import org.eclipse.lsp4j.DidChangeWatchedFilesParams
+import org.eclipse.lsp4j.DidCloseTextDocumentParams
+import org.eclipse.lsp4j.DidOpenTextDocumentParams
+import org.eclipse.lsp4j.DidSaveTextDocumentParams
+import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.MessageParams
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.ShowMessageRequestParams
 import org.eclipse.lsp4j.TextDocumentIdentifier
 import org.eclipse.lsp4j.TextDocumentPositionParams
+import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint
 import org.eclipse.lsp4j.launch.LSPLauncher
 import org.eclipse.lsp4j.services.LanguageClient
+import org.eclipse.lsp4j.services.LanguageServer
+import org.eclipse.lsp4j.services.TextDocumentService
+import org.eclipse.lsp4j.services.WorkspaceService
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.junit.Test
 
 import static org.junit.Assert.*
 
 class LSPEndpointTest {
+	
+	static val TIMEOUT = 2000
 	
 	@Test
 	def void testIssue152() throws Exception {
@@ -60,6 +76,56 @@ class LSPEndpointTest {
 			assertFalse(future.isDone)
 		} finally {
 			in.close()
+		}
+	}
+	
+	@Test
+	def void testIssue346() throws Exception {
+		val logMessages = new LogMessageAccumulator
+		try {
+			logMessages.registerTo(GenericEndpoint)
+			
+			val server = new DummyServer
+			val in = new PipedInputStream
+			val messageStream = new PipedOutputStream
+			in.connect(messageStream)
+			val messageWriter = new OutputStreamWriter(messageStream)
+			val out = new ByteArrayOutputStream
+			val launcher = LSPLauncher.createServerLauncher(server, in, out, true, null)
+			launcher.startListening()
+			
+			messageWriter.write('Content-Length: 48\r\n\r\n')
+			messageWriter.write('{"jsonrpc": "2.0","method": "exit","params": {}}')
+			messageWriter.flush()
+			
+			server.exited.get(TIMEOUT, TimeUnit.MILLISECONDS)
+			assertTrue(logMessages.records.join('\n', [message]), logMessages.records.isEmpty)
+		} finally {
+			logMessages.unregister();
+		}
+	}
+	
+	@Accessors
+	private static class DummyServer implements LanguageServer {
+		
+		val textDocumentService = new TextDocumentService {
+			override didChange(DidChangeTextDocumentParams params) {}
+			override didClose(DidCloseTextDocumentParams params) {}
+			override didOpen(DidOpenTextDocumentParams params) {}
+			override didSave(DidSaveTextDocumentParams params) {}
+		}
+		
+		val workspaceService = new WorkspaceService {
+			override didChangeConfiguration(DidChangeConfigurationParams params) {}
+			override didChangeWatchedFiles(DidChangeWatchedFilesParams params) {}
+		}
+		
+		override initialize(InitializeParams params) {}
+		override shutdown() {}
+		
+		val exited = new CompletableFuture<Void>
+		override exit() {
+			exited.complete(null)
 		}
 	}
 	

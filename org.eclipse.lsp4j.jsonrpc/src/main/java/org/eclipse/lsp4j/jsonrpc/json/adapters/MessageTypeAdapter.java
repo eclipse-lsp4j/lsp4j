@@ -265,7 +265,13 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			}
 			return parameters;
 		}
-		return new JsonParser().parse(in);
+		JsonElement rawParams = new JsonParser().parse(in);
+		if (method != null && parameterTypes.length == 0 && (
+				rawParams.isJsonArray() && rawParams.getAsJsonArray().size() == 0
+				|| rawParams.isJsonObject() && rawParams.getAsJsonObject().size() == 0)) {
+			return null;
+		}
+		return rawParams;
 	}
 
 	/**
@@ -307,6 +313,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				index++;
 			}
 			return parameters;
+		}
+		if (method != null && parameterTypes.length == 0 && (
+				rawParams.isJsonArray() && rawParams.getAsJsonArray().size() == 0
+				|| rawParams.isJsonObject() && rawParams.getAsJsonObject().size() == 0)) {
+			return null;
 		}
 		return rawParams;
 	}

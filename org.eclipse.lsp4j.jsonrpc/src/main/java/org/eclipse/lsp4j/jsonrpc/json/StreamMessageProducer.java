@@ -116,7 +116,7 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 		} catch (IOException exception) {
 			if (JsonRpcException.indicatesStreamClosed(exception)) {
 				// Only log the error if we had intended to keep running
-				if( keepRunning ) 
+				if (keepRunning)
 					fireStreamClosed(exception);
 			} else
 				throw new JsonRpcException(exception);

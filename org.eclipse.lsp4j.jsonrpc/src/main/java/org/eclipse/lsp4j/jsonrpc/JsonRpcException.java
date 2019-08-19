@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.SocketException;
 import java.nio.channels.ClosedChannelException;
@@ -26,6 +27,7 @@ public class JsonRpcException extends RuntimeException {
 	public static boolean indicatesStreamClosed(Throwable thr) {
 		return thr instanceof InterruptedIOException
 				|| thr instanceof ClosedChannelException
+				|| thr instanceof IOException && "Pipe closed".equals(thr.getMessage())
 				|| thr instanceof SocketException && ("Connection reset".equals(thr.getMessage()) || "Socket closed".equals(thr.getMessage()))
 				|| thr instanceof JsonRpcException && indicatesStreamClosed(thr.getCause());
 	}
