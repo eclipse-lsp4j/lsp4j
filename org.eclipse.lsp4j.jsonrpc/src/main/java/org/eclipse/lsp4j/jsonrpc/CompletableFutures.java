@@ -28,11 +28,7 @@ public final class CompletableFutures {
 	public static <R> CompletableFuture<R> computeAsync(Function<CancelChecker, R> code) {
 		CompletableFuture<CancelChecker> start = new CompletableFuture<>();
 		CompletableFuture<R> result = start.thenApplyAsync(code);
-		CancelChecker cancelIndicator = () -> {
-			if (result.isCancelled()) 
-				throw new CancellationException();
-		};
-		start.complete(cancelIndicator);
+		start.complete(new FutureCancelChecker(result));
 		return result;
 	}
 	
@@ -45,12 +41,29 @@ public final class CompletableFutures {
 	public static <R> CompletableFuture<R> computeAsync(Executor executor, Function<CancelChecker, R> code) {
 		CompletableFuture<CancelChecker> start = new CompletableFuture<>();
 		CompletableFuture<R> result = start.thenApplyAsync(code, executor);
-		CancelChecker cancelIndicator = () -> {
-			if (result.isCancelled()) 
-				throw new CancellationException();
-		};
-		start.complete(cancelIndicator);
+		start.complete(new FutureCancelChecker(result));
 		return result;
+	}
+	
+	public static class FutureCancelChecker implements CancelChecker {
+		
+		private final CompletableFuture<?> future;
+		
+		public FutureCancelChecker(CompletableFuture<?> future) {
+			this.future = future;
+		}
+
+		@Override
+		public void checkCanceled() {
+			if (future.isCancelled()) 
+				throw new CancellationException();
+		}
+		
+		@Override
+		public boolean isCanceled() {
+			return future.isCancelled();
+		}
+		
 	}
 	
 }
