@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -69,10 +70,7 @@ public class DisassembleArguments {
    * Memory reference to the base location containing the instructions to disassemble.
    */
   public void setMemoryReference(@NonNull final String memoryReference) {
-    if (memoryReference == null) {
-      throw new IllegalArgumentException("Property must not be null: memoryReference");
-    }
-    this.memoryReference = memoryReference;
+    this.memoryReference = Preconditions.checkNotNull(memoryReference, "memoryReference");
   }
   
   /**
@@ -132,10 +130,7 @@ public class DisassembleArguments {
    * implementation-defined 'invalid instruction' value.
    */
   public void setInstructionCount(@NonNull final Long instructionCount) {
-    if (instructionCount == null) {
-      throw new IllegalArgumentException("Property must not be null: instructionCount");
-    }
-    this.instructionCount = instructionCount;
+    this.instructionCount = Preconditions.checkNotNull(instructionCount, "instructionCount");
   }
   
   /**

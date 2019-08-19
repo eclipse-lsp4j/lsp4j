@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.DataBreakpointAccessType;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -79,10 +80,7 @@ public class DataBreakpointInfoResponse {
    * UI string that describes on what data the breakpoint is set on or why a data breakpoint is not available.
    */
   public void setDescription(@NonNull final String description) {
-    if (description == null) {
-      throw new IllegalArgumentException("Property must not be null: description");
-    }
-    this.description = description;
+    this.description = Preconditions.checkNotNull(description, "description");
   }
   
   /**

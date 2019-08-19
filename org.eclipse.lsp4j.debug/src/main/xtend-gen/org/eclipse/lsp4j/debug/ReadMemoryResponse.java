@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -57,10 +58,7 @@ public class ReadMemoryResponse {
    * decimal value otherwise.
    */
   public void setAddress(@NonNull final String address) {
-    if (address == null) {
-      throw new IllegalArgumentException("Property must not be null: address");
-    }
-    this.address = address;
+    this.address = Preconditions.checkNotNull(address, "address");
   }
   
   /**

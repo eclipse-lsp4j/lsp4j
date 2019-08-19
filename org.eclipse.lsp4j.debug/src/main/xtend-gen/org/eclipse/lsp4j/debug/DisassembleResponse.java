@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.debug;
 
 import java.util.Arrays;
 import org.eclipse.lsp4j.debug.DisassembledInstruction;
+import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -41,10 +42,7 @@ public class DisassembleResponse {
    * The list of disassembled instructions.
    */
   public void setInstructions(@NonNull final DisassembledInstruction[] instructions) {
-    if (instructions == null) {
-      throw new IllegalArgumentException("Property must not be null: instructions");
-    }
-    this.instructions = instructions;
+    this.instructions = Preconditions.checkNotNull(instructions, "instructions");
   }
   
   @Override
