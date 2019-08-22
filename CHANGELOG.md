@@ -1,18 +1,23 @@
 ## LSP4J Change Log
 
+### v0.8.0 (Aug. 2019)
+
+ * Implemented DAP version 1.35.0
+ * Added new module `org.eclipse.lsp4j.websocket` for using LSP4J over websockets
+
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/12?closed=1
+
+-----
+
 ### v0.7.2 (May 2019)
 
  * Updated `textDocument/callHierarchy` according to latest proposal (note: changes to classes and methods marked with `@Beta` are _not_ regarded as API-breaking).
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/14?closed=1
 
------
-
 ### v0.7.1 (Apr. 2019)
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/13?closed=1
-
------
 
 ### v0.7.0 (Feb. 2019)
 
