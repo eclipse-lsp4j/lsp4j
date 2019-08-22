@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
-version = '0.8.0-SNAPSHOT'
+version = '0.8.0'
 
 ext.versions = [
 	'xtend_lib': '2.18.0',
