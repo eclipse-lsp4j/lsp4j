@@ -3,5 +3,7 @@
 	<feature id="org.eclipse.lsp4j.sdk" version="0.8.0.qualifier">
 		<category name="lsp4j"/>
 	</feature>
+	<bundle id="javax.websocket" version="0.0.0"/>
+	<bundle id="javax.websocket.source" version="0.0.0"/>
    <category-def name="lsp4j" label="Lsp4j"/>
 </site>

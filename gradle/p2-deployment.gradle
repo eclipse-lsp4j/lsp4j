@@ -17,6 +17,8 @@ group = 'org.eclipse.lsp4j'
 p2gen {
 	zipRepository true
 	feature 'lsp4j-feature'
+	additionalBundle 'javax.websocket'
+	additionalBundle 'javax.websocket.source'
 	tychoVersion '1.4.0'
 	
 	dependencies {
@@ -32,6 +34,14 @@ p2gen {
 		bundle {
 			id 'com.google.gson.source'
 			version versions.gson_orbit
+		}
+		bundle {
+			id 'javax.websocket'
+			version '0.0.0'
+		}
+		bundle {
+			id 'javax.websocket.source'
+			version '0.0.0'
 		}
 	}
 }
