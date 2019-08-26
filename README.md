@@ -30,19 +30,19 @@ Also, you can get them directly from the TypeFox Jenkins server:
 
 ### Supported LSP Versions
 
- * LSP4J 0.7.x &rarr; LSP 3.14.0
- * LSP4J 0.6.x &rarr; LSP 3.13.0
- * LSP4J 0.5.x &rarr; LSP 3.10.0
- * LSP4J 0.4.x &rarr; LSP 3.7.0
- * LSP4J 0.2.x, 0.3.x &rarr; LSP 3.0
- * LSP4J 0.1.x &rarr; LSP 2.1
+ * LSP4J 0.7.&ast;, 0.8.&ast; &rarr; LSP 3.14.0
+ * LSP4J 0.6.&ast; &rarr; LSP 3.13.0
+ * LSP4J 0.5.&ast; &rarr; LSP 3.10.0
+ * LSP4J 0.4.&ast; &rarr; LSP 3.7.0
+ * LSP4J 0.2.&ast;, 0.3.&ast; &rarr; LSP 3.0
+ * LSP4J 0.1.&ast; &rarr; LSP 2.1
 
 ### Supported DAP Versions
 
- * LSP4J 0.8.x &rarr; DAP 1.35.0
- * LSP4J 0.5.x &rarr; DAP 1.31.0
- * LSP4J 0.4.x &rarr; DAP 1.25.0
- * LSP4J before 0.4.x did not support DAP
+ * LSP4J 0.8.&ast; &rarr; DAP 1.35.0
+ * LSP4J 0.5.&ast; &ndash; 0.7.&ast; &rarr; DAP 1.31.0
+ * LSP4J 0.4.&ast; &rarr; DAP 1.25.0
+ * LSP4J before 0.4.0 did not support DAP
 
 ### Building and Contributing
 
