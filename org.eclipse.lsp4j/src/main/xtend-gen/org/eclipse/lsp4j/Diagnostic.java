@@ -14,6 +14,7 @@ package org.eclipse.lsp4j;
 import java.util.List;
 import org.eclipse.lsp4j.DiagnosticRelatedInformation;
 import org.eclipse.lsp4j.DiagnosticSeverity;
+import org.eclipse.lsp4j.DiagnosticTag;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
@@ -52,6 +53,11 @@ public class Diagnostic {
    */
   @NonNull
   private String message;
+  
+  /**
+   * Additional metadata about the diagnostic.
+   */
+  private List<DiagnosticTag> tags;
   
   /**
    * An array of related diagnostic information, e.g. when symbol-names within a scope collide
@@ -160,6 +166,21 @@ public class Diagnostic {
   }
   
   /**
+   * Additional metadata about the diagnostic.
+   */
+  @Pure
+  public List<DiagnosticTag> getTags() {
+    return this.tags;
+  }
+  
+  /**
+   * Additional metadata about the diagnostic.
+   */
+  public void setTags(final List<DiagnosticTag> tags) {
+    this.tags = tags;
+  }
+  
+  /**
    * An array of related diagnostic information, e.g. when symbol-names within a scope collide
    * all definitions can be marked via this property.
    * 
@@ -189,6 +210,7 @@ public class Diagnostic {
     b.add("code", this.code);
     b.add("source", this.source);
     b.add("message", this.message);
+    b.add("tags", this.tags);
     b.add("relatedInformation", this.relatedInformation);
     return b.toString();
   }
@@ -228,6 +250,11 @@ public class Diagnostic {
         return false;
     } else if (!this.message.equals(other.message))
       return false;
+    if (this.tags == null) {
+      if (other.tags != null)
+        return false;
+    } else if (!this.tags.equals(other.tags))
+      return false;
     if (this.relatedInformation == null) {
       if (other.relatedInformation != null)
         return false;
@@ -246,6 +273,7 @@ public class Diagnostic {
     result = prime * result + ((this.code== null) ? 0 : this.code.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
+    result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
     return prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
   }
 }
