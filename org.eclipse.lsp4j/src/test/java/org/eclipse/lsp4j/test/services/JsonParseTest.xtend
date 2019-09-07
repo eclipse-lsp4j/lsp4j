@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2016 TypeFox and others.
+ * Copyright (c) 2019 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -56,6 +56,7 @@ import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
 import org.eclipse.lsp4j.ParameterInformation
 import org.eclipse.lsp4j.Position
+import org.eclipse.lsp4j.PrepareRenameResult
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
@@ -478,6 +479,76 @@ class JsonParseTest {
 					]
 				]
 			))
+		])
+	}
+	
+	@Test
+	def void testPrepareRenameResponse1() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_PREPARE_RENAME
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"range": {
+						"start": {
+							"character": 32,
+							"line": 3
+						},
+						"end": {
+							"character": 35,
+							"line": 3
+						}
+					},
+					"placeholder": "someVar"
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.forRight(new PrepareRenameResult => [
+				range = new Range => [
+					start = new Position(3, 32)
+					end = new Position(3, 35)
+				]
+				placeholder = "someVar"
+			])
+		])
+	}
+	
+	@Test
+	def void testPrepareRenameResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_PREPARE_RENAME
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"start": {
+						"character": 32,
+						"line": 3
+					},
+					"end": {
+						"character": 35,
+						"line": 3
+					}
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result =  Either.forLeft(new Range => [
+				start = new Position(3, 32)
+				end = new Position(3, 35)
+			])
 		])
 	}
 	

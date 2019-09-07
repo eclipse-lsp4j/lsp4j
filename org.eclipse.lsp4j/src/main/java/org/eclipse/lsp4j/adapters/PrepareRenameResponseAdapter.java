@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2018 Microsoft Corporation and others.
+ * Copyright (c) 2019 Microsoft Corporation and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11,12 +11,10 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.adapters;
 
-import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
-import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter.PropertyChecker;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -37,9 +35,6 @@ public class PrepareRenameResponseAdapter implements TypeAdapterFactory {
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
 		Predicate<JsonElement> leftChecker = new PropertyChecker("start");
 		Predicate<JsonElement> rightChecker = new PropertyChecker("range");
-		TypeAdapter<Either<Range, PrepareRenameResult>> elementTypeAdapter = new EitherTypeAdapter<>(gson, ELEMENT_TYPE,
-				leftChecker, rightChecker);
-		return (TypeAdapter<T>) new CollectionTypeAdapter<>(gson, ELEMENT_TYPE.getType(), elementTypeAdapter,
-				ArrayList::new);
+		return (TypeAdapter<T>) new EitherTypeAdapter<>(gson, ELEMENT_TYPE, leftChecker, rightChecker);
 	}
 }
