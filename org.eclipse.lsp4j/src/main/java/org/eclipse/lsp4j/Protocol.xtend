@@ -816,12 +816,19 @@ class PublishDiagnosticsCapabilities {
 	 * Whether the client accepts diagnostics with related information.
 	 */
 	Boolean relatedInformation
+	
+	Boolean tagSupport
 
 	new() {
 	}
 
 	new(Boolean relatedInformation) {
 		this.relatedInformation = relatedInformation
+	}
+	
+	new(Boolean relatedInformation, Boolean tagSupport) {
+		this.relatedInformation = relatedInformation
+		this.tagSupport = tagSupport
 	}
 }
 
