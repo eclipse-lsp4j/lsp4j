@@ -24,11 +24,18 @@ public class PublishDiagnosticsCapabilities {
    */
   private Boolean relatedInformation;
   
+  private Boolean tagSupport;
+  
   public PublishDiagnosticsCapabilities() {
   }
   
   public PublishDiagnosticsCapabilities(final Boolean relatedInformation) {
     this.relatedInformation = relatedInformation;
+  }
+  
+  public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final Boolean tagSupport) {
+    this.relatedInformation = relatedInformation;
+    this.tagSupport = tagSupport;
   }
   
   /**
@@ -46,11 +53,21 @@ public class PublishDiagnosticsCapabilities {
     this.relatedInformation = relatedInformation;
   }
   
+  @Pure
+  public Boolean getTagSupport() {
+    return this.tagSupport;
+  }
+  
+  public void setTagSupport(final Boolean tagSupport) {
+    this.tagSupport = tagSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("relatedInformation", this.relatedInformation);
+    b.add("tagSupport", this.tagSupport);
     return b.toString();
   }
   
@@ -69,12 +86,20 @@ public class PublishDiagnosticsCapabilities {
         return false;
     } else if (!this.relatedInformation.equals(other.relatedInformation))
       return false;
+    if (this.tagSupport == null) {
+      if (other.tagSupport != null)
+        return false;
+    } else if (!this.tagSupport.equals(other.tagSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
+    return prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
   }
 }
