@@ -24,6 +24,11 @@ public class PublishDiagnosticsCapabilities {
    */
   private Boolean relatedInformation;
   
+  /**
+   * Client supports the tag property to provide meta data about a diagnostic.
+   * 
+   * Since 3.15
+   */
   private Boolean tagSupport;
   
   public PublishDiagnosticsCapabilities() {
@@ -53,11 +58,21 @@ public class PublishDiagnosticsCapabilities {
     this.relatedInformation = relatedInformation;
   }
   
+  /**
+   * Client supports the tag property to provide meta data about a diagnostic.
+   * 
+   * Since 3.15
+   */
   @Pure
   public Boolean getTagSupport() {
     return this.tagSupport;
   }
   
+  /**
+   * Client supports the tag property to provide meta data about a diagnostic.
+   * 
+   * Since 3.15
+   */
   public void setTagSupport(final Boolean tagSupport) {
     this.tagSupport = tagSupport;
   }
