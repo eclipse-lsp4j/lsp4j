@@ -816,7 +816,12 @@ class PublishDiagnosticsCapabilities {
 	 * Whether the client accepts diagnostics with related information.
 	 */
 	Boolean relatedInformation
-	
+
+	/**
+	 * Client supports the tag property to provide meta data about a diagnostic.
+	 *
+	 * Since 3.15
+	 */
 	Boolean tagSupport
 
 	new() {
