@@ -52,6 +52,22 @@ public class MockConnectionTest {
 	}
 	
 	@Test
+	public void testChunkedClientRequest() throws Exception {
+		StringBuilder messageBuilder = new StringBuilder();
+		Random random = new Random(1);
+		for (int i = 0; i < 3 * MockSession.MAX_CHUNK_SIZE; i++) {
+			messageBuilder.append((char) ('a' + random.nextInt('z' - 'a' + 1)));
+		}
+		String message = messageBuilder.toString();
+		String expectedResult = messageBuilder.append("bar").toString();
+	
+		CompletableFuture<String> future = client.server.request(message);
+		String result = future.get(TIMEOUT, TimeUnit.MILLISECONDS);
+
+		Assert.assertEquals(expectedResult, result);
+	}
+
+	@Test
 	public void testNotifications() throws Exception {
 		server.client.notify("12");
 		await(() -> client.result.length() == 2);

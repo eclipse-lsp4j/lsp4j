@@ -22,19 +22,41 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 /**
  * WebSocket message handler that parses JSON messages and forwards them to a {@link MessageConsumer}.
  */
-public class WebSocketMessageHandler implements MessageHandler.Whole<String> {
+public class WebSocketMessageHandler implements MessageHandler.Partial<String> {
 	
 	private final MessageConsumer callback;
 	private final MessageJsonHandler jsonHandler;
 	private final MessageIssueHandler issueHandler;
+
+	private StringBuilder buffer = null;
 	
 	public WebSocketMessageHandler(MessageConsumer callback, MessageJsonHandler jsonHandler, MessageIssueHandler issueHandler) {
 		this.callback = callback;
 		this.jsonHandler = jsonHandler;
 		this.issueHandler = issueHandler;
 	}
+
+	@Override
+	public void onMessage(String partialMessage, boolean last) {
+		if (last) {
+			// only use the buffer if necessary
+			String wholeMessage = (buffer == null)
+					? partialMessage
+					: buffer.append(partialMessage).toString();
+			// reset the buffer. use new (empty) buffer next time
+			buffer = null;
+			// handle the message
+			onMessage(wholeMessage);
+		} else {
+			// buffer usage necessary now
+			if (buffer == null) {
+				buffer = new StringBuilder();
+			}
+			buffer.append(partialMessage);
+		}
+	}
 	
-	public void onMessage(String content) {
+	private void onMessage(String content) {
 		try {
 			Message message = jsonHandler.parseMessage(content);
 			callback.consume(message);
