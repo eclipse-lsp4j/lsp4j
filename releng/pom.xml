@@ -4,7 +4,7 @@
 
 	<groupId>org.eclipse.lsp4j</groupId>
 	<artifactId>lsp4j.releng</artifactId>
-	<version>0.8.0-SNAPSHOT</version>
+	<version>0.8.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -30,67 +30,67 @@
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.debug</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.debug</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.websocket</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.websocket</artifactId>
-			<version>0.8.0</version>
+			<version>0.8.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 	</dependencies>
@@ -119,7 +119,7 @@
 						<artifact>
 							<groupId>org.eclipse.lsp4j</groupId>
 							<artifactId>lsp4j.target</artifactId>
-							<version>0.8.0-SNAPSHOT</version>
+							<version>0.8.1-SNAPSHOT</version>
 						</artifact>
 					</target>
 					<environments>
