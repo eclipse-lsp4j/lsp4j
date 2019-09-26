@@ -1,5 +1,9 @@
 ## LSP4J Change Log
 
+### v0.8.1 (Sep. 2019)
+
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/16?closed=1
+
 ### v0.8.0 (Aug. 2019)
 
  * Implemented DAP version 1.35.0
