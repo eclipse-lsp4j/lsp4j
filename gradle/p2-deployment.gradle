@@ -17,6 +17,8 @@ group = 'org.eclipse.lsp4j'
 p2gen {
 	zipRepository true
 	feature 'lsp4j-feature'
+	additionalBundle 'com.google.guava'
+	additionalBundle 'com.google.guava.source'
 	additionalBundle 'javax.websocket'
 	additionalBundle 'javax.websocket.source'
 	tychoVersion '1.4.0'
@@ -26,7 +28,7 @@ p2gen {
 		bundle 'com.google.guava'
 	}
 	dependencies {
-		repositoryUrl 'http://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository'
+		repositoryUrl 'https://download.eclipse.org/tools/orbit/downloads/2019-09'
 		bundle {
 			id 'com.google.gson'
 			version versions.gson_orbit
@@ -34,6 +36,14 @@ p2gen {
 		bundle {
 			id 'com.google.gson.source'
 			version versions.gson_orbit
+		}
+		bundle {
+			id 'com.google.guava'
+			version versions.guava_orbit
+		}
+		bundle {
+			id 'com.google.guava.source'
+			version versions.guava_orbit
 		}
 		bundle {
 			id 'javax.websocket'
