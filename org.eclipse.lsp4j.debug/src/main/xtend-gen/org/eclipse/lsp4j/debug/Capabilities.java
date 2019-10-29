@@ -237,6 +237,25 @@ public class Capabilities {
   private Boolean supportsDisassembleRequest;
   
   /**
+   * The debug adapter supports the 'cancel' request.
+   * <p>
+   * This is an optional property.
+   * 
+   * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
+   * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
+   * the flag is present and as such it should be false or left unset when implementation
+   * a debug adapter.
+   */
+  private Boolean supportsCancelRequest;
+  
+  /**
+   * The debug adapter supports the 'breakpointLocations' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsBreakpointLocationsRequest;
+  
+  /**
    * The debug adapter supports the 'configurationDone' request.
    * <p>
    * This is an optional property.
@@ -812,6 +831,54 @@ public class Capabilities {
     this.supportsDisassembleRequest = supportsDisassembleRequest;
   }
   
+  /**
+   * The debug adapter supports the 'cancel' request.
+   * <p>
+   * This is an optional property.
+   * 
+   * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
+   * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
+   * the flag is present and as such it should be false or left unset when implementation
+   * a debug adapter.
+   */
+  @Pure
+  public Boolean getSupportsCancelRequest() {
+    return this.supportsCancelRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'cancel' request.
+   * <p>
+   * This is an optional property.
+   * 
+   * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
+   * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
+   * the flag is present and as such it should be false or left unset when implementation
+   * a debug adapter.
+   */
+  public void setSupportsCancelRequest(final Boolean supportsCancelRequest) {
+    this.supportsCancelRequest = supportsCancelRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'breakpointLocations' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsBreakpointLocationsRequest() {
+    return this.supportsBreakpointLocationsRequest;
+  }
+  
+  /**
+   * The debug adapter supports the 'breakpointLocations' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsBreakpointLocationsRequest(final Boolean supportsBreakpointLocationsRequest) {
+    this.supportsBreakpointLocationsRequest = supportsBreakpointLocationsRequest;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -846,6 +913,8 @@ public class Capabilities {
     b.add("supportsDataBreakpoints", this.supportsDataBreakpoints);
     b.add("supportsReadMemoryRequest", this.supportsReadMemoryRequest);
     b.add("supportsDisassembleRequest", this.supportsDisassembleRequest);
+    b.add("supportsCancelRequest", this.supportsCancelRequest);
+    b.add("supportsBreakpointLocationsRequest", this.supportsBreakpointLocationsRequest);
     return b.toString();
   }
   
@@ -1009,6 +1078,16 @@ public class Capabilities {
         return false;
     } else if (!this.supportsDisassembleRequest.equals(other.supportsDisassembleRequest))
       return false;
+    if (this.supportsCancelRequest == null) {
+      if (other.supportsCancelRequest != null)
+        return false;
+    } else if (!this.supportsCancelRequest.equals(other.supportsCancelRequest))
+      return false;
+    if (this.supportsBreakpointLocationsRequest == null) {
+      if (other.supportsBreakpointLocationsRequest != null)
+        return false;
+    } else if (!this.supportsBreakpointLocationsRequest.equals(other.supportsBreakpointLocationsRequest))
+      return false;
     return true;
   }
   
@@ -1046,6 +1125,8 @@ public class Capabilities {
     result = prime * result + ((this.supportsTerminateRequest== null) ? 0 : this.supportsTerminateRequest.hashCode());
     result = prime * result + ((this.supportsDataBreakpoints== null) ? 0 : this.supportsDataBreakpoints.hashCode());
     result = prime * result + ((this.supportsReadMemoryRequest== null) ? 0 : this.supportsReadMemoryRequest.hashCode());
-    return prime * result + ((this.supportsDisassembleRequest== null) ? 0 : this.supportsDisassembleRequest.hashCode());
+    result = prime * result + ((this.supportsDisassembleRequest== null) ? 0 : this.supportsDisassembleRequest.hashCode());
+    result = prime * result + ((this.supportsCancelRequest== null) ? 0 : this.supportsCancelRequest.hashCode());
+    return prime * result + ((this.supportsBreakpointLocationsRequest== null) ? 0 : this.supportsBreakpointLocationsRequest.hashCode());
   }
 }

@@ -15,6 +15,8 @@ package org.eclipse.lsp4j.debug.services;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.lsp4j.debug.BreakpointLocationsArguments;
+import org.eclipse.lsp4j.debug.BreakpointLocationsResponse;
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CompletionsArguments;
 import org.eclipse.lsp4j.debug.CompletionsResponse;
@@ -85,7 +87,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.36.0";
+	public static final String SCHEMA_VERSION = "1.37.0";
 
 	/**
 	 * This request is sent from the debug adapter to the client to run a command in
@@ -182,6 +184,15 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> terminate(TerminateArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The 'breakpointLocations' request returns all possible locations for source
+	 * breakpoints in a given range.
+	 */
+	@JsonRequest
+	default CompletableFuture<BreakpointLocationsResponse> breakpointLocations(BreakpointLocationsArguments args) {
 		throw new UnsupportedOperationException();
 	}
 

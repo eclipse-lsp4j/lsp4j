@@ -26,7 +26,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.36.0";
+	public static final String SCHEMA_VERSION = "1.37.0";
 }
 
 /**
@@ -643,6 +643,59 @@ class TerminateArguments {
 	 * A value of true indicates that this 'terminate' request is part of a restart sequence.
 	 */
 	Boolean restart;
+}
+
+/**
+ * Response to 'breakpointLocations' request.
+ * <p>
+ * Contains possible locations for source breakpoints.
+ */
+@JsonRpcData
+class BreakpointLocationsResponse {
+	/**
+	 * Sorted set of possible breakpoint locations.
+	 */
+	@NonNull
+	BreakpointLocation[] breakpoints;
+}
+
+/**
+ * Arguments for 'breakpointLocations' request.
+ */
+@JsonRpcData
+class BreakpointLocationsArguments {
+	/**
+	 * The source location of the breakpoints; either 'source.path' or 'source.reference' must be specified.
+	 */
+	@NonNull
+	Source source;
+	/**
+	 * Start line of range to search possible breakpoint locations in. If only the line is specified,
+	 * the request returns all possible locations in that line.
+	 */
+	@NonNull
+	Long line;
+	/**
+	 * Optional start column of range to search possible breakpoint locations in. If no start column is given,
+	 * the first column in the start line is assumed.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long column;
+	/**
+	 * Optional end line of range to search possible breakpoint locations in. If no end line is given,
+	 * then the end line is assumed to be the start line.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long endLine;
+	/**
+	 * Optional end column of range to search possible breakpoint locations in. If no end column is given,
+	 * then it is assumed to be in the last column of the end line.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long endColumn;
 }
 
 /**
@@ -1890,6 +1943,23 @@ class Capabilities {
 	 * This is an optional property.
 	 */
 	Boolean supportsDisassembleRequest;
+	/**
+	 * The debug adapter supports the 'cancel' request.
+	 * <p>
+	 * This is an optional property.
+	 *
+	 * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
+	 * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
+	 * the flag is present and as such it should be false or left unset when implementation
+	 * a debug adapter.
+	 */
+	Boolean supportsCancelRequest;
+	/**
+	 * The debug adapter supports the 'breakpointLocations' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsBreakpointLocationsRequest
 }
 
 /**
@@ -2597,6 +2667,36 @@ interface VariablePresentationHintVisibility {
 	public static final String PROTECTED = "protected";
 	public static final String INTERNAL = "internal";
 	public static final String FINAL = "final";
+}
+
+/**
+ * Properties of a breakpoint location returned from the 'breakpointLocations' request.
+ */
+@JsonRpcData
+class BreakpointLocation {
+	/**
+	 * Start line of breakpoint location.
+	 */
+	@NonNull
+	Long line;
+	/**
+	 * Optional start column of breakpoint location.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long column;
+	/**
+	 * Optional end line of breakpoint location if the location covers a range.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long endLine;
+	/**
+	 * Optional end column of breakpoint location if the location covers a range.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Long endColumn;
 }
 
 /**
