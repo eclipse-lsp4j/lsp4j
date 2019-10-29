@@ -72,28 +72,30 @@ public class Variable {
   
   /**
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest.
+   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @NonNull
-  private Long variablesReference;
+  private Integer variablesReference;
   
   /**
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long namedVariables;
+  private Integer namedVariables;
   
   /**
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long indexedVariables;
+  private Integer indexedVariables;
   
   /**
    * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
@@ -195,19 +197,19 @@ public class Variable {
   
   /**
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest.
+   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
   @NonNull
-  public Long getVariablesReference() {
+  public Integer getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest.
+   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Long variablesReference) {
+  public void setVariablesReference(@NonNull final Integer variablesReference) {
     this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
   }
   
@@ -215,11 +217,12 @@ public class Variable {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getNamedVariables() {
+  public Integer getNamedVariables() {
     return this.namedVariables;
   }
   
@@ -227,10 +230,11 @@ public class Variable {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setNamedVariables(final Long namedVariables) {
+  public void setNamedVariables(final Integer namedVariables) {
     this.namedVariables = namedVariables;
   }
   
@@ -238,11 +242,12 @@ public class Variable {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getIndexedVariables() {
+  public Integer getIndexedVariables() {
     return this.indexedVariables;
   }
   
@@ -250,10 +255,11 @@ public class Variable {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setIndexedVariables(final Long indexedVariables) {
+  public void setIndexedVariables(final Integer indexedVariables) {
     this.indexedVariables = indexedVariables;
   }
   

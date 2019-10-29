@@ -23,10 +23,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class DataBreakpointInfoArguments {
   /**
    * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long variablesReference;
+  private Integer variablesReference;
   
   /**
    * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
@@ -37,20 +38,22 @@ public class DataBreakpointInfoArguments {
   
   /**
    * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getVariablesReference() {
+  public Integer getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setVariablesReference(final Long variablesReference) {
+  public void setVariablesReference(final Integer variablesReference) {
     this.variablesReference = variablesReference;
   }
   

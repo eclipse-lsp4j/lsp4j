@@ -115,6 +115,13 @@ public class Capabilities {
   private Boolean supportsModulesRequest;
   
   /**
+   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
+   * <p>
+   * This is an optional property.
+   */
+  private String[] completionTriggerCharacters;
+  
+  /**
    * The set of additional module information exposed by the debug adapter.
    * <p>
    * This is an optional property.
@@ -477,6 +484,25 @@ public class Capabilities {
   }
   
   /**
+   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String[] getCompletionTriggerCharacters() {
+    return this.completionTriggerCharacters;
+  }
+  
+  /**
+   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
+   * <p>
+   * This is an optional property.
+   */
+  public void setCompletionTriggerCharacters(final String[] completionTriggerCharacters) {
+    this.completionTriggerCharacters = completionTriggerCharacters;
+  }
+  
+  /**
    * The set of additional module information exposed by the debug adapter.
    * <p>
    * This is an optional property.
@@ -803,6 +829,7 @@ public class Capabilities {
     b.add("supportsStepInTargetsRequest", this.supportsStepInTargetsRequest);
     b.add("supportsCompletionsRequest", this.supportsCompletionsRequest);
     b.add("supportsModulesRequest", this.supportsModulesRequest);
+    b.add("completionTriggerCharacters", this.completionTriggerCharacters);
     b.add("additionalModuleColumns", this.additionalModuleColumns);
     b.add("supportedChecksumAlgorithms", this.supportedChecksumAlgorithms);
     b.add("supportsRestartRequest", this.supportsRestartRequest);
@@ -896,6 +923,11 @@ public class Capabilities {
       if (other.supportsModulesRequest != null)
         return false;
     } else if (!this.supportsModulesRequest.equals(other.supportsModulesRequest))
+      return false;
+    if (this.completionTriggerCharacters == null) {
+      if (other.completionTriggerCharacters != null)
+        return false;
+    } else if (!Arrays.deepEquals(this.completionTriggerCharacters, other.completionTriggerCharacters))
       return false;
     if (this.additionalModuleColumns == null) {
       if (other.additionalModuleColumns != null)
@@ -998,6 +1030,7 @@ public class Capabilities {
     result = prime * result + ((this.supportsStepInTargetsRequest== null) ? 0 : this.supportsStepInTargetsRequest.hashCode());
     result = prime * result + ((this.supportsCompletionsRequest== null) ? 0 : this.supportsCompletionsRequest.hashCode());
     result = prime * result + ((this.supportsModulesRequest== null) ? 0 : this.supportsModulesRequest.hashCode());
+    result = prime * result + ((this.completionTriggerCharacters== null) ? 0 : Arrays.deepHashCode(this.completionTriggerCharacters));
     result = prime * result + ((this.additionalModuleColumns== null) ? 0 : Arrays.deepHashCode(this.additionalModuleColumns));
     result = prime * result + ((this.supportedChecksumAlgorithms== null) ? 0 : Arrays.deepHashCode(this.supportedChecksumAlgorithms));
     result = prime * result + ((this.supportsRestartRequest== null) ? 0 : this.supportsRestartRequest.hashCode());

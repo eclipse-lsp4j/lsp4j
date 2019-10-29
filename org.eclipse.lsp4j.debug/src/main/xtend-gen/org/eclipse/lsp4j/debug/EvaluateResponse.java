@@ -44,28 +44,30 @@ public class EvaluateResponse {
   
   /**
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest.
+   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @NonNull
-  private Long variablesReference;
+  private Integer variablesReference;
   
   /**
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long namedVariables;
+  private Integer namedVariables;
   
   /**
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long indexedVariables;
+  private Integer indexedVariables;
   
   /**
    * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
@@ -73,7 +75,7 @@ public class EvaluateResponse {
    * <p>
    * This is an optional property.
    */
-  private Long memoryReference;
+  private String memoryReference;
   
   /**
    * The result of the evaluate request.
@@ -131,19 +133,19 @@ public class EvaluateResponse {
   
   /**
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest.
+   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
   @NonNull
-  public Long getVariablesReference() {
+  public Integer getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest.
+   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Long variablesReference) {
+  public void setVariablesReference(@NonNull final Integer variablesReference) {
     this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
   }
   
@@ -151,11 +153,12 @@ public class EvaluateResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getNamedVariables() {
+  public Integer getNamedVariables() {
     return this.namedVariables;
   }
   
@@ -163,10 +166,11 @@ public class EvaluateResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setNamedVariables(final Long namedVariables) {
+  public void setNamedVariables(final Integer namedVariables) {
     this.namedVariables = namedVariables;
   }
   
@@ -174,11 +178,12 @@ public class EvaluateResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getIndexedVariables() {
+  public Integer getIndexedVariables() {
     return this.indexedVariables;
   }
   
@@ -186,10 +191,11 @@ public class EvaluateResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setIndexedVariables(final Long indexedVariables) {
+  public void setIndexedVariables(final Integer indexedVariables) {
     this.indexedVariables = indexedVariables;
   }
   
@@ -200,7 +206,7 @@ public class EvaluateResponse {
    * This is an optional property.
    */
   @Pure
-  public Long getMemoryReference() {
+  public String getMemoryReference() {
     return this.memoryReference;
   }
   
@@ -210,7 +216,7 @@ public class EvaluateResponse {
    * <p>
    * This is an optional property.
    */
-  public void setMemoryReference(final Long memoryReference) {
+  public void setMemoryReference(final String memoryReference) {
     this.memoryReference = memoryReference;
   }
   

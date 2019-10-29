@@ -26,7 +26,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.35.0";
+	public static final String SCHEMA_VERSION = "1.36.0";
 }
 
 /**
@@ -207,11 +207,12 @@ class OutputEventArguments {
 	String output;
 	/**
 	 * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-	 * retrieved by passing 'variablesReference' to the 'variables' request.
+	 * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
+	 * equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * An optional source location where the output was produced.
 	 * <p>
@@ -417,17 +418,17 @@ class CapabilitiesEventArguments {
 @JsonRpcData
 class RunInTerminalResponse {
 	/**
-	 * The process ID.
+	 * The process ID. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long processId;
+	Integer processId;
 	/**
-	 * The process ID of the terminal shell.
+	 * The process ID of the terminal shell. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long shellProcessId;
+	Integer shellProcessId;
 }
 
 /**
@@ -777,10 +778,11 @@ class DataBreakpointInfoResponse {
 class DataBreakpointInfoArguments {
 	/**
 	 * Reference to the Variable container if the data breakpoint is requested for a child of the container.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
-	*/
-	Long variablesReference;
+	 */
+	Integer variablesReference;
 	/**
 	 * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
 	 * this can be an expression.
@@ -1041,10 +1043,10 @@ class VariablesResponse {
 @JsonRpcData
 class VariablesArguments {
 	/**
-	 * The Variable reference.
+	 * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
 	@NonNull
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
 	 * <p>
@@ -1097,27 +1099,29 @@ class SetVariableResponse {
 	String type;
 	/**
 	 * If variablesReference is > 0, the new value is structured and its children can be retrieved by passing
-	 * variablesReference to the VariablesRequest.
+	 * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long namedVariables;
+	Integer namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long indexedVariables;
+	Integer indexedVariables;
 }
 
 /**
@@ -1126,10 +1130,10 @@ class SetVariableResponse {
 @JsonRpcData
 class SetVariableArguments {
 	/**
-	 * The reference of the variable container.
+	 * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
 	@NonNull
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * The name of the variable in the container.
 	 */
@@ -1290,33 +1294,35 @@ class EvaluateResponse {
 	VariablePresentationHint presentationHint;
 	/**
 	 * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-	 * variablesReference to the VariablesRequest.
+	 * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
 	@NonNull
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long namedVariables;
+	Integer namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long indexedVariables;
+	Integer indexedVariables;
 	/**
 	 * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
 	 * reference to the memory address contained in the pointer.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long memoryReference;
+	String memoryReference;
 }
 
 /**
@@ -1397,26 +1403,29 @@ class SetExpressionResponse {
 	/**
 	 * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long namedVariables;
+	Integer namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long indexedVariables;
+	Integer indexedVariables;
 }
 
 /**
@@ -1776,6 +1785,12 @@ class Capabilities {
 	 * This is an optional property.
 	 */
 	Boolean supportsModulesRequest;
+	/**
+	 * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String[] completionTriggerCharacters;
 	/**
 	 * The set of additional module information exposed by the debug adapter.
 	 * <p>
@@ -2144,10 +2159,11 @@ class Source {
 	/**
 	 * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
 	 * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long sourceReference;
+	Integer sourceReference;
 	/**
 	 * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
 	 * the source is not available or that it is skipped on stepping.
@@ -2291,26 +2307,28 @@ class Scope {
 	ScopePresentationHint presentationHint;
 	/**
 	 * The variables of this scope can be retrieved by passing the value of variablesReference to the
-	 * VariablesRequest.
+	 * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
 	@NonNull
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * The number of named variables in this scope.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long namedVariables;
+	Integer namedVariables;
 	/**
 	 * The number of indexed variables in this scope.
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long indexedVariables;
+	Integer indexedVariables;
 	/**
 	 * If true, the number of variables in this scope is large or expensive to retrieve.
 	 */
@@ -2417,26 +2435,28 @@ class Variable {
 	String evaluateName;
 	/**
 	 * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-	 * variablesReference to the VariablesRequest.
+	 * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
 	@NonNull
-	Long variablesReference;
+	Integer variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
 	 * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long namedVariables;
+	Integer namedVariables;
 	/**
 	 * The number of indexed child variables.
 	 * <p>
 	 * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
+	 * The value should be less than or equal to 2147483647 (2^31 - 1).
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long indexedVariables;
+	Integer indexedVariables;
 	/**
 	 * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
 	 * <p>
@@ -2799,10 +2819,10 @@ class GotoTarget {
 	 */
 	Long endColumn;
 	/**
-	* Optional memory reference for the instruction pointer value represented by this target.
-	* <p>
-	* This is an optional property.
-	*/
+	 * Optional memory reference for the instruction pointer value represented by this target.
+	 * <p>
+	 * This is an optional property.
+	 */
 	String instructionPointerReference;
 }
 
@@ -2823,6 +2843,12 @@ class CompletionItem {
 	 * This is an optional property.
 	 */
 	String text;
+	/**
+	 * A string that should be used when comparing this item with other items. When `falsy` the label is used.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String sortText;
 	/**
 	 * The item's type. Typically the client uses this information to render the item in the UI with an icon.
 	 * <p>

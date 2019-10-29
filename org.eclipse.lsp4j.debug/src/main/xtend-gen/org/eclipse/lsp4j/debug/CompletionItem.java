@@ -37,6 +37,13 @@ public class CompletionItem {
   private String text;
   
   /**
+   * A string that should be used when comparing this item with other items. When `falsy` the label is used.
+   * <p>
+   * This is an optional property.
+   */
+  private String sortText;
+  
+  /**
    * The item's type. Typically the client uses this information to render the item in the UI with an icon.
    * <p>
    * This is an optional property.
@@ -97,6 +104,25 @@ public class CompletionItem {
    */
   public void setText(final String text) {
     this.text = text;
+  }
+  
+  /**
+   * A string that should be used when comparing this item with other items. When `falsy` the label is used.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getSortText() {
+    return this.sortText;
+  }
+  
+  /**
+   * A string that should be used when comparing this item with other items. When `falsy` the label is used.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSortText(final String sortText) {
+    this.sortText = sortText;
   }
   
   /**
@@ -172,6 +198,7 @@ public class CompletionItem {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("label", this.label);
     b.add("text", this.text);
+    b.add("sortText", this.sortText);
     b.add("type", this.type);
     b.add("start", this.start);
     b.add("length", this.length);
@@ -198,6 +225,11 @@ public class CompletionItem {
         return false;
     } else if (!this.text.equals(other.text))
       return false;
+    if (this.sortText == null) {
+      if (other.sortText != null)
+        return false;
+    } else if (!this.sortText.equals(other.sortText))
+      return false;
     if (this.type == null) {
       if (other.type != null)
         return false;
@@ -223,6 +255,7 @@ public class CompletionItem {
     int result = 1;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
+    result = prime * result + ((this.sortText== null) ? 0 : this.sortText.hashCode());
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
     result = prime * result + ((this.start== null) ? 0 : this.start.hashCode());
     return prime * result + ((this.length== null) ? 0 : this.length.hashCode());
