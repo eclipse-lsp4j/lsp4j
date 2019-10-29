@@ -1,5 +1,30 @@
 ## LSP4J Change Log
 
+### v0.9.0 (TBD)
+
+ * Implemented DAP version 1.36.0
+
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/15?closed=1
+
+Breaking API changes:
+ * In DebugProtocol many fields which used to be defined as `Long` are now `Integer`.
+   This is due to changes in DAP 1.36 that clarified these values should be less
+   than or equal to 2147483647 (2^31 - 1)
+    - `OutputEventArguments`: `variablesReference`
+    - `RunInTerminalResponse`: `processId`, `shellProcessId`
+    - `DataBreakpointInfoArguments`: `variablesReference`
+    - `VariablesArguments`: `variablesReference`
+    - `SetVariableResponse`: `variablesReference`, `namedVariables`, `indexedVariables`
+    - `SetVariableArguments`: `variablesReference`
+    - `EvaluateResponse`: `variablesReference`, `namedVariables`, `indexedVariables`
+    - `SetExpressionResponse`: `variablesReference`, `namedVariables`, `indexedVariables`
+    - `Source`: `sourceReference`
+    - `Scope`: `variablesReference`, `namedVariables`, `indexedVariables`
+    - `Variable`: `variablesReference`, `namedVariables`, `indexedVariables`
+
+ * The DebugProtocol's `EvaluateResponse`'s field `memoryReference` was previously incorrectly
+   declared as `Long`, it is now correctly declared as `String`
+
 ### v0.8.1 (Sep. 2019)
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/16?closed=1

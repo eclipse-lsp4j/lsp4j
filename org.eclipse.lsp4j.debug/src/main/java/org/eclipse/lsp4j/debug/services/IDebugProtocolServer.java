@@ -85,7 +85,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.35.0";
+	public static final String SCHEMA_VERSION = "1.36.0";
 
 	/**
 	 * This request is sent from the debug adapter to the client to run a command in
@@ -347,7 +347,7 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request suspenses the debuggee.
+	 * The request suspends the debuggee.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'pause') after the thread has been paused successfully.

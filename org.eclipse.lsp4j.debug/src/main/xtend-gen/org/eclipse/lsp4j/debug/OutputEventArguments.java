@@ -39,11 +39,12 @@ public class OutputEventArguments {
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing 'variablesReference' to the 'variables' request.
+   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
+   * equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long variablesReference;
+  private Integer variablesReference;
   
   /**
    * An optional source location where the output was produced.
@@ -115,22 +116,24 @@ public class OutputEventArguments {
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing 'variablesReference' to the 'variables' request.
+   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
+   * equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getVariablesReference() {
+  public Integer getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing 'variablesReference' to the 'variables' request.
+   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
+   * equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setVariablesReference(final Long variablesReference) {
+  public void setVariablesReference(final Integer variablesReference) {
     this.variablesReference = variablesReference;
   }
   

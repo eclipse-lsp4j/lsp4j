@@ -24,10 +24,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class VariablesArguments {
   /**
-   * The Variable reference.
+   * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @NonNull
-  private Long variablesReference;
+  private Integer variablesReference;
   
   /**
    * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
@@ -58,18 +58,18 @@ public class VariablesArguments {
   private ValueFormat format;
   
   /**
-   * The Variable reference.
+   * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
   @NonNull
-  public Long getVariablesReference() {
+  public Integer getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
-   * The Variable reference.
+   * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Long variablesReference) {
+  public void setVariablesReference(@NonNull final Integer variablesReference) {
     this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
   }
   

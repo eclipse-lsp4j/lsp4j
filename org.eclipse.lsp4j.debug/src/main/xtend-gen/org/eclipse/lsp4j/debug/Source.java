@@ -42,10 +42,11 @@ public class Source {
   /**
    * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
    * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long sourceReference;
+  private Integer sourceReference;
   
   /**
    * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
@@ -131,21 +132,23 @@ public class Source {
   /**
    * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
    * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getSourceReference() {
+  public Integer getSourceReference() {
     return this.sourceReference;
   }
   
   /**
    * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
    * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setSourceReference(final Long sourceReference) {
+  public void setSourceReference(final Integer sourceReference) {
     this.sourceReference = sourceReference;
   }
   

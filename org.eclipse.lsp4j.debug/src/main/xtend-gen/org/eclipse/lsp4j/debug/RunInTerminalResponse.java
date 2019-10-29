@@ -20,54 +20,54 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class RunInTerminalResponse {
   /**
-   * The process ID.
+   * The process ID. The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long processId;
+  private Integer processId;
   
   /**
-   * The process ID of the terminal shell.
+   * The process ID of the terminal shell. The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  private Long shellProcessId;
+  private Integer shellProcessId;
   
   /**
-   * The process ID.
+   * The process ID. The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getProcessId() {
+  public Integer getProcessId() {
     return this.processId;
   }
   
   /**
-   * The process ID.
+   * The process ID. The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setProcessId(final Long processId) {
+  public void setProcessId(final Integer processId) {
     this.processId = processId;
   }
   
   /**
-   * The process ID of the terminal shell.
+   * The process ID of the terminal shell. The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   @Pure
-  public Long getShellProcessId() {
+  public Integer getShellProcessId() {
     return this.shellProcessId;
   }
   
   /**
-   * The process ID of the terminal shell.
+   * The process ID of the terminal shell. The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
-  public void setShellProcessId(final Long shellProcessId) {
+  public void setShellProcessId(final Integer shellProcessId) {
     this.shellProcessId = shellProcessId;
   }
   
