@@ -21,14 +21,10 @@ p2gen {
 	additionalBundle 'com.google.guava.source'
 	additionalBundle 'javax.websocket'
 	additionalBundle 'javax.websocket.source'
-	tychoVersion '1.4.0'
+	tychoVersion '1.5.1'
 	
 	dependencies {
-		repositoryUrl 'http://download.eclipse.org/releases/luna/201502271000/'
-		bundle 'com.google.guava'
-	}
-	dependencies {
-		repositoryUrl 'https://download.eclipse.org/tools/orbit/downloads/2019-09'
+		repositoryUrl 'https://download.eclipse.org/tools/orbit/downloads/2019-12'
 		bundle {
 			id 'com.google.gson'
 			version versions.gson_orbit
