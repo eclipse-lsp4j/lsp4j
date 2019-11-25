@@ -17,14 +17,12 @@ buildscript {
 	repositories.jcenter()
 	dependencies {
 		classpath 'org.xtext:xtext-gradle-plugin:2.0.7'
-		classpath 'io.typefox.gradle:gradle-p2gen:0.1.0'
 	}
 }
 
 ext.buildTime = DateTimeFormatter.ofPattern('yyyyMMdd-HHmm').format(LocalDateTime.now())
 
 apply from: "${rootDir}/gradle/versions.gradle"
-apply from: "${rootDir}/gradle/p2-deployment.gradle"
 
 subprojects {
 	repositories.jcenter()
