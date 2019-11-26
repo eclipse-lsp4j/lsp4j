@@ -18,19 +18,16 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
 
  * Releases: http://download.eclipse.org/lsp4j/updates/releases/
  * Milestones: http://download.eclipse.org/lsp4j/updates/milestones/
- * Nightly: http://services.typefox.io/open-source/jenkins/job/lsp4j/job/master/lastStableBuild/artifact/build/p2-repository/
+ * Nightly: https://download.eclipse.org/lsp4j/builds/master/
 
 #### Snapshots
 
-The snapshots are regularly deployed to:
+The snapshots are deployed during the build to:
  * https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/lsp4j/
-
-Also, you can get them directly from the TypeFox Jenkins server:
- * http://services.typefox.io/open-source/jenkins/job/lsp4j/job/master/lastSuccessfulBuild/artifact/build/maven-repository/
 
 ### Supported LSP Versions
 
- * LSP4J 0.7.&ast;, 0.8.&ast; &rarr; LSP 3.14.0
+ * LSP4J 0.7.&ast;, 0.8.&ast; , 0.9.&ast; &rarr; LSP 3.14.0
  * LSP4J 0.6.&ast; &rarr; LSP 3.13.0
  * LSP4J 0.5.&ast; &rarr; LSP 3.10.0
  * LSP4J 0.4.&ast; &rarr; LSP 3.7.0
@@ -39,7 +36,7 @@ Also, you can get them directly from the TypeFox Jenkins server:
 
 ### Supported DAP Versions
 
- * LSP4J 0.8.&ast; &rarr; DAP 1.35.0
+ * LSP4J 0.8.&ast; 0.9.&ast; &rarr; DAP 1.35.0
  * LSP4J 0.5.&ast; &ndash; 0.7.&ast; &rarr; DAP 1.31.0
  * LSP4J 0.4.&ast; &rarr; DAP 1.25.0
  * LSP4J before 0.4.0 did not support DAP

@@ -35,6 +35,49 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 	from javadoc.destinationDir
 }
 
+ext.signMethod = { jarfile -> 
+	println "Signing $jarfile"
+	def SIGNING_SERVICE = 'http://build.eclipse.org:31338/sign'
+	def STDOUT_FORMAT = '    %{size_upload} bytes uploaded, %{size_download} bytes downloaded (%{time_total} s)\\n'
+
+	ProcessBuilder curl_pb = new ProcessBuilder("curl", 
+		"--fail", "--silent", "--show-error", "--output",
+		"${jarfile}-signed", "--form", "file=@${jarfile}",
+		"--write-out", STDOUT_FORMAT, 
+		SIGNING_SERVICE);
+	println String.join(" ", curl_pb.command());
+	curl_pb.directory(new File("${project.buildDir}"));
+	Process curl_process = curl_pb.start()
+	curl_process.waitFor()
+
+	println curl_process.err.text
+	println curl_process.text
+
+	if (curl_process.exitValue() != 0) {
+		throw new GradleException("Failed to run curl"); 
+	}
+
+	ProcessBuilder mv_pb = new ProcessBuilder("mv", 
+		"${jarfile}-signed", jarfile)
+	println String.join(" ", mv_pb.command());
+	mv_pb.directory(new File("${project.buildDir}"));
+	Process mv_process = mv_pb.start()
+	mv_process.waitFor()
+
+	if (curl_process.exitValue() != 0) {
+		throw new GradleException("Failed to run mv"); 
+	}
+}
+
+task signJar(description: 'Sign JARs with Eclipse Signing Service', group: 'Build'){
+    doLast {
+		signMethod("${project.buildDir}/libs/${project.name}-${project.version}.jar")
+		signMethod("${project.buildDir}/libs/${project.name}-${project.version}-sources.jar")
+		signMethod("${project.buildDir}/libs/${project.name}-${project.version}-javadoc.jar")
+	}
+}
+signJar.dependsOn jar, sourcesJar, javadocJar
+
 artifacts.archives sourcesJar, javadocJar
 
 configurations.all {
