@@ -56,7 +56,10 @@ To develop with Eclipse this is the recommended flow:
   - There is already a launch configuration in the root of the repository called "lsp4j-build-gradle", run it.
   - Doing this will generate the missing files and update the project configurations
 
-5. Clean the projects
+5. Refresh the lsp4j projects.
+  - This step is not needed if you have the "Refresh using native hooks or polling" setting (in Preferences -> General -> Workspace) enabled.
+
+6. Clean the projects
   - Project menu -> Clean...
   - Select all the lsp4j projects
 
