@@ -12,46 +12,20 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import org.eclipse.lsp4j.CallHierarchyDirection;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Returns a collection of calls from one symbol to another.
+ * The parameter of a `textDocument/prepareCallHierarchy` request.
  */
 @Beta
 @SuppressWarnings("all")
-public class CallHierarchyParams extends TextDocumentPositionParams {
-  /**
-   * The direction of calls to provide.
-   */
-  @NonNull
-  private CallHierarchyDirection direction;
-  
-  /**
-   * The direction of calls to provide.
-   */
-  @Pure
-  @NonNull
-  public CallHierarchyDirection getDirection() {
-    return this.direction;
-  }
-  
-  /**
-   * The direction of calls to provide.
-   */
-  public void setDirection(@NonNull final CallHierarchyDirection direction) {
-    this.direction = Preconditions.checkNotNull(direction, "direction");
-  }
-  
+public class CallHierarchyPrepareParams extends TextDocumentPositionParams {
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("direction", this.direction);
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
     b.add("position", getPosition());
@@ -69,18 +43,12 @@ public class CallHierarchyParams extends TextDocumentPositionParams {
       return false;
     if (!super.equals(obj))
       return false;
-    CallHierarchyParams other = (CallHierarchyParams) obj;
-    if (this.direction == null) {
-      if (other.direction != null)
-        return false;
-    } else if (!this.direction.equals(other.direction))
-      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.direction== null) ? 0 : this.direction.hashCode());
+    return super.hashCode();
   }
 }
