@@ -36,6 +36,13 @@ public class PublishDiagnosticsParams {
   @NonNull
   private List<Diagnostic> diagnostics;
   
+  /**
+   * Optional the version number of the document the diagnostics are published for.
+   * 
+   * @since 3.15.0
+   */
+  private int version;
+  
   public PublishDiagnosticsParams() {
     ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
     this.diagnostics = _arrayList;
@@ -78,12 +85,32 @@ public class PublishDiagnosticsParams {
     this.diagnostics = Preconditions.checkNotNull(diagnostics, "diagnostics");
   }
   
+  /**
+   * Optional the version number of the document the diagnostics are published for.
+   * 
+   * @since 3.15.0
+   */
+  @Pure
+  public int getVersion() {
+    return this.version;
+  }
+  
+  /**
+   * Optional the version number of the document the diagnostics are published for.
+   * 
+   * @since 3.15.0
+   */
+  public void setVersion(final int version) {
+    this.version = version;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("uri", this.uri);
     b.add("diagnostics", this.diagnostics);
+    b.add("version", this.version);
     return b.toString();
   }
   
@@ -107,6 +134,8 @@ public class PublishDiagnosticsParams {
         return false;
     } else if (!this.diagnostics.equals(other.diagnostics))
       return false;
+    if (other.version != this.version)
+      return false;
     return true;
   }
   
@@ -116,6 +145,7 @@ public class PublishDiagnosticsParams {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
-    return prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
+    result = prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
+    return prime * result + this.version;
   }
 }

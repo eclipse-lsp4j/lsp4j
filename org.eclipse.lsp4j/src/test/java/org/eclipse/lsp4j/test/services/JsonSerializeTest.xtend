@@ -434,6 +434,7 @@ class JsonSerializeTest {
 						message = "Couldn't resolve reference to State 'bar'."
 					])
 				]
+				version = 1
 			]
 		]
 		message.assertSerialize('''
@@ -457,7 +458,8 @@ class JsonSerializeTest {
 			        "severity": 1,
 			        "message": "Couldn\u0027t resolve reference to State \u0027bar\u0027."
 			      }
-			    ]
+			    ],
+			    "version": 1
 			  }
 			}
 		''')

@@ -822,7 +822,7 @@ class PublishDiagnosticsCapabilities {
 	 *
 	 * Since 3.15
 	 */
-	Boolean tagSupport
+	DiagnosticsTagSupport tagSupport
 
 	new() {
 	}
@@ -831,9 +831,24 @@ class PublishDiagnosticsCapabilities {
 		this.relatedInformation = relatedInformation
 	}
 	
-	new(Boolean relatedInformation, Boolean tagSupport) {
+	new(Boolean relatedInformation, DiagnosticsTagSupport tagSupport) {
 		this.relatedInformation = relatedInformation
 		this.tagSupport = tagSupport
+	}
+}
+
+@JsonRpcData
+class DiagnosticsTagSupport {
+	/**
+	* The tags supported by the client.
+	*/
+	List<DiagnosticTag> valueSet
+
+	new() {
+	}
+
+	new(List<DiagnosticTag> valueSet) {
+		this.valueSet = valueSet
 	}
 }
 
@@ -2807,6 +2822,13 @@ class PublishDiagnosticsParams {
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
+
+	/**
+	 * Optional the version number of the document the diagnostics are published for.
+	 *
+	 * @since 3.15.0
+	 */
+	int version
 
 	new() {
 		this.diagnostics = new ArrayList

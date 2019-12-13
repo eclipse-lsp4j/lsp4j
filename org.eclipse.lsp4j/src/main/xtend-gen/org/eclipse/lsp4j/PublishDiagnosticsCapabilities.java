@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.DiagnosticsTagSupport;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -29,7 +30,7 @@ public class PublishDiagnosticsCapabilities {
    * 
    * Since 3.15
    */
-  private Boolean tagSupport;
+  private DiagnosticsTagSupport tagSupport;
   
   public PublishDiagnosticsCapabilities() {
   }
@@ -38,7 +39,7 @@ public class PublishDiagnosticsCapabilities {
     this.relatedInformation = relatedInformation;
   }
   
-  public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final Boolean tagSupport) {
+  public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final DiagnosticsTagSupport tagSupport) {
     this.relatedInformation = relatedInformation;
     this.tagSupport = tagSupport;
   }
@@ -64,7 +65,7 @@ public class PublishDiagnosticsCapabilities {
    * Since 3.15
    */
   @Pure
-  public Boolean getTagSupport() {
+  public DiagnosticsTagSupport getTagSupport() {
     return this.tagSupport;
   }
   
@@ -73,7 +74,7 @@ public class PublishDiagnosticsCapabilities {
    * 
    * Since 3.15
    */
-  public void setTagSupport(final Boolean tagSupport) {
+  public void setTagSupport(final DiagnosticsTagSupport tagSupport) {
     this.tagSupport = tagSupport;
   }
   
