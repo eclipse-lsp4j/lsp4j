@@ -4850,45 +4850,69 @@ class SemanticHighlightingInformation {
 }
 
 /**
- * Returns a collection of calls from one symbol to another.
+ * The parameter of a `textDocument/prepareCallHierarchy` request.
  */
 @Beta
 @JsonRpcData
-class CallHierarchyParams extends TextDocumentPositionParams {
-
-	/**
-	 * The direction of calls to provide.
-	 */
-	@NonNull
-	CallHierarchyDirection direction
+class CallHierarchyPrepareParams  extends TextDocumentPositionParams {
 
 }
 
 /**
- * Each {@code CallHierarchyCall} object defines a call from one {@code CallHierarchySymbol} to another.
+ * The parameter of a `callHierarchy/incomingCalls` request.
  */
 @Beta
 @JsonRpcData
-class CallHierarchyCall {
+class CallHierarchyIncomingCallsParams {
+	CallHierarchyItem item
+}
+
+/**
+ * The parameter of a `callHierarchy/outgoingCalls` request.
+ */
+@Beta
+@JsonRpcData
+class CallHierarchyOutgoingCallsParams {
+	CallHierarchyItem item
+}
+
+/**
+ * Represents an incoming call, e.g. a caller of a method or constructor.
+ */
+@Beta
+@JsonRpcData
+class CallHierarchyIncomingCall {
 
 	/**
-	 * The source range of the reference. The range is a sub range of the {@link CallHierarchyCall#getFrom from} symbol range.
+	 * The item that makes the call.
 	 */
-	@NonNull
-	Range range
+	CallHierarchyItem from
 
 	/**
-	 * The symbol that contains the reference.
+	 * The range at which at which the calls appears. This is relative to the caller
+	 * denoted by [`this.from`](#CallHierarchyIncomingCall.from).
 	 */
-	@NonNull
-	CallHierarchySymbol from
+	Range[] fromRanges
+}
+
+/**
+ * Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
+ */
+@Beta
+@JsonRpcData
+class CallHierarchyOutgoingCall {
 
 	/**
-	 * The symbol that is referenced.
+	 * The item that is called.
 	 */
-	@NonNull
-	CallHierarchySymbol to
+	CallHierarchyItem to
 
+	/**
+	 * The range at which this item is called. This is the range relative to the caller, e.g the item
+	 * passed to [`provideCallHierarchyOutgoingCalls`](#CallHierarchyItemProvider.provideCallHierarchyOutgoingCalls)
+	 * and not [`this.to`](#CallHierarchyOutgoingCall.to).
+	 */
+	Range[] fromRanges
 }
 
 /**
@@ -4896,27 +4920,32 @@ class CallHierarchyCall {
  */
 @Beta
 @JsonRpcData
-class CallHierarchySymbol {
+class CallHierarchyItem {
 
 	/**
-	 * The name of the symbol targeted by the call hierarchy request.
+	 * The name of the item targeted by the call hierarchy request.
 	 */
 	@NonNull
 	String name
 
 	/**
-	 * More detail for this symbol, e.g the signature of a function.
+	 * More detail for this item, e.g the signature of a function.
 	 */
 	String detail
 
 	/**
-	 * The kind of this symbol.
+	 * The kind of this item.
 	 */
 	@NonNull
 	SymbolKind kind
 
 	/**
-	 * URI of the document containing the symbol.
+	 * Tags for this item.
+	 */
+	SymbolTag[] tags
+
+	/**
+	 * The resource identifier of this item.
 	 */
 	@NonNull
 	String uri
@@ -4931,7 +4960,7 @@ class CallHierarchySymbol {
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-	 * Must be contained by the the {@link CallHierarchySymbol#getRange range}.
+	 * Must be contained by the the {@link CallHierarchyItem#getRange range}.
 	 */
 	@NonNull
 	Range selectionRange

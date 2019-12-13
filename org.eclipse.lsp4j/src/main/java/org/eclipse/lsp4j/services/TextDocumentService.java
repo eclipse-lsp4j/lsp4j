@@ -14,9 +14,12 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.lsp4j.CallHierarchyCall;
-import org.eclipse.lsp4j.CallHierarchyParams;
-import org.eclipse.lsp4j.CallHierarchySymbol;
+import org.eclipse.lsp4j.CallHierarchyIncomingCall;
+import org.eclipse.lsp4j.CallHierarchyIncomingCallsParams;
+import org.eclipse.lsp4j.CallHierarchyOutgoingCall;
+import org.eclipse.lsp4j.CallHierarchyOutgoingCallsParams;
+import org.eclipse.lsp4j.CallHierarchyPrepareParams;
+import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionParams;
 import org.eclipse.lsp4j.CodeLens;
@@ -469,21 +472,38 @@ public interface TextDocumentService {
 	}
 
 	/**
-	 * The {@code textDocument/callHierarchy} request is sent from the client to the
-	 * server to request the call hierarchy for a symbol defined (or referenced) at
-	 * the given text document position. Returns a collection of calls from one
-	 * symbol to another. The server will send a collection of
-	 * {@link CallHierarchyCall} objects, or {@code null} if no callable symbol is
-	 * found at the given document position. Each {@code CallHierarchyCall} object
-	 * defines a call from one {@link CallHierarchySymbol} to another.
+	 * Bootstraps call hierarchy by returning the item that is denoted by the given document
+	 * and position. This item will be used as entry into the call graph. Providers should
+	 * return null when there is no item at the given location.
 	 */
 	@Beta
 	@JsonRequest
-	default CompletableFuture<List<CallHierarchyCall>> callHierarchy(CallHierarchyParams params) {
+	default CompletableFuture<List<CallHierarchyItem>> prepareCallHierarchy(CallHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
 	}
 
-	
+	/**
+	 * Provide all incoming calls for an item, e.g all callers for a method. In graph terms this descibes directed
+	 * and annotated edges inside the call graph, e.g the given item is the starting node and the result is the nodes
+	 * that can be reached.
+	*/
+	@Beta
+	@JsonRequest(value="callHierarchy/incomingCalls", useSegment = false)
+	default CompletableFuture<List<CallHierarchyIncomingCall>> callHierarchyIncomingCalls(CallHierarchyIncomingCallsParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	* Provide all outgoing calls for an item, e.g call calls to functions, methods, or constructors from the given item. In
+	* graph terms this descibes directed and annotated edges inside the call graph, e.g the given item is the starting
+	* node and the result is the nodes that can be reached.
+	*/
+	@Beta
+	@JsonRequest(value="callHierarchy/outgoingCalls", useSegment = false)
+	default CompletableFuture<List<CallHierarchyOutgoingCall>> callHierarchyOutgoingCalls(CallHierarchyOutgoingCallsParams params) {
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * The {@code textDocument/selectionRange} request is sent from the client to the server to return
 	 * suggested selection ranges at an array of given positions. A selection range is a range around

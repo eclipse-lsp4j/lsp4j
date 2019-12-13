@@ -12,8 +12,10 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import java.util.Arrays;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
+import org.eclipse.lsp4j.SymbolTag;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -24,26 +26,31 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @Beta
 @SuppressWarnings("all")
-public class CallHierarchySymbol {
+public class CallHierarchyItem {
   /**
-   * The name of the symbol targeted by the call hierarchy request.
+   * The name of the item targeted by the call hierarchy request.
    */
   @NonNull
   private String name;
   
   /**
-   * More detail for this symbol, e.g the signature of a function.
+   * More detail for this item, e.g the signature of a function.
    */
   private String detail;
   
   /**
-   * The kind of this symbol.
+   * The kind of this item.
    */
   @NonNull
   private SymbolKind kind;
   
   /**
-   * URI of the document containing the symbol.
+   * Tags for this item.
+   */
+  private SymbolTag[] tags;
+  
+  /**
+   * The resource identifier of this item.
    */
   @NonNull
   private String uri;
@@ -58,13 +65,13 @@ public class CallHierarchySymbol {
   
   /**
    * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-   * Must be contained by the the {@link CallHierarchySymbol#getRange range}.
+   * Must be contained by the the {@link CallHierarchyItem#getRange range}.
    */
   @NonNull
   private Range selectionRange;
   
   /**
-   * The name of the symbol targeted by the call hierarchy request.
+   * The name of the item targeted by the call hierarchy request.
    */
   @Pure
   @NonNull
@@ -73,14 +80,14 @@ public class CallHierarchySymbol {
   }
   
   /**
-   * The name of the symbol targeted by the call hierarchy request.
+   * The name of the item targeted by the call hierarchy request.
    */
   public void setName(@NonNull final String name) {
     this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**
-   * More detail for this symbol, e.g the signature of a function.
+   * More detail for this item, e.g the signature of a function.
    */
   @Pure
   public String getDetail() {
@@ -88,14 +95,14 @@ public class CallHierarchySymbol {
   }
   
   /**
-   * More detail for this symbol, e.g the signature of a function.
+   * More detail for this item, e.g the signature of a function.
    */
   public void setDetail(final String detail) {
     this.detail = detail;
   }
   
   /**
-   * The kind of this symbol.
+   * The kind of this item.
    */
   @Pure
   @NonNull
@@ -104,14 +111,29 @@ public class CallHierarchySymbol {
   }
   
   /**
-   * The kind of this symbol.
+   * The kind of this item.
    */
   public void setKind(@NonNull final SymbolKind kind) {
     this.kind = Preconditions.checkNotNull(kind, "kind");
   }
   
   /**
-   * URI of the document containing the symbol.
+   * Tags for this item.
+   */
+  @Pure
+  public SymbolTag[] getTags() {
+    return this.tags;
+  }
+  
+  /**
+   * Tags for this item.
+   */
+  public void setTags(final SymbolTag[] tags) {
+    this.tags = tags;
+  }
+  
+  /**
+   * The resource identifier of this item.
    */
   @Pure
   @NonNull
@@ -120,7 +142,7 @@ public class CallHierarchySymbol {
   }
   
   /**
-   * URI of the document containing the symbol.
+   * The resource identifier of this item.
    */
   public void setUri(@NonNull final String uri) {
     this.uri = Preconditions.checkNotNull(uri, "uri");
@@ -148,7 +170,7 @@ public class CallHierarchySymbol {
   
   /**
    * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-   * Must be contained by the the {@link CallHierarchySymbol#getRange range}.
+   * Must be contained by the the {@link CallHierarchyItem#getRange range}.
    */
   @Pure
   @NonNull
@@ -158,7 +180,7 @@ public class CallHierarchySymbol {
   
   /**
    * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-   * Must be contained by the the {@link CallHierarchySymbol#getRange range}.
+   * Must be contained by the the {@link CallHierarchyItem#getRange range}.
    */
   public void setSelectionRange(@NonNull final Range selectionRange) {
     this.selectionRange = Preconditions.checkNotNull(selectionRange, "selectionRange");
@@ -171,6 +193,7 @@ public class CallHierarchySymbol {
     b.add("name", this.name);
     b.add("detail", this.detail);
     b.add("kind", this.kind);
+    b.add("tags", this.tags);
     b.add("uri", this.uri);
     b.add("range", this.range);
     b.add("selectionRange", this.selectionRange);
@@ -186,7 +209,7 @@ public class CallHierarchySymbol {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    CallHierarchySymbol other = (CallHierarchySymbol) obj;
+    CallHierarchyItem other = (CallHierarchyItem) obj;
     if (this.name == null) {
       if (other.name != null)
         return false;
@@ -201,6 +224,11 @@ public class CallHierarchySymbol {
       if (other.kind != null)
         return false;
     } else if (!this.kind.equals(other.kind))
+      return false;
+    if (this.tags == null) {
+      if (other.tags != null)
+        return false;
+    } else if (!Arrays.deepEquals(this.tags, other.tags))
       return false;
     if (this.uri == null) {
       if (other.uri != null)
@@ -228,6 +256,7 @@ public class CallHierarchySymbol {
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
+    result = prime * result + ((this.tags== null) ? 0 : Arrays.deepHashCode(this.tags));
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     return prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
