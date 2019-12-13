@@ -260,7 +260,8 @@ class JsonParseTest {
 							},
 							"severity": 1
 						}
-					]
+					],
+					version: 1
 				}
 			}
 		'''.assertParse(new NotificationMessage => [
@@ -278,6 +279,7 @@ class JsonParseTest {
 						message = "Couldn't resolve reference to State 'bar'."
 					])
 				]
+				version = 1
 			]
 		])
 	}
