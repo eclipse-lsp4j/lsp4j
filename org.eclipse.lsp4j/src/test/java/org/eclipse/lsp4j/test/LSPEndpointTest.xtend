@@ -80,6 +80,24 @@ class LSPEndpointTest {
 	}
 	
 	@Test
+	def void testDiagnosticCodeIsStringOrNumber() throws Exception {
+		val client = new DummyClient
+		val in = new PipedInputStream
+		val responseStream = new PipedOutputStream
+		in.connect(responseStream)
+		val responseWriter = new OutputStreamWriter(responseStream)
+		val out = new ByteArrayOutputStream
+		val launcher = LSPLauncher.createClientLauncher(client, in, out, true, null)
+		launcher.startListening()
+
+		responseWriter.write('Content-Length: 202\r\n\r\n')
+		responseWriter.write('{"jsonrpc":"2.0","method":"textDocument/publishDiagnostics","params":{"uri":"any","diagnostics":[{"range":{"start":{"line":41,"character":0},"end":{"line":41,"character":9}},code:1,message:"message"}]}}')
+		responseWriter.flush()
+
+		assertEquals(1, client.publishedDiagnostics.get(TIMEOUT, TimeUnit.MILLISECONDS).diagnostics.get(0).getCode().getRight().intValue());
+	}
+
+	@Test
 	def void testIssue346() throws Exception {
 		val logMessages = new LogMessageAccumulator
 		try {
@@ -131,7 +149,10 @@ class LSPEndpointTest {
 	
 	private static class DummyClient implements LanguageClient {
 		override logMessage(MessageParams message) {}
-		override publishDiagnostics(PublishDiagnosticsParams diagnostics) {}
+		val publishedDiagnostics= new CompletableFuture<PublishDiagnosticsParams>
+		override publishDiagnostics(PublishDiagnosticsParams diagnostics) {
+                    publishedDiagnostics.complete(diagnostics)
+                }
 		override showMessage(MessageParams messageParams) {}
 		override showMessageRequest(ShowMessageRequestParams requestParams) {}
 		override telemetryEvent(Object object) {}
