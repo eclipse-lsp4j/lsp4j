@@ -21,7 +21,7 @@ All Pull Requests must be by authors who have signed the ECA, and if they are no
 
 The [Jenkins CI job](https://ci.eclipse.org/lsp4j/job/lsp4j-github-pullrequests/) builds and tests pull requests. All member of the [GitHub Eclipse organisation](https://github.com/orgs/eclipse/people) should have their PRs built automatically as the whole organisation is on the whitelist. All other PRs need to be approved before they are built for the first time. To approve a PR you have to be an admin and say:
 
-* "ok to test" to accept this pull request for testing
+* "run tests" to accept this pull request for testing
 * "test this please" for a one time test run
 * "add to whitelist" to add the author to the whitelist
 
