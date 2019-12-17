@@ -4864,7 +4864,15 @@ class CallHierarchyPrepareParams  extends TextDocumentPositionParams {
 @Beta
 @JsonRpcData
 class CallHierarchyIncomingCallsParams {
+	@NonNull
 	CallHierarchyItem item
+
+	new() {
+	}
+
+	new(@NonNull CallHierarchyItem item) {
+		this.item = item
+	}
 }
 
 /**
@@ -4873,7 +4881,15 @@ class CallHierarchyIncomingCallsParams {
 @Beta
 @JsonRpcData
 class CallHierarchyOutgoingCallsParams {
+	@NonNull
 	CallHierarchyItem item
+
+	new() {
+	}
+
+	new(@NonNull CallHierarchyItem item) {
+		this.item = item
+	}
 }
 
 /**
@@ -4886,13 +4902,23 @@ class CallHierarchyIncomingCall {
 	/**
 	 * The item that makes the call.
 	 */
+	@NonNull
 	CallHierarchyItem from
 
 	/**
 	 * The range at which at which the calls appears. This is relative to the caller
 	 * denoted by [`this.from`](#CallHierarchyIncomingCall.from).
 	 */
-	Range[] fromRanges
+	@NonNull
+	List<Range> fromRanges
+
+	new() {
+	}
+
+	new(@NonNull CallHierarchyItem from, @NonNull List<Range> fromRanges) {
+		this.from = from
+		this.fromRanges = fromRanges
+	}
 }
 
 /**
@@ -4905,6 +4931,7 @@ class CallHierarchyOutgoingCall {
 	/**
 	 * The item that is called.
 	 */
+	@NonNull
 	CallHierarchyItem to
 
 	/**
@@ -4912,7 +4939,16 @@ class CallHierarchyOutgoingCall {
 	 * passed to [`provideCallHierarchyOutgoingCalls`](#CallHierarchyItemProvider.provideCallHierarchyOutgoingCalls)
 	 * and not [`this.to`](#CallHierarchyOutgoingCall.to).
 	 */
-	Range[] fromRanges
+	@NonNull
+	List<Range> fromRanges
+
+	new() {
+	}
+
+	new(@NonNull CallHierarchyItem to, @NonNull List<Range> fromRanges) {
+		this.to = to
+		this.fromRanges = fromRanges
+	}
 }
 
 /**
@@ -4942,7 +4978,7 @@ class CallHierarchyItem {
 	/**
 	 * Tags for this item.
 	 */
-	SymbolTag[] tags
+	List<SymbolTag> tags
 
 	/**
 	 * The resource identifier of this item.

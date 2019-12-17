@@ -12,7 +12,7 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import java.util.Arrays;
+import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.SymbolTag;
@@ -47,7 +47,7 @@ public class CallHierarchyItem {
   /**
    * Tags for this item.
    */
-  private SymbolTag[] tags;
+  private List<SymbolTag> tags;
   
   /**
    * The resource identifier of this item.
@@ -121,14 +121,14 @@ public class CallHierarchyItem {
    * Tags for this item.
    */
   @Pure
-  public SymbolTag[] getTags() {
+  public List<SymbolTag> getTags() {
     return this.tags;
   }
   
   /**
    * Tags for this item.
    */
-  public void setTags(final SymbolTag[] tags) {
+  public void setTags(final List<SymbolTag> tags) {
     this.tags = tags;
   }
   
@@ -228,7 +228,7 @@ public class CallHierarchyItem {
     if (this.tags == null) {
       if (other.tags != null)
         return false;
-    } else if (!Arrays.deepEquals(this.tags, other.tags))
+    } else if (!this.tags.equals(other.tags))
       return false;
     if (this.uri == null) {
       if (other.uri != null)
@@ -256,7 +256,7 @@ public class CallHierarchyItem {
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
-    result = prime * result + ((this.tags== null) ? 0 : Arrays.deepHashCode(this.tags));
+    result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     return prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
