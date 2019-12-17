@@ -13,6 +13,8 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CallHierarchyItem;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -22,15 +24,24 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @Beta
 @SuppressWarnings("all")
 public class CallHierarchyOutgoingCallsParams {
+  @NonNull
   private CallHierarchyItem item;
   
+  public CallHierarchyOutgoingCallsParams() {
+  }
+  
+  public CallHierarchyOutgoingCallsParams(@NonNull final CallHierarchyItem item) {
+    this.item = item;
+  }
+  
   @Pure
+  @NonNull
   public CallHierarchyItem getItem() {
     return this.item;
   }
   
-  public void setItem(final CallHierarchyItem item) {
-    this.item = item;
+  public void setItem(@NonNull final CallHierarchyItem item) {
+    this.item = Preconditions.checkNotNull(item, "item");
   }
   
   @Override

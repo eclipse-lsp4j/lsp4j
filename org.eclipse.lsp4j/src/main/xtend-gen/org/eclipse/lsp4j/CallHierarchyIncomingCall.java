@@ -12,9 +12,11 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import java.util.Arrays;
+import java.util.List;
 import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -27,18 +29,29 @@ public class CallHierarchyIncomingCall {
   /**
    * The item that makes the call.
    */
+  @NonNull
   private CallHierarchyItem from;
   
   /**
    * The range at which at which the calls appears. This is relative to the caller
    * denoted by [`this.from`](#CallHierarchyIncomingCall.from).
    */
-  private Range[] fromRanges;
+  @NonNull
+  private List<Range> fromRanges;
+  
+  public CallHierarchyIncomingCall() {
+  }
+  
+  public CallHierarchyIncomingCall(@NonNull final CallHierarchyItem from, @NonNull final List<Range> fromRanges) {
+    this.from = from;
+    this.fromRanges = fromRanges;
+  }
   
   /**
    * The item that makes the call.
    */
   @Pure
+  @NonNull
   public CallHierarchyItem getFrom() {
     return this.from;
   }
@@ -46,8 +59,8 @@ public class CallHierarchyIncomingCall {
   /**
    * The item that makes the call.
    */
-  public void setFrom(final CallHierarchyItem from) {
-    this.from = from;
+  public void setFrom(@NonNull final CallHierarchyItem from) {
+    this.from = Preconditions.checkNotNull(from, "from");
   }
   
   /**
@@ -55,7 +68,8 @@ public class CallHierarchyIncomingCall {
    * denoted by [`this.from`](#CallHierarchyIncomingCall.from).
    */
   @Pure
-  public Range[] getFromRanges() {
+  @NonNull
+  public List<Range> getFromRanges() {
     return this.fromRanges;
   }
   
@@ -63,8 +77,8 @@ public class CallHierarchyIncomingCall {
    * The range at which at which the calls appears. This is relative to the caller
    * denoted by [`this.from`](#CallHierarchyIncomingCall.from).
    */
-  public void setFromRanges(final Range[] fromRanges) {
-    this.fromRanges = fromRanges;
+  public void setFromRanges(@NonNull final List<Range> fromRanges) {
+    this.fromRanges = Preconditions.checkNotNull(fromRanges, "fromRanges");
   }
   
   @Override
@@ -94,7 +108,7 @@ public class CallHierarchyIncomingCall {
     if (this.fromRanges == null) {
       if (other.fromRanges != null)
         return false;
-    } else if (!Arrays.deepEquals(this.fromRanges, other.fromRanges))
+    } else if (!this.fromRanges.equals(other.fromRanges))
       return false;
     return true;
   }
@@ -105,6 +119,6 @@ public class CallHierarchyIncomingCall {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.from== null) ? 0 : this.from.hashCode());
-    return prime * result + ((this.fromRanges== null) ? 0 : Arrays.deepHashCode(this.fromRanges));
+    return prime * result + ((this.fromRanges== null) ? 0 : this.fromRanges.hashCode());
   }
 }
