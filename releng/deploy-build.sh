@@ -11,6 +11,9 @@ DOWNLOAD_MOUNT=/home/data/httpd/$DOWNLOAD
 if test -e ${DOWNLOAD_MOUNT}-new; then
     rm -r ${DOWNLOAD_MOUNT}-new
 fi
+if test -e ${DOWNLOAD_MOUNT}-last; then
+    rm -r ${DOWNLOAD_MOUNT}-last
+fi
 mkdir -p ${DOWNLOAD_MOUNT}-new
 cp -rpvf build/p2-repository/* ${DOWNLOAD_MOUNT}-new
 if test -e ${DOWNLOAD_MOUNT}; then
