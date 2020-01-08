@@ -63,7 +63,7 @@ public class EndpointProxy implements InvocationHandler {
 		for (Class<?> interf : interfaces) {
 			AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
 				if (methodInfos.put(methodInfo.method.getName(), methodInfo) != null) {
-					throw new IllegalStateException("Method overload not allowed : " + methodInfo.method);
+					throw new IllegalStateException("Duplicate RPC method " + methodInfo.method);
 				}
 			});
 			AnnotationUtil.findDelegateSegments(interf, new HashSet<Class<?>>(), (method) -> {
@@ -72,7 +72,7 @@ public class EndpointProxy implements InvocationHandler {
 				info.delegate = delegateProxy;
 				info.method = method;
 				if (delegatedSegments.put(method.getName(), info) != null) {
-					throw new IllegalStateException("Method overload not allowed : " + method);
+					throw new IllegalStateException("Duplicate RPC method " + method);
 				}
 			});
 		}
