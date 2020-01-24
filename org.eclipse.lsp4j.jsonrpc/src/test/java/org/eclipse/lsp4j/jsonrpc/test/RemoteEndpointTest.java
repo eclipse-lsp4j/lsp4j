@@ -213,7 +213,7 @@ public class RemoteEndpointTest {
 			assertEquals(ResponseErrorCode.InternalError.getValue(), response.getError().getCode());
 			String exception = (String) response.getError().getData();
 			String expected = "java.lang.RuntimeException: BAAZ\n\tat org.eclipse.lsp4j.jsonrpc.test.RemoteEndpointTest";
-			assertEquals(expected, exception.substring(0, expected.length()));
+			assertEquals(expected, exception.replaceAll("\\r", "").substring(0, expected.length()));
 		} finally {
 			logMessages.unregister();
 		}

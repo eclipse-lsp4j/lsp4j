@@ -72,7 +72,7 @@ class LSPEndpointTest {
 			assertEquals('''
 				Lists must not contain null references. Path: $.result.contents[0]
 				Lists must not contain null references. Path: $.result.contents[1]
-			'''.toString.trim, exception.cause.message)
+			'''.toString.replaceAll("\\r", "").trim, exception.cause.message)
 			assertFalse(future.isDone)
 		} finally {
 			in.close()
