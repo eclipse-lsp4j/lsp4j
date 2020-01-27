@@ -12,8 +12,6 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -33,8 +31,7 @@ public class Breakpoint {
   /**
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
-  @NonNull
-  private Boolean verified;
+  private boolean verified;
   
   /**
    * An optional message about the state of the breakpoint. This is shown to the user and can be used to explain why
@@ -105,16 +102,15 @@ public class Breakpoint {
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
   @Pure
-  @NonNull
-  public Boolean getVerified() {
+  public boolean isVerified() {
     return this.verified;
   }
   
   /**
    * If true breakpoint could be set (but not necessarily at the desired location).
    */
-  public void setVerified(@NonNull final Boolean verified) {
-    this.verified = Preconditions.checkNotNull(verified, "verified");
+  public void setVerified(final boolean verified) {
+    this.verified = verified;
   }
   
   /**
@@ -265,10 +261,7 @@ public class Breakpoint {
         return false;
     } else if (!this.id.equals(other.id))
       return false;
-    if (this.verified == null) {
-      if (other.verified != null)
-        return false;
-    } else if (!this.verified.equals(other.verified))
+    if (other.verified != this.verified)
       return false;
     if (this.message == null) {
       if (other.message != null)
@@ -309,7 +302,7 @@ public class Breakpoint {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
-    result = prime * result + ((this.verified== null) ? 0 : this.verified.hashCode());
+    result = prime * result + (this.verified ? 1231 : 1237);
     result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());

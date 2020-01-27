@@ -25,8 +25,7 @@ public class StepInTarget {
   /**
    * Unique identifier for a stepIn target.
    */
-  @NonNull
-  private Integer id;
+  private int id;
   
   /**
    * The name of the stepIn target (shown in the UI).
@@ -38,16 +37,15 @@ public class StepInTarget {
    * Unique identifier for a stepIn target.
    */
   @Pure
-  @NonNull
-  public Integer getId() {
+  public int getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a stepIn target.
    */
-  public void setId(@NonNull final Integer id) {
-    this.id = Preconditions.checkNotNull(id, "id");
+  public void setId(final int id) {
+    this.id = id;
   }
   
   /**
@@ -85,10 +83,7 @@ public class StepInTarget {
     if (getClass() != obj.getClass())
       return false;
     StepInTarget other = (StepInTarget) obj;
-    if (this.id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!this.id.equals(other.id))
+    if (other.id != this.id)
       return false;
     if (this.label == null) {
       if (other.label != null)
@@ -103,7 +98,7 @@ public class StepInTarget {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
+    result = prime * result + this.id;
     return prime * result + ((this.label== null) ? 0 : this.label.hashCode());
   }
 }

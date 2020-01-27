@@ -26,8 +26,7 @@ public class GotoTarget {
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
-  @NonNull
-  private Integer id;
+  private int id;
   
   /**
    * The name of the goto target (shown in the UI).
@@ -38,8 +37,7 @@ public class GotoTarget {
   /**
    * The line of the goto target.
    */
-  @NonNull
-  private Integer line;
+  private int line;
   
   /**
    * An optional column of the goto target.
@@ -73,16 +71,15 @@ public class GotoTarget {
    * Unique identifier for a goto target. This is used in the goto request.
    */
   @Pure
-  @NonNull
-  public Integer getId() {
+  public int getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
-  public void setId(@NonNull final Integer id) {
-    this.id = Preconditions.checkNotNull(id, "id");
+  public void setId(final int id) {
+    this.id = id;
   }
   
   /**
@@ -105,16 +102,15 @@ public class GotoTarget {
    * The line of the goto target.
    */
   @Pure
-  @NonNull
-  public Integer getLine() {
+  public int getLine() {
     return this.line;
   }
   
   /**
    * The line of the goto target.
    */
-  public void setLine(@NonNull final Integer line) {
-    this.line = Preconditions.checkNotNull(line, "line");
+  public void setLine(final int line) {
+    this.line = line;
   }
   
   /**
@@ -217,20 +213,14 @@ public class GotoTarget {
     if (getClass() != obj.getClass())
       return false;
     GotoTarget other = (GotoTarget) obj;
-    if (this.id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!this.id.equals(other.id))
+    if (other.id != this.id)
       return false;
     if (this.label == null) {
       if (other.label != null)
         return false;
     } else if (!this.label.equals(other.label))
       return false;
-    if (this.line == null) {
-      if (other.line != null)
-        return false;
-    } else if (!this.line.equals(other.line))
+    if (other.line != this.line)
       return false;
     if (this.column == null) {
       if (other.column != null)
@@ -260,9 +250,9 @@ public class GotoTarget {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
+    result = prime * result + this.id;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
-    result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
+    result = prime * result + this.line;
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
     result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());

@@ -24,8 +24,7 @@ public class Thread {
   /**
    * Unique identifier for the thread.
    */
-  @NonNull
-  private Integer id;
+  private int id;
   
   /**
    * A name of the thread.
@@ -37,16 +36,15 @@ public class Thread {
    * Unique identifier for the thread.
    */
   @Pure
-  @NonNull
-  public Integer getId() {
+  public int getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the thread.
    */
-  public void setId(@NonNull final Integer id) {
-    this.id = Preconditions.checkNotNull(id, "id");
+  public void setId(final int id) {
+    this.id = id;
   }
   
   /**
@@ -84,10 +82,7 @@ public class Thread {
     if (getClass() != obj.getClass())
       return false;
     Thread other = (Thread) obj;
-    if (this.id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!this.id.equals(other.id))
+    if (other.id != this.id)
       return false;
     if (this.name == null) {
       if (other.name != null)
@@ -102,7 +97,7 @@ public class Thread {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
+    result = prime * result + this.id;
     return prime * result + ((this.name== null) ? 0 : this.name.hashCode());
   }
 }

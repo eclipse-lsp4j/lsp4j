@@ -28,8 +28,7 @@ public class StackFrame {
    * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
-  @NonNull
-  private Integer id;
+  private int id;
   
   /**
    * The name of the stack frame, typically a method name.
@@ -47,14 +46,12 @@ public class StackFrame {
   /**
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
-  @NonNull
-  private Integer line;
+  private int line;
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
-  @NonNull
-  private Integer column;
+  private int column;
   
   /**
    * An optional end line of the range covered by the stack frame.
@@ -98,8 +95,7 @@ public class StackFrame {
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
   @Pure
-  @NonNull
-  public Integer getId() {
+  public int getId() {
     return this.id;
   }
   
@@ -107,8 +103,8 @@ public class StackFrame {
    * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
-  public void setId(@NonNull final Integer id) {
-    this.id = Preconditions.checkNotNull(id, "id");
+  public void setId(final int id) {
+    this.id = id;
   }
   
   /**
@@ -150,32 +146,30 @@ public class StackFrame {
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
   @Pure
-  @NonNull
-  public Integer getLine() {
+  public int getLine() {
     return this.line;
   }
   
   /**
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
-  public void setLine(@NonNull final Integer line) {
-    this.line = Preconditions.checkNotNull(line, "line");
+  public void setLine(final int line) {
+    this.line = line;
   }
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
   @Pure
-  @NonNull
-  public Integer getColumn() {
+  public int getColumn() {
     return this.column;
   }
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
-  public void setColumn(@NonNull final Integer column) {
-    this.column = Preconditions.checkNotNull(column, "column");
+  public void setColumn(final int column) {
+    this.column = column;
   }
   
   /**
@@ -320,10 +314,7 @@ public class StackFrame {
     if (getClass() != obj.getClass())
       return false;
     StackFrame other = (StackFrame) obj;
-    if (this.id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!this.id.equals(other.id))
+    if (other.id != this.id)
       return false;
     if (this.name == null) {
       if (other.name != null)
@@ -335,15 +326,9 @@ public class StackFrame {
         return false;
     } else if (!this.source.equals(other.source))
       return false;
-    if (this.line == null) {
-      if (other.line != null)
-        return false;
-    } else if (!this.line.equals(other.line))
+    if (other.line != this.line)
       return false;
-    if (this.column == null) {
-      if (other.column != null)
-        return false;
-    } else if (!this.column.equals(other.column))
+    if (other.column != this.column)
       return false;
     if (this.endLine == null) {
       if (other.endLine != null)
@@ -378,11 +363,11 @@ public class StackFrame {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
+    result = prime * result + this.id;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
-    result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
-    result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
+    result = prime * result + this.line;
+    result = prime * result + this.column;
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
     result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
     result = prime * result + ((this.instructionPointerReference== null) ? 0 : this.instructionPointerReference.hashCode());

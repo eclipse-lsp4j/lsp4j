@@ -39,8 +39,7 @@ public class CompletionsArguments {
   /**
    * The character position for which to determine the completion proposals.
    */
-  @NonNull
-  private Integer column;
+  private int column;
   
   /**
    * An optional line for which to determine the completion proposals. If missing the first line of the text is
@@ -93,16 +92,15 @@ public class CompletionsArguments {
    * The character position for which to determine the completion proposals.
    */
   @Pure
-  @NonNull
-  public Integer getColumn() {
+  public int getColumn() {
     return this.column;
   }
   
   /**
    * The character position for which to determine the completion proposals.
    */
-  public void setColumn(@NonNull final Integer column) {
-    this.column = Preconditions.checkNotNull(column, "column");
+  public void setColumn(final int column) {
+    this.column = column;
   }
   
   /**
@@ -157,10 +155,7 @@ public class CompletionsArguments {
         return false;
     } else if (!this.text.equals(other.text))
       return false;
-    if (this.column == null) {
-      if (other.column != null)
-        return false;
-    } else if (!this.column.equals(other.column))
+    if (other.column != this.column)
       return false;
     if (this.line == null) {
       if (other.line != null)
@@ -177,7 +172,7 @@ public class CompletionsArguments {
     int result = 1;
     result = prime * result + ((this.frameId== null) ? 0 : this.frameId.hashCode());
     result = prime * result + ((this.text== null) ? 0 : this.text.hashCode());
-    result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
+    result = prime * result + this.column;
     return prime * result + ((this.line== null) ? 0 : this.line.hashCode());
   }
 }

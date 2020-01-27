@@ -12,8 +12,6 @@
 package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.Source;
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -33,8 +31,7 @@ public class SourceArguments {
    * The reference to the source. This is the same as source.sourceReference. This is provided for backward
    * compatibility since old backends do not understand the 'source' attribute.
    */
-  @NonNull
-  private Integer sourceReference;
+  private int sourceReference;
   
   /**
    * Specifies the source content to load. Either source.path or source.sourceReference must be specified.
@@ -60,8 +57,7 @@ public class SourceArguments {
    * compatibility since old backends do not understand the 'source' attribute.
    */
   @Pure
-  @NonNull
-  public Integer getSourceReference() {
+  public int getSourceReference() {
     return this.sourceReference;
   }
   
@@ -69,8 +65,8 @@ public class SourceArguments {
    * The reference to the source. This is the same as source.sourceReference. This is provided for backward
    * compatibility since old backends do not understand the 'source' attribute.
    */
-  public void setSourceReference(@NonNull final Integer sourceReference) {
-    this.sourceReference = Preconditions.checkNotNull(sourceReference, "sourceReference");
+  public void setSourceReference(final int sourceReference) {
+    this.sourceReference = sourceReference;
   }
   
   @Override
@@ -97,10 +93,7 @@ public class SourceArguments {
         return false;
     } else if (!this.source.equals(other.source))
       return false;
-    if (this.sourceReference == null) {
-      if (other.sourceReference != null)
-        return false;
-    } else if (!this.sourceReference.equals(other.sourceReference))
+    if (other.sourceReference != this.sourceReference)
       return false;
     return true;
   }
@@ -111,6 +104,6 @@ public class SourceArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
-    return prime * result + ((this.sourceReference== null) ? 0 : this.sourceReference.hashCode());
+    return prime * result + this.sourceReference;
   }
 }

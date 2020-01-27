@@ -42,8 +42,7 @@ public class Scope {
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
    * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  @NonNull
-  private Integer variablesReference;
+  private int variablesReference;
   
   /**
    * The number of named variables in this scope.
@@ -68,8 +67,7 @@ public class Scope {
   /**
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
-  @NonNull
-  private Boolean expensive;
+  private boolean expensive;
   
   /**
    * Optional source for this scope.
@@ -150,8 +148,7 @@ public class Scope {
    * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
-  @NonNull
-  public Integer getVariablesReference() {
+  public int getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -159,8 +156,8 @@ public class Scope {
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
    * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Integer variablesReference) {
-    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
+  public void setVariablesReference(final int variablesReference) {
+    this.variablesReference = variablesReference;
   }
   
   /**
@@ -217,16 +214,15 @@ public class Scope {
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
   @Pure
-  @NonNull
-  public Boolean getExpensive() {
+  public boolean isExpensive() {
     return this.expensive;
   }
   
   /**
    * If true, the number of variables in this scope is large or expensive to retrieve.
    */
-  public void setExpensive(@NonNull final Boolean expensive) {
-    this.expensive = Preconditions.checkNotNull(expensive, "expensive");
+  public void setExpensive(final boolean expensive) {
+    this.expensive = expensive;
   }
   
   /**
@@ -362,10 +358,7 @@ public class Scope {
         return false;
     } else if (!this.presentationHint.equals(other.presentationHint))
       return false;
-    if (this.variablesReference == null) {
-      if (other.variablesReference != null)
-        return false;
-    } else if (!this.variablesReference.equals(other.variablesReference))
+    if (other.variablesReference != this.variablesReference)
       return false;
     if (this.namedVariables == null) {
       if (other.namedVariables != null)
@@ -377,10 +370,7 @@ public class Scope {
         return false;
     } else if (!this.indexedVariables.equals(other.indexedVariables))
       return false;
-    if (this.expensive == null) {
-      if (other.expensive != null)
-        return false;
-    } else if (!this.expensive.equals(other.expensive))
+    if (other.expensive != this.expensive)
       return false;
     if (this.source == null) {
       if (other.source != null)
@@ -417,10 +407,10 @@ public class Scope {
     int result = 1;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
-    result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
+    result = prime * result + this.variablesReference;
     result = prime * result + ((this.namedVariables== null) ? 0 : this.namedVariables.hashCode());
     result = prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
-    result = prime * result + ((this.expensive== null) ? 0 : this.expensive.hashCode());
+    result = prime * result + (this.expensive ? 1231 : 1237);
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());

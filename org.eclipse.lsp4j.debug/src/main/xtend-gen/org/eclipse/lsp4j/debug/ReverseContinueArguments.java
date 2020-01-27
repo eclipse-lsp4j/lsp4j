@@ -11,8 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -24,23 +22,21 @@ public class ReverseContinueArguments {
   /**
    * Execute 'reverseContinue' for this thread.
    */
-  @NonNull
-  private Integer threadId;
+  private int threadId;
   
   /**
    * Execute 'reverseContinue' for this thread.
    */
   @Pure
-  @NonNull
-  public Integer getThreadId() {
+  public int getThreadId() {
     return this.threadId;
   }
   
   /**
    * Execute 'reverseContinue' for this thread.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
-    this.threadId = Preconditions.checkNotNull(threadId, "threadId");
+  public void setThreadId(final int threadId) {
+    this.threadId = threadId;
   }
   
   @Override
@@ -61,10 +57,7 @@ public class ReverseContinueArguments {
     if (getClass() != obj.getClass())
       return false;
     ReverseContinueArguments other = (ReverseContinueArguments) obj;
-    if (this.threadId == null) {
-      if (other.threadId != null)
-        return false;
-    } else if (!this.threadId.equals(other.threadId))
+    if (other.threadId != this.threadId)
       return false;
     return true;
   }
@@ -72,6 +65,6 @@ public class ReverseContinueArguments {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.threadId== null) ? 0 : this.threadId.hashCode());
+    return 31 * 1 + this.threadId;
   }
 }

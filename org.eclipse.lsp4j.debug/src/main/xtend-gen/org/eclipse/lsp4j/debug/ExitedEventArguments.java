@@ -11,8 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -24,23 +22,21 @@ public class ExitedEventArguments {
   /**
    * The exit code returned from the debuggee.
    */
-  @NonNull
-  private Integer exitCode;
+  private int exitCode;
   
   /**
    * The exit code returned from the debuggee.
    */
   @Pure
-  @NonNull
-  public Integer getExitCode() {
+  public int getExitCode() {
     return this.exitCode;
   }
   
   /**
    * The exit code returned from the debuggee.
    */
-  public void setExitCode(@NonNull final Integer exitCode) {
-    this.exitCode = Preconditions.checkNotNull(exitCode, "exitCode");
+  public void setExitCode(final int exitCode) {
+    this.exitCode = exitCode;
   }
   
   @Override
@@ -61,10 +57,7 @@ public class ExitedEventArguments {
     if (getClass() != obj.getClass())
       return false;
     ExitedEventArguments other = (ExitedEventArguments) obj;
-    if (this.exitCode == null) {
-      if (other.exitCode != null)
-        return false;
-    } else if (!this.exitCode.equals(other.exitCode))
+    if (other.exitCode != this.exitCode)
       return false;
     return true;
   }
@@ -72,6 +65,6 @@ public class ExitedEventArguments {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.exitCode== null) ? 0 : this.exitCode.hashCode());
+    return 31 * 1 + this.exitCode;
   }
 }

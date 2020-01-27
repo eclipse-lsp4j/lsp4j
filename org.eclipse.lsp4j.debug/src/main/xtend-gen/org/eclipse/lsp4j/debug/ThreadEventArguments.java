@@ -32,8 +32,7 @@ public class ThreadEventArguments {
   /**
    * The identifier of the thread.
    */
-  @NonNull
-  private Integer threadId;
+  private int threadId;
   
   /**
    * The reason for the event.
@@ -59,16 +58,15 @@ public class ThreadEventArguments {
    * The identifier of the thread.
    */
   @Pure
-  @NonNull
-  public Integer getThreadId() {
+  public int getThreadId() {
     return this.threadId;
   }
   
   /**
    * The identifier of the thread.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
-    this.threadId = Preconditions.checkNotNull(threadId, "threadId");
+  public void setThreadId(final int threadId) {
+    this.threadId = threadId;
   }
   
   @Override
@@ -95,10 +93,7 @@ public class ThreadEventArguments {
         return false;
     } else if (!this.reason.equals(other.reason))
       return false;
-    if (this.threadId == null) {
-      if (other.threadId != null)
-        return false;
-    } else if (!this.threadId.equals(other.threadId))
+    if (other.threadId != this.threadId)
       return false;
     return true;
   }
@@ -109,6 +104,6 @@ public class ThreadEventArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.reason== null) ? 0 : this.reason.hashCode());
-    return prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
+    return prime * result + this.threadId;
   }
 }

@@ -31,8 +31,7 @@ public class GotoTargetsArguments {
   /**
    * The line location for which the goto targets are determined.
    */
-  @NonNull
-  private Integer line;
+  private int line;
   
   /**
    * An optional column location for which the goto targets are determined.
@@ -61,16 +60,15 @@ public class GotoTargetsArguments {
    * The line location for which the goto targets are determined.
    */
   @Pure
-  @NonNull
-  public Integer getLine() {
+  public int getLine() {
     return this.line;
   }
   
   /**
    * The line location for which the goto targets are determined.
    */
-  public void setLine(@NonNull final Integer line) {
-    this.line = Preconditions.checkNotNull(line, "line");
+  public void setLine(final int line) {
+    this.line = line;
   }
   
   /**
@@ -117,10 +115,7 @@ public class GotoTargetsArguments {
         return false;
     } else if (!this.source.equals(other.source))
       return false;
-    if (this.line == null) {
-      if (other.line != null)
-        return false;
-    } else if (!this.line.equals(other.line))
+    if (other.line != this.line)
       return false;
     if (this.column == null) {
       if (other.column != null)
@@ -136,7 +131,7 @@ public class GotoTargetsArguments {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
-    result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
+    result = prime * result + this.line;
     return prime * result + ((this.column== null) ? 0 : this.column.hashCode());
   }
 }

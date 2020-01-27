@@ -13,8 +13,6 @@ package org.eclipse.lsp4j.debug;
 
 import org.eclipse.lsp4j.debug.ValueFormat;
 import org.eclipse.lsp4j.debug.VariablesArgumentsFilter;
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -26,8 +24,7 @@ public class VariablesArguments {
   /**
    * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  @NonNull
-  private Integer variablesReference;
+  private int variablesReference;
   
   /**
    * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
@@ -61,16 +58,15 @@ public class VariablesArguments {
    * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
-  @NonNull
-  public Integer getVariablesReference() {
+  public int getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Integer variablesReference) {
-    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
+  public void setVariablesReference(final int variablesReference) {
+    this.variablesReference = variablesReference;
   }
   
   /**
@@ -171,10 +167,7 @@ public class VariablesArguments {
     if (getClass() != obj.getClass())
       return false;
     VariablesArguments other = (VariablesArguments) obj;
-    if (this.variablesReference == null) {
-      if (other.variablesReference != null)
-        return false;
-    } else if (!this.variablesReference.equals(other.variablesReference))
+    if (other.variablesReference != this.variablesReference)
       return false;
     if (this.filter == null) {
       if (other.filter != null)
@@ -204,7 +197,7 @@ public class VariablesArguments {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
+    result = prime * result + this.variablesReference;
     result = prime * result + ((this.filter== null) ? 0 : this.filter.hashCode());
     result = prime * result + ((this.start== null) ? 0 : this.start.hashCode());
     result = prime * result + ((this.count== null) ? 0 : this.count.hashCode());
