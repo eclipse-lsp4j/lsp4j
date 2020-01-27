@@ -26,21 +26,21 @@ public class StackTraceArguments {
    * Retrieve the stacktrace for this thread.
    */
   @NonNull
-  private Long threadId;
+  private Integer threadId;
   
   /**
    * The index of the first frame to return; if omitted frames start at 0.
    * <p>
    * This is an optional property.
    */
-  private Long startFrame;
+  private Integer startFrame;
   
   /**
    * The maximum number of frames to return. If levels is not specified or 0, all frames are returned.
    * <p>
    * This is an optional property.
    */
-  private Long levels;
+  private Integer levels;
   
   /**
    * Specifies details on how to format the stack frames.
@@ -54,14 +54,14 @@ public class StackTraceArguments {
    */
   @Pure
   @NonNull
-  public Long getThreadId() {
+  public Integer getThreadId() {
     return this.threadId;
   }
   
   /**
    * Retrieve the stacktrace for this thread.
    */
-  public void setThreadId(@NonNull final Long threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   
@@ -71,7 +71,7 @@ public class StackTraceArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getStartFrame() {
+  public Integer getStartFrame() {
     return this.startFrame;
   }
   
@@ -80,7 +80,7 @@ public class StackTraceArguments {
    * <p>
    * This is an optional property.
    */
-  public void setStartFrame(final Long startFrame) {
+  public void setStartFrame(final Integer startFrame) {
     this.startFrame = startFrame;
   }
   
@@ -90,7 +90,7 @@ public class StackTraceArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getLevels() {
+  public Integer getLevels() {
     return this.levels;
   }
   
@@ -99,7 +99,7 @@ public class StackTraceArguments {
    * <p>
    * This is an optional property.
    */
-  public void setLevels(final Long levels) {
+  public void setLevels(final Integer levels) {
     this.levels = levels;
   }
   

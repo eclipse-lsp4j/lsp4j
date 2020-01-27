@@ -34,7 +34,7 @@ public class SourceArguments {
    * compatibility since old backends do not understand the 'source' attribute.
    */
   @NonNull
-  private Long sourceReference;
+  private Integer sourceReference;
   
   /**
    * Specifies the source content to load. Either source.path or source.sourceReference must be specified.
@@ -61,7 +61,7 @@ public class SourceArguments {
    */
   @Pure
   @NonNull
-  public Long getSourceReference() {
+  public Integer getSourceReference() {
     return this.sourceReference;
   }
   
@@ -69,7 +69,7 @@ public class SourceArguments {
    * The reference to the source. This is the same as source.sourceReference. This is provided for backward
    * compatibility since old backends do not understand the 'source' attribute.
    */
-  public void setSourceReference(@NonNull final Long sourceReference) {
+  public void setSourceReference(@NonNull final Integer sourceReference) {
     this.sourceReference = Preconditions.checkNotNull(sourceReference, "sourceReference");
   }
   

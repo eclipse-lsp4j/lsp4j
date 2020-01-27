@@ -35,7 +35,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Long systemProcessId;
+  private Integer systemProcessId;
   
   /**
    * If true, the process is running on the same computer as the debug adapter.
@@ -57,7 +57,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Long pointerSize;
+  private Integer pointerSize;
   
   /**
    * The logical name of the process. This is usually the full path to process's executable file. Example:
@@ -83,7 +83,7 @@ public class ProcessEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getSystemProcessId() {
+  public Integer getSystemProcessId() {
     return this.systemProcessId;
   }
   
@@ -92,7 +92,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setSystemProcessId(final Long systemProcessId) {
+  public void setSystemProcessId(final Integer systemProcessId) {
     this.systemProcessId = systemProcessId;
   }
   
@@ -141,7 +141,7 @@ public class ProcessEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getPointerSize() {
+  public Integer getPointerSize() {
     return this.pointerSize;
   }
   
@@ -151,7 +151,7 @@ public class ProcessEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setPointerSize(final Long pointerSize) {
+  public void setPointerSize(final Integer pointerSize) {
     this.pointerSize = pointerSize;
   }
   

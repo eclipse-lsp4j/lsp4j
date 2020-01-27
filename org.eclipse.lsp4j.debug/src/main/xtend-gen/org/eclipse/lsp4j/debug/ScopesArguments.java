@@ -25,21 +25,21 @@ public class ScopesArguments {
    * Retrieve the scopes for this stackframe.
    */
   @NonNull
-  private Long frameId;
+  private Integer frameId;
   
   /**
    * Retrieve the scopes for this stackframe.
    */
   @Pure
   @NonNull
-  public Long getFrameId() {
+  public Integer getFrameId() {
     return this.frameId;
   }
   
   /**
    * Retrieve the scopes for this stackframe.
    */
-  public void setFrameId(@NonNull final Long frameId) {
+  public void setFrameId(@NonNull final Integer frameId) {
     this.frameId = Preconditions.checkNotNull(frameId, "frameId");
   }
   

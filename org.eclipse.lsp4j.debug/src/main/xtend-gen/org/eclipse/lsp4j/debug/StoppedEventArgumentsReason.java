@@ -21,19 +21,19 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface StoppedEventArgumentsReason {
-  public static final String STEP = "step";
+  static final String STEP = "step";
   
-  public static final String BREAKPOINT = "breakpoint";
+  static final String BREAKPOINT = "breakpoint";
   
-  public static final String EXCEPTION = "exception";
+  static final String EXCEPTION = "exception";
   
-  public static final String PAUSE = "pause";
+  static final String PAUSE = "pause";
   
-  public static final String ENTRY = "entry";
+  static final String ENTRY = "entry";
   
-  public static final String GOTO = "goto";
+  static final String GOTO = "goto";
   
-  public static final String FUNCTION_BREAKPOINT = "function breakpoint";
+  static final String FUNCTION_BREAKPOINT = "function breakpoint";
   
-  public static final String DATA_BREAKPOINT = "data breakpoint";
+  static final String DATA_BREAKPOINT = "data breakpoint";
 }

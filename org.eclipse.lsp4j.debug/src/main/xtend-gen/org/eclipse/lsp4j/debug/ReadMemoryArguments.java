@@ -32,14 +32,14 @@ public class ReadMemoryArguments {
    * <p>
    * This is an optional property.
    */
-  private Long offset;
+  private Integer offset;
   
   /**
    * Number of bytes to read at the specified location and offset.
    * <p>
    * This is an optional property.
    */
-  private Long count;
+  private Integer count;
   
   /**
    * Memory reference to the base location from which data should be read.
@@ -63,7 +63,7 @@ public class ReadMemoryArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getOffset() {
+  public Integer getOffset() {
     return this.offset;
   }
   
@@ -72,7 +72,7 @@ public class ReadMemoryArguments {
    * <p>
    * This is an optional property.
    */
-  public void setOffset(final Long offset) {
+  public void setOffset(final Integer offset) {
     this.offset = offset;
   }
   
@@ -82,7 +82,7 @@ public class ReadMemoryArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getCount() {
+  public Integer getCount() {
     return this.count;
   }
   
@@ -91,7 +91,7 @@ public class ReadMemoryArguments {
    * <p>
    * This is an optional property.
    */
-  public void setCount(final Long count) {
+  public void setCount(final Integer count) {
     this.count = count;
   }
   

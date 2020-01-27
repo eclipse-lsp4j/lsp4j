@@ -25,27 +25,27 @@ public class GotoArguments {
    * Set the goto target for this thread.
    */
   @NonNull
-  private Long threadId;
+  private Integer threadId;
   
   /**
    * The location where the debuggee will continue to run.
    */
   @NonNull
-  private Long targetId;
+  private Integer targetId;
   
   /**
    * Set the goto target for this thread.
    */
   @Pure
   @NonNull
-  public Long getThreadId() {
+  public Integer getThreadId() {
     return this.threadId;
   }
   
   /**
    * Set the goto target for this thread.
    */
-  public void setThreadId(@NonNull final Long threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   
@@ -54,14 +54,14 @@ public class GotoArguments {
    */
   @Pure
   @NonNull
-  public Long getTargetId() {
+  public Integer getTargetId() {
     return this.targetId;
   }
   
   /**
    * The location where the debuggee will continue to run.
    */
-  public void setTargetId(@NonNull final Long targetId) {
+  public void setTargetId(@NonNull final Integer targetId) {
     this.targetId = Preconditions.checkNotNull(targetId, "targetId");
   }
   

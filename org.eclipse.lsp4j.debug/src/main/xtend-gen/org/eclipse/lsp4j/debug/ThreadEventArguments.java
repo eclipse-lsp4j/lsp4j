@@ -33,7 +33,7 @@ public class ThreadEventArguments {
    * The identifier of the thread.
    */
   @NonNull
-  private Long threadId;
+  private Integer threadId;
   
   /**
    * The reason for the event.
@@ -60,14 +60,14 @@ public class ThreadEventArguments {
    */
   @Pure
   @NonNull
-  public Long getThreadId() {
+  public Integer getThreadId() {
     return this.threadId;
   }
   
   /**
    * The identifier of the thread.
    */
-  public void setThreadId(@NonNull final Long threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   

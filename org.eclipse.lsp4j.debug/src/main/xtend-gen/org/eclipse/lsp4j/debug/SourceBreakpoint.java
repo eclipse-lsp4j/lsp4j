@@ -25,14 +25,14 @@ public class SourceBreakpoint {
    * The source line of the breakpoint or logpoint.
    */
   @NonNull
-  private Long line;
+  private Integer line;
   
   /**
    * An optional source column of the breakpoint.
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * An optional expression for conditional breakpoints.
@@ -62,14 +62,14 @@ public class SourceBreakpoint {
    */
   @Pure
   @NonNull
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
   /**
    * The source line of the breakpoint or logpoint.
    */
-  public void setLine(@NonNull final Long line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = Preconditions.checkNotNull(line, "line");
   }
   
@@ -79,7 +79,7 @@ public class SourceBreakpoint {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -88,7 +88,7 @@ public class SourceBreakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   

@@ -18,7 +18,7 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface ThreadEventArgumentsReason {
-  public static final String STARTED = "started";
+  static final String STARTED = "started";
   
-  public static final String EXITED = "exited";
+  static final String EXITED = "exited";
 }

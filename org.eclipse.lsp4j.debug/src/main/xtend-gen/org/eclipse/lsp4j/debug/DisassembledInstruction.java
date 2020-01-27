@@ -62,28 +62,28 @@ public class DisassembledInstruction {
    * <p>
    * This is an optional property.
    */
-  private Long line;
+  private Integer line;
   
   /**
    * The column within the line that corresponds to this instruction, if any.
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * The end line of the range that corresponds to this instruction, if any.
    * <p>
    * This is an optional property.
    */
-  private Long endLine;
+  private Integer endLine;
   
   /**
    * The end column of the range that corresponds to this instruction, if any.
    * <p>
    * This is an optional property.
    */
-  private Long endColumn;
+  private Integer endColumn;
   
   /**
    * The address of the instruction. Treated as a hex value if prefixed with '0x', or as a decimal value otherwise.
@@ -184,7 +184,7 @@ public class DisassembledInstruction {
    * This is an optional property.
    */
   @Pure
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
@@ -193,7 +193,7 @@ public class DisassembledInstruction {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Long line) {
+  public void setLine(final Integer line) {
     this.line = line;
   }
   
@@ -203,7 +203,7 @@ public class DisassembledInstruction {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -212,7 +212,7 @@ public class DisassembledInstruction {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   
@@ -222,7 +222,7 @@ public class DisassembledInstruction {
    * This is an optional property.
    */
   @Pure
-  public Long getEndLine() {
+  public Integer getEndLine() {
     return this.endLine;
   }
   
@@ -231,7 +231,7 @@ public class DisassembledInstruction {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Long endLine) {
+  public void setEndLine(final Integer endLine) {
     this.endLine = endLine;
   }
   
@@ -241,7 +241,7 @@ public class DisassembledInstruction {
    * This is an optional property.
    */
   @Pure
-  public Long getEndColumn() {
+  public Integer getEndColumn() {
     return this.endColumn;
   }
   
@@ -250,7 +250,7 @@ public class DisassembledInstruction {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Long endColumn) {
+  public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
   }
   

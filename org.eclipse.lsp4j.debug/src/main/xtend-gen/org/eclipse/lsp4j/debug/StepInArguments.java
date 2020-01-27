@@ -25,28 +25,28 @@ public class StepInArguments {
    * Execute 'stepIn' for this thread.
    */
   @NonNull
-  private Long threadId;
+  private Integer threadId;
   
   /**
    * Optional id of the target to step into.
    * <p>
    * This is an optional property.
    */
-  private Long targetId;
+  private Integer targetId;
   
   /**
    * Execute 'stepIn' for this thread.
    */
   @Pure
   @NonNull
-  public Long getThreadId() {
+  public Integer getThreadId() {
     return this.threadId;
   }
   
   /**
    * Execute 'stepIn' for this thread.
    */
-  public void setThreadId(@NonNull final Long threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   
@@ -56,7 +56,7 @@ public class StepInArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getTargetId() {
+  public Integer getTargetId() {
     return this.targetId;
   }
   
@@ -65,7 +65,7 @@ public class StepInArguments {
    * <p>
    * This is an optional property.
    */
-  public void setTargetId(final Long targetId) {
+  public void setTargetId(final Integer targetId) {
     this.targetId = targetId;
   }
   

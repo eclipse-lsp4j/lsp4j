@@ -40,7 +40,7 @@ public class SetExpressionArguments {
    * <p>
    * This is an optional property.
    */
-  private Long frameId;
+  private Integer frameId;
   
   /**
    * Specifies how the resulting value should be formatted.
@@ -88,7 +88,7 @@ public class SetExpressionArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getFrameId() {
+  public Integer getFrameId() {
     return this.frameId;
   }
   
@@ -98,7 +98,7 @@ public class SetExpressionArguments {
    * <p>
    * This is an optional property.
    */
-  public void setFrameId(final Long frameId) {
+  public void setFrameId(final Integer frameId) {
     this.frameId = frameId;
   }
   

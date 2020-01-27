@@ -25,7 +25,7 @@ public class TerminateThreadsArguments {
    * <p>
    * This is an optional property.
    */
-  private Long[] threadIds;
+  private Integer[] threadIds;
   
   /**
    * Ids of threads to be terminated.
@@ -33,7 +33,7 @@ public class TerminateThreadsArguments {
    * This is an optional property.
    */
   @Pure
-  public Long[] getThreadIds() {
+  public Integer[] getThreadIds() {
     return this.threadIds;
   }
   
@@ -42,7 +42,7 @@ public class TerminateThreadsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setThreadIds(final Long[] threadIds) {
+  public void setThreadIds(final Integer[] threadIds) {
     this.threadIds = threadIds;
   }
   

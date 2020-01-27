@@ -32,7 +32,7 @@ public class DisassembleArguments {
    * <p>
    * This is an optional property.
    */
-  private Long offset;
+  private Integer offset;
   
   /**
    * Optional offset (in instructions) to be applied after the byte offset (if any) before disassembling. Can be
@@ -40,7 +40,7 @@ public class DisassembleArguments {
    * <p>
    * This is an optional property.
    */
-  private Long instructionOffset;
+  private Integer instructionOffset;
   
   /**
    * Number of instructions to disassemble starting at the specified location and offset. An adapter must return
@@ -48,7 +48,7 @@ public class DisassembleArguments {
    * implementation-defined 'invalid instruction' value.
    */
   @NonNull
-  private Long instructionCount;
+  private Integer instructionCount;
   
   /**
    * If true, the adapter should attempt to resolve memory addresses and other values to symbolic names.
@@ -79,7 +79,7 @@ public class DisassembleArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getOffset() {
+  public Integer getOffset() {
     return this.offset;
   }
   
@@ -88,7 +88,7 @@ public class DisassembleArguments {
    * <p>
    * This is an optional property.
    */
-  public void setOffset(final Long offset) {
+  public void setOffset(final Integer offset) {
     this.offset = offset;
   }
   
@@ -99,7 +99,7 @@ public class DisassembleArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getInstructionOffset() {
+  public Integer getInstructionOffset() {
     return this.instructionOffset;
   }
   
@@ -109,7 +109,7 @@ public class DisassembleArguments {
    * <p>
    * This is an optional property.
    */
-  public void setInstructionOffset(final Long instructionOffset) {
+  public void setInstructionOffset(final Integer instructionOffset) {
     this.instructionOffset = instructionOffset;
   }
   
@@ -120,7 +120,7 @@ public class DisassembleArguments {
    */
   @Pure
   @NonNull
-  public Long getInstructionCount() {
+  public Integer getInstructionCount() {
     return this.instructionCount;
   }
   
@@ -129,7 +129,7 @@ public class DisassembleArguments {
    * exactly this number of instructions - any unavailable instructions should be replaced with an
    * implementation-defined 'invalid instruction' value.
    */
-  public void setInstructionCount(@NonNull final Long instructionCount) {
+  public void setInstructionCount(@NonNull final Integer instructionCount) {
     this.instructionCount = Preconditions.checkNotNull(instructionCount, "instructionCount");
   }
   

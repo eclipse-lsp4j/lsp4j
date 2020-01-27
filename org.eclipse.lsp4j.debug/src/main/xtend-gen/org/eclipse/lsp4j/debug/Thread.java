@@ -25,7 +25,7 @@ public class Thread {
    * Unique identifier for the thread.
    */
   @NonNull
-  private Long id;
+  private Integer id;
   
   /**
    * A name of the thread.
@@ -38,14 +38,14 @@ public class Thread {
    */
   @Pure
   @NonNull
-  public Long getId() {
+  public Integer getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the thread.
    */
-  public void setId(@NonNull final Long id) {
+  public void setId(@NonNull final Integer id) {
     this.id = Preconditions.checkNotNull(id, "id");
   }
   

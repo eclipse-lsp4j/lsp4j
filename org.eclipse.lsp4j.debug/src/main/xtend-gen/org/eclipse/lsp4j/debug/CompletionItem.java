@@ -58,7 +58,7 @@ public class CompletionItem {
    * <p>
    * This is an optional property.
    */
-  private Long start;
+  private Integer start;
   
   /**
    * This value determines how many characters are overwritten by the completion text.
@@ -67,7 +67,7 @@ public class CompletionItem {
    * <p>
    * This is an optional property.
    */
-  private Long length;
+  private Integer length;
   
   /**
    * The label of this completion item. By default this is also the text that is inserted when selecting this
@@ -153,7 +153,7 @@ public class CompletionItem {
    * This is an optional property.
    */
   @Pure
-  public Long getStart() {
+  public Integer getStart() {
     return this.start;
   }
   
@@ -165,7 +165,7 @@ public class CompletionItem {
    * <p>
    * This is an optional property.
    */
-  public void setStart(final Long start) {
+  public void setStart(final Integer start) {
     this.start = start;
   }
   
@@ -177,7 +177,7 @@ public class CompletionItem {
    * This is an optional property.
    */
   @Pure
-  public Long getLength() {
+  public Integer getLength() {
     return this.length;
   }
   
@@ -188,7 +188,7 @@ public class CompletionItem {
    * <p>
    * This is an optional property.
    */
-  public void setLength(final Long length) {
+  public void setLength(final Integer length) {
     this.length = length;
   }
   

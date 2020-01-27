@@ -56,7 +56,7 @@ public class ColumnDescriptor {
    * <p>
    * This is an optional property.
    */
-  private Long width;
+  private Integer width;
   
   /**
    * Name of the attribute rendered in this column.
@@ -134,7 +134,7 @@ public class ColumnDescriptor {
    * This is an optional property.
    */
   @Pure
-  public Long getWidth() {
+  public Integer getWidth() {
     return this.width;
   }
   
@@ -143,7 +143,7 @@ public class ColumnDescriptor {
    * <p>
    * This is an optional property.
    */
-  public void setWidth(final Long width) {
+  public void setWidth(final Integer width) {
     this.width = width;
   }
   

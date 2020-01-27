@@ -26,7 +26,7 @@ public class StepInTarget {
    * Unique identifier for a stepIn target.
    */
   @NonNull
-  private Long id;
+  private Integer id;
   
   /**
    * The name of the stepIn target (shown in the UI).
@@ -39,14 +39,14 @@ public class StepInTarget {
    */
   @Pure
   @NonNull
-  public Long getId() {
+  public Integer getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a stepIn target.
    */
-  public void setId(@NonNull final Long id) {
+  public void setId(@NonNull final Integer id) {
     this.id = Preconditions.checkNotNull(id, "id");
   }
   
