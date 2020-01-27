@@ -26,7 +26,7 @@ public class Message {
    * Unique identifier for the message.
    */
   @NonNull
-  private Long id;
+  private Integer id;
   
   /**
    * A format string for the message. Embedded variables have the form '{name}'.
@@ -77,14 +77,14 @@ public class Message {
    */
   @Pure
   @NonNull
-  public Long getId() {
+  public Integer getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the message.
    */
-  public void setId(@NonNull final Long id) {
+  public void setId(@NonNull final Integer id) {
     this.id = Preconditions.checkNotNull(id, "id");
   }
   

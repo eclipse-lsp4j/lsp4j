@@ -18,9 +18,9 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface BreakpointEventArgumentsReason {
-  public static final String CHANGED = "changed";
+  static final String CHANGED = "changed";
   
-  public static final String NEW = "new";
+  static final String NEW = "new";
   
-  public static final String REMOVED = "removed";
+  static final String REMOVED = "removed";
 }

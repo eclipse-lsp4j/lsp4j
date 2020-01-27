@@ -28,7 +28,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  private Long id;
+  private Integer id;
   
   /**
    * If true breakpoint could be set (but not necessarily at the desired location).
@@ -56,21 +56,21 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  private Long line;
+  private Integer line;
   
   /**
    * An optional start column of the actual range covered by the breakpoint.
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * An optional end line of the actual range covered by the breakpoint.
    * <p>
    * This is an optional property.
    */
-  private Long endLine;
+  private Integer endLine;
   
   /**
    * An optional end column of the actual range covered by the breakpoint. If no end line is given, then the end
@@ -78,7 +78,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  private Long endColumn;
+  private Integer endColumn;
   
   /**
    * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
@@ -87,7 +87,7 @@ public class Breakpoint {
    * This is an optional property.
    */
   @Pure
-  public Long getId() {
+  public Integer getId() {
     return this.id;
   }
   
@@ -97,7 +97,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setId(final Long id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
   
@@ -163,7 +163,7 @@ public class Breakpoint {
    * This is an optional property.
    */
   @Pure
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
@@ -172,7 +172,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Long line) {
+  public void setLine(final Integer line) {
     this.line = line;
   }
   
@@ -182,7 +182,7 @@ public class Breakpoint {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -191,7 +191,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   
@@ -201,7 +201,7 @@ public class Breakpoint {
    * This is an optional property.
    */
   @Pure
-  public Long getEndLine() {
+  public Integer getEndLine() {
     return this.endLine;
   }
   
@@ -210,7 +210,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Long endLine) {
+  public void setEndLine(final Integer endLine) {
     this.endLine = endLine;
   }
   
@@ -221,7 +221,7 @@ public class Breakpoint {
    * This is an optional property.
    */
   @Pure
-  public Long getEndColumn() {
+  public Integer getEndColumn() {
     return this.endColumn;
   }
   
@@ -231,7 +231,7 @@ public class Breakpoint {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Long endColumn) {
+  public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
   }
   

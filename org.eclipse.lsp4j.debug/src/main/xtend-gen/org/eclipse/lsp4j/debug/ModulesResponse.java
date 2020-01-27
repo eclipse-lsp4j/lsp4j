@@ -33,7 +33,7 @@ public class ModulesResponse {
    * <p>
    * This is an optional property.
    */
-  private Long totalModules;
+  private Integer totalModules;
   
   /**
    * All modules or range of modules.
@@ -57,7 +57,7 @@ public class ModulesResponse {
    * This is an optional property.
    */
   @Pure
-  public Long getTotalModules() {
+  public Integer getTotalModules() {
     return this.totalModules;
   }
   
@@ -66,7 +66,7 @@ public class ModulesResponse {
    * <p>
    * This is an optional property.
    */
-  public void setTotalModules(final Long totalModules) {
+  public void setTotalModules(final Integer totalModules) {
     this.totalModules = totalModules;
   }
   

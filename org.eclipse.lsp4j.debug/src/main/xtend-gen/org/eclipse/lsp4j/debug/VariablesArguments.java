@@ -41,14 +41,14 @@ public class VariablesArguments {
    * <p>
    * This is an optional property.
    */
-  private Long start;
+  private Integer start;
   
   /**
    * The number of variables to return. If count is missing or 0, all variables are returned.
    * <p>
    * This is an optional property.
    */
-  private Long count;
+  private Integer count;
   
   /**
    * Specifies details on how to format the Variable values.
@@ -98,7 +98,7 @@ public class VariablesArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getStart() {
+  public Integer getStart() {
     return this.start;
   }
   
@@ -107,7 +107,7 @@ public class VariablesArguments {
    * <p>
    * This is an optional property.
    */
-  public void setStart(final Long start) {
+  public void setStart(final Integer start) {
     this.start = start;
   }
   
@@ -117,7 +117,7 @@ public class VariablesArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getCount() {
+  public Integer getCount() {
     return this.count;
   }
   
@@ -126,7 +126,7 @@ public class VariablesArguments {
    * <p>
    * This is an optional property.
    */
-  public void setCount(final Long count) {
+  public void setCount(final Integer count) {
     this.count = count;
   }
   

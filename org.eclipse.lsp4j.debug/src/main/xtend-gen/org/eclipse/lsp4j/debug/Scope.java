@@ -83,28 +83,28 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  private Long line;
+  private Integer line;
   
   /**
    * Optional start column of the range covered by this scope.
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * Optional end line of the range covered by this scope.
    * <p>
    * This is an optional property.
    */
-  private Long endLine;
+  private Integer endLine;
   
   /**
    * Optional end column of the range covered by this scope.
    * <p>
    * This is an optional property.
    */
-  private Long endColumn;
+  private Integer endColumn;
   
   /**
    * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
@@ -254,7 +254,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
@@ -263,7 +263,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Long line) {
+  public void setLine(final Integer line) {
     this.line = line;
   }
   
@@ -273,7 +273,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -282,7 +282,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   
@@ -292,7 +292,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Long getEndLine() {
+  public Integer getEndLine() {
     return this.endLine;
   }
   
@@ -301,7 +301,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Long endLine) {
+  public void setEndLine(final Integer endLine) {
     this.endLine = endLine;
   }
   
@@ -311,7 +311,7 @@ public class Scope {
    * This is an optional property.
    */
   @Pure
-  public Long getEndColumn() {
+  public Integer getEndColumn() {
     return this.endColumn;
   }
   
@@ -320,7 +320,7 @@ public class Scope {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Long endColumn) {
+  public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
   }
   

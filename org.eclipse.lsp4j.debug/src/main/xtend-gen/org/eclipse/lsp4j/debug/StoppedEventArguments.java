@@ -48,7 +48,7 @@ public class StoppedEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Long threadId;
+  private Integer threadId;
   
   /**
    * A value of true hints to the frontend that this event should not change the focus.
@@ -130,7 +130,7 @@ public class StoppedEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getThreadId() {
+  public Integer getThreadId() {
     return this.threadId;
   }
   
@@ -139,7 +139,7 @@ public class StoppedEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setThreadId(final Long threadId) {
+  public void setThreadId(final Integer threadId) {
     this.threadId = threadId;
   }
   

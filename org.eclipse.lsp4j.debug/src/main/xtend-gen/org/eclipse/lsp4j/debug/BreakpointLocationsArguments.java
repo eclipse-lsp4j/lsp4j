@@ -33,7 +33,7 @@ public class BreakpointLocationsArguments {
    * the request returns all possible locations in that line.
    */
   @NonNull
-  private Long line;
+  private Integer line;
   
   /**
    * Optional start column of range to search possible breakpoint locations in. If no start column is given,
@@ -41,7 +41,7 @@ public class BreakpointLocationsArguments {
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * Optional end line of range to search possible breakpoint locations in. If no end line is given,
@@ -49,7 +49,7 @@ public class BreakpointLocationsArguments {
    * <p>
    * This is an optional property.
    */
-  private Long endLine;
+  private Integer endLine;
   
   /**
    * Optional end column of range to search possible breakpoint locations in. If no end column is given,
@@ -57,7 +57,7 @@ public class BreakpointLocationsArguments {
    * <p>
    * This is an optional property.
    */
-  private Long endColumn;
+  private Integer endColumn;
   
   /**
    * The source location of the breakpoints; either 'source.path' or 'source.reference' must be specified.
@@ -81,7 +81,7 @@ public class BreakpointLocationsArguments {
    */
   @Pure
   @NonNull
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
@@ -89,7 +89,7 @@ public class BreakpointLocationsArguments {
    * Start line of range to search possible breakpoint locations in. If only the line is specified,
    * the request returns all possible locations in that line.
    */
-  public void setLine(@NonNull final Long line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = Preconditions.checkNotNull(line, "line");
   }
   
@@ -100,7 +100,7 @@ public class BreakpointLocationsArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -110,7 +110,7 @@ public class BreakpointLocationsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   
@@ -121,7 +121,7 @@ public class BreakpointLocationsArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getEndLine() {
+  public Integer getEndLine() {
     return this.endLine;
   }
   
@@ -131,7 +131,7 @@ public class BreakpointLocationsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Long endLine) {
+  public void setEndLine(final Integer endLine) {
     this.endLine = endLine;
   }
   
@@ -142,7 +142,7 @@ public class BreakpointLocationsArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getEndColumn() {
+  public Integer getEndColumn() {
     return this.endColumn;
   }
   
@@ -152,7 +152,7 @@ public class BreakpointLocationsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Long endColumn) {
+  public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
   }
   

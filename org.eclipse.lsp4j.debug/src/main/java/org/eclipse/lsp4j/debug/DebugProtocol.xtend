@@ -59,7 +59,7 @@ class StoppedEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long threadId;
+	Integer threadId;
 	/**
 	 * A value of true hints to the frontend that this event should not change the focus.
 	 * <p>
@@ -119,7 +119,7 @@ class ContinuedEventArguments {
 	 * The thread which was continued.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 	/**
 	 * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
 	 * <p>
@@ -137,7 +137,7 @@ class ExitedEventArguments {
 	 * The exit code returned from the debuggee.
 	 */
 	@NonNull
-	Long exitCode;
+	Integer exitCode;
 }
 
 /**
@@ -174,7 +174,7 @@ class ThreadEventArguments {
 	 * The identifier of the thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -224,13 +224,13 @@ class OutputEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long line;
+	Integer line;
 	/**
 	 * An optional source location column where the output was produced.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * Optional data to report. For the 'telemetry' category the data will be sent to telemetry, for the other
 	 * categories the data is shown in JSON format.
@@ -351,7 +351,7 @@ class ProcessEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long systemProcessId;
+	Integer systemProcessId;
 	/**
 	 * If true, the process is running on the same computer as the debug adapter.
 	 * <p>
@@ -370,7 +370,7 @@ class ProcessEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long pointerSize;
+	Integer pointerSize;
 }
 
 /**
@@ -674,28 +674,28 @@ class BreakpointLocationsArguments {
 	 * the request returns all possible locations in that line.
 	 */
 	@NonNull
-	Long line;
+	Integer line;
 	/**
 	 * Optional start column of range to search possible breakpoint locations in. If no start column is given,
 	 * the first column in the start line is assumed.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * Optional end line of range to search possible breakpoint locations in. If no end line is given,
 	 * then the end line is assumed to be the start line.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * Optional end column of range to search possible breakpoint locations in. If no end column is given,
 	 * then it is assumed to be in the last column of the end line.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 }
 
 /**
@@ -740,7 +740,7 @@ class SetBreakpointsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long[] lines;
+	Integer[] lines;
 	/**
 	 * A value of true indicates that the underlying source has been modified which results in new breakpoint
 	 * locations.
@@ -894,7 +894,7 @@ class ContinueArguments {
 	 * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -906,7 +906,7 @@ class NextArguments {
 	 * Execute 'next' for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -918,13 +918,13 @@ class StepInArguments {
 	 * Execute 'stepIn' for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 	/**
 	 * Optional id of the target to step into.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long targetId;
+	Integer targetId;
 }
 
 /**
@@ -936,7 +936,7 @@ class StepOutArguments {
 	 * Execute 'stepOut' for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -948,7 +948,7 @@ class StepBackArguments {
 	 * Execute 'stepBack' for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -960,7 +960,7 @@ class ReverseContinueArguments {
 	 * Execute 'reverseContinue' for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -972,7 +972,7 @@ class RestartFrameArguments {
 	 * Restart this stackframe.
 	 */
 	@NonNull
-	Long frameId;
+	Integer frameId;
 }
 
 /**
@@ -984,12 +984,12 @@ class GotoArguments {
 	 * Set the goto target for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 	/**
 	 * The location where the debuggee will continue to run.
 	 */
 	@NonNull
-	Long targetId;
+	Integer targetId;
 }
 
 /**
@@ -1001,7 +1001,7 @@ class PauseArguments {
 	 * Pause execution for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -1021,7 +1021,7 @@ class StackTraceResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long totalFrames;
+	Integer totalFrames;
 }
 
 /**
@@ -1033,19 +1033,19 @@ class StackTraceArguments {
 	 * Retrieve the stacktrace for this thread.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 	/**
 	 * The index of the first frame to return; if omitted frames start at 0.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long startFrame;
+	Integer startFrame;
 	/**
 	 * The maximum number of frames to return. If levels is not specified or 0, all frames are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long levels;
+	Integer levels;
 	/**
 	 * Specifies details on how to format the stack frames.
 	 * <p>
@@ -1075,7 +1075,7 @@ class ScopesArguments {
 	 * Retrieve the scopes for this stackframe.
 	 */
 	@NonNull
-	Long frameId;
+	Integer frameId;
 }
 
 /**
@@ -1111,13 +1111,13 @@ class VariablesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long start;
+	Integer start;
 	/**
 	 * The number of variables to return. If count is missing or 0, all variables are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long count;
+	Integer count;
 	/**
 	 * Specifies details on how to format the Variable values.
 	 * <p>
@@ -1239,7 +1239,7 @@ class SourceArguments {
 	 * compatibility since old backends do not understand the 'source' attribute.
 	 */
 	@NonNull
-	Long sourceReference;
+	Integer sourceReference;
 }
 
 /**
@@ -1264,7 +1264,7 @@ class TerminateThreadsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long[] threadIds;
+	Integer[] threadIds;
 }
 
 /**
@@ -1282,7 +1282,7 @@ class ModulesResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long totalModules;
+	Integer totalModules;
 }
 
 /**
@@ -1295,13 +1295,13 @@ class ModulesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long startModule;
+	Integer startModule;
 	/**
 	 * The number of modules to return. If moduleCount is not specified or 0, all modules are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long moduleCount;
+	Integer moduleCount;
 }
 
 /**
@@ -1394,7 +1394,7 @@ class EvaluateArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long frameId;
+	Integer frameId;
 	/**
 	 * The context in which the evaluate request is run.
 	 * <p>
@@ -1502,7 +1502,7 @@ class SetExpressionArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long frameId;
+	Integer frameId;
 	/**
 	 * Specifies how the resulting value should be formatted.
 	 * <p>
@@ -1532,7 +1532,7 @@ class StepInTargetsArguments {
 	 * The stack frame for which to retrieve the possible stepIn targets.
 	 */
 	@NonNull
-	Long frameId;
+	Integer frameId;
 }
 
 /**
@@ -1561,13 +1561,13 @@ class GotoTargetsArguments {
 	 * The line location for which the goto targets are determined.
 	 */
 	@NonNull
-	Long line;
+	Integer line;
 	/**
 	 * An optional column location for which the goto targets are determined.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 }
 
 /**
@@ -1593,7 +1593,7 @@ class CompletionsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long frameId;
+	Integer frameId;
 	/**
 	 * One or more source lines. Typically this is the text a user has typed into the debug console before he asked
 	 * for completion.
@@ -1604,14 +1604,14 @@ class CompletionsArguments {
 	 * The character position for which to determine the completion proposals.
 	 */
 	@NonNull
-	Long column;
+	Integer column;
 	/**
 	 * An optional line for which to determine the completion proposals. If missing the first line of the text is
 	 * assumed.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long line;
+	Integer line;
 }
 
 /**
@@ -1652,7 +1652,7 @@ class ExceptionInfoArguments {
 	 * Thread for which exception information should be retrieved.
 	 */
 	@NonNull
-	Long threadId;
+	Integer threadId;
 }
 
 /**
@@ -1672,7 +1672,7 @@ class ReadMemoryResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long unreadableBytes;
+	Integer unreadableBytes;
 	/**
 	 * The bytes read from memory, encoded using base64.
 	 * <p>
@@ -1696,13 +1696,13 @@ class ReadMemoryArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long offset;
+	Integer offset;
 	/**
 	 * Number of bytes to read at the specified location and offset.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long count;
+	Integer count;
 }
 
 /**
@@ -1732,21 +1732,21 @@ class DisassembleArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long offset;
+	Integer offset;
 	/**
 	 * Optional offset (in instructions) to be applied after the byte offset (if any) before disassembling. Can be
 	 * negative.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long instructionOffset;
+	Integer instructionOffset;
 	/**
 	 * Number of instructions to disassemble starting at the specified location and offset. An adapter must return
 	 * exactly this number of instructions - any unavailable instructions should be replaced with an
 	 * implementation-defined 'invalid instruction' value.
 	 */
 	@NonNull
-	Long instructionCount;
+	Integer instructionCount;
 	/**
 	 * If true, the adapter should attempt to resolve memory addresses and other values to symbolic names.
 	 * <p>
@@ -1995,7 +1995,7 @@ class Message {
 	 * Unique identifier for the message.
 	 */
 	@NonNull
-	Long id;
+	Integer id;
 	/**
 	 * A format string for the message. Embedded variables have the form '{name}'.
 	 * <p>
@@ -2062,7 +2062,7 @@ class Module {
 	 * Unique identifier for the module.
 	 */
 	@NonNull
-	Either<Long, String> id;
+	Either<Integer, String> id;
 	/**
 	 * A name of the module.
 	 */
@@ -2161,7 +2161,7 @@ class ColumnDescriptor {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long width;
+	Integer width;
 }
 
 /**
@@ -2198,7 +2198,7 @@ class Thread {
 	 * Unique identifier for the thread.
 	 */
 	@NonNull
-	Long id;
+	Integer id;
 	/**
 	 * A name of the thread.
 	 */
@@ -2290,7 +2290,7 @@ class StackFrame {
 	 * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
 	 */
 	@NonNull
-	Long id;
+	Integer id;
 	/**
 	 * The name of the stack frame, typically a method name.
 	 */
@@ -2306,24 +2306,24 @@ class StackFrame {
 	 * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
 	 */
 	@NonNull
-	Long line;
+	Integer line;
 	/**
 	 * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
 	 */
 	@NonNull
-	Long column;
+	Integer column;
 	/**
 	 * An optional end line of the range covered by the stack frame.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * An optional end column of the range covered by the stack frame.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 	/**
 	 * Optional memory reference for the current instruction pointer in this frame.
 	 * <p>
@@ -2335,7 +2335,7 @@ class StackFrame {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Either<Long, String> moduleId;
+	Either<Integer, String> moduleId;
 	/**
 	 * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
 	 * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
@@ -2415,25 +2415,25 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long line;
+	Integer line;
 	/**
 	 * Optional start column of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * Optional end line of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * Optional end column of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 }
 
 /**
@@ -2678,25 +2678,25 @@ class BreakpointLocation {
 	 * Start line of breakpoint location.
 	 */
 	@NonNull
-	Long line;
+	Integer line;
 	/**
 	 * Optional start column of breakpoint location.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * Optional end line of breakpoint location if the location covers a range.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * Optional end column of breakpoint location if the location covers a range.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 }
 
 /**
@@ -2708,13 +2708,13 @@ class SourceBreakpoint {
 	 * The source line of the breakpoint or logpoint.
 	 */
 	@NonNull
-	Long line;
+	Integer line;
 	/**
 	 * An optional source column of the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * An optional expression for conditional breakpoints.
 	 * <p>
@@ -2814,7 +2814,7 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long id;
+	Integer id;
 	/**
 	 * If true breakpoint could be set (but not necessarily at the desired location).
 	 */
@@ -2838,26 +2838,26 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long line;
+	Integer line;
 	/**
 	 * An optional start column of the actual range covered by the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * An optional end line of the actual range covered by the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * An optional end column of the actual range covered by the breakpoint. If no end line is given, then the end
 	 * column is assumed to be in the start line.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 }
 
 /**
@@ -2870,7 +2870,7 @@ class StepInTarget {
 	 * Unique identifier for a stepIn target.
 	 */
 	@NonNull
-	Long id;
+	Integer id;
 	/**
 	 * The name of the stepIn target (shown in the UI).
 	 */
@@ -2889,7 +2889,7 @@ class GotoTarget {
 	 * Unique identifier for a goto target. This is used in the goto request.
 	 */
 	@NonNull
-	Long id;
+	Integer id;
 	/**
 	 * The name of the goto target (shown in the UI).
 	 */
@@ -2899,25 +2899,25 @@ class GotoTarget {
 	 * The line of the goto target.
 	 */
 	@NonNull
-	Long line;
+	Integer line;
 	/**
 	 * An optional column of the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * An optional end line of the range covered by the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * An optional end column of the range covered by the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 	/**
 	 * Optional memory reference for the instruction pointer value represented by this target.
 	 * <p>
@@ -2963,7 +2963,7 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long start;
+	Integer start;
 	/**
 	 * This value determines how many characters are overwritten by the completion text.
 	 * <p>
@@ -2971,7 +2971,7 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long length;
+	Integer length;
 }
 
 /**
@@ -3233,23 +3233,23 @@ class DisassembledInstruction {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long line;
+	Integer line;
 	/**
 	 * The column within the line that corresponds to this instruction, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long column;
+	Integer column;
 	/**
 	 * The end line of the range that corresponds to this instruction, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endLine;
+	Integer endLine;
 	/**
 	 * The end column of the range that corresponds to this instruction, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Long endColumn;
+	Integer endColumn;
 }

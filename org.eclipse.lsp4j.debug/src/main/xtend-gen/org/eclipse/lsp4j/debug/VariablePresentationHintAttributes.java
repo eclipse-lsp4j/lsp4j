@@ -20,35 +20,35 @@ public interface VariablePresentationHintAttributes {
   /**
    * Indicates that the object is static.
    */
-  public static final String STATIC = "static";
+  static final String STATIC = "static";
   
   /**
    * Indicates that the object is a constant.
    */
-  public static final String CONSTANT = "constant";
+  static final String CONSTANT = "constant";
   
   /**
    * Indicates that the object is read only.
    */
-  public static final String READ_ONLY = "readOnly";
+  static final String READ_ONLY = "readOnly";
   
   /**
    * Indicates that the object is a raw string.
    */
-  public static final String RAW_STRING = "rawString";
+  static final String RAW_STRING = "rawString";
   
   /**
    * Indicates that the object can have an Object ID created for it.
    */
-  public static final String HAS_OBJECT_ID = "hasObjectId";
+  static final String HAS_OBJECT_ID = "hasObjectId";
   
   /**
    * Indicates that the object has an Object ID associated with it.
    */
-  public static final String CAN_HAVE_OBJECT_ID = "canHaveObjectId";
+  static final String CAN_HAVE_OBJECT_ID = "canHaveObjectId";
   
   /**
    * Indicates that the evaluation had side effects.
    */
-  public static final String HAS_SIDE_EFFECTS = "hasSideEffects";
+  static final String HAS_SIDE_EFFECTS = "hasSideEffects";
 }

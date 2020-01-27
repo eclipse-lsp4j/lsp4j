@@ -26,7 +26,7 @@ public class ContinueArguments {
    * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
    */
   @NonNull
-  private Long threadId;
+  private Integer threadId;
   
   /**
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
@@ -34,7 +34,7 @@ public class ContinueArguments {
    */
   @Pure
   @NonNull
-  public Long getThreadId() {
+  public Integer getThreadId() {
     return this.threadId;
   }
   
@@ -42,7 +42,7 @@ public class ContinueArguments {
    * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
    * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
    */
-  public void setThreadId(@NonNull final Long threadId) {
+  public void setThreadId(@NonNull final Integer threadId) {
     this.threadId = Preconditions.checkNotNull(threadId, "threadId");
   }
   

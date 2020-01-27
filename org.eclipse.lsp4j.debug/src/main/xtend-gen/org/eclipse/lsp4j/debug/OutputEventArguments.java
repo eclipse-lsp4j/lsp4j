@@ -58,14 +58,14 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  private Long line;
+  private Integer line;
   
   /**
    * An optional source location column where the output was produced.
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * Optional data to report. For the 'telemetry' category the data will be sent to telemetry, for the other
@@ -162,7 +162,7 @@ public class OutputEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
@@ -171,7 +171,7 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setLine(final Long line) {
+  public void setLine(final Integer line) {
     this.line = line;
   }
   
@@ -181,7 +181,7 @@ public class OutputEventArguments {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -190,7 +190,7 @@ public class OutputEventArguments {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   

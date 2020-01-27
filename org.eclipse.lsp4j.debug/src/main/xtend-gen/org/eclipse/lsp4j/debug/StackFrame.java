@@ -29,7 +29,7 @@ public class StackFrame {
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
   @NonNull
-  private Long id;
+  private Integer id;
   
   /**
    * The name of the stack frame, typically a method name.
@@ -48,27 +48,27 @@ public class StackFrame {
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
   @NonNull
-  private Long line;
+  private Integer line;
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
   @NonNull
-  private Long column;
+  private Integer column;
   
   /**
    * An optional end line of the range covered by the stack frame.
    * <p>
    * This is an optional property.
    */
-  private Long endLine;
+  private Integer endLine;
   
   /**
    * An optional end column of the range covered by the stack frame.
    * <p>
    * This is an optional property.
    */
-  private Long endColumn;
+  private Integer endColumn;
   
   /**
    * Optional memory reference for the current instruction pointer in this frame.
@@ -82,7 +82,7 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  private Either<Long, String> moduleId;
+  private Either<Integer, String> moduleId;
   
   /**
    * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
@@ -99,7 +99,7 @@ public class StackFrame {
    */
   @Pure
   @NonNull
-  public Long getId() {
+  public Integer getId() {
     return this.id;
   }
   
@@ -107,7 +107,7 @@ public class StackFrame {
    * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
    * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
    */
-  public void setId(@NonNull final Long id) {
+  public void setId(@NonNull final Integer id) {
     this.id = Preconditions.checkNotNull(id, "id");
   }
   
@@ -151,14 +151,14 @@ public class StackFrame {
    */
   @Pure
   @NonNull
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
   /**
    * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
    */
-  public void setLine(@NonNull final Long line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = Preconditions.checkNotNull(line, "line");
   }
   
@@ -167,14 +167,14 @@ public class StackFrame {
    */
   @Pure
   @NonNull
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
   /**
    * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
    */
-  public void setColumn(@NonNull final Long column) {
+  public void setColumn(@NonNull final Integer column) {
     this.column = Preconditions.checkNotNull(column, "column");
   }
   
@@ -184,7 +184,7 @@ public class StackFrame {
    * This is an optional property.
    */
   @Pure
-  public Long getEndLine() {
+  public Integer getEndLine() {
     return this.endLine;
   }
   
@@ -193,7 +193,7 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Long endLine) {
+  public void setEndLine(final Integer endLine) {
     this.endLine = endLine;
   }
   
@@ -203,7 +203,7 @@ public class StackFrame {
    * This is an optional property.
    */
   @Pure
-  public Long getEndColumn() {
+  public Integer getEndColumn() {
     return this.endColumn;
   }
   
@@ -212,7 +212,7 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Long endColumn) {
+  public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
   }
   
@@ -241,7 +241,7 @@ public class StackFrame {
    * This is an optional property.
    */
   @Pure
-  public Either<Long, String> getModuleId() {
+  public Either<Integer, String> getModuleId() {
     return this.moduleId;
   }
   
@@ -250,11 +250,11 @@ public class StackFrame {
    * <p>
    * This is an optional property.
    */
-  public void setModuleId(final Either<Long, String> moduleId) {
+  public void setModuleId(final Either<Integer, String> moduleId) {
     this.moduleId = moduleId;
   }
   
-  public void setModuleId(final Long moduleId) {
+  public void setModuleId(final Integer moduleId) {
     if (moduleId == null) {
       this.moduleId = null;
       return;

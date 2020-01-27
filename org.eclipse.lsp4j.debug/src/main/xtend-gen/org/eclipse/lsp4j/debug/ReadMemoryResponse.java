@@ -34,7 +34,7 @@ public class ReadMemoryResponse {
    * <p>
    * This is an optional property.
    */
-  private Long unreadableBytes;
+  private Integer unreadableBytes;
   
   /**
    * The bytes read from memory, encoded using base64.
@@ -68,7 +68,7 @@ public class ReadMemoryResponse {
    * This is an optional property.
    */
   @Pure
-  public Long getUnreadableBytes() {
+  public Integer getUnreadableBytes() {
     return this.unreadableBytes;
   }
   
@@ -78,7 +78,7 @@ public class ReadMemoryResponse {
    * <p>
    * This is an optional property.
    */
-  public void setUnreadableBytes(final Long unreadableBytes) {
+  public void setUnreadableBytes(final Integer unreadableBytes) {
     this.unreadableBytes = unreadableBytes;
   }
   

@@ -25,21 +25,21 @@ public class StepInTargetsArguments {
    * The stack frame for which to retrieve the possible stepIn targets.
    */
   @NonNull
-  private Long frameId;
+  private Integer frameId;
   
   /**
    * The stack frame for which to retrieve the possible stepIn targets.
    */
   @Pure
   @NonNull
-  public Long getFrameId() {
+  public Integer getFrameId() {
     return this.frameId;
   }
   
   /**
    * The stack frame for which to retrieve the possible stepIn targets.
    */
-  public void setFrameId(@NonNull final Long frameId) {
+  public void setFrameId(@NonNull final Integer frameId) {
     this.frameId = Preconditions.checkNotNull(frameId, "frameId");
   }
   

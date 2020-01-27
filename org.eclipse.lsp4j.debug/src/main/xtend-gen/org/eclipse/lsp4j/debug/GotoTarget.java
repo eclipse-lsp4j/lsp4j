@@ -27,7 +27,7 @@ public class GotoTarget {
    * Unique identifier for a goto target. This is used in the goto request.
    */
   @NonNull
-  private Long id;
+  private Integer id;
   
   /**
    * The name of the goto target (shown in the UI).
@@ -39,28 +39,28 @@ public class GotoTarget {
    * The line of the goto target.
    */
   @NonNull
-  private Long line;
+  private Integer line;
   
   /**
    * An optional column of the goto target.
    * <p>
    * This is an optional property.
    */
-  private Long column;
+  private Integer column;
   
   /**
    * An optional end line of the range covered by the goto target.
    * <p>
    * This is an optional property.
    */
-  private Long endLine;
+  private Integer endLine;
   
   /**
    * An optional end column of the range covered by the goto target.
    * <p>
    * This is an optional property.
    */
-  private Long endColumn;
+  private Integer endColumn;
   
   /**
    * Optional memory reference for the instruction pointer value represented by this target.
@@ -74,14 +74,14 @@ public class GotoTarget {
    */
   @Pure
   @NonNull
-  public Long getId() {
+  public Integer getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for a goto target. This is used in the goto request.
    */
-  public void setId(@NonNull final Long id) {
+  public void setId(@NonNull final Integer id) {
     this.id = Preconditions.checkNotNull(id, "id");
   }
   
@@ -106,14 +106,14 @@ public class GotoTarget {
    */
   @Pure
   @NonNull
-  public Long getLine() {
+  public Integer getLine() {
     return this.line;
   }
   
   /**
    * The line of the goto target.
    */
-  public void setLine(@NonNull final Long line) {
+  public void setLine(@NonNull final Integer line) {
     this.line = Preconditions.checkNotNull(line, "line");
   }
   
@@ -123,7 +123,7 @@ public class GotoTarget {
    * This is an optional property.
    */
   @Pure
-  public Long getColumn() {
+  public Integer getColumn() {
     return this.column;
   }
   
@@ -132,7 +132,7 @@ public class GotoTarget {
    * <p>
    * This is an optional property.
    */
-  public void setColumn(final Long column) {
+  public void setColumn(final Integer column) {
     this.column = column;
   }
   
@@ -142,7 +142,7 @@ public class GotoTarget {
    * This is an optional property.
    */
   @Pure
-  public Long getEndLine() {
+  public Integer getEndLine() {
     return this.endLine;
   }
   
@@ -151,7 +151,7 @@ public class GotoTarget {
    * <p>
    * This is an optional property.
    */
-  public void setEndLine(final Long endLine) {
+  public void setEndLine(final Integer endLine) {
     this.endLine = endLine;
   }
   
@@ -161,7 +161,7 @@ public class GotoTarget {
    * This is an optional property.
    */
   @Pure
-  public Long getEndColumn() {
+  public Integer getEndColumn() {
     return this.endColumn;
   }
   
@@ -170,7 +170,7 @@ public class GotoTarget {
    * <p>
    * This is an optional property.
    */
-  public void setEndColumn(final Long endColumn) {
+  public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
   }
   

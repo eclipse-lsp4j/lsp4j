@@ -25,21 +25,21 @@ public class ExitedEventArguments {
    * The exit code returned from the debuggee.
    */
   @NonNull
-  private Long exitCode;
+  private Integer exitCode;
   
   /**
    * The exit code returned from the debuggee.
    */
   @Pure
   @NonNull
-  public Long getExitCode() {
+  public Integer getExitCode() {
     return this.exitCode;
   }
   
   /**
    * The exit code returned from the debuggee.
    */
-  public void setExitCode(@NonNull final Long exitCode) {
+  public void setExitCode(@NonNull final Integer exitCode) {
     this.exitCode = Preconditions.checkNotNull(exitCode, "exitCode");
   }
   
