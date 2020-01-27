@@ -11,8 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -24,23 +22,21 @@ public class RestartFrameArguments {
   /**
    * Restart this stackframe.
    */
-  @NonNull
-  private Integer frameId;
+  private int frameId;
   
   /**
    * Restart this stackframe.
    */
   @Pure
-  @NonNull
-  public Integer getFrameId() {
+  public int getFrameId() {
     return this.frameId;
   }
   
   /**
    * Restart this stackframe.
    */
-  public void setFrameId(@NonNull final Integer frameId) {
-    this.frameId = Preconditions.checkNotNull(frameId, "frameId");
+  public void setFrameId(final int frameId) {
+    this.frameId = frameId;
   }
   
   @Override
@@ -61,10 +57,7 @@ public class RestartFrameArguments {
     if (getClass() != obj.getClass())
       return false;
     RestartFrameArguments other = (RestartFrameArguments) obj;
-    if (this.frameId == null) {
-      if (other.frameId != null)
-        return false;
-    } else if (!this.frameId.equals(other.frameId))
+    if (other.frameId != this.frameId)
       return false;
     return true;
   }
@@ -72,6 +65,6 @@ public class RestartFrameArguments {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.frameId== null) ? 0 : this.frameId.hashCode());
+    return 31 * 1 + this.frameId;
   }
 }

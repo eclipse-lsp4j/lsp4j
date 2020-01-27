@@ -25,8 +25,7 @@ public class SetVariableArguments {
   /**
    * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  @NonNull
-  private Integer variablesReference;
+  private int variablesReference;
   
   /**
    * The name of the variable in the container.
@@ -51,16 +50,15 @@ public class SetVariableArguments {
    * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
-  @NonNull
-  public Integer getVariablesReference() {
+  public int getVariablesReference() {
     return this.variablesReference;
   }
   
   /**
    * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Integer variablesReference) {
-    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
+  public void setVariablesReference(final int variablesReference) {
+    this.variablesReference = variablesReference;
   }
   
   /**
@@ -135,10 +133,7 @@ public class SetVariableArguments {
     if (getClass() != obj.getClass())
       return false;
     SetVariableArguments other = (SetVariableArguments) obj;
-    if (this.variablesReference == null) {
-      if (other.variablesReference != null)
-        return false;
-    } else if (!this.variablesReference.equals(other.variablesReference))
+    if (other.variablesReference != this.variablesReference)
       return false;
     if (this.name == null) {
       if (other.name != null)
@@ -163,7 +158,7 @@ public class SetVariableArguments {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
+    result = prime * result + this.variablesReference;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.value== null) ? 0 : this.value.hashCode());
     return prime * result + ((this.format== null) ? 0 : this.format.hashCode());

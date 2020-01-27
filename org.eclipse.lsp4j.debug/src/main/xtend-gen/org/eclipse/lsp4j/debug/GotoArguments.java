@@ -11,8 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -24,45 +22,41 @@ public class GotoArguments {
   /**
    * Set the goto target for this thread.
    */
-  @NonNull
-  private Integer threadId;
+  private int threadId;
   
   /**
    * The location where the debuggee will continue to run.
    */
-  @NonNull
-  private Integer targetId;
+  private int targetId;
   
   /**
    * Set the goto target for this thread.
    */
   @Pure
-  @NonNull
-  public Integer getThreadId() {
+  public int getThreadId() {
     return this.threadId;
   }
   
   /**
    * Set the goto target for this thread.
    */
-  public void setThreadId(@NonNull final Integer threadId) {
-    this.threadId = Preconditions.checkNotNull(threadId, "threadId");
+  public void setThreadId(final int threadId) {
+    this.threadId = threadId;
   }
   
   /**
    * The location where the debuggee will continue to run.
    */
   @Pure
-  @NonNull
-  public Integer getTargetId() {
+  public int getTargetId() {
     return this.targetId;
   }
   
   /**
    * The location where the debuggee will continue to run.
    */
-  public void setTargetId(@NonNull final Integer targetId) {
-    this.targetId = Preconditions.checkNotNull(targetId, "targetId");
+  public void setTargetId(final int targetId) {
+    this.targetId = targetId;
   }
   
   @Override
@@ -84,15 +78,9 @@ public class GotoArguments {
     if (getClass() != obj.getClass())
       return false;
     GotoArguments other = (GotoArguments) obj;
-    if (this.threadId == null) {
-      if (other.threadId != null)
-        return false;
-    } else if (!this.threadId.equals(other.threadId))
+    if (other.threadId != this.threadId)
       return false;
-    if (this.targetId == null) {
-      if (other.targetId != null)
-        return false;
-    } else if (!this.targetId.equals(other.targetId))
+    if (other.targetId != this.targetId)
       return false;
     return true;
   }
@@ -102,7 +90,7 @@ public class GotoArguments {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.threadId== null) ? 0 : this.threadId.hashCode());
-    return prime * result + ((this.targetId== null) ? 0 : this.targetId.hashCode());
+    result = prime * result + this.threadId;
+    return prime * result + this.targetId;
   }
 }

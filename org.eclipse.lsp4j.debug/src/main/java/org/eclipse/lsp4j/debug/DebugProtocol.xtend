@@ -118,8 +118,7 @@ class ContinuedEventArguments {
 	/**
 	 * The thread which was continued.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 	/**
 	 * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
 	 * <p>
@@ -136,8 +135,7 @@ class ExitedEventArguments {
 	/**
 	 * The exit code returned from the debuggee.
 	 */
-	@NonNull
-	Integer exitCode;
+	int exitCode;
 }
 
 /**
@@ -173,8 +171,7 @@ class ThreadEventArguments {
 	/**
 	 * The identifier of the thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -673,8 +670,7 @@ class BreakpointLocationsArguments {
 	 * Start line of range to search possible breakpoint locations in. If only the line is specified,
 	 * the request returns all possible locations in that line.
 	 */
-	@NonNull
-	Integer line;
+	int line;
 	/**
 	 * Optional start column of range to search possible breakpoint locations in. If no start column is given,
 	 * the first column in the start line is assumed.
@@ -893,8 +889,7 @@ class ContinueArguments {
 	 * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
 	 * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -905,8 +900,7 @@ class NextArguments {
 	/**
 	 * Execute 'next' for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -917,8 +911,7 @@ class StepInArguments {
 	/**
 	 * Execute 'stepIn' for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 	/**
 	 * Optional id of the target to step into.
 	 * <p>
@@ -935,8 +928,7 @@ class StepOutArguments {
 	/**
 	 * Execute 'stepOut' for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -947,8 +939,7 @@ class StepBackArguments {
 	/**
 	 * Execute 'stepBack' for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -959,8 +950,7 @@ class ReverseContinueArguments {
 	/**
 	 * Execute 'reverseContinue' for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -971,8 +961,7 @@ class RestartFrameArguments {
 	/**
 	 * Restart this stackframe.
 	 */
-	@NonNull
-	Integer frameId;
+	int frameId;
 }
 
 /**
@@ -983,13 +972,11 @@ class GotoArguments {
 	/**
 	 * Set the goto target for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 	/**
 	 * The location where the debuggee will continue to run.
 	 */
-	@NonNull
-	Integer targetId;
+	int targetId;
 }
 
 /**
@@ -1000,8 +987,7 @@ class PauseArguments {
 	/**
 	 * Pause execution for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -1032,8 +1018,7 @@ class StackTraceArguments {
 	/**
 	 * Retrieve the stacktrace for this thread.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 	/**
 	 * The index of the first frame to return; if omitted frames start at 0.
 	 * <p>
@@ -1074,8 +1059,7 @@ class ScopesArguments {
 	/**
 	 * Retrieve the scopes for this stackframe.
 	 */
-	@NonNull
-	Integer frameId;
+	int frameId;
 }
 
 /**
@@ -1098,8 +1082,7 @@ class VariablesArguments {
 	/**
 	 * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
-	@NonNull
-	Integer variablesReference;
+	int variablesReference;
 	/**
 	 * Optional filter to limit the child variables to either named or indexed. If omitted, both types are fetched.
 	 * <p>
@@ -1185,8 +1168,7 @@ class SetVariableArguments {
 	/**
 	 * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
-	@NonNull
-	Integer variablesReference;
+	int variablesReference;
 	/**
 	 * The name of the variable in the container.
 	 */
@@ -1238,8 +1220,7 @@ class SourceArguments {
 	 * The reference to the source. This is the same as source.sourceReference. This is provided for backward
 	 * compatibility since old backends do not understand the 'source' attribute.
 	 */
-	@NonNull
-	Integer sourceReference;
+	int sourceReference;
 }
 
 /**
@@ -1349,8 +1330,7 @@ class EvaluateResponse {
 	 * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
-	@NonNull
-	Integer variablesReference;
+	int variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
@@ -1531,8 +1511,7 @@ class StepInTargetsArguments {
 	/**
 	 * The stack frame for which to retrieve the possible stepIn targets.
 	 */
-	@NonNull
-	Integer frameId;
+	int frameId;
 }
 
 /**
@@ -1560,8 +1539,7 @@ class GotoTargetsArguments {
 	/**
 	 * The line location for which the goto targets are determined.
 	 */
-	@NonNull
-	Integer line;
+	int line;
 	/**
 	 * An optional column location for which the goto targets are determined.
 	 * <p>
@@ -1603,8 +1581,7 @@ class CompletionsArguments {
 	/**
 	 * The character position for which to determine the completion proposals.
 	 */
-	@NonNull
-	Integer column;
+	int column;
 	/**
 	 * An optional line for which to determine the completion proposals. If missing the first line of the text is
 	 * assumed.
@@ -1651,8 +1628,7 @@ class ExceptionInfoArguments {
 	/**
 	 * Thread for which exception information should be retrieved.
 	 */
-	@NonNull
-	Integer threadId;
+	int threadId;
 }
 
 /**
@@ -1745,8 +1721,7 @@ class DisassembleArguments {
 	 * exactly this number of instructions - any unavailable instructions should be replaced with an
 	 * implementation-defined 'invalid instruction' value.
 	 */
-	@NonNull
-	Integer instructionCount;
+	int instructionCount;
 	/**
 	 * If true, the adapter should attempt to resolve memory addresses and other values to symbolic names.
 	 * <p>
@@ -1994,8 +1969,7 @@ class Message {
 	/**
 	 * Unique identifier for the message.
 	 */
-	@NonNull
-	Integer id;
+	int id;
 	/**
 	 * A format string for the message. Embedded variables have the form '{name}'.
 	 * <p>
@@ -2061,7 +2035,6 @@ class Module {
 	/**
 	 * Unique identifier for the module.
 	 */
-	@NonNull
 	Either<Integer, String> id;
 	/**
 	 * A name of the module.
@@ -2197,8 +2170,7 @@ class Thread {
 	/**
 	 * Unique identifier for the thread.
 	 */
-	@NonNull
-	Integer id;
+	int id;
 	/**
 	 * A name of the thread.
 	 */
@@ -2289,8 +2261,7 @@ class StackFrame {
 	 * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
 	 * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
 	 */
-	@NonNull
-	Integer id;
+	int id;
 	/**
 	 * The name of the stack frame, typically a method name.
 	 */
@@ -2305,13 +2276,11 @@ class StackFrame {
 	/**
 	 * The line within the file of the frame. If source is null or doesn't exist, line is 0 and must be ignored.
 	 */
-	@NonNull
-	Integer line;
+	int line;
 	/**
 	 * The column within the line. If source is null or doesn't exist, column is 0 and must be ignored.
 	 */
-	@NonNull
-	Integer column;
+	int column;
 	/**
 	 * An optional end line of the range covered by the stack frame.
 	 * <p>
@@ -2379,8 +2348,7 @@ class Scope {
 	 * The variables of this scope can be retrieved by passing the value of variablesReference to the
 	 * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
-	@NonNull
-	Integer variablesReference;
+	int variablesReference;
 	/**
 	 * The number of named variables in this scope.
 	 * <p>
@@ -2402,8 +2370,7 @@ class Scope {
 	/**
 	 * If true, the number of variables in this scope is large or expensive to retrieve.
 	 */
-	@NonNull
-	Boolean expensive;
+	boolean expensive;
 	/**
 	 * Optional source for this scope.
 	 * <p>
@@ -2507,8 +2474,7 @@ class Variable {
 	 * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
 	 */
-	@NonNull
-	Integer variablesReference;
+	int variablesReference;
 	/**
 	 * The number of named child variables.
 	 * <p>
@@ -2677,8 +2643,7 @@ class BreakpointLocation {
 	/**
 	 * Start line of breakpoint location.
 	 */
-	@NonNull
-	Integer line;
+	int line;
 	/**
 	 * Optional start column of breakpoint location.
 	 * <p>
@@ -2707,8 +2672,7 @@ class SourceBreakpoint {
 	/**
 	 * The source line of the breakpoint or logpoint.
 	 */
-	@NonNull
-	Integer line;
+	int line;
 	/**
 	 * An optional source column of the breakpoint.
 	 * <p>
@@ -2818,8 +2782,7 @@ class Breakpoint {
 	/**
 	 * If true breakpoint could be set (but not necessarily at the desired location).
 	 */
-	@NonNull
-	Boolean verified;
+	boolean verified;
 	/**
 	 * An optional message about the state of the breakpoint. This is shown to the user and can be used to explain why
 	 * a breakpoint could not be verified.
@@ -2869,8 +2832,7 @@ class StepInTarget {
 	/**
 	 * Unique identifier for a stepIn target.
 	 */
-	@NonNull
-	Integer id;
+	int id;
 	/**
 	 * The name of the stepIn target (shown in the UI).
 	 */
@@ -2888,8 +2850,7 @@ class GotoTarget {
 	/**
 	 * Unique identifier for a goto target. This is used in the goto request.
 	 */
-	@NonNull
-	Integer id;
+	int id;
 	/**
 	 * The name of the goto target (shown in the UI).
 	 */
@@ -2898,8 +2859,7 @@ class GotoTarget {
 	/**
 	 * The line of the goto target.
 	 */
-	@NonNull
-	Integer line;
+	int line;
 	/**
 	 * An optional column of the goto target.
 	 * <p>

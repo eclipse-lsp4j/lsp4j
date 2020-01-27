@@ -25,8 +25,7 @@ public class Message {
   /**
    * Unique identifier for the message.
    */
-  @NonNull
-  private Integer id;
+  private int id;
   
   /**
    * A format string for the message. Embedded variables have the form '{name}'.
@@ -76,16 +75,15 @@ public class Message {
    * Unique identifier for the message.
    */
   @Pure
-  @NonNull
-  public Integer getId() {
+  public int getId() {
     return this.id;
   }
   
   /**
    * Unique identifier for the message.
    */
-  public void setId(@NonNull final Integer id) {
-    this.id = Preconditions.checkNotNull(id, "id");
+  public void setId(final int id) {
+    this.id = id;
   }
   
   /**
@@ -229,10 +227,7 @@ public class Message {
     if (getClass() != obj.getClass())
       return false;
     Message other = (Message) obj;
-    if (this.id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!this.id.equals(other.id))
+    if (other.id != this.id)
       return false;
     if (this.format == null) {
       if (other.format != null)
@@ -272,7 +267,7 @@ public class Message {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
+    result = prime * result + this.id;
     result = prime * result + ((this.format== null) ? 0 : this.format.hashCode());
     result = prime * result + ((this.variables== null) ? 0 : this.variables.hashCode());
     result = prime * result + ((this.sendTelemetry== null) ? 0 : this.sendTelemetry.hashCode());

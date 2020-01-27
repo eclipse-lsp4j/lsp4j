@@ -47,8 +47,7 @@ public class DisassembleArguments {
    * exactly this number of instructions - any unavailable instructions should be replaced with an
    * implementation-defined 'invalid instruction' value.
    */
-  @NonNull
-  private Integer instructionCount;
+  private int instructionCount;
   
   /**
    * If true, the adapter should attempt to resolve memory addresses and other values to symbolic names.
@@ -119,8 +118,7 @@ public class DisassembleArguments {
    * implementation-defined 'invalid instruction' value.
    */
   @Pure
-  @NonNull
-  public Integer getInstructionCount() {
+  public int getInstructionCount() {
     return this.instructionCount;
   }
   
@@ -129,8 +127,8 @@ public class DisassembleArguments {
    * exactly this number of instructions - any unavailable instructions should be replaced with an
    * implementation-defined 'invalid instruction' value.
    */
-  public void setInstructionCount(@NonNull final Integer instructionCount) {
-    this.instructionCount = Preconditions.checkNotNull(instructionCount, "instructionCount");
+  public void setInstructionCount(final int instructionCount) {
+    this.instructionCount = instructionCount;
   }
   
   /**
@@ -189,10 +187,7 @@ public class DisassembleArguments {
         return false;
     } else if (!this.instructionOffset.equals(other.instructionOffset))
       return false;
-    if (this.instructionCount == null) {
-      if (other.instructionCount != null)
-        return false;
-    } else if (!this.instructionCount.equals(other.instructionCount))
+    if (other.instructionCount != this.instructionCount)
       return false;
     if (this.resolveSymbols == null) {
       if (other.resolveSymbols != null)
@@ -210,7 +205,7 @@ public class DisassembleArguments {
     result = prime * result + ((this.memoryReference== null) ? 0 : this.memoryReference.hashCode());
     result = prime * result + ((this.offset== null) ? 0 : this.offset.hashCode());
     result = prime * result + ((this.instructionOffset== null) ? 0 : this.instructionOffset.hashCode());
-    result = prime * result + ((this.instructionCount== null) ? 0 : this.instructionCount.hashCode());
+    result = prime * result + this.instructionCount;
     return prime * result + ((this.resolveSymbols== null) ? 0 : this.resolveSymbols.hashCode());
   }
 }

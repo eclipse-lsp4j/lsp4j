@@ -74,8 +74,7 @@ public class Variable {
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  @NonNull
-  private Integer variablesReference;
+  private int variablesReference;
   
   /**
    * The number of named child variables.
@@ -200,8 +199,7 @@ public class Variable {
    * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
-  @NonNull
-  public Integer getVariablesReference() {
+  public int getVariablesReference() {
     return this.variablesReference;
   }
   
@@ -209,8 +207,8 @@ public class Variable {
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
    */
-  public void setVariablesReference(@NonNull final Integer variablesReference) {
-    this.variablesReference = Preconditions.checkNotNull(variablesReference, "variablesReference");
+  public void setVariablesReference(final int variablesReference) {
+    this.variablesReference = variablesReference;
   }
   
   /**
@@ -333,10 +331,7 @@ public class Variable {
         return false;
     } else if (!this.evaluateName.equals(other.evaluateName))
       return false;
-    if (this.variablesReference == null) {
-      if (other.variablesReference != null)
-        return false;
-    } else if (!this.variablesReference.equals(other.variablesReference))
+    if (other.variablesReference != this.variablesReference)
       return false;
     if (this.namedVariables == null) {
       if (other.namedVariables != null)
@@ -366,7 +361,7 @@ public class Variable {
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
     result = prime * result + ((this.presentationHint== null) ? 0 : this.presentationHint.hashCode());
     result = prime * result + ((this.evaluateName== null) ? 0 : this.evaluateName.hashCode());
-    result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
+    result = prime * result + this.variablesReference;
     result = prime * result + ((this.namedVariables== null) ? 0 : this.namedVariables.hashCode());
     result = prime * result + ((this.indexedVariables== null) ? 0 : this.indexedVariables.hashCode());
     return prime * result + ((this.memoryReference== null) ? 0 : this.memoryReference.hashCode());

@@ -11,8 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.util.Preconditions;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -24,8 +22,7 @@ public class SourceBreakpoint {
   /**
    * The source line of the breakpoint or logpoint.
    */
-  @NonNull
-  private Integer line;
+  private int line;
   
   /**
    * An optional source column of the breakpoint.
@@ -61,16 +58,15 @@ public class SourceBreakpoint {
    * The source line of the breakpoint or logpoint.
    */
   @Pure
-  @NonNull
-  public Integer getLine() {
+  public int getLine() {
     return this.line;
   }
   
   /**
    * The source line of the breakpoint or logpoint.
    */
-  public void setLine(@NonNull final Integer line) {
-    this.line = Preconditions.checkNotNull(line, "line");
+  public void setLine(final int line) {
+    this.line = line;
   }
   
   /**
@@ -175,10 +171,7 @@ public class SourceBreakpoint {
     if (getClass() != obj.getClass())
       return false;
     SourceBreakpoint other = (SourceBreakpoint) obj;
-    if (this.line == null) {
-      if (other.line != null)
-        return false;
-    } else if (!this.line.equals(other.line))
+    if (other.line != this.line)
       return false;
     if (this.column == null) {
       if (other.column != null)
@@ -208,7 +201,7 @@ public class SourceBreakpoint {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
+    result = prime * result + this.line;
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.condition== null) ? 0 : this.condition.hashCode());
     result = prime * result + ((this.hitCondition== null) ? 0 : this.hitCondition.hashCode());

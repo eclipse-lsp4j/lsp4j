@@ -8,6 +8,14 @@
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/15?closed=1
 
 Breaking API changes:
+ * In DebugProtocol fields which were `@NonNull Long` are now `int` as they
+   are required. This brings the DAP implementation in LSP4J in line with
+   the LSP implementation under the same conditions.
+
+ * In DebugProtocol fields which were `@NonNull Boolean` are now `boolean`
+   as they are required. This brings the DAP implementation in LSP4J in
+   line with the LSP implementation under the same conditions.
+
  * In DebugProtocol fields which used to be defined as `Long` are now `Integer`.
    This is due to changes in DAP 1.36 and clarification sought from
    https://github.com/microsoft/debug-adapter-protocol/issues/90

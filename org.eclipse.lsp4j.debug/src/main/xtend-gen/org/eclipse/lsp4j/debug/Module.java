@@ -42,7 +42,6 @@ public class Module {
   /**
    * Unique identifier for the module.
    */
-  @NonNull
   private Either<Integer, String> id;
   
   /**
@@ -119,7 +118,6 @@ public class Module {
    * Unique identifier for the module.
    */
   @Pure
-  @NonNull
   public Either<Integer, String> getId() {
     return this.id;
   }
@@ -127,13 +125,12 @@ public class Module {
   /**
    * Unique identifier for the module.
    */
-  public void setId(@NonNull final Either<Integer, String> id) {
-    this.id = Preconditions.checkNotNull(id, "id");
+  public void setId(final Either<Integer, String> id) {
+    this.id = id;
   }
   
   public void setId(final Integer id) {
     if (id == null) {
-      Preconditions.checkNotNull(id, "id");
       this.id = null;
       return;
     }
@@ -142,7 +139,6 @@ public class Module {
   
   public void setId(final String id) {
     if (id == null) {
-      Preconditions.checkNotNull(id, "id");
       this.id = null;
       return;
     }
