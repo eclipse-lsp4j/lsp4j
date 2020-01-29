@@ -281,11 +281,38 @@ class CompletionItemCapabilities {
 	 */
 	Boolean preselectSupport
 
+	/**
+	 * Client supports the tag property on a completion item. Clients supporting
+	 * tags have to handle unknown tags gracefully. Clients especially need to
+	 * preserve unknown tags when sending a completion item back to the server in
+	 * a resolve call.
+	 * 
+	 * Since 3.15.0
+	 */
+	CompletionItemTagSupportCapabilities tagSupport
+
 	new() {
 	}
 
 	new(Boolean snippetSupport) {
 		this.snippetSupport = snippetSupport
+	}
+}
+
+@JsonRpcData
+class CompletionItemTagSupportCapabilities {
+	/**
+	* The tags supported by the client.
+	*/
+	@NonNull
+	List<CompletionItemTag> valueSet
+
+	new() {
+		this.valueSet = new ArrayList
+	}
+
+	new(@NonNull List<CompletionItemTag> valueSet) {
+		this.valueSet = Preconditions.checkNotNull(valueSet, 'valueSet')
 	}
 }
 
@@ -433,6 +460,16 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
 	 * specific properties.
 	 */
 	SignatureInformationCapabilities signatureInformation
+
+	/**
+	 * The client supports to send additional context information for a
+	 * `textDocument/signatureHelp` request. A client that opts into
+	 * contextSupport will also support the `retriggerCharacters` on
+	 * `SignatureHelpOptions`.
+	 * 
+	 * Since 3.15.0
+	 */
+	Boolean contextSupport
 
 	new() {
 	}
@@ -689,13 +726,15 @@ class CodeActionKindCapabilities {
 	 * 
 	 * See {@link CodeActionKind} for allowed values.
 	 */
+	@NonNull
 	List<String> valueSet
 
 	new() {
+		this.valueSet = new ArrayList
 	}
 
-	new(List<String> valueSet) {
-		this.valueSet = valueSet
+	new(@NonNull List<String> valueSet) {
+		this.valueSet = Preconditions.checkNotNull(valueSet, 'valueSet')
 	}
 }
 
@@ -727,6 +766,13 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	CodeActionLiteralSupportCapabilities codeActionLiteralSupport
 
+	/**
+	 * Whether code action supports the `isPreferred` property.
+	 * 
+	 * Since 3.15.0
+	 */
+	Boolean isPreferredSupport
+
 	new() {
 	}
 
@@ -737,6 +783,11 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	new(CodeActionLiteralSupportCapabilities codeActionLiteralSupport, Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 		this.codeActionLiteralSupport = codeActionLiteralSupport
+	}
+
+	new(CodeActionLiteralSupportCapabilities codeActionLiteralSupport, Boolean dynamicRegistration, Boolean isPreferredSupport) {
+		this(codeActionLiteralSupport, dynamicRegistration)
+		this.isPreferredSupport = isPreferredSupport
 	}
 }
 
@@ -758,11 +809,24 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
+
+	/**
+	 * Whether the client supports the `tooltip` property on `DocumentLink`.
+	 * 
+	 * Since 3.15.0
+	 */
+	Boolean tooltipSupport
+
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
+	}
+
+	new(Boolean dynamicRegistration, Boolean tooltipSupport) {
+		super(dynamicRegistration)
+		this.tooltipSupport = tooltipSupport
 	}
 }
 
@@ -819,10 +883,19 @@ class PublishDiagnosticsCapabilities {
 
 	/**
 	 * Client supports the tag property to provide meta data about a diagnostic.
-	 *
+	 * Clients supporting tags have to handle unknown tags gracefully.
+	 * 
 	 * Since 3.15
 	 */
 	DiagnosticsTagSupport tagSupport
+
+	/**
+	 * Whether the client interprets the version property of the
+	 * `textDocument/publishDiagnostics` notification's parameter.
+	 * 
+	 * Since 3.15.0
+	 */
+	Boolean versionSupport
 
 	new() {
 	}
@@ -832,8 +905,13 @@ class PublishDiagnosticsCapabilities {
 	}
 	
 	new(Boolean relatedInformation, DiagnosticsTagSupport tagSupport) {
-		this.relatedInformation = relatedInformation
+		this(relatedInformation)
 		this.tagSupport = tagSupport
+	}
+
+	new(Boolean relatedInformation, DiagnosticsTagSupport tagSupport, Boolean versionSupport) {
+		this(relatedInformation, tagSupport)
+		this.versionSupport = versionSupport
 	}
 }
 
@@ -842,13 +920,15 @@ class DiagnosticsTagSupport {
 	/**
 	* The tags supported by the client.
 	*/
+	@NonNull
 	List<DiagnosticTag> valueSet
 
 	new() {
+		this.valueSet = new ArrayList
 	}
 
-	new(List<DiagnosticTag> valueSet) {
-		this.valueSet = valueSet
+	new(@NonNull List<DiagnosticTag> valueSet) {
+		this.valueSet = Preconditions.checkNotNull(valueSet, 'valueSet')
 	}
 }
 
@@ -937,7 +1017,6 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
  */
-@Beta
 @JsonRpcData
 class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 	
@@ -1090,7 +1169,6 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to `textDocument/selectionRange` requests
 	 */
-	@Beta
 	SelectionRangeCapabilities  selectionRange
 }
 
@@ -1162,6 +1240,17 @@ class CodeAction {
 	List<Diagnostic> diagnostics
 
 	/**
+	 * Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
+	 * by keybindings.
+	 * 
+	 * A quick fix should be marked preferred if it properly addresses the underlying error.
+	 * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
+	 * 
+	 * Since 3.15.0
+	 */
+	Boolean isPreferred
+
+	/**
 	 * The workspace edit this code action performs.
 	 */
 	WorkspaceEdit edit
@@ -1218,8 +1307,7 @@ class CodeActionContext {
 
 /**
  * The code action request is sent from the client to the server to compute commands for a given text document and range.
- * The request is triggered when the user moves the cursor into an problem marker in the editor or presses the lightbulb
- * associated with a marker.
+ * These commands are typically code fixes to either fix problems or to beautify/refactor code.
  */
 @JsonRpcData
 class CodeActionParams {
@@ -1406,6 +1494,13 @@ class CompletionItem {
 	CompletionItemKind kind
 
 	/**
+	 * Tags for this completion item.
+	 * 
+	 * Since 3.15.0
+	 */
+	List<CompletionItemTag> tags
+
+	/**
 	 * A human-readable string with additional information about this item, like type or symbol information.
 	 */
 	String detail
@@ -1430,7 +1525,7 @@ class CompletionItem {
 	Boolean preselect
 
 	/**
-	 * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
+	 * A string that should be used when comparing this item with other items. When `falsy` the label is used.
 	 */
 	String sortText
 
@@ -1829,7 +1924,7 @@ class DidOpenTextDocumentParams {
 }
 
 /**
- * The document save notification is sent from the client to the server when the document for saved in the clinet.
+ * The document save notification is sent from the client to the server when the document was saved in the client.
  */
 @JsonRpcData
 class DidSaveTextDocumentParams {
@@ -1955,6 +2050,17 @@ class DocumentLink {
 	String target
 
 	/**
+	 * The tooltip text when you hover over this link.
+	 * 
+	 * If a tooltip is provided, is will be displayed in a string that includes instructions on how to
+	 * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
+	 * user settings, and localization.
+	 * 
+	 * Since 3.15.0
+	 */
+	String tooltip
+
+	/**
 	 * A data entry field that is preserved on a document link between a
 	 * DocumentLinkRequest and a DocumentLinkResolveRequest.
 	 */
@@ -1976,6 +2082,11 @@ class DocumentLink {
 	new(@NonNull Range range, String target, Object data) {
 		this(range, target)
 		this.data = data
+	}
+
+	new(@NonNull Range range, String target, Object data, String tooltip) {
+		this(range, target, data)
+		this.tooltip = tooltip
 	}
 }
 
@@ -2305,6 +2416,9 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	static val TAB_SIZE = 'tabSize'
 	static val INSERT_SPACES = 'insertSpaces'
+	static val TRIM_TRAILING_WHITESPACE = 'trimTrailingWhitespace'
+	static val INSERT_FINAL_NEWLINE = 'insertFinalNewline'
+	static val TRIM_FINAL_NEWLINES = 'trimFinalNewlines'
 
 	new() {
 	}
@@ -2375,6 +2489,57 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	def void setInsertSpaces(boolean insertSpaces) {
 		putBoolean(INSERT_SPACES, insertSpaces)
+	}
+
+	/**
+	 * Trim trailing whitespace on a line.
+	 * 
+	 * Since 3.15.0
+	 */
+	def boolean isTrimTrailingWhitespace() {
+		val value = getBoolean(TRIM_TRAILING_WHITESPACE)
+		if (value !== null)
+			return value
+		else
+			return false
+	}
+
+	def void setTrimTrailingWhitespace(boolean trimTrailingWhitespace) {
+		putBoolean(TRIM_TRAILING_WHITESPACE, trimTrailingWhitespace)
+	}
+
+	/**
+	 * Insert a newline character at the end of the file if one does not exist.
+	 * 
+	 * Since 3.15.0
+	 */
+	def boolean isInsertFinalNewline() {
+		val value = getBoolean(INSERT_FINAL_NEWLINE)
+		if (value !== null)
+			return value
+		else
+			return false
+	}
+
+	def void setInsertFinalNewline(boolean insertFinalNewline) {
+		putBoolean(INSERT_FINAL_NEWLINE, insertFinalNewline)
+	}
+
+	/**
+	 * Trim all newlines after the final newline at the end of the file.
+	 * 
+	 * Since 3.15.0
+	 */
+	def boolean isTrimFinalNewlines() {
+		val value = getBoolean(TRIM_FINAL_NEWLINES)
+		if (value !== null)
+			return value
+		else
+			return false
+	}
+
+	def void setTrimFinalNewlines(boolean trimFinalNewlines) {
+		putBoolean(TRIM_FINAL_NEWLINES, trimFinalNewlines)
 	}
 
 	/**
@@ -2482,7 +2647,7 @@ class Hover {
 /**
  * MarkedString can be used to render human readable text. It is either a markdown string
  * or a code-block that provides a language and a code snippet. The language identifier
- * is sematically equal to the optional language identifier in fenced code blocks in GitHub
+ * is semantically equal to the optional language identifier in fenced code blocks in GitHub
  * issues. See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
  * 
  * The pair of a language and a value is an equivalent to markdown:
@@ -2491,8 +2656,11 @@ class Hover {
  * ```
  * 
  * Note that markdown strings will be sanitized - that means html will be escaped.
+ * 
+ * @deprecated Use MarkupContent instead.
  */
 @JsonRpcData
+@Deprecated
 class MarkedString {
 	@NonNull
 	String language
@@ -2555,7 +2723,7 @@ class InitializeParams {
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
 	 * 
-	 * @deprecated in favour of rootUri.
+	 * @deprecated Use rootUri instead.
 	 */
 	@Deprecated
 	String rootPath
@@ -2580,9 +2748,18 @@ class InitializeParams {
 	/**
 	 * An optional extension to the protocol.
 	 * To tell the server what client (editor) is talking to it.
+	 * 
+	 * @deprecated Use clientInfo instead.
 	 */
 	@Deprecated
 	String clientName
+
+	/**
+	 * Information about the client
+	 * 
+	 * Since 3.15.0
+	 */
+	ClientInfo clientInfo
 
 	/**
 	 * The initial trace setting. If omitted trace is disabled ('off').
@@ -2610,16 +2787,90 @@ class InitializeResult {
 	@NonNull
 	ServerCapabilities capabilities
 
+	/**
+	 * Information about the server.
+	 * 
+	 * Since 3.15.0
+	 */
+	ServerInfo serverInfo
+
 	new() {
 	}
 
 	new(@NonNull ServerCapabilities capabilities) {
 		this.capabilities = Preconditions.checkNotNull(capabilities, 'capabilities')
 	}
+
+	new(@NonNull ServerCapabilities capabilities, ServerInfo serverInfo) {
+		this(capabilities)
+		this.serverInfo = serverInfo
+	}
 }
 
 @JsonRpcData
 class InitializedParams {
+}
+
+/**
+ * Information about the client
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+class ClientInfo {
+	/**
+	 * The name of the client as defined by the client.
+	 */
+	@NonNull
+	String name
+
+	/**
+	 * The client's version as defined by the client.
+	 */
+	String version
+
+	new() {
+	}
+
+	new(@NonNull String name) {
+		this.name = Preconditions.checkNotNull(name, 'name')
+	}
+
+	new(@NonNull String name, String version) {
+		this(name)
+		this.version = version
+	}
+}
+
+/**
+ * Information about the server.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+class ServerInfo {
+	/**
+	 * The name of the server as defined by the server.
+	 */
+	@NonNull
+	String name
+
+	/**
+	 * The server's version as defined by the server.
+	 */
+	String version
+
+	new() {
+	}
+
+	new(@NonNull String name) {
+		this.name = Preconditions.checkNotNull(name, 'name')
+	}
+
+	new(@NonNull String name, String version) {
+		this(name)
+		this.version = version
+	}
 }
 
 /**
@@ -2826,9 +3077,9 @@ class PublishDiagnosticsParams {
 	/**
 	 * Optional the version number of the document the diagnostics are published for.
 	 *
-	 * @since 3.15.0
+	 * Since 3.15.0
 	 */
-	int version
+	Integer version
 
 	new() {
 		this.diagnostics = new ArrayList
@@ -2837,6 +3088,11 @@ class PublishDiagnosticsParams {
 	new(@NonNull String uri, @NonNull List<Diagnostic> diagnostics) {
 		this.uri = Preconditions.checkNotNull(uri, 'uri')
 		this.diagnostics = Preconditions.checkNotNull(diagnostics, 'diagnostics')
+	}
+
+	new(@NonNull String uri, @NonNull List<Diagnostic> diagnostics, Integer version) {
+		this(uri, diagnostics)
+		this.version = version
 	}
 }
 
@@ -3198,6 +3454,77 @@ class ShowMessageRequestParams extends MessageParams {
 }
 
 /**
+ * The signature help request is sent from the client to the server to request signature information at a given cursor position.
+ */
+@JsonRpcData
+class SignatureHelpParams extends TextDocumentPositionParams {
+	/**
+	 * The signature help context. This is only available if the client specifies
+	 * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
+	 * 
+	 * Since 3.15.0
+	 */
+	SignatureHelpContext context
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, SignatureHelpContext context) {
+		super(textDocument, position)
+		this.context = context
+	}
+}
+
+/**
+ * Additional information about the context in which a signature help request was triggered.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+class SignatureHelpContext {
+	/**
+	 * Action that caused signature help to be triggered.
+	 */
+	@NonNull
+	SignatureHelpTriggerKind triggerKind
+
+	/**
+	 * Character that caused signature help to be triggered.
+	 * 
+	 * This is undefined when `triggerKind !== SignatureHelpTriggerKind.TriggerCharacter`
+	 */
+	String triggerCharacter
+
+	/**
+	 * `true` if signature help was already showing when it was triggered.
+	 * 
+	 * Retriggers occur when the signature help is already active and can be caused by actions such as
+	 * typing a trigger character, a cursor move, or document content changes.
+	 */
+	boolean isRetrigger
+
+	/**
+	 * The currently active `SignatureHelp`.
+	 * 
+	 * The `activeSignatureHelp` has its `SignatureHelp.activeSignature` field updated based on
+	 * the user navigating through available signatures.
+	 */
+	SignatureHelp activeSignatureHelp
+
+	new() {
+	}
+
+	new(@NonNull SignatureHelpTriggerKind triggerKind, boolean isRetrigger) {
+		this.triggerKind = triggerKind
+		this.isRetrigger = isRetrigger
+	}
+}
+
+/**
  * Signature help represents the signature of something callable. There can be multiple signature but only one
  * active and only one active parameter.
  */
@@ -3212,21 +3539,21 @@ class SignatureHelp {
 	/**
 	 * The active signature. If omitted or the value lies outside the
 	 * range of `signatures` the value defaults to zero or is ignored if
-	 * `signatures.length === 0`. Whenever possible implementors should 
-	 * make an active decision about the active signature and shouldn't 
+	 * `signatures.length === 0`. Whenever possible implementors should
+	 * make an active decision about the active signature and shouldn't
 	 * rely on a default value.
 	 * In future version of the protocol this property might become
-	 * mandantory to better express this.
+	 * mandatory to better express this.
 	 */
 	Integer activeSignature
 
 	/**
 	 * The active parameter of the active signature. If omitted or the value
-	 * lies outside the range of `signatures[activeSignature].parameters` 
-	 * defaults to 0 if the active signature has parameters. If 
-	 * the active signature has no parameters it is ignored. 
+	 * lies outside the range of `signatures[activeSignature].parameters`
+	 * defaults to 0 if the active signature has parameters. If
+	 * the active signature has no parameters it is ignored.
 	 * In future version of the protocol this property might become
-	 * mandantory to better express the active parameter if the
+	 * mandatory to better express the active parameter if the
 	 * active signature does have any.
 	 */
 	Integer activeParameter
@@ -3252,11 +3579,26 @@ class SignatureHelpOptions {
 	 */
 	List<String> triggerCharacters
 
+	/**
+	 * List of characters that re-trigger signature help.
+	 * 
+	 * These trigger characters are only active when signature help is already showing. All trigger characters
+	 * are also counted as re-trigger characters.
+	 * 
+	 * Since 3.15.0
+	 */
+	List<String> retriggerCharacters
+
 	new() {
 	}
 
 	new(List<String> triggerCharacters) {
 		this.triggerCharacters = triggerCharacters
+	}
+
+	new(List<String> triggerCharacters, List<String> retriggerCharacters) {
+		this(triggerCharacters)
+		this.retriggerCharacters = retriggerCharacters
 	}
 }
 
@@ -3523,7 +3865,10 @@ class TextDocumentContentChangeEvent {
 
 	/**
 	 * The length of the range that got replaced.
+	 * 
+	 * @deprecated Use range instead.
 	 */
+	 @Deprecated
 	Integer rangeLength
 
 	/**
@@ -4047,7 +4392,8 @@ class WorkspaceEdit {
 @JsonRpcData
 class WorkspaceSymbolParams {
 	/**
-	 * A non-empty query string
+	 * A query string to filter symbols by. Clients may send an empty
+	 * string here to request all symbols.
 	 */
 	@NonNull
 	String query
@@ -4202,6 +4548,7 @@ class Unregistration {
  */
 @JsonRpcData
 class UnregistrationParams {
+	// This is a known misspelling in the spec and is intended to be fixed in LSP 4.x
 	@NonNull
 	List<Unregistration> unregisterations
 
@@ -4460,7 +4807,7 @@ class WorkspaceFoldersOptions {
 	 * change notifications.
 	 * 
 	 * If a string is provided, the string is treated as an ID
-	 * under which the notification is registed on the client
+	 * under which the notification is registered on the client
 	 * side. The ID can be used to unregister for these events
 	 * using the `client/unregisterCapability` request.
 	 */
@@ -4596,7 +4943,7 @@ class ConfigurationItem {
 }
 
 /**
- * The document color request is sent from the client to the server to list all color refereces
+ * The document color request is sent from the client to the server to list all color references
  * found in a given text document. Along with the range, a color value in RGB is returned.
  * 
  * Since 3.6.0
@@ -4620,7 +4967,7 @@ class DocumentColorParams {
 @JsonRpcData
 class ColorInformation {
 	/**
-	 * The range in the document where this color appers.
+	 * The range in the document where this color appears.
 	 */
 	@NonNull
 	Range range
@@ -5028,7 +5375,6 @@ class CallHierarchyItem {
 /**
  * A parameter literal used in selection range requests.
  */
-@Beta
 @JsonRpcData
 class SelectionRangeParams {
 	
@@ -5044,7 +5390,6 @@ class SelectionRangeParams {
 	@NonNull
 	List<Position> positions
 	
-	
 	new() {
 	}
 
@@ -5058,7 +5403,6 @@ class SelectionRangeParams {
  * A selection range represents a part of a selection hierarchy. A selection range
  * may have a parent selection range that contains it.
  */
-@Beta
 @JsonRpcData
 class SelectionRange {
 	
@@ -5072,8 +5416,6 @@ class SelectionRange {
 	 * The parent selection range containing this range. Therefore `parent.range` must contain `this.range`.
 	 */
 	SelectionRange parent
-	
-	
 	
 	new() {
 	}

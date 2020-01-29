@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.ServerCapabilities;
+import org.eclipse.lsp4j.ServerInfo;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -25,11 +26,23 @@ public class InitializeResult {
   @NonNull
   private ServerCapabilities capabilities;
   
+  /**
+   * Information about the server.
+   * 
+   * Since 3.15.0
+   */
+  private ServerInfo serverInfo;
+  
   public InitializeResult() {
   }
   
   public InitializeResult(@NonNull final ServerCapabilities capabilities) {
     this.capabilities = Preconditions.<ServerCapabilities>checkNotNull(capabilities, "capabilities");
+  }
+  
+  public InitializeResult(@NonNull final ServerCapabilities capabilities, final ServerInfo serverInfo) {
+    this(capabilities);
+    this.serverInfo = serverInfo;
   }
   
   /**
@@ -48,11 +61,31 @@ public class InitializeResult {
     this.capabilities = Preconditions.checkNotNull(capabilities, "capabilities");
   }
   
+  /**
+   * Information about the server.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public ServerInfo getServerInfo() {
+    return this.serverInfo;
+  }
+  
+  /**
+   * Information about the server.
+   * 
+   * Since 3.15.0
+   */
+  public void setServerInfo(final ServerInfo serverInfo) {
+    this.serverInfo = serverInfo;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("capabilities", this.capabilities);
+    b.add("serverInfo", this.serverInfo);
     return b.toString();
   }
   
@@ -71,12 +104,20 @@ public class InitializeResult {
         return false;
     } else if (!this.capabilities.equals(other.capabilities))
       return false;
+    if (this.serverInfo == null) {
+      if (other.serverInfo != null)
+        return false;
+    } else if (!this.serverInfo.equals(other.serverInfo))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
+    return prime * result + ((this.serverInfo== null) ? 0 : this.serverInfo.hashCode());
   }
 }

@@ -27,6 +27,13 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
    */
   private CodeActionLiteralSupportCapabilities codeActionLiteralSupport;
   
+  /**
+   * Whether code action supports the `isPreferred` property.
+   * 
+   * Since 3.15.0
+   */
+  private Boolean isPreferredSupport;
+  
   public CodeActionCapabilities() {
   }
   
@@ -37,6 +44,11 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
   public CodeActionCapabilities(final CodeActionLiteralSupportCapabilities codeActionLiteralSupport, final Boolean dynamicRegistration) {
     super(dynamicRegistration);
     this.codeActionLiteralSupport = codeActionLiteralSupport;
+  }
+  
+  public CodeActionCapabilities(final CodeActionLiteralSupportCapabilities codeActionLiteralSupport, final Boolean dynamicRegistration, final Boolean isPreferredSupport) {
+    this(codeActionLiteralSupport, dynamicRegistration);
+    this.isPreferredSupport = isPreferredSupport;
   }
   
   /**
@@ -56,11 +68,31 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     this.codeActionLiteralSupport = codeActionLiteralSupport;
   }
   
+  /**
+   * Whether code action supports the `isPreferred` property.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public Boolean getIsPreferredSupport() {
+    return this.isPreferredSupport;
+  }
+  
+  /**
+   * Whether code action supports the `isPreferred` property.
+   * 
+   * Since 3.15.0
+   */
+  public void setIsPreferredSupport(final Boolean isPreferredSupport) {
+    this.isPreferredSupport = isPreferredSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("codeActionLiteralSupport", this.codeActionLiteralSupport);
+    b.add("isPreferredSupport", this.isPreferredSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -82,12 +114,20 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
         return false;
     } else if (!this.codeActionLiteralSupport.equals(other.codeActionLiteralSupport))
       return false;
+    if (this.isPreferredSupport == null) {
+      if (other.isPreferredSupport != null)
+        return false;
+    } else if (!this.isPreferredSupport.equals(other.isPreferredSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.codeActionLiteralSupport== null) ? 0 : this.codeActionLiteralSupport.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.codeActionLiteralSupport== null) ? 0 : this.codeActionLiteralSupport.hashCode());
+    return prime * result + ((this.isPreferredSupport== null) ? 0 : this.isPreferredSupport.hashCode());
   }
 }

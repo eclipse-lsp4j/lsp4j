@@ -39,9 +39,9 @@ public class PublishDiagnosticsParams {
   /**
    * Optional the version number of the document the diagnostics are published for.
    * 
-   * @since 3.15.0
+   * Since 3.15.0
    */
-  private int version;
+  private Integer version;
   
   public PublishDiagnosticsParams() {
     ArrayList<Diagnostic> _arrayList = new ArrayList<Diagnostic>();
@@ -51,6 +51,11 @@ public class PublishDiagnosticsParams {
   public PublishDiagnosticsParams(@NonNull final String uri, @NonNull final List<Diagnostic> diagnostics) {
     this.uri = Preconditions.<String>checkNotNull(uri, "uri");
     this.diagnostics = Preconditions.<List<Diagnostic>>checkNotNull(diagnostics, "diagnostics");
+  }
+  
+  public PublishDiagnosticsParams(@NonNull final String uri, @NonNull final List<Diagnostic> diagnostics, final Integer version) {
+    this(uri, diagnostics);
+    this.version = version;
   }
   
   /**
@@ -88,19 +93,19 @@ public class PublishDiagnosticsParams {
   /**
    * Optional the version number of the document the diagnostics are published for.
    * 
-   * @since 3.15.0
+   * Since 3.15.0
    */
   @Pure
-  public int getVersion() {
+  public Integer getVersion() {
     return this.version;
   }
   
   /**
    * Optional the version number of the document the diagnostics are published for.
    * 
-   * @since 3.15.0
+   * Since 3.15.0
    */
-  public void setVersion(final int version) {
+  public void setVersion(final Integer version) {
     this.version = version;
   }
   
@@ -134,7 +139,10 @@ public class PublishDiagnosticsParams {
         return false;
     } else if (!this.diagnostics.equals(other.diagnostics))
       return false;
-    if (other.version != this.version)
+    if (this.version == null) {
+      if (other.version != null)
+        return false;
+    } else if (!this.version.equals(other.version))
       return false;
     return true;
   }
@@ -146,6 +154,6 @@ public class PublishDiagnosticsParams {
     int result = 1;
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
-    return prime * result + this.version;
+    return prime * result + ((this.version== null) ? 0 : this.version.hashCode());
   }
 }

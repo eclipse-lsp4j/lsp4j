@@ -27,6 +27,16 @@ public class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
    */
   private SignatureInformationCapabilities signatureInformation;
   
+  /**
+   * The client supports to send additional context information for a
+   * `textDocument/signatureHelp` request. A client that opts into
+   * contextSupport will also support the `retriggerCharacters` on
+   * `SignatureHelpOptions`.
+   * 
+   * Since 3.15.0
+   */
+  private Boolean contextSupport;
+  
   public SignatureHelpCapabilities() {
   }
   
@@ -56,11 +66,37 @@ public class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
     this.signatureInformation = signatureInformation;
   }
   
+  /**
+   * The client supports to send additional context information for a
+   * `textDocument/signatureHelp` request. A client that opts into
+   * contextSupport will also support the `retriggerCharacters` on
+   * `SignatureHelpOptions`.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public Boolean getContextSupport() {
+    return this.contextSupport;
+  }
+  
+  /**
+   * The client supports to send additional context information for a
+   * `textDocument/signatureHelp` request. A client that opts into
+   * contextSupport will also support the `retriggerCharacters` on
+   * `SignatureHelpOptions`.
+   * 
+   * Since 3.15.0
+   */
+  public void setContextSupport(final Boolean contextSupport) {
+    this.contextSupport = contextSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("signatureInformation", this.signatureInformation);
+    b.add("contextSupport", this.contextSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -82,12 +118,20 @@ public class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
         return false;
     } else if (!this.signatureInformation.equals(other.signatureInformation))
       return false;
+    if (this.contextSupport == null) {
+      if (other.contextSupport != null)
+        return false;
+    } else if (!this.contextSupport.equals(other.contextSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.signatureInformation== null) ? 0 : this.signatureInformation.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.signatureInformation== null) ? 0 : this.signatureInformation.hashCode());
+    return prime * result + ((this.contextSupport== null) ? 0 : this.contextSupport.hashCode());
   }
 }

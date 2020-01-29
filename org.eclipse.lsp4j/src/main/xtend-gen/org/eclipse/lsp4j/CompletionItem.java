@@ -15,6 +15,7 @@ import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItemKind;
+import org.eclipse.lsp4j.CompletionItemTag;
 import org.eclipse.lsp4j.InsertTextFormat;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.TextEdit;
@@ -45,6 +46,13 @@ public class CompletionItem {
   private CompletionItemKind kind;
   
   /**
+   * Tags for this completion item.
+   * 
+   * Since 3.15.0
+   */
+  private List<CompletionItemTag> tags;
+  
+  /**
    * A human-readable string with additional information about this item, like type or symbol information.
    */
   private String detail;
@@ -69,7 +77,7 @@ public class CompletionItem {
   private Boolean preselect;
   
   /**
-   * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
+   * A string that should be used when comparing this item with other items. When `falsy` the label is used.
    */
   private String sortText;
   
@@ -168,6 +176,25 @@ public class CompletionItem {
   }
   
   /**
+   * Tags for this completion item.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public List<CompletionItemTag> getTags() {
+    return this.tags;
+  }
+  
+  /**
+   * Tags for this completion item.
+   * 
+   * Since 3.15.0
+   */
+  public void setTags(final List<CompletionItemTag> tags) {
+    this.tags = tags;
+  }
+  
+  /**
    * A human-readable string with additional information about this item, like type or symbol information.
    */
   @Pure
@@ -252,7 +279,7 @@ public class CompletionItem {
   }
   
   /**
-   * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
+   * A string that should be used when comparing this item with other items. When `falsy` the label is used.
    */
   @Pure
   public String getSortText() {
@@ -260,7 +287,7 @@ public class CompletionItem {
   }
   
   /**
-   * A string that shoud be used when comparing this item with other items. When `falsy` the label is used.
+   * A string that should be used when comparing this item with other items. When `falsy` the label is used.
    */
   public void setSortText(final String sortText) {
     this.sortText = sortText;
@@ -422,6 +449,7 @@ public class CompletionItem {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("label", this.label);
     b.add("kind", this.kind);
+    b.add("tags", this.tags);
     b.add("detail", this.detail);
     b.add("documentation", this.documentation);
     b.add("deprecated", this.deprecated);
@@ -457,6 +485,11 @@ public class CompletionItem {
       if (other.kind != null)
         return false;
     } else if (!this.kind.equals(other.kind))
+      return false;
+    if (this.tags == null) {
+      if (other.tags != null)
+        return false;
+    } else if (!this.tags.equals(other.tags))
       return false;
     if (this.detail == null) {
       if (other.detail != null)
@@ -533,6 +566,7 @@ public class CompletionItem {
     int result = 1;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
+    result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
     result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
     result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());

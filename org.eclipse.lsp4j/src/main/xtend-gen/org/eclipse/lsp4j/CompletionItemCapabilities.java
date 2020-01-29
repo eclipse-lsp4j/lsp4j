@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.CompletionItemTagSupportCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -50,6 +51,16 @@ public class CompletionItemCapabilities {
    * Client supports the preselect property on a completion item.
    */
   private Boolean preselectSupport;
+  
+  /**
+   * Client supports the tag property on a completion item. Clients supporting
+   * tags have to handle unknown tags gracefully. Clients especially need to
+   * preserve unknown tags when sending a completion item back to the server in
+   * a resolve call.
+   * 
+   * Since 3.15.0
+   */
+  private CompletionItemTagSupportCapabilities tagSupport;
   
   public CompletionItemCapabilities() {
   }
@@ -145,6 +156,31 @@ public class CompletionItemCapabilities {
     this.preselectSupport = preselectSupport;
   }
   
+  /**
+   * Client supports the tag property on a completion item. Clients supporting
+   * tags have to handle unknown tags gracefully. Clients especially need to
+   * preserve unknown tags when sending a completion item back to the server in
+   * a resolve call.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public CompletionItemTagSupportCapabilities getTagSupport() {
+    return this.tagSupport;
+  }
+  
+  /**
+   * Client supports the tag property on a completion item. Clients supporting
+   * tags have to handle unknown tags gracefully. Clients especially need to
+   * preserve unknown tags when sending a completion item back to the server in
+   * a resolve call.
+   * 
+   * Since 3.15.0
+   */
+  public void setTagSupport(final CompletionItemTagSupportCapabilities tagSupport) {
+    this.tagSupport = tagSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -154,6 +190,7 @@ public class CompletionItemCapabilities {
     b.add("documentationFormat", this.documentationFormat);
     b.add("deprecatedSupport", this.deprecatedSupport);
     b.add("preselectSupport", this.preselectSupport);
+    b.add("tagSupport", this.tagSupport);
     return b.toString();
   }
   
@@ -192,6 +229,11 @@ public class CompletionItemCapabilities {
         return false;
     } else if (!this.preselectSupport.equals(other.preselectSupport))
       return false;
+    if (this.tagSupport == null) {
+      if (other.tagSupport != null)
+        return false;
+    } else if (!this.tagSupport.equals(other.tagSupport))
+      return false;
     return true;
   }
   
@@ -204,6 +246,7 @@ public class CompletionItemCapabilities {
     result = prime * result + ((this.commitCharactersSupport== null) ? 0 : this.commitCharactersSupport.hashCode());
     result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
     result = prime * result + ((this.deprecatedSupport== null) ? 0 : this.deprecatedSupport.hashCode());
-    return prime * result + ((this.preselectSupport== null) ? 0 : this.preselectSupport.hashCode());
+    result = prime * result + ((this.preselectSupport== null) ? 0 : this.preselectSupport.hashCode());
+    return prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
   }
 }

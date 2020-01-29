@@ -1,6 +1,6 @@
 /******************************************************************************
- * Copyright (c) 2019 Microsoft.
- *
+ * Copyright (c) 2016-2018 TypeFox and others.
+ * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
@@ -13,30 +13,21 @@
 package org.eclipse.lsp4j;
 
 /**
- * The diagnostic tags.
+ * Completion item tags are extra annotations that tweak the rendering of a completion
+ * item.
  * 
  * Since 3.15.0
  */
-public enum DiagnosticTag {
+public enum CompletionItemTag {
 
     /**
-     * Unused or unnecessary code.
-     *
-     * Clients are allowed to render diagnostics with this tag faded out instead of having
-     * an error squiggle.
+     * Render a completion as obsolete, usually using a strike-out.
      */
-    Unnecessary(1),
-
-    /**
-     * Deprecated or obsolete code.
-     *
-     * Clients are allowed to rendered diagnostics with this tag strike through.
-     */
-    Deprecated(2);
+    Deprecated(1);
 
     private final int value;
 
-    DiagnosticTag(int value) {
+    CompletionItemTag(int value) {
         this.value = value;
     }
 
@@ -44,8 +35,8 @@ public enum DiagnosticTag {
         return value;
     }
 
-    public static DiagnosticTag forValue(int value) {
-        DiagnosticTag[] allValues = DiagnosticTag.values();
+    public static CompletionItemTag forValue(int value) {
+        CompletionItemTag[] allValues = CompletionItemTag.values();
         if (value < 1 || value > allValues.length)
             throw new IllegalArgumentException("Illegal enum value: " + value);
         return allValues[value - 1];

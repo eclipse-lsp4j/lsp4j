@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.ClientInfo;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.generator.TypeAdapterImpl;
@@ -104,6 +105,9 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     	case "clientName":
     		result.setClientName(readClientName(in));
     		break;
+    	case "clientInfo":
+    		result.setClientInfo(readClientInfo(in));
+    		break;
     	case "trace":
     		result.setTrace(readTrace(in));
     		break;
@@ -138,6 +142,10 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     return gson.fromJson(in, String.class);
   }
   
+  protected ClientInfo readClientInfo(final JsonReader in) throws IOException {
+    return gson.fromJson(in, ClientInfo.class);
+  }
+  
   protected String readTrace(final JsonReader in) throws IOException {
     return gson.fromJson(in, String.class);
   }
@@ -165,6 +173,8 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     writeCapabilities(out, value.getCapabilities());
     out.name("clientName");
     writeClientName(out, value.getClientName());
+    out.name("clientInfo");
+    writeClientInfo(out, value.getClientInfo());
     out.name("trace");
     writeTrace(out, value.getTrace());
     out.name("workspaceFolders");
@@ -189,6 +199,10 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
   
   protected void writeClientName(final JsonWriter out, final String value) throws IOException {
     out.value(value);
+  }
+  
+  protected void writeClientInfo(final JsonWriter out, final ClientInfo value) throws IOException {
+    gson.toJson(value, ClientInfo.class, out);
   }
   
   protected void writeTrace(final JsonWriter out, final String value) throws IOException {

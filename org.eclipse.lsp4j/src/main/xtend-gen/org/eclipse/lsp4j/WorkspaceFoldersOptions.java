@@ -32,7 +32,7 @@ public class WorkspaceFoldersOptions {
    * change notifications.
    * 
    * If a string is provided, the string is treated as an ID
-   * under which the notification is registed on the client
+   * under which the notification is registered on the client
    * side. The ID can be used to unregister for these events
    * using the `client/unregisterCapability` request.
    */
@@ -58,7 +58,7 @@ public class WorkspaceFoldersOptions {
    * change notifications.
    * 
    * If a string is provided, the string is treated as an ID
-   * under which the notification is registed on the client
+   * under which the notification is registered on the client
    * side. The ID can be used to unregister for these events
    * using the `client/unregisterCapability` request.
    */
@@ -72,7 +72,7 @@ public class WorkspaceFoldersOptions {
    * change notifications.
    * 
    * If a string is provided, the string is treated as an ID
-   * under which the notification is registed on the client
+   * under which the notification is registered on the client
    * side. The ID can be used to unregister for these events
    * using the `client/unregisterCapability` request.
    */

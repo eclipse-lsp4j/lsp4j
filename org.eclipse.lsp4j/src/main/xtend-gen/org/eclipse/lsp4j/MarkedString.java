@@ -19,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * MarkedString can be used to render human readable text. It is either a markdown string
  * or a code-block that provides a language and a code snippet. The language identifier
- * is sematically equal to the optional language identifier in fenced code blocks in GitHub
+ * is semantically equal to the optional language identifier in fenced code blocks in GitHub
  * issues. See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
  * 
  * The pair of a language and a value is an equivalent to markdown:
@@ -28,7 +28,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * ```
  * 
  * Note that markdown strings will be sanitized - that means html will be escaped.
+ * 
+ * @deprecated Use MarkupContent instead.
  */
+@Deprecated
 @SuppressWarnings("all")
 public class MarkedString {
   @NonNull

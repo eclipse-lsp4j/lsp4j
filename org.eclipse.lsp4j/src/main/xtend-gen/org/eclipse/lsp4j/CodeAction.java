@@ -47,6 +47,17 @@ public class CodeAction {
   private List<Diagnostic> diagnostics;
   
   /**
+   * Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
+   * by keybindings.
+   * 
+   * A quick fix should be marked preferred if it properly addresses the underlying error.
+   * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
+   * 
+   * Since 3.15.0
+   */
+  private Boolean isPreferred;
+  
+  /**
    * The workspace edit this code action performs.
    */
   private WorkspaceEdit edit;
@@ -116,6 +127,33 @@ public class CodeAction {
   }
   
   /**
+   * Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
+   * by keybindings.
+   * 
+   * A quick fix should be marked preferred if it properly addresses the underlying error.
+   * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public Boolean getIsPreferred() {
+    return this.isPreferred;
+  }
+  
+  /**
+   * Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
+   * by keybindings.
+   * 
+   * A quick fix should be marked preferred if it properly addresses the underlying error.
+   * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
+   * 
+   * Since 3.15.0
+   */
+  public void setIsPreferred(final Boolean isPreferred) {
+    this.isPreferred = isPreferred;
+  }
+  
+  /**
    * The workspace edit this code action performs.
    */
   @Pure
@@ -156,6 +194,7 @@ public class CodeAction {
     b.add("title", this.title);
     b.add("kind", this.kind);
     b.add("diagnostics", this.diagnostics);
+    b.add("isPreferred", this.isPreferred);
     b.add("edit", this.edit);
     b.add("command", this.command);
     return b.toString();
@@ -186,6 +225,11 @@ public class CodeAction {
         return false;
     } else if (!this.diagnostics.equals(other.diagnostics))
       return false;
+    if (this.isPreferred == null) {
+      if (other.isPreferred != null)
+        return false;
+    } else if (!this.isPreferred.equals(other.isPreferred))
+      return false;
     if (this.edit == null) {
       if (other.edit != null)
         return false;
@@ -207,6 +251,7 @@ public class CodeAction {
     result = prime * result + ((this.title== null) ? 0 : this.title.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
     result = prime * result + ((this.diagnostics== null) ? 0 : this.diagnostics.hashCode());
+    result = prime * result + ((this.isPreferred== null) ? 0 : this.isPreferred.hashCode());
     result = prime * result + ((this.edit== null) ? 0 : this.edit.hashCode());
     return prime * result + ((this.command== null) ? 0 : this.command.hashCode());
   }

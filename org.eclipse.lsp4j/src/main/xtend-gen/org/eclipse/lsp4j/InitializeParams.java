@@ -14,6 +14,7 @@ package org.eclipse.lsp4j;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.ClientCapabilities;
+import org.eclipse.lsp4j.ClientInfo;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
@@ -34,7 +35,7 @@ public class InitializeParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecated in favour of rootUri.
+   * @deprecated Use rootUri instead.
    */
   @Deprecated
   private String rootPath;
@@ -59,9 +60,18 @@ public class InitializeParams {
   /**
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
+   * 
+   * @deprecated Use clientInfo instead.
    */
   @Deprecated
   private String clientName;
+  
+  /**
+   * Information about the client
+   * 
+   * Since 3.15.0
+   */
+  private ClientInfo clientInfo;
   
   /**
    * The initial trace setting. If omitted trace is disabled ('off').
@@ -98,7 +108,7 @@ public class InitializeParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecated in favour of rootUri.
+   * @deprecated Use rootUri instead.
    */
   @Pure
   @Deprecated
@@ -109,7 +119,7 @@ public class InitializeParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecated in favour of rootUri.
+   * @deprecated Use rootUri instead.
    */
   @Deprecated
   public void setRootPath(final String rootPath) {
@@ -166,6 +176,8 @@ public class InitializeParams {
   /**
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
+   * 
+   * @deprecated Use clientInfo instead.
    */
   @Pure
   @Deprecated
@@ -176,10 +188,31 @@ public class InitializeParams {
   /**
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
+   * 
+   * @deprecated Use clientInfo instead.
    */
   @Deprecated
   public void setClientName(final String clientName) {
     this.clientName = clientName;
+  }
+  
+  /**
+   * Information about the client
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public ClientInfo getClientInfo() {
+    return this.clientInfo;
+  }
+  
+  /**
+   * Information about the client
+   * 
+   * Since 3.15.0
+   */
+  public void setClientInfo(final ClientInfo clientInfo) {
+    this.clientInfo = clientInfo;
   }
   
   /**
@@ -236,6 +269,7 @@ public class InitializeParams {
     b.add("initializationOptions", this.initializationOptions);
     b.add("capabilities", this.capabilities);
     b.add("clientName", this.clientName);
+    b.add("clientInfo", this.clientInfo);
     b.add("trace", this.trace);
     b.add("workspaceFolders", this.workspaceFolders);
     return b.toString();
@@ -281,6 +315,11 @@ public class InitializeParams {
         return false;
     } else if (!this.clientName.equals(other.clientName))
       return false;
+    if (this.clientInfo == null) {
+      if (other.clientInfo != null)
+        return false;
+    } else if (!this.clientInfo.equals(other.clientInfo))
+      return false;
     if (this.trace == null) {
       if (other.trace != null)
         return false;
@@ -305,6 +344,7 @@ public class InitializeParams {
     result = prime * result + ((this.initializationOptions== null) ? 0 : this.initializationOptions.hashCode());
     result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
     result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
+    result = prime * result + ((this.clientInfo== null) ? 0 : this.clientInfo.hashCode());
     result = prime * result + ((this.trace== null) ? 0 : this.trace.hashCode());
     return prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
   }

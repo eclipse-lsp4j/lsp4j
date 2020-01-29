@@ -30,7 +30,10 @@ public class TextDocumentContentChangeEvent {
   
   /**
    * The length of the range that got replaced.
+   * 
+   * @deprecated Use range instead.
    */
+  @Deprecated
   private Integer rangeLength;
   
   /**
@@ -69,15 +72,21 @@ public class TextDocumentContentChangeEvent {
   
   /**
    * The length of the range that got replaced.
+   * 
+   * @deprecated Use range instead.
    */
   @Pure
+  @Deprecated
   public Integer getRangeLength() {
     return this.rangeLength;
   }
   
   /**
    * The length of the range that got replaced.
+   * 
+   * @deprecated Use range instead.
    */
+  @Deprecated
   public void setRangeLength(final Integer rangeLength) {
     this.rangeLength = rangeLength;
   }
