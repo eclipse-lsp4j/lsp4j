@@ -30,7 +30,7 @@ case $BRANCH_NAME in
             base="${i%.*}"
             # XXX: The sign and deploy is disabled (echo'ed only) because someone
             # else is deploying snapshots on a daily basis already???
-            echo /shared/common/apache-maven-latest/bin/mvn \
+            /shared/common/apache-maven-latest/bin/mvn \
                 -s /opt/public/hipp/homes/genie.lsp4j/.m2/settings-deploy-ossrh.xml \
                 gpg:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
