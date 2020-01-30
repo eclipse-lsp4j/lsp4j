@@ -7,13 +7,7 @@ set -x # echo all commands used for debugging purposes
 DOWNLOAD=download.eclipse.org/lsp4j/$LSP4J_PUBLISH_LOCATION
 DOWNLOAD_MOUNT=/home/data/httpd/$DOWNLOAD
 ARTIFACTS=https://ci.eclipse.org/lsp4j/job/${PROJECT}/$LSP4J_BUILD_NUMBER/artifact
-
-if [ "$PROJECT" == "lsp4j" ]; then
-    ARTIFACTS_REPO_TARGET=$ARTIFACTS/build
-else
-    echo "Missing repo location of $PROJECT"
-    exit 1
-fi
+ARTIFACTS_REPO_TARGET=$ARTIFACTS/build
 
 echo Using download location root of "https://$DOWNLOAD"
 echo Using artifacts location root of $ARTIFACTS
