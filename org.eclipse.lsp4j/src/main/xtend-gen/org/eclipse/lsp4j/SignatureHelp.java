@@ -38,7 +38,7 @@ public class SignatureHelp {
    * make an active decision about the active signature and shouldn't
    * rely on a default value.
    * In future version of the protocol this property might become
-   * mandantory to better express this.
+   * mandatory to better express this.
    */
   private Integer activeSignature;
   
@@ -48,7 +48,7 @@ public class SignatureHelp {
    * defaults to 0 if the active signature has parameters. If
    * the active signature has no parameters it is ignored.
    * In future version of the protocol this property might become
-   * mandantory to better express the active parameter if the
+   * mandatory to better express the active parameter if the
    * active signature does have any.
    */
   private Integer activeParameter;
@@ -87,7 +87,7 @@ public class SignatureHelp {
    * make an active decision about the active signature and shouldn't
    * rely on a default value.
    * In future version of the protocol this property might become
-   * mandantory to better express this.
+   * mandatory to better express this.
    */
   @Pure
   public Integer getActiveSignature() {
@@ -101,7 +101,7 @@ public class SignatureHelp {
    * make an active decision about the active signature and shouldn't
    * rely on a default value.
    * In future version of the protocol this property might become
-   * mandantory to better express this.
+   * mandatory to better express this.
    */
   public void setActiveSignature(final Integer activeSignature) {
     this.activeSignature = activeSignature;
@@ -113,7 +113,7 @@ public class SignatureHelp {
    * defaults to 0 if the active signature has parameters. If
    * the active signature has no parameters it is ignored.
    * In future version of the protocol this property might become
-   * mandantory to better express the active parameter if the
+   * mandatory to better express the active parameter if the
    * active signature does have any.
    */
   @Pure
@@ -127,7 +127,7 @@ public class SignatureHelp {
    * defaults to 0 if the active signature has parameters. If
    * the active signature has no parameters it is ignored.
    * In future version of the protocol this property might become
-   * mandantory to better express the active parameter if the
+   * mandatory to better express the active parameter if the
    * active signature does have any.
    */
   public void setActiveParameter(final Integer activeParameter) {

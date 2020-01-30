@@ -58,6 +58,7 @@ import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
 import org.eclipse.lsp4j.SelectionRange;
 import org.eclipse.lsp4j.SelectionRangeParams;
 import org.eclipse.lsp4j.SignatureHelp;
+import org.eclipse.lsp4j.SignatureHelpParams;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
@@ -123,7 +124,7 @@ public interface TextDocumentService {
 	 * Registration Options: SignatureHelpRegistrationOptions
 	 */
 	@JsonRequest
-	default CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position) {
+	default CompletableFuture<SignatureHelp> signatureHelp(SignatureHelpParams params) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -509,7 +510,6 @@ public interface TextDocumentService {
 	 * suggested selection ranges at an array of given positions. A selection range is a range around
 	 * the cursor position which the user might be interested in selecting.
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<SelectionRange>> selectionRange(SelectionRangeParams params) {
 		throw new UnsupportedOperationException();

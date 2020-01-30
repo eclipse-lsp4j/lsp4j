@@ -11,8 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.lsp4j.DiagnosticTag;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -21,19 +24,23 @@ public class DiagnosticsTagSupport {
   /**
    * The tags supported by the client.
    */
+  @NonNull
   private List<DiagnosticTag> valueSet;
   
   public DiagnosticsTagSupport() {
+    ArrayList<DiagnosticTag> _arrayList = new ArrayList<DiagnosticTag>();
+    this.valueSet = _arrayList;
   }
   
-  public DiagnosticsTagSupport(final List<DiagnosticTag> valueSet) {
-    this.valueSet = valueSet;
+  public DiagnosticsTagSupport(@NonNull final List<DiagnosticTag> valueSet) {
+    this.valueSet = Preconditions.<List<DiagnosticTag>>checkNotNull(valueSet, "valueSet");
   }
   
   /**
    * The tags supported by the client.
    */
   @Pure
+  @NonNull
   public List<DiagnosticTag> getValueSet() {
     return this.valueSet;
   }
@@ -41,8 +48,8 @@ public class DiagnosticsTagSupport {
   /**
    * The tags supported by the client.
    */
-  public void setValueSet(final List<DiagnosticTag> valueSet) {
-    this.valueSet = valueSet;
+  public void setValueSet(@NonNull final List<DiagnosticTag> valueSet) {
+    this.valueSet = Preconditions.checkNotNull(valueSet, "valueSet");
   }
   
   @Override

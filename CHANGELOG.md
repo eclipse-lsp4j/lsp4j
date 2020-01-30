@@ -4,6 +4,7 @@
 
  * Implemented DAP version 1.36.0
  * Implemented DAP version 1.37.0 (except CancelRequest)
+ * Implemented LSP version 3.15.0 (except Progress)
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/15?closed=1
 
@@ -22,6 +23,10 @@ Breaking API changes:
 
  * The DebugProtocol's `EvaluateResponse`'s field `memoryReference` was previously incorrectly
    declared as `Long`, it is now correctly declared as `String`
+
+ * `CodeActionKindCapabilities.valueSet` marked with `@NonNull`
+
+ * Parameter of `textDocument/signatureHelp` changed from `TextDocumentPositionParams position` to `SignatureHelpParams params`
 
 ### v0.8.1 (Sep. 2019)
 

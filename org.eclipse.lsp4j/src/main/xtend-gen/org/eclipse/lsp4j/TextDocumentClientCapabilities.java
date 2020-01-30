@@ -181,7 +181,6 @@ public class TextDocumentClientCapabilities {
   /**
    * Capabilities specific to `textDocument/selectionRange` requests
    */
-  @Beta
   private SelectionRangeCapabilities selectionRange;
   
   @Pure

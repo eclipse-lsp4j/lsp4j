@@ -22,7 +22,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class WorkspaceSymbolParams {
   /**
-   * A non-empty query string
+   * A query string to filter symbols by. Clients may send an empty
+   * string here to request all symbols.
    */
   @NonNull
   private String query;
@@ -35,7 +36,8 @@ public class WorkspaceSymbolParams {
   }
   
   /**
-   * A non-empty query string
+   * A query string to filter symbols by. Clients may send an empty
+   * string here to request all symbols.
    */
   @Pure
   @NonNull
@@ -44,7 +46,8 @@ public class WorkspaceSymbolParams {
   }
   
   /**
-   * A non-empty query string
+   * A query string to filter symbols by. Clients may send an empty
+   * string here to request all symbols.
    */
   public void setQuery(@NonNull final String query) {
     this.query = Preconditions.checkNotNull(query, "query");

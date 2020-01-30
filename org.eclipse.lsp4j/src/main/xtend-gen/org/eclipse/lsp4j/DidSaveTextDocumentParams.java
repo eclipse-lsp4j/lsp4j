@@ -18,7 +18,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * The document save notification is sent from the client to the server when the document for saved in the clinet.
+ * The document save notification is sent from the client to the server when the document was saved in the client.
  */
 @SuppressWarnings("all")
 public class DidSaveTextDocumentParams {

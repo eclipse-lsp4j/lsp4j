@@ -20,6 +20,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
+  /**
+   * Whether the client supports the `tooltip` property on `DocumentLink`.
+   * 
+   * Since 3.15.0
+   */
+  private Boolean tooltipSupport;
+  
   public DocumentLinkCapabilities() {
   }
   
@@ -27,10 +34,35 @@ public class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
     super(dynamicRegistration);
   }
   
+  public DocumentLinkCapabilities(final Boolean dynamicRegistration, final Boolean tooltipSupport) {
+    super(dynamicRegistration);
+    this.tooltipSupport = tooltipSupport;
+  }
+  
+  /**
+   * Whether the client supports the `tooltip` property on `DocumentLink`.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public Boolean getTooltipSupport() {
+    return this.tooltipSupport;
+  }
+  
+  /**
+   * Whether the client supports the `tooltip` property on `DocumentLink`.
+   * 
+   * Since 3.15.0
+   */
+  public void setTooltipSupport(final Boolean tooltipSupport) {
+    this.tooltipSupport = tooltipSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("tooltipSupport", this.tooltipSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -46,12 +78,18 @@ public class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
       return false;
     if (!super.equals(obj))
       return false;
+    DocumentLinkCapabilities other = (DocumentLinkCapabilities) obj;
+    if (this.tooltipSupport == null) {
+      if (other.tooltipSupport != null)
+        return false;
+    } else if (!this.tooltipSupport.equals(other.tooltipSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return super.hashCode();
+    return 31 * super.hashCode() + ((this.tooltipSupport== null) ? 0 : this.tooltipSupport.hashCode());
   }
 }

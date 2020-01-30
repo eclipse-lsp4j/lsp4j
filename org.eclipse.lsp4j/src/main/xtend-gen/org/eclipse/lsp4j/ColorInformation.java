@@ -21,7 +21,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class ColorInformation {
   /**
-   * The range in the document where this color appers.
+   * The range in the document where this color appears.
    */
   @NonNull
   private Range range;
@@ -41,7 +41,7 @@ public class ColorInformation {
   }
   
   /**
-   * The range in the document where this color appers.
+   * The range in the document where this color appears.
    */
   @Pure
   @NonNull
@@ -50,7 +50,7 @@ public class ColorInformation {
   }
   
   /**
-   * The range in the document where this color appers.
+   * The range in the document where this color appears.
    */
   public void setRange(@NonNull final Range range) {
     this.range = Preconditions.checkNotNull(range, "range");

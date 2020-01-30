@@ -11,7 +11,10 @@
  */
 package org.eclipse.lsp4j;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -25,13 +28,16 @@ public class CodeActionKindCapabilities {
    * 
    * See {@link CodeActionKind} for allowed values.
    */
+  @NonNull
   private List<String> valueSet;
   
   public CodeActionKindCapabilities() {
+    ArrayList<String> _arrayList = new ArrayList<String>();
+    this.valueSet = _arrayList;
   }
   
-  public CodeActionKindCapabilities(final List<String> valueSet) {
-    this.valueSet = valueSet;
+  public CodeActionKindCapabilities(@NonNull final List<String> valueSet) {
+    this.valueSet = Preconditions.<List<String>>checkNotNull(valueSet, "valueSet");
   }
   
   /**
@@ -43,6 +49,7 @@ public class CodeActionKindCapabilities {
    * See {@link CodeActionKind} for allowed values.
    */
   @Pure
+  @NonNull
   public List<String> getValueSet() {
     return this.valueSet;
   }
@@ -55,8 +62,8 @@ public class CodeActionKindCapabilities {
    * 
    * See {@link CodeActionKind} for allowed values.
    */
-  public void setValueSet(final List<String> valueSet) {
-    this.valueSet = valueSet;
+  public void setValueSet(@NonNull final List<String> valueSet) {
+    this.valueSet = Preconditions.checkNotNull(valueSet, "valueSet");
   }
   
   @Override

@@ -27,10 +27,19 @@ public class PublishDiagnosticsCapabilities {
   
   /**
    * Client supports the tag property to provide meta data about a diagnostic.
+   * Clients supporting tags have to handle unknown tags gracefully.
    * 
    * Since 3.15
    */
   private DiagnosticsTagSupport tagSupport;
+  
+  /**
+   * Whether the client interprets the version property of the
+   * `textDocument/publishDiagnostics` notification's parameter.
+   * 
+   * Since 3.15.0
+   */
+  private Boolean versionSupport;
   
   public PublishDiagnosticsCapabilities() {
   }
@@ -40,8 +49,13 @@ public class PublishDiagnosticsCapabilities {
   }
   
   public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final DiagnosticsTagSupport tagSupport) {
-    this.relatedInformation = relatedInformation;
+    this(relatedInformation);
     this.tagSupport = tagSupport;
+  }
+  
+  public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final DiagnosticsTagSupport tagSupport, final Boolean versionSupport) {
+    this(relatedInformation, tagSupport);
+    this.versionSupport = versionSupport;
   }
   
   /**
@@ -61,6 +75,7 @@ public class PublishDiagnosticsCapabilities {
   
   /**
    * Client supports the tag property to provide meta data about a diagnostic.
+   * Clients supporting tags have to handle unknown tags gracefully.
    * 
    * Since 3.15
    */
@@ -71,11 +86,33 @@ public class PublishDiagnosticsCapabilities {
   
   /**
    * Client supports the tag property to provide meta data about a diagnostic.
+   * Clients supporting tags have to handle unknown tags gracefully.
    * 
    * Since 3.15
    */
   public void setTagSupport(final DiagnosticsTagSupport tagSupport) {
     this.tagSupport = tagSupport;
+  }
+  
+  /**
+   * Whether the client interprets the version property of the
+   * `textDocument/publishDiagnostics` notification's parameter.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public Boolean getVersionSupport() {
+    return this.versionSupport;
+  }
+  
+  /**
+   * Whether the client interprets the version property of the
+   * `textDocument/publishDiagnostics` notification's parameter.
+   * 
+   * Since 3.15.0
+   */
+  public void setVersionSupport(final Boolean versionSupport) {
+    this.versionSupport = versionSupport;
   }
   
   @Override
@@ -84,6 +121,7 @@ public class PublishDiagnosticsCapabilities {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("relatedInformation", this.relatedInformation);
     b.add("tagSupport", this.tagSupport);
+    b.add("versionSupport", this.versionSupport);
     return b.toString();
   }
   
@@ -107,6 +145,11 @@ public class PublishDiagnosticsCapabilities {
         return false;
     } else if (!this.tagSupport.equals(other.tagSupport))
       return false;
+    if (this.versionSupport == null) {
+      if (other.versionSupport != null)
+        return false;
+    } else if (!this.versionSupport.equals(other.versionSupport))
+      return false;
     return true;
   }
   
@@ -116,6 +159,7 @@ public class PublishDiagnosticsCapabilities {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
-    return prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
+    result = prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
+    return prime * result + ((this.versionSupport== null) ? 0 : this.versionSupport.hashCode());
   }
 }

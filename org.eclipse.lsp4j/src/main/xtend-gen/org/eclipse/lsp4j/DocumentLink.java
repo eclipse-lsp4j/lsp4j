@@ -37,6 +37,17 @@ public class DocumentLink {
   private String target;
   
   /**
+   * The tooltip text when you hover over this link.
+   * 
+   * If a tooltip is provided, is will be displayed in a string that includes instructions on how to
+   * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
+   * user settings, and localization.
+   * 
+   * Since 3.15.0
+   */
+  private String tooltip;
+  
+  /**
    * A data entry field that is preserved on a document link between a
    * DocumentLinkRequest and a DocumentLinkResolveRequest.
    */
@@ -58,6 +69,11 @@ public class DocumentLink {
   public DocumentLink(@NonNull final Range range, final String target, final Object data) {
     this(range, target);
     this.data = data;
+  }
+  
+  public DocumentLink(@NonNull final Range range, final String target, final Object data, final String tooltip) {
+    this(range, target, data);
+    this.tooltip = tooltip;
   }
   
   /**
@@ -92,6 +108,33 @@ public class DocumentLink {
   }
   
   /**
+   * The tooltip text when you hover over this link.
+   * 
+   * If a tooltip is provided, is will be displayed in a string that includes instructions on how to
+   * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
+   * user settings, and localization.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public String getTooltip() {
+    return this.tooltip;
+  }
+  
+  /**
+   * The tooltip text when you hover over this link.
+   * 
+   * If a tooltip is provided, is will be displayed in a string that includes instructions on how to
+   * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
+   * user settings, and localization.
+   * 
+   * Since 3.15.0
+   */
+  public void setTooltip(final String tooltip) {
+    this.tooltip = tooltip;
+  }
+  
+  /**
    * A data entry field that is preserved on a document link between a
    * DocumentLinkRequest and a DocumentLinkResolveRequest.
    */
@@ -114,6 +157,7 @@ public class DocumentLink {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("range", this.range);
     b.add("target", this.target);
+    b.add("tooltip", this.tooltip);
     b.add("data", this.data);
     return b.toString();
   }
@@ -138,6 +182,11 @@ public class DocumentLink {
         return false;
     } else if (!this.target.equals(other.target))
       return false;
+    if (this.tooltip == null) {
+      if (other.tooltip != null)
+        return false;
+    } else if (!this.tooltip.equals(other.tooltip))
+      return false;
     if (this.data == null) {
       if (other.data != null)
         return false;
@@ -153,6 +202,7 @@ public class DocumentLink {
     int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.target== null) ? 0 : this.target.hashCode());
+    result = prime * result + ((this.tooltip== null) ? 0 : this.tooltip.hashCode());
     return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

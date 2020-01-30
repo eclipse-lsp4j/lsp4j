@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
@@ -23,7 +22,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * A parameter literal used in selection range requests.
  */
-@Beta
 @SuppressWarnings("all")
 public class SelectionRangeParams {
   /**

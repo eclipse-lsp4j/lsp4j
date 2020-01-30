@@ -11,54 +11,52 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.TextDocumentIdentifier;
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.lsp4j.CompletionItemTag;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-/**
- * The document color request is sent from the client to the server to list all color references
- * found in a given text document. Along with the range, a color value in RGB is returned.
- * 
- * Since 3.6.0
- */
 @SuppressWarnings("all")
-public class DocumentColorParams {
+public class CompletionItemTagSupportCapabilities {
   /**
-   * The text document.
+   * The tags supported by the client.
    */
   @NonNull
-  private TextDocumentIdentifier textDocument;
+  private List<CompletionItemTag> valueSet;
   
-  public DocumentColorParams() {
+  public CompletionItemTagSupportCapabilities() {
+    ArrayList<CompletionItemTag> _arrayList = new ArrayList<CompletionItemTag>();
+    this.valueSet = _arrayList;
   }
   
-  public DocumentColorParams(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+  public CompletionItemTagSupportCapabilities(@NonNull final List<CompletionItemTag> valueSet) {
+    this.valueSet = Preconditions.<List<CompletionItemTag>>checkNotNull(valueSet, "valueSet");
   }
   
   /**
-   * The text document.
+   * The tags supported by the client.
    */
   @Pure
   @NonNull
-  public TextDocumentIdentifier getTextDocument() {
-    return this.textDocument;
+  public List<CompletionItemTag> getValueSet() {
+    return this.valueSet;
   }
   
   /**
-   * The text document.
+   * The tags supported by the client.
    */
-  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
+  public void setValueSet(@NonNull final List<CompletionItemTag> valueSet) {
+    this.valueSet = Preconditions.checkNotNull(valueSet, "valueSet");
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
+    b.add("valueSet", this.valueSet);
     return b.toString();
   }
   
@@ -71,11 +69,11 @@ public class DocumentColorParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    DocumentColorParams other = (DocumentColorParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
+    CompletionItemTagSupportCapabilities other = (CompletionItemTagSupportCapabilities) obj;
+    if (this.valueSet == null) {
+      if (other.valueSet != null)
         return false;
-    } else if (!this.textDocument.equals(other.textDocument))
+    } else if (!this.valueSet.equals(other.valueSet))
       return false;
     return true;
   }
@@ -83,6 +81,6 @@ public class DocumentColorParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    return 31 * 1 + ((this.valueSet== null) ? 0 : this.valueSet.hashCode());
   }
 }

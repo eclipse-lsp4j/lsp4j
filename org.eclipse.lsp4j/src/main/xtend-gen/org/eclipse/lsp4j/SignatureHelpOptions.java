@@ -25,11 +25,26 @@ public class SignatureHelpOptions {
    */
   private List<String> triggerCharacters;
   
+  /**
+   * List of characters that re-trigger signature help.
+   * 
+   * These trigger characters are only active when signature help is already showing. All trigger characters
+   * are also counted as re-trigger characters.
+   * 
+   * Since 3.15.0
+   */
+  private List<String> retriggerCharacters;
+  
   public SignatureHelpOptions() {
   }
   
   public SignatureHelpOptions(final List<String> triggerCharacters) {
     this.triggerCharacters = triggerCharacters;
+  }
+  
+  public SignatureHelpOptions(final List<String> triggerCharacters, final List<String> retriggerCharacters) {
+    this(triggerCharacters);
+    this.retriggerCharacters = retriggerCharacters;
   }
   
   /**
@@ -47,11 +62,37 @@ public class SignatureHelpOptions {
     this.triggerCharacters = triggerCharacters;
   }
   
+  /**
+   * List of characters that re-trigger signature help.
+   * 
+   * These trigger characters are only active when signature help is already showing. All trigger characters
+   * are also counted as re-trigger characters.
+   * 
+   * Since 3.15.0
+   */
+  @Pure
+  public List<String> getRetriggerCharacters() {
+    return this.retriggerCharacters;
+  }
+  
+  /**
+   * List of characters that re-trigger signature help.
+   * 
+   * These trigger characters are only active when signature help is already showing. All trigger characters
+   * are also counted as re-trigger characters.
+   * 
+   * Since 3.15.0
+   */
+  public void setRetriggerCharacters(final List<String> retriggerCharacters) {
+    this.retriggerCharacters = retriggerCharacters;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("triggerCharacters", this.triggerCharacters);
+    b.add("retriggerCharacters", this.retriggerCharacters);
     return b.toString();
   }
   
@@ -70,12 +111,20 @@ public class SignatureHelpOptions {
         return false;
     } else if (!this.triggerCharacters.equals(other.triggerCharacters))
       return false;
+    if (this.retriggerCharacters == null) {
+      if (other.retriggerCharacters != null)
+        return false;
+    } else if (!this.retriggerCharacters.equals(other.retriggerCharacters))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
+    return prime * result + ((this.retriggerCharacters== null) ? 0 : this.retriggerCharacters.hashCode());
   }
 }
