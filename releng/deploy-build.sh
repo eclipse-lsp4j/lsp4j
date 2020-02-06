@@ -28,8 +28,6 @@ case $BRANCH_NAME in
         find build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"
-            # XXX: The sign and deploy is disabled (echo'ed only) because someone
-            # else is deploying snapshots on a daily basis already???
             /shared/common/apache-maven-latest/bin/mvn \
                 -s /opt/public/hipp/homes/genie.lsp4j/.m2/settings-deploy-ossrh.xml \
                 gpg:sign-and-deploy-file \
