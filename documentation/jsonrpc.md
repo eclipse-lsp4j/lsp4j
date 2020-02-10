@@ -88,4 +88,29 @@ MyService proxy = ServiceEndpoints.toProxy(endpoint, MyService.class);
 
 Of course you can use the same interface, as is done with the [interfaces](../org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/services/LanguageServer.java) defining the messages of the LSP.
 
+# Naming of JSON RPC Request and Notifications
+
+When annotated with @JsonRequest or @JsonNotification LSP4J will use the name of the annotated method to create the JSON RPC method name. This naming can be customized by using segments and providing explicit names in the annotations. Here are some examples of method naming options:
+
+```java
+@JsonSegment("mysegment")
+public interface NamingExample {
+
+    // The JSON RPC method name will be "mysegment/myrequest"
+    @JsonRequest
+    CompletableFuture<?> myrequest();
+
+    // The JSON RPC method name will be "myotherrequest"
+    @JsonRequest(useSegment = false)
+    CompletableFuture<?> myotherrequest();
+
+    // The JSON RPC method name will be "mysegment/somethirdrequest"
+    @JsonRequest(value="somethirdrequest")
+    CompletableFuture<?> notthesamenameasvalue();
+
+    // The JSON RPC method name will be "call/it/what/you/want"
+    @JsonRequest(value="call/it/what/you/want", useSegment = false)
+    CompletableFuture<?> yetanothername();
+}
+```
 
