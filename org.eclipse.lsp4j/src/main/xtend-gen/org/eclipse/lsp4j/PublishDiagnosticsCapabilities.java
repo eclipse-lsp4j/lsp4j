@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.DiagnosticsTagSupport;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -29,9 +30,14 @@ public class PublishDiagnosticsCapabilities {
    * Client supports the tag property to provide meta data about a diagnostic.
    * Clients supporting tags have to handle unknown tags gracefully.
    * 
+   * This property had been added and implemented as boolean before it was
+   * added to the specification as {@link DiagnosticsTagSupport}. In order to
+   * keep this implementation compatible with intermediate clients (including
+   * vscode-language-client < 6.0.0) we add an either type here.
+   * 
    * Since 3.15
    */
-  private DiagnosticsTagSupport tagSupport;
+  private Either<Boolean, DiagnosticsTagSupport> tagSupport;
   
   /**
    * Whether the client interprets the version property of the
@@ -50,7 +56,7 @@ public class PublishDiagnosticsCapabilities {
   
   public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final DiagnosticsTagSupport tagSupport) {
     this(relatedInformation);
-    this.tagSupport = tagSupport;
+    this.setTagSupport(tagSupport);
   }
   
   public PublishDiagnosticsCapabilities(final Boolean relatedInformation, final DiagnosticsTagSupport tagSupport, final Boolean versionSupport) {
@@ -77,10 +83,15 @@ public class PublishDiagnosticsCapabilities {
    * Client supports the tag property to provide meta data about a diagnostic.
    * Clients supporting tags have to handle unknown tags gracefully.
    * 
+   * This property had been added and implemented as boolean before it was
+   * added to the specification as {@link DiagnosticsTagSupport}. In order to
+   * keep this implementation compatible with intermediate clients (including
+   * vscode-language-client < 6.0.0) we add an either type here.
+   * 
    * Since 3.15
    */
   @Pure
-  public DiagnosticsTagSupport getTagSupport() {
+  public Either<Boolean, DiagnosticsTagSupport> getTagSupport() {
     return this.tagSupport;
   }
   
@@ -88,10 +99,31 @@ public class PublishDiagnosticsCapabilities {
    * Client supports the tag property to provide meta data about a diagnostic.
    * Clients supporting tags have to handle unknown tags gracefully.
    * 
+   * This property had been added and implemented as boolean before it was
+   * added to the specification as {@link DiagnosticsTagSupport}. In order to
+   * keep this implementation compatible with intermediate clients (including
+   * vscode-language-client < 6.0.0) we add an either type here.
+   * 
    * Since 3.15
    */
-  public void setTagSupport(final DiagnosticsTagSupport tagSupport) {
+  public void setTagSupport(final Either<Boolean, DiagnosticsTagSupport> tagSupport) {
     this.tagSupport = tagSupport;
+  }
+  
+  public void setTagSupport(final Boolean tagSupport) {
+    if (tagSupport == null) {
+      this.tagSupport = null;
+      return;
+    }
+    this.tagSupport = Either.forLeft(tagSupport);
+  }
+  
+  public void setTagSupport(final DiagnosticsTagSupport tagSupport) {
+    if (tagSupport == null) {
+      this.tagSupport = null;
+      return;
+    }
+    this.tagSupport = Either.forRight(tagSupport);
   }
   
   /**
