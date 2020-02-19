@@ -5,6 +5,7 @@
  * Implemented DAP version 1.36.0
  * Implemented DAP version 1.37.0 (except CancelRequest)
  * Implemented LSP version 3.15.0 (except Progress)
+ * Improved compatibility with prior versions of `vscode-languageclient` (https://github.com/eclipse/lsp4j/issues/407)
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/15?closed=1
 
