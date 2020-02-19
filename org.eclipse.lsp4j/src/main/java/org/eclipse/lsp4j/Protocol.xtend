@@ -2292,7 +2292,7 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	@Deprecated
 	new(@NonNull Position position, @NonNull String ch) {
 		this.position = Preconditions.checkNotNull(position, 'position')
-		this.ch = ch
+		this.ch = Preconditions.checkNotNull(ch, 'ch')
 	}
 }
 
