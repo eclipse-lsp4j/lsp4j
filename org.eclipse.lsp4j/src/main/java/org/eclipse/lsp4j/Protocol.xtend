@@ -855,6 +855,8 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Client supports testing for validity of rename operations
 	 * before execution.
+	 * 
+	 * Since 3.12.0
 	 */
 	Boolean prepareSupport
 
@@ -1016,6 +1018,8 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
+ * 
+ * Since 3.15.0
  */
 @JsonRpcData
 class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
@@ -1168,8 +1172,10 @@ class TextDocumentClientCapabilities {
 	
 	/**
 	 * Capabilities specific to `textDocument/selectionRange` requests
+	 * 
+	 * Since 3.15.0
 	 */
-	SelectionRangeCapabilities  selectionRange
+	SelectionRangeCapabilities selectionRange
 }
 
 /**
@@ -1682,6 +1688,8 @@ class Diagnostic {
 
 	/**
 	 * Additional metadata about the diagnostic.
+	 * 
+	 * Since 3.15.0
 	 */
 	 List<DiagnosticTag> tags;
 
@@ -3372,8 +3380,9 @@ class ServerCapabilities {
 	
 	/**
 	 * The server provides selection range support.
+	 *
+	 * Since 3.15.0
 	 */
-	@Beta
 	Either<Boolean, StaticRegistrationOptions> selectionRangeProvider
 
 	/**

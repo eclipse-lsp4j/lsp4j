@@ -17,6 +17,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
+ * 
+ * Since 3.15.0
  */
 @SuppressWarnings("all")
 public class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {

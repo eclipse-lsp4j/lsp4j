@@ -56,6 +56,8 @@ public class Diagnostic {
   
   /**
    * Additional metadata about the diagnostic.
+   * 
+   * Since 3.15.0
    */
   private List<DiagnosticTag> tags;
   
@@ -167,6 +169,8 @@ public class Diagnostic {
   
   /**
    * Additional metadata about the diagnostic.
+   * 
+   * Since 3.15.0
    */
   @Pure
   public List<DiagnosticTag> getTags() {
@@ -175,6 +179,8 @@ public class Diagnostic {
   
   /**
    * Additional metadata about the diagnostic.
+   * 
+   * Since 3.15.0
    */
   public void setTags(final List<DiagnosticTag> tags) {
     this.tags = tags;

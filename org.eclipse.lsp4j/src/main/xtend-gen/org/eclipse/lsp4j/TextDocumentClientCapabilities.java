@@ -180,6 +180,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to `textDocument/selectionRange` requests
+   * 
+   * Since 3.15.0
    */
   private SelectionRangeCapabilities selectionRange;
   
@@ -565,6 +567,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to `textDocument/selectionRange` requests
+   * 
+   * Since 3.15.0
    */
   @Pure
   public SelectionRangeCapabilities getSelectionRange() {
@@ -573,6 +577,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to `textDocument/selectionRange` requests
+   * 
+   * Since 3.15.0
    */
   public void setSelectionRange(final SelectionRangeCapabilities selectionRange) {
     this.selectionRange = selectionRange;
