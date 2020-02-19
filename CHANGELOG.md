@@ -1,6 +1,6 @@
 ## LSP4J Change Log
 
-### v0.9.0 (TBD)
+### v0.9.0 (Feb. 2020)
 
  * Implemented DAP version 1.36.0
  * Implemented DAP version 1.37.0 (except CancelRequest)
@@ -26,7 +26,15 @@ Breaking API changes:
 
  * `CodeActionKindCapabilities.valueSet` marked with `@NonNull`
 
- * Parameter of `textDocument/signatureHelp` changed from `TextDocumentPositionParams position` to `SignatureHelpParams params`
+ * Parameters for the following requests have been changed from `TextDocumentPositionParams`
+     * `textDocument/signatureHelp` changed to `SignatureHelpParams`
+     * `textDocument/hover` changed to `HoverParams`
+     * `textDocument/declaration` changed to `DeclarationParams`
+     * `textDocument/definition` changed to `DefinitionParams`
+     * `textDocument/typeDefinition` changed to `TypeDefinitionParams`
+     * `textDocument/implementation` changed to `ImplementationParams`
+     * `textDocument/documentHighlight` changed to `DocumentHighlightParams`
+     * `textDocument/prepareRename` changed to `PrepareRenameParams`
 
 ### v0.8.1 (Sep. 2019)
 
