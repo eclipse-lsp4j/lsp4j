@@ -37,7 +37,7 @@ public class WillSaveTextDocumentParams {
   
   public WillSaveTextDocumentParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final TextDocumentSaveReason reason) {
     this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
-    this.reason = reason;
+    this.reason = Preconditions.<TextDocumentSaveReason>checkNotNull(reason, "reason");
   }
   
   /**
