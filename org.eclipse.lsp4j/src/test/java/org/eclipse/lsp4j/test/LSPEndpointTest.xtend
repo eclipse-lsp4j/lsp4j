@@ -24,13 +24,13 @@ import org.eclipse.lsp4j.DidChangeWatchedFilesParams
 import org.eclipse.lsp4j.DidCloseTextDocumentParams
 import org.eclipse.lsp4j.DidOpenTextDocumentParams
 import org.eclipse.lsp4j.DidSaveTextDocumentParams
+import org.eclipse.lsp4j.HoverParams
 import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.MessageParams
 import org.eclipse.lsp4j.Position
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.ShowMessageRequestParams
 import org.eclipse.lsp4j.TextDocumentIdentifier
-import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint
 import org.eclipse.lsp4j.launch.LSPLauncher
 import org.eclipse.lsp4j.services.LanguageClient
@@ -57,7 +57,7 @@ class LSPEndpointTest {
 		val launcher = LSPLauncher.createClientLauncher(client, in, out, true, null)
 		val future = launcher.startListening()
 		
-		val hoverResult = launcher.remoteProxy.textDocumentService.hover(new TextDocumentPositionParams => [
+		val hoverResult = launcher.remoteProxy.textDocumentService.hover(new HoverParams => [
 			textDocument = new TextDocumentIdentifier('foo')
 			position = new Position(0, 0)
 		])

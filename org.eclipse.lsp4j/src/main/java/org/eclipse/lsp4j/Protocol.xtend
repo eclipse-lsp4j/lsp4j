@@ -5430,3 +5430,101 @@ class SelectionRange {
 		this.parent = parent
 	}
 }
+
+/**
+ * The hover request is sent from the client to the server to request hover information at a given
+ * text document position.
+ */
+@JsonRpcData
+class HoverParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
+ * The go to declaration request is sent from the client to the server to resolve the declaration
+ * location of a symbol at a given text document position.
+ */
+@JsonRpcData
+class DeclarationParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
+ * The go to definition request is sent from the client to the server to resolve the definition
+ *  location of a symbol at a given text document position.
+ */
+@JsonRpcData
+class DefinitionParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
+ * The go to type definition request is sent from the client to the server to resolve the type definition
+ * location of a symbol at a given text document position.
+ */
+@JsonRpcData
+class TypeDefinitionParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
+ * The go to implementation request is sent from the client to the server to resolve the implementation
+ * location of a symbol at a given text document position.
+ */
+@JsonRpcData
+class ImplementationParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
+ * The document highlight request is sent from the client to the server to resolve a document highlights
+ * for a given text document position.
+ */
+@JsonRpcData
+class DocumentHighlightParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
+ * The prepare rename request is sent from the client to the server to setup and test the validity of a
+ * rename operation at a given location.
+ */
+@JsonRpcData
+class PrepareRenameParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
