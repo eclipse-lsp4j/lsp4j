@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -22,19 +23,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
 @SuppressWarnings("all")
-public class RenameParams {
-  /**
-   * The document in which to find the symbol.
-   */
-  @NonNull
-  private TextDocumentIdentifier textDocument;
-  
-  /**
-   * The position at which this request was send.
-   */
-  @NonNull
-  private Position position;
-  
+public class RenameParams extends TextDocumentPositionParams {
   /**
    * The new name of the symbol. If the given name is not valid the request must return a
    * ResponseError with an appropriate message set.
@@ -46,41 +35,8 @@ public class RenameParams {
   }
   
   public RenameParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position, @NonNull final String newName) {
-    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
-    this.position = Preconditions.<Position>checkNotNull(position, "position");
+    super(textDocument, position);
     this.newName = Preconditions.<String>checkNotNull(newName, "newName");
-  }
-  
-  /**
-   * The document in which to find the symbol.
-   */
-  @Pure
-  @NonNull
-  public TextDocumentIdentifier getTextDocument() {
-    return this.textDocument;
-  }
-  
-  /**
-   * The document in which to find the symbol.
-   */
-  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
-    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
-  }
-  
-  /**
-   * The position at which this request was send.
-   */
-  @Pure
-  @NonNull
-  public Position getPosition() {
-    return this.position;
-  }
-  
-  /**
-   * The position at which this request was send.
-   */
-  public void setPosition(@NonNull final Position position) {
-    this.position = Preconditions.checkNotNull(position, "position");
   }
   
   /**
@@ -105,9 +61,10 @@ public class RenameParams {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("textDocument", this.textDocument);
-    b.add("position", this.position);
     b.add("newName", this.newName);
+    b.add("textDocument", getTextDocument());
+    b.add("uri", getUri());
+    b.add("position", getPosition());
     return b.toString();
   }
   
@@ -120,17 +77,9 @@ public class RenameParams {
       return false;
     if (getClass() != obj.getClass())
       return false;
+    if (!super.equals(obj))
+      return false;
     RenameParams other = (RenameParams) obj;
-    if (this.textDocument == null) {
-      if (other.textDocument != null)
-        return false;
-    } else if (!this.textDocument.equals(other.textDocument))
-      return false;
-    if (this.position == null) {
-      if (other.position != null)
-        return false;
-    } else if (!this.position.equals(other.position))
-      return false;
     if (this.newName == null) {
       if (other.newName != null)
         return false;
@@ -142,10 +91,6 @@ public class RenameParams {
   @Override
   @Pure
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
-    result = prime * result + ((this.position== null) ? 0 : this.position.hashCode());
-    return prime * result + ((this.newName== null) ? 0 : this.newName.hashCode());
+    return 31 * super.hashCode() + ((this.newName== null) ? 0 : this.newName.hashCode());
   }
 }

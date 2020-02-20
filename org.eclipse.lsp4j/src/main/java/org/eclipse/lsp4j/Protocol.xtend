@@ -1977,7 +1977,7 @@ class WillSaveTextDocumentParams {
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull TextDocumentSaveReason reason) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
-		this.reason = reason
+		this.reason = Preconditions.checkNotNull(reason, 'reason')
 	}
 }
 
@@ -2288,9 +2288,16 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
 	new() {
 	}
 
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options, @NonNull Position position, @NonNull String ch) {
+		super(textDocument, options)
+		this.position = Preconditions.checkNotNull(position, 'position')
+		this.ch = Preconditions.checkNotNull(ch, 'ch')
+	}
+
+	@Deprecated
 	new(@NonNull Position position, @NonNull String ch) {
 		this.position = Preconditions.checkNotNull(position, 'position')
-		this.ch = ch
+		this.ch = Preconditions.checkNotNull(ch, 'ch')
 	}
 }
 
@@ -2308,6 +2315,12 @@ class DocumentRangeFormattingParams extends DocumentFormattingParams {
 	new() {
 	}
 
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options, @NonNull Range range) {
+		super(textDocument, options)
+		this.range = Preconditions.checkNotNull(range, 'range')
+	}
+
+	@Deprecated
 	new(@NonNull Range range) {
 		this.range = Preconditions.checkNotNull(range, 'range')
 	}
@@ -3158,6 +3171,12 @@ class ReferenceParams extends TextDocumentPositionParams {
 	new() {
 	}
 
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull ReferenceContext context) {
+		super(textDocument, position)
+		this.context = Preconditions.checkNotNull(context, 'context')
+	}
+
+	@Deprecated
 	new(@NonNull ReferenceContext context) {
 		this.context = Preconditions.checkNotNull(context, 'context')
 	}
@@ -3190,19 +3209,7 @@ class PrepareRenameResult {
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
 @JsonRpcData
-class RenameParams {
-	/**
-	 * The document in which to find the symbol.
-	 */
-	@NonNull
-	TextDocumentIdentifier textDocument
-
-	/**
-	 * The position at which this request was send.
-	 */
-	@NonNull
-	Position position
-
+class RenameParams extends TextDocumentPositionParams {
 	/**
 	 * The new name of the symbol. If the given name is not valid the request must return a
 	 * ResponseError with an appropriate message set.
@@ -3214,8 +3221,7 @@ class RenameParams {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull String newName) {
-		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
-		this.position = Preconditions.checkNotNull(position, 'position')
+		super(textDocument, position)
 		this.newName = Preconditions.checkNotNull(newName, 'newName')
 	}
 }

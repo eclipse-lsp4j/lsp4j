@@ -12,7 +12,9 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.DocumentFormattingParams;
+import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -32,6 +34,12 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams {
   public DocumentRangeFormattingParams() {
   }
   
+  public DocumentRangeFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options, @NonNull final Range range) {
+    super(textDocument, options);
+    this.range = Preconditions.<Range>checkNotNull(range, "range");
+  }
+  
+  @Deprecated
   public DocumentRangeFormattingParams(@NonNull final Range range) {
     this.range = Preconditions.<Range>checkNotNull(range, "range");
   }

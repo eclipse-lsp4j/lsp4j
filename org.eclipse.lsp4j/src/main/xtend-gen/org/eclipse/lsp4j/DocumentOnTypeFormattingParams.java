@@ -12,7 +12,9 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.DocumentFormattingParams;
+import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -38,9 +40,16 @@ public class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
   public DocumentOnTypeFormattingParams() {
   }
   
+  public DocumentOnTypeFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options, @NonNull final Position position, @NonNull final String ch) {
+    super(textDocument, options);
+    this.position = Preconditions.<Position>checkNotNull(position, "position");
+    this.ch = Preconditions.<String>checkNotNull(ch, "ch");
+  }
+  
+  @Deprecated
   public DocumentOnTypeFormattingParams(@NonNull final Position position, @NonNull final String ch) {
     this.position = Preconditions.<Position>checkNotNull(position, "position");
-    this.ch = ch;
+    this.ch = Preconditions.<String>checkNotNull(ch, "ch");
   }
   
   /**
