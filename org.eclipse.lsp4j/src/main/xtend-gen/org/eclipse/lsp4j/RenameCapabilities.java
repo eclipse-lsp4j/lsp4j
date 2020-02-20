@@ -23,6 +23,8 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
   /**
    * Client supports testing for validity of rename operations
    * before execution.
+   * 
+   * Since 3.12.0
    */
   private Boolean prepareSupport;
   
@@ -41,6 +43,8 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
   /**
    * Client supports testing for validity of rename operations
    * before execution.
+   * 
+   * Since 3.12.0
    */
   @Pure
   public Boolean getPrepareSupport() {
@@ -50,6 +54,8 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
   /**
    * Client supports testing for validity of rename operations
    * before execution.
+   * 
+   * Since 3.12.0
    */
   public void setPrepareSupport(final Boolean prepareSupport) {
     this.prepareSupport = prepareSupport;

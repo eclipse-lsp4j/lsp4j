@@ -189,8 +189,9 @@ public class ServerCapabilities {
   
   /**
    * The server provides selection range support.
+   * 
+   * Since 3.15.0
    */
-  @Beta
   private Either<Boolean, StaticRegistrationOptions> selectionRangeProvider;
   
   /**
@@ -789,6 +790,8 @@ public class ServerCapabilities {
   
   /**
    * The server provides selection range support.
+   * 
+   * Since 3.15.0
    */
   @Pure
   public Either<Boolean, StaticRegistrationOptions> getSelectionRangeProvider() {
@@ -797,6 +800,8 @@ public class ServerCapabilities {
   
   /**
    * The server provides selection range support.
+   * 
+   * Since 3.15.0
    */
   public void setSelectionRangeProvider(final Either<Boolean, StaticRegistrationOptions> selectionRangeProvider) {
     this.selectionRangeProvider = selectionRangeProvider;
