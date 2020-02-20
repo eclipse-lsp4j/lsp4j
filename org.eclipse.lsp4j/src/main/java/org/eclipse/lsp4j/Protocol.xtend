@@ -885,9 +885,14 @@ class PublishDiagnosticsCapabilities {
 	 * Client supports the tag property to provide meta data about a diagnostic.
 	 * Clients supporting tags have to handle unknown tags gracefully.
 	 * 
+	 * This property had been added and implemented as boolean before it was
+	 * added to the specification as {@link DiagnosticsTagSupport}. In order to 
+	 * keep this implementation compatible with intermediate clients (including
+	 * vscode-language-client < 6.0.0) we add an either type here.
+	 *
 	 * Since 3.15
 	 */
-	DiagnosticsTagSupport tagSupport
+	Either<Boolean, DiagnosticsTagSupport> tagSupport
 
 	/**
 	 * Whether the client interprets the version property of the
