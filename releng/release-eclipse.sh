@@ -33,6 +33,24 @@ $ECHO unzip -q p2-repository.zip
 $ECHO mv p2-repository/* .
 $ECHO rm -r p2-repository p2-repository.zip
 
+### GPG Sign and Deploy to Maven Central
+# - this wget/unzip is not $ECHO so that the find/loop does something
+wget -q $ARTIFACTS_REPO_TARGET/maven-repository/*zip*/maven-repository.zip
+unzip -q maven-repository.zip
+find maven-repository -name '*.pom' | while read i
+do
+    base="${i%.*}"
+    $ECHO /shared/common/apache-maven-latest/bin/mvn \
+        -s /opt/public/hipp/homes/genie.lsp4j/.m2/settings-deploy-ossrh.xml \
+        gpg:sign-and-deploy-file \
+        -DpomFile=${base}.pom \
+        -Dfile=${base}.jar \
+        -Dsources=${base}-sources.jar \
+        -Djavadoc=${base}-javadoc.jar \
+        -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2 \
+        -DrepositoryId=ossrh
+done
+
 if [ "$DRY_RUN" == "false" ]; then
     echo Release uploaded to "https://$DOWNLOAD"
 else
