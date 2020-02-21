@@ -24,7 +24,7 @@ mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 # Only maven deploy specific branches
 case $BRANCH_NAME in
     master | release_*)
-        # GPG Sign and Deploy to Maven Central - either snapshot or staging
+        # GPG Sign and Deploy to Maven Central snapshot
         find build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"
