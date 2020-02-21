@@ -42,13 +42,14 @@ pipeline {
         }
       }
     }
-    stage('Deploy Snapshot') {
-      steps {
-        timeout(activity: true, time: 20) {
-          sh './releng/deploy-build.sh'
-        }
-      }
-    }
+    // Skip Deploy on release builds
+    // stage('Deploy Snapshot') {
+    //   steps {
+    //     timeout(activity: true, time: 20) {
+    //       sh './releng/deploy-build.sh'
+    //     }
+    //   }
+    // }
   }
   post {
     always {
