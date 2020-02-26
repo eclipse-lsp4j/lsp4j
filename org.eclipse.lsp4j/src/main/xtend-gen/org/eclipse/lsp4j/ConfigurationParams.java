@@ -20,9 +20,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The workspace/configuration request is sent from the server to the client to fetch configuration
- * settings from the client. The request can fetch n configuration settings in one roundtrip.
+ * settings from the client. The request can fetch several configuration settings in one roundtrip.
  * The order of the returned configuration settings correspond to the order of the passed
- * ConfigurationItems (e.g. the first item in the response is the result for the first
+ * {@link ConfigurationItem}s (e.g. the first item in the response is the result for the first
  * configuration item in the params).
  * 
  * Since 3.6.0
