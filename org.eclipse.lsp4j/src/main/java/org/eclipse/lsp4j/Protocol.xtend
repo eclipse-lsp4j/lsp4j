@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j
@@ -60,8 +60,8 @@ class WorkspaceEditCapabilities {
 	/**
 	 * The client supports resource changes
 	 * in `WorkspaceEdit`s.
-	 * 
-	 * @deprecated Since LSP introduces resource operations, use {link #resourceOperations} 
+	 *
+	 * @deprecated Since LSP introduces resource operations, use {link #resourceOperations}
 	 */
 	@Deprecated
 	@Beta Boolean resourceChanges
@@ -69,7 +69,7 @@ class WorkspaceEditCapabilities {
 	/**
 	 * The resource operations the client supports. Clients should at least
 	 * support 'create', 'rename' and 'delete' files and folders.
-	 * 
+	 *
 	 * See {@link ResourceOperationKind} for allowed values.
 	 */
 	List<String> resourceOperations;
@@ -77,7 +77,7 @@ class WorkspaceEditCapabilities {
 	/**
 	 * The failure handling strategy of a client if applying the workspace edit
 	 * fails.
-	 * 
+	 *
 	 * See {@link FailureHandlingKind} for allowed values.
 	 */
 	String failureHandling;
@@ -164,7 +164,7 @@ class ExecuteCommandCapabilities extends DynamicRegistrationCapabilities {
 @JsonRpcData
 class WorkspaceClientCapabilities {
 	/**
-	 * The client supports applying batch edits to the workspace by supporting 
+	 * The client supports applying batch edits to the workspace by supporting
 	 * the request 'workspace/applyEdit'.
 	 */
 	Boolean applyEdit
@@ -196,14 +196,14 @@ class WorkspaceClientCapabilities {
 
 	/**
 	 * The client has support for workspace folders.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	Boolean workspaceFolders
 
 	/**
 	 * The client supports `workspace/configuration` requests.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	Boolean configuration
@@ -252,7 +252,7 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 class CompletionItemCapabilities {
 	/**
 	 * Client supports snippets as insert text.
-	 * 
+	 *
 	 * A snippet can define tab stops and placeholders with `$1`, `$2`
 	 * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
 	 * the end of the snippet. Placeholders with equal identifiers are linked,
@@ -286,7 +286,7 @@ class CompletionItemCapabilities {
 	 * tags have to handle unknown tags gracefully. Clients especially need to
 	 * preserve unknown tags when sending a completion item back to the server in
 	 * a resolve call.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	CompletionItemTagSupportCapabilities tagSupport
@@ -323,7 +323,7 @@ class CompletionItemKindCapabilities {
 	 * property exists the client also guarantees that it will
 	 * handle values outside its set gracefully and falls back
 	 * to a default value when unknown.
-	 * 
+	 *
 	 * If this property is not present the client only supports
 	 * the completion items kinds from `Text` to `Reference` as defined in
 	 * the initial version of the protocol.
@@ -385,7 +385,7 @@ class HoverCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Client supports the following content formats for the content
 	 * property. The order describes the preferred format of the client.
-	 * 
+	 *
 	 * See {@link MarkupKind} for allowed values.
 	 */
 	List<String> contentFormat
@@ -411,11 +411,11 @@ class SignatureInformationCapabilities {
 	/**
 	 * Client supports the following content formats for the documentation
 	 * property. The order describes the preferred format of the client.
-	 * 
+	 *
 	 * See {@link MarkupKind} for allowed values.
 	 */
 	List<String> documentationFormat
-	
+
 	/**
 	 * Client capabilities specific to parameter information.
 	 */
@@ -441,10 +441,10 @@ class ParameterInformationCapabilities {
 	 * Since 3.14.0
 	 */
 	Boolean labelOffsetSupport
-	
+
 	new() {
 	}
-	
+
 	new(Boolean labelOffsetSupport) {
 		this.labelOffsetSupport = labelOffsetSupport
 	}
@@ -466,7 +466,7 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
 	 * `textDocument/signatureHelp` request. A client that opts into
 	 * contextSupport will also support the `retriggerCharacters` on
 	 * `SignatureHelpOptions`.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	Boolean contextSupport
@@ -520,7 +520,7 @@ class SymbolKindCapabilities {
 	 * property exists the client also guarantees that it will
 	 * handle values outside its set gracefully and falls back
 	 * to a default value when unknown.
-	 * 
+	 *
 	 * If this property is not present the client only supports
 	 * the symbol kinds from `File` to `Array` as defined in
 	 * the initial version of the protocol.
@@ -623,14 +623,14 @@ class DefinitionCapabilities extends DynamicRegistrationCapabilities {
 	 * The client supports additional metadata in the form of definition links.
 	 */
 	Boolean linkSupport
-	
+
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
-	
+
 	new(Boolean dynamicRegistration, Boolean linkSupport) {
 		super(dynamicRegistration)
 		this.linkSupport = linkSupport
@@ -648,14 +648,14 @@ class DeclarationCapabilities extends DynamicRegistrationCapabilities {
 	 * The client supports additional metadata in the form of declaration links.
 	 */
 	Boolean linkSupport
-	
+
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
-	
+
 	new(Boolean dynamicRegistration, Boolean linkSupport) {
 		super(dynamicRegistration)
 		this.linkSupport = linkSupport
@@ -664,7 +664,7 @@ class DeclarationCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/typeDefinition`
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -675,14 +675,14 @@ class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
 	 * Since 3.14.0
 	 */
 	Boolean linkSupport
-	
+
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
-	
+
 	new(Boolean dynamicRegistration, Boolean linkSupport) {
 		super(dynamicRegistration)
 		this.linkSupport = linkSupport
@@ -691,7 +691,7 @@ class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/implementation`.
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -702,14 +702,14 @@ class ImplementationCapabilities extends DynamicRegistrationCapabilities {
 	 * Since 3.14.0
 	 */
 	Boolean linkSupport
-	
+
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
-	
+
 	new(Boolean dynamicRegistration, Boolean linkSupport) {
 		super(dynamicRegistration)
 		this.linkSupport = linkSupport
@@ -723,7 +723,7 @@ class CodeActionKindCapabilities {
 	 * property exists the client also guarantees that it will
 	 * handle values outside its set gracefully and falls back
 	 * to a default value when unknown.
-	 * 
+	 *
 	 * See {@link CodeActionKind} for allowed values.
 	 */
 	@NonNull
@@ -768,7 +768,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * Whether code action supports the `isPreferred` property.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	Boolean isPreferredSupport
@@ -812,7 +812,7 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * Whether the client supports the `tooltip` property on `DocumentLink`.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	Boolean tooltipSupport
@@ -833,7 +833,7 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the `textDocument/documentColor` and the
  * `textDocument/colorPresentation` request.
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -855,7 +855,7 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Client supports testing for validity of rename operations
 	 * before execution.
-	 * 
+	 *
 	 * Since 3.12.0
 	 */
 	Boolean prepareSupport
@@ -886,9 +886,9 @@ class PublishDiagnosticsCapabilities {
 	/**
 	 * Client supports the tag property to provide meta data about a diagnostic.
 	 * Clients supporting tags have to handle unknown tags gracefully.
-	 * 
+	 *
 	 * This property had been added and implemented as boolean before it was
-	 * added to the specification as {@link DiagnosticsTagSupport}. In order to 
+	 * added to the specification as {@link DiagnosticsTagSupport}. In order to
 	 * keep this implementation compatible with intermediate clients (including
 	 * vscode-language-client < 6.0.0) we add an either type here.
 	 *
@@ -899,7 +899,7 @@ class PublishDiagnosticsCapabilities {
 	/**
 	 * Whether the client interprets the version property of the
 	 * `textDocument/publishDiagnostics` notification's parameter.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	Boolean versionSupport
@@ -910,7 +910,7 @@ class PublishDiagnosticsCapabilities {
 	new(Boolean relatedInformation) {
 		this.relatedInformation = relatedInformation
 	}
-	
+
 	new(Boolean relatedInformation, DiagnosticsTagSupport tagSupport) {
 		this(relatedInformation)
 		this.tagSupport = tagSupport
@@ -941,7 +941,7 @@ class DiagnosticsTagSupport {
 
 /**
  * Capabilities specific to `textDocument/foldingRange` requests.
- * 
+ *
  * Since 3.10.0
  */
 @JsonRpcData
@@ -961,7 +961,7 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to {@code textDocument/semanticHighlighting}.
- * 
+ *
  * <p>
  * <b>Note:</b> the <a href=
  * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
@@ -986,7 +986,7 @@ class SemanticHighlightingCapabilities {
 
 /**
  * Capabilities specific to the {@code textDocument/typeHierarchy}.
- * 
+ *
  * <p>
  * <b>Note:</b> the <a href=
  * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
@@ -1023,18 +1023,18 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
 class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
-	
+
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
-	}	
+	}
 }
 
 /**
@@ -1105,14 +1105,14 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to the `textDocument/typeDefinition`
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	TypeDefinitionCapabilities typeDefinition
 
 	/**
 	 * Capabilities specific to the `textDocument/implementation`
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	ImplementationCapabilities implementation
@@ -1135,7 +1135,7 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to the `textDocument/documentColor` and the
 	 * `textDocument/colorPresentation` request.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	ColorProviderCapabilities colorProvider
@@ -1152,7 +1152,7 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to `textDocument/foldingRange` requests.
-	 * 
+	 *
 	 * Since 3.10.0
 	 */
 	FoldingRangeCapabilities foldingRange
@@ -1174,26 +1174,26 @@ class TextDocumentClientCapabilities {
 	 */
 	@Beta
 	CallHierarchyCapabilities callHierarchy
-	
+
 	/**
 	 * Capabilities specific to `textDocument/selectionRange` requests
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	SelectionRangeCapabilities selectionRange
 }
 
 /**
- * `ClientCapabilities` now define capabilities for dynamic registration, workspace and text document features the client supports. 
+ * `ClientCapabilities` now define capabilities for dynamic registration, workspace and text document features the client supports.
  * The `experimental` can be used to pass experimental capabilities under development.
  * For future compatibility a `ClientCapabilities` object literal can have more properties set than currently defined.
  * Servers receiving a `ClientCapabilities` object literal with unknown properties should ignore these properties.
  * A missing property should be interpreted as an absence of the capability.
  * If a property is missing that defines sub properties all sub properties should be interpreted as an absence of the capability.
- * 
+ *
  * Client capabilities got introduced with the version 3.0 of the protocol. They therefore only describe capabilities that got introduced in 3.x or later.
  * Capabilities that existed in the 2.x version of the protocol are still mandatory for clients. Clients cannot opt out of providing them.
- * So even if a client omits the `ClientCapabilities.textDocument.synchronization` 
+ * So even if a client omits the `ClientCapabilities.textDocument.synchronization`
  * it is still required that the client provides text document synchronization (e.g. open, changed and close notifications).
  */
 @JsonRpcData
@@ -1227,7 +1227,7 @@ class ClientCapabilities {
 /**
  * A code action represents a change that can be performed in code, e.g. to fix a problem or
  * to refactor code.
- * 
+ *
  * A CodeAction must set either `edit` and/or a `command`. If both are supplied, the `edit` is applied first, then the `command` is executed.
  */
 @JsonRpcData
@@ -1240,7 +1240,7 @@ class CodeAction {
 
 	/**
 	 * The kind of the code action.
-	 * 
+	 *
 	 * Used to filter code actions.
 	 */
 	String kind
@@ -1253,10 +1253,10 @@ class CodeAction {
 	/**
 	 * Marks this as a preferred action. Preferred actions are used by the `auto fix` command and can be targeted
 	 * by keybindings.
-	 * 
+	 *
 	 * A quick fix should be marked preferred if it properly addresses the underlying error.
 	 * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	Boolean isPreferred
@@ -1295,10 +1295,10 @@ class CodeActionContext {
 
 	/**
 	 * Requested kind of actions to return.
-	 * 
+	 *
 	 * Actions not of this kind are filtered out by the client before being shown. So servers
 	 * can omit computing them.
-	 * 
+	 *
 	 * See {@link CodeActionKind} for allowed values.
 	 */
 	List<String> only
@@ -1353,7 +1353,7 @@ class CodeActionParams {
 /**
  * A code lens represents a command that should be shown along with source text, like the number of references,
  * a way to run tests, etc.
- * 
+ *
  * A code lens is <em>unresolved</em> when no command is associated to it. For performance reasons the creation of a
  * code lens and resolving should be done to two stages.
  */
@@ -1397,7 +1397,7 @@ class CodeLens {
 class CodeActionOptions {
 	/**
 	 * CodeActionKinds that this server may return.
-	 * 
+	 *
 	 * The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
 	 * may list out every specific kind they provide.
 	 */
@@ -1506,7 +1506,7 @@ class CompletionItem {
 
 	/**
 	 * Tags for this completion item.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	List<CompletionItemTag> tags
@@ -1528,7 +1528,7 @@ class CompletionItem {
 
 	/**
 	 * Select this item when showing.
-	 * 
+	 *
 	 * *Note* that only one completion item can be selected and that the
 	 * tool / client decides which item that is. The rule is that the *first*
 	 * item of those that match best is selected.
@@ -1559,7 +1559,7 @@ class CompletionItem {
 	/**
 	 * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
 	 * `insertText` is ignored.
-	 * 
+	 *
 	 * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
 	 * has been requested.
 	 */
@@ -1569,7 +1569,7 @@ class CompletionItem {
 	 * An optional array of additional text edits that are applied when
 	 * selecting this completion. Edits must not overlap (including the same insert position)
 	 * with the main edit nor with themselves.
-	 * 
+	 *
 	 * Additional text edits should be used to change text unrelated to the current cursor position
 	 * (for example adding an import statement at the top of the file if the completion item will
 	 * insert an unqualified type).
@@ -1693,7 +1693,7 @@ class Diagnostic {
 
 	/**
 	 * Additional metadata about the diagnostic.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	 List<DiagnosticTag> tags;
@@ -1701,7 +1701,7 @@ class Diagnostic {
 	/**
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
 	 * all definitions can be marked via this property.
-	 * 
+	 *
 	 * Since 3.7.0
 	 */
 	List<DiagnosticRelatedInformation> relatedInformation
@@ -1730,7 +1730,7 @@ class Diagnostic {
  * Represents a related message and source code location for a diagnostic. This should be
  * used to point to code locations that cause or related to a diagnostics, e.g when duplicating
  * a symbol in a scope.
- * 
+ *
  * Since 3.7.0
  */
 @JsonRpcData
@@ -2064,11 +2064,11 @@ class DocumentLink {
 
 	/**
 	 * The tooltip text when you hover over this link.
-	 * 
+	 *
 	 * If a tooltip is provided, is will be displayed in a string that includes instructions on how to
 	 * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
 	 * user settings, and localization.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	String tooltip
@@ -2378,10 +2378,10 @@ class ResolveTypeHierarchyItemParams {
 	 */
 	@NonNull
 	TypeHierarchyDirection direction
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull TypeHierarchyItem item, int resolve, @NonNull TypeHierarchyDirection direction) {
 		this.item = Preconditions.checkNotNull(item, 'item')
 		this.resolve = resolve
@@ -2519,7 +2519,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	/**
 	 * Trim trailing whitespace on a line.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	def boolean isTrimTrailingWhitespace() {
@@ -2536,7 +2536,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	/**
 	 * Insert a newline character at the end of the file if one does not exist.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	def boolean isInsertFinalNewline() {
@@ -2553,7 +2553,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	/**
 	 * Trim all newlines after the final newline at the end of the file.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	def boolean isTrimFinalNewlines() {
@@ -2601,10 +2601,10 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 /**
  * A MarkupContent literal represents a string value which content is interpreted based on its
  * kind flag. Currently the protocol supports `plaintext` and `markdown` as markup kinds.
- * 
+ *
  * If the kind is `markdown` then the value can contain fenced code blocks like in GitHub issues.
  * See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
- * 
+ *
  * Please Note that clients might sanitize the return markdown. A client could decide to
  * remove HTML from the markdown to avoid script execution.
  */
@@ -2621,10 +2621,10 @@ class MarkupContent {
 	 */
 	@NonNull
 	String value
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull String kind, @NonNull String value) {
 		this.kind = Preconditions.checkNotNull(kind, 'kind')
 		this.value = Preconditions.checkNotNull(value, 'value')
@@ -2675,14 +2675,14 @@ class Hover {
  * or a code-block that provides a language and a code snippet. The language identifier
  * is semantically equal to the optional language identifier in fenced code blocks in GitHub
  * issues. See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
- * 
+ *
  * The pair of a language and a value is an equivalent to markdown:
  * ```${language}
  * ${value}
  * ```
- * 
+ *
  * Note that markdown strings will be sanitized - that means html will be escaped.
- * 
+ *
  * @deprecated Use MarkupContent instead.
  */
 @JsonRpcData
@@ -2727,7 +2727,7 @@ class InitializeError {
 interface InitializeErrorCode {
 	/**
 	 * If the protocol version provided by the client can't be handled by the server.
-	 * 
+	 *
 	 * @deprecated This initialize error got replaced by client capabilities.
 	 * There is no version handshake in version 3.0x
 	 */
@@ -2748,7 +2748,7 @@ class InitializeParams {
 
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
-	 * 
+	 *
 	 * @deprecated Use rootUri instead.
 	 */
 	@Deprecated
@@ -2774,7 +2774,7 @@ class InitializeParams {
 	/**
 	 * An optional extension to the protocol.
 	 * To tell the server what client (editor) is talking to it.
-	 * 
+	 *
 	 * @deprecated Use clientInfo instead.
 	 */
 	@Deprecated
@@ -2782,14 +2782,14 @@ class InitializeParams {
 
 	/**
 	 * Information about the client
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	ClientInfo clientInfo
 
 	/**
 	 * The initial trace setting. If omitted trace is disabled ('off').
-	 * 
+	 *
 	 * Legal values: 'off' | 'messages' | 'verbose'
 	 */
 	String trace
@@ -2799,7 +2799,7 @@ class InitializeParams {
 	 * This property is only available if the client supports workspace folders.
 	 * It can be `null` if the client supports workspace folders but none are
 	 * configured.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	List<WorkspaceFolder> workspaceFolders
@@ -2815,7 +2815,7 @@ class InitializeResult {
 
 	/**
 	 * Information about the server.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	ServerInfo serverInfo
@@ -2839,7 +2839,7 @@ class InitializedParams {
 
 /**
  * Information about the client
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
@@ -2870,7 +2870,7 @@ class ClientInfo {
 
 /**
  * Information about the server.
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
@@ -2952,16 +2952,16 @@ class LocationLink {
 	 */
 	@NonNull
 	Range targetSelectionRange
-	
+
 	new() {
 	}
-	
+
 	new(@NonNull String targetUri, @NonNull Range targetRange, @NonNull Range targetSelectionRange) {
 		this.targetUri = Preconditions.checkNotNull(targetUri, 'targetUri')
 		this.targetRange = Preconditions.checkNotNull(targetRange, 'targetRange')
 		this.targetSelectionRange = Preconditions.checkNotNull(targetSelectionRange, 'targetSelectionRange')
 	}
-	
+
 	new(@NonNull String targetUri, @NonNull Range targetRange, @NonNull Range targetSelectionRange, Range originSelectionRange) {
 		this(targetUri, targetRange, targetSelectionRange)
 		this.originSelectionRange = originSelectionRange
@@ -2992,7 +2992,7 @@ class MessageActionItem {
 /**
  * The show message notification is sent from a server to a client to ask the client to display a particular message
  * in the user class.
- * 
+ *
  * The log message notification is send from the server to the client to ask the client to log a particular message.
  */
 @JsonRpcData
@@ -3264,14 +3264,14 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides Goto Type Definition support.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	Either<Boolean, StaticRegistrationOptions> typeDefinitionProvider
 
 	/**
 	 * The server provides Goto Implementation support.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	Either<Boolean, StaticRegistrationOptions> implementationProvider
@@ -3335,18 +3335,18 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides color provider support.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	Either<Boolean, ColorProviderOptions> colorProvider
 
 	/**
 	 * The server provides folding provider support.
-	 * 
+	 *
 	 * Since 3.10.0
 	 */
 	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
-	
+
 	/**
 	 * The server provides go to declaration support.
 	 *
@@ -3369,11 +3369,11 @@ class ServerCapabilities {
 	 */
 	@Beta
 	SemanticHighlightingServerCapabilities semanticHighlighting
-	
+
 	/**
 	 * Server capability for calculating super- and subtype hierarchies.
 	 * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
-	 * 
+	 *
 	 * <p>
 	 * <b>Note:</b> the <a href=
 	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
@@ -3387,8 +3387,8 @@ class ServerCapabilities {
 	 */
 	@Beta
 	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
-	
-	
+
+
 	/**
 	 * The server provides selection range support.
 	 *
@@ -3411,7 +3411,7 @@ class ServerCapabilities {
 class WorkspaceServerCapabilities {
 	/**
 	 * The server supports workspace folder.
-	 * 
+	 *
 	 * Since 3.6.0
 	 */
 	WorkspaceFoldersOptions workspaceFolders
@@ -3426,7 +3426,7 @@ class WorkspaceServerCapabilities {
 
 /**
  * Semantic highlighting server capabilities.
- * 
+ *
  * <p>
  * <b>Note:</b> the <a href=
  * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
@@ -3481,7 +3481,7 @@ class SignatureHelpParams extends TextDocumentPositionParams {
 	/**
 	 * The signature help context. This is only available if the client specifies
 	 * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	SignatureHelpContext context
@@ -3501,7 +3501,7 @@ class SignatureHelpParams extends TextDocumentPositionParams {
 
 /**
  * Additional information about the context in which a signature help request was triggered.
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
@@ -3514,14 +3514,14 @@ class SignatureHelpContext {
 
 	/**
 	 * Character that caused signature help to be triggered.
-	 * 
+	 *
 	 * This is undefined when `triggerKind !== SignatureHelpTriggerKind.TriggerCharacter`
 	 */
 	String triggerCharacter
 
 	/**
 	 * `true` if signature help was already showing when it was triggered.
-	 * 
+	 *
 	 * Retriggers occur when the signature help is already active and can be caused by actions such as
 	 * typing a trigger character, a cursor move, or document content changes.
 	 */
@@ -3529,7 +3529,7 @@ class SignatureHelpContext {
 
 	/**
 	 * The currently active `SignatureHelp`.
-	 * 
+	 *
 	 * The `activeSignatureHelp` has its `SignatureHelp.activeSignature` field updated based on
 	 * the user navigating through available signatures.
 	 */
@@ -3601,10 +3601,10 @@ class SignatureHelpOptions {
 
 	/**
 	 * List of characters that re-trigger signature help.
-	 * 
+	 *
 	 * These trigger characters are only active when signature help is already showing. All trigger characters
 	 * are also counted as re-trigger characters.
-	 * 
+	 *
 	 * Since 3.15.0
 	 */
 	List<String> retriggerCharacters
@@ -3669,29 +3669,29 @@ class SignatureInformation {
  */
 @JsonRpcData
 class TypeHierarchyItem {
-	
+
 	/**
 	 * The human readable name of the hierarchy item.
 	 */
 	@NonNull
 	String name
-	
+
 	/**
 	 * Optional detail for the hierarchy item. It can be, for instance, the signature of a function or method.
 	 */
 	String detail
-	
+
 	/**
 	 * The kind of the hierarchy item. For instance, class or interface.
 	 */
 	@NonNull
 	SymbolKind kind
-	
+
 	/**
 	 * {@code true} if the hierarchy item is deprecated. Otherwise, {@code false}. It is {@code false} by default.
 	 */
 	Boolean deprecated
-	
+
 	/**
 	 * The URI of the text document where this type hierarchy item belongs to.
 	 */
@@ -3702,7 +3702,7 @@ class TypeHierarchyItem {
 	 * The range enclosing this type hierarchy item not including leading/trailing whitespace but everything else
 	 * like comments. This information is typically used to determine if the clients cursor is inside the type
 	 * hierarchy item to reveal in the symbol in the UI.
-	 * 
+	 *
 	 * @see TypeHierarchyItem#selectionRange
 	 */
 	@NonNull
@@ -3711,7 +3711,7 @@ class TypeHierarchyItem {
 	/**
 	 * The range that should be selected and revealed when this type hierarchy item is being picked, e.g the name of a function.
 	 * Must be contained by the the {@link TypeHierarchyItem#getRange range}.
-	 * 
+	 *
 	 * @see TypeHierarchyItem#range
 	 */
 	@NonNull
@@ -3841,7 +3841,7 @@ class SymbolInformation {
 	 * tool the range's start information is used to position the cursor. So
 	 * the range usually spans more then the actual symbol's name and does
 	 * normally include things like visibility modifiers.
-	 * 
+	 *
 	 * The range doesn't have to denote a node range in the sense of a abstract
 	 * syntax tree. It can therefore not be used to re-construct a hierarchy of
 	 * the symbols.
@@ -3885,7 +3885,7 @@ class TextDocumentContentChangeEvent {
 
 	/**
 	 * The length of the range that got replaced.
-	 * 
+	 *
 	 * @deprecated Use range instead.
 	 */
 	 @Deprecated
@@ -4328,11 +4328,11 @@ class DeleteFile extends ResourceOperation {
 
 /**
  * A resource change.
- * 
+ *
  * If both current and newUri has valid values this is considered to be a move operation.
  * If current has a valid value while newUri is null it is treated as a delete operation.
  * If current is null and newUri has a valid value a create operation is executed.
- * 
+ *
  * @deprecated As LSP introduces resource operation, use the {@link ResourceOperation} instead.
  */
 @JsonRpcData
@@ -4343,14 +4343,14 @@ class ResourceChange {
 	/**
 	 * The Uri for current resource. Required for delete and move operations
 	 * otherwise it is null.
-	 * 
+	 *
 	 */
 	String current
 
 	/**
 	 * The new uri for the resource. Required for create and move operations.
 	 * otherwise null.
-	 * 
+	 *
 	 * Must be compatible with the current uri ie. must be a file
 	 * uri if current is not null and is a file uri.
 	 */
@@ -4359,7 +4359,7 @@ class ResourceChange {
 }
 
 /**
- * A workspace edit represents changes to many resources managed in the workspace. 
+ * A workspace edit represents changes to many resources managed in the workspace.
  * The edit should either provide `changes` or `documentChanges`.
  * If documentChanges are present they are preferred over `changes`
  * if the client can handle versioned document edits.
@@ -4385,7 +4385,7 @@ class WorkspaceEdit {
 	 * rename, move, delete or content change.
 	 * These changes are applied in the order that they are supplied,
 	 * however clients may group the changes for optimization
-	 * 
+	 *
 	 * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
 	 */
 	@Beta
@@ -4587,7 +4587,7 @@ class UnregistrationParams {
 @JsonRpcData
 class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-	 * How documents are synced to the server. See TextDocumentSyncKind.Full 
+	 * How documents are synced to the server. See TextDocumentSyncKind.Full
 	 * and TextDocumentSyncKind.Incremental.
 	 */
 	@NonNull
@@ -4624,7 +4624,7 @@ class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
 	 * starts to type an identifier. For example if the user types `c` in a JavaScript file
 	 * code complete will automatically pop up present `console` besides others as a
 	 * completion item. Characters that make up identifiers don't need to be listed here.
-	 * 
+	 *
 	 * If code complete should automatically be trigger on characters not being valid inside
 	 * an identifier (for example `.` in JavaScript) list them in `triggerCharacters`.
 	 */
@@ -4812,7 +4812,7 @@ class ApplyWorkspaceEditResponse {
 
 /**
  * The server supports workspace folder.
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -4825,7 +4825,7 @@ class WorkspaceFoldersOptions {
 	/**
 	 * Whether the server wants to receive workspace folder
 	 * change notifications.
-	 * 
+	 *
 	 * If a string is provided, the string is treated as an ID
 	 * under which the notification is registered on the client
 	 * side. The ID can be used to unregister for these events
@@ -4920,7 +4920,7 @@ class DidChangeWorkspaceFoldersParams {
  * The order of the returned configuration settings correspond to the order of the passed
  * {@link ConfigurationItem}s (e.g. the first item in the response is the result for the first
  * configuration item in the params).
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -4946,7 +4946,7 @@ class ConfigurationParams {
  * EditorConfig to manage its settings the configuration should be returned for the passed resource
  * URI. If the client can’t provide a configuration setting for a given scope then null need to be
  * present in the returned array.
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -4965,7 +4965,7 @@ class ConfigurationItem {
 /**
  * The document color request is sent from the client to the server to list all color references
  * found in a given text document. Along with the range, a color value in RGB is returned.
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -5046,7 +5046,7 @@ class Color {
 /**
  * The color presentation request is sent from the client to the server to obtain a list of presentations
  * for a color value at a given location.
- * 
+ *
  * Since 3.6.0
  */
 @JsonRpcData
@@ -5397,19 +5397,19 @@ class CallHierarchyItem {
  */
 @JsonRpcData
 class SelectionRangeParams {
-	
+
 	/**
 	 * The text document.
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
-	
+
 	/**
 	 * The positions inside the text document.
 	 */
 	@NonNull
 	List<Position> positions
-	
+
 	new() {
 	}
 
@@ -5425,18 +5425,18 @@ class SelectionRangeParams {
  */
 @JsonRpcData
 class SelectionRange {
-	
+
 	/**
 	 * The [range](#Range) of this selection range.
 	 */
 	@NonNull
 	Range range
-	
+
 	/**
 	 * The parent selection range containing this range. Therefore `parent.range` must contain `this.range`.
 	 */
 	SelectionRange parent
-	
+
 	new() {
 	}
 
