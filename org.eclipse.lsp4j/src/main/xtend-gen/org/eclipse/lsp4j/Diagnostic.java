@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.DiagnosticRelatedInformation;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.DiagnosticTag;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -41,7 +42,7 @@ public class Diagnostic {
   /**
    * The diagnostic's code. Can be omitted.
    */
-  private String code;
+  private Either<String, Number> code;
   
   /**
    * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
@@ -85,7 +86,7 @@ public class Diagnostic {
   
   public Diagnostic(@NonNull final Range range, @NonNull final String message, final DiagnosticSeverity severity, final String source, final String code) {
     this(range, message, severity, source);
-    this.code = code;
+    this.setCode(code);
   }
   
   /**
@@ -125,15 +126,31 @@ public class Diagnostic {
    * The diagnostic's code. Can be omitted.
    */
   @Pure
-  public String getCode() {
+  public Either<String, Number> getCode() {
     return this.code;
   }
   
   /**
    * The diagnostic's code. Can be omitted.
    */
-  public void setCode(final String code) {
+  public void setCode(final Either<String, Number> code) {
     this.code = code;
+  }
+  
+  public void setCode(final String code) {
+    if (code == null) {
+      this.code = null;
+      return;
+    }
+    this.code = Either.forLeft(code);
+  }
+  
+  public void setCode(final Number code) {
+    if (code == null) {
+      this.code = null;
+      return;
+    }
+    this.code = Either.forRight(code);
   }
   
   /**
