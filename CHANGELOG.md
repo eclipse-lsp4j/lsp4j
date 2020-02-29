@@ -37,6 +37,9 @@ Breaking API changes:
      * `textDocument/documentHighlight` changed to `DocumentHighlightParams`
      * `textDocument/prepareRename` changed to `PrepareRenameParams`
 
+  * The LSP's Protocol `Diagnostic` field `code` was previouslyt incorrectly declared as `String`,
+    it is now correctly declared as `Either<String, Number>`
+
 ### v0.8.1 (Sep. 2019)
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/16?closed=1
