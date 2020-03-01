@@ -10,7 +10,7 @@ If you are implementing a client (e.g. an editor) you simply need to implement `
 
 # Launch and connect with a `LanguageClient`
 
-Now that you have an actual implementation you can connect it with a remote client. Let's assume you have an `Inputstream` and an `Outputstream`, over which you want to communicate with a language client.
+Now that you have an actual implementation you can connect it with a remote client. Let's assume you have an `InputStream` and an `OutputStream`, over which you want to communicate with a language client.
 
 The utility class `LSPLauncher` does most of the wiring for you. Here is the code needed.
 
@@ -33,7 +33,7 @@ if (myImpl instanceof LanguageClientAware) {
 
 Now your language server is not only able to receive messages from the other side, but can send messages back as well.
 
-The final thing you need to to do in order to start listening on the given inputstream, is this:
+The final thing you need to do in order to start listening on the given `InputStream`, is this:
 
 ``` java
 launcher.startListening();
@@ -43,7 +43,7 @@ This will start the listening process in a new thread.
 
 # Extending the Protocol
 
-As explained in the [JSON-RPC implementation documentation](jsonrpc.md#service-objects), protocol messages can be specified through methods annotated with `@JsonNotification` or `@JsonRequest`. If you would like to add more client-to-server messages, just pass a `LanguageServer` implementation with additional annotated methods to the `LSPLauncher`. In case you need to change the protocol so it is no longer compatible with the `LanguageServer` interface, or you would like to add or change some server-to-client messages, use the utility methods in `Launcher` instead of `LSPLauncher`. Those allow you to use arbitrary local service objects and arbitrary remote service interfaces, and you can even combine multiple service objects or interfaces.
+As explained in the [JSON RPC implementation documentation](jsonrpc.md#service-objects), protocol messages can be specified through methods annotated with `@JsonNotification` or `@JsonRequest`. If you would like to add more client-to-server messages, just pass a `LanguageServer` implementation with additional annotated methods to the `LSPLauncher`. In case you need to change the protocol so it is no longer compatible with the `LanguageServer` interface, or you would like to add or change some server-to-client messages, use the utility methods in `Launcher` instead of `LSPLauncher`. Those allow you to use arbitrary local service objects and arbitrary remote service interfaces, and you can even combine multiple service objects or interfaces.
 
 # Cancellation Support
 
@@ -63,7 +63,7 @@ public CompletableFuture<CompletionList> completion(
 ```
 The method `checkCanceled` will throw a `CancellationException` in case the request was cancelled. So make sure you don't catch it accidentally.
 
-If you are on the other side and want to cancel a request you made, you need to call cancel on the returned future :
+If you are on the other side and want to cancel a request you made, you need to call cancel on the returned future:
 
 ``` java
 CompletableFuture<CompletionList> result = languageServer
@@ -74,4 +74,4 @@ result.cancel(true);
 
 # JSON RPC
 
-For more information about the underlying json rpc framework see [JSON RPC Documentation](jsonrpc.md).
+For more information about the underlying JSON RPC framework see [JSON RPC Documentation](jsonrpc.md).
