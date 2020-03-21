@@ -64,7 +64,10 @@ public class CompletionItem {
   
   /**
    * Indicates if this item is deprecated.
+   *
+   * @deprecated Use `tags` instead if supported.
    */
+  @Deprecated
   private Boolean deprecated;
   
   /**
