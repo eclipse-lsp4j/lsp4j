@@ -13,8 +13,6 @@ package org.eclipse.lsp4j.util;
 
 import org.eclipse.lsp4j.Position;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Utilities for the {@link Position}.
  */
