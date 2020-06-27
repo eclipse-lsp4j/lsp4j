@@ -17,8 +17,6 @@ import java.util.Queue;
 
 import org.eclipse.lsp4j.DocumentSymbol;
 
-import com.google.common.base.Preconditions;
-
 /**
  * Utilities for {@link DocumentSymbols document symbols}.
  */
