@@ -64,7 +64,10 @@ public class CompletionItem {
   
   /**
    * Indicates if this item is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
    */
+  @Deprecated
   private Boolean deprecated;
   
   /**
@@ -242,15 +245,21 @@ public class CompletionItem {
   
   /**
    * Indicates if this item is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
    */
   @Pure
+  @Deprecated
   public Boolean getDeprecated() {
     return this.deprecated;
   }
   
   /**
    * Indicates if this item is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
    */
+  @Deprecated
   public void setDeprecated(final Boolean deprecated) {
     this.deprecated = deprecated;
   }
