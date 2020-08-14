@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.util.Preconditions
+import java.util.Arrays
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -2667,6 +2668,10 @@ class Hover {
 	new(@NonNull MarkupContent contents, Range range) {
 		this.contents = Preconditions.checkNotNull(contents, 'contents')
 		this.range = range
+	}
+
+	new(@NonNull Either<String, MarkedString> contents) {
+		this.contents = Arrays.asList(Preconditions.checkNotNull(contents, 'contents'))
 	}
 }
 
