@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Signature help options.
  */
 @SuppressWarnings("all")
-public class SignatureHelpOptions {
+public class SignatureHelpOptions extends AbstractWorkDoneProgressOptions {
   /**
    * The characters that trigger signature help automatically.
    */
@@ -93,6 +94,7 @@ public class SignatureHelpOptions {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("triggerCharacters", this.triggerCharacters);
     b.add("retriggerCharacters", this.retriggerCharacters);
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -104,6 +106,8 @@ public class SignatureHelpOptions {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     SignatureHelpOptions other = (SignatureHelpOptions) obj;
     if (this.triggerCharacters == null) {
@@ -123,7 +127,7 @@ public class SignatureHelpOptions {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
     return prime * result + ((this.retriggerCharacters== null) ? 0 : this.retriggerCharacters.hashCode());
   }

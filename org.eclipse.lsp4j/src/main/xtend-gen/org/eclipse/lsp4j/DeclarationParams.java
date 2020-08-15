@@ -13,7 +13,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TextDocumentPositionAndWorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -23,7 +23,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * location of a symbol at a given text document position.
  */
 @SuppressWarnings("all")
-public class DeclarationParams extends TextDocumentPositionParams {
+public class DeclarationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
   public DeclarationParams() {
   }
   
@@ -35,6 +35,8 @@ public class DeclarationParams extends TextDocumentPositionParams {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("partialResultToken", getPartialResultToken());
+    b.add("workDoneToken", getWorkDoneToken());
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
     b.add("position", getPosition());

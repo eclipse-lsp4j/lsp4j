@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -18,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Code Lens options.
  */
 @SuppressWarnings("all")
-public class CodeLensOptions {
+public class CodeLensOptions extends AbstractWorkDoneProgressOptions {
   /**
    * Code lens has a resolve provider as well.
    */
@@ -51,6 +52,7 @@ public class CodeLensOptions {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("resolveProvider", this.resolveProvider);
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -63,6 +65,8 @@ public class CodeLensOptions {
       return false;
     if (getClass() != obj.getClass())
       return false;
+    if (!super.equals(obj))
+      return false;
     CodeLensOptions other = (CodeLensOptions) obj;
     if (other.resolveProvider != this.resolveProvider)
       return false;
@@ -72,6 +76,6 @@ public class CodeLensOptions {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + (this.resolveProvider ? 1231 : 1237);
+    return 31 * super.hashCode() + (this.resolveProvider ? 1231 : 1237);
   }
 }

@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -21,7 +22,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The document links request is sent from the client to the server to request the location of links in a document.
  */
 @SuppressWarnings("all")
-public class DocumentLinkParams {
+public class DocumentLinkParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The document to provide document links for.
    */
@@ -56,6 +57,8 @@ public class DocumentLinkParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -67,6 +70,8 @@ public class DocumentLinkParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     DocumentLinkParams other = (DocumentLinkParams) obj;
     if (this.textDocument == null) {
@@ -80,6 +85,6 @@ public class DocumentLinkParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    return 31 * super.hashCode() + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
   }
 }

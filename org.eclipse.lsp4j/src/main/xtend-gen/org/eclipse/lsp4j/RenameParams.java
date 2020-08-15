@@ -13,7 +13,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TextDocumentPositionAndWorkDoneProgressParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -23,7 +23,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
 @SuppressWarnings("all")
-public class RenameParams extends TextDocumentPositionParams {
+public class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
   /**
    * The new name of the symbol. If the given name is not valid the request must return a
    * ResponseError with an appropriate message set.
@@ -62,6 +62,7 @@ public class RenameParams extends TextDocumentPositionParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("newName", this.newName);
+    b.add("workDoneToken", getWorkDoneToken());
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
     b.add("position", getPosition());

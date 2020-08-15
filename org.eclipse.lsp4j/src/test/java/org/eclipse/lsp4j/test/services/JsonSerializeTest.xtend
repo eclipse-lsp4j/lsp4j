@@ -45,6 +45,7 @@ import org.eclipse.lsp4j.MarkupContent
 import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
 import org.eclipse.lsp4j.Position
+import org.eclipse.lsp4j.ProgressParams
 import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
@@ -63,6 +64,9 @@ import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
 import org.eclipse.lsp4j.TypeDefinitionCapabilities
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
+import org.eclipse.lsp4j.WorkDoneProgressCancelParams
+import org.eclipse.lsp4j.WorkDoneProgressCreateParams
+import org.eclipse.lsp4j.WorkDoneProgressEnd
 import org.eclipse.lsp4j.WorkspaceClientCapabilities
 import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
@@ -784,6 +788,143 @@ class JsonSerializeTest {
 			  "jsonrpc": "2.0",
 			  "id": "12",
 			  "result": null
+			}
+		''')
+	}
+	
+	@Test
+	def void testProgressCreate() {
+		val message = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.PROGRESS_CREATE
+			params = new WorkDoneProgressCreateParams => [
+				token = Either.forLeft("progress-token")
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "window/workDoneProgress/create",
+			  "params": {
+			    "token": "progress-token"
+			  }
+			}
+		''')
+		
+		val message2 = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.PROGRESS_CREATE
+			params = new WorkDoneProgressCreateParams => [
+				token = Either.forRight(1234)
+			]
+		]
+		message2.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "window/workDoneProgress/create",
+			  "params": {
+			    "token": 1234
+			  }
+			}
+		''')
+	}
+	
+	@Test
+	def void testProgressCancel() {
+		val message = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.PROGRESS_CANCEL
+			params = new WorkDoneProgressCancelParams => [
+				token = Either.forLeft("progress-token")
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "window/workDoneProgress/cancel",
+			  "params": {
+			    "token": "progress-token"
+			  }
+			}
+		''')
+		
+		val message2 = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.PROGRESS_CANCEL
+			params = new WorkDoneProgressCancelParams => [
+				token = Either.forRight(1234)
+			]
+		]
+		message2.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "window/workDoneProgress/cancel",
+			  "params": {
+			    "token": 1234
+			  }
+			}
+		''')
+	}
+	
+	@Test
+	def void testProgressNotify() {
+		val message = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.PROGRESS_NOTIFY
+			params = new ProgressParams => [
+				token = Either.forLeft("progress-token")
+				value = new WorkDoneProgressEnd => [
+					message = "message"
+				]
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "$/progress",
+			  "params": {
+			    "token": "progress-token",
+			    "value": {
+			      "kind": "end",
+			      "message": "message"
+			    }
+			  }
+			}
+		''')
+		
+		val message2 = new RequestMessage => [
+			jsonrpc = "2.0"
+			id = "1"
+			method = MessageMethods.PROGRESS_NOTIFY
+			params = new ProgressParams => [
+				token = Either.forRight(1234)
+				value = new WorkDoneProgressEnd => [
+					message = "message"
+				]
+			]
+		]
+		message2.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "1",
+			  "method": "$/progress",
+			  "params": {
+			    "token": 1234,
+			    "value": {
+			      "kind": "end",
+			      "message": "message"
+			    }
+			  }
 			}
 		''')
 	}

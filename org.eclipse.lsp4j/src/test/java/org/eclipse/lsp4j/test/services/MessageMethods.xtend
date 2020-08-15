@@ -48,6 +48,9 @@ interface MessageMethods {
 	public static val SHOW_MESSAGE = 'window/showMessage'
 	public static val SHOW_MESSAGE_REQUEST = 'window/showMessageRequest'
 	public static val LOG_MESSAGE = 'window/logMessage'
+	public static val PROGRESS_NOTIFY = '$/progress'
+	public static val PROGRESS_CREATE = 'window/workDoneProgress/create'
+	public static val PROGRESS_CANCEL = 'window/workDoneProgress/cancel'
 	public static val TELEMETRY_EVENT = 'telemetry/event'
 	
 }

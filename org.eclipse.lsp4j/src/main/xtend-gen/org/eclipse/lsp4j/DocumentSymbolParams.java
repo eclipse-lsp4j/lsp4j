@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -21,7 +22,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The document symbol request is sent from the client to the server to list all symbols found in a given text document.
  */
 @SuppressWarnings("all")
-public class DocumentSymbolParams {
+public class DocumentSymbolParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -56,6 +57,8 @@ public class DocumentSymbolParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -67,6 +70,8 @@ public class DocumentSymbolParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     DocumentSymbolParams other = (DocumentSymbolParams) obj;
     if (this.textDocument == null) {
@@ -80,6 +85,6 @@ public class DocumentSymbolParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    return 31 * super.hashCode() + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
   }
 }

@@ -14,7 +14,7 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.ReferenceContext;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TextDocumentPositionAndWorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -25,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * denoted by the given text document position.
  */
 @SuppressWarnings("all")
-public class ReferenceParams extends TextDocumentPositionParams {
+public class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
   @NonNull
   private ReferenceContext context;
   
@@ -57,6 +57,8 @@ public class ReferenceParams extends TextDocumentPositionParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("context", this.context);
+    b.add("partialResultToken", getPartialResultToken());
+    b.add("workDoneToken", getWorkDoneToken());
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
     b.add("position", getPosition());

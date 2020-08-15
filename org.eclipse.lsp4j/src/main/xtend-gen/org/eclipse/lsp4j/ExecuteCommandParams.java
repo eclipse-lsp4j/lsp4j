@@ -12,6 +12,8 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.WorkDoneProgressParams;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -24,7 +26,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * to the client.
  */
 @SuppressWarnings("all")
-public class ExecuteCommandParams {
+public class ExecuteCommandParams implements WorkDoneProgressParams {
+  private Either<String, Number> workDoneToken;
+  
   /**
    * The identifier of the actual command handler.
    */
@@ -44,6 +48,37 @@ public class ExecuteCommandParams {
   public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments) {
     this.command = Preconditions.<String>checkNotNull(command, "command");
     this.arguments = arguments;
+  }
+  
+  public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments, final Either<String, Number> workDoneToken) {
+    this.command = Preconditions.<String>checkNotNull(command, "command");
+    this.arguments = arguments;
+    this.workDoneToken = workDoneToken;
+  }
+  
+  @Pure
+  public Either<String, Number> getWorkDoneToken() {
+    return this.workDoneToken;
+  }
+  
+  public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
+    this.workDoneToken = workDoneToken;
+  }
+  
+  public void setWorkDoneToken(final String workDoneToken) {
+    if (workDoneToken == null) {
+      this.workDoneToken = null;
+      return;
+    }
+    this.workDoneToken = Either.forLeft(workDoneToken);
+  }
+  
+  public void setWorkDoneToken(final Number workDoneToken) {
+    if (workDoneToken == null) {
+      this.workDoneToken = null;
+      return;
+    }
+    this.workDoneToken = Either.forRight(workDoneToken);
   }
   
   /**
@@ -85,6 +120,7 @@ public class ExecuteCommandParams {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("workDoneToken", this.workDoneToken);
     b.add("command", this.command);
     b.add("arguments", this.arguments);
     return b.toString();
@@ -100,6 +136,11 @@ public class ExecuteCommandParams {
     if (getClass() != obj.getClass())
       return false;
     ExecuteCommandParams other = (ExecuteCommandParams) obj;
+    if (this.workDoneToken == null) {
+      if (other.workDoneToken != null)
+        return false;
+    } else if (!this.workDoneToken.equals(other.workDoneToken))
+      return false;
     if (this.command == null) {
       if (other.command != null)
         return false;
@@ -118,6 +159,7 @@ public class ExecuteCommandParams {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((this.workDoneToken== null) ? 0 : this.workDoneToken.hashCode());
     result = prime * result + ((this.command== null) ? 0 : this.command.hashCode());
     return prime * result + ((this.arguments== null) ? 0 : this.arguments.hashCode());
   }

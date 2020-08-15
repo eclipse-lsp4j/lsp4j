@@ -19,11 +19,13 @@ import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
 import org.eclipse.lsp4j.ConfigurationParams;
 import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.ProgressParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.RegistrationParams;
 import org.eclipse.lsp4j.SemanticHighlightingParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.UnregistrationParams;
+import org.eclipse.lsp4j.WorkDoneProgressCreateParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -139,6 +141,25 @@ public interface LanguageClient {
 	@Beta
 	@JsonNotification("textDocument/semanticHighlighting")
 	default void semanticHighlighting(SemanticHighlightingParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * This request is sent from the server to the client to ask the client to create a work done progress.
+	 */
+	@JsonRequest("window/workDoneProgress/create")
+	default CompletableFuture<Void> createProgress(WorkDoneProgressCreateParams params) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * The base protocol offers also support to report progress in a generic fashion. 
+	 * This mechanism can be used to report any kind of progress including work done progress 
+	 * (usually used to report progress in the user interface using a progress bar) 
+	 * and partial result progress to support streaming of results.
+	 */
+	@JsonNotification("$/progress")
+	default void notifyProgress(ProgressParams params) {
 		throw new UnsupportedOperationException();
 	}
 }

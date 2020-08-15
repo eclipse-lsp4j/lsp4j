@@ -14,6 +14,7 @@ package org.eclipse.lsp4j;
 import java.util.List;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -23,7 +24,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * A parameter literal used in selection range requests.
  */
 @SuppressWarnings("all")
-public class SelectionRangeParams {
+public class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -82,6 +83,8 @@ public class SelectionRangeParams {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
     b.add("positions", this.positions);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -93,6 +96,8 @@ public class SelectionRangeParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     SelectionRangeParams other = (SelectionRangeParams) obj;
     if (this.textDocument == null) {
@@ -112,7 +117,7 @@ public class SelectionRangeParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     return prime * result + ((this.positions== null) ? 0 : this.positions.hashCode());
   }

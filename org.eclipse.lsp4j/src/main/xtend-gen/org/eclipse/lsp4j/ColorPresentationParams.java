@@ -14,6 +14,7 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.Color;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -26,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Since 3.6.0
  */
 @SuppressWarnings("all")
-public class ColorPresentationParams {
+public class ColorPresentationParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -109,6 +110,8 @@ public class ColorPresentationParams {
     b.add("textDocument", this.textDocument);
     b.add("color", this.color);
     b.add("range", this.range);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -120,6 +123,8 @@ public class ColorPresentationParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     ColorPresentationParams other = (ColorPresentationParams) obj;
     if (this.textDocument == null) {
@@ -144,7 +149,7 @@ public class ColorPresentationParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.color== null) ? 0 : this.color.hashCode());
     return prime * result + ((this.range== null) ? 0 : this.range.hashCode());

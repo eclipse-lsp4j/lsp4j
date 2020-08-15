@@ -21,6 +21,7 @@ import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
+import org.eclipse.lsp4j.WorkDoneProgressCancelParams;
 import org.eclipse.lsp4j.services.LanguageServer;
 import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
@@ -75,4 +76,7 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 	public void didSave(DidSaveTextDocumentParams params) {
 	}
 
+	@Override
+	public void cancelProgress(WorkDoneProgressCancelParams params) {
+	}
 }
