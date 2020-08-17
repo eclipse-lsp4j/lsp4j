@@ -18,13 +18,13 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface VariablePresentationHintVisibility {
-  static final String PUBLIC = "public";
+  public static final String PUBLIC = "public";
   
-  static final String PRIVATE = "private";
+  public static final String PRIVATE = "private";
   
-  static final String PROTECTED = "protected";
+  public static final String PROTECTED = "protected";
   
-  static final String INTERNAL = "internal";
+  public static final String INTERNAL = "internal";
   
-  static final String FINAL = "final";
+  public static final String FINAL = "final";
 }

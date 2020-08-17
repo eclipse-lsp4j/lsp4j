@@ -21,56 +21,56 @@ public interface VariablePresentationHintKind {
   /**
    * Indicates that the object is a property.
    */
-  static final String PROPERTY = "property";
+  public static final String PROPERTY = "property";
   
   /**
    * Indicates that the object is a method.
    */
-  static final String METHOD = "method";
+  public static final String METHOD = "method";
   
   /**
    * Indicates that the object is a class.
    */
-  static final String CLASS = "class";
+  public static final String CLASS = "class";
   
   /**
    * Indicates that the object is data.
    */
-  static final String DATA = "data";
+  public static final String DATA = "data";
   
   /**
    * Indicates that the object is an event.
    */
-  static final String EVENT = "event";
+  public static final String EVENT = "event";
   
   /**
    * Indicates that the object is a base class.
    */
-  static final String BASE_CLASS = "baseClass";
+  public static final String BASE_CLASS = "baseClass";
   
   /**
    * Indicates that the object is an inner class.
    */
-  static final String INNER_CLASS = "innerClass";
+  public static final String INNER_CLASS = "innerClass";
   
   /**
    * Indicates that the object is an interface.
    */
-  static final String INTERFACE = "interface";
+  public static final String INTERFACE = "interface";
   
   /**
    * Indicates that the object is the most derived class.
    */
-  static final String MOST_DERIVED_CLASS = "mostDerivedClass";
+  public static final String MOST_DERIVED_CLASS = "mostDerivedClass";
   
   /**
    * Indicates that the object is virtual, that means it is a synthetic object introduced by the adapter for
    * rendering purposes, e.g. an index range for large arrays.
    */
-  static final String VIRTUAL = "virtual";
+  public static final String VIRTUAL = "virtual";
   
   /**
    * Indicates that a data breakpoint is registered for the object.
    */
-  static final String DATA_BREAKPOINT = "dataBreakpoint";
+  public static final String DATA_BREAKPOINT = "dataBreakpoint";
 }
