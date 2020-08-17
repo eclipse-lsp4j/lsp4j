@@ -18,7 +18,7 @@ package org.eclipse.lsp4j.debug;
  */
 @SuppressWarnings("all")
 public interface InitializeRequestArgumentsPathFormat {
-  static final String PATH = "path";
+  public static final String PATH = "path";
   
-  static final String URI = "uri";
+  public static final String URI = "uri";
 }
