@@ -41,7 +41,7 @@ public class WorkspaceClientCapabilities {
   private DidChangeConfigurationCapabilities didChangeConfiguration;
   
   /**
-   * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+   * Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
    */
   private DidChangeWatchedFilesCapabilities didChangeWatchedFiles;
   
@@ -117,7 +117,7 @@ public class WorkspaceClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+   * Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
    */
   @Pure
   public DidChangeWatchedFilesCapabilities getDidChangeWatchedFiles() {
@@ -125,7 +125,7 @@ public class WorkspaceClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+   * Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
    */
   public void setDidChangeWatchedFiles(final DidChangeWatchedFilesCapabilities didChangeWatchedFiles) {
     this.didChangeWatchedFiles = didChangeWatchedFiles;
