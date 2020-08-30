@@ -23,6 +23,8 @@ import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.FoldingRangeProviderOptions;
 import org.eclipse.lsp4j.RenameOptions;
 import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
+import org.eclipse.lsp4j.SemanticTokensOptions;
+import org.eclipse.lsp4j.SemanticTokensRegistrationOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
@@ -193,6 +195,14 @@ public class ServerCapabilities {
    * Since 3.15.0
    */
   private Either<Boolean, StaticRegistrationOptions> selectionRangeProvider;
+  
+  /**
+   * The server provides semantic tokens support.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> semanticTokensProvider;
   
   /**
    * Experimental server capabilities.
@@ -824,6 +834,25 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides semantic tokens support.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> getSemanticTokensProvider() {
+    return this.semanticTokensProvider;
+  }
+  
+  /**
+   * The server provides semantic tokens support.
+   * 
+   * Since 3.16.0
+   */
+  public void setSemanticTokensProvider(final Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> semanticTokensProvider) {
+    this.semanticTokensProvider = semanticTokensProvider;
+  }
+  
+  /**
    * Experimental server capabilities.
    */
   @Pure
@@ -869,6 +898,7 @@ public class ServerCapabilities {
     b.add("typeHierarchyProvider", this.typeHierarchyProvider);
     b.add("callHierarchyProvider", this.callHierarchyProvider);
     b.add("selectionRangeProvider", this.selectionRangeProvider);
+    b.add("semanticTokensProvider", this.semanticTokensProvider);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -1018,6 +1048,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.selectionRangeProvider.equals(other.selectionRangeProvider))
       return false;
+    if (this.semanticTokensProvider == null) {
+      if (other.semanticTokensProvider != null)
+        return false;
+    } else if (!this.semanticTokensProvider.equals(other.semanticTokensProvider))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -1058,6 +1093,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.typeHierarchyProvider== null) ? 0 : this.typeHierarchyProvider.hashCode());
     result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
     result = prime * result + ((this.selectionRangeProvider== null) ? 0 : this.selectionRangeProvider.hashCode());
+    result = prime * result + ((this.semanticTokensProvider== null) ? 0 : this.semanticTokensProvider.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }
