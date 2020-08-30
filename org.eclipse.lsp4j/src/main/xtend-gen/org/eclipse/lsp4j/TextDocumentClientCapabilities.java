@@ -33,6 +33,7 @@ import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
 import org.eclipse.lsp4j.SelectionRangeCapabilities;
 import org.eclipse.lsp4j.SemanticHighlightingCapabilities;
+import org.eclipse.lsp4j.SemanticTokensCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
 import org.eclipse.lsp4j.TypeDefinitionCapabilities;
@@ -184,6 +185,14 @@ public class TextDocumentClientCapabilities {
    * Since 3.15.0
    */
   private SelectionRangeCapabilities selectionRange;
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticTokens}.
+   * 
+   * @since 3.16.0
+   */
+  @Beta
+  private SemanticTokensCapabilities semanticTokens;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -584,6 +593,25 @@ public class TextDocumentClientCapabilities {
     this.selectionRange = selectionRange;
   }
   
+  /**
+   * Capabilities specific to {@code textDocument/semanticTokens}.
+   * 
+   * @since 3.16.0
+   */
+  @Pure
+  public SemanticTokensCapabilities getSemanticTokens() {
+    return this.semanticTokens;
+  }
+  
+  /**
+   * Capabilities specific to {@code textDocument/semanticTokens}.
+   * 
+   * @since 3.16.0
+   */
+  public void setSemanticTokens(final SemanticTokensCapabilities semanticTokens) {
+    this.semanticTokens = semanticTokens;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -613,6 +641,7 @@ public class TextDocumentClientCapabilities {
     b.add("typeHierarchyCapabilities", this.typeHierarchyCapabilities);
     b.add("callHierarchy", this.callHierarchy);
     b.add("selectionRange", this.selectionRange);
+    b.add("semanticTokens", this.semanticTokens);
     return b.toString();
   }
   
@@ -751,6 +780,11 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.selectionRange.equals(other.selectionRange))
       return false;
+    if (this.semanticTokens == null) {
+      if (other.semanticTokens != null)
+        return false;
+    } else if (!this.semanticTokens.equals(other.semanticTokens))
+      return false;
     return true;
   }
   
@@ -783,6 +817,7 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
     result = prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
     result = prime * result + ((this.callHierarchy== null) ? 0 : this.callHierarchy.hashCode());
-    return prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
+    result = prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
+    return prime * result + ((this.semanticTokens== null) ? 0 : this.semanticTokens.hashCode());
   }
 }

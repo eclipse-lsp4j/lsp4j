@@ -1038,6 +1038,113 @@ class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 	}
 }
 
+@Beta
+@JsonRpcData
+class SemanticTokensClientFull {
+
+	/**
+	* The client will send the `textDocument/semanticTokens/full/delta` request if
+	* the server provides a corresponding handler.
+	*/
+	Boolean delta
+
+	new() {
+	}
+
+	new(Boolean delta) {
+		this.delta = delta
+	}
+}
+
+@Beta
+@JsonRpcData
+class SemanticTokensRequests {
+
+	/**
+	* The client will send the `textDocument/semanticTokens/range` request if
+	* the server provides a corresponding handler.
+	*/
+	Either<Boolean, Object> range
+
+	/**
+	* The client will send the `textDocument/semanticTokens/full` request if
+	* the server provides a corresponding handler.
+	*/
+	Either<Boolean, SemanticTokensClientFull> full
+
+	new() {
+	}
+
+	new(Boolean full) {
+		this.full = full
+	}
+
+	new(SemanticTokensClientFull full) {
+		this.full = full
+	}
+
+	new(Boolean full, Boolean range) {
+		this.full = full
+		this.range = range
+	}
+
+	new(SemanticTokensClientFull full, Boolean range) {
+		this.full = full
+		this.range = range
+	}
+
+}
+
+@Beta
+@JsonRpcData
+class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
+
+	/**
+	 * Which requests the client supports and might send to the server.
+	 */
+	@NonNull
+	SemanticTokensRequests requests
+
+	/**
+	 * The token types that the client supports.
+	 */
+	@NonNull
+	List<String> tokenTypes;
+
+	/**
+	 * The token modifiers that the client supports.
+	 */
+	@NonNull
+	List<String> tokenModifiers;
+
+	/**
+	 * The formats the clients supports.
+	 */
+	@NonNull
+	List<TokenFormat> formats;
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(@NonNull SemanticTokensRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
+		this.requests = Preconditions.checkNotNull(requests, 'requests')
+		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
+		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
+		this.formats = Preconditions.checkNotNull(formats, 'formats')
+	}
+
+
+	new(Boolean dynamicRegistration, @NonNull SemanticTokensRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
+		super(dynamicRegistration)
+		this.requests = Preconditions.checkNotNull(requests, 'requests')
+		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
+		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
+		this.formats = Preconditions.checkNotNull(formats, 'formats')
+	}
+
+}
+
 /**
  * Text document specific client capabilities.
  */
@@ -1182,6 +1289,14 @@ class TextDocumentClientCapabilities {
 	 * Since 3.15.0
 	 */
 	SelectionRangeCapabilities selectionRange
+
+	/**
+	 * Capabilities specific to {@code textDocument/semanticTokens}.
+	 *
+	 * @since 3.16.0
+	 */
+	@Beta
+	SemanticTokensCapabilities semanticTokens
 }
 
 /**
@@ -3587,6 +3702,144 @@ class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	}
 }
 
+@Beta
+@JsonRpcData
+class SemanticTokensLegend {
+
+	/**
+	 * The token types that the client supports.
+	 */
+	@NonNull
+	List<String> tokenTypes;
+
+	/**
+	 * The token modifiers that the client supports.
+	 */
+	@NonNull
+	List<String> tokenModifiers;
+
+	new(@NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers) {
+		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
+		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
+	}
+
+}
+
+@Beta
+@JsonRpcData
+class SemanticTokensServerFull {
+
+	/**
+	* The server supports deltas for full documents.
+	*/
+	Boolean delta
+
+	new() {
+	}
+
+	new(Boolean delta) {
+		this.delta = delta
+	}
+}
+
+@Beta
+@JsonRpcData
+class SemanticTokensOptions {
+
+	/**
+	 * The legend used by the server
+	 */
+	@NonNull
+	SemanticTokensLegend legend
+
+	/**
+	 * Server supports providing semantic tokens for a specific range
+	 * of a document.
+	 */
+	Either<Boolean, Object> range
+
+	/**
+	 * Server supports providing semantic tokens for a full document.
+	 */
+	Either<Boolean, SemanticTokensServerFull> full
+
+	new(@NonNull SemanticTokensLegend legend) {
+		this.legend = Preconditions.checkNotNull(legend, 'legend')
+	}
+
+	new(@NonNull SemanticTokensLegend legend, Boolean full) {
+		this(legend)
+		this.full = full
+	}
+
+	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full) {
+		this(legend)
+		this.full = full
+	}
+
+	new(@NonNull SemanticTokensLegend legend, Boolean full, Boolean range) {
+		this(legend)
+		this.full = full
+		this.range = range
+	}
+
+	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full, Boolean range) {
+		this(legend)
+		this.full = full
+		this.range = range
+	}
+
+}
+
+@Beta
+@JsonRpcData
+class SemanticTokensRegistrationOptions extends TextDocumentRegistrationOptions  {
+
+	/**
+	 * The legend used by the server
+	 */
+	@NonNull
+	SemanticTokensLegend legend
+
+	/**
+	 * Server supports providing semantic tokens for a specific range
+	 * of a document.
+	 */
+	Either<Boolean, Object> range
+
+	/**
+	 * Server supports providing semantic tokens for a full document.
+	 */
+	Either<Boolean, SemanticTokensServerFull> full
+
+	new(@NonNull SemanticTokensLegend legend) {
+		this.legend = Preconditions.checkNotNull(legend, 'legend')
+	}
+
+	new(@NonNull SemanticTokensLegend legend, Boolean full) {
+		this(legend)
+		this.full = full
+	}
+
+	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full) {
+		this(legend)
+		this.full = full
+	}
+
+	new(@NonNull SemanticTokensLegend legend, Boolean full, Boolean range) {
+		this(legend)
+		this.full = full
+		this.range = range
+	}
+
+	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full, Boolean range) {
+		this(legend)
+		this.full = full
+		this.range = range
+	}
+
+}
+
 @JsonRpcData
 class ServerCapabilities {
 	/**
@@ -3750,6 +4003,14 @@ class ServerCapabilities {
 	Either<Boolean, StaticRegistrationOptions> selectionRangeProvider
 
 	/**
+	 * The server provides semantic tokens support.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> semanticTokensProvider
+
+	/**
 	 * Experimental server capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
@@ -3850,6 +4111,186 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, SignatureHelpContext context) {
 		super(textDocument, position)
 		this.context = context
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensParams {
+
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokens {
+
+	/**
+	 * An optional result id. If provided and clients support delta updating
+	 * the client will include the result id in the next semantic token request.
+	 * A server can then instead of computing all semantic tokens again simply
+	 * send a delta.
+	 */
+	String resultId
+
+	/**
+	 * The actual tokens.
+	 */
+	@NonNull
+	List<Integer> data
+
+	new(@NonNull List<Integer> data) {
+		this.data = Preconditions.checkNotNull(data, 'data')
+	}
+
+	new(String resultId, @NonNull List<Integer> data) {
+		this(data)
+		this.resultId = resultId
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensPartialResult {
+
+	@NonNull
+	List<Integer> data
+
+	new(@NonNull List<Integer> data) {
+		this.data = Preconditions.checkNotNull(data, 'data')
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensDeltaParams {
+
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The result id of a previous response. The result Id can either point to a full response
+	 * or a delta response depending on what was recevied last.
+	 */
+	@NonNull
+	String previousResultId
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull String previousResultId) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.previousResultId = Preconditions.checkNotNull(previousResultId, 'previousResultId')
+	}
+
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensEdit {
+
+	/**
+	 * The start offset of the edit.
+	 */
+	int start
+
+	/**
+	 * The count of elements to remove.
+	 */
+	int deleteCount;
+
+	/**
+	 * The elements to insert.
+	 */
+	List<Integer> data;
+
+	new(int start, int deleteCount, List<Integer> data) {
+		this.start = start
+		this.deleteCount = deleteCount
+		this.data = data
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensDelta {
+
+	String resultId
+
+	/**
+	 * The semantic token edits to transform a previous result into a new result.
+	 */
+	@NonNull
+	List<SemanticTokensEdit> edits
+
+	new(@NonNull List<SemanticTokensEdit> edits) {
+		this.edits = Preconditions.checkNotNull(edits, 'edits')
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensDeltaPartialResult {
+
+	@NonNull
+	List<SemanticTokensEdit> edits
+
+	new(@NonNull List<SemanticTokensEdit> edits) {
+		this.edits = Preconditions.checkNotNull(edits, 'edits')
+	}
+}
+
+/**
+ * @since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class SemanticTokensRangeParams {
+
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The range the semantic tokens are requested for.
+	 */
+	@NonNull
+	Range range;
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 }
 
