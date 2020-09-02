@@ -2225,7 +2225,7 @@ class TextDocumentSyncOptions {
 	/**
 	 * Save notifications are sent to the server.
 	 */
-	SaveOptions save
+	Either<Boolean, SaveOptions> save
 }
 
 /**

@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.SaveOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -42,7 +43,7 @@ public class TextDocumentSyncOptions {
   /**
    * Save notifications are sent to the server.
    */
-  private SaveOptions save;
+  private Either<Boolean, SaveOptions> save;
   
   /**
    * Open and close notifications are sent to the server.
@@ -110,15 +111,31 @@ public class TextDocumentSyncOptions {
    * Save notifications are sent to the server.
    */
   @Pure
-  public SaveOptions getSave() {
+  public Either<Boolean, SaveOptions> getSave() {
     return this.save;
   }
   
   /**
    * Save notifications are sent to the server.
    */
-  public void setSave(final SaveOptions save) {
+  public void setSave(final Either<Boolean, SaveOptions> save) {
     this.save = save;
+  }
+  
+  public void setSave(final Boolean save) {
+    if (save == null) {
+      this.save = null;
+      return;
+    }
+    this.save = Either.forLeft(save);
+  }
+  
+  public void setSave(final SaveOptions save) {
+    if (save == null) {
+      this.save = null;
+      return;
+    }
+    this.save = Either.forRight(save);
   }
   
   @Override
