@@ -24,6 +24,7 @@ import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
+import org.eclipse.lsp4j.adapters.WorkDoneProgressNotificationAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
@@ -1184,6 +1185,20 @@ class TextDocumentClientCapabilities {
 }
 
 /**
+ * Window specific client capabilities.
+ */
+@JsonRpcData
+class WindowClientCapabilities {
+	/**
+	 * Whether client supports handling progress notifications. If set servers are allowed to
+	 * report in `workDoneProgress` property in the request specific server capabilities.
+	 *
+	 * Since 3.15.0
+	 */
+	Boolean workDoneProgress;
+}
+
+/**
  * `ClientCapabilities` now define capabilities for dynamic registration, workspace and text document features the client supports.
  * The `experimental` can be used to pass experimental capabilities under development.
  * For future compatibility a `ClientCapabilities` object literal can have more properties set than currently defined.
@@ -1209,6 +1224,11 @@ class ClientCapabilities {
 	TextDocumentClientCapabilities textDocument
 
 	/**
+	 * Window specific client capabilities.
+	 */
+	WindowClientCapabilities window
+
+	/**
 	 * Experimental client capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
@@ -1220,6 +1240,13 @@ class ClientCapabilities {
 	new(WorkspaceClientCapabilities workspace, TextDocumentClientCapabilities textDocument, Object experimental) {
 		this.workspace = workspace
 		this.textDocument = textDocument
+		this.experimental = experimental
+	}
+	
+	new(WorkspaceClientCapabilities workspace, TextDocumentClientCapabilities textDocument, WindowClientCapabilities window, Object experimental) {
+		this.workspace = workspace
+		this.textDocument = textDocument
+		this.window = window
 		this.experimental = experimental
 	}
 }
@@ -1321,7 +1348,8 @@ class CodeActionContext {
  * These commands are typically code fixes to either fix problems or to beautify/refactor code.
  */
 @JsonRpcData
-class CodeActionParams {
+class CodeActionParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * The document in which the command was invoked.
 	 */
@@ -1394,7 +1422,7 @@ class CodeLens {
  * Code Action options.
  */
 @JsonRpcData
-class CodeActionOptions {
+class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * CodeActionKinds that this server may return.
 	 *
@@ -1415,7 +1443,7 @@ class CodeActionOptions {
  * Code Lens options.
  */
 @JsonRpcData
-class CodeLensOptions {
+class CodeLensOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * Code lens has a resolve provider as well.
 	 */
@@ -1433,7 +1461,8 @@ class CodeLensOptions {
  * The code lens request is sent from the client to the server to compute code lenses for a given text document.
  */
 @JsonRpcData
-class CodeLensParams {
+class CodeLensParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * The document to request code lens for.
 	 */
@@ -1638,7 +1667,8 @@ class CompletionList {
  * Completion options.
  */
 @JsonRpcData
-class CompletionOptions {
+class CompletionOptions extends AbstractWorkDoneProgressOptions {
+
 	/**
 	 * The server provides support to resolve additional information for a completion item.
 	 */
@@ -1994,6 +2024,7 @@ class WillSaveTextDocumentParams {
  */
 @JsonRpcData
 class DocumentFormattingParams {
+	
 	/**
 	 * The document to format.
 	 */
@@ -2107,7 +2138,8 @@ class DocumentLink {
  * The document links request is sent from the client to the server to request the location of links in a document.
  */
 @JsonRpcData
-class DocumentLinkParams {
+class DocumentLinkParams extends WorkDoneProgressAndPartialResultParams {
+	
 	/**
 	 * The document to provide document links for.
 	 */
@@ -2144,7 +2176,8 @@ class DocumentLinkOptions {
  * Execute command options.
  */
 @JsonRpcData
-class ExecuteCommandOptions {
+class ExecuteCommandOptions extends AbstractWorkDoneProgressOptions {
+
 	/**
 	 * The commands to be executed on the server
 	 */
@@ -2281,6 +2314,7 @@ class DocumentOnTypeFormattingOptions {
  */
 @JsonRpcData
 class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
+	
 	/**
 	 * The position at which this request was send.
 	 */
@@ -2313,7 +2347,10 @@ class DocumentOnTypeFormattingParams extends DocumentFormattingParams {
  * The document range formatting request is sent from the client to the server to format a given range in a document.
  */
 @JsonRpcData
-class DocumentRangeFormattingParams extends DocumentFormattingParams {
+class DocumentRangeFormattingParams extends DocumentFormattingParams implements WorkDoneProgressParams {
+	
+	Either<String, Number> workDoneToken
+	
 	/**
 	 * The range to format
 	 */
@@ -2390,11 +2427,20 @@ class ResolveTypeHierarchyItemParams {
 
 }
 
+@JsonRpcData
+class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class DocumentSymbolRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+}
+
 /**
  * The document symbol request is sent from the client to the server to list all symbols found in a given text document.
  */
 @JsonRpcData
-class DocumentSymbolParams {
+class DocumentSymbolParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * The text document.
 	 */
@@ -2703,6 +2749,296 @@ class MarkedString {
 	}
 }
 
+/**
+ * The $/progress notification payload interface.
+ *
+ * Since 3.15.0
+ */
+interface WorkDoneProgressNotification {
+	def WorkDoneProgressKind getKind()
+}
+ 
+/**
+ * The $/progress notification payload to start progress reporting.
+ *
+ * Since 3.15.0
+ */
+@JsonRpcData
+class WorkDoneProgressBegin implements WorkDoneProgressNotification {
+
+	/**
+	 * Always return begin
+	 */
+	override WorkDoneProgressKind getKind() {
+		WorkDoneProgressKind.begin
+	}
+
+	/**
+	 * Mandatory title of the progress operation. Used to briefly inform about
+	 * the kind of operation being performed.
+	 *
+	 * Examples: "Indexing" or "Linking dependencies".
+	 */
+	@NonNull
+	String title
+
+	/**
+	 * Controls if a cancel button should show to allow the user to cancel the
+	 * long running operation. Clients that don't support cancellation are allowed
+	 * to ignore the setting.
+	 */
+	Boolean cancellable
+
+	/**
+	 * Optional, more detailed associated progress message. Contains
+	 * complementary information to the `title`.
+	 *
+	 * Examples: "3/25 files", "project/src/module2", "node_modules/some_dep".
+	 * If unset, the previous progress message (if any) is still valid.
+	 */
+	String message
+
+	/**
+	 * Optional progress percentage to display (value 100 is considered 100%).
+	 * If not provided infinite progress is assumed and clients are allowed
+	 * to ignore the `percentage` value in subsequent in report notifications.
+	 *
+	 * The value should be steadily rising. Clients are free to ignore values
+	 * that are not following this rule.
+	 */
+	Integer percentage;
+}
+
+/**
+ * The notification payload about progress reporting.
+ *
+ * Since 3.15.0
+ */
+@JsonRpcData
+class WorkDoneProgressReport implements WorkDoneProgressNotification {
+
+	/**
+	 * Always return report
+	 */
+	override WorkDoneProgressKind getKind() {
+		WorkDoneProgressKind.report
+	}
+
+	/**
+	 * Controls enablement state of a cancel button. This property is only valid if a cancel
+	 * button got requested in the `WorkDoneProgressStart` payload.
+	 *
+	 * Clients that don't support cancellation or don't support control the button's
+	 * enablement state are allowed to ignore the setting.
+	 */
+	Boolean cancellable
+
+	/**
+	 * Optional, more detailed associated progress message. Contains
+	 * complementary information to the `title`.
+	 *
+	 * Examples: "3/25 files", "project/src/module2", "node_modules/some_dep".
+	 * If unset, the previous progress message (if any) is still valid.
+	 */
+	String message
+
+	/**
+	 * Optional progress percentage to display (value 100 is considered 100%).
+	 * If not provided infinite progress is assumed and clients are allowed
+	 * to ignore the `percentage` value in subsequent in report notifications.
+	 *
+	 * The value should be steadily rising. Clients are free to ignore values
+	 * that are not following this rule.
+	 */
+	Integer percentage;
+}
+
+/**
+ * The notification payload about progress reporting.
+ * Signaling the end of a progress reporting is done using the following payload:
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+class WorkDoneProgressEnd implements WorkDoneProgressNotification {
+
+	/**
+	 * Always return end
+	 */
+	override WorkDoneProgressKind getKind() {
+		WorkDoneProgressKind.end
+	}
+
+	/**
+	 * Optional, a final message indicating to for example indicate the outcome
+	 * of the operation.
+	 */
+	String message
+}
+
+/**
+ * The base protocol offers also support to report progress in a generic fashion. 
+ * This mechanism can be used to report any kind of progress including work done progress 
+ * (usually used to report progress in the user interface using a progress bar) 
+ * and partial result progress to support streaming of results. 
+ * A progress notification has the following properties:
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+class ProgressParams {
+
+	Either<String, Number> token
+
+	@JsonAdapter(WorkDoneProgressNotificationAdapter.Factory)
+	WorkDoneProgressNotification value;
+
+	new() {
+	}
+
+	new(@NonNull Either<String, Number> token, WorkDoneProgressNotification value) {
+		this.token = token
+		this.value = value
+	}
+
+}
+
+
+/**
+ * A parameter literal used to pass a work done progress token.
+ * 
+ * Since 3.15.0
+ */
+interface WorkDoneProgressParams {
+	/**
+	 * An optional token that a server can use to report work done progress.
+	 */
+	def Either<String, Number> getWorkDoneToken()
+	
+	def void setWorkDoneToken(Either<String, Number> token)
+	
+}
+
+/**
+ * Options to signal work done progress support in server capabilities.
+ * 
+ * Since 3.15.0
+ */
+interface WorkDoneProgressOptions {
+	
+	def Boolean getWorkDoneProgress()
+	
+	def void setWorkDoneProgress(Boolean workDoneProgress)
+	
+}
+
+/**
+ * Options to signal work done progress support in server capabilities.
+ * It is not present in protocol specification, so it's just "dry" class.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+abstract class AbstractWorkDoneProgressOptions implements WorkDoneProgressOptions {
+	Boolean workDoneProgress
+} 
+
+/**
+ * Options to signal work done progress support in server capabilities and TextDocumentRegistrationOptions.
+ * It is not present in protocol specification, so it's just "dry" class.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+abstract class AbstractTextDocumentRegistrationAndWorkDoneProgressOptions extends TextDocumentRegistrationOptions implements WorkDoneProgressOptions {
+	Boolean workDoneProgress
+	
+	new() {
+	}
+
+	new(List<DocumentFilter> documentSelector) {
+		super(documentSelector)
+	}
+}
+
+/**
+ * A parameter literal used to pass a partial result token.
+ * 
+ * Since 3.15.0
+ */
+interface PartialResultParams {
+	/**
+	 * An optional token that a server can use to report partial results (e.g. streaming) to
+	 * the client.
+	 */
+	def Either<String, Number> getPartialResultToken()
+	
+	def void setPartialResultToken(Either<String, Number> token)
+}
+
+/**
+ * Abstract class which implements work done progress and partial result request parameter.
+ * It is not present in protocol specification, so it's just "dry" class.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+abstract class WorkDoneProgressAndPartialResultParams implements WorkDoneProgressParams, PartialResultParams {
+	
+	Either<String, Number> workDoneToken
+	
+	Either<String, Number> partialResultToken
+	
+}
+
+/**
+ * Abstract class which extends TextDocumentPosition and implements work done progress request parameter.
+ * It is not present in protocol specification, so it's just "dry" class.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+abstract class TextDocumentPositionAndWorkDoneProgressParams extends TextDocumentPositionParams implements WorkDoneProgressParams {
+
+	Either<String, Number> workDoneToken
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+
+	@Deprecated
+	new(@NonNull TextDocumentIdentifier textDocument, String uri, @NonNull Position position) {
+		super(textDocument, uri, position)
+	}
+}
+
+/**
+ * Abstract class which extends TextDocumentPosition and implements work done progress and partial result request parameter.
+ * It is not present in protocol specification, so it's just "dry" class.
+ * 
+ * Since 3.15.0
+ */
+@JsonRpcData
+abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultParams extends TextDocumentPositionAndWorkDoneProgressParams implements PartialResultParams {
+
+	Either<String, Number> partialResultToken
+	
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+
+	@Deprecated
+	new(@NonNull TextDocumentIdentifier textDocument, String uri, @NonNull Position position) {
+		super(textDocument, uri, position)
+	}
+}
+
 @JsonRpcData
 class InitializeError {
 	/**
@@ -2740,7 +3076,10 @@ interface InitializeErrorCode {
  */
 @JsonRpcData
 @JsonAdapter(InitializeParamsTypeAdapter.Factory)
-class InitializeParams {
+class InitializeParams implements WorkDoneProgressParams {
+	
+	Either<String, Number> workDoneToken
+	
 	/**
 	 * The process Id of the parent process that started the server.
 	 */
@@ -2803,6 +3142,7 @@ class InitializeParams {
 	 * Since 3.6.0
 	 */
 	List<WorkspaceFolder> workspaceFolders
+
 }
 
 @JsonRpcData
@@ -3167,12 +3507,21 @@ class ReferenceContext {
 	}
 }
 
+@JsonRpcData
+class ReferenceOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class ReferenceRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+}
+
 /**
  * The references request is sent from the client to the server to resolve project-wide references for the symbol
  * denoted by the given text document position.
  */
 @JsonRpcData
-class ReferenceParams extends TextDocumentPositionParams {
+class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	@NonNull
 	ReferenceContext context
 
@@ -3217,7 +3566,8 @@ class PrepareRenameResult {
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
 @JsonRpcData
-class RenameParams extends TextDocumentPositionParams {
+class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
+
 	/**
 	 * The new name of the symbol. If the given name is not valid the request must return a
 	 * ResponseError with an appropriate message set.
@@ -3477,7 +3827,8 @@ class ShowMessageRequestParams extends MessageParams {
  * The signature help request is sent from the client to the server to request signature information at a given cursor position.
  */
 @JsonRpcData
-class SignatureHelpParams extends TextDocumentPositionParams {
+class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams {
+
 	/**
 	 * The signature help context. This is only available if the client specifies
 	 * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
@@ -3593,7 +3944,8 @@ class SignatureHelp {
  * Signature help options.
  */
 @JsonRpcData
-class SignatureHelpOptions {
+class SignatureHelpOptions extends AbstractWorkDoneProgressOptions {
+
 	/**
 	 * The characters that trigger signature help automatically.
 	 */
@@ -3974,6 +4326,7 @@ class TextDocumentItem {
  */
 @JsonRpcData
 class TextDocumentPositionParams {
+	
 	/**
 	 * The text document.
 	 */
@@ -4008,8 +4361,10 @@ class TextDocumentPositionParams {
 	}
 }
 
+
 @JsonRpcData
-class CompletionParams extends TextDocumentPositionParams {
+class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	/**
 	 * The completion context. This is only available it the client specifies
 	 * to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
@@ -4406,11 +4761,29 @@ class WorkspaceEdit {
 	}
 }
 
+
+/**
+ * The options of a Workspace Symbol Request.
+ */
+@JsonRpcData
+class WorkspaceSymbolOptions extends AbstractWorkDoneProgressOptions {
+
+}
+
+/**
+ * The options of a Workspace Symbol Registration Request.
+ */
+@JsonRpcData
+class WorkspaceSymbolRegistrationOptions extends WorkspaceSymbolOptions {
+}
+
+
 /**
  * The parameters of a Workspace Symbol Request.
  */
 @JsonRpcData
-class WorkspaceSymbolParams {
+class WorkspaceSymbolParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * A query string to filter symbols by. Clients may send an empty
 	 * string here to request all symbols.
@@ -4645,7 +5018,7 @@ class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
 }
 
 @JsonRpcData
-class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOptions {
+class SignatureHelpRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The characters that trigger signature help automatically.
 	 */
@@ -4722,7 +5095,10 @@ class DocumentOnTypeFormattingRegistrationOptions extends TextDocumentRegistrati
  * to the client.
  */
 @JsonRpcData
-class ExecuteCommandParams {
+class ExecuteCommandParams implements WorkDoneProgressParams {
+	
+	Either<String, Number> workDoneToken
+	
 	/**
 	 * The identifier of the actual command handler.
 	 */
@@ -4743,25 +5119,20 @@ class ExecuteCommandParams {
 		this.command = Preconditions.checkNotNull(command, 'command')
 		this.arguments = arguments
 	}
+	
+	new(@NonNull String command, List<Object> arguments, Either<String, Number> workDoneToken) {
+		this.command = Preconditions.checkNotNull(command, 'command')
+		this.arguments = arguments
+		this.workDoneToken = workDoneToken
+	}
 }
 
 /**
  * Execute command registration options.
  */
 @JsonRpcData
-class ExecuteCommandRegistrationOptions {
-	/**
-	 * The commands to be executed on the server
-	 */
-	@NonNull
-	List<String> commands
-
-	new() {
-	}
-
-	new(@NonNull List<String> commands) {
-		this.commands = Preconditions.checkNotNull(commands, 'commands')
-	}
+class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
+	
 }
 
 /**
@@ -4969,7 +5340,8 @@ class ConfigurationItem {
  * Since 3.6.0
  */
 @JsonRpcData
-class DocumentColorParams {
+class DocumentColorParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * The text document.
 	 */
@@ -5050,7 +5422,8 @@ class Color {
  * Since 3.6.0
  */
 @JsonRpcData
-class ColorPresentationParams {
+class ColorPresentationParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * The text document.
 	 */
@@ -5125,7 +5498,8 @@ class ColorPresentation {
  * ranges found in a given text document.
  */
 @JsonRpcData
-class FoldingRangeRequestParams {
+class FoldingRangeRequestParams extends WorkDoneProgressAndPartialResultParams {
+
 	/**
 	 * The text document.
 	 */
@@ -5396,7 +5770,7 @@ class CallHierarchyItem {
  * A parameter literal used in selection range requests.
  */
 @JsonRpcData
-class SelectionRangeParams {
+class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
 
 	/**
 	 * The text document.
@@ -5447,17 +5821,40 @@ class SelectionRange {
 }
 
 /**
+ * Hover options.
+ */
+@JsonRpcData
+class HoverOptions extends AbstractWorkDoneProgressOptions {
+}
+
+/**
+ * Hover registration options.
+ */
+@JsonRpcData
+class HoverRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+}
+
+/**
  * The hover request is sent from the client to the server to request hover information at a given
  * text document position.
  */
 @JsonRpcData
-class HoverParams extends TextDocumentPositionParams {
+class HoverParams extends TextDocumentPositionAndWorkDoneProgressParams {
+	
 	new() {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
 		super(textDocument, position)
 	}
+}
+
+@JsonRpcData
+class DeclarationOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
 
 /**
@@ -5465,13 +5862,22 @@ class HoverParams extends TextDocumentPositionParams {
  * location of a symbol at a given text document position.
  */
 @JsonRpcData
-class DeclarationParams extends TextDocumentPositionParams {
+class DeclarationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	new() {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
 		super(textDocument, position)
 	}
+}
+
+@JsonRpcData
+class DefinitionOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class DefinitionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
 
 /**
@@ -5479,13 +5885,22 @@ class DeclarationParams extends TextDocumentPositionParams {
  *  location of a symbol at a given text document position.
  */
 @JsonRpcData
-class DefinitionParams extends TextDocumentPositionParams {
+class DefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	new() {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
 		super(textDocument, position)
 	}
+}
+
+@JsonRpcData
+class TypeDefinitionOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
 
 /**
@@ -5493,13 +5908,22 @@ class DefinitionParams extends TextDocumentPositionParams {
  * location of a symbol at a given text document position.
  */
 @JsonRpcData
-class TypeDefinitionParams extends TextDocumentPositionParams {
+class TypeDefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	new() {
 	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
 		super(textDocument, position)
 	}
+}
+
+@JsonRpcData
+class ImplementationOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class ImplementationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
 
 /**
@@ -5507,7 +5931,8 @@ class TypeDefinitionParams extends TextDocumentPositionParams {
  * location of a symbol at a given text document position.
  */
 @JsonRpcData
-class ImplementationParams extends TextDocumentPositionParams {
+class ImplementationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	new() {
 	}
 
@@ -5516,12 +5941,21 @@ class ImplementationParams extends TextDocumentPositionParams {
 	}
 }
 
+@JsonRpcData
+class DocumentHighlightOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class DocumentHighlightRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+}
+
 /**
  * The document highlight request is sent from the client to the server to resolve a document highlights
  * for a given text document position.
  */
 @JsonRpcData
-class DocumentHighlightParams extends TextDocumentPositionParams {
+class DocumentHighlightParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	
 	new() {
 	}
 
@@ -5543,3 +5977,36 @@ class PrepareRenameParams extends TextDocumentPositionParams {
 		super(textDocument, position)
 	}
 }
+
+@JsonRpcData
+class WorkDoneProgressCreateParams {
+	/**
+	* The token to be used to report progress.
+	*/
+	Either<String, Number> token
+
+	new() {
+	}
+
+	new(@NonNull Either<String, Number> token) {
+		this.token = token
+	}
+}
+
+@JsonRpcData
+class WorkDoneProgressCancelParams {
+	/**
+	* The token to be used to report progress.
+	*/
+	Either<String, Number> token
+	
+	new() {
+	}
+
+	new(@NonNull Either<String, Number> token) {
+		this.token = token
+	}
+}
+
+
+

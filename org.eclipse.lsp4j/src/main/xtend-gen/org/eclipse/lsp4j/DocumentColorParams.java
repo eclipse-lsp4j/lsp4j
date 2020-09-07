@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -24,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Since 3.6.0
  */
 @SuppressWarnings("all")
-public class DocumentColorParams {
+public class DocumentColorParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -59,6 +60,8 @@ public class DocumentColorParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -70,6 +73,8 @@ public class DocumentColorParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     DocumentColorParams other = (DocumentColorParams) obj;
     if (this.textDocument == null) {
@@ -83,6 +88,6 @@ public class DocumentColorParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    return 31 * super.hashCode() + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
   }
 }

@@ -14,6 +14,7 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.CodeActionContext;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -24,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * These commands are typically code fixes to either fix problems or to beautify/refactor code.
  */
 @SuppressWarnings("all")
-public class CodeActionParams {
+public class CodeActionParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The document in which the command was invoked.
    */
@@ -107,6 +108,8 @@ public class CodeActionParams {
     b.add("textDocument", this.textDocument);
     b.add("range", this.range);
     b.add("context", this.context);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -118,6 +121,8 @@ public class CodeActionParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     CodeActionParams other = (CodeActionParams) obj;
     if (this.textDocument == null) {
@@ -142,7 +147,7 @@ public class CodeActionParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     return prime * result + ((this.context== null) ? 0 : this.context.hashCode());

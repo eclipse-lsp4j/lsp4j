@@ -201,16 +201,14 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 	protected Either<L, R> createLeft(L obj) throws IOException {
 		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
 			return (Either<L, R>) Either3.forLeft3(obj);
-		else
-			return Either.forLeft(obj);
+		return Either.forLeft(obj);
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected Either<L, R> createRight(R obj) throws IOException {
 		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
 			return (Either<L, R>) Either3.forRight3((Either<?, ?>) obj);
-		else
-			return Either.forRight(obj);
+		return Either.forRight(obj);
 	}
 
 	protected static class EitherTypeArgument<T> {

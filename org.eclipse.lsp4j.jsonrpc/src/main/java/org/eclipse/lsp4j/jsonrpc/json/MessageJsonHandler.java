@@ -46,7 +46,7 @@ import com.google.gson.stream.MalformedJsonException;
 public class MessageJsonHandler {
 	
 	public static final JsonRpcMethod CANCEL_METHOD = JsonRpcMethod.notification("$/cancelRequest", CancelParams.class);
-	
+
 	private final Gson gson;
 	
 	private final Map<String, JsonRpcMethod> supportedMethods;

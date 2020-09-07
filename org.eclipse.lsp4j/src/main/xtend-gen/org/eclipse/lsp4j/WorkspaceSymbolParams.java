@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -20,7 +21,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The parameters of a Workspace Symbol Request.
  */
 @SuppressWarnings("all")
-public class WorkspaceSymbolParams {
+public class WorkspaceSymbolParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * A query string to filter symbols by. Clients may send an empty
    * string here to request all symbols.
@@ -58,6 +59,8 @@ public class WorkspaceSymbolParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("query", this.query);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -69,6 +72,8 @@ public class WorkspaceSymbolParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     WorkspaceSymbolParams other = (WorkspaceSymbolParams) obj;
     if (this.query == null) {
@@ -82,6 +87,6 @@ public class WorkspaceSymbolParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.query== null) ? 0 : this.query.hashCode());
+    return 31 * super.hashCode() + ((this.query== null) ? 0 : this.query.hashCode());
   }
 }

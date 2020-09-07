@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.InitializedParams;
+import org.eclipse.lsp4j.WorkDoneProgressCancelParams;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -86,5 +87,13 @@ public interface LanguageServer {
 	 */
 	@JsonDelegate
 	WorkspaceService getWorkspaceService();
+	
+	/**
+	 * This notification is sent from the client to the server to cancel a progress initiated on the server side.
+	 */
+	@JsonNotification("window/workDoneProgress/cancel")
+	default void cancelProgress(WorkDoneProgressCancelParams params) {
+		throw new UnsupportedOperationException();
+	}
 	
 }

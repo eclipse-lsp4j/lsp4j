@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Code Action options.
  */
 @SuppressWarnings("all")
-public class CodeActionOptions {
+public class CodeActionOptions extends AbstractWorkDoneProgressOptions {
   /**
    * CodeActionKinds that this server may return.
    * 
@@ -61,6 +62,7 @@ public class CodeActionOptions {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("codeActionKinds", this.codeActionKinds);
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -72,6 +74,8 @@ public class CodeActionOptions {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     CodeActionOptions other = (CodeActionOptions) obj;
     if (this.codeActionKinds == null) {
@@ -85,6 +89,6 @@ public class CodeActionOptions {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.codeActionKinds== null) ? 0 : this.codeActionKinds.hashCode());
+    return 31 * super.hashCode() + ((this.codeActionKinds== null) ? 0 : this.codeActionKinds.hashCode());
   }
 }

@@ -14,7 +14,7 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.SignatureHelpContext;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TextDocumentPositionAndWorkDoneProgressParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -23,7 +23,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The signature help request is sent from the client to the server to request signature information at a given cursor position.
  */
 @SuppressWarnings("all")
-public class SignatureHelpParams extends TextDocumentPositionParams {
+public class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams {
   /**
    * The signature help context. This is only available if the client specifies
    * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
@@ -70,6 +70,7 @@ public class SignatureHelpParams extends TextDocumentPositionParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("context", this.context);
+    b.add("workDoneToken", getWorkDoneToken());
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
     b.add("position", getPosition());

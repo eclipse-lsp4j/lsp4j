@@ -26,6 +26,7 @@ import org.eclipse.lsp4j.ClientInfo;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.generator.TypeAdapterImpl;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
 /**
  * A type adapter for the InitializeParams protocol type.
@@ -68,6 +69,8 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     }
   }
   
+  private static final TypeToken<Either<String, Number>> WORKDONETOKEN_TYPE_TOKEN = new TypeToken<Either<String, Number>>() {};
+  
   private static final TypeToken<List<WorkspaceFolder>> WORKSPACEFOLDERS_TYPE_TOKEN = new TypeToken<List<WorkspaceFolder>>() {};
   
   private final Gson gson;
@@ -87,6 +90,9 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     while (in.hasNext()) {
     	String name = in.nextName();
     	switch (name) {
+    	case "workDoneToken":
+    		result.setWorkDoneToken(readWorkDoneToken(in));
+    		break;
     	case "processId":
     		result.setProcessId(readProcessId(in));
     		break;
@@ -120,6 +126,10 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     }
     in.endObject();
     return result;
+  }
+  
+  protected Either<String, Number> readWorkDoneToken(final JsonReader in) throws IOException {
+    return gson.fromJson(in, WORKDONETOKEN_TYPE_TOKEN.getType());
   }
   
   protected Integer readProcessId(final JsonReader in) throws IOException {
@@ -161,6 +171,8 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     }
     
     out.beginObject();
+    out.name("workDoneToken");
+    writeWorkDoneToken(out, value.getWorkDoneToken());
     out.name("processId");
     writeProcessId(out, value.getProcessId());
     out.name("rootPath");
@@ -180,6 +192,10 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     out.name("workspaceFolders");
     writeWorkspaceFolders(out, value.getWorkspaceFolders());
     out.endObject();
+  }
+  
+  protected void writeWorkDoneToken(final JsonWriter out, final Either<String, Number> value) throws IOException {
+    gson.toJson(value, WORKDONETOKEN_TYPE_TOKEN.getType(), out);
   }
   
   protected void writeRootPath(final JsonWriter out, final String value) throws IOException {

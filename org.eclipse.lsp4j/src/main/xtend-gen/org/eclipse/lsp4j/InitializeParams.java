@@ -15,9 +15,11 @@ import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.ClientCapabilities;
 import org.eclipse.lsp4j.ClientInfo;
+import org.eclipse.lsp4j.WorkDoneProgressParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -26,7 +28,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @JsonAdapter(InitializeParamsTypeAdapter.Factory.class)
 @SuppressWarnings("all")
-public class InitializeParams {
+public class InitializeParams implements WorkDoneProgressParams {
+  private Either<String, Number> workDoneToken;
+  
   /**
    * The process Id of the parent process that started the server.
    */
@@ -89,6 +93,31 @@ public class InitializeParams {
    * Since 3.6.0
    */
   private List<WorkspaceFolder> workspaceFolders;
+  
+  @Pure
+  public Either<String, Number> getWorkDoneToken() {
+    return this.workDoneToken;
+  }
+  
+  public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
+    this.workDoneToken = workDoneToken;
+  }
+  
+  public void setWorkDoneToken(final String workDoneToken) {
+    if (workDoneToken == null) {
+      this.workDoneToken = null;
+      return;
+    }
+    this.workDoneToken = Either.forLeft(workDoneToken);
+  }
+  
+  public void setWorkDoneToken(final Number workDoneToken) {
+    if (workDoneToken == null) {
+      this.workDoneToken = null;
+      return;
+    }
+    this.workDoneToken = Either.forRight(workDoneToken);
+  }
   
   /**
    * The process Id of the parent process that started the server.
@@ -263,6 +292,7 @@ public class InitializeParams {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("workDoneToken", this.workDoneToken);
     b.add("processId", this.processId);
     b.add("rootPath", this.rootPath);
     b.add("rootUri", this.rootUri);
@@ -285,6 +315,11 @@ public class InitializeParams {
     if (getClass() != obj.getClass())
       return false;
     InitializeParams other = (InitializeParams) obj;
+    if (this.workDoneToken == null) {
+      if (other.workDoneToken != null)
+        return false;
+    } else if (!this.workDoneToken.equals(other.workDoneToken))
+      return false;
     if (this.processId == null) {
       if (other.processId != null)
         return false;
@@ -338,6 +373,7 @@ public class InitializeParams {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((this.workDoneToken== null) ? 0 : this.workDoneToken.hashCode());
     result = prime * result + ((this.processId== null) ? 0 : this.processId.hashCode());
     result = prime * result + ((this.rootPath== null) ? 0 : this.rootPath.hashCode());
     result = prime * result + ((this.rootUri== null) ? 0 : this.rootUri.hashCode());

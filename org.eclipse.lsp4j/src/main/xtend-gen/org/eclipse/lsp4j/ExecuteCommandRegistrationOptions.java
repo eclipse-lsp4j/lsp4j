@@ -11,9 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
-import java.util.List;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.lsp4j.util.Preconditions;
+import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -21,41 +19,13 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Execute command registration options.
  */
 @SuppressWarnings("all")
-public class ExecuteCommandRegistrationOptions {
-  /**
-   * The commands to be executed on the server
-   */
-  @NonNull
-  private List<String> commands;
-  
-  public ExecuteCommandRegistrationOptions() {
-  }
-  
-  public ExecuteCommandRegistrationOptions(@NonNull final List<String> commands) {
-    this.commands = Preconditions.<List<String>>checkNotNull(commands, "commands");
-  }
-  
-  /**
-   * The commands to be executed on the server
-   */
-  @Pure
-  @NonNull
-  public List<String> getCommands() {
-    return this.commands;
-  }
-  
-  /**
-   * The commands to be executed on the server
-   */
-  public void setCommands(@NonNull final List<String> commands) {
-    this.commands = Preconditions.checkNotNull(commands, "commands");
-  }
-  
+public class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("commands", this.commands);
+    b.add("commands", getCommands());
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -68,11 +38,7 @@ public class ExecuteCommandRegistrationOptions {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    ExecuteCommandRegistrationOptions other = (ExecuteCommandRegistrationOptions) obj;
-    if (this.commands == null) {
-      if (other.commands != null)
-        return false;
-    } else if (!this.commands.equals(other.commands))
+    if (!super.equals(obj))
       return false;
     return true;
   }
@@ -80,6 +46,6 @@ public class ExecuteCommandRegistrationOptions {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.commands== null) ? 0 : this.commands.hashCode());
+    return super.hashCode();
   }
 }

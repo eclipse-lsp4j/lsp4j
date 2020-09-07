@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
+import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Completion options.
  */
 @SuppressWarnings("all")
-public class CompletionOptions {
+public class CompletionOptions extends AbstractWorkDoneProgressOptions {
   /**
    * The server provides support to resolve additional information for a completion item.
    */
@@ -74,6 +75,7 @@ public class CompletionOptions {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("resolveProvider", this.resolveProvider);
     b.add("triggerCharacters", this.triggerCharacters);
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -85,6 +87,8 @@ public class CompletionOptions {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     CompletionOptions other = (CompletionOptions) obj;
     if (this.resolveProvider == null) {
@@ -104,7 +108,7 @@ public class CompletionOptions {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
     return prime * result + ((this.triggerCharacters== null) ? 0 : this.triggerCharacters.hashCode());
   }

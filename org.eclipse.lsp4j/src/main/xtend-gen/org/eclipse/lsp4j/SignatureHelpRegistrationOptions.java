@@ -12,12 +12,12 @@
 package org.eclipse.lsp4j;
 
 import java.util.List;
-import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
+import org.eclipse.lsp4j.AbstractTextDocumentRegistrationAndWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOptions {
+public class SignatureHelpRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
   /**
    * The characters that trigger signature help automatically.
    */
@@ -50,6 +50,7 @@ public class SignatureHelpRegistrationOptions extends TextDocumentRegistrationOp
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("triggerCharacters", this.triggerCharacters);
+    b.add("workDoneProgress", getWorkDoneProgress());
     b.add("documentSelector", getDocumentSelector());
     return b.toString();
   }

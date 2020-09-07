@@ -48,5 +48,5 @@ public class MockLanguageClient implements LanguageClient {
 	public CompletableFuture<List<WorkspaceFolder>> workspaceFolders() {
 		throw new UnsupportedOperationException();
 	}
-
+	
 }

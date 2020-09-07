@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -22,7 +23,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Execute command options.
  */
 @SuppressWarnings("all")
-public class ExecuteCommandOptions {
+public class ExecuteCommandOptions extends AbstractWorkDoneProgressOptions {
   /**
    * The commands to be executed on the server
    */
@@ -58,6 +59,7 @@ public class ExecuteCommandOptions {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("commands", this.commands);
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -69,6 +71,8 @@ public class ExecuteCommandOptions {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     ExecuteCommandOptions other = (ExecuteCommandOptions) obj;
     if (this.commands == null) {
@@ -82,6 +86,6 @@ public class ExecuteCommandOptions {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.commands== null) ? 0 : this.commands.hashCode());
+    return 31 * super.hashCode() + ((this.commands== null) ? 0 : this.commands.hashCode());
   }
 }

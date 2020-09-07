@@ -14,13 +14,13 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.CompletionContext;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
+import org.eclipse.lsp4j.TextDocumentPositionAndWorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
-public class CompletionParams extends TextDocumentPositionParams {
+public class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
   /**
    * The completion context. This is only available it the client specifies
    * to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
@@ -61,6 +61,8 @@ public class CompletionParams extends TextDocumentPositionParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("context", this.context);
+    b.add("partialResultToken", getPartialResultToken());
+    b.add("workDoneToken", getWorkDoneToken());
     b.add("textDocument", getTextDocument());
     b.add("uri", getUri());
     b.add("position", getPosition());

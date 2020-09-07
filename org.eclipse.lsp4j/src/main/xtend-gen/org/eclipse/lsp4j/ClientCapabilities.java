@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.TextDocumentClientCapabilities;
+import org.eclipse.lsp4j.WindowClientCapabilities;
 import org.eclipse.lsp4j.WorkspaceClientCapabilities;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -44,6 +45,11 @@ public class ClientCapabilities {
   private TextDocumentClientCapabilities textDocument;
   
   /**
+   * Window specific client capabilities.
+   */
+  private WindowClientCapabilities window;
+  
+  /**
    * Experimental client capabilities.
    */
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
@@ -55,6 +61,13 @@ public class ClientCapabilities {
   public ClientCapabilities(final WorkspaceClientCapabilities workspace, final TextDocumentClientCapabilities textDocument, final Object experimental) {
     this.workspace = workspace;
     this.textDocument = textDocument;
+    this.experimental = experimental;
+  }
+  
+  public ClientCapabilities(final WorkspaceClientCapabilities workspace, final TextDocumentClientCapabilities textDocument, final WindowClientCapabilities window, final Object experimental) {
+    this.workspace = workspace;
+    this.textDocument = textDocument;
+    this.window = window;
     this.experimental = experimental;
   }
   
@@ -89,6 +102,21 @@ public class ClientCapabilities {
   }
   
   /**
+   * Window specific client capabilities.
+   */
+  @Pure
+  public WindowClientCapabilities getWindow() {
+    return this.window;
+  }
+  
+  /**
+   * Window specific client capabilities.
+   */
+  public void setWindow(final WindowClientCapabilities window) {
+    this.window = window;
+  }
+  
+  /**
    * Experimental client capabilities.
    */
   @Pure
@@ -109,6 +137,7 @@ public class ClientCapabilities {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("workspace", this.workspace);
     b.add("textDocument", this.textDocument);
+    b.add("window", this.window);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -133,6 +162,11 @@ public class ClientCapabilities {
         return false;
     } else if (!this.textDocument.equals(other.textDocument))
       return false;
+    if (this.window == null) {
+      if (other.window != null)
+        return false;
+    } else if (!this.window.equals(other.window))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -148,6 +182,7 @@ public class ClientCapabilities {
     int result = 1;
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    result = prime * result + ((this.window== null) ? 0 : this.window.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }
