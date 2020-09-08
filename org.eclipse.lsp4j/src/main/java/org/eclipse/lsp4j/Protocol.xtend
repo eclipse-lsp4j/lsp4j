@@ -1552,7 +1552,10 @@ class CompletionItem {
 
 	/**
 	 * Indicates if this item is deprecated.
+	 *
+	 * @deprecated Use `tags` instead if supported.
 	 */
+	@Deprecated
 	Boolean deprecated
 
 	/**
