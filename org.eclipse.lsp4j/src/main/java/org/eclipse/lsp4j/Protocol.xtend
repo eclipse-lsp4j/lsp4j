@@ -1037,10 +1037,12 @@ class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 		super(dynamicRegistration)
 	}
 }
-
+/**
+ * @since 3.16.0
+ */
 @Beta
 @JsonRpcData
-class SemanticTokensClientFull {
+class SemanticTokensClientCapabilitiesRequestsFull {
 
 	/**
 	* The client will send the `textDocument/semanticTokens/full/delta` request if
@@ -1056,9 +1058,12 @@ class SemanticTokensClientFull {
 	}
 }
 
+/**
+ * @since 3.16.0
+ */
 @Beta
 @JsonRpcData
-class SemanticTokensRequests {
+class SemanticTokensClientCapabilitiesRequests {
 
 	/**
 	* The client will send the `textDocument/semanticTokens/range` request if
@@ -1070,7 +1075,7 @@ class SemanticTokensRequests {
 	* The client will send the `textDocument/semanticTokens/full` request if
 	* the server provides a corresponding handler.
 	*/
-	Either<Boolean, SemanticTokensClientFull> full
+	Either<Boolean, SemanticTokensClientCapabilitiesRequestsFull> full
 
 	new() {
 	}
@@ -1079,7 +1084,7 @@ class SemanticTokensRequests {
 		this.full = full
 	}
 
-	new(SemanticTokensClientFull full) {
+	new(SemanticTokensClientCapabilitiesRequestsFull full) {
 		this.full = full
 	}
 
@@ -1088,13 +1093,16 @@ class SemanticTokensRequests {
 		this.range = range
 	}
 
-	new(SemanticTokensClientFull full, Boolean range) {
+	new(SemanticTokensClientCapabilitiesRequestsFull full, Boolean range) {
 		this.full = full
 		this.range = range
 	}
 
 }
 
+/**
+ * @since 3.16.0
+ */
 @Beta
 @JsonRpcData
 class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
@@ -1103,7 +1111,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * Which requests the client supports and might send to the server.
 	 */
 	@NonNull
-	SemanticTokensRequests requests
+	SemanticTokensClientCapabilitiesRequests requests
 
 	/**
 	 * The token types that the client supports.
@@ -1127,7 +1135,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 		super(dynamicRegistration)
 	}
 
-	new(@NonNull SemanticTokensRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
+	new(@NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
 		this.requests = Preconditions.checkNotNull(requests, 'requests')
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
 		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
@@ -1135,7 +1143,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	}
 
 
-	new(Boolean dynamicRegistration, @NonNull SemanticTokensRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
+	new(Boolean dynamicRegistration, @NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
 		super(dynamicRegistration)
 		this.requests = Preconditions.checkNotNull(requests, 'requests')
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
@@ -3744,7 +3752,7 @@ class SemanticTokensServerFull {
 
 @Beta
 @JsonRpcData
-class SemanticTokensOptions {
+class SemanticTokensOptions implements WorkDoneProgressOptions {
 
 	/**
 	 * The legend used by the server
@@ -3793,7 +3801,7 @@ class SemanticTokensOptions {
 
 @Beta
 @JsonRpcData
-class SemanticTokensRegistrationOptions extends TextDocumentRegistrationOptions  {
+class SemanticTokensRegistrationOptions extends TextDocumentRegistrationOptions implements WorkDoneProgressOptions {
 
 	/**
 	 * The legend used by the server
@@ -4119,7 +4127,7 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
  */
 @Beta
 @JsonRpcData
-class SemanticTokensParams {
+class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 
 	/**
 	 * The text document.
@@ -4183,7 +4191,7 @@ class SemanticTokensPartialResult {
  */
 @Beta
 @JsonRpcData
-class SemanticTokensDeltaParams {
+class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 
 	/**
 	 * The text document.
@@ -4252,6 +4260,11 @@ class SemanticTokensDelta {
 	new(@NonNull List<SemanticTokensEdit> edits) {
 		this.edits = Preconditions.checkNotNull(edits, 'edits')
 	}
+
+	new(@NonNull List<SemanticTokensEdit> edits, String resultId) {
+		this.edits = Preconditions.checkNotNull(edits, 'edits')
+		this.resultId = resultId
+	}
 }
 
 /**
@@ -4274,7 +4287,7 @@ class SemanticTokensDeltaPartialResult {
  */
 @Beta
 @JsonRpcData
-class SemanticTokensRangeParams {
+class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 
 	/**
 	 * The text document.
@@ -6451,6 +6464,3 @@ class WorkDoneProgressCancelParams {
 		this.token = token
 	}
 }
-
-
-

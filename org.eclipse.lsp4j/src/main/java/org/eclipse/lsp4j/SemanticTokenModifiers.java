@@ -17,8 +17,8 @@ import com.google.common.annotations.Beta;
  * @since 3.16.0
  */
 @Beta
-public final class SemanticTokenModfiers {
-    private SemanticTokenModfiers() {
+public final class SemanticTokenModifiers {
+    private SemanticTokenModifiers() {
     }
 
     public static final String Declaration = "declaration";
