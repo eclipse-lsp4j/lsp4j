@@ -192,9 +192,17 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		} else if (matchesRight) {
 			// Parse the right alternative from the JSON stream
 			return createRight(right.read(in));
-		} else {
-			throw new JsonParseException("Unexpected token " + nextToken + ": expected " + left + " | " + right + " tokens.");
+		} else if (leftChecker != null || rightChecker != null) {
+			// If result is not the list but directly the only item in the list
+			JsonElement element = new JsonParser().parse(in);
+			if (leftChecker != null && leftChecker.test(element))
+				// Parse the left alternative from the JSON element tree
+				return createLeft(left.read(element));
+			if (rightChecker != null && rightChecker.test(element))
+				// Parse the right alternative from the JSON element tree
+				return createRight(right.read(element));
 		}
+		throw new JsonParseException("Unexpected token " + nextToken + ": expected " + left + " | " + right + " tokens.");
 	}
 	
 	@SuppressWarnings("unchecked")
