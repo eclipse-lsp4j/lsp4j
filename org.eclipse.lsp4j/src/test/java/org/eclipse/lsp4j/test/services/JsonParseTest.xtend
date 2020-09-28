@@ -987,6 +987,42 @@ class JsonParseTest {
 				new Location('foo', new Range(new Position(7, 12), new Position(8, 16)))
 			])
 		])
+		
+	}
+
+	@Test
+	def void testItemInsteadOfListResponse() {
+		//test parse direct item without the list
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_DECLARATION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"uri": "foo",
+					"range": {
+						"start": {
+							"line": 7,
+							"character": 12
+						},
+						"end": {
+							"line": 8,
+							"character": 16
+						}
+					}
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = Either.<List<? extends Location>, List<? extends LocationLink>>forLeft(#[
+				new Location('foo', new Range(new Position(7, 12), new Position(8, 16)))
+			])
+		])
 	}
 
 	@Test
