@@ -37,6 +37,11 @@ public class SemanticTokensDelta {
     this.edits = Preconditions.<List<SemanticTokensEdit>>checkNotNull(edits, "edits");
   }
   
+  public SemanticTokensDelta(@NonNull final List<SemanticTokensEdit> edits, final String resultId) {
+    this.edits = Preconditions.<List<SemanticTokensEdit>>checkNotNull(edits, "edits");
+    this.resultId = resultId;
+  }
+  
   @Pure
   public String getResultId() {
     return this.resultId;

@@ -15,19 +15,22 @@ import com.google.common.annotations.Beta;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * @since 3.16.0
+ */
 @Beta
 @SuppressWarnings("all")
-public class SemanticTokensClientFull {
+public class SemanticTokensClientCapabilitiesRequestsFull {
   /**
    * The client will send the `textDocument/semanticTokens/full/delta` request if
    * the server provides a corresponding handler.
    */
   private Boolean delta;
   
-  public SemanticTokensClientFull() {
+  public SemanticTokensClientCapabilitiesRequestsFull() {
   }
   
-  public SemanticTokensClientFull(final Boolean delta) {
+  public SemanticTokensClientCapabilitiesRequestsFull(final Boolean delta) {
     this.delta = delta;
   }
   
@@ -65,7 +68,7 @@ public class SemanticTokensClientFull {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    SemanticTokensClientFull other = (SemanticTokensClientFull) obj;
+    SemanticTokensClientCapabilitiesRequestsFull other = (SemanticTokensClientCapabilitiesRequestsFull) obj;
     if (this.delta == null) {
       if (other.delta != null)
         return false;

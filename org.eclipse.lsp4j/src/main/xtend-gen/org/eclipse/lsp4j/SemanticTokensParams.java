@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -23,7 +24,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @Beta
 @SuppressWarnings("all")
-public class SemanticTokensParams {
+public class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -55,6 +56,8 @@ public class SemanticTokensParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -66,6 +69,8 @@ public class SemanticTokensParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     SemanticTokensParams other = (SemanticTokensParams) obj;
     if (this.textDocument == null) {
@@ -79,6 +84,6 @@ public class SemanticTokensParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    return 31 * super.hashCode() + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
   }
 }
