@@ -23,8 +23,7 @@ import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.FoldingRangeProviderOptions;
 import org.eclipse.lsp4j.RenameOptions;
 import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
-import org.eclipse.lsp4j.SemanticTokensOptions;
-import org.eclipse.lsp4j.SemanticTokensRegistrationOptions;
+import org.eclipse.lsp4j.SemanticTokensWithRegistrationOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
 import org.eclipse.lsp4j.TextDocumentSyncKind;
@@ -202,7 +201,7 @@ public class ServerCapabilities {
    * Since 3.16.0
    */
   @Beta
-  private Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> semanticTokensProvider;
+  private SemanticTokensWithRegistrationOptions semanticTokensProvider;
   
   /**
    * Experimental server capabilities.
@@ -839,7 +838,7 @@ public class ServerCapabilities {
    * Since 3.16.0
    */
   @Pure
-  public Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> getSemanticTokensProvider() {
+  public SemanticTokensWithRegistrationOptions getSemanticTokensProvider() {
     return this.semanticTokensProvider;
   }
   
@@ -848,7 +847,7 @@ public class ServerCapabilities {
    * 
    * Since 3.16.0
    */
-  public void setSemanticTokensProvider(final Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> semanticTokensProvider) {
+  public void setSemanticTokensProvider(final SemanticTokensWithRegistrationOptions semanticTokensProvider) {
     this.semanticTokensProvider = semanticTokensProvider;
   }
   

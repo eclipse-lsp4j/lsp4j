@@ -12,80 +12,53 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import org.eclipse.lsp4j.SemanticTokensLegend;
-import org.eclipse.lsp4j.SemanticTokensServerFull;
-import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
+import org.eclipse.lsp4j.SemanticTokensClientCapabilitiesRequestsFull;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
-import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
-import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * @since 3.16.0
+ */
 @Beta
 @SuppressWarnings("all")
-public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationOptions {
+public class SemanticTokensClientCapabilitiesRequests {
   /**
-   * The legend used by the server
-   */
-  @NonNull
-  private SemanticTokensLegend legend;
-  
-  /**
-   * Server supports providing semantic tokens for a specific range
-   * of a document.
+   * The client will send the `textDocument/semanticTokens/range` request if
+   * the server provides a corresponding handler.
    */
   private Either<Boolean, Object> range;
   
   /**
-   * Server supports providing semantic tokens for a full document.
+   * The client will send the `textDocument/semanticTokens/full` request if
+   * the server provides a corresponding handler.
    */
-  private Either<Boolean, SemanticTokensServerFull> full;
+  private Either<Boolean, SemanticTokensClientCapabilitiesRequestsFull> full;
   
-  public SemanticTokensRegistrationOptions(@NonNull final SemanticTokensLegend legend) {
-    this.legend = Preconditions.<SemanticTokensLegend>checkNotNull(legend, "legend");
+  public SemanticTokensClientCapabilitiesRequests() {
   }
   
-  public SemanticTokensRegistrationOptions(@NonNull final SemanticTokensLegend legend, final Boolean full) {
-    this(legend);
+  public SemanticTokensClientCapabilitiesRequests(final Boolean full) {
     this.setFull(full);
   }
   
-  public SemanticTokensRegistrationOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full) {
-    this(legend);
+  public SemanticTokensClientCapabilitiesRequests(final SemanticTokensClientCapabilitiesRequestsFull full) {
     this.setFull(full);
   }
   
-  public SemanticTokensRegistrationOptions(@NonNull final SemanticTokensLegend legend, final Boolean full, final Boolean range) {
-    this(legend);
+  public SemanticTokensClientCapabilitiesRequests(final Boolean full, final Boolean range) {
     this.setFull(full);
     this.setRange(range);
   }
   
-  public SemanticTokensRegistrationOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full, final Boolean range) {
-    this(legend);
+  public SemanticTokensClientCapabilitiesRequests(final SemanticTokensClientCapabilitiesRequestsFull full, final Boolean range) {
     this.setFull(full);
     this.setRange(range);
   }
   
   /**
-   * The legend used by the server
-   */
-  @Pure
-  @NonNull
-  public SemanticTokensLegend getLegend() {
-    return this.legend;
-  }
-  
-  /**
-   * The legend used by the server
-   */
-  public void setLegend(@NonNull final SemanticTokensLegend legend) {
-    this.legend = Preconditions.checkNotNull(legend, "legend");
-  }
-  
-  /**
-   * Server supports providing semantic tokens for a specific range
-   * of a document.
+   * The client will send the `textDocument/semanticTokens/range` request if
+   * the server provides a corresponding handler.
    */
   @Pure
   public Either<Boolean, Object> getRange() {
@@ -93,8 +66,8 @@ public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationO
   }
   
   /**
-   * Server supports providing semantic tokens for a specific range
-   * of a document.
+   * The client will send the `textDocument/semanticTokens/range` request if
+   * the server provides a corresponding handler.
    */
   public void setRange(final Either<Boolean, Object> range) {
     this.range = range;
@@ -117,17 +90,19 @@ public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationO
   }
   
   /**
-   * Server supports providing semantic tokens for a full document.
+   * The client will send the `textDocument/semanticTokens/full` request if
+   * the server provides a corresponding handler.
    */
   @Pure
-  public Either<Boolean, SemanticTokensServerFull> getFull() {
+  public Either<Boolean, SemanticTokensClientCapabilitiesRequestsFull> getFull() {
     return this.full;
   }
   
   /**
-   * Server supports providing semantic tokens for a full document.
+   * The client will send the `textDocument/semanticTokens/full` request if
+   * the server provides a corresponding handler.
    */
-  public void setFull(final Either<Boolean, SemanticTokensServerFull> full) {
+  public void setFull(final Either<Boolean, SemanticTokensClientCapabilitiesRequestsFull> full) {
     this.full = full;
   }
   
@@ -139,7 +114,7 @@ public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationO
     this.full = Either.forLeft(full);
   }
   
-  public void setFull(final SemanticTokensServerFull full) {
+  public void setFull(final SemanticTokensClientCapabilitiesRequestsFull full) {
     if (full == null) {
       this.full = null;
       return;
@@ -151,10 +126,8 @@ public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationO
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("legend", this.legend);
     b.add("range", this.range);
     b.add("full", this.full);
-    b.add("documentSelector", getDocumentSelector());
     return b.toString();
   }
   
@@ -167,14 +140,7 @@ public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationO
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
-    SemanticTokensRegistrationOptions other = (SemanticTokensRegistrationOptions) obj;
-    if (this.legend == null) {
-      if (other.legend != null)
-        return false;
-    } else if (!this.legend.equals(other.legend))
-      return false;
+    SemanticTokensClientCapabilitiesRequests other = (SemanticTokensClientCapabilitiesRequests) obj;
     if (this.range == null) {
       if (other.range != null)
         return false;
@@ -192,8 +158,7 @@ public class SemanticTokensRegistrationOptions extends TextDocumentRegistrationO
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + ((this.legend== null) ? 0 : this.legend.hashCode());
+    int result = 1;
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     return prime * result + ((this.full== null) ? 0 : this.full.hashCode());
   }

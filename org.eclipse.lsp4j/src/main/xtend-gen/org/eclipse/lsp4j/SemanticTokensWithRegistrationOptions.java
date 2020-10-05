@@ -12,6 +12,9 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import java.util.List;
+import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
+import org.eclipse.lsp4j.DocumentFilter;
 import org.eclipse.lsp4j.SemanticTokensLegend;
 import org.eclipse.lsp4j.SemanticTokensServerFull;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -22,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @Beta
 @SuppressWarnings("all")
-public class SemanticTokensOptions {
+public class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
   /**
    * The legend used by the server
    */
@@ -40,30 +43,43 @@ public class SemanticTokensOptions {
    */
   private Either<Boolean, SemanticTokensServerFull> full;
   
-  public SemanticTokensOptions(@NonNull final SemanticTokensLegend legend) {
+  /**
+   * A document selector to identify the scope of the registration. If set to null
+   * the document selector provided on the client side will be used.
+   */
+  private List<DocumentFilter> documentSelector;
+  
+  public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend) {
     this.legend = Preconditions.<SemanticTokensLegend>checkNotNull(legend, "legend");
   }
   
-  public SemanticTokensOptions(@NonNull final SemanticTokensLegend legend, final Boolean full) {
+  public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend, final Boolean full) {
     this(legend);
     this.setFull(full);
   }
   
-  public SemanticTokensOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full) {
+  public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full) {
     this(legend);
     this.setFull(full);
   }
   
-  public SemanticTokensOptions(@NonNull final SemanticTokensLegend legend, final Boolean full, final Boolean range) {
+  public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend, final Boolean full, final Boolean range) {
     this(legend);
     this.setFull(full);
     this.setRange(range);
   }
   
-  public SemanticTokensOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full, final Boolean range) {
+  public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full, final Boolean range) {
     this(legend);
     this.setFull(full);
     this.setRange(range);
+  }
+  
+  public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend, final SemanticTokensServerFull full, final Boolean range, final List<DocumentFilter> documentSelector) {
+    this(legend);
+    this.setFull(full);
+    this.setRange(range);
+    this.documentSelector = documentSelector;
   }
   
   /**
@@ -146,6 +162,23 @@ public class SemanticTokensOptions {
     this.full = Either.forRight(full);
   }
   
+  /**
+   * A document selector to identify the scope of the registration. If set to null
+   * the document selector provided on the client side will be used.
+   */
+  @Pure
+  public List<DocumentFilter> getDocumentSelector() {
+    return this.documentSelector;
+  }
+  
+  /**
+   * A document selector to identify the scope of the registration. If set to null
+   * the document selector provided on the client side will be used.
+   */
+  public void setDocumentSelector(final List<DocumentFilter> documentSelector) {
+    this.documentSelector = documentSelector;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -153,6 +186,8 @@ public class SemanticTokensOptions {
     b.add("legend", this.legend);
     b.add("range", this.range);
     b.add("full", this.full);
+    b.add("documentSelector", this.documentSelector);
+    b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
   
@@ -165,7 +200,9 @@ public class SemanticTokensOptions {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    SemanticTokensOptions other = (SemanticTokensOptions) obj;
+    if (!super.equals(obj))
+      return false;
+    SemanticTokensWithRegistrationOptions other = (SemanticTokensWithRegistrationOptions) obj;
     if (this.legend == null) {
       if (other.legend != null)
         return false;
@@ -181,6 +218,11 @@ public class SemanticTokensOptions {
         return false;
     } else if (!this.full.equals(other.full))
       return false;
+    if (this.documentSelector == null) {
+      if (other.documentSelector != null)
+        return false;
+    } else if (!this.documentSelector.equals(other.documentSelector))
+      return false;
     return true;
   }
   
@@ -188,9 +230,10 @@ public class SemanticTokensOptions {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.legend== null) ? 0 : this.legend.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    return prime * result + ((this.full== null) ? 0 : this.full.hashCode());
+    result = prime * result + ((this.full== null) ? 0 : this.full.hashCode());
+    return prime * result + ((this.documentSelector== null) ? 0 : this.documentSelector.hashCode());
   }
 }

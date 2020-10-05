@@ -14,6 +14,7 @@ package org.eclipse.lsp4j;
 import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -24,7 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @Beta
 @SuppressWarnings("all")
-public class SemanticTokensRangeParams {
+public class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -80,6 +81,8 @@ public class SemanticTokensRangeParams {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
     b.add("range", this.range);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -91,6 +94,8 @@ public class SemanticTokensRangeParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     SemanticTokensRangeParams other = (SemanticTokensRangeParams) obj;
     if (this.textDocument == null) {
@@ -110,7 +115,7 @@ public class SemanticTokensRangeParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     return prime * result + ((this.range== null) ? 0 : this.range.hashCode());
   }

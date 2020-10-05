@@ -3752,7 +3752,7 @@ class SemanticTokensServerFull {
 
 @Beta
 @JsonRpcData
-class SemanticTokensOptions implements WorkDoneProgressOptions {
+class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
 
 	/**
 	 * The legend used by the server
@@ -3770,6 +3770,12 @@ class SemanticTokensOptions implements WorkDoneProgressOptions {
 	 * Server supports providing semantic tokens for a full document.
 	 */
 	Either<Boolean, SemanticTokensServerFull> full
+
+	/**
+	 * A document selector to identify the scope of the registration. If set to null
+	 * the document selector provided on the client side will be used.
+	 */
+	List<DocumentFilter> documentSelector
 
 	new(@NonNull SemanticTokensLegend legend) {
 		this.legend = Preconditions.checkNotNull(legend, 'legend')
@@ -3797,53 +3803,11 @@ class SemanticTokensOptions implements WorkDoneProgressOptions {
 		this.range = range
 	}
 
-}
-
-@Beta
-@JsonRpcData
-class SemanticTokensRegistrationOptions extends TextDocumentRegistrationOptions implements WorkDoneProgressOptions {
-
-	/**
-	 * The legend used by the server
-	 */
-	@NonNull
-	SemanticTokensLegend legend
-
-	/**
-	 * Server supports providing semantic tokens for a specific range
-	 * of a document.
-	 */
-	Either<Boolean, Object> range
-
-	/**
-	 * Server supports providing semantic tokens for a full document.
-	 */
-	Either<Boolean, SemanticTokensServerFull> full
-
-	new(@NonNull SemanticTokensLegend legend) {
-		this.legend = Preconditions.checkNotNull(legend, 'legend')
-	}
-
-	new(@NonNull SemanticTokensLegend legend, Boolean full) {
-		this(legend)
-		this.full = full
-	}
-
-	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full) {
-		this(legend)
-		this.full = full
-	}
-
-	new(@NonNull SemanticTokensLegend legend, Boolean full, Boolean range) {
+	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full, Boolean range, List<DocumentFilter> documentSelector) {
 		this(legend)
 		this.full = full
 		this.range = range
-	}
-
-	new(@NonNull SemanticTokensLegend legend, SemanticTokensServerFull full, Boolean range) {
-		this(legend)
-		this.full = full
-		this.range = range
+		this.documentSelector = documentSelector
 	}
 
 }
@@ -4016,7 +3980,7 @@ class ServerCapabilities {
 	 * Since 3.16.0
 	 */
 	@Beta
-	Either<SemanticTokensOptions, SemanticTokensRegistrationOptions> semanticTokensProvider
+	SemanticTokensWithRegistrationOptions semanticTokensProvider
 
 	/**
 	 * Experimental server capabilities.

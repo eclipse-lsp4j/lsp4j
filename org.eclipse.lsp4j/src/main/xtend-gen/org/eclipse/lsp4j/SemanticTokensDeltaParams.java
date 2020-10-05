@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -23,7 +24,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @Beta
 @SuppressWarnings("all")
-public class SemanticTokensDeltaParams {
+public class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
   /**
    * The text document.
    */
@@ -82,6 +83,8 @@ public class SemanticTokensDeltaParams {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("textDocument", this.textDocument);
     b.add("previousResultId", this.previousResultId);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -93,6 +96,8 @@ public class SemanticTokensDeltaParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     SemanticTokensDeltaParams other = (SemanticTokensDeltaParams) obj;
     if (this.textDocument == null) {
@@ -112,7 +117,7 @@ public class SemanticTokensDeltaParams {
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = 1;
+    int result = super.hashCode();
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     return prime * result + ((this.previousResultId== null) ? 0 : this.previousResultId.hashCode());
   }
