@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CallHierarchyItem;
+import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -23,7 +24,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @Beta
 @SuppressWarnings("all")
-public class CallHierarchyOutgoingCallsParams {
+public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
   @NonNull
   private CallHierarchyItem item;
   
@@ -49,6 +50,8 @@ public class CallHierarchyOutgoingCallsParams {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("item", this.item);
+    b.add("workDoneToken", getWorkDoneToken());
+    b.add("partialResultToken", getPartialResultToken());
     return b.toString();
   }
   
@@ -60,6 +63,8 @@ public class CallHierarchyOutgoingCallsParams {
     if (obj == null)
       return false;
     if (getClass() != obj.getClass())
+      return false;
+    if (!super.equals(obj))
       return false;
     CallHierarchyOutgoingCallsParams other = (CallHierarchyOutgoingCallsParams) obj;
     if (this.item == null) {
@@ -73,6 +78,6 @@ public class CallHierarchyOutgoingCallsParams {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.item== null) ? 0 : this.item.hashCode());
+    return 31 * super.hashCode() + ((this.item== null) ? 0 : this.item.hashCode());
   }
 }

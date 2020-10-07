@@ -1023,6 +1023,14 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 }
 
+@JsonRpcData
+class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
+}
+
+@JsonRpcData
+class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+}
+
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
  *
@@ -6046,7 +6054,7 @@ class SemanticHighlightingInformation {
  */
 @Beta
 @JsonRpcData
-class CallHierarchyPrepareParams  extends TextDocumentPositionParams {
+class CallHierarchyPrepareParams  extends TextDocumentPositionAndWorkDoneProgressParams {
 
 }
 
@@ -6055,7 +6063,7 @@ class CallHierarchyPrepareParams  extends TextDocumentPositionParams {
  */
 @Beta
 @JsonRpcData
-class CallHierarchyIncomingCallsParams {
+class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
 	CallHierarchyItem item
 
@@ -6072,7 +6080,7 @@ class CallHierarchyIncomingCallsParams {
  */
 @Beta
 @JsonRpcData
-class CallHierarchyOutgoingCallsParams {
+class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
 	CallHierarchyItem item
 
