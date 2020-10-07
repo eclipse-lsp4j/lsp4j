@@ -3782,6 +3782,9 @@ class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOpti
 	 */
 	List<DocumentFilter> documentSelector
 
+	new() {
+	}
+
 	new(@NonNull SemanticTokensLegend legend) {
 		this.legend = Preconditions.checkNotNull(legend, 'legend')
 	}

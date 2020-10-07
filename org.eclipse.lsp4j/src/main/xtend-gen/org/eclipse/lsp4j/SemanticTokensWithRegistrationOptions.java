@@ -49,6 +49,9 @@ public class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgr
    */
   private List<DocumentFilter> documentSelector;
   
+  public SemanticTokensWithRegistrationOptions() {
+  }
+  
   public SemanticTokensWithRegistrationOptions(@NonNull final SemanticTokensLegend legend) {
     this.legend = Preconditions.<SemanticTokensLegend>checkNotNull(legend, "legend");
   }
