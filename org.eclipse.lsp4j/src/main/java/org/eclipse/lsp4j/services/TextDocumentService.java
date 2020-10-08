@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.services;
@@ -14,12 +14,14 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.google.common.annotations.Beta;
+
 import org.eclipse.lsp4j.CallHierarchyIncomingCall;
 import org.eclipse.lsp4j.CallHierarchyIncomingCallsParams;
+import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.CallHierarchyOutgoingCall;
 import org.eclipse.lsp4j.CallHierarchyOutgoingCallsParams;
 import org.eclipse.lsp4j.CallHierarchyPrepareParams;
-import org.eclipse.lsp4j.CallHierarchyItem;
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.CodeActionParams;
 import org.eclipse.lsp4j.CodeLens;
@@ -63,6 +65,11 @@ import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
 import org.eclipse.lsp4j.SelectionRange;
 import org.eclipse.lsp4j.SelectionRangeParams;
+import org.eclipse.lsp4j.SemanticTokens;
+import org.eclipse.lsp4j.SemanticTokensDelta;
+import org.eclipse.lsp4j.SemanticTokensDeltaParams;
+import org.eclipse.lsp4j.SemanticTokensParams;
+import org.eclipse.lsp4j.SemanticTokensRangeParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SignatureHelpParams;
 import org.eclipse.lsp4j.SymbolInformation;
@@ -77,13 +84,12 @@ import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
 import org.eclipse.lsp4j.adapters.DocumentSymbolResponseAdapter;
 import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
+import org.eclipse.lsp4j.adapters.SemanticTokensFullDeltaResponseAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
-
-import com.google.common.annotations.Beta;
 
 @JsonSegment("textDocument")
 public interface TextDocumentService {
@@ -518,6 +524,41 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	default CompletableFuture<List<SelectionRange>> selectionRange(SelectionRangeParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code textDocument/semanticTokens/full} request is sent from the client to the server to return
+	 * the semantic tokens for a whole file.
+	 */
+	@JsonRequest(value="textDocument/semanticTokens/full", useSegment = false)
+	default CompletableFuture<SemanticTokens> semanticTokensFull(SemanticTokensParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code textDocument/semanticTokens/full/delta} request is sent from the client to the server to return
+	 * the semantic tokens delta for a whole file.
+	 */
+	@JsonRequest(value="textDocument/semanticTokens/full/delta", useSegment = false)
+	@ResponseJsonAdapter(SemanticTokensFullDeltaResponseAdapter.class)
+	default CompletableFuture<Either<SemanticTokens, SemanticTokensDelta>> semanticTokensFullDelta(SemanticTokensDeltaParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code textDocument/semanticTokens/range} request is sent from the client to the server to return
+	 * the semantic tokens delta for a range.
+	 *
+	 * When a user opens a file it can be benificial to only compute the semantic tokens for the visible range
+	 * (faster rendering of the tokens in the user interface). If a server can compute these tokens faster than
+	 * for the whole file it can provide a handler for the textDocument/semanticTokens/range request to handle
+	 * this case special. Please note that if a client also announces that it will send the
+	 * textDocument/semanticTokens/range server should implement this request as well to allow for flicker free
+	 * scrolling and semantic coloring of a minimap.
+	 */
+	@JsonRequest(value="textDocument/semanticTokens/range", useSegment = false)
+	default CompletableFuture<SemanticTokens> semanticTokensRange(SemanticTokensRangeParams params) {
 		throw new UnsupportedOperationException();
 	}
 }
