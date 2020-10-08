@@ -26,7 +26,7 @@ public final class Preconditions {
 	
 	public static <T> T checkNotNull(T object, String propertyName) {
 		if (nullChecks && object == null) {
-			throw new IllegalArgumentException("Property must not be null: " + propertyName);
+			throw new NullPointerException("Property must not be null: " + propertyName);
 		}
 		return object;
 	}

@@ -12,8 +12,8 @@ public class NonNullTest {
 	public void testCodeAction1() {
 		try {
 			new CodeAction(null);
-			fail("Expected an IllegalArgumentException");
-		} catch (IllegalArgumentException exc) {
+			fail("Expected a NullPointerException");
+		} catch (NullPointerException exc) {
 			assertEquals("Property must not be null: title", exc.getMessage());
 		}
 	}
@@ -23,8 +23,8 @@ public class NonNullTest {
 		try {
 			CodeAction codeAction = new CodeAction();
 			codeAction.setTitle(null);
-			fail("Expected an IllegalArgumentException");
-		} catch (IllegalArgumentException exc) {
+			fail("Expected a NullPointerException");
+		} catch (NullPointerException exc) {
 			assertEquals("Property must not be null: title", exc.getMessage());
 		}
 	}
