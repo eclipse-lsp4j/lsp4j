@@ -1127,16 +1127,18 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	List<String> tokenModifiers;
 
 	/**
-	 * The formats the clients supports.
+	 * The tokens the client supports.
+	 *
+	 * See {@link TokenFormat} for allowed values.
 	 */
 	@NonNull
-	List<TokenFormat> formats;
+	List<String> formats;
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
 
-	new(@NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
+	new(@NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<String> formats) {
 		this.requests = Preconditions.checkNotNull(requests, 'requests')
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
 		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
@@ -1144,7 +1146,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	}
 
 
-	new(Boolean dynamicRegistration, @NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<TokenFormat> formats) {
+	new(Boolean dynamicRegistration, @NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<String> formats) {
 		super(dynamicRegistration)
 		this.requests = Preconditions.checkNotNull(requests, 'requests')
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
