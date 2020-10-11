@@ -21,7 +21,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @since 3.16.0
+ * The request is sent from the client to the server to resolve semantic tokens for a range in a given file.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")

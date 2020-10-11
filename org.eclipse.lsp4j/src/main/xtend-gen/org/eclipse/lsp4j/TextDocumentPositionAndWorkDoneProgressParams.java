@@ -28,6 +28,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public abstract class TextDocumentPositionAndWorkDoneProgressParams extends TextDocumentPositionParams implements WorkDoneProgressParams {
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   private Either<String, Number> workDoneToken;
   
   public TextDocumentPositionAndWorkDoneProgressParams() {
@@ -37,16 +40,17 @@ public abstract class TextDocumentPositionAndWorkDoneProgressParams extends Text
     super(textDocument, position);
   }
   
-  @Deprecated
-  public TextDocumentPositionAndWorkDoneProgressParams(@NonNull final TextDocumentIdentifier textDocument, final String uri, @NonNull final Position position) {
-    super(textDocument, uri, position);
-  }
-  
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   @Pure
   public Either<String, Number> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }

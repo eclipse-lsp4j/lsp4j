@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -21,6 +22,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * a give cursor location in the text document. The request would also allow to specify if the item should be resolved
  * and whether sub- or supertypes are to be resolved.
  */
+@Beta
 @SuppressWarnings("all")
 public class TypeHierarchyParams extends TextDocumentPositionParams {
   /**

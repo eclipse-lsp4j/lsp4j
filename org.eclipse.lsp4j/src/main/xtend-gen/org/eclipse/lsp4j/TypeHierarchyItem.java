@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
@@ -24,6 +25,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Representation of an item that carries type information (such as class, interface, enumeration, etc) with additional parentage details.
  */
+@Beta
 @SuppressWarnings("all")
 public class TypeHierarchyItem {
   /**

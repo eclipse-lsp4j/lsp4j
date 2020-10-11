@@ -30,8 +30,14 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class ProgressParams {
+  /**
+   * The progress token provided by the client or server.
+   */
   private Either<String, Number> token;
   
+  /**
+   * The progress data.
+   */
   @JsonAdapter(WorkDoneProgressNotificationAdapter.Factory.class)
   private WorkDoneProgressNotification value;
   
@@ -43,11 +49,17 @@ public class ProgressParams {
     this.value = value;
   }
   
+  /**
+   * The progress token provided by the client or server.
+   */
   @Pure
   public Either<String, Number> getToken() {
     return this.token;
   }
   
+  /**
+   * The progress token provided by the client or server.
+   */
   public void setToken(final Either<String, Number> token) {
     this.token = token;
   }
@@ -68,11 +80,17 @@ public class ProgressParams {
     this.token = Either.forRight(token);
   }
   
+  /**
+   * The progress data.
+   */
   @Pure
   public WorkDoneProgressNotification getValue() {
     return this.value;
   }
   
+  /**
+   * The progress data.
+   */
   public void setValue(final WorkDoneProgressNotification value) {
     this.value = value;
   }

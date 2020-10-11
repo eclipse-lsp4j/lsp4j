@@ -25,15 +25,28 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public abstract class WorkDoneProgressAndPartialResultParams implements WorkDoneProgressParams, PartialResultParams {
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   private Either<String, Number> workDoneToken;
   
+  /**
+   * An optional token that a server can use to report partial results (e.g. streaming) to
+   * the client.
+   */
   private Either<String, Number> partialResultToken;
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   @Pure
   public Either<String, Number> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }
@@ -54,11 +67,19 @@ public abstract class WorkDoneProgressAndPartialResultParams implements WorkDone
     this.workDoneToken = Either.forRight(workDoneToken);
   }
   
+  /**
+   * An optional token that a server can use to report partial results (e.g. streaming) to
+   * the client.
+   */
   @Pure
   public Either<String, Number> getPartialResultToken() {
     return this.partialResultToken;
   }
   
+  /**
+   * An optional token that a server can use to report partial results (e.g. streaming) to
+   * the client.
+   */
   public void setPartialResultToken(final Either<String, Number> partialResultToken) {
     this.partialResultToken = partialResultToken;
   }

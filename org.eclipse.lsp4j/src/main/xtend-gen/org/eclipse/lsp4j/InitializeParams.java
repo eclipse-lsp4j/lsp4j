@@ -29,6 +29,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @JsonAdapter(InitializeParamsTypeAdapter.Factory.class)
 @SuppressWarnings("all")
 public class InitializeParams implements WorkDoneProgressParams {
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   private Either<String, Number> workDoneToken;
   
   /**
@@ -94,11 +97,17 @@ public class InitializeParams implements WorkDoneProgressParams {
    */
   private List<WorkspaceFolder> workspaceFolders;
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   @Pure
   public Either<String, Number> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }

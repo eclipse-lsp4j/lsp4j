@@ -40,7 +40,7 @@ public class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgress
   }
   
   public SignatureHelpParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position, final SignatureHelpContext context) {
-    super(textDocument, position);
+    this(textDocument, position);
     this.context = context;
   }
   
