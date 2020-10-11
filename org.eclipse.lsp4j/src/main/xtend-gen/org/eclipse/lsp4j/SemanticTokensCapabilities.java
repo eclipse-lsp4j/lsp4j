@@ -15,7 +15,6 @@ import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.lsp4j.SemanticTokensClientCapabilitiesRequests;
-import org.eclipse.lsp4j.TokenFormat;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -46,28 +45,30 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
   private List<String> tokenModifiers;
   
   /**
-   * The formats the clients supports.
+   * The tokens the client supports.
+   * 
+   * See {@link TokenFormat} for allowed values.
    */
   @NonNull
-  private List<TokenFormat> formats;
+  private List<String> formats;
   
   public SemanticTokensCapabilities(final Boolean dynamicRegistration) {
     super(dynamicRegistration);
   }
   
-  public SemanticTokensCapabilities(@NonNull final SemanticTokensClientCapabilitiesRequests requests, @NonNull final List<String> tokenTypes, @NonNull final List<String> tokenModifiers, @NonNull final List<TokenFormat> formats) {
+  public SemanticTokensCapabilities(@NonNull final SemanticTokensClientCapabilitiesRequests requests, @NonNull final List<String> tokenTypes, @NonNull final List<String> tokenModifiers, @NonNull final List<String> formats) {
     this.requests = Preconditions.<SemanticTokensClientCapabilitiesRequests>checkNotNull(requests, "requests");
     this.tokenTypes = Preconditions.<List<String>>checkNotNull(tokenTypes, "tokenTypes");
     this.tokenModifiers = Preconditions.<List<String>>checkNotNull(tokenModifiers, "tokenModifiers");
-    this.formats = Preconditions.<List<TokenFormat>>checkNotNull(formats, "formats");
+    this.formats = Preconditions.<List<String>>checkNotNull(formats, "formats");
   }
   
-  public SemanticTokensCapabilities(final Boolean dynamicRegistration, @NonNull final SemanticTokensClientCapabilitiesRequests requests, @NonNull final List<String> tokenTypes, @NonNull final List<String> tokenModifiers, @NonNull final List<TokenFormat> formats) {
+  public SemanticTokensCapabilities(final Boolean dynamicRegistration, @NonNull final SemanticTokensClientCapabilitiesRequests requests, @NonNull final List<String> tokenTypes, @NonNull final List<String> tokenModifiers, @NonNull final List<String> formats) {
     super(dynamicRegistration);
     this.requests = Preconditions.<SemanticTokensClientCapabilitiesRequests>checkNotNull(requests, "requests");
     this.tokenTypes = Preconditions.<List<String>>checkNotNull(tokenTypes, "tokenTypes");
     this.tokenModifiers = Preconditions.<List<String>>checkNotNull(tokenModifiers, "tokenModifiers");
-    this.formats = Preconditions.<List<TokenFormat>>checkNotNull(formats, "formats");
+    this.formats = Preconditions.<List<String>>checkNotNull(formats, "formats");
   }
   
   /**
@@ -119,18 +120,22 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
   }
   
   /**
-   * The formats the clients supports.
+   * The tokens the client supports.
+   * 
+   * See {@link TokenFormat} for allowed values.
    */
   @Pure
   @NonNull
-  public List<TokenFormat> getFormats() {
+  public List<String> getFormats() {
     return this.formats;
   }
   
   /**
-   * The formats the clients supports.
+   * The tokens the client supports.
+   * 
+   * See {@link TokenFormat} for allowed values.
    */
-  public void setFormats(@NonNull final List<TokenFormat> formats) {
+  public void setFormats(@NonNull final List<String> formats) {
     this.formats = Preconditions.checkNotNull(formats, "formats");
   }
   
