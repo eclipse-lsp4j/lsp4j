@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -28,6 +29,15 @@ public class CodeActionOptions extends AbstractWorkDoneProgressOptions {
    * may list out every specific kind they provide.
    */
   private List<String> codeActionKinds;
+  
+  /**
+   * The server provides support to resolve additional
+   * information for a code action.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean resolveProvider;
   
   public CodeActionOptions() {
   }
@@ -57,11 +67,33 @@ public class CodeActionOptions extends AbstractWorkDoneProgressOptions {
     this.codeActionKinds = codeActionKinds;
   }
   
+  /**
+   * The server provides support to resolve additional
+   * information for a code action.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getResolveProvider() {
+    return this.resolveProvider;
+  }
+  
+  /**
+   * The server provides support to resolve additional
+   * information for a code action.
+   * 
+   * Since 3.16.0
+   */
+  public void setResolveProvider(final Boolean resolveProvider) {
+    this.resolveProvider = resolveProvider;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("codeActionKinds", this.codeActionKinds);
+    b.add("resolveProvider", this.resolveProvider);
     b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
@@ -83,12 +115,20 @@ public class CodeActionOptions extends AbstractWorkDoneProgressOptions {
         return false;
     } else if (!this.codeActionKinds.equals(other.codeActionKinds))
       return false;
+    if (this.resolveProvider == null) {
+      if (other.resolveProvider != null)
+        return false;
+    } else if (!this.resolveProvider.equals(other.resolveProvider))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.codeActionKinds== null) ? 0 : this.codeActionKinds.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.codeActionKinds== null) ? 0 : this.codeActionKinds.hashCode());
+    return prime * result + ((this.resolveProvider== null) ? 0 : this.resolveProvider.hashCode());
   }
 }

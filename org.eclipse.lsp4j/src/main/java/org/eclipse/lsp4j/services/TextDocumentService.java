@@ -254,6 +254,15 @@ public interface TextDocumentService {
 	}
 
 	/**
+	 * The request is sent from the client to the server to resolve additional information for a given code action. This is usually used to compute
+	 * the `edit` property of a code action to avoid its unnecessary computation during the `textDocument/codeAction` request.
+	 */
+	@JsonRequest(value="codeAction/resolve", useSegment = false)
+	default CompletableFuture<CodeAction> resolveCodeAction(CodeAction unresolved) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
 	 * The code lens request is sent from the client to the server to compute
 	 * code lenses for a given text document.
 	 * 
@@ -496,7 +505,7 @@ public interface TextDocumentService {
 	}
 
 	/**
-	 * Provide all incoming calls for an item, e.g all callers for a method. In graph terms this descibes directed
+	 * Provide all incoming calls for an item, e.g all callers for a method. In graph terms this describes directed
 	 * and annotated edges inside the call graph, e.g the given item is the starting node and the result is the nodes
 	 * that can be reached.
 	*/
@@ -508,7 +517,7 @@ public interface TextDocumentService {
 
 	/**
 	* Provide all outgoing calls for an item, e.g call calls to functions, methods, or constructors from the given item. In
-	* graph terms this descibes directed and annotated edges inside the call graph, e.g the given item is the starting
+	* graph terms this describes directed and annotated edges inside the call graph, e.g the given item is the starting
 	* node and the result is the nodes that can be reached.
 	*/
 	@Beta
@@ -550,7 +559,7 @@ public interface TextDocumentService {
 	 * The {@code textDocument/semanticTokens/range} request is sent from the client to the server to return
 	 * the semantic tokens delta for a range.
 	 *
-	 * When a user opens a file it can be benificial to only compute the semantic tokens for the visible range
+	 * When a user opens a file it can be beneficial to only compute the semantic tokens for the visible range
 	 * (faster rendering of the tokens in the user interface). If a server can compute these tokens faster than
 	 * for the whole file it can provide a handler for the textDocument/semanticTokens/range request to handle
 	 * this case special. Please note that if a client also announces that it will send the

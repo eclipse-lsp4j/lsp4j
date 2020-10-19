@@ -11,9 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
+import java.util.List;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.SymbolKind;
+import org.eclipse.lsp4j.SymbolTag;
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
@@ -39,8 +42,19 @@ public class SymbolInformation {
   private SymbolKind kind;
   
   /**
-   * Indicates if this symbol is deprecated.
+   * Tags for this symbol.
+   * 
+   * Since 3.16.0
    */
+  @Beta
+  private List<SymbolTag> tags;
+  
+  /**
+   * Indicates if this symbol is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
+   */
+  @Deprecated
   private Boolean deprecated;
   
   /**
@@ -112,16 +126,41 @@ public class SymbolInformation {
   }
   
   /**
-   * Indicates if this symbol is deprecated.
+   * Tags for this symbol.
+   * 
+   * Since 3.16.0
    */
   @Pure
+  public List<SymbolTag> getTags() {
+    return this.tags;
+  }
+  
+  /**
+   * Tags for this symbol.
+   * 
+   * Since 3.16.0
+   */
+  public void setTags(final List<SymbolTag> tags) {
+    this.tags = tags;
+  }
+  
+  /**
+   * Indicates if this symbol is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
+   */
+  @Pure
+  @Deprecated
   public Boolean getDeprecated() {
     return this.deprecated;
   }
   
   /**
    * Indicates if this symbol is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
    */
+  @Deprecated
   public void setDeprecated(final Boolean deprecated) {
     this.deprecated = deprecated;
   }
@@ -185,6 +224,7 @@ public class SymbolInformation {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("name", this.name);
     b.add("kind", this.kind);
+    b.add("tags", this.tags);
     b.add("deprecated", this.deprecated);
     b.add("location", this.location);
     b.add("containerName", this.containerName);
@@ -211,6 +251,11 @@ public class SymbolInformation {
         return false;
     } else if (!this.kind.equals(other.kind))
       return false;
+    if (this.tags == null) {
+      if (other.tags != null)
+        return false;
+    } else if (!this.tags.equals(other.tags))
+      return false;
     if (this.deprecated == null) {
       if (other.deprecated != null)
         return false;
@@ -236,6 +281,7 @@ public class SymbolInformation {
     int result = 1;
     result = prime * result + ((this.name== null) ? 0 : this.name.hashCode());
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
+    result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
     result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());
     result = prime * result + ((this.location== null) ? 0 : this.location.hashCode());
     return prime * result + ((this.containerName== null) ? 0 : this.containerName.hashCode());

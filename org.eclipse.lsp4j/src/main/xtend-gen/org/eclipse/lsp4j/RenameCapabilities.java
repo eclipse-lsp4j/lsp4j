@@ -28,6 +28,13 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
    */
   private Boolean prepareSupport;
   
+  /**
+   * Client supports the default behavior result (`{ defaultBehavior: boolean }`).
+   * 
+   * Since 3.16.0
+   */
+  private Boolean prepareSupportDefaultBehavior;
+  
   public RenameCapabilities() {
   }
   
@@ -61,11 +68,31 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
     this.prepareSupport = prepareSupport;
   }
   
+  /**
+   * Client supports the default behavior result (`{ defaultBehavior: boolean }`).
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getPrepareSupportDefaultBehavior() {
+    return this.prepareSupportDefaultBehavior;
+  }
+  
+  /**
+   * Client supports the default behavior result (`{ defaultBehavior: boolean }`).
+   * 
+   * Since 3.16.0
+   */
+  public void setPrepareSupportDefaultBehavior(final Boolean prepareSupportDefaultBehavior) {
+    this.prepareSupportDefaultBehavior = prepareSupportDefaultBehavior;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("prepareSupport", this.prepareSupport);
+    b.add("prepareSupportDefaultBehavior", this.prepareSupportDefaultBehavior);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -87,12 +114,20 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
         return false;
     } else if (!this.prepareSupport.equals(other.prepareSupport))
       return false;
+    if (this.prepareSupportDefaultBehavior == null) {
+      if (other.prepareSupportDefaultBehavior != null)
+        return false;
+    } else if (!this.prepareSupportDefaultBehavior.equals(other.prepareSupportDefaultBehavior))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.prepareSupport== null) ? 0 : this.prepareSupport.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.prepareSupport== null) ? 0 : this.prepareSupport.hashCode());
+    return prime * result + ((this.prepareSupportDefaultBehavior== null) ? 0 : this.prepareSupportDefaultBehavior.hashCode());
   }
 }

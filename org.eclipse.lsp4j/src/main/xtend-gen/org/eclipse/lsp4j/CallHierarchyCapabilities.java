@@ -17,7 +17,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Capabilities specific to the {@code textDocument/callHierarchy}.
+ * Capabilities specific to the {@code textDocument/prepareCallHierarchy}.
  */
 @Beta
 @SuppressWarnings("all")

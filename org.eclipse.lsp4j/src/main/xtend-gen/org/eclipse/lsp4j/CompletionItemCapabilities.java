@@ -11,7 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
+import org.eclipse.lsp4j.CompletionItemResolveSupportCapabilities;
 import org.eclipse.lsp4j.CompletionItemTagSupportCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -61,6 +63,25 @@ public class CompletionItemCapabilities {
    * Since 3.15.0
    */
   private CompletionItemTagSupportCapabilities tagSupport;
+  
+  /**
+   * Client support insert replace edit to control different behavior if a
+   * completion item is inserted in the text or should replace text.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean insertReplaceSupport;
+  
+  /**
+   * Indicates which properties a client can resolve lazily on a completion
+   * item. Before version 3.16.0 only the predefined properties `documentation`
+   * and `details` could be resolved lazily.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private CompletionItemResolveSupportCapabilities resolveSupport;
   
   public CompletionItemCapabilities() {
   }
@@ -181,6 +202,50 @@ public class CompletionItemCapabilities {
     this.tagSupport = tagSupport;
   }
   
+  /**
+   * Client support insert replace edit to control different behavior if a
+   * completion item is inserted in the text or should replace text.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getInsertReplaceSupport() {
+    return this.insertReplaceSupport;
+  }
+  
+  /**
+   * Client support insert replace edit to control different behavior if a
+   * completion item is inserted in the text or should replace text.
+   * 
+   * Since 3.16.0
+   */
+  public void setInsertReplaceSupport(final Boolean insertReplaceSupport) {
+    this.insertReplaceSupport = insertReplaceSupport;
+  }
+  
+  /**
+   * Indicates which properties a client can resolve lazily on a completion
+   * item. Before version 3.16.0 only the predefined properties `documentation`
+   * and `details` could be resolved lazily.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public CompletionItemResolveSupportCapabilities getResolveSupport() {
+    return this.resolveSupport;
+  }
+  
+  /**
+   * Indicates which properties a client can resolve lazily on a completion
+   * item. Before version 3.16.0 only the predefined properties `documentation`
+   * and `details` could be resolved lazily.
+   * 
+   * Since 3.16.0
+   */
+  public void setResolveSupport(final CompletionItemResolveSupportCapabilities resolveSupport) {
+    this.resolveSupport = resolveSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -191,6 +256,8 @@ public class CompletionItemCapabilities {
     b.add("deprecatedSupport", this.deprecatedSupport);
     b.add("preselectSupport", this.preselectSupport);
     b.add("tagSupport", this.tagSupport);
+    b.add("insertReplaceSupport", this.insertReplaceSupport);
+    b.add("resolveSupport", this.resolveSupport);
     return b.toString();
   }
   
@@ -234,6 +301,16 @@ public class CompletionItemCapabilities {
         return false;
     } else if (!this.tagSupport.equals(other.tagSupport))
       return false;
+    if (this.insertReplaceSupport == null) {
+      if (other.insertReplaceSupport != null)
+        return false;
+    } else if (!this.insertReplaceSupport.equals(other.insertReplaceSupport))
+      return false;
+    if (this.resolveSupport == null) {
+      if (other.resolveSupport != null)
+        return false;
+    } else if (!this.resolveSupport.equals(other.resolveSupport))
+      return false;
     return true;
   }
   
@@ -247,6 +324,8 @@ public class CompletionItemCapabilities {
     result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
     result = prime * result + ((this.deprecatedSupport== null) ? 0 : this.deprecatedSupport.hashCode());
     result = prime * result + ((this.preselectSupport== null) ? 0 : this.preselectSupport.hashCode());
-    return prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
+    result = prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
+    result = prime * result + ((this.insertReplaceSupport== null) ? 0 : this.insertReplaceSupport.hashCode());
+    return prime * result + ((this.resolveSupport== null) ? 0 : this.resolveSupport.hashCode());
   }
 }

@@ -11,16 +11,56 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 @SuppressWarnings("all")
 public class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
+  /**
+   * A human-readable string that is shown when multiple outlines trees
+   * are shown for the same document.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private String label;
+  
+  public DocumentSymbolOptions() {
+  }
+  
+  @Beta
+  public DocumentSymbolOptions(final String label) {
+    this.label = label;
+  }
+  
+  /**
+   * A human-readable string that is shown when multiple outlines trees
+   * are shown for the same document.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public String getLabel() {
+    return this.label;
+  }
+  
+  /**
+   * A human-readable string that is shown when multiple outlines trees
+   * are shown for the same document.
+   * 
+   * Since 3.16.0
+   */
+  public void setLabel(final String label) {
+    this.label = label;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("label", this.label);
     b.add("workDoneProgress", getWorkDoneProgress());
     return b.toString();
   }
@@ -36,12 +76,18 @@ public class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
       return false;
     if (!super.equals(obj))
       return false;
+    DocumentSymbolOptions other = (DocumentSymbolOptions) obj;
+    if (this.label == null) {
+      if (other.label != null)
+        return false;
+    } else if (!this.label.equals(other.label))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return super.hashCode();
+    return 31 * super.hashCode() + ((this.label== null) ? 0 : this.label.hashCode());
   }
 }

@@ -135,7 +135,7 @@ public class CompletionItem {
   private Command command;
   
   /**
-   * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
+   * A data entry field that is preserved on a completion item between a completion and a completion resolve request.
    */
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object data;
@@ -438,7 +438,7 @@ public class CompletionItem {
   }
   
   /**
-   * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
+   * A data entry field that is preserved on a completion item between a completion and a completion resolve request.
    */
   @Pure
   public Object getData() {
@@ -446,7 +446,7 @@ public class CompletionItem {
   }
   
   /**
-   * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
+   * A data entry field that is preserved on a completion item between a completion and a completion resolve request.
    */
   public void setData(final Object data) {
     this.data = data;

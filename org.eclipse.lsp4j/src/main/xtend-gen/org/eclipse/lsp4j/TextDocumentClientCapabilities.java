@@ -174,7 +174,7 @@ public class TextDocumentClientCapabilities {
   private TypeHierarchyCapabilities typeHierarchyCapabilities;
   
   /**
-   * Capabilities specific to {@code textDocument/callHierarchy}.
+   * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
    */
   @Beta
   private CallHierarchyCapabilities callHierarchy;
@@ -560,7 +560,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to {@code textDocument/callHierarchy}.
+   * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
    */
   @Pure
   public CallHierarchyCapabilities getCallHierarchy() {
@@ -568,7 +568,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to {@code textDocument/callHierarchy}.
+   * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
    */
   public void setCallHierarchy(final CallHierarchyCapabilities callHierarchy) {
     this.callHierarchy = callHierarchy;

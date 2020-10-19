@@ -11,9 +11,11 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
+import org.eclipse.lsp4j.SymbolTag;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -60,8 +62,19 @@ public class DocumentSymbol {
   private String detail;
   
   /**
-   * Indicates if this symbol is deprecated.
+   * Tags for this document symbol.
+   * 
+   * Since 3.16.0
    */
+  @Beta
+  private List<SymbolTag> tags;
+  
+  /**
+   * Indicates if this symbol is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
+   */
+  @Deprecated
   private Boolean deprecated;
   
   /**
@@ -178,16 +191,41 @@ public class DocumentSymbol {
   }
   
   /**
-   * Indicates if this symbol is deprecated.
+   * Tags for this document symbol.
+   * 
+   * Since 3.16.0
    */
   @Pure
+  public List<SymbolTag> getTags() {
+    return this.tags;
+  }
+  
+  /**
+   * Tags for this document symbol.
+   * 
+   * Since 3.16.0
+   */
+  public void setTags(final List<SymbolTag> tags) {
+    this.tags = tags;
+  }
+  
+  /**
+   * Indicates if this symbol is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
+   */
+  @Pure
+  @Deprecated
   public Boolean getDeprecated() {
     return this.deprecated;
   }
   
   /**
    * Indicates if this symbol is deprecated.
+   * 
+   * @deprecated Use `tags` instead if supported.
    */
+  @Deprecated
   public void setDeprecated(final Boolean deprecated) {
     this.deprecated = deprecated;
   }
@@ -216,6 +254,7 @@ public class DocumentSymbol {
     b.add("range", this.range);
     b.add("selectionRange", this.selectionRange);
     b.add("detail", this.detail);
+    b.add("tags", this.tags);
     b.add("deprecated", this.deprecated);
     b.add("children", this.children);
     return b.toString();
@@ -256,6 +295,11 @@ public class DocumentSymbol {
         return false;
     } else if (!this.detail.equals(other.detail))
       return false;
+    if (this.tags == null) {
+      if (other.tags != null)
+        return false;
+    } else if (!this.tags.equals(other.tags))
+      return false;
     if (this.deprecated == null) {
       if (other.deprecated != null)
         return false;
@@ -279,6 +323,7 @@ public class DocumentSymbol {
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
     result = prime * result + ((this.detail== null) ? 0 : this.detail.hashCode());
+    result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
     result = prime * result + ((this.deprecated== null) ? 0 : this.deprecated.hashCode());
     return prime * result + ((this.children== null) ? 0 : this.children.hashCode());
   }

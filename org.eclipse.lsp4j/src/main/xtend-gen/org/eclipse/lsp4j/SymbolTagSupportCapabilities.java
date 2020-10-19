@@ -11,37 +11,34 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.lsp4j.CompletionItemTag;
+import org.eclipse.lsp4j.SymbolTag;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Client supports the tag property on a completion item. Clients supporting
- * tags have to handle unknown tags gracefully. Clients especially need to
- * preserve unknown tags when sending a completion item back to the server in
- * a resolve call.
- * 
- * Since 3.15.0
+ * Specific capabilities for the `SymbolTag`.
  */
+@Beta
 @SuppressWarnings("all")
-public class CompletionItemTagSupportCapabilities {
+public class SymbolTagSupportCapabilities {
   /**
    * The tags supported by the client.
    */
   @NonNull
-  private List<CompletionItemTag> valueSet;
+  private List<SymbolTag> valueSet;
   
-  public CompletionItemTagSupportCapabilities() {
-    ArrayList<CompletionItemTag> _arrayList = new ArrayList<CompletionItemTag>();
+  public SymbolTagSupportCapabilities() {
+    ArrayList<SymbolTag> _arrayList = new ArrayList<SymbolTag>();
     this.valueSet = _arrayList;
   }
   
-  public CompletionItemTagSupportCapabilities(@NonNull final List<CompletionItemTag> valueSet) {
-    this.valueSet = Preconditions.<List<CompletionItemTag>>checkNotNull(valueSet, "valueSet");
+  public SymbolTagSupportCapabilities(@NonNull final List<SymbolTag> valueSet) {
+    this.valueSet = Preconditions.<List<SymbolTag>>checkNotNull(valueSet, "valueSet");
   }
   
   /**
@@ -49,14 +46,14 @@ public class CompletionItemTagSupportCapabilities {
    */
   @Pure
   @NonNull
-  public List<CompletionItemTag> getValueSet() {
+  public List<SymbolTag> getValueSet() {
     return this.valueSet;
   }
   
   /**
    * The tags supported by the client.
    */
-  public void setValueSet(@NonNull final List<CompletionItemTag> valueSet) {
+  public void setValueSet(@NonNull final List<SymbolTag> valueSet) {
     this.valueSet = Preconditions.checkNotNull(valueSet, "valueSet");
   }
   
@@ -77,7 +74,7 @@ public class CompletionItemTagSupportCapabilities {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    CompletionItemTagSupportCapabilities other = (CompletionItemTagSupportCapabilities) obj;
+    SymbolTagSupportCapabilities other = (SymbolTagSupportCapabilities) obj;
     if (this.valueSet == null) {
       if (other.valueSet != null)
         return false;

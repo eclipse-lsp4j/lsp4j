@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DiagnosticsTagSupport;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -46,6 +47,24 @@ public class PublishDiagnosticsCapabilities {
    * Since 3.15.0
    */
   private Boolean versionSupport;
+  
+  /**
+   * Client supports a codeDescription property
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean codeDescriptionSupport;
+  
+  /**
+   * Whether code action supports the `data` property which is
+   * preserved between a `textDocument/publishDiagnostics` and
+   * `textDocument/codeAction` request.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean dataSupport;
   
   public PublishDiagnosticsCapabilities() {
   }
@@ -147,6 +166,48 @@ public class PublishDiagnosticsCapabilities {
     this.versionSupport = versionSupport;
   }
   
+  /**
+   * Client supports a codeDescription property
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getCodeDescriptionSupport() {
+    return this.codeDescriptionSupport;
+  }
+  
+  /**
+   * Client supports a codeDescription property
+   * 
+   * Since 3.16.0
+   */
+  public void setCodeDescriptionSupport(final Boolean codeDescriptionSupport) {
+    this.codeDescriptionSupport = codeDescriptionSupport;
+  }
+  
+  /**
+   * Whether code action supports the `data` property which is
+   * preserved between a `textDocument/publishDiagnostics` and
+   * `textDocument/codeAction` request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getDataSupport() {
+    return this.dataSupport;
+  }
+  
+  /**
+   * Whether code action supports the `data` property which is
+   * preserved between a `textDocument/publishDiagnostics` and
+   * `textDocument/codeAction` request.
+   * 
+   * Since 3.16.0
+   */
+  public void setDataSupport(final Boolean dataSupport) {
+    this.dataSupport = dataSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -154,6 +215,8 @@ public class PublishDiagnosticsCapabilities {
     b.add("relatedInformation", this.relatedInformation);
     b.add("tagSupport", this.tagSupport);
     b.add("versionSupport", this.versionSupport);
+    b.add("codeDescriptionSupport", this.codeDescriptionSupport);
+    b.add("dataSupport", this.dataSupport);
     return b.toString();
   }
   
@@ -182,6 +245,16 @@ public class PublishDiagnosticsCapabilities {
         return false;
     } else if (!this.versionSupport.equals(other.versionSupport))
       return false;
+    if (this.codeDescriptionSupport == null) {
+      if (other.codeDescriptionSupport != null)
+        return false;
+    } else if (!this.codeDescriptionSupport.equals(other.codeDescriptionSupport))
+      return false;
+    if (this.dataSupport == null) {
+      if (other.dataSupport != null)
+        return false;
+    } else if (!this.dataSupport.equals(other.dataSupport))
+      return false;
     return true;
   }
   
@@ -192,6 +265,8 @@ public class PublishDiagnosticsCapabilities {
     int result = 1;
     result = prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
     result = prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
-    return prime * result + ((this.versionSupport== null) ? 0 : this.versionSupport.hashCode());
+    result = prime * result + ((this.versionSupport== null) ? 0 : this.versionSupport.hashCode());
+    result = prime * result + ((this.codeDescriptionSupport== null) ? 0 : this.codeDescriptionSupport.hashCode());
+    return prime * result + ((this.dataSupport== null) ? 0 : this.dataSupport.hashCode());
   }
 }

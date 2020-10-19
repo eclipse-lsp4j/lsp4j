@@ -11,7 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CodeActionLiteralSupportCapabilities;
+import org.eclipse.lsp4j.CodeActionResolveSupportCapabilities;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -33,6 +35,33 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
    * Since 3.15.0
    */
   private Boolean isPreferredSupport;
+  
+  /**
+   * Whether code action supports the `disabled` property.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean disabledSupport;
+  
+  /**
+   * Whether code action supports the `data` property which is
+   * preserved between a `textDocument/codeAction` and a
+   * `codeAction/resolve` request.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean dataSupport;
+  
+  /**
+   * Whether the client supports resolving additional code action
+   * properties via a separate `codeAction/resolve` request.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private CodeActionResolveSupportCapabilities resolveSupport;
   
   public CodeActionCapabilities() {
   }
@@ -87,12 +116,78 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     this.isPreferredSupport = isPreferredSupport;
   }
   
+  /**
+   * Whether code action supports the `disabled` property.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getDisabledSupport() {
+    return this.disabledSupport;
+  }
+  
+  /**
+   * Whether code action supports the `disabled` property.
+   * 
+   * Since 3.16.0
+   */
+  public void setDisabledSupport(final Boolean disabledSupport) {
+    this.disabledSupport = disabledSupport;
+  }
+  
+  /**
+   * Whether code action supports the `data` property which is
+   * preserved between a `textDocument/codeAction` and a
+   * `codeAction/resolve` request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getDataSupport() {
+    return this.dataSupport;
+  }
+  
+  /**
+   * Whether code action supports the `data` property which is
+   * preserved between a `textDocument/codeAction` and a
+   * `codeAction/resolve` request.
+   * 
+   * Since 3.16.0
+   */
+  public void setDataSupport(final Boolean dataSupport) {
+    this.dataSupport = dataSupport;
+  }
+  
+  /**
+   * Whether the client supports resolving additional code action
+   * properties via a separate `codeAction/resolve` request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public CodeActionResolveSupportCapabilities getResolveSupport() {
+    return this.resolveSupport;
+  }
+  
+  /**
+   * Whether the client supports resolving additional code action
+   * properties via a separate `codeAction/resolve` request.
+   * 
+   * Since 3.16.0
+   */
+  public void setResolveSupport(final CodeActionResolveSupportCapabilities resolveSupport) {
+    this.resolveSupport = resolveSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("codeActionLiteralSupport", this.codeActionLiteralSupport);
     b.add("isPreferredSupport", this.isPreferredSupport);
+    b.add("disabledSupport", this.disabledSupport);
+    b.add("dataSupport", this.dataSupport);
+    b.add("resolveSupport", this.resolveSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -119,6 +214,21 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
         return false;
     } else if (!this.isPreferredSupport.equals(other.isPreferredSupport))
       return false;
+    if (this.disabledSupport == null) {
+      if (other.disabledSupport != null)
+        return false;
+    } else if (!this.disabledSupport.equals(other.disabledSupport))
+      return false;
+    if (this.dataSupport == null) {
+      if (other.dataSupport != null)
+        return false;
+    } else if (!this.dataSupport.equals(other.dataSupport))
+      return false;
+    if (this.resolveSupport == null) {
+      if (other.resolveSupport != null)
+        return false;
+    } else if (!this.resolveSupport.equals(other.resolveSupport))
+      return false;
     return true;
   }
   
@@ -128,6 +238,9 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     final int prime = 31;
     int result = super.hashCode();
     result = prime * result + ((this.codeActionLiteralSupport== null) ? 0 : this.codeActionLiteralSupport.hashCode());
-    return prime * result + ((this.isPreferredSupport== null) ? 0 : this.isPreferredSupport.hashCode());
+    result = prime * result + ((this.isPreferredSupport== null) ? 0 : this.isPreferredSupport.hashCode());
+    result = prime * result + ((this.disabledSupport== null) ? 0 : this.disabledSupport.hashCode());
+    result = prime * result + ((this.dataSupport== null) ? 0 : this.dataSupport.hashCode());
+    return prime * result + ((this.resolveSupport== null) ? 0 : this.resolveSupport.hashCode());
   }
 }

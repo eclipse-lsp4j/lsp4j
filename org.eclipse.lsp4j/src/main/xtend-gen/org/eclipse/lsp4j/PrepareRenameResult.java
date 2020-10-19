@@ -17,6 +17,10 @@ import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * One of the result types of the `textDocument/prepareRename` request.
+ * Provides the range of the string to rename and a placeholder text of the string content to be renamed.
+ */
 @SuppressWarnings("all")
 public class PrepareRenameResult {
   /**

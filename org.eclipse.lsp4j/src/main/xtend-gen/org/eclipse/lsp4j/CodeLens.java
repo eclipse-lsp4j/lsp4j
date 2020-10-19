@@ -41,7 +41,7 @@ public class CodeLens {
   private Command command;
   
   /**
-   * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
+   * A data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object data;
@@ -91,7 +91,7 @@ public class CodeLens {
   }
   
   /**
-   * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
+   * A data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
   @Pure
   public Object getData() {
@@ -99,7 +99,7 @@ public class CodeLens {
   }
   
   /**
-   * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
+   * A data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
    */
   public void setData(final Object data) {
     this.data = data;

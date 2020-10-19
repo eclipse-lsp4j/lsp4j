@@ -74,7 +74,7 @@ class WorkspaceEditCapabilities {
 	 *
 	 * See {@link ResourceOperationKind} for allowed values.
 	 */
-	List<String> resourceOperations;
+	List<String> resourceOperations
 
 	/**
 	 * The failure handling strategy of a client if applying the workspace edit
@@ -82,7 +82,7 @@ class WorkspaceEditCapabilities {
 	 *
 	 * See {@link FailureHandlingKind} for allowed values.
 	 */
-	String failureHandling;
+	String failureHandling
 
 	new() {
 	}
@@ -121,6 +121,7 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
 
 /**
  * Capabilities specific to the `workspace/symbol` request.
+ * Referred to in the spec as WorkspaceSymbolClientCapabilities.
  */
 @JsonRpcData
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
@@ -129,6 +130,15 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	 * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
 	 */
 	SymbolKindCapabilities symbolKind
+
+	/**
+	 * The client supports tags on `SymbolInformation`.
+	 * Clients supporting tags have to handle unknown tags gracefully.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	SymbolTagSupportCapabilities tagSupport
 
 	new() {
 	}
@@ -293,6 +303,25 @@ class CompletionItemCapabilities {
 	 */
 	CompletionItemTagSupportCapabilities tagSupport
 
+	/**
+	 * Client support insert replace edit to control different behavior if a
+	 * completion item is inserted in the text or should replace text.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean insertReplaceSupport
+
+	/**
+	 * Indicates which properties a client can resolve lazily on a completion
+	 * item. Before version 3.16.0 only the predefined properties `documentation`
+	 * and `details` could be resolved lazily.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	CompletionItemResolveSupportCapabilities resolveSupport
+
 	new() {
 	}
 
@@ -301,6 +330,14 @@ class CompletionItemCapabilities {
 	}
 }
 
+/**
+ * Client supports the tag property on a completion item. Clients supporting
+ * tags have to handle unknown tags gracefully. Clients especially need to
+ * preserve unknown tags when sending a completion item back to the server in
+ * a resolve call.
+ *
+ * Since 3.15.0
+ */
 @JsonRpcData
 class CompletionItemTagSupportCapabilities {
 	/**
@@ -318,6 +355,35 @@ class CompletionItemTagSupportCapabilities {
 	}
 }
 
+/**
+ * Indicates which properties a client can resolve lazily on a completion
+ * item. Before version 3.16.0 only the predefined properties `documentation`
+ * and `details` could be resolved lazily.
+ *
+ * Since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class CompletionItemResolveSupportCapabilities {
+	/**
+	 * The properties that a client can resolve lazily.
+	 */
+	@NonNull
+	List<String> properties
+
+	new() {
+		this.properties = new ArrayList
+	}
+
+	new(@NonNull List<String> properties) {
+		this.properties = Preconditions.checkNotNull(properties, 'properties')
+	}
+}
+
+/**
+ * The client supports the following `CompletionItemKind` specific
+ * capabilities.
+ */
 @JsonRpcData
 class CompletionItemKindCapabilities {
 	/**
@@ -422,6 +488,15 @@ class SignatureInformationCapabilities {
 	 * Client capabilities specific to parameter information.
 	 */
 	ParameterInformationCapabilities parameterInformation
+
+	/**
+	 * The client supports the `activeParameter` property on `SignatureInformation`
+	 * literal.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean activeParameterSupport
 
 	new() {
 	}
@@ -538,6 +613,27 @@ class SymbolKindCapabilities {
 }
 
 /**
+ * Specific capabilities for the `SymbolTag`.
+ */
+@Beta
+@JsonRpcData
+class SymbolTagSupportCapabilities {
+	/**
+	 * The tags supported by the client.
+	 */
+	@NonNull
+	List<SymbolTag> valueSet
+
+	new() {
+		this.valueSet = new ArrayList
+	}
+
+	new(@NonNull List<SymbolTag> valueSet) {
+		this.valueSet = Preconditions.checkNotNull(valueSet, 'valueSet')
+	}
+}
+
+/**
  * Capabilities specific to the `textDocument/documentSymbol`
  */
 @JsonRpcData
@@ -551,6 +647,25 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	 * The client support hierarchical document symbols.
 	 */
 	Boolean hierarchicalDocumentSymbolSupport
+
+	/**
+	 * The client supports tags on `SymbolInformation`. Tags are supported on
+	 * `DocumentSymbol` if `hierarchicalDocumentSymbolSupport` is set to true.
+	 * Clients supporting tags have to handle unknown tags gracefully.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	SymbolTagSupportCapabilities tagSupport
+
+	/**
+	 * The client supports an additional label presented in the UI when
+	 * registering a document symbol provider.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean labelSupport
 
 	new() {
 	}
@@ -752,7 +867,31 @@ class CodeActionLiteralSupportCapabilities {
 	}
 
 	new(CodeActionKindCapabilities codeActionKind) {
-		this.codeActionKind = codeActionKind;
+		this.codeActionKind = codeActionKind
+	}
+}
+
+/**
+ * Whether the client supports resolving additional code action
+ * properties via a separate `codeAction/resolve` request.
+ *
+ * Since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class CodeActionResolveSupportCapabilities {
+	/**
+	 * The properties that a client can resolve lazily.
+	 */
+	@NonNull
+	List<String> properties
+
+	new() {
+		this.properties = new ArrayList
+	}
+
+	new(@NonNull List<String> properties) {
+		this.properties = Preconditions.checkNotNull(properties, 'properties')
 	}
 }
 
@@ -774,6 +913,33 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * Since 3.15.0
 	 */
 	Boolean isPreferredSupport
+
+	/**
+	 * Whether code action supports the `disabled` property.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean disabledSupport
+
+	/**
+	 * Whether code action supports the `data` property which is
+	 * preserved between a `textDocument/codeAction` and a
+	 * `codeAction/resolve` request.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean dataSupport
+
+	/**
+	 * Whether the client supports resolving additional code action
+	 * properties via a separate `codeAction/resolve` request.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	CodeActionResolveSupportCapabilities resolveSupport
 
 	new() {
 	}
@@ -862,6 +1028,13 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	Boolean prepareSupport
 
+	/**
+	 * Client supports the default behavior result (`{ defaultBehavior: boolean }`).
+	 *
+	 * Since 3.16.0
+	 */
+	Boolean prepareSupportDefaultBehavior
+
 	new() {
 	}
 
@@ -905,6 +1078,24 @@ class PublishDiagnosticsCapabilities {
 	 * Since 3.15.0
 	 */
 	Boolean versionSupport
+
+	/**
+	 * Client supports a codeDescription property
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean codeDescriptionSupport
+
+	/**
+	 * Whether code action supports the `data` property which is
+	 * preserved between a `textDocument/publishDiagnostics` and
+	 * `textDocument/codeAction` request.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean dataSupport
 
 	new() {
 	}
@@ -1008,7 +1199,7 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Capabilities specific to the {@code textDocument/callHierarchy}.
+ * Capabilities specific to the {@code textDocument/prepareCallHierarchy}.
  */
 @Beta
 @JsonRpcData
@@ -1118,13 +1309,13 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * The token types that the client supports.
 	 */
 	@NonNull
-	List<String> tokenTypes;
+	List<String> tokenTypes
 
 	/**
 	 * The token modifiers that the client supports.
 	 */
 	@NonNull
-	List<String> tokenModifiers;
+	List<String> tokenModifiers
 
 	/**
 	 * The tokens the client supports.
@@ -1132,7 +1323,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * See {@link TokenFormat} for allowed values.
 	 */
 	@NonNull
-	List<String> formats;
+	List<String> formats
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
@@ -1289,7 +1480,7 @@ class TextDocumentClientCapabilities {
 	TypeHierarchyCapabilities typeHierarchyCapabilities
 
 	/**
-	 * Capabilities specific to {@code textDocument/callHierarchy}.
+	 * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
 	 */
 	@Beta
 	CallHierarchyCapabilities callHierarchy
@@ -1321,7 +1512,7 @@ class WindowClientCapabilities {
 	 *
 	 * Since 3.15.0
 	 */
-	Boolean workDoneProgress;
+	Boolean workDoneProgress
 }
 
 /**
@@ -1368,7 +1559,7 @@ class ClientCapabilities {
 		this.textDocument = textDocument
 		this.experimental = experimental
 	}
-	
+
 	new(WorkspaceClientCapabilities workspace, TextDocumentClientCapabilities textDocument, WindowClientCapabilities window, Object experimental) {
 		this.workspace = workspace
 		this.textDocument = textDocument
@@ -1415,6 +1606,26 @@ class CodeAction {
 	Boolean isPreferred
 
 	/**
+	 * Marks that the code action cannot currently be applied.
+	 *
+	 * Clients should follow the following guidelines regarding disabled code actions:
+	 *
+	 *   - Disabled code actions are not shown in automatic [lightbulb](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
+	 *     code action menu.
+	 *
+	 *   - Disabled actions are shown as faded out in the code action menu when the user request a more specific type
+	 *     of code action, such as refactorings.
+	 *
+	 *   - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+	 *     that auto applies a code action and only a disabled code actions are returned, the client should show the user an
+	 *     error message with `reason` in the editor.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	CodeActionDisabled disabled
+
+	/**
 	 * The workspace edit this code action performs.
 	 */
 	WorkspaceEdit edit
@@ -1426,13 +1637,58 @@ class CodeAction {
 	 */
 	Command command
 
+	/**
+	 * A data entry field that is preserved on a code action between
+	 * a `textDocument/codeAction` and a `codeAction/resolve` request.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
 	new() {
 	}
 
 	new(@NonNull String title) {
 		this.title = Preconditions.checkNotNull(title, 'title')
 	}
+}
 
+/**
+ * Marks that the code action cannot currently be applied.
+ *
+ * Clients should follow the following guidelines regarding disabled code actions:
+ *
+ *   - Disabled code actions are not shown in automatic [lightbulb](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
+ *     code action menu.
+ *
+ *   - Disabled actions are shown as faded out in the code action menu when the user request a more specific type
+ *     of code action, such as refactorings.
+ *
+ *   - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+ *     that auto applies a code action and only a disabled code actions are returned, the client should show the user an
+ *     error message with `reason` in the editor.
+ *
+ * Since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class CodeActionDisabled {
+	/**
+	 * Human readable description of why the code action is currently disabled.
+	 *
+	 * This is displayed in the code actions UI.
+	 */
+	@NonNull
+	String reason
+
+	new() {
+	}
+
+	new(@NonNull String reason) {
+		this.reason = Preconditions.checkNotNull(reason, 'reason')
+	}
 }
 
 /**
@@ -1524,7 +1780,7 @@ class CodeLens {
 	Command command
 
 	/**
-	 * An data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
+	 * A data entry field that is preserved on a code lens item between a code lens and a code lens resolve request.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
@@ -1555,6 +1811,15 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * may list out every specific kind they provide.
 	 */
 	List<String> codeActionKinds
+
+	/**
+	 * The server provides support to resolve additional
+	 * information for a code action.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Boolean resolveProvider
 
 	new() {
 	}
@@ -1747,7 +2012,7 @@ class CompletionItem {
 	Command command
 
 	/**
-	 * An data entry field that is preserved on a completion item between a completion and a completion resolve request.
+	 * A data entry field that is preserved on a completion item between a completion and a completion resolve request.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
@@ -1838,6 +2103,14 @@ class Diagnostic {
 	Either<String, Number> code
 
 	/**
+	 * An optional property to describe the error code.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	DiagnosticCodeDescription codeDescription
+
+	/**
 	 * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
 	 */
 	String source
@@ -1853,7 +2126,7 @@ class Diagnostic {
 	 *
 	 * Since 3.15.0
 	 */
-	 List<DiagnosticTag> tags;
+	 List<DiagnosticTag> tags
 
 	/**
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
@@ -1862,6 +2135,16 @@ class Diagnostic {
 	 * Since 3.7.0
 	 */
 	List<DiagnosticRelatedInformation> relatedInformation
+
+	/**
+	 * A data entry field that is preserved between a `textDocument/publishDiagnostics`
+	 * notification and `textDocument/codeAction` request.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
 
 	new() {
 	}
@@ -1910,6 +2193,28 @@ class DiagnosticRelatedInformation {
 	new(@NonNull Location location, @NonNull String message) {
 		this.location = Preconditions.checkNotNull(location, 'location')
 		this.message = Preconditions.checkNotNull(message, 'message')
+	}
+}
+
+/**
+ * Structure to capture a description for an error code.
+ *
+ * Since 3.16.0
+ */
+@Beta
+@JsonRpcData
+class DiagnosticCodeDescription {
+	/**
+	 * A URI to open with more information about the diagnostic error.
+	 */
+	@NonNull
+	String href
+
+	new() {
+	}
+
+	new(@NonNull String href) {
+		this.href = Preconditions.checkNotNull(href, 'href')
 	}
 }
 
@@ -2349,7 +2654,7 @@ class RenameOptions extends StaticRegistrationOptions {
 	/**
 	 * Renames should be checked and tested before being executed.
 	 */
-	Boolean prepareProvider;
+	Boolean prepareProvider
 }
 
 /**
@@ -2571,6 +2876,22 @@ class ResolveTypeHierarchyItemParams {
 
 @JsonRpcData
 class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
+	/**
+	 * A human-readable string that is shown when multiple outlines trees
+	 * are shown for the same document.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	String label
+
+	new() {
+	}
+
+	@Beta
+	new(String label) {
+		this.label = label
+	}
 }
 
 @JsonRpcData
@@ -2902,7 +3223,7 @@ class MarkedString {
 interface WorkDoneProgressNotification {
 	def WorkDoneProgressKind getKind()
 }
- 
+
 /**
  * The $/progress notification payload to start progress reporting.
  *
@@ -2951,7 +3272,7 @@ class WorkDoneProgressBegin implements WorkDoneProgressNotification {
 	 * The value should be steadily rising. Clients are free to ignore values
 	 * that are not following this rule.
 	 */
-	Integer percentage;
+	Integer percentage
 }
 
 /**
@@ -2995,13 +3316,13 @@ class WorkDoneProgressReport implements WorkDoneProgressNotification {
 	 * The value should be steadily rising. Clients are free to ignore values
 	 * that are not following this rule.
 	 */
-	Integer percentage;
+	Integer percentage
 }
 
 /**
  * The notification payload about progress reporting.
  * Signaling the end of a progress reporting is done using the following payload:
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
@@ -3041,7 +3362,7 @@ class ProgressParams {
 	 * The progress data.
 	 */
 	@JsonAdapter(WorkDoneProgressNotificationAdapter.Factory)
-	WorkDoneProgressNotification value;
+	WorkDoneProgressNotification value
 
 	new() {
 	}
@@ -3072,38 +3393,38 @@ interface WorkDoneProgressParams {
 
 /**
  * Options to signal work done progress support in server capabilities.
- * 
+ *
  * Since 3.15.0
  */
 interface WorkDoneProgressOptions {
-	
+
 	def Boolean getWorkDoneProgress()
-	
+
 	def void setWorkDoneProgress(Boolean workDoneProgress)
-	
+
 }
 
 /**
  * Options to signal work done progress support in server capabilities.
  * It is not present in protocol specification, so it's just "dry" class.
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
 abstract class AbstractWorkDoneProgressOptions implements WorkDoneProgressOptions {
 	Boolean workDoneProgress
-} 
+}
 
 /**
  * Options to signal work done progress support in server capabilities and TextDocumentRegistrationOptions.
  * It is not present in protocol specification, so it's just "dry" class.
- * 
+ *
  * Since 3.15.0
  */
 @JsonRpcData
 abstract class AbstractTextDocumentRegistrationAndWorkDoneProgressOptions extends TextDocumentRegistrationOptions implements WorkDoneProgressOptions {
 	Boolean workDoneProgress
-	
+
 	new() {
 	}
 
@@ -3694,6 +4015,10 @@ class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialR
 	}
 }
 
+/**
+ * One of the result types of the `textDocument/prepareRename` request.
+ * Provides the range of the string to rename and a placeholder text of the string content to be renamed.
+ */
 @JsonRpcData
 class PrepareRenameResult {
 	/**
@@ -3746,13 +4071,13 @@ class SemanticTokensLegend {
 	 * The token types that the client supports.
 	 */
 	@NonNull
-	List<String> tokenTypes;
+	List<String> tokenTypes
 
 	/**
 	 * The token modifiers that the client supports.
 	 */
 	@NonNull
-	List<String> tokenModifiers;
+	List<String> tokenModifiers
 
 	new(@NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers) {
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
@@ -4059,13 +4384,13 @@ class SemanticHighlightingServerCapabilities {
 	 * feature. Otherwise, clients should reuse this "lookup table" when receiving semantic highlighting notifications from
 	 * the server.
 	 */
-	List<List<String>> scopes;
+	List<List<String>> scopes
 
 	new() {
 	}
 
 	new(List<List<String>> scopes) {
-		this.scopes = scopes;
+		this.scopes = scopes
 	}
 
 }
@@ -4223,12 +4548,12 @@ class SemanticTokensEdit {
 	/**
 	 * The count of elements to remove.
 	 */
-	int deleteCount;
+	int deleteCount
 
 	/**
 	 * The elements to insert.
 	 */
-	List<Integer> data;
+	List<Integer> data
 
 	new(int start, int deleteCount, List<Integer> data) {
 		this.start = start
@@ -4295,7 +4620,7 @@ class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 	 * The range the semantic tokens are requested for.
 	 */
 	@NonNull
-	Range range;
+	Range range
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
@@ -4449,6 +4774,16 @@ class SignatureInformation {
 	 */
 	List<ParameterInformation> parameters
 
+	/**
+	 * The index of the active parameter.
+	 *
+	 * If provided, this is used in place of `SignatureHelp.activeParameter`.
+	 *
+	 * Since 3.16.0
+	 */
+	@Beta
+	Integer activeParameter
+
 	new() {
 	}
 
@@ -4569,7 +4904,7 @@ class DocumentSymbol {
 	 * inside the symbol to reveal in the symbol in the UI.
 	 */
 	@NonNull
-	Range range;
+	Range range
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
@@ -4585,8 +4920,19 @@ class DocumentSymbol {
 	String detail
 
 	/**
-	 * Indicates if this symbol is deprecated.
+	 * Tags for this document symbol.
+	 *
+	 * Since 3.16.0
 	 */
+	@Beta
+	List<SymbolTag> tags
+
+	/**
+	 * Indicates if this symbol is deprecated.
+	 *
+	 * @deprecated Use `tags` instead if supported.
+	 */
+	@Deprecated
 	Boolean deprecated
 
 	/**
@@ -4637,8 +4983,19 @@ class SymbolInformation {
 	SymbolKind kind
 
 	/**
-	 * Indicates if this symbol is deprecated.
+	 * Tags for this symbol.
+	 *
+	 * Since 3.16.0
 	 */
+	@Beta
+	List<SymbolTag> tags
+
+	/**
+	 * Indicates if this symbol is deprecated.
+	 *
+	 * @deprecated Use `tags` instead if supported.
+	 */
+	@Deprecated
 	Boolean deprecated
 
 	/**
@@ -4954,7 +5311,7 @@ class TextDocumentEdit {
 abstract class ResourceOperation {
 
 	@NonNull
-	String kind;
+	String kind
 
 	new() {
 	}
@@ -5587,7 +5944,6 @@ class ExecuteCommandParams implements WorkDoneProgressParams {
  */
 @JsonRpcData
 class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
-	
 }
 
 /**
@@ -6167,7 +6523,7 @@ class CallHierarchyOutgoingCall {
 }
 
 /**
- * The result of a {@code textDocument/callHierarchy} request.
+ * The result of a {@code textDocument/prepareCallHierarchy} request.
  */
 @Beta
 @JsonRpcData
