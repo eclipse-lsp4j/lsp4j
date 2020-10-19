@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.TypeHierarchyDirection;
 import org.eclipse.lsp4j.TypeHierarchyItem;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -23,6 +24,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * {@link TypeHierarchyItem#getParents parents} or the {@link TypeHierarchyItem#getChildren children} is not
  * defined. If resolved and no {@code parents} or {@code children} are available then an empty list is returned.
  */
+@Beta
 @SuppressWarnings("all")
 public class ResolveTypeHierarchyItemParams {
   /**

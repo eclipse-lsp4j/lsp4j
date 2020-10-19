@@ -28,6 +28,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultParams extends TextDocumentPositionAndWorkDoneProgressParams implements PartialResultParams {
+  /**
+   * An optional token that a server can use to report partial results (e.g. streaming) to
+   * the client.
+   */
   private Either<String, Number> partialResultToken;
   
   public TextDocumentPositionAndWorkDoneProgressAndPartialResultParams() {
@@ -37,16 +41,19 @@ public abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultPar
     super(textDocument, position);
   }
   
-  @Deprecated
-  public TextDocumentPositionAndWorkDoneProgressAndPartialResultParams(@NonNull final TextDocumentIdentifier textDocument, final String uri, @NonNull final Position position) {
-    super(textDocument, uri, position);
-  }
-  
+  /**
+   * An optional token that a server can use to report partial results (e.g. streaming) to
+   * the client.
+   */
   @Pure
   public Either<String, Number> getPartialResultToken() {
     return this.partialResultToken;
   }
   
+  /**
+   * An optional token that a server can use to report partial results (e.g. streaming) to
+   * the client.
+   */
   public void setPartialResultToken(final Either<String, Number> partialResultToken) {
     this.partialResultToken = partialResultToken;
   }

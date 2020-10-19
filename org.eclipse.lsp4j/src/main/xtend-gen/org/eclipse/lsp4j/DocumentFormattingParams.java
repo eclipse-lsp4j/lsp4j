@@ -13,6 +13,8 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
+import org.eclipse.lsp4j.WorkDoneProgressParams;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -22,7 +24,12 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The document formatting request is sent from the server to the client to format a whole document.
  */
 @SuppressWarnings("all")
-public class DocumentFormattingParams {
+public class DocumentFormattingParams implements WorkDoneProgressParams {
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
+  private Either<String, Number> workDoneToken;
+  
   /**
    * The document to format.
    */
@@ -41,6 +48,37 @@ public class DocumentFormattingParams {
   public DocumentFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options) {
     this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
     this.options = Preconditions.<FormattingOptions>checkNotNull(options, "options");
+  }
+  
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
+  @Pure
+  public Either<String, Number> getWorkDoneToken() {
+    return this.workDoneToken;
+  }
+  
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
+  public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
+    this.workDoneToken = workDoneToken;
+  }
+  
+  public void setWorkDoneToken(final String workDoneToken) {
+    if (workDoneToken == null) {
+      this.workDoneToken = null;
+      return;
+    }
+    this.workDoneToken = Either.forLeft(workDoneToken);
+  }
+  
+  public void setWorkDoneToken(final Number workDoneToken) {
+    if (workDoneToken == null) {
+      this.workDoneToken = null;
+      return;
+    }
+    this.workDoneToken = Either.forRight(workDoneToken);
   }
   
   /**
@@ -79,6 +117,7 @@ public class DocumentFormattingParams {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("workDoneToken", this.workDoneToken);
     b.add("textDocument", this.textDocument);
     b.add("options", this.options);
     return b.toString();
@@ -94,6 +133,11 @@ public class DocumentFormattingParams {
     if (getClass() != obj.getClass())
       return false;
     DocumentFormattingParams other = (DocumentFormattingParams) obj;
+    if (this.workDoneToken == null) {
+      if (other.workDoneToken != null)
+        return false;
+    } else if (!this.workDoneToken.equals(other.workDoneToken))
+      return false;
     if (this.textDocument == null) {
       if (other.textDocument != null)
         return false;
@@ -112,6 +156,7 @@ public class DocumentFormattingParams {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((this.workDoneToken== null) ? 0 : this.workDoneToken.hashCode());
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     return prime * result + ((this.options== null) ? 0 : this.options.hashCode());
   }

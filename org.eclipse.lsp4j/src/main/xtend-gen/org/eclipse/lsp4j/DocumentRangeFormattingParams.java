@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.FormattingOptions;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
@@ -26,8 +25,23 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * The document range formatting request is sent from the client to the server to format a given range in a document.
  */
 @SuppressWarnings("all")
-public class DocumentRangeFormattingParams extends DocumentFormattingParams implements WorkDoneProgressParams {
+public class DocumentRangeFormattingParams implements WorkDoneProgressParams {
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   private Either<String, Number> workDoneToken;
+  
+  /**
+   * The document to format.
+   */
+  @NonNull
+  private TextDocumentIdentifier textDocument;
+  
+  /**
+   * The format options
+   */
+  @NonNull
+  private FormattingOptions options;
   
   /**
    * The range to format
@@ -39,7 +53,8 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams impl
   }
   
   public DocumentRangeFormattingParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final FormattingOptions options, @NonNull final Range range) {
-    super(textDocument, options);
+    this.textDocument = Preconditions.<TextDocumentIdentifier>checkNotNull(textDocument, "textDocument");
+    this.options = Preconditions.<FormattingOptions>checkNotNull(options, "options");
     this.range = Preconditions.<Range>checkNotNull(range, "range");
   }
   
@@ -48,11 +63,17 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams impl
     this.range = Preconditions.<Range>checkNotNull(range, "range");
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   @Pure
   public Either<String, Number> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }
@@ -71,6 +92,38 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams impl
       return;
     }
     this.workDoneToken = Either.forRight(workDoneToken);
+  }
+  
+  /**
+   * The document to format.
+   */
+  @Pure
+  @NonNull
+  public TextDocumentIdentifier getTextDocument() {
+    return this.textDocument;
+  }
+  
+  /**
+   * The document to format.
+   */
+  public void setTextDocument(@NonNull final TextDocumentIdentifier textDocument) {
+    this.textDocument = Preconditions.checkNotNull(textDocument, "textDocument");
+  }
+  
+  /**
+   * The format options
+   */
+  @Pure
+  @NonNull
+  public FormattingOptions getOptions() {
+    return this.options;
+  }
+  
+  /**
+   * The format options
+   */
+  public void setOptions(@NonNull final FormattingOptions options) {
+    this.options = Preconditions.checkNotNull(options, "options");
   }
   
   /**
@@ -94,9 +147,9 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams impl
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("workDoneToken", this.workDoneToken);
+    b.add("textDocument", this.textDocument);
+    b.add("options", this.options);
     b.add("range", this.range);
-    b.add("textDocument", getTextDocument());
-    b.add("options", getOptions());
     return b.toString();
   }
   
@@ -109,13 +162,21 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams impl
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
     DocumentRangeFormattingParams other = (DocumentRangeFormattingParams) obj;
     if (this.workDoneToken == null) {
       if (other.workDoneToken != null)
         return false;
     } else if (!this.workDoneToken.equals(other.workDoneToken))
+      return false;
+    if (this.textDocument == null) {
+      if (other.textDocument != null)
+        return false;
+    } else if (!this.textDocument.equals(other.textDocument))
+      return false;
+    if (this.options == null) {
+      if (other.options != null)
+        return false;
+    } else if (!this.options.equals(other.options))
       return false;
     if (this.range == null) {
       if (other.range != null)
@@ -129,8 +190,10 @@ public class DocumentRangeFormattingParams extends DocumentFormattingParams impl
   @Pure
   public int hashCode() {
     final int prime = 31;
-    int result = super.hashCode();
+    int result = 1;
     result = prime * result + ((this.workDoneToken== null) ? 0 : this.workDoneToken.hashCode());
+    result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
+    result = prime * result + ((this.options== null) ? 0 : this.options.hashCode());
     return prime * result + ((this.range== null) ? 0 : this.range.hashCode());
   }
 }

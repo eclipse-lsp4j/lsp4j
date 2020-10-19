@@ -25,5 +25,8 @@ public interface WorkDoneProgressParams {
    */
   public abstract Either<String, Number> getWorkDoneToken();
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   public abstract void setWorkDoneToken(final Either<String, Number> token);
 }

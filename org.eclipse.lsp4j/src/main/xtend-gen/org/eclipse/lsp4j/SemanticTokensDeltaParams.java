@@ -20,7 +20,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @since 3.16.0
+ * The request is sent from the client to the server to resolve semantic token deltas for a given whole file.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
@@ -33,7 +35,7 @@ public class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultP
   
   /**
    * The result id of a previous response. The result Id can either point to a full response
-   * or a delta response depending on what was recevied last.
+   * or a delta response depending on what was received last.
    */
   @NonNull
   private String previousResultId;
@@ -61,7 +63,7 @@ public class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultP
   
   /**
    * The result id of a previous response. The result Id can either point to a full response
-   * or a delta response depending on what was recevied last.
+   * or a delta response depending on what was received last.
    */
   @Pure
   @NonNull
@@ -71,7 +73,7 @@ public class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultP
   
   /**
    * The result id of a previous response. The result Id can either point to a full response
-   * or a delta response depending on what was recevied last.
+   * or a delta response depending on what was received last.
    */
   public void setPreviousResultId(@NonNull final String previousResultId) {
     this.previousResultId = Preconditions.checkNotNull(previousResultId, "previousResultId");

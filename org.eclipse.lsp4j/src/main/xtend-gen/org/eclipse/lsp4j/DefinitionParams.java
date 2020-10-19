@@ -20,7 +20,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The go to definition request is sent from the client to the server to resolve the definition
- *  location of a symbol at a given text document position.
+ * location of a symbol at a given text document position.
  */
 @SuppressWarnings("all")
 public class DefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {

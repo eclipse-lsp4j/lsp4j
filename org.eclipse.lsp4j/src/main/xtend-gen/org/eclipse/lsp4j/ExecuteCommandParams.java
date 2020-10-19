@@ -27,6 +27,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  */
 @SuppressWarnings("all")
 public class ExecuteCommandParams implements WorkDoneProgressParams {
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   private Either<String, Number> workDoneToken;
   
   /**
@@ -51,16 +54,21 @@ public class ExecuteCommandParams implements WorkDoneProgressParams {
   }
   
   public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments, final Either<String, Number> workDoneToken) {
-    this.command = Preconditions.<String>checkNotNull(command, "command");
-    this.arguments = arguments;
+    this(command, arguments);
     this.workDoneToken = workDoneToken;
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   @Pure
   public Either<String, Number> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
+  /**
+   * An optional token that a server can use to report work done progress.
+   */
   public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }

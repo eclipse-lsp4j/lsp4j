@@ -19,6 +19,9 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The Completion request is sent from the client to the server to compute completion items at a given cursor position.
+ */
 @SuppressWarnings("all")
 public class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
   /**
@@ -35,7 +38,7 @@ public class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAnd
   }
   
   public CompletionParams(@NonNull final TextDocumentIdentifier textDocument, @NonNull final Position position, final CompletionContext context) {
-    super(textDocument, position);
+    this(textDocument, position);
     this.context = context;
   }
   
