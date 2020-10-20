@@ -614,6 +614,8 @@ class SymbolKindCapabilities {
 
 /**
  * Specific capabilities for the `SymbolTag`.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
@@ -1200,6 +1202,8 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the {@code textDocument/prepareCallHierarchy}.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
@@ -1481,6 +1485,8 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
+	 *
+	 * Since 3.16.0
 	 */
 	@Beta
 	CallHierarchyCapabilities callHierarchy
@@ -1495,7 +1501,7 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to {@code textDocument/semanticTokens}.
 	 *
-	 * @since 3.16.0
+	 * Since 3.16.0
 	 */
 	@Beta
 	SemanticTokensCapabilities semanticTokens
@@ -4063,6 +4069,11 @@ class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	}
 }
 
+/**
+ * The legend used by the server
+ *
+ * Since 3.16.0
+ */
 @Beta
 @JsonRpcData
 class SemanticTokensLegend {
@@ -4086,6 +4097,11 @@ class SemanticTokensLegend {
 
 }
 
+/**
+ * Server supports providing semantic tokens for a full document.
+ *
+ * Since 3.16.0
+ */
 @Beta
 @JsonRpcData
 class SemanticTokensServerFull {
@@ -4318,10 +4334,11 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides Call Hierarchy support.
+	 *
+	 * Since 3.16.0
 	 */
 	@Beta
 	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
-
 
 	/**
 	 * The server provides selection range support.
@@ -6422,6 +6439,8 @@ class SemanticHighlightingInformation {
 
 /**
  * The parameter of a `textDocument/prepareCallHierarchy` request.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
@@ -6431,6 +6450,8 @@ class CallHierarchyPrepareParams  extends TextDocumentPositionParams {
 
 /**
  * The parameter of a `callHierarchy/incomingCalls` request.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
@@ -6442,12 +6463,14 @@ class CallHierarchyIncomingCallsParams {
 	}
 
 	new(@NonNull CallHierarchyItem item) {
-		this.item = item
+		this.item = Preconditions.checkNotNull(item, 'item')
 	}
 }
 
 /**
  * The parameter of a `callHierarchy/outgoingCalls` request.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
@@ -6459,17 +6482,18 @@ class CallHierarchyOutgoingCallsParams {
 	}
 
 	new(@NonNull CallHierarchyItem item) {
-		this.item = item
+		this.item = Preconditions.checkNotNull(item, 'item')
 	}
 }
 
 /**
  * Represents an incoming call, e.g. a caller of a method or constructor.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
 class CallHierarchyIncomingCall {
-
 	/**
 	 * The item that makes the call.
 	 */
@@ -6487,18 +6511,19 @@ class CallHierarchyIncomingCall {
 	}
 
 	new(@NonNull CallHierarchyItem from, @NonNull List<Range> fromRanges) {
-		this.from = from
-		this.fromRanges = fromRanges
+		this.from = Preconditions.checkNotNull(from, 'from')
+		this.fromRanges = Preconditions.checkNotNull(fromRanges, 'fromRanges')
 	}
 }
 
 /**
  * Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
 class CallHierarchyOutgoingCall {
-
 	/**
 	 * The item that is called.
 	 */
@@ -6517,18 +6542,19 @@ class CallHierarchyOutgoingCall {
 	}
 
 	new(@NonNull CallHierarchyItem to, @NonNull List<Range> fromRanges) {
-		this.to = to
-		this.fromRanges = fromRanges
+		this.to = Preconditions.checkNotNull(to, 'to')
+		this.fromRanges = Preconditions.checkNotNull(fromRanges, 'fromRanges')
 	}
 }
 
 /**
  * The result of a {@code textDocument/prepareCallHierarchy} request.
+ *
+ * Since 3.16.0
  */
 @Beta
 @JsonRpcData
 class CallHierarchyItem {
-
 	/**
 	 * The name of the item targeted by the call hierarchy request.
 	 */
@@ -6571,11 +6597,12 @@ class CallHierarchyItem {
 	 */
 	@NonNull
 	Range selectionRange
-
 }
 
 /**
  * A parameter literal used in selection range requests.
+ *
+ * Since 3.15.0
  */
 @JsonRpcData
 class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
@@ -6603,6 +6630,8 @@ class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
 /**
  * A selection range represents a part of a selection hierarchy. A selection range
  * may have a parent selection range that contains it.
+ *
+ * Since 3.15.0
  */
 @JsonRpcData
 class SelectionRange {

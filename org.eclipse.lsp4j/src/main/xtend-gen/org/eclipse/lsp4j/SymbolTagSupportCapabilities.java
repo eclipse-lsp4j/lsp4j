@@ -22,6 +22,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Specific capabilities for the `SymbolTag`.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")

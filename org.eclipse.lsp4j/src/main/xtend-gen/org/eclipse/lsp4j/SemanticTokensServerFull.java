@@ -15,6 +15,11 @@ import com.google.common.annotations.Beta;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Server supports providing semantic tokens for a full document.
+ * 
+ * Since 3.16.0
+ */
 @Beta
 @SuppressWarnings("all")
 public class SemanticTokensServerFull {

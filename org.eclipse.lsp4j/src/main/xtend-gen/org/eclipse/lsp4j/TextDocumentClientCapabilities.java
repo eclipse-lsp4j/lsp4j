@@ -175,6 +175,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
+   * 
+   * Since 3.16.0
    */
   @Beta
   private CallHierarchyCapabilities callHierarchy;
@@ -189,7 +191,7 @@ public class TextDocumentClientCapabilities {
   /**
    * Capabilities specific to {@code textDocument/semanticTokens}.
    * 
-   * @since 3.16.0
+   * Since 3.16.0
    */
   @Beta
   private SemanticTokensCapabilities semanticTokens;
@@ -561,6 +563,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
+   * 
+   * Since 3.16.0
    */
   @Pure
   public CallHierarchyCapabilities getCallHierarchy() {
@@ -569,6 +573,8 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
+   * 
+   * Since 3.16.0
    */
   public void setCallHierarchy(final CallHierarchyCapabilities callHierarchy) {
     this.callHierarchy = callHierarchy;
@@ -596,7 +602,7 @@ public class TextDocumentClientCapabilities {
   /**
    * Capabilities specific to {@code textDocument/semanticTokens}.
    * 
-   * @since 3.16.0
+   * Since 3.16.0
    */
   @Pure
   public SemanticTokensCapabilities getSemanticTokens() {
@@ -606,7 +612,7 @@ public class TextDocumentClientCapabilities {
   /**
    * Capabilities specific to {@code textDocument/semanticTokens}.
    * 
-   * @since 3.16.0
+   * Since 3.16.0
    */
   public void setSemanticTokens(final SemanticTokensCapabilities semanticTokens) {
     this.semanticTokens = semanticTokens;

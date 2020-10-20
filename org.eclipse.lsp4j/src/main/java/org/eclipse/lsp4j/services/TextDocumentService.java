@@ -146,7 +146,7 @@ public interface TextDocumentService {
 	 * 
 	 * Registration Options: TextDocumentRegistrationOptions
 	 * 
-	 * Since version 3.14.0
+	 * Since 3.14.0
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
@@ -172,7 +172,7 @@ public interface TextDocumentService {
 	 * 
 	 * Registration Options: TextDocumentRegistrationOptions
 	 * 
-	 * Since version 3.6.0
+	 * Since 3.6.0
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
@@ -186,7 +186,7 @@ public interface TextDocumentService {
 	 * 
 	 * Registration Options: TextDocumentRegistrationOptions
 	 * 
-	 * Since version 3.6.0
+	 * Since 3.6.0
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
@@ -256,6 +256,8 @@ public interface TextDocumentService {
 	/**
 	 * The request is sent from the client to the server to resolve additional information for a given code action. This is usually used to compute
 	 * the `edit` property of a code action to avoid its unnecessary computation during the `textDocument/codeAction` request.
+	 * 
+	 * Since 3.16.0
 	 */
 	@JsonRequest(value="codeAction/resolve", useSegment = false)
 	default CompletableFuture<CodeAction> resolveCodeAction(CodeAction unresolved) {
@@ -413,7 +415,7 @@ public interface TextDocumentService {
 	 *  - Color boxes showing the actual color next to the reference
 	 *  - Show a color picker when a color reference is edited
 	 * 
-	 * Since version 3.6.0
+	 * Since 3.6.0
 	 */
 	@JsonRequest
 	default CompletableFuture<List<ColorInformation>> documentColor(DocumentColorParams params) {
@@ -426,7 +428,7 @@ public interface TextDocumentService {
 	 *  - modify a color reference.
 	 *  - show in a color picker and let users pick one of the presentations
 	 * 
-	 * Since version 3.6.0
+	 * Since 3.6.0
 	 */
 	@JsonRequest
 	default CompletableFuture<List<ColorPresentation>> colorPresentation(ColorPresentationParams params) {
@@ -437,7 +439,7 @@ public interface TextDocumentService {
 	 * The folding range request is sent from the client to the server to return all folding
 	 * ranges found in a given text document.
 	 * 
-	 * Since version 3.10.0
+	 * Since 3.10.0
 	 */
 	@JsonRequest
 	default CompletableFuture<List<FoldingRange>> foldingRange(FoldingRangeRequestParams params) {
@@ -448,7 +450,7 @@ public interface TextDocumentService {
 	 * The prepare rename request is sent from the client to the server to setup and test the validity of a rename
 	 * operation at a given location.
 	 * 
-	 * Since version 3.12.0
+	 * Since 3.12.0
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(PrepareRenameResponseAdapter.class)
@@ -497,6 +499,8 @@ public interface TextDocumentService {
 	 * Bootstraps call hierarchy by returning the item that is denoted by the given document
 	 * and position. This item will be used as entry into the call graph. Providers should
 	 * return null when there is no item at the given location.
+	 * 
+	 * Since 3.16.0
 	 */
 	@Beta
 	@JsonRequest
@@ -508,6 +512,8 @@ public interface TextDocumentService {
 	 * Provide all incoming calls for an item, e.g all callers for a method. In graph terms this describes directed
 	 * and annotated edges inside the call graph, e.g the given item is the starting node and the result is the nodes
 	 * that can be reached.
+	 * 
+	 * Since 3.16.0
 	*/
 	@Beta
 	@JsonRequest(value="callHierarchy/incomingCalls", useSegment = false)
@@ -519,6 +525,8 @@ public interface TextDocumentService {
 	* Provide all outgoing calls for an item, e.g call calls to functions, methods, or constructors from the given item. In
 	* graph terms this describes directed and annotated edges inside the call graph, e.g the given item is the starting
 	* node and the result is the nodes that can be reached.
+	* 
+	* Since 3.16.0
 	*/
 	@Beta
 	@JsonRequest(value="callHierarchy/outgoingCalls", useSegment = false)
@@ -530,6 +538,8 @@ public interface TextDocumentService {
 	 * The {@code textDocument/selectionRange} request is sent from the client to the server to return
 	 * suggested selection ranges at an array of given positions. A selection range is a range around
 	 * the cursor position which the user might be interested in selecting.
+	 * 
+	 * Since 3.15.0
 	 */
 	@JsonRequest
 	default CompletableFuture<List<SelectionRange>> selectionRange(SelectionRangeParams params) {
@@ -539,6 +549,8 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/full} request is sent from the client to the server to return
 	 * the semantic tokens for a whole file.
+	 * 
+	 * Since 3.16.0
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/full", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensFull(SemanticTokensParams params) {
@@ -548,6 +560,8 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/full/delta} request is sent from the client to the server to return
 	 * the semantic tokens delta for a whole file.
+	 * 
+	 * Since 3.16.0
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/full/delta", useSegment = false)
 	@ResponseJsonAdapter(SemanticTokensFullDeltaResponseAdapter.class)
@@ -565,6 +579,8 @@ public interface TextDocumentService {
 	 * this case special. Please note that if a client also announces that it will send the
 	 * textDocument/semanticTokens/range server should implement this request as well to allow for flicker free
 	 * scrolling and semantic coloring of a minimap.
+	 * 
+	 * Since 3.16.0
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/range", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensRange(SemanticTokensRangeParams params) {

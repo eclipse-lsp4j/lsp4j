@@ -22,6 +22,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Represents an incoming call, e.g. a caller of a method or constructor.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
@@ -43,8 +45,8 @@ public class CallHierarchyIncomingCall {
   }
   
   public CallHierarchyIncomingCall(@NonNull final CallHierarchyItem from, @NonNull final List<Range> fromRanges) {
-    this.from = from;
-    this.fromRanges = fromRanges;
+    this.from = Preconditions.<CallHierarchyItem>checkNotNull(from, "from");
+    this.fromRanges = Preconditions.<List<Range>>checkNotNull(fromRanges, "fromRanges");
   }
   
   /**

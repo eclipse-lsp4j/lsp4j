@@ -20,6 +20,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The parameter of a `callHierarchy/outgoingCalls` request.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
@@ -31,7 +33,7 @@ public class CallHierarchyOutgoingCallsParams {
   }
   
   public CallHierarchyOutgoingCallsParams(@NonNull final CallHierarchyItem item) {
-    this.item = item;
+    this.item = Preconditions.<CallHierarchyItem>checkNotNull(item, "item");
   }
   
   @Pure
