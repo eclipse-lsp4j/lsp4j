@@ -6597,6 +6597,13 @@ class CallHierarchyItem {
 	 */
 	@NonNull
 	Range selectionRange
+
+	/**
+	 * A data entry field that is preserved between a call hierarchy prepare and
+	 * incoming calls or outgoing calls requests.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
 }
 
 /**

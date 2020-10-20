@@ -12,10 +12,12 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
+import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.SymbolTag;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -71,6 +73,13 @@ public class CallHierarchyItem {
    */
   @NonNull
   private Range selectionRange;
+  
+  /**
+   * A data entry field that is preserved between a call hierarchy prepare and
+   * incoming calls or outgoing calls requests.
+   */
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
+  private Object data;
   
   /**
    * The name of the item targeted by the call hierarchy request.
@@ -188,6 +197,23 @@ public class CallHierarchyItem {
     this.selectionRange = Preconditions.checkNotNull(selectionRange, "selectionRange");
   }
   
+  /**
+   * A data entry field that is preserved between a call hierarchy prepare and
+   * incoming calls or outgoing calls requests.
+   */
+  @Pure
+  public Object getData() {
+    return this.data;
+  }
+  
+  /**
+   * A data entry field that is preserved between a call hierarchy prepare and
+   * incoming calls or outgoing calls requests.
+   */
+  public void setData(final Object data) {
+    this.data = data;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -199,6 +225,7 @@ public class CallHierarchyItem {
     b.add("uri", this.uri);
     b.add("range", this.range);
     b.add("selectionRange", this.selectionRange);
+    b.add("data", this.data);
     return b.toString();
   }
   
@@ -247,6 +274,11 @@ public class CallHierarchyItem {
         return false;
     } else if (!this.selectionRange.equals(other.selectionRange))
       return false;
+    if (this.data == null) {
+      if (other.data != null)
+        return false;
+    } else if (!this.data.equals(other.data))
+      return false;
     return true;
   }
   
@@ -261,6 +293,7 @@ public class CallHierarchyItem {
     result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
     result = prime * result + ((this.uri== null) ? 0 : this.uri.hashCode());
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
-    return prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
+    result = prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
+    return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }
