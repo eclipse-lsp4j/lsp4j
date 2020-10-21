@@ -92,6 +92,7 @@ public class TracingMessageConsumerTest {
 		String expectedTrace = "" +
 				"[Trace - 06:07:30 PM] Received response 'foo - (1)' in 100ms\n" +
 				"Result: \"bar\"\n" +
+				"Error: null\n" +
 				"\n" +
 				"\n";
 

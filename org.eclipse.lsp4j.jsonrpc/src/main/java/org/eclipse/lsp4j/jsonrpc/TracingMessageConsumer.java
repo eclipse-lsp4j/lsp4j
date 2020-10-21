@@ -153,8 +153,10 @@ public class TracingMessageConsumer implements MessageConsumer {
 			long latencyMillis = now.toEpochMilli() - requestMetadata.start.toEpochMilli();
 			Object result = responseMessage.getResult();
 			String resultJson = MessageJsonHandler.toString(result);
-			String format = "[Trace - %s] Received response '%s - (%s)' in %sms\nResult: %s\n\n\n";
-			return String.format(format, date, method, id, latencyMillis, resultJson);
+			Object error = responseMessage.getError();
+			String errorJson = MessageJsonHandler.toString(error);
+			String format = "[Trace - %s] Received response '%s - (%s)' in %sms\nResult: %s\nError: %s\n\n\n";
+			return String.format(format, date, method, id, latencyMillis, resultJson, errorJson);
 		} else if (message instanceof NotificationMessage) {
 			NotificationMessage notificationMessage = (NotificationMessage) message;
 			String method = notificationMessage.getMethod();
