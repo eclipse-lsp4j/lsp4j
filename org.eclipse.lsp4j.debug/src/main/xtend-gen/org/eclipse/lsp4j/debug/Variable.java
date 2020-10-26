@@ -74,7 +74,7 @@ public class Variable {
   private String evaluateName;
   
   /**
-   * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
+   * If variablesReference is &gt; 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
   private int variablesReference;
@@ -206,7 +206,7 @@ public class Variable {
   }
   
   /**
-   * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
+   * If variablesReference is &gt; 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
   @Pure
@@ -215,7 +215,7 @@ public class Variable {
   }
   
   /**
-   * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
+   * If variablesReference is &gt; 0, the variable is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    */
   public void setVariablesReference(final int variablesReference) {
