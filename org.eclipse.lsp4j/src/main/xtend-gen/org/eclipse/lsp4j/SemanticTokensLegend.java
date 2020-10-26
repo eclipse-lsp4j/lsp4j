@@ -18,6 +18,11 @@ import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The legend used by the server
+ * 
+ * Since 3.16.0
+ */
 @Beta
 @SuppressWarnings("all")
 public class SemanticTokensLegend {

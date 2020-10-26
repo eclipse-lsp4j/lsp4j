@@ -22,6 +22,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
@@ -44,8 +46,8 @@ public class CallHierarchyOutgoingCall {
   }
   
   public CallHierarchyOutgoingCall(@NonNull final CallHierarchyItem to, @NonNull final List<Range> fromRanges) {
-    this.to = to;
-    this.fromRanges = fromRanges;
+    this.to = Preconditions.<CallHierarchyItem>checkNotNull(to, "to");
+    this.fromRanges = Preconditions.<List<Range>>checkNotNull(fromRanges, "fromRanges");
   }
   
   /**

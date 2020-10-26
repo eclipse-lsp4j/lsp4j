@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.ParameterInformationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -33,6 +34,15 @@ public class SignatureInformationCapabilities {
    * Client capabilities specific to parameter information.
    */
   private ParameterInformationCapabilities parameterInformation;
+  
+  /**
+   * The client supports the `activeParameter` property on `SignatureInformation`
+   * literal.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean activeParameterSupport;
   
   public SignatureInformationCapabilities() {
   }
@@ -77,12 +87,34 @@ public class SignatureInformationCapabilities {
     this.parameterInformation = parameterInformation;
   }
   
+  /**
+   * The client supports the `activeParameter` property on `SignatureInformation`
+   * literal.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getActiveParameterSupport() {
+    return this.activeParameterSupport;
+  }
+  
+  /**
+   * The client supports the `activeParameter` property on `SignatureInformation`
+   * literal.
+   * 
+   * Since 3.16.0
+   */
+  public void setActiveParameterSupport(final Boolean activeParameterSupport) {
+    this.activeParameterSupport = activeParameterSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("documentationFormat", this.documentationFormat);
     b.add("parameterInformation", this.parameterInformation);
+    b.add("activeParameterSupport", this.activeParameterSupport);
     return b.toString();
   }
   
@@ -106,6 +138,11 @@ public class SignatureInformationCapabilities {
         return false;
     } else if (!this.parameterInformation.equals(other.parameterInformation))
       return false;
+    if (this.activeParameterSupport == null) {
+      if (other.activeParameterSupport != null)
+        return false;
+    } else if (!this.activeParameterSupport.equals(other.activeParameterSupport))
+      return false;
     return true;
   }
   
@@ -115,6 +152,7 @@ public class SignatureInformationCapabilities {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.documentationFormat== null) ? 0 : this.documentationFormat.hashCode());
-    return prime * result + ((this.parameterInformation== null) ? 0 : this.parameterInformation.hashCode());
+    result = prime * result + ((this.parameterInformation== null) ? 0 : this.parameterInformation.hashCode());
+    return prime * result + ((this.activeParameterSupport== null) ? 0 : this.activeParameterSupport.hashCode());
   }
 }

@@ -14,10 +14,14 @@ package org.eclipse.lsp4j;
 
 /**
  * Symbol tags are extra annotations that tweak the rendering of a symbol.
- * @since 3.15
+ * 
+ * Since 3.16
  */
 public enum SymbolTag {
 
+	/**
+	 * Render a symbol as obsolete, usually using a strike-out.
+	 */
 	Deprecated(1);
 
 	private final int value;

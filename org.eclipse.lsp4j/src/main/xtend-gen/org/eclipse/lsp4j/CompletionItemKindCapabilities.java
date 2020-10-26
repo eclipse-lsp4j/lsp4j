@@ -16,6 +16,10 @@ import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The client supports the following `CompletionItemKind` specific
+ * capabilities.
+ */
 @SuppressWarnings("all")
 public class CompletionItemKindCapabilities {
   /**

@@ -20,6 +20,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * A selection range represents a part of a selection hierarchy. A selection range
  * may have a parent selection range that contains it.
+ * 
+ * Since 3.15.0
  */
 @SuppressWarnings("all")
 public class SelectionRange {

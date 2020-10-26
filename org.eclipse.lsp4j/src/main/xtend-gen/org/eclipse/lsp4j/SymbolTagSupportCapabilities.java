@@ -12,48 +12,58 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import org.eclipse.lsp4j.CallHierarchyItem;
-import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
+import java.util.ArrayList;
+import java.util.List;
+import org.eclipse.lsp4j.SymbolTag;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * The parameter of a `callHierarchy/outgoingCalls` request.
+ * Specific capabilities for the `SymbolTag`.
  * 
  * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
-public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
+public class SymbolTagSupportCapabilities {
+  /**
+   * The tags supported by the client.
+   */
   @NonNull
-  private CallHierarchyItem item;
+  private List<SymbolTag> valueSet;
   
-  public CallHierarchyOutgoingCallsParams() {
+  public SymbolTagSupportCapabilities() {
+    ArrayList<SymbolTag> _arrayList = new ArrayList<SymbolTag>();
+    this.valueSet = _arrayList;
   }
   
-  public CallHierarchyOutgoingCallsParams(@NonNull final CallHierarchyItem item) {
-    this.item = Preconditions.<CallHierarchyItem>checkNotNull(item, "item");
+  public SymbolTagSupportCapabilities(@NonNull final List<SymbolTag> valueSet) {
+    this.valueSet = Preconditions.<List<SymbolTag>>checkNotNull(valueSet, "valueSet");
   }
   
+  /**
+   * The tags supported by the client.
+   */
   @Pure
   @NonNull
-  public CallHierarchyItem getItem() {
-    return this.item;
+  public List<SymbolTag> getValueSet() {
+    return this.valueSet;
   }
   
-  public void setItem(@NonNull final CallHierarchyItem item) {
-    this.item = Preconditions.checkNotNull(item, "item");
+  /**
+   * The tags supported by the client.
+   */
+  public void setValueSet(@NonNull final List<SymbolTag> valueSet) {
+    this.valueSet = Preconditions.checkNotNull(valueSet, "valueSet");
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("item", this.item);
-    b.add("workDoneToken", getWorkDoneToken());
-    b.add("partialResultToken", getPartialResultToken());
+    b.add("valueSet", this.valueSet);
     return b.toString();
   }
   
@@ -66,13 +76,11 @@ public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartial
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
-    CallHierarchyOutgoingCallsParams other = (CallHierarchyOutgoingCallsParams) obj;
-    if (this.item == null) {
-      if (other.item != null)
+    SymbolTagSupportCapabilities other = (SymbolTagSupportCapabilities) obj;
+    if (this.valueSet == null) {
+      if (other.valueSet != null)
         return false;
-    } else if (!this.item.equals(other.item))
+    } else if (!this.valueSet.equals(other.valueSet))
       return false;
     return true;
   }
@@ -80,6 +88,6 @@ public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartial
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.item== null) ? 0 : this.item.hashCode());
+    return 31 * 1 + ((this.valueSet== null) ? 0 : this.valueSet.hashCode());
   }
 }

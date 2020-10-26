@@ -12,48 +12,53 @@
 package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
-import org.eclipse.lsp4j.CallHierarchyItem;
-import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * The parameter of a `callHierarchy/outgoingCalls` request.
+ * Structure to capture a description for an error code.
  * 
  * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
-public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
+public class DiagnosticCodeDescription {
+  /**
+   * A URI to open with more information about the diagnostic error.
+   */
   @NonNull
-  private CallHierarchyItem item;
+  private String href;
   
-  public CallHierarchyOutgoingCallsParams() {
+  public DiagnosticCodeDescription() {
   }
   
-  public CallHierarchyOutgoingCallsParams(@NonNull final CallHierarchyItem item) {
-    this.item = Preconditions.<CallHierarchyItem>checkNotNull(item, "item");
+  public DiagnosticCodeDescription(@NonNull final String href) {
+    this.href = Preconditions.<String>checkNotNull(href, "href");
   }
   
+  /**
+   * A URI to open with more information about the diagnostic error.
+   */
   @Pure
   @NonNull
-  public CallHierarchyItem getItem() {
-    return this.item;
+  public String getHref() {
+    return this.href;
   }
   
-  public void setItem(@NonNull final CallHierarchyItem item) {
-    this.item = Preconditions.checkNotNull(item, "item");
+  /**
+   * A URI to open with more information about the diagnostic error.
+   */
+  public void setHref(@NonNull final String href) {
+    this.href = Preconditions.checkNotNull(href, "href");
   }
   
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("item", this.item);
-    b.add("workDoneToken", getWorkDoneToken());
-    b.add("partialResultToken", getPartialResultToken());
+    b.add("href", this.href);
     return b.toString();
   }
   
@@ -66,13 +71,11 @@ public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartial
       return false;
     if (getClass() != obj.getClass())
       return false;
-    if (!super.equals(obj))
-      return false;
-    CallHierarchyOutgoingCallsParams other = (CallHierarchyOutgoingCallsParams) obj;
-    if (this.item == null) {
-      if (other.item != null)
+    DiagnosticCodeDescription other = (DiagnosticCodeDescription) obj;
+    if (this.href == null) {
+      if (other.href != null)
         return false;
-    } else if (!this.item.equals(other.item))
+    } else if (!this.href.equals(other.href))
       return false;
     return true;
   }
@@ -80,6 +83,6 @@ public class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartial
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.item== null) ? 0 : this.item.hashCode());
+    return 31 * 1 + ((this.href== null) ? 0 : this.href.hashCode());
   }
 }

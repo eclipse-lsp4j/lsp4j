@@ -11,13 +11,16 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.lsp4j.SymbolKindCapabilities;
+import org.eclipse.lsp4j.SymbolTagSupportCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Capabilities specific to the `workspace/symbol` request.
+ * Referred to in the spec as WorkspaceSymbolClientCapabilities.
  */
 @SuppressWarnings("all")
 public class SymbolCapabilities extends DynamicRegistrationCapabilities {
@@ -25,6 +28,15 @@ public class SymbolCapabilities extends DynamicRegistrationCapabilities {
    * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
    */
   private SymbolKindCapabilities symbolKind;
+  
+  /**
+   * The client supports tags on `SymbolInformation`.
+   * Clients supporting tags have to handle unknown tags gracefully.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private SymbolTagSupportCapabilities tagSupport;
   
   public SymbolCapabilities() {
   }
@@ -57,11 +69,33 @@ public class SymbolCapabilities extends DynamicRegistrationCapabilities {
     this.symbolKind = symbolKind;
   }
   
+  /**
+   * The client supports tags on `SymbolInformation`.
+   * Clients supporting tags have to handle unknown tags gracefully.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public SymbolTagSupportCapabilities getTagSupport() {
+    return this.tagSupport;
+  }
+  
+  /**
+   * The client supports tags on `SymbolInformation`.
+   * Clients supporting tags have to handle unknown tags gracefully.
+   * 
+   * Since 3.16.0
+   */
+  public void setTagSupport(final SymbolTagSupportCapabilities tagSupport) {
+    this.tagSupport = tagSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("symbolKind", this.symbolKind);
+    b.add("tagSupport", this.tagSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -83,12 +117,20 @@ public class SymbolCapabilities extends DynamicRegistrationCapabilities {
         return false;
     } else if (!this.symbolKind.equals(other.symbolKind))
       return false;
+    if (this.tagSupport == null) {
+      if (other.tagSupport != null)
+        return false;
+    } else if (!this.tagSupport.equals(other.tagSupport))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.symbolKind== null) ? 0 : this.symbolKind.hashCode());
+    return prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
   }
 }

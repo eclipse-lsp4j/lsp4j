@@ -21,6 +21,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The parameter of a `callHierarchy/incomingCalls` request.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
@@ -32,7 +34,7 @@ public class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartial
   }
   
   public CallHierarchyIncomingCallsParams(@NonNull final CallHierarchyItem item) {
-    this.item = item;
+    this.item = Preconditions.<CallHierarchyItem>checkNotNull(item, "item");
   }
   
   @Pure

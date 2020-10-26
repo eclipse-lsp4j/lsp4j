@@ -11,11 +11,15 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
+import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
+import org.eclipse.lsp4j.DiagnosticCodeDescription;
 import org.eclipse.lsp4j.DiagnosticRelatedInformation;
 import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.DiagnosticTag;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
@@ -45,6 +49,14 @@ public class Diagnostic {
   private Either<String, Number> code;
   
   /**
+   * An optional property to describe the error code.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private DiagnosticCodeDescription codeDescription;
+  
+  /**
    * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
    */
   private String source;
@@ -69,6 +81,16 @@ public class Diagnostic {
    * Since 3.7.0
    */
   private List<DiagnosticRelatedInformation> relatedInformation;
+  
+  /**
+   * A data entry field that is preserved between a `textDocument/publishDiagnostics`
+   * notification and `textDocument/codeAction` request.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  @JsonAdapter(JsonElementTypeAdapter.Factory.class)
+  private Object data;
   
   public Diagnostic() {
   }
@@ -154,6 +176,25 @@ public class Diagnostic {
   }
   
   /**
+   * An optional property to describe the error code.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public DiagnosticCodeDescription getCodeDescription() {
+    return this.codeDescription;
+  }
+  
+  /**
+   * An optional property to describe the error code.
+   * 
+   * Since 3.16.0
+   */
+  public void setCodeDescription(final DiagnosticCodeDescription codeDescription) {
+    this.codeDescription = codeDescription;
+  }
+  
+  /**
    * A human-readable string describing the source of this diagnostic, e.g. 'typescript' or 'super lint'.
    */
   @Pure
@@ -224,6 +265,27 @@ public class Diagnostic {
     this.relatedInformation = relatedInformation;
   }
   
+  /**
+   * A data entry field that is preserved between a `textDocument/publishDiagnostics`
+   * notification and `textDocument/codeAction` request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Object getData() {
+    return this.data;
+  }
+  
+  /**
+   * A data entry field that is preserved between a `textDocument/publishDiagnostics`
+   * notification and `textDocument/codeAction` request.
+   * 
+   * Since 3.16.0
+   */
+  public void setData(final Object data) {
+    this.data = data;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -231,10 +293,12 @@ public class Diagnostic {
     b.add("range", this.range);
     b.add("severity", this.severity);
     b.add("code", this.code);
+    b.add("codeDescription", this.codeDescription);
     b.add("source", this.source);
     b.add("message", this.message);
     b.add("tags", this.tags);
     b.add("relatedInformation", this.relatedInformation);
+    b.add("data", this.data);
     return b.toString();
   }
   
@@ -263,6 +327,11 @@ public class Diagnostic {
         return false;
     } else if (!this.code.equals(other.code))
       return false;
+    if (this.codeDescription == null) {
+      if (other.codeDescription != null)
+        return false;
+    } else if (!this.codeDescription.equals(other.codeDescription))
+      return false;
     if (this.source == null) {
       if (other.source != null)
         return false;
@@ -283,6 +352,11 @@ public class Diagnostic {
         return false;
     } else if (!this.relatedInformation.equals(other.relatedInformation))
       return false;
+    if (this.data == null) {
+      if (other.data != null)
+        return false;
+    } else if (!this.data.equals(other.data))
+      return false;
     return true;
   }
   
@@ -294,9 +368,11 @@ public class Diagnostic {
     result = prime * result + ((this.range== null) ? 0 : this.range.hashCode());
     result = prime * result + ((this.severity== null) ? 0 : this.severity.hashCode());
     result = prime * result + ((this.code== null) ? 0 : this.code.hashCode());
+    result = prime * result + ((this.codeDescription== null) ? 0 : this.codeDescription.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.message== null) ? 0 : this.message.hashCode());
     result = prime * result + ((this.tags== null) ? 0 : this.tags.hashCode());
-    return prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
+    result = prime * result + ((this.relatedInformation== null) ? 0 : this.relatedInformation.hashCode());
+    return prime * result + ((this.data== null) ? 0 : this.data.hashCode());
   }
 }

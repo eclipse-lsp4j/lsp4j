@@ -184,6 +184,8 @@ public class ServerCapabilities {
   
   /**
    * The server provides Call Hierarchy support.
+   * 
+   * Since 3.16.0
    */
   @Beta
   private Either<Boolean, StaticRegistrationOptions> callHierarchyProvider;
@@ -768,6 +770,8 @@ public class ServerCapabilities {
   
   /**
    * The server provides Call Hierarchy support.
+   * 
+   * Since 3.16.0
    */
   @Pure
   public Either<Boolean, StaticRegistrationOptions> getCallHierarchyProvider() {
@@ -776,6 +780,8 @@ public class ServerCapabilities {
   
   /**
    * The server provides Call Hierarchy support.
+   * 
+   * Since 3.16.0
    */
   public void setCallHierarchyProvider(final Either<Boolean, StaticRegistrationOptions> callHierarchyProvider) {
     this.callHierarchyProvider = callHierarchyProvider;

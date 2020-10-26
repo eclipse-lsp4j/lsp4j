@@ -22,6 +22,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * A parameter literal used in selection range requests.
+ * 
+ * Since 3.15.0
  */
 @SuppressWarnings("all")
 public class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {

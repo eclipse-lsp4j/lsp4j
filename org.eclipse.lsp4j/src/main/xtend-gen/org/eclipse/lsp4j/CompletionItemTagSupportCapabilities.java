@@ -19,6 +19,14 @@ import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Client supports the tag property on a completion item. Clients supporting
+ * tags have to handle unknown tags gracefully. Clients especially need to
+ * preserve unknown tags when sending a completion item back to the server in
+ * a resolve call.
+ * 
+ * Since 3.15.0
+ */
 @SuppressWarnings("all")
 public class CompletionItemTagSupportCapabilities {
   /**

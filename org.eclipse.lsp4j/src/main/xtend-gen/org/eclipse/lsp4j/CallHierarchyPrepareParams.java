@@ -18,6 +18,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The parameter of a `textDocument/prepareCallHierarchy` request.
+ * 
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")

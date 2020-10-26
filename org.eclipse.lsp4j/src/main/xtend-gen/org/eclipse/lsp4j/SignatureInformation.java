@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.ParameterInformation;
@@ -41,6 +42,16 @@ public class SignatureInformation {
    * The parameters of this signature.
    */
   private List<ParameterInformation> parameters;
+  
+  /**
+   * The index of the active parameter.
+   * 
+   * If provided, this is used in place of `SignatureHelp.activeParameter`.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Integer activeParameter;
   
   public SignatureInformation() {
   }
@@ -123,6 +134,29 @@ public class SignatureInformation {
     this.parameters = parameters;
   }
   
+  /**
+   * The index of the active parameter.
+   * 
+   * If provided, this is used in place of `SignatureHelp.activeParameter`.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Integer getActiveParameter() {
+    return this.activeParameter;
+  }
+  
+  /**
+   * The index of the active parameter.
+   * 
+   * If provided, this is used in place of `SignatureHelp.activeParameter`.
+   * 
+   * Since 3.16.0
+   */
+  public void setActiveParameter(final Integer activeParameter) {
+    this.activeParameter = activeParameter;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -130,6 +164,7 @@ public class SignatureInformation {
     b.add("label", this.label);
     b.add("documentation", this.documentation);
     b.add("parameters", this.parameters);
+    b.add("activeParameter", this.activeParameter);
     return b.toString();
   }
   
@@ -158,6 +193,11 @@ public class SignatureInformation {
         return false;
     } else if (!this.parameters.equals(other.parameters))
       return false;
+    if (this.activeParameter == null) {
+      if (other.activeParameter != null)
+        return false;
+    } else if (!this.activeParameter.equals(other.activeParameter))
+      return false;
     return true;
   }
   
@@ -168,6 +208,7 @@ public class SignatureInformation {
     int result = 1;
     result = prime * result + ((this.label== null) ? 0 : this.label.hashCode());
     result = prime * result + ((this.documentation== null) ? 0 : this.documentation.hashCode());
-    return prime * result + ((this.parameters== null) ? 0 : this.parameters.hashCode());
+    result = prime * result + ((this.parameters== null) ? 0 : this.parameters.hashCode());
+    return prime * result + ((this.activeParameter== null) ? 0 : this.activeParameter.hashCode());
   }
 }

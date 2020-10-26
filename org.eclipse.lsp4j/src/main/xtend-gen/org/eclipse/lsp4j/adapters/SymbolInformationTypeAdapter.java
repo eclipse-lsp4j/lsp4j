@@ -8,11 +8,13 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.SymbolKind;
+import org.eclipse.lsp4j.SymbolTag;
 import org.eclipse.lsp4j.generator.TypeAdapterImpl;
 
 /**
@@ -69,6 +71,8 @@ public class SymbolInformationTypeAdapter extends TypeAdapter<SymbolInformation>
     out.endObject();
   }
   
+  private static final TypeToken<List<SymbolTag>> TAGS_TYPE_TOKEN = new TypeToken<List<SymbolTag>>() {};
+  
   private final Gson gson;
   
   public SymbolInformationTypeAdapter(final Gson gson) {
@@ -91,6 +95,9 @@ public class SymbolInformationTypeAdapter extends TypeAdapter<SymbolInformation>
     		break;
     	case "kind":
     		result.setKind(readKind(in));
+    		break;
+    	case "tags":
+    		result.setTags(readTags(in));
     		break;
     	case "deprecated":
     		result.setDeprecated(readDeprecated(in));
@@ -117,6 +124,10 @@ public class SymbolInformationTypeAdapter extends TypeAdapter<SymbolInformation>
     return gson.fromJson(in, SymbolKind.class);
   }
   
+  protected List<SymbolTag> readTags(final JsonReader in) throws IOException {
+    return gson.fromJson(in, TAGS_TYPE_TOKEN.getType());
+  }
+  
   protected Boolean readDeprecated(final JsonReader in) throws IOException {
     return gson.fromJson(in, Boolean.class);
   }
@@ -140,6 +151,8 @@ public class SymbolInformationTypeAdapter extends TypeAdapter<SymbolInformation>
     writeName(out, value.getName());
     out.name("kind");
     writeKind(out, value.getKind());
+    out.name("tags");
+    writeTags(out, value.getTags());
     out.name("deprecated");
     writeDeprecated(out, value.getDeprecated());
     out.name("location");
@@ -155,6 +168,10 @@ public class SymbolInformationTypeAdapter extends TypeAdapter<SymbolInformation>
   
   protected void writeKind(final JsonWriter out, final SymbolKind value) throws IOException {
     gson.toJson(value, SymbolKind.class, out);
+  }
+  
+  protected void writeTags(final JsonWriter out, final List<SymbolTag> value) throws IOException {
+    gson.toJson(value, TAGS_TYPE_TOKEN.getType(), out);
   }
   
   protected void writeDeprecated(final JsonWriter out, final Boolean value) throws IOException {
