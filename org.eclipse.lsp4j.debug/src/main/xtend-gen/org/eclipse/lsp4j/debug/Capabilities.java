@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -108,18 +108,19 @@ public class Capabilities {
   private Boolean supportsCompletionsRequest;
   
   /**
+   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.'
+   * character.
+   * <p>
+   * This is an optional property.
+   */
+  private String[] completionTriggerCharacters;
+  
+  /**
    * The debug adapter supports the 'modules' request.
    * <p>
    * This is an optional property.
    */
   private Boolean supportsModulesRequest;
-  
-  /**
-   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
-   * <p>
-   * This is an optional property.
-   */
-  private String[] completionTriggerCharacters;
   
   /**
    * The set of additional module information exposed by the debug adapter.
@@ -240,11 +241,6 @@ public class Capabilities {
    * The debug adapter supports the 'cancel' request.
    * <p>
    * This is an optional property.
-   * 
-   * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
-   * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
-   * the flag is present and as such it should be false or left unset when implementation
-   * a debug adapter.
    */
   private Boolean supportsCancelRequest;
   
@@ -254,6 +250,27 @@ public class Capabilities {
    * This is an optional property.
    */
   private Boolean supportsBreakpointLocationsRequest;
+  
+  /**
+   * The debug adapter supports the 'clipboard' context value in the 'evaluate' request.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsClipboardContext;
+  
+  /**
+   * The debug adapter supports stepping granularities (argument 'granularity') for the stepping requests.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsSteppingGranularity;
+  
+  /**
+   * The debug adapter supports adding breakpoints based on instruction references.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsInstructionBreakpoints;
   
   /**
    * The debug adapter supports the 'configurationDone' request.
@@ -484,6 +501,27 @@ public class Capabilities {
   }
   
   /**
+   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.'
+   * character.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String[] getCompletionTriggerCharacters() {
+    return this.completionTriggerCharacters;
+  }
+  
+  /**
+   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.'
+   * character.
+   * <p>
+   * This is an optional property.
+   */
+  public void setCompletionTriggerCharacters(final String[] completionTriggerCharacters) {
+    this.completionTriggerCharacters = completionTriggerCharacters;
+  }
+  
+  /**
    * The debug adapter supports the 'modules' request.
    * <p>
    * This is an optional property.
@@ -500,25 +538,6 @@ public class Capabilities {
    */
   public void setSupportsModulesRequest(final Boolean supportsModulesRequest) {
     this.supportsModulesRequest = supportsModulesRequest;
-  }
-  
-  /**
-   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
-   * <p>
-   * This is an optional property.
-   */
-  @Pure
-  public String[] getCompletionTriggerCharacters() {
-    return this.completionTriggerCharacters;
-  }
-  
-  /**
-   * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.' character.
-   * <p>
-   * This is an optional property.
-   */
-  public void setCompletionTriggerCharacters(final String[] completionTriggerCharacters) {
-    this.completionTriggerCharacters = completionTriggerCharacters;
   }
   
   /**
@@ -835,11 +854,6 @@ public class Capabilities {
    * The debug adapter supports the 'cancel' request.
    * <p>
    * This is an optional property.
-   * 
-   * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
-   * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
-   * the flag is present and as such it should be false or left unset when implementation
-   * a debug adapter.
    */
   @Pure
   public Boolean getSupportsCancelRequest() {
@@ -850,11 +864,6 @@ public class Capabilities {
    * The debug adapter supports the 'cancel' request.
    * <p>
    * This is an optional property.
-   * 
-   * XXX: LSP4J note: The implementation of Cancel Request is not done. Some thought on how
-   * to tie Debug Protocol's implementation in with LSP4J's existing support needed. Only
-   * the flag is present and as such it should be false or left unset when implementation
-   * a debug adapter.
    */
   public void setSupportsCancelRequest(final Boolean supportsCancelRequest) {
     this.supportsCancelRequest = supportsCancelRequest;
@@ -879,6 +888,63 @@ public class Capabilities {
     this.supportsBreakpointLocationsRequest = supportsBreakpointLocationsRequest;
   }
   
+  /**
+   * The debug adapter supports the 'clipboard' context value in the 'evaluate' request.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsClipboardContext() {
+    return this.supportsClipboardContext;
+  }
+  
+  /**
+   * The debug adapter supports the 'clipboard' context value in the 'evaluate' request.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsClipboardContext(final Boolean supportsClipboardContext) {
+    this.supportsClipboardContext = supportsClipboardContext;
+  }
+  
+  /**
+   * The debug adapter supports stepping granularities (argument 'granularity') for the stepping requests.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsSteppingGranularity() {
+    return this.supportsSteppingGranularity;
+  }
+  
+  /**
+   * The debug adapter supports stepping granularities (argument 'granularity') for the stepping requests.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsSteppingGranularity(final Boolean supportsSteppingGranularity) {
+    this.supportsSteppingGranularity = supportsSteppingGranularity;
+  }
+  
+  /**
+   * The debug adapter supports adding breakpoints based on instruction references.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsInstructionBreakpoints() {
+    return this.supportsInstructionBreakpoints;
+  }
+  
+  /**
+   * The debug adapter supports adding breakpoints based on instruction references.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsInstructionBreakpoints(final Boolean supportsInstructionBreakpoints) {
+    this.supportsInstructionBreakpoints = supportsInstructionBreakpoints;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -895,8 +961,8 @@ public class Capabilities {
     b.add("supportsGotoTargetsRequest", this.supportsGotoTargetsRequest);
     b.add("supportsStepInTargetsRequest", this.supportsStepInTargetsRequest);
     b.add("supportsCompletionsRequest", this.supportsCompletionsRequest);
-    b.add("supportsModulesRequest", this.supportsModulesRequest);
     b.add("completionTriggerCharacters", this.completionTriggerCharacters);
+    b.add("supportsModulesRequest", this.supportsModulesRequest);
     b.add("additionalModuleColumns", this.additionalModuleColumns);
     b.add("supportedChecksumAlgorithms", this.supportedChecksumAlgorithms);
     b.add("supportsRestartRequest", this.supportsRestartRequest);
@@ -915,6 +981,9 @@ public class Capabilities {
     b.add("supportsDisassembleRequest", this.supportsDisassembleRequest);
     b.add("supportsCancelRequest", this.supportsCancelRequest);
     b.add("supportsBreakpointLocationsRequest", this.supportsBreakpointLocationsRequest);
+    b.add("supportsClipboardContext", this.supportsClipboardContext);
+    b.add("supportsSteppingGranularity", this.supportsSteppingGranularity);
+    b.add("supportsInstructionBreakpoints", this.supportsInstructionBreakpoints);
     return b.toString();
   }
   
@@ -988,15 +1057,15 @@ public class Capabilities {
         return false;
     } else if (!this.supportsCompletionsRequest.equals(other.supportsCompletionsRequest))
       return false;
-    if (this.supportsModulesRequest == null) {
-      if (other.supportsModulesRequest != null)
-        return false;
-    } else if (!this.supportsModulesRequest.equals(other.supportsModulesRequest))
-      return false;
     if (this.completionTriggerCharacters == null) {
       if (other.completionTriggerCharacters != null)
         return false;
     } else if (!Arrays.deepEquals(this.completionTriggerCharacters, other.completionTriggerCharacters))
+      return false;
+    if (this.supportsModulesRequest == null) {
+      if (other.supportsModulesRequest != null)
+        return false;
+    } else if (!this.supportsModulesRequest.equals(other.supportsModulesRequest))
       return false;
     if (this.additionalModuleColumns == null) {
       if (other.additionalModuleColumns != null)
@@ -1088,6 +1157,21 @@ public class Capabilities {
         return false;
     } else if (!this.supportsBreakpointLocationsRequest.equals(other.supportsBreakpointLocationsRequest))
       return false;
+    if (this.supportsClipboardContext == null) {
+      if (other.supportsClipboardContext != null)
+        return false;
+    } else if (!this.supportsClipboardContext.equals(other.supportsClipboardContext))
+      return false;
+    if (this.supportsSteppingGranularity == null) {
+      if (other.supportsSteppingGranularity != null)
+        return false;
+    } else if (!this.supportsSteppingGranularity.equals(other.supportsSteppingGranularity))
+      return false;
+    if (this.supportsInstructionBreakpoints == null) {
+      if (other.supportsInstructionBreakpoints != null)
+        return false;
+    } else if (!this.supportsInstructionBreakpoints.equals(other.supportsInstructionBreakpoints))
+      return false;
     return true;
   }
   
@@ -1108,8 +1192,8 @@ public class Capabilities {
     result = prime * result + ((this.supportsGotoTargetsRequest== null) ? 0 : this.supportsGotoTargetsRequest.hashCode());
     result = prime * result + ((this.supportsStepInTargetsRequest== null) ? 0 : this.supportsStepInTargetsRequest.hashCode());
     result = prime * result + ((this.supportsCompletionsRequest== null) ? 0 : this.supportsCompletionsRequest.hashCode());
-    result = prime * result + ((this.supportsModulesRequest== null) ? 0 : this.supportsModulesRequest.hashCode());
     result = prime * result + ((this.completionTriggerCharacters== null) ? 0 : Arrays.deepHashCode(this.completionTriggerCharacters));
+    result = prime * result + ((this.supportsModulesRequest== null) ? 0 : this.supportsModulesRequest.hashCode());
     result = prime * result + ((this.additionalModuleColumns== null) ? 0 : Arrays.deepHashCode(this.additionalModuleColumns));
     result = prime * result + ((this.supportedChecksumAlgorithms== null) ? 0 : Arrays.deepHashCode(this.supportedChecksumAlgorithms));
     result = prime * result + ((this.supportsRestartRequest== null) ? 0 : this.supportsRestartRequest.hashCode());
@@ -1127,6 +1211,9 @@ public class Capabilities {
     result = prime * result + ((this.supportsReadMemoryRequest== null) ? 0 : this.supportsReadMemoryRequest.hashCode());
     result = prime * result + ((this.supportsDisassembleRequest== null) ? 0 : this.supportsDisassembleRequest.hashCode());
     result = prime * result + ((this.supportsCancelRequest== null) ? 0 : this.supportsCancelRequest.hashCode());
-    return prime * result + ((this.supportsBreakpointLocationsRequest== null) ? 0 : this.supportsBreakpointLocationsRequest.hashCode());
+    result = prime * result + ((this.supportsBreakpointLocationsRequest== null) ? 0 : this.supportsBreakpointLocationsRequest.hashCode());
+    result = prime * result + ((this.supportsClipboardContext== null) ? 0 : this.supportsClipboardContext.hashCode());
+    result = prime * result + ((this.supportsSteppingGranularity== null) ? 0 : this.supportsSteppingGranularity.hashCode());
+    return prime * result + ((this.supportsInstructionBreakpoints== null) ? 0 : this.supportsInstructionBreakpoints.hashCode());
   }
 }

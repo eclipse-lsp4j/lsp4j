@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -36,7 +36,9 @@ public class SetVariableResponse {
   
   /**
    * If variablesReference is > 0, the new value is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
+   * <p>
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -46,6 +48,7 @@ public class SetVariableResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -56,6 +59,7 @@ public class SetVariableResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -99,7 +103,9 @@ public class SetVariableResponse {
   
   /**
    * If variablesReference is > 0, the new value is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
+   * <p>
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -110,7 +116,9 @@ public class SetVariableResponse {
   
   /**
    * If variablesReference is > 0, the new value is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
+   * <p>
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -122,6 +130,7 @@ public class SetVariableResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -135,6 +144,7 @@ public class SetVariableResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -147,6 +157,7 @@ public class SetVariableResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -160,6 +171,7 @@ public class SetVariableResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.

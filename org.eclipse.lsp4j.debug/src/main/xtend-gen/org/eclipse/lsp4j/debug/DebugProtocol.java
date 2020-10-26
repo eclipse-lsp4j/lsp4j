@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -20,5 +20,5 @@ public class DebugProtocol {
   /**
    * Version of Debug Protocol
    */
-  public static final String SCHEMA_VERSION = "1.37.0";
+  public static final String SCHEMA_VERSION = "1.42.0";
 }

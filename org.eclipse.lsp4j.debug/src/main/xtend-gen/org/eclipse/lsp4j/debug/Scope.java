@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import org.eclipse.lsp4j.debug.ScopePresentationHint;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -24,23 +23,25 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class Scope {
   /**
-   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
-   * UI as is and can be translated.
+   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the UI as is and can
+   * be translated.
    */
   @NonNull
   private String name;
   
   /**
-   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
-   * generic UI.
+   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with
+   * a generic UI.
    * <p>
    * This is an optional property.
+   * <p>
+   * Possible values include - but not limited to those defined in {@link ScopePresentationHint}
    */
-  private ScopePresentationHint presentationHint;
+  private String presentationHint;
   
   /**
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
-   * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * VariablesRequest.
    */
   private int variablesReference;
   
@@ -48,7 +49,6 @@ public class Scope {
    * The number of named variables in this scope.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -58,7 +58,6 @@ public class Scope {
    * The number of indexed variables in this scope.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -105,8 +104,8 @@ public class Scope {
   private Integer endColumn;
   
   /**
-   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
-   * UI as is and can be translated.
+   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the UI as is and can
+   * be translated.
    */
   @Pure
   @NonNull
@@ -115,37 +114,41 @@ public class Scope {
   }
   
   /**
-   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the
-   * UI as is and can be translated.
+   * Name of the scope such as 'Arguments', 'Locals', or 'Registers'. This string is shown in the UI as is and can
+   * be translated.
    */
   public void setName(@NonNull final String name) {
     this.name = Preconditions.checkNotNull(name, "name");
   }
   
   /**
-   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
-   * generic UI.
+   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with
+   * a generic UI.
    * <p>
    * This is an optional property.
+   * <p>
+   * Possible values include - but not limited to those defined in {@link ScopePresentationHint}
    */
   @Pure
-  public ScopePresentationHint getPresentationHint() {
+  public String getPresentationHint() {
     return this.presentationHint;
   }
   
   /**
-   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with a
-   * generic UI.
+   * An optional hint for how to present this scope in the UI. If this attribute is missing, the scope is shown with
+   * a generic UI.
    * <p>
    * This is an optional property.
+   * <p>
+   * Possible values include - but not limited to those defined in {@link ScopePresentationHint}
    */
-  public void setPresentationHint(final ScopePresentationHint presentationHint) {
+  public void setPresentationHint(final String presentationHint) {
     this.presentationHint = presentationHint;
   }
   
   /**
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
-   * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * VariablesRequest.
    */
   @Pure
   public int getVariablesReference() {
@@ -154,7 +157,7 @@ public class Scope {
   
   /**
    * The variables of this scope can be retrieved by passing the value of variablesReference to the
-   * VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * VariablesRequest.
    */
   public void setVariablesReference(final int variablesReference) {
     this.variablesReference = variablesReference;
@@ -164,7 +167,6 @@ public class Scope {
    * The number of named variables in this scope.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -177,7 +179,6 @@ public class Scope {
    * The number of named variables in this scope.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -189,7 +190,6 @@ public class Scope {
    * The number of indexed variables in this scope.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -202,7 +202,6 @@ public class Scope {
    * The number of indexed variables in this scope.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */

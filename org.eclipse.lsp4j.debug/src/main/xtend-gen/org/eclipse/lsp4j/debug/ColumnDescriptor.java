@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -19,6 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * A ColumnDescriptor specifies what module attribute to show in a column of the ModulesView, how to format it,
+ * <p>
  * and what the column's label should be.
  * <p>
  * It is only used if the underlying UI actually supports this level of customization.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -19,8 +19,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * An ExceptionPathSegment represents a segment in a path that is used to match leafs or nodes in a tree of
- * exceptions. If a segment consists of more than one name, it matches the names provided if 'negate' is false or
- * missing or it matches anything except the names provided if 'negate' is true.
+ * exceptions.
+ * <p>
+ * If a segment consists of more than one name, it matches the names provided if 'negate' is false or missing or
+ * <p>
+ * it matches anything except the names provided if 'negate' is true.
  */
 @SuppressWarnings("all")
 public class ExceptionPathSegment {

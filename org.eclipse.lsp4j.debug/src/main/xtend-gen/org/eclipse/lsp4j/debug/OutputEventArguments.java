@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.OutputEventArgumentsGroup;
 import org.eclipse.lsp4j.debug.Source;
 import org.eclipse.lsp4j.debug.util.Preconditions;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -38,9 +39,16 @@ public class OutputEventArguments {
   private String output;
   
   /**
+   * Support for keeping an output log organized by grouping related messages.
+   * <p>
+   * This is an optional property.
+   */
+  private OutputEventArgumentsGroup group;
+  
+  /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
-   * equal to 2147483647 (2^31 - 1).
+   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
+   * 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -115,9 +123,28 @@ public class OutputEventArguments {
   }
   
   /**
+   * Support for keeping an output log organized by grouping related messages.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public OutputEventArgumentsGroup getGroup() {
+    return this.group;
+  }
+  
+  /**
+   * Support for keeping an output log organized by grouping related messages.
+   * <p>
+   * This is an optional property.
+   */
+  public void setGroup(final OutputEventArgumentsGroup group) {
+    this.group = group;
+  }
+  
+  /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
-   * equal to 2147483647 (2^31 - 1).
+   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
+   * 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -128,8 +155,8 @@ public class OutputEventArguments {
   
   /**
    * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
-   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or
-   * equal to 2147483647 (2^31 - 1).
+   * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
+   * 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -221,6 +248,7 @@ public class OutputEventArguments {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("category", this.category);
     b.add("output", this.output);
+    b.add("group", this.group);
     b.add("variablesReference", this.variablesReference);
     b.add("source", this.source);
     b.add("line", this.line);
@@ -248,6 +276,11 @@ public class OutputEventArguments {
       if (other.output != null)
         return false;
     } else if (!this.output.equals(other.output))
+      return false;
+    if (this.group == null) {
+      if (other.group != null)
+        return false;
+    } else if (!this.group.equals(other.group))
       return false;
     if (this.variablesReference == null) {
       if (other.variablesReference != null)
@@ -284,6 +317,7 @@ public class OutputEventArguments {
     int result = 1;
     result = prime * result + ((this.category== null) ? 0 : this.category.hashCode());
     result = prime * result + ((this.output== null) ? 0 : this.output.hashCode());
+    result = prime * result + ((this.group== null) ? 0 : this.group.hashCode());
     result = prime * result + ((this.variablesReference== null) ? 0 : this.variablesReference.hashCode());
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());

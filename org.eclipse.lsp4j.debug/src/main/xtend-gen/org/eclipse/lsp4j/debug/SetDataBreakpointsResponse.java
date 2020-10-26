@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -26,13 +26,15 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class SetDataBreakpointsResponse {
   /**
-   * Information about the data breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
+   * Information about the data breakpoints. The array elements correspond to the elements of the input argument
+   * 'breakpoints' array.
    */
   @NonNull
   private Breakpoint[] breakpoints;
   
   /**
-   * Information about the data breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
+   * Information about the data breakpoints. The array elements correspond to the elements of the input argument
+   * 'breakpoints' array.
    */
   @Pure
   @NonNull
@@ -41,7 +43,8 @@ public class SetDataBreakpointsResponse {
   }
   
   /**
-   * Information about the data breakpoints. The array elements correspond to the elements of the 'breakpoints' array.
+   * Information about the data breakpoints. The array elements correspond to the elements of the input argument
+   * 'breakpoints' array.
    */
   public void setBreakpoints(@NonNull final Breakpoint[] breakpoints) {
     this.breakpoints = Preconditions.checkNotNull(breakpoints, "breakpoints");

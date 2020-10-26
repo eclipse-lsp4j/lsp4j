@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -32,15 +32,19 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class SetBreakpointsResponse {
   /**
-   * Information about the breakpoints. The array elements are in the same order as the elements of the
-   * 'breakpoints' (or the deprecated 'lines') array in the arguments.
+   * Information about the breakpoints.
+   * <p>
+   * The array elements are in the same order as the elements of the 'breakpoints' (or the deprecated 'lines') array
+   * in the arguments.
    */
   @NonNull
   private Breakpoint[] breakpoints;
   
   /**
-   * Information about the breakpoints. The array elements are in the same order as the elements of the
-   * 'breakpoints' (or the deprecated 'lines') array in the arguments.
+   * Information about the breakpoints.
+   * <p>
+   * The array elements are in the same order as the elements of the 'breakpoints' (or the deprecated 'lines') array
+   * in the arguments.
    */
   @Pure
   @NonNull
@@ -49,8 +53,10 @@ public class SetBreakpointsResponse {
   }
   
   /**
-   * Information about the breakpoints. The array elements are in the same order as the elements of the
-   * 'breakpoints' (or the deprecated 'lines') array in the arguments.
+   * Information about the breakpoints.
+   * <p>
+   * The array elements are in the same order as the elements of the 'breakpoints' (or the deprecated 'lines') array
+   * in the arguments.
    */
   public void setBreakpoints(@NonNull final Breakpoint[] breakpoints) {
     this.breakpoints = Preconditions.checkNotNull(breakpoints, "breakpoints");

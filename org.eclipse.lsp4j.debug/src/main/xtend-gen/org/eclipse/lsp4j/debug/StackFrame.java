@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -25,8 +25,10 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class StackFrame {
   /**
-   * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
-   * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
+   * An identifier for the stack frame. It must be unique across all threads.
+   * <p>
+   * This id can be used to retrieve the scopes of the frame with the 'scopesRequest' or to restart the execution of
+   * a stackframe.
    */
   private int id;
   
@@ -82,17 +84,20 @@ public class StackFrame {
   private Either<Integer, String> moduleId;
   
   /**
-   * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
-   * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
-   * change the appearance of a frame in a 'subtle' way.
+   * An optional hint for how to present this frame in the UI.
+   * <p>
+   * A value of 'label' can be used to indicate that the frame is an artificial frame that is used as a visual label
+   * or separator. A value of 'subtle' can be used to change the appearance of a frame in a 'subtle' way.
    * <p>
    * This is an optional property.
    */
   private StackFramePresentationHint presentationHint;
   
   /**
-   * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
-   * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
+   * An identifier for the stack frame. It must be unique across all threads.
+   * <p>
+   * This id can be used to retrieve the scopes of the frame with the 'scopesRequest' or to restart the execution of
+   * a stackframe.
    */
   @Pure
   public int getId() {
@@ -100,8 +105,10 @@ public class StackFrame {
   }
   
   /**
-   * An identifier for the stack frame. It must be unique across all threads. This id can be used to retrieve the
-   * scopes of the frame with the 'scopesRequest' or to restart the execution of a stackframe.
+   * An identifier for the stack frame. It must be unique across all threads.
+   * <p>
+   * This id can be used to retrieve the scopes of the frame with the 'scopesRequest' or to restart the execution of
+   * a stackframe.
    */
   public void setId(final int id) {
     this.id = id;
@@ -265,9 +272,10 @@ public class StackFrame {
   }
   
   /**
-   * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
-   * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
-   * change the appearance of a frame in a 'subtle' way.
+   * An optional hint for how to present this frame in the UI.
+   * <p>
+   * A value of 'label' can be used to indicate that the frame is an artificial frame that is used as a visual label
+   * or separator. A value of 'subtle' can be used to change the appearance of a frame in a 'subtle' way.
    * <p>
    * This is an optional property.
    */
@@ -277,9 +285,10 @@ public class StackFrame {
   }
   
   /**
-   * An optional hint for how to present this frame in the UI. A value of 'label' can be used to indicate that the
-   * frame is an artificial frame that is used as a visual label or separator. A value of 'subtle' can be used to
-   * change the appearance of a frame in a 'subtle' way.
+   * An optional hint for how to present this frame in the UI.
+   * <p>
+   * A value of 'label' can be used to indicate that the frame is an artificial frame that is used as a visual label
+   * or separator. A value of 'subtle' can be used to change the appearance of a frame in a 'subtle' way.
    * <p>
    * This is an optional property.
    */

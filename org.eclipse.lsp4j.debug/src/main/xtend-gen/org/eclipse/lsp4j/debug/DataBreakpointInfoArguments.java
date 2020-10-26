@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23,22 +23,21 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class DataBreakpointInfoArguments {
   /**
    * Reference to the Variable container if the data breakpoint is requested for a child of the container.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   private Integer variablesReference;
   
   /**
-   * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
-   * this can be an expression.
+   * The name of the Variable's child to obtain data breakpoint information for.
+   * <p>
+   * If variableReference isn’t provided, this can be an expression.
    */
   @NonNull
   private String name;
   
   /**
    * Reference to the Variable container if the data breakpoint is requested for a child of the container.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -49,7 +48,6 @@ public class DataBreakpointInfoArguments {
   
   /**
    * Reference to the Variable container if the data breakpoint is requested for a child of the container.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -58,8 +56,9 @@ public class DataBreakpointInfoArguments {
   }
   
   /**
-   * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
-   * this can be an expression.
+   * The name of the Variable's child to obtain data breakpoint information for.
+   * <p>
+   * If variableReference isn’t provided, this can be an expression.
    */
   @Pure
   @NonNull
@@ -68,8 +67,9 @@ public class DataBreakpointInfoArguments {
   }
   
   /**
-   * The name of the Variable's child to obtain data breakpoint information for. If variableReference isn't provided,
-   * this can be an expression.
+   * The name of the Variable's child to obtain data breakpoint information for.
+   * <p>
+   * If variableReference isn’t provided, this can be an expression.
    */
   public void setName(@NonNull final String name) {
     this.name = Preconditions.checkNotNull(name, "name");

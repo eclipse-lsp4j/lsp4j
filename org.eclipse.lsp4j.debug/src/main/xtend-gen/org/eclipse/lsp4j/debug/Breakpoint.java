@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -16,12 +16,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Information about a Breakpoint created in setBreakpoints or setFunctionBreakpoints.
+ * Information about a Breakpoint created in setBreakpoints, setFunctionBreakpoints, setInstructionBreakpoints, or
+ * setDataBreakpoints.
  */
 @SuppressWarnings("all")
 public class Breakpoint {
   /**
-   * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+   * An optional identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
    * breakpoints.
    * <p>
    * This is an optional property.
@@ -34,8 +35,9 @@ public class Breakpoint {
   private boolean verified;
   
   /**
-   * An optional message about the state of the breakpoint. This is shown to the user and can be used to explain why
-   * a breakpoint could not be verified.
+   * An optional message about the state of the breakpoint.
+   * <p>
+   * This is shown to the user and can be used to explain why a breakpoint could not be verified.
    * <p>
    * This is an optional property.
    */
@@ -70,15 +72,32 @@ public class Breakpoint {
   private Integer endLine;
   
   /**
-   * An optional end column of the actual range covered by the breakpoint. If no end line is given, then the end
-   * column is assumed to be in the start line.
+   * An optional end column of the actual range covered by the breakpoint.
+   * <p>
+   * If no end line is given, then the end column is assumed to be in the start line.
    * <p>
    * This is an optional property.
    */
   private Integer endColumn;
   
   /**
-   * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+   * An optional memory reference to where the breakpoint is set.
+   * <p>
+   * This is an optional property.
+   */
+  private String instructionReference;
+  
+  /**
+   * An optional offset from the instruction reference.
+   * <p>
+   * This can be negative.
+   * <p>
+   * This is an optional property.
+   */
+  private Integer offset;
+  
+  /**
+   * An optional identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
    * breakpoints.
    * <p>
    * This is an optional property.
@@ -89,7 +108,7 @@ public class Breakpoint {
   }
   
   /**
-   * An optional unique identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
+   * An optional identifier for the breakpoint. It is needed if breakpoint events are used to update or remove
    * breakpoints.
    * <p>
    * This is an optional property.
@@ -114,8 +133,9 @@ public class Breakpoint {
   }
   
   /**
-   * An optional message about the state of the breakpoint. This is shown to the user and can be used to explain why
-   * a breakpoint could not be verified.
+   * An optional message about the state of the breakpoint.
+   * <p>
+   * This is shown to the user and can be used to explain why a breakpoint could not be verified.
    * <p>
    * This is an optional property.
    */
@@ -125,8 +145,9 @@ public class Breakpoint {
   }
   
   /**
-   * An optional message about the state of the breakpoint. This is shown to the user and can be used to explain why
-   * a breakpoint could not be verified.
+   * An optional message about the state of the breakpoint.
+   * <p>
+   * This is shown to the user and can be used to explain why a breakpoint could not be verified.
    * <p>
    * This is an optional property.
    */
@@ -211,8 +232,9 @@ public class Breakpoint {
   }
   
   /**
-   * An optional end column of the actual range covered by the breakpoint. If no end line is given, then the end
-   * column is assumed to be in the start line.
+   * An optional end column of the actual range covered by the breakpoint.
+   * <p>
+   * If no end line is given, then the end column is assumed to be in the start line.
    * <p>
    * This is an optional property.
    */
@@ -222,13 +244,56 @@ public class Breakpoint {
   }
   
   /**
-   * An optional end column of the actual range covered by the breakpoint. If no end line is given, then the end
-   * column is assumed to be in the start line.
+   * An optional end column of the actual range covered by the breakpoint.
+   * <p>
+   * If no end line is given, then the end column is assumed to be in the start line.
    * <p>
    * This is an optional property.
    */
   public void setEndColumn(final Integer endColumn) {
     this.endColumn = endColumn;
+  }
+  
+  /**
+   * An optional memory reference to where the breakpoint is set.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public String getInstructionReference() {
+    return this.instructionReference;
+  }
+  
+  /**
+   * An optional memory reference to where the breakpoint is set.
+   * <p>
+   * This is an optional property.
+   */
+  public void setInstructionReference(final String instructionReference) {
+    this.instructionReference = instructionReference;
+  }
+  
+  /**
+   * An optional offset from the instruction reference.
+   * <p>
+   * This can be negative.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Integer getOffset() {
+    return this.offset;
+  }
+  
+  /**
+   * An optional offset from the instruction reference.
+   * <p>
+   * This can be negative.
+   * <p>
+   * This is an optional property.
+   */
+  public void setOffset(final Integer offset) {
+    this.offset = offset;
   }
   
   @Override
@@ -243,6 +308,8 @@ public class Breakpoint {
     b.add("column", this.column);
     b.add("endLine", this.endLine);
     b.add("endColumn", this.endColumn);
+    b.add("instructionReference", this.instructionReference);
+    b.add("offset", this.offset);
     return b.toString();
   }
   
@@ -293,6 +360,16 @@ public class Breakpoint {
         return false;
     } else if (!this.endColumn.equals(other.endColumn))
       return false;
+    if (this.instructionReference == null) {
+      if (other.instructionReference != null)
+        return false;
+    } else if (!this.instructionReference.equals(other.instructionReference))
+      return false;
+    if (this.offset == null) {
+      if (other.offset != null)
+        return false;
+    } else if (!this.offset.equals(other.offset))
+      return false;
     return true;
   }
   
@@ -308,6 +385,8 @@ public class Breakpoint {
     result = prime * result + ((this.line== null) ? 0 : this.line.hashCode());
     result = prime * result + ((this.column== null) ? 0 : this.column.hashCode());
     result = prime * result + ((this.endLine== null) ? 0 : this.endLine.hashCode());
-    return prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
+    result = prime * result + ((this.endColumn== null) ? 0 : this.endColumn.hashCode());
+    result = prime * result + ((this.instructionReference== null) ? 0 : this.instructionReference.hashCode());
+    return prime * result + ((this.offset== null) ? 0 : this.offset.hashCode());
   }
 }

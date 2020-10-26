@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11,8 +11,6 @@
  */
 package org.eclipse.lsp4j.debug;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * This enumeration defines all possible access types for data breakpoints.
  */
@@ -22,6 +20,5 @@ public enum DataBreakpointAccessType {
   
   WRITE,
   
-  @SerializedName("readWrite")
   READ_WRITE;
 }

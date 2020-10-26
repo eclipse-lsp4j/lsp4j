@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -20,14 +20,18 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class ContinueArguments {
   /**
-   * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-   * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
+   * Continue execution for the specified thread (if possible).
+   * <p>
+   * If the backend cannot continue on a single thread but will continue on all threads, it should set the
+   * 'allThreadsContinued' attribute in the response to true.
    */
   private int threadId;
   
   /**
-   * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-   * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
+   * Continue execution for the specified thread (if possible).
+   * <p>
+   * If the backend cannot continue on a single thread but will continue on all threads, it should set the
+   * 'allThreadsContinued' attribute in the response to true.
    */
   @Pure
   public int getThreadId() {
@@ -35,8 +39,10 @@ public class ContinueArguments {
   }
   
   /**
-   * Continue execution for the specified thread (if possible). If the backend cannot continue on a single thread
-   * but will continue on all threads, it should set the 'allThreadsContinued' attribute in the response to true.
+   * Continue execution for the specified thread (if possible).
+   * <p>
+   * If the backend cannot continue on a single thread but will continue on all threads, it should set the
+   * 'allThreadsContinued' attribute in the response to true.
    */
   public void setThreadId(final int threadId) {
     this.threadId = threadId;

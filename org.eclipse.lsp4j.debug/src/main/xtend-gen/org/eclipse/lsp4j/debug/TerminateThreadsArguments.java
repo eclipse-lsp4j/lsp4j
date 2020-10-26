@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -25,7 +25,7 @@ public class TerminateThreadsArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer[] threadIds;
+  private int[] threadIds;
   
   /**
    * Ids of threads to be terminated.
@@ -33,7 +33,7 @@ public class TerminateThreadsArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer[] getThreadIds() {
+  public int[] getThreadIds() {
     return this.threadIds;
   }
   
@@ -42,7 +42,7 @@ public class TerminateThreadsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setThreadIds(final Integer[] threadIds) {
+  public void setThreadIds(final int[] threadIds) {
     this.threadIds = threadIds;
   }
   
@@ -67,7 +67,7 @@ public class TerminateThreadsArguments {
     if (this.threadIds == null) {
       if (other.threadIds != null)
         return false;
-    } else if (!Arrays.deepEquals(this.threadIds, other.threadIds))
+    } else if (!Arrays.equals(this.threadIds, other.threadIds))
       return false;
     return true;
   }
@@ -75,6 +75,6 @@ public class TerminateThreadsArguments {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.threadIds== null) ? 0 : Arrays.deepHashCode(this.threadIds));
+    return 31 * 1 + ((this.threadIds== null) ? 0 : Arrays.hashCode(this.threadIds));
   }
 }

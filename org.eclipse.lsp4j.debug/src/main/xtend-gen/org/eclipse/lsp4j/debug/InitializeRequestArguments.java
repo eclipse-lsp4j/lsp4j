@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -98,6 +98,20 @@ public class InitializeRequestArguments {
    * This is an optional property.
    */
   private Boolean supportsMemoryReferences;
+  
+  /**
+   * Client supports progress reporting.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsProgressReporting;
+  
+  /**
+   * Client supports the invalidated event.
+   * <p>
+   * This is an optional property.
+   */
+  private Boolean supportsInvalidatedEvent;
   
   /**
    * The ID of the (frontend) client using this adapter.
@@ -309,6 +323,44 @@ public class InitializeRequestArguments {
     this.supportsMemoryReferences = supportsMemoryReferences;
   }
   
+  /**
+   * Client supports progress reporting.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsProgressReporting() {
+    return this.supportsProgressReporting;
+  }
+  
+  /**
+   * Client supports progress reporting.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsProgressReporting(final Boolean supportsProgressReporting) {
+    this.supportsProgressReporting = supportsProgressReporting;
+  }
+  
+  /**
+   * Client supports the invalidated event.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Boolean getSupportsInvalidatedEvent() {
+    return this.supportsInvalidatedEvent;
+  }
+  
+  /**
+   * Client supports the invalidated event.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSupportsInvalidatedEvent(final Boolean supportsInvalidatedEvent) {
+    this.supportsInvalidatedEvent = supportsInvalidatedEvent;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -324,6 +376,8 @@ public class InitializeRequestArguments {
     b.add("supportsVariablePaging", this.supportsVariablePaging);
     b.add("supportsRunInTerminalRequest", this.supportsRunInTerminalRequest);
     b.add("supportsMemoryReferences", this.supportsMemoryReferences);
+    b.add("supportsProgressReporting", this.supportsProgressReporting);
+    b.add("supportsInvalidatedEvent", this.supportsInvalidatedEvent);
     return b.toString();
   }
   
@@ -392,6 +446,16 @@ public class InitializeRequestArguments {
         return false;
     } else if (!this.supportsMemoryReferences.equals(other.supportsMemoryReferences))
       return false;
+    if (this.supportsProgressReporting == null) {
+      if (other.supportsProgressReporting != null)
+        return false;
+    } else if (!this.supportsProgressReporting.equals(other.supportsProgressReporting))
+      return false;
+    if (this.supportsInvalidatedEvent == null) {
+      if (other.supportsInvalidatedEvent != null)
+        return false;
+    } else if (!this.supportsInvalidatedEvent.equals(other.supportsInvalidatedEvent))
+      return false;
     return true;
   }
   
@@ -410,6 +474,8 @@ public class InitializeRequestArguments {
     result = prime * result + ((this.supportsVariableType== null) ? 0 : this.supportsVariableType.hashCode());
     result = prime * result + ((this.supportsVariablePaging== null) ? 0 : this.supportsVariablePaging.hashCode());
     result = prime * result + ((this.supportsRunInTerminalRequest== null) ? 0 : this.supportsRunInTerminalRequest.hashCode());
-    return prime * result + ((this.supportsMemoryReferences== null) ? 0 : this.supportsMemoryReferences.hashCode());
+    result = prime * result + ((this.supportsMemoryReferences== null) ? 0 : this.supportsMemoryReferences.hashCode());
+    result = prime * result + ((this.supportsProgressReporting== null) ? 0 : this.supportsProgressReporting.hashCode());
+    return prime * result + ((this.supportsInvalidatedEvent== null) ? 0 : this.supportsInvalidatedEvent.hashCode());
   }
 }

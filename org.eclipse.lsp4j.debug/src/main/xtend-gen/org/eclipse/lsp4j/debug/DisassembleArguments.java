@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -43,9 +43,10 @@ public class DisassembleArguments {
   private Integer instructionOffset;
   
   /**
-   * Number of instructions to disassemble starting at the specified location and offset. An adapter must return
-   * exactly this number of instructions - any unavailable instructions should be replaced with an
-   * implementation-defined 'invalid instruction' value.
+   * Number of instructions to disassemble starting at the specified location and offset.
+   * <p>
+   * An adapter must return exactly this number of instructions - any unavailable instructions should be replaced
+   * with an implementation-defined 'invalid instruction' value.
    */
   private int instructionCount;
   
@@ -113,9 +114,10 @@ public class DisassembleArguments {
   }
   
   /**
-   * Number of instructions to disassemble starting at the specified location and offset. An adapter must return
-   * exactly this number of instructions - any unavailable instructions should be replaced with an
-   * implementation-defined 'invalid instruction' value.
+   * Number of instructions to disassemble starting at the specified location and offset.
+   * <p>
+   * An adapter must return exactly this number of instructions - any unavailable instructions should be replaced
+   * with an implementation-defined 'invalid instruction' value.
    */
   @Pure
   public int getInstructionCount() {
@@ -123,9 +125,10 @@ public class DisassembleArguments {
   }
   
   /**
-   * Number of instructions to disassemble starting at the specified location and offset. An adapter must return
-   * exactly this number of instructions - any unavailable instructions should be replaced with an
-   * implementation-defined 'invalid instruction' value.
+   * Number of instructions to disassemble starting at the specified location and offset.
+   * <p>
+   * An adapter must return exactly this number of instructions - any unavailable instructions should be replaced
+   * with an implementation-defined 'invalid instruction' value.
    */
   public void setInstructionCount(final int instructionCount) {
     this.instructionCount = instructionCount;

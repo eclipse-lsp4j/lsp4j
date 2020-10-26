@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -12,8 +12,10 @@
 package org.eclipse.lsp4j.debug;
 
 /**
- * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
- * the source is not available or that it is skipped on stepping.
+ * An optional hint for how to present the source in the UI.
+ * <p>
+ * A value of 'deemphasize' can be used to indicate that the source is not available or that it is skipped on
+ * stepping.
  */
 @SuppressWarnings("all")
 public enum SourcePresentationHint {

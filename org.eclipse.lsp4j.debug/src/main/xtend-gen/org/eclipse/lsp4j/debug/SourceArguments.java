@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -28,8 +28,9 @@ public class SourceArguments {
   private Source source;
   
   /**
-   * The reference to the source. This is the same as source.sourceReference. This is provided for backward
-   * compatibility since old backends do not understand the 'source' attribute.
+   * The reference to the source. This is the same as source.sourceReference.
+   * <p>
+   * This is provided for backward compatibility since old backends do not understand the 'source' attribute.
    */
   private int sourceReference;
   
@@ -53,8 +54,9 @@ public class SourceArguments {
   }
   
   /**
-   * The reference to the source. This is the same as source.sourceReference. This is provided for backward
-   * compatibility since old backends do not understand the 'source' attribute.
+   * The reference to the source. This is the same as source.sourceReference.
+   * <p>
+   * This is provided for backward compatibility since old backends do not understand the 'source' attribute.
    */
   @Pure
   public int getSourceReference() {
@@ -62,8 +64,9 @@ public class SourceArguments {
   }
   
   /**
-   * The reference to the source. This is the same as source.sourceReference. This is provided for backward
-   * compatibility since old backends do not understand the 'source' attribute.
+   * The reference to the source. This is the same as source.sourceReference.
+   * <p>
+   * This is provided for backward compatibility since old backends do not understand the 'source' attribute.
    */
   public void setSourceReference(final int sourceReference) {
     this.sourceReference = sourceReference;

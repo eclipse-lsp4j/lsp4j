@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -36,4 +36,6 @@ public interface StoppedEventArgumentsReason {
   public static final String FUNCTION_BREAKPOINT = "function breakpoint";
   
   public static final String DATA_BREAKPOINT = "data breakpoint";
+  
+  public static final String INSTRUCTION_BREAKPOINT = "instruction breakpoint";
 }

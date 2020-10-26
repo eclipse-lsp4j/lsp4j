@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -64,7 +64,8 @@ public interface VariablePresentationHintKind {
   public static final String MOST_DERIVED_CLASS = "mostDerivedClass";
   
   /**
-   * Indicates that the object is virtual, that means it is a synthetic object introduced by the adapter for
+   * Indicates that the object is virtual, that means it is a synthetic object introducedby the
+   * adapter for
    * rendering purposes, e.g. an index range for large arrays.
    */
   public static final String VIRTUAL = "virtual";
