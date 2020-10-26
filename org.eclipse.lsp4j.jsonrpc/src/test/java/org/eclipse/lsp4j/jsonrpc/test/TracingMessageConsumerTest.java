@@ -25,6 +25,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,7 +49,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_REMOTE_ENDPOINT, new HashMap<>(), new HashMap<>(), printWriter, TEST_CLOCK_1);
+						TEST_REMOTE_ENDPOINT, new HashMap<>(), new HashMap<>(), printWriter, TEST_CLOCK_1, Locale.US);
 
 		RequestMessage message = new RequestMessage();
 		message.setId("1");
@@ -77,7 +78,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_REMOTE_ENDPOINT, sentRequests, new HashMap<>(), printWriter, TEST_CLOCK_2);
+						TEST_REMOTE_ENDPOINT, sentRequests, new HashMap<>(), printWriter, TEST_CLOCK_2, Locale.US);
 
 		ResponseMessage message = new ResponseMessage();
 		message.setId("1");
@@ -106,7 +107,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_REMOTE_ENDPOINT, sentRequests, new HashMap<>(), printWriter, TEST_CLOCK_2);
+						TEST_REMOTE_ENDPOINT, sentRequests, new HashMap<>(), printWriter, TEST_CLOCK_2, Locale.US);
 
 		ResponseMessage message = new ResponseMessage();
 		message.setId("1");
@@ -135,7 +136,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_REMOTE_ENDPOINT, new HashMap<>(), new HashMap<>(), printWriter, TEST_CLOCK_1);
+						TEST_REMOTE_ENDPOINT, new HashMap<>(), new HashMap<>(), printWriter, TEST_CLOCK_1, Locale.US);
 
 		NotificationMessage message = new NotificationMessage();
 		message.setMethod("foo");
@@ -160,7 +161,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_STREAM_MESSAGE_CONSUMER, new HashMap<>(), new HashMap<>(), printWriter, TEST_CLOCK_1);
+						TEST_STREAM_MESSAGE_CONSUMER, new HashMap<>(), new HashMap<>(), printWriter, TEST_CLOCK_1, Locale.US);
 
 		RequestMessage message = new RequestMessage();
 		message.setId("1");
@@ -189,7 +190,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_STREAM_MESSAGE_CONSUMER, new HashMap<>(), receivedRequests, printWriter, TEST_CLOCK_2);
+						TEST_STREAM_MESSAGE_CONSUMER, new HashMap<>(), receivedRequests, printWriter, TEST_CLOCK_2, Locale.US);
 
 		ResponseMessage message = new ResponseMessage();
 		message.setId("1");
@@ -214,7 +215,7 @@ public class TracingMessageConsumerTest {
 
 		TracingMessageConsumer consumer =
 				new TracingMessageConsumer(
-						TEST_STREAM_MESSAGE_CONSUMER, emptyMap(), emptyMap(), printWriter, TEST_CLOCK_1);
+						TEST_STREAM_MESSAGE_CONSUMER, emptyMap(), emptyMap(), printWriter, TEST_CLOCK_1, Locale.US);
 
 		NotificationMessage message = new NotificationMessage();
 		message.setMethod("foo");
