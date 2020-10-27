@@ -2,6 +2,7 @@
 
 ### v0.10.0 (Nov. 2020)
 
+ * Implemented LSP version 3.16.0 (specification is not finalized yet)
  * Implemented DAP version 1.37.0's CancelRequest
  * Implemented DAP version 1.38.0
  * Implemented DAP version 1.39.0
