@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -49,9 +49,11 @@ public class DisassembledInstruction {
   private String symbol;
   
   /**
-   * Source location that corresponds to this instruction, if any. Should always be set (if available) on the first
-   * instruction returned, but can be omitted afterwards if this instruction maps to the same source file as the
-   * previous instruction.
+   * Source location that corresponds to this instruction, if any.
+   * <p>
+   * Should always be set (if available) on the first instruction returned,
+   * <p>
+   * but can be omitted afterwards if this instruction maps to the same source file as the previous instruction.
    * <p>
    * This is an optional property.
    */
@@ -156,9 +158,11 @@ public class DisassembledInstruction {
   }
   
   /**
-   * Source location that corresponds to this instruction, if any. Should always be set (if available) on the first
-   * instruction returned, but can be omitted afterwards if this instruction maps to the same source file as the
-   * previous instruction.
+   * Source location that corresponds to this instruction, if any.
+   * <p>
+   * Should always be set (if available) on the first instruction returned,
+   * <p>
+   * but can be omitted afterwards if this instruction maps to the same source file as the previous instruction.
    * <p>
    * This is an optional property.
    */
@@ -168,9 +172,11 @@ public class DisassembledInstruction {
   }
   
   /**
-   * Source location that corresponds to this instruction, if any. Should always be set (if available) on the first
-   * instruction returned, but can be omitted afterwards if this instruction maps to the same source file as the
-   * previous instruction.
+   * Source location that corresponds to this instruction, if any.
+   * <p>
+   * Should always be set (if available) on the first instruction returned,
+   * <p>
+   * but can be omitted afterwards if this instruction maps to the same source file as the previous instruction.
    * <p>
    * This is an optional property.
    */

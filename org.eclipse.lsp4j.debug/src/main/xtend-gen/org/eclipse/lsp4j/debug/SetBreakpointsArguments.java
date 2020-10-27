@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -42,7 +42,7 @@ public class SetBreakpointsArguments {
    * <p>
    * This is an optional property.
    */
-  private Integer[] lines;
+  private int[] lines;
   
   /**
    * A value of true indicates that the underlying source has been modified which results in new breakpoint
@@ -93,7 +93,7 @@ public class SetBreakpointsArguments {
    * This is an optional property.
    */
   @Pure
-  public Integer[] getLines() {
+  public int[] getLines() {
     return this.lines;
   }
   
@@ -102,7 +102,7 @@ public class SetBreakpointsArguments {
    * <p>
    * This is an optional property.
    */
-  public void setLines(final Integer[] lines) {
+  public void setLines(final int[] lines) {
     this.lines = lines;
   }
   
@@ -161,7 +161,7 @@ public class SetBreakpointsArguments {
     if (this.lines == null) {
       if (other.lines != null)
         return false;
-    } else if (!Arrays.deepEquals(this.lines, other.lines))
+    } else if (!Arrays.equals(this.lines, other.lines))
       return false;
     if (this.sourceModified == null) {
       if (other.sourceModified != null)
@@ -178,7 +178,7 @@ public class SetBreakpointsArguments {
     int result = 1;
     result = prime * result + ((this.source== null) ? 0 : this.source.hashCode());
     result = prime * result + ((this.breakpoints== null) ? 0 : Arrays.deepHashCode(this.breakpoints));
-    result = prime * result + ((this.lines== null) ? 0 : Arrays.deepHashCode(this.lines));
+    result = prime * result + ((this.lines== null) ? 0 : Arrays.hashCode(this.lines));
     return prime * result + ((this.sourceModified== null) ? 0 : this.sourceModified.hashCode());
   }
 }

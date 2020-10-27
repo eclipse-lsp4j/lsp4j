@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -21,6 +21,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class DisconnectArguments {
   /**
    * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+   * <p>
+   * This is an optional property.
    */
   private Boolean restart;
   
@@ -29,8 +31,7 @@ public class DisconnectArguments {
    * <p>
    * If unspecified, the debug adapter is free to do whatever it thinks is best.
    * <p>
-   * A client can only rely on this attribute being properly honored if a debug adapter returns true for the
-   * 'supportTerminateDebuggee' capability.
+   * The attribute is only honored by a debug adapter if the capability 'supportTerminateDebuggee' is true.
    * <p>
    * This is an optional property.
    */
@@ -38,6 +39,8 @@ public class DisconnectArguments {
   
   /**
    * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+   * <p>
+   * This is an optional property.
    */
   @Pure
   public Boolean getRestart() {
@@ -46,6 +49,8 @@ public class DisconnectArguments {
   
   /**
    * A value of true indicates that this 'disconnect' request is part of a restart sequence.
+   * <p>
+   * This is an optional property.
    */
   public void setRestart(final Boolean restart) {
     this.restart = restart;
@@ -56,8 +61,7 @@ public class DisconnectArguments {
    * <p>
    * If unspecified, the debug adapter is free to do whatever it thinks is best.
    * <p>
-   * A client can only rely on this attribute being properly honored if a debug adapter returns true for the
-   * 'supportTerminateDebuggee' capability.
+   * The attribute is only honored by a debug adapter if the capability 'supportTerminateDebuggee' is true.
    * <p>
    * This is an optional property.
    */
@@ -71,8 +75,7 @@ public class DisconnectArguments {
    * <p>
    * If unspecified, the debug adapter is free to do whatever it thinks is best.
    * <p>
-   * A client can only rely on this attribute being properly honored if a debug adapter returns true for the
-   * 'supportTerminateDebuggee' capability.
+   * The attribute is only honored by a debug adapter if the capability 'supportTerminateDebuggee' is true.
    * <p>
    * This is an optional property.
    */

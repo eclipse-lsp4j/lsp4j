@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -29,30 +29,30 @@ public class BreakpointLocationsArguments {
   private Source source;
   
   /**
-   * Start line of range to search possible breakpoint locations in. If only the line is specified,
-   * the request returns all possible locations in that line.
+   * Start line of range to search possible breakpoint locations in. If only the line is specified, the request
+   * returns all possible locations in that line.
    */
   private int line;
   
   /**
-   * Optional start column of range to search possible breakpoint locations in. If no start column is given,
-   * the first column in the start line is assumed.
+   * Optional start column of range to search possible breakpoint locations in. If no start column is given, the
+   * first column in the start line is assumed.
    * <p>
    * This is an optional property.
    */
   private Integer column;
   
   /**
-   * Optional end line of range to search possible breakpoint locations in. If no end line is given,
-   * then the end line is assumed to be the start line.
+   * Optional end line of range to search possible breakpoint locations in. If no end line is given, then the end
+   * line is assumed to be the start line.
    * <p>
    * This is an optional property.
    */
   private Integer endLine;
   
   /**
-   * Optional end column of range to search possible breakpoint locations in. If no end column is given,
-   * then it is assumed to be in the last column of the end line.
+   * Optional end column of range to search possible breakpoint locations in. If no end column is given, then it is
+   * assumed to be in the last column of the end line.
    * <p>
    * This is an optional property.
    */
@@ -75,8 +75,8 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Start line of range to search possible breakpoint locations in. If only the line is specified,
-   * the request returns all possible locations in that line.
+   * Start line of range to search possible breakpoint locations in. If only the line is specified, the request
+   * returns all possible locations in that line.
    */
   @Pure
   public int getLine() {
@@ -84,16 +84,16 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Start line of range to search possible breakpoint locations in. If only the line is specified,
-   * the request returns all possible locations in that line.
+   * Start line of range to search possible breakpoint locations in. If only the line is specified, the request
+   * returns all possible locations in that line.
    */
   public void setLine(final int line) {
     this.line = line;
   }
   
   /**
-   * Optional start column of range to search possible breakpoint locations in. If no start column is given,
-   * the first column in the start line is assumed.
+   * Optional start column of range to search possible breakpoint locations in. If no start column is given, the
+   * first column in the start line is assumed.
    * <p>
    * This is an optional property.
    */
@@ -103,8 +103,8 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Optional start column of range to search possible breakpoint locations in. If no start column is given,
-   * the first column in the start line is assumed.
+   * Optional start column of range to search possible breakpoint locations in. If no start column is given, the
+   * first column in the start line is assumed.
    * <p>
    * This is an optional property.
    */
@@ -113,8 +113,8 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Optional end line of range to search possible breakpoint locations in. If no end line is given,
-   * then the end line is assumed to be the start line.
+   * Optional end line of range to search possible breakpoint locations in. If no end line is given, then the end
+   * line is assumed to be the start line.
    * <p>
    * This is an optional property.
    */
@@ -124,8 +124,8 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Optional end line of range to search possible breakpoint locations in. If no end line is given,
-   * then the end line is assumed to be the start line.
+   * Optional end line of range to search possible breakpoint locations in. If no end line is given, then the end
+   * line is assumed to be the start line.
    * <p>
    * This is an optional property.
    */
@@ -134,8 +134,8 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Optional end column of range to search possible breakpoint locations in. If no end column is given,
-   * then it is assumed to be in the last column of the end line.
+   * Optional end column of range to search possible breakpoint locations in. If no end column is given, then it is
+   * assumed to be in the last column of the end line.
    * <p>
    * This is an optional property.
    */
@@ -145,8 +145,8 @@ public class BreakpointLocationsArguments {
   }
   
   /**
-   * Optional end column of range to search possible breakpoint locations in. If no end column is given,
-   * then it is assumed to be in the last column of the end line.
+   * Optional end column of range to search possible breakpoint locations in. If no end column is given, then it is
+   * assumed to be in the last column of the end line.
    * <p>
    * This is an optional property.
    */

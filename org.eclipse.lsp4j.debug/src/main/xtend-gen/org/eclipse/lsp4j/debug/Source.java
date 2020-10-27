@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -18,22 +18,27 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * A Source is a descriptor for source code. It is returned from the debug adapter as part of a StackFrame and it
- * is used by clients when specifying breakpoints.
+ * A Source is a descriptor for source code.
+ * <p>
+ * It is returned from the debug adapter as part of a StackFrame and it is used by clients when specifying
+ * breakpoints.
  */
 @SuppressWarnings("all")
 public class Source {
   /**
-   * The short name of the source. Every source returned from the debug adapter has a name. When sending a source to
-   * the debug adapter this name is optional.
+   * The short name of the source. Every source returned from the debug adapter has a name.
+   * <p>
+   * When sending a source to the debug adapter this name is optional.
    * <p>
    * This is an optional property.
    */
   private String name;
   
   /**
-   * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its value is 0).
+   * The path of the source to be shown in the UI.
+   * <p>
+   * It is only used to locate and load the content of the source if no sourceReference is specified (or its value
+   * is 0).
    * <p>
    * This is an optional property.
    */
@@ -41,7 +46,10 @@ public class Source {
   
   /**
    * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-   * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * is specified).
+   * <p>
+   * A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -49,8 +57,10 @@ public class Source {
   private Integer sourceReference;
   
   /**
-   * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
-   * the source is not available or that it is skipped on stepping.
+   * An optional hint for how to present the source in the UI.
+   * <p>
+   * A value of 'deemphasize' can be used to indicate that the source is not available or that it is skipped on
+   * stepping.
    * <p>
    * This is an optional property.
    */
@@ -73,8 +83,10 @@ public class Source {
   private Source[] sources;
   
   /**
-   * Optional data that a debug adapter might want to loop through the client. The client should leave the data
-   * intact and persist it across sessions. The client should not interpret the data.
+   * Optional data that a debug adapter might want to loop through the client.
+   * <p>
+   * The client should leave the data intact and persist it across sessions. The client should not interpret the
+   * data.
    * <p>
    * This is an optional property.
    */
@@ -88,8 +100,9 @@ public class Source {
   private Checksum[] checksums;
   
   /**
-   * The short name of the source. Every source returned from the debug adapter has a name. When sending a source to
-   * the debug adapter this name is optional.
+   * The short name of the source. Every source returned from the debug adapter has a name.
+   * <p>
+   * When sending a source to the debug adapter this name is optional.
    * <p>
    * This is an optional property.
    */
@@ -99,8 +112,9 @@ public class Source {
   }
   
   /**
-   * The short name of the source. Every source returned from the debug adapter has a name. When sending a source to
-   * the debug adapter this name is optional.
+   * The short name of the source. Every source returned from the debug adapter has a name.
+   * <p>
+   * When sending a source to the debug adapter this name is optional.
    * <p>
    * This is an optional property.
    */
@@ -109,8 +123,10 @@ public class Source {
   }
   
   /**
-   * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its value is 0).
+   * The path of the source to be shown in the UI.
+   * <p>
+   * It is only used to locate and load the content of the source if no sourceReference is specified (or its value
+   * is 0).
    * <p>
    * This is an optional property.
    */
@@ -120,8 +136,10 @@ public class Source {
   }
   
   /**
-   * The path of the source to be shown in the UI. It is only used to locate and load the content of the source if
-   * no sourceReference is specified (or its value is 0).
+   * The path of the source to be shown in the UI.
+   * <p>
+   * It is only used to locate and load the content of the source if no sourceReference is specified (or its value
+   * is 0).
    * <p>
    * This is an optional property.
    */
@@ -131,7 +149,10 @@ public class Source {
   
   /**
    * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-   * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * is specified).
+   * <p>
+   * A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -143,7 +164,10 @@ public class Source {
   
   /**
    * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-   * is specified). A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * is specified).
+   * <p>
+   * A sourceReference is only valid for a session, so it must not be used to persist a source.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -153,8 +177,10 @@ public class Source {
   }
   
   /**
-   * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
-   * the source is not available or that it is skipped on stepping.
+   * An optional hint for how to present the source in the UI.
+   * <p>
+   * A value of 'deemphasize' can be used to indicate that the source is not available or that it is skipped on
+   * stepping.
    * <p>
    * This is an optional property.
    */
@@ -164,8 +190,10 @@ public class Source {
   }
   
   /**
-   * An optional hint for how to present the source in the UI. A value of 'deemphasize' can be used to indicate that
-   * the source is not available or that it is skipped on stepping.
+   * An optional hint for how to present the source in the UI.
+   * <p>
+   * A value of 'deemphasize' can be used to indicate that the source is not available or that it is skipped on
+   * stepping.
    * <p>
    * This is an optional property.
    */
@@ -216,8 +244,10 @@ public class Source {
   }
   
   /**
-   * Optional data that a debug adapter might want to loop through the client. The client should leave the data
-   * intact and persist it across sessions. The client should not interpret the data.
+   * Optional data that a debug adapter might want to loop through the client.
+   * <p>
+   * The client should leave the data intact and persist it across sessions. The client should not interpret the
+   * data.
    * <p>
    * This is an optional property.
    */
@@ -227,8 +257,10 @@ public class Source {
   }
   
   /**
-   * Optional data that a debug adapter might want to loop through the client. The client should leave the data
-   * intact and persist it across sessions. The client should not interpret the data.
+   * Optional data that a debug adapter might want to loop through the client.
+   * <p>
+   * The client should leave the data intact and persist it across sessions. The client should not interpret the
+   * data.
    * <p>
    * This is an optional property.
    */

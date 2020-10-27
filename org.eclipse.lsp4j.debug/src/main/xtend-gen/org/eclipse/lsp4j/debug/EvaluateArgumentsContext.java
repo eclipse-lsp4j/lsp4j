@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -32,4 +32,11 @@ public interface EvaluateArgumentsContext {
    * evaluate is run from a data hover.
    */
   public static final String HOVER = "hover";
+  
+  /**
+   * evaluate is run to generate the value that will be stored in the clipboard.
+   * The attribute is only honored by a
+   * debug adapter if the capability 'supportsClipboardContext' is true.
+   */
+  public static final String CLIPBOARD = "clipboard";
 }

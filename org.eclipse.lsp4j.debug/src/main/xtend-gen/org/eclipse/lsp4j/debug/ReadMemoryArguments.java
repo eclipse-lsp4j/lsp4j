@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -36,10 +36,8 @@ public class ReadMemoryArguments {
   
   /**
    * Number of bytes to read at the specified location and offset.
-   * <p>
-   * This is an optional property.
    */
-  private Integer count;
+  private int count;
   
   /**
    * Memory reference to the base location from which data should be read.
@@ -78,20 +76,16 @@ public class ReadMemoryArguments {
   
   /**
    * Number of bytes to read at the specified location and offset.
-   * <p>
-   * This is an optional property.
    */
   @Pure
-  public Integer getCount() {
+  public int getCount() {
     return this.count;
   }
   
   /**
    * Number of bytes to read at the specified location and offset.
-   * <p>
-   * This is an optional property.
    */
-  public void setCount(final Integer count) {
+  public void setCount(final int count) {
     this.count = count;
   }
   
@@ -125,10 +119,7 @@ public class ReadMemoryArguments {
         return false;
     } else if (!this.offset.equals(other.offset))
       return false;
-    if (this.count == null) {
-      if (other.count != null)
-        return false;
-    } else if (!this.count.equals(other.count))
+    if (other.count != this.count)
       return false;
     return true;
   }
@@ -140,6 +131,6 @@ public class ReadMemoryArguments {
     int result = 1;
     result = prime * result + ((this.memoryReference== null) ? 0 : this.memoryReference.hashCode());
     result = prime * result + ((this.offset== null) ? 0 : this.offset.hashCode());
-    return prime * result + ((this.count== null) ? 0 : this.count.hashCode());
+    return prime * result + this.count;
   }
 }

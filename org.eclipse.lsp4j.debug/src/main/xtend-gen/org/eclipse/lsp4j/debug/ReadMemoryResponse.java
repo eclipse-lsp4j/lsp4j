@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -22,15 +22,18 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class ReadMemoryResponse {
   /**
-   * The address of the first byte of data returned. Treated as a hex value if prefixed with '0x', or as a
-   * decimal value otherwise.
+   * The address of the first byte of data returned.
+   * <p>
+   * Treated as a hex value if prefixed with '0x', or as a decimal value otherwise.
    */
   @NonNull
   private String address;
   
   /**
-   * The number of unreadable bytes encountered after the last successfully read byte. This can be used to
-   * determine the number of bytes that must be skipped before a subsequent 'readMemory' request will succeed.
+   * The number of unreadable bytes encountered after the last successfully read byte.
+   * <p>
+   * This can be used to determine the number of bytes that must be skipped before a subsequent 'readMemory' request
+   * will succeed.
    * <p>
    * This is an optional property.
    */
@@ -44,8 +47,9 @@ public class ReadMemoryResponse {
   private String data;
   
   /**
-   * The address of the first byte of data returned. Treated as a hex value if prefixed with '0x', or as a
-   * decimal value otherwise.
+   * The address of the first byte of data returned.
+   * <p>
+   * Treated as a hex value if prefixed with '0x', or as a decimal value otherwise.
    */
   @Pure
   @NonNull
@@ -54,16 +58,19 @@ public class ReadMemoryResponse {
   }
   
   /**
-   * The address of the first byte of data returned. Treated as a hex value if prefixed with '0x', or as a
-   * decimal value otherwise.
+   * The address of the first byte of data returned.
+   * <p>
+   * Treated as a hex value if prefixed with '0x', or as a decimal value otherwise.
    */
   public void setAddress(@NonNull final String address) {
     this.address = Preconditions.checkNotNull(address, "address");
   }
   
   /**
-   * The number of unreadable bytes encountered after the last successfully read byte. This can be used to
-   * determine the number of bytes that must be skipped before a subsequent 'readMemory' request will succeed.
+   * The number of unreadable bytes encountered after the last successfully read byte.
+   * <p>
+   * This can be used to determine the number of bytes that must be skipped before a subsequent 'readMemory' request
+   * will succeed.
    * <p>
    * This is an optional property.
    */
@@ -73,8 +80,10 @@ public class ReadMemoryResponse {
   }
   
   /**
-   * The number of unreadable bytes encountered after the last successfully read byte. This can be used to
-   * determine the number of bytes that must be skipped before a subsequent 'readMemory' request will succeed.
+   * The number of unreadable bytes encountered after the last successfully read byte.
+   * <p>
+   * This can be used to determine the number of bytes that must be skipped before a subsequent 'readMemory' request
+   * will succeed.
    * <p>
    * This is an optional property.
    */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -68,6 +68,28 @@ public class CompletionItem {
    * This is an optional property.
    */
   private Integer length;
+  
+  /**
+   * Determines the start of the new selection after the text has been inserted (or replaced).
+   * <p>
+   * The start position must in the range 0 and length of the completion text.
+   * <p>
+   * If omitted the selection starts at the end of the completion text.
+   * <p>
+   * This is an optional property.
+   */
+  private Integer selectionStart;
+  
+  /**
+   * Determines the length of the new selection after the text has been inserted (or replaced).
+   * <p>
+   * The selection can not extend beyond the bounds of the completion text.
+   * <p>
+   * If omitted the length is assumed to be 0.
+   * <p>
+   * This is an optional property.
+   */
+  private Integer selectionLength;
   
   /**
    * The label of this completion item. By default this is also the text that is inserted when selecting this
@@ -192,6 +214,60 @@ public class CompletionItem {
     this.length = length;
   }
   
+  /**
+   * Determines the start of the new selection after the text has been inserted (or replaced).
+   * <p>
+   * The start position must in the range 0 and length of the completion text.
+   * <p>
+   * If omitted the selection starts at the end of the completion text.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Integer getSelectionStart() {
+    return this.selectionStart;
+  }
+  
+  /**
+   * Determines the start of the new selection after the text has been inserted (or replaced).
+   * <p>
+   * The start position must in the range 0 and length of the completion text.
+   * <p>
+   * If omitted the selection starts at the end of the completion text.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSelectionStart(final Integer selectionStart) {
+    this.selectionStart = selectionStart;
+  }
+  
+  /**
+   * Determines the length of the new selection after the text has been inserted (or replaced).
+   * <p>
+   * The selection can not extend beyond the bounds of the completion text.
+   * <p>
+   * If omitted the length is assumed to be 0.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public Integer getSelectionLength() {
+    return this.selectionLength;
+  }
+  
+  /**
+   * Determines the length of the new selection after the text has been inserted (or replaced).
+   * <p>
+   * The selection can not extend beyond the bounds of the completion text.
+   * <p>
+   * If omitted the length is assumed to be 0.
+   * <p>
+   * This is an optional property.
+   */
+  public void setSelectionLength(final Integer selectionLength) {
+    this.selectionLength = selectionLength;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -202,6 +278,8 @@ public class CompletionItem {
     b.add("type", this.type);
     b.add("start", this.start);
     b.add("length", this.length);
+    b.add("selectionStart", this.selectionStart);
+    b.add("selectionLength", this.selectionLength);
     return b.toString();
   }
   
@@ -245,6 +323,16 @@ public class CompletionItem {
         return false;
     } else if (!this.length.equals(other.length))
       return false;
+    if (this.selectionStart == null) {
+      if (other.selectionStart != null)
+        return false;
+    } else if (!this.selectionStart.equals(other.selectionStart))
+      return false;
+    if (this.selectionLength == null) {
+      if (other.selectionLength != null)
+        return false;
+    } else if (!this.selectionLength.equals(other.selectionLength))
+      return false;
     return true;
   }
   
@@ -258,6 +346,8 @@ public class CompletionItem {
     result = prime * result + ((this.sortText== null) ? 0 : this.sortText.hashCode());
     result = prime * result + ((this.type== null) ? 0 : this.type.hashCode());
     result = prime * result + ((this.start== null) ? 0 : this.start.hashCode());
-    return prime * result + ((this.length== null) ? 0 : this.length.hashCode());
+    result = prime * result + ((this.length== null) ? 0 : this.length.hashCode());
+    result = prime * result + ((this.selectionStart== null) ? 0 : this.selectionStart.hashCode());
+    return prime * result + ((this.selectionLength== null) ? 0 : this.selectionLength.hashCode());
   }
 }

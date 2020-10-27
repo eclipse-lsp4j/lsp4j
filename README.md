@@ -37,6 +37,7 @@ The snapshots are deployed during the build to:
 
 ### Supported DAP Versions
 
+ * LSP4J 0.10.&ast; &rarr; DAP 1.42.0
  * LSP4J 0.9.&ast; &rarr; DAP 1.37.0 (except CancelRequest)
  * LSP4J 0.8.&ast; &rarr; DAP 1.35.0
  * LSP4J 0.5.&ast; &ndash; 0.7.&ast; &rarr; DAP 1.31.0

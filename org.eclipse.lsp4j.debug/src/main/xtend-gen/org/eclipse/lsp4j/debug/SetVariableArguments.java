@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -23,7 +23,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class SetVariableArguments {
   /**
-   * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * The reference of the variable container.
    */
   private int variablesReference;
   
@@ -47,7 +47,7 @@ public class SetVariableArguments {
   private ValueFormat format;
   
   /**
-   * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * The reference of the variable container.
    */
   @Pure
   public int getVariablesReference() {
@@ -55,7 +55,7 @@ public class SetVariableArguments {
   }
   
   /**
-   * The reference of the variable container. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * The reference of the variable container.
    */
   public void setVariablesReference(final int variablesReference) {
     this.variablesReference = variablesReference;

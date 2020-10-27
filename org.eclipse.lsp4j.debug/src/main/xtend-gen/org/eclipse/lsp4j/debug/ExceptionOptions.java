@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -26,7 +26,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class ExceptionOptions {
   /**
    * A path that selects a single or multiple exceptions in a tree. If 'path' is missing, the whole tree is
-   * selected. By convention the first segment of the path is a category that is used to group exceptions in the UI.
+   * selected.
+   * <p>
+   * By convention the first segment of the path is a category that is used to group exceptions in the UI.
    * <p>
    * This is an optional property.
    */
@@ -40,7 +42,9 @@ public class ExceptionOptions {
   
   /**
    * A path that selects a single or multiple exceptions in a tree. If 'path' is missing, the whole tree is
-   * selected. By convention the first segment of the path is a category that is used to group exceptions in the UI.
+   * selected.
+   * <p>
+   * By convention the first segment of the path is a category that is used to group exceptions in the UI.
    * <p>
    * This is an optional property.
    */
@@ -51,7 +55,9 @@ public class ExceptionOptions {
   
   /**
    * A path that selects a single or multiple exceptions in a tree. If 'path' is missing, the whole tree is
-   * selected. By convention the first segment of the path is a category that is used to group exceptions in the UI.
+   * selected.
+   * <p>
+   * By convention the first segment of the path is a category that is used to group exceptions in the UI.
    * <p>
    * This is an optional property.
    */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -19,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * The event indicates that the execution of the debuggee has stopped due to some condition.
  * <p>
- * This can be caused by a break point previously set, a stepping action has completed, by executing a debugger
+ * This can be caused by a break point previously set, a stepping request has completed, by executing a debugger
  * statement etc.
  */
 @SuppressWarnings("all")

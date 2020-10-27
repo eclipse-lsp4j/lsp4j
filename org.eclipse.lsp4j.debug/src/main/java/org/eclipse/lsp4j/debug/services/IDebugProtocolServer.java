@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.debug.BreakpointLocationsArguments;
 import org.eclipse.lsp4j.debug.BreakpointLocationsResponse;
+import org.eclipse.lsp4j.debug.CancelArguments;
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CompletionsArguments;
 import org.eclipse.lsp4j.debug.CompletionsResponse;
@@ -60,6 +61,8 @@ import org.eclipse.lsp4j.debug.SetExpressionArguments;
 import org.eclipse.lsp4j.debug.SetExpressionResponse;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsResponse;
+import org.eclipse.lsp4j.debug.SetInstructionBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetInstructionBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetVariableArguments;
 import org.eclipse.lsp4j.debug.SetVariableResponse;
 import org.eclipse.lsp4j.debug.SourceArguments;
@@ -87,12 +90,58 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.37.0";
+	public static final String SCHEMA_VERSION = "1.42.0";
 
 	/**
-	 * This request is sent from the debug adapter to the client to run a command in
-	 * a terminal. This is typically used to launch the debuggee in a terminal
-	 * provided by the client.
+	 * The 'cancel' request is used by the frontend in two situations:
+	 * <ul>
+	 * <li>to indicate that it is no longer interested in the result produced by a
+	 * specific request issued earlier</li>
+	 * <li>to cancel a progress sequence. Clients should only call this request if
+	 * the capability 'supportsCancelRequest' is true.</li>
+	 * </ul>
+	 * <p>
+	 * This request has a hint characteristic: a debug adapter can only be expected
+	 * to make a 'best effort' in honouring this request but there are no
+	 * guarantees.
+	 * <p>
+	 * The 'cancel' request may return an error if it could not cancel an operation
+	 * but a frontend should refrain from presenting this error to end users.
+	 * <p>
+	 * A frontend client should only call this request if the capability
+	 * 'supportsCancelRequest' is true.
+	 * <p>
+	 * The request that got canceled still needs to send a response back. This can
+	 * either be a normal result ('success' attribute true)
+	 * <p>
+	 * or an error response ('success' attribute false and the 'message' set to
+	 * 'cancelled').
+	 * <p>
+	 * Returning partial results from a cancelled request is possible but please
+	 * note that a frontend client has no generic way for detecting that a response
+	 * is partial or not.
+	 * <p>
+	 * The progress that got cancelled still needs to send a 'progressEnd' event
+	 * back.
+	 * <p>
+	 * A client should not assume that progress just got cancelled after sending the
+	 * 'cancel' request.
+	 */
+	@JsonRequest
+	default CompletableFuture<Void> cancel(CancelArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * This optional request is sent from the debug adapter to the client to run a
+	 * command in a terminal.
+	 * <p>
+	 * This is typically used to launch the debuggee in a terminal provided by the
+	 * client.
+	 * <p>
+	 * This request should only be called if the client has passed the value true
+	 * for the 'supportsRunInTerminalRequest' capability of the 'initialize'
+	 * request.
 	 */
 	@JsonRequest
 	default CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
@@ -101,11 +150,14 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The 'initialize' request is sent as the first request from the client to the
-	 * debug adapter in order to configure it with client capabilities and to
-	 * retrieve capabilities from the debug adapter.
+	 * debug adapter
+	 * <p>
+	 * in order to configure it with client capabilities and to retrieve
+	 * capabilities from the debug adapter.
 	 * <p>
 	 * Until the debug adapter has responded to with an 'initialize' response, the
 	 * client must not send any additional requests or events to the debug adapter.
+	 * <p>
 	 * In addition the debug adapter is not allowed to send any requests or events
 	 * to the client until it has responded with an 'initialize' response.
 	 * <p>
@@ -117,9 +169,14 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The client of the debug protocol must send this request at the end of the
-	 * sequence of configuration requests (which was started by the 'initialized'
-	 * event).
+	 * This optional request indicates that the client has finished initialization
+	 * of the debug adapter.
+	 * <p>
+	 * So it is the last request in the sequence of configuration requests (which
+	 * was started by the 'initialized' event).
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsConfigurationDoneRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
@@ -127,10 +184,11 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The launch request is sent from the client to the debug adapter to start the
-	 * debuggee with or without debugging (if 'noDebug' is true). Since launching is
-	 * debugger/runtime specific, the arguments for this request are not part of
-	 * this specification.
+	 * This launch request is sent from the client to the debug adapter to start the
+	 * debuggee with or without debugging (if 'noDebug' is true).
+	 * <p>
+	 * Since launching is debugger/runtime specific, the arguments for this request
+	 * are not part of this specification.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> launch(Map<String, Object> args) {
@@ -139,8 +197,10 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The attach request is sent from the client to the debug adapter to attach to
-	 * a debuggee that is already running. Since attaching is debugger/runtime
-	 * specific, the arguments for this request are not part of this specification.
+	 * a debuggee that is already running.
+	 * <p>
+	 * Since attaching is debugger/runtime specific, the arguments for this request
+	 * are not part of this specification.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> attach(Map<String, Object> args) {
@@ -148,16 +208,12 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Restarts a debug session. If the capability 'supportsRestartRequest' is
-	 * missing or has the value false,
+	 * Restarts a debug session. Clients should only call this request if the
+	 * capability 'supportsRestartRequest' is true.
 	 * <p>
-	 * the client will implement 'restart' by terminating the debug adapter first
-	 * and then launching it anew.
-	 * <p>
-	 * A debug adapter can override this default behaviour by implementing a restart
-	 * request
-	 * <p>
-	 * and setting the capability 'supportsRestartRequest' to true.
+	 * If the capability is missing or has the value false, a typical client will
+	 * emulate 'restart' by terminating the debug adapter first and then launching
+	 * it anew.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> restart(RestartArguments args) {
@@ -166,12 +222,19 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The 'disconnect' request is sent from the client to the debug adapter in
-	 * order to stop debugging. It asks the debug adapter to disconnect from the
-	 * debuggee and to terminate the debug adapter. If the debuggee has been started
-	 * with the 'launch' request, the 'disconnect' request terminates the debuggee.
+	 * order to stop debugging.
+	 * <p>
+	 * It asks the debug adapter to disconnect from the debuggee and to terminate
+	 * the debug adapter.
+	 * <p>
+	 * If the debuggee has been started with the 'launch' request, the 'disconnect'
+	 * request terminates the debuggee.
+	 * <p>
 	 * If the 'attach' request was used to connect to the debuggee, 'disconnect'
-	 * does not terminate the debuggee. This behavior can be controlled with the
-	 * 'terminateDebuggee' (if supported by the debug adapter).
+	 * does not terminate the debuggee.
+	 * <p>
+	 * This behavior can be controlled with the 'terminateDebuggee' argument (if
+	 * supported by the debug adapter).
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> disconnect(DisconnectArguments args) {
@@ -181,6 +244,9 @@ public interface IDebugProtocolServer {
 	/**
 	 * The 'terminate' request is sent from the client to the debug adapter in order
 	 * to give the debuggee a chance for terminating itself.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsTerminateRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> terminate(TerminateArguments args) {
@@ -190,6 +256,9 @@ public interface IDebugProtocolServer {
 	/**
 	 * The 'breakpointLocations' request returns all possible locations for source
 	 * breakpoints in a given range.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsBreakpointLocationsRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<BreakpointLocationsResponse> breakpointLocations(BreakpointLocationsArguments args) {
@@ -211,12 +280,15 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Replaces all existing function breakpoints with new breakpoints.
+	 * Replaces all existing function breakpoints with new function breakpoints.
 	 * <p>
 	 * To clear all function breakpoints, specify an empty array.
 	 * <p>
 	 * When a function breakpoint is hit, a 'stopped' event (with reason 'function
 	 * breakpoint') is generated.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsFunctionBreakpoints' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetFunctionBreakpointsResponse> setFunctionBreakpoints(
@@ -225,9 +297,13 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request configures the debuggers response to thrown exceptions. If an
-	 * exception is configured to break, a 'stopped' event is fired (with reason
-	 * 'exception').
+	 * The request configures the debuggers response to thrown exceptions.
+	 * <p>
+	 * If an exception is configured to break, a 'stopped' event is fired (with
+	 * reason 'exception').
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'exceptionBreakpointFilters' returns one or more filters.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
@@ -237,6 +313,9 @@ public interface IDebugProtocolServer {
 	/**
 	 * Obtains information on a possible data breakpoint that could be set on an
 	 * expression or variable.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsDataBreakpoints' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<DataBreakpointInfoResponse> dataBreakpointInfo(DataBreakpointInfoArguments args) {
@@ -244,15 +323,36 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Replaces all existing data breakpoints with new breakpoints.
+	 * Replaces all existing data breakpoints with new data breakpoints.
 	 * <p>
 	 * To clear all data breakpoints, specify an empty array.
 	 * <p>
 	 * When a data breakpoint is hit, a 'stopped' event (with reason 'data
 	 * breakpoint') is generated.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsDataBreakpoints' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetDataBreakpointsResponse> setDataBreakpoints(SetDataBreakpointsArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Replaces all existing instruction breakpoints. Typically, instruction
+	 * breakpoints would be set from a diassembly window.
+	 * <p>
+	 * To clear all instruction breakpoints, specify an empty array.
+	 * <p>
+	 * When an instruction breakpoint is hit, a 'stopped' event (with reason
+	 * 'instruction breakpoint') is generated.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsInstructionBreakpoints' is true.
+	 */
+	@JsonRequest
+	default CompletableFuture<SetInstructionBreakpointsResponse> setInstructionBreakpoints(
+			SetInstructionBreakpointsArguments args) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -312,8 +412,10 @@ public interface IDebugProtocolServer {
 	 * The request starts the debuggee to run one step backwards.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
-	 * reason 'step') after the step has completed. Clients should only call this
-	 * request if the capability 'supportsStepBack' is true.
+	 * reason 'step') after the step has completed.
+	 * <p>
+	 * Clients should only call this request if the capability 'supportsStepBack' is
+	 * true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> stepBack(StepBackArguments args) {
@@ -321,8 +423,10 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to run backward. Clients should only call
-	 * this request if the capability 'supportsStepBack' is true.
+	 * The request starts the debuggee to run backward.
+	 * <p>
+	 * Clients should only call this request if the capability 'supportsStepBack' is
+	 * true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> reverseContinue(ReverseContinueArguments args) {
@@ -334,6 +438,9 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'restart') after the restart has completed.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsRestartFrame' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> restartFrame(RestartFrameArguments args) {
@@ -351,6 +458,10 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event with
 	 * reason 'goto'.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsGotoTargetsRequest' is true (because only then goto targets exist
+	 * that can be passed as arguments).
 	 */
 	@JsonRequest(value = "goto")
 	default CompletableFuture<Void> goto_(GotoArguments args) {
@@ -397,7 +508,8 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Set the variable with the given name in the variable container to a new
-	 * value.
+	 * value. Clients should only call this request if the capability
+	 * 'supportsSetVariable' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetVariableResponse> setVariable(SetVariableArguments args) {
@@ -422,6 +534,9 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The request terminates the threads with the given ids.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsTerminateThreadsRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> terminateThreads(TerminateThreadsArguments args) {
@@ -429,8 +544,11 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Modules can be retrieved from the debug adapter with the ModulesRequest which
-	 * can either return all modules or a range of modules to support paging.
+	 * Modules can be retrieved from the debug adapter with this request which can
+	 * either return all modules or a range of modules to support paging.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsModulesRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<ModulesResponse> modules(ModulesArguments args) {
@@ -439,6 +557,9 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Retrieves the set of all sources currently loaded by the debugged process.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsLoadedSourcesRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<LoadedSourcesResponse> loadedSources(LoadedSourcesArguments args) {
@@ -461,6 +582,9 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * The expressions have access to any variables and arguments that are in scope
 	 * of the specified frame.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsSetExpression' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
@@ -475,6 +599,9 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * The StepInTargets may only be called if the 'supportsStepInTargetsRequest'
 	 * capability exists and is true.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsStepInTargetsRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<StepInTargetsResponse> stepInTargets(StepInTargetsArguments args) {
@@ -487,8 +614,8 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * These targets can be used in the 'goto' request.
 	 * <p>
-	 * The GotoTargets request may only be called if the
-	 * 'supportsGotoTargetsRequest' capability exists and is true.
+	 * Clients should only call this request if the capability
+	 * 'supportsGotoTargetsRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<GotoTargetsResponse> gotoTargets(GotoTargetsArguments args) {
@@ -498,8 +625,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Returns a list of possible completions for a given caret position and text.
 	 * <p>
-	 * The CompletionsRequest may only be called if the 'supportsCompletionsRequest'
-	 * capability exists and is true.
+	 * Clients should only call this request if the capability
+	 * 'supportsCompletionsRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<CompletionsResponse> completions(CompletionsArguments args) {
@@ -508,6 +635,9 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Retrieves the details of the exception that caused this event to be raised.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsExceptionInfoRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args) {
@@ -516,6 +646,9 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Reads bytes from memory at the provided location.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsReadMemoryRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
@@ -524,6 +657,9 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Disassembles code stored at the provided location.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * 'supportsDisassembleRequest' is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<DisassembleResponse> disassemble(DisassembleArguments args) {

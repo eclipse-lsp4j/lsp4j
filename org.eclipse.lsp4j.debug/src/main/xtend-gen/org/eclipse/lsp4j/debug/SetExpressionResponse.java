@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -31,6 +31,9 @@ public class SetExpressionResponse {
   /**
    * The optional type of the value.
    * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
+   * <p>
    * This is an optional property.
    */
   private String type;
@@ -45,6 +48,7 @@ public class SetExpressionResponse {
   /**
    * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -55,6 +59,7 @@ public class SetExpressionResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -65,6 +70,7 @@ public class SetExpressionResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -90,6 +96,9 @@ public class SetExpressionResponse {
   /**
    * The optional type of the value.
    * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -99,6 +108,9 @@ public class SetExpressionResponse {
   
   /**
    * The optional type of the value.
+   * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -128,6 +140,7 @@ public class SetExpressionResponse {
   /**
    * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -140,6 +153,7 @@ public class SetExpressionResponse {
   /**
    * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -152,6 +166,7 @@ public class SetExpressionResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -165,6 +180,7 @@ public class SetExpressionResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -177,6 +193,7 @@ public class SetExpressionResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -190,6 +207,7 @@ public class SetExpressionResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.

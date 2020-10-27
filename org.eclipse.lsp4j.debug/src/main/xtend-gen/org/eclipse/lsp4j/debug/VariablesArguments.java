@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -22,7 +22,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class VariablesArguments {
   /**
-   * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * The Variable reference.
    */
   private int variablesReference;
   
@@ -50,12 +50,14 @@ public class VariablesArguments {
   /**
    * Specifies details on how to format the Variable values.
    * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsValueFormattingOptions' is true.
+   * <p>
    * This is an optional property.
    */
   private ValueFormat format;
   
   /**
-   * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * The Variable reference.
    */
   @Pure
   public int getVariablesReference() {
@@ -63,7 +65,7 @@ public class VariablesArguments {
   }
   
   /**
-   * The Variable reference. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * The Variable reference.
    */
   public void setVariablesReference(final int variablesReference) {
     this.variablesReference = variablesReference;
@@ -129,6 +131,8 @@ public class VariablesArguments {
   /**
    * Specifies details on how to format the Variable values.
    * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsValueFormattingOptions' is true.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -138,6 +142,8 @@ public class VariablesArguments {
   
   /**
    * Specifies details on how to format the Variable values.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsValueFormattingOptions' is true.
    * <p>
    * This is an optional property.
    */

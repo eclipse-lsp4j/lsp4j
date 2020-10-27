@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -51,6 +51,9 @@ public class Variable {
   /**
    * The type of the variable's value. Typically shown in the UI when hovering over the value.
    * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
+   * <p>
    * This is an optional property.
    */
   private String type;
@@ -72,7 +75,7 @@ public class Variable {
   
   /**
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
    */
   private int variablesReference;
   
@@ -80,7 +83,6 @@ public class Variable {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -90,14 +92,17 @@ public class Variable {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
   private Integer indexedVariables;
   
   /**
-   * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+   * Optional memory reference for the variable if the variable represents executable code, such as a function
+   * pointer.
+   * <p>
+   * This attribute is only required if the client has passed the value true for the 'supportsMemoryReferences'
+   * capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -138,6 +143,9 @@ public class Variable {
   /**
    * The type of the variable's value. Typically shown in the UI when hovering over the value.
    * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -147,6 +155,9 @@ public class Variable {
   
   /**
    * The type of the variable's value. Typically shown in the UI when hovering over the value.
+   * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -196,7 +207,7 @@ public class Variable {
   
   /**
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
    */
   @Pure
   public int getVariablesReference() {
@@ -205,7 +216,7 @@ public class Variable {
   
   /**
    * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
    */
   public void setVariablesReference(final int variablesReference) {
     this.variablesReference = variablesReference;
@@ -215,7 +226,6 @@ public class Variable {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -228,7 +238,6 @@ public class Variable {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -240,7 +249,6 @@ public class Variable {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -253,7 +261,6 @@ public class Variable {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the children in a paged UI and fetch them in chunks.
-   * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
    */
@@ -262,7 +269,11 @@ public class Variable {
   }
   
   /**
-   * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+   * Optional memory reference for the variable if the variable represents executable code, such as a function
+   * pointer.
+   * <p>
+   * This attribute is only required if the client has passed the value true for the 'supportsMemoryReferences'
+   * capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -272,7 +283,11 @@ public class Variable {
   }
   
   /**
-   * Optional memory reference for the variable if the variable represents executable code, such as a function pointer.
+   * Optional memory reference for the variable if the variable represents executable code, such as a function
+   * pointer.
+   * <p>
+   * This attribute is only required if the client has passed the value true for the 'supportsMemoryReferences'
+   * capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -31,7 +31,7 @@ public class BreakpointEventArguments {
   private String reason;
   
   /**
-   * The breakpoint.
+   * The 'id' attribute is used to find the target breakpoint and the other attributes are used as the new values.
    */
   @NonNull
   private Breakpoint breakpoint;
@@ -57,7 +57,7 @@ public class BreakpointEventArguments {
   }
   
   /**
-   * The breakpoint.
+   * The 'id' attribute is used to find the target breakpoint and the other attributes are used as the new values.
    */
   @Pure
   @NonNull
@@ -66,7 +66,7 @@ public class BreakpointEventArguments {
   }
   
   /**
-   * The breakpoint.
+   * The 'id' attribute is used to find the target breakpoint and the other attributes are used as the new values.
    */
   public void setBreakpoint(@NonNull final Breakpoint breakpoint) {
     this.breakpoint = Preconditions.checkNotNull(breakpoint, "breakpoint");

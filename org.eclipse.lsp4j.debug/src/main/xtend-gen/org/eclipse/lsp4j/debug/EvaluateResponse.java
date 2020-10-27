@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -31,6 +31,9 @@ public class EvaluateResponse {
   /**
    * The optional type of the evaluate result.
    * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
+   * <p>
    * This is an optional property.
    */
   private String type;
@@ -44,7 +47,9 @@ public class EvaluateResponse {
   
   /**
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
+   * <p>
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   private int variablesReference;
   
@@ -52,6 +57,7 @@ public class EvaluateResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -62,6 +68,7 @@ public class EvaluateResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -69,8 +76,12 @@ public class EvaluateResponse {
   private Integer indexedVariables;
   
   /**
-   * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
-   * reference to the memory address contained in the pointer.
+   * Optional memory reference to a location appropriate for this result.
+   * <p>
+   * For pointer type eval results, this is generally a reference to the memory address contained in the pointer.
+   * <p>
+   * This attribute should be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsMemoryReferences' capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -95,6 +106,9 @@ public class EvaluateResponse {
   /**
    * The optional type of the evaluate result.
    * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -104,6 +118,9 @@ public class EvaluateResponse {
   
   /**
    * The optional type of the evaluate result.
+   * <p>
+   * This attribute should only be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsVariableType' capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -132,7 +149,9 @@ public class EvaluateResponse {
   
   /**
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
+   * <p>
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   @Pure
   public int getVariablesReference() {
@@ -141,7 +160,9 @@ public class EvaluateResponse {
   
   /**
    * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
-   * variablesReference to the VariablesRequest. The value should be less than or equal to 2147483647 (2^31 - 1).
+   * variablesReference to the VariablesRequest.
+   * <p>
+   * The value should be less than or equal to 2147483647 (2^31 - 1).
    */
   public void setVariablesReference(final int variablesReference) {
     this.variablesReference = variablesReference;
@@ -151,6 +172,7 @@ public class EvaluateResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -164,6 +186,7 @@ public class EvaluateResponse {
    * The number of named child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -176,6 +199,7 @@ public class EvaluateResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -189,6 +213,7 @@ public class EvaluateResponse {
    * The number of indexed child variables.
    * <p>
    * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
+   * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
    * <p>
    * This is an optional property.
@@ -198,8 +223,12 @@ public class EvaluateResponse {
   }
   
   /**
-   * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
-   * reference to the memory address contained in the pointer.
+   * Optional memory reference to a location appropriate for this result.
+   * <p>
+   * For pointer type eval results, this is generally a reference to the memory address contained in the pointer.
+   * <p>
+   * This attribute should be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsMemoryReferences' capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */
@@ -209,8 +238,12 @@ public class EvaluateResponse {
   }
   
   /**
-   * Memory reference to a location appropriate for this result. For pointer type eval results, this is generally a
-   * reference to the memory address contained in the pointer.
+   * Optional memory reference to a location appropriate for this result.
+   * <p>
+   * For pointer type eval results, this is generally a reference to the memory address contained in the pointer.
+   * <p>
+   * This attribute should be returned by a debug adapter if the client has passed the value true for the
+   * 'supportsMemoryReferences' capability of the 'initialize' request.
    * <p>
    * This is an optional property.
    */

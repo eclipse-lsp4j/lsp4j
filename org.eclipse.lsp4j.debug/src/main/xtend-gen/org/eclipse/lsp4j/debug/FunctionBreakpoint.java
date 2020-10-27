@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -30,13 +30,18 @@ public class FunctionBreakpoint {
   /**
    * An optional expression for conditional breakpoints.
    * <p>
+   * It is only honored by a debug adapter if the capability 'supportsConditionalBreakpoints' is true.
+   * <p>
    * This is an optional property.
    */
   private String condition;
   
   /**
-   * An optional expression that controls how many hits of the breakpoint are ignored. The backend is expected to
-   * interpret the expression as needed.
+   * An optional expression that controls how many hits of the breakpoint are ignored.
+   * <p>
+   * The backend is expected to interpret the expression as needed.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsHitConditionalBreakpoints' is true.
    * <p>
    * This is an optional property.
    */
@@ -61,6 +66,8 @@ public class FunctionBreakpoint {
   /**
    * An optional expression for conditional breakpoints.
    * <p>
+   * It is only honored by a debug adapter if the capability 'supportsConditionalBreakpoints' is true.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -71,6 +78,8 @@ public class FunctionBreakpoint {
   /**
    * An optional expression for conditional breakpoints.
    * <p>
+   * It is only honored by a debug adapter if the capability 'supportsConditionalBreakpoints' is true.
+   * <p>
    * This is an optional property.
    */
   public void setCondition(final String condition) {
@@ -78,8 +87,11 @@ public class FunctionBreakpoint {
   }
   
   /**
-   * An optional expression that controls how many hits of the breakpoint are ignored. The backend is expected to
-   * interpret the expression as needed.
+   * An optional expression that controls how many hits of the breakpoint are ignored.
+   * <p>
+   * The backend is expected to interpret the expression as needed.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsHitConditionalBreakpoints' is true.
    * <p>
    * This is an optional property.
    */
@@ -89,8 +101,11 @@ public class FunctionBreakpoint {
   }
   
   /**
-   * An optional expression that controls how many hits of the breakpoint are ignored. The backend is expected to
-   * interpret the expression as needed.
+   * An optional expression that controls how many hits of the breakpoint are ignored.
+   * <p>
+   * The backend is expected to interpret the expression as needed.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsHitConditionalBreakpoints' is true.
    * <p>
    * This is an optional property.
    */

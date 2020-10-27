@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -41,6 +41,8 @@ public class StackTraceArguments {
   
   /**
    * Specifies details on how to format the stack frames.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsValueFormattingOptions' is true.
    * <p>
    * This is an optional property.
    */
@@ -102,6 +104,8 @@ public class StackTraceArguments {
   /**
    * Specifies details on how to format the stack frames.
    * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsValueFormattingOptions' is true.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -111,6 +115,8 @@ public class StackTraceArguments {
   
   /**
    * Specifies details on how to format the stack frames.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsValueFormattingOptions' is true.
    * <p>
    * This is an optional property.
    */

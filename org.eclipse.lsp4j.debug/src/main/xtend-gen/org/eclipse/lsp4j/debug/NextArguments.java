@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j.debug;
 
+import org.eclipse.lsp4j.debug.SteppingGranularity;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -23,6 +24,13 @@ public class NextArguments {
    * Execute 'next' for this thread.
    */
   private int threadId;
+  
+  /**
+   * Optional granularity to step. If no granularity is specified, a granularity of 'statement' is assumed.
+   * <p>
+   * This is an optional property.
+   */
+  private SteppingGranularity granularity;
   
   /**
    * Execute 'next' for this thread.
@@ -39,11 +47,31 @@ public class NextArguments {
     this.threadId = threadId;
   }
   
+  /**
+   * Optional granularity to step. If no granularity is specified, a granularity of 'statement' is assumed.
+   * <p>
+   * This is an optional property.
+   */
+  @Pure
+  public SteppingGranularity getGranularity() {
+    return this.granularity;
+  }
+  
+  /**
+   * Optional granularity to step. If no granularity is specified, a granularity of 'statement' is assumed.
+   * <p>
+   * This is an optional property.
+   */
+  public void setGranularity(final SteppingGranularity granularity) {
+    this.granularity = granularity;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("threadId", this.threadId);
+    b.add("granularity", this.granularity);
     return b.toString();
   }
   
@@ -59,12 +87,20 @@ public class NextArguments {
     NextArguments other = (NextArguments) obj;
     if (other.threadId != this.threadId)
       return false;
+    if (this.granularity == null) {
+      if (other.granularity != null)
+        return false;
+    } else if (!this.granularity.equals(other.granularity))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + this.threadId;
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + this.threadId;
+    return prime * result + ((this.granularity== null) ? 0 : this.granularity.hashCode());
   }
 }

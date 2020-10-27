@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017, 2019 Kichwa Coders Ltd. and others.
+ * Copyright (c) 2017, 2020 Kichwa Coders Ltd. and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -32,6 +32,8 @@ public class SetExceptionBreakpointsArguments {
   /**
    * Configuration options for selected exceptions.
    * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsExceptionOptions' is true.
+   * <p>
    * This is an optional property.
    */
   private ExceptionOptions[] exceptionOptions;
@@ -55,6 +57,8 @@ public class SetExceptionBreakpointsArguments {
   /**
    * Configuration options for selected exceptions.
    * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsExceptionOptions' is true.
+   * <p>
    * This is an optional property.
    */
   @Pure
@@ -64,6 +68,8 @@ public class SetExceptionBreakpointsArguments {
   
   /**
    * Configuration options for selected exceptions.
+   * <p>
+   * The attribute is only honored by a debug adapter if the capability 'supportsExceptionOptions' is true.
    * <p>
    * This is an optional property.
    */
