@@ -137,8 +137,11 @@ public interface LanguageClient {
 	 * <b>Note:</b> the <a href=
 	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
 	 * language feature</a> is not yet part of the official LSP specification.
+	 * 
+	 * @deprecated Use {@code SemanticTokens} API instead.
 	 */
 	@Beta
+	@Deprecated
 	@JsonNotification("textDocument/semanticHighlighting")
 	default void semanticHighlighting(SemanticHighlightingParams params) {
 		throw new UnsupportedOperationException();

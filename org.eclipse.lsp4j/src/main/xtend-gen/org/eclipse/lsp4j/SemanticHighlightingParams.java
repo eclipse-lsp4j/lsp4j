@@ -22,8 +22,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Parameters for the semantic highlighting (server-side) push notification.
+ * 
+ * @deprecated Use {@code SemanticTokens} API instead.
  */
 @Beta
+@Deprecated
 @SuppressWarnings("all")
 public class SemanticHighlightingParams {
   /**

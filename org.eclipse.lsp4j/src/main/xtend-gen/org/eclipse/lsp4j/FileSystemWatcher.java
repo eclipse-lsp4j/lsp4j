@@ -19,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class FileSystemWatcher {
   /**
-   * The  glob pattern to watch
+   * The glob pattern to watch
    */
   @NonNull
   private String globPattern;
@@ -44,7 +44,7 @@ public class FileSystemWatcher {
   }
   
   /**
-   * The  glob pattern to watch
+   * The glob pattern to watch
    */
   @Pure
   @NonNull
@@ -53,7 +53,7 @@ public class FileSystemWatcher {
   }
   
   /**
-   * The  glob pattern to watch
+   * The glob pattern to watch
    */
   public void setGlobPattern(@NonNull final String globPattern) {
     this.globPattern = Preconditions.checkNotNull(globPattern, "globPattern");

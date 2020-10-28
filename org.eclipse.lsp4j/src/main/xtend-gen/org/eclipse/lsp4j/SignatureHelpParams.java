@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 public class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams {
   /**
    * The signature help context. This is only available if the client specifies
-   * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
+   * to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
    * 
    * Since 3.15.0
    */
@@ -46,7 +46,7 @@ public class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgress
   
   /**
    * The signature help context. This is only available if the client specifies
-   * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
+   * to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
    * 
    * Since 3.15.0
    */
@@ -57,7 +57,7 @@ public class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgress
   
   /**
    * The signature help context. This is only available if the client specifies
-   * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
+   * to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
    * 
    * Since 3.15.0
    */
