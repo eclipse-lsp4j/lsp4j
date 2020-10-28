@@ -39,7 +39,7 @@ public class TextDocumentItem {
   private int version;
   
   /**
-   * The content of the opened  text document.
+   * The content of the opened text document.
    */
   @NonNull
   private String text;
@@ -102,7 +102,7 @@ public class TextDocumentItem {
   }
   
   /**
-   * The content of the opened  text document.
+   * The content of the opened text document.
    */
   @Pure
   @NonNull
@@ -111,7 +111,7 @@ public class TextDocumentItem {
   }
   
   /**
-   * The content of the opened  text document.
+   * The content of the opened text document.
    */
   public void setText(@NonNull final String text) {
     this.text = Preconditions.checkNotNull(text, "text");

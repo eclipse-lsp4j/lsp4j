@@ -17,8 +17,11 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * Represents a semantic highlighting information that has to be applied on a specific line of the text document.
+ * 
+ * @deprecated Use {@code SemanticTokens} API instead.
  */
 @Beta
+@Deprecated
 @SuppressWarnings("all")
 public class SemanticHighlightingInformation {
   /**

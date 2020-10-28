@@ -166,8 +166,11 @@ public class ServerCapabilities {
   
   /**
    * Semantic highlighting server capabilities.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
    */
   @Beta
+  @Deprecated
   private SemanticHighlightingServerCapabilities semanticHighlighting;
   
   /**
@@ -712,15 +715,21 @@ public class ServerCapabilities {
   
   /**
    * Semantic highlighting server capabilities.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
    */
   @Pure
+  @Deprecated
   public SemanticHighlightingServerCapabilities getSemanticHighlighting() {
     return this.semanticHighlighting;
   }
   
   /**
    * Semantic highlighting server capabilities.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
    */
+  @Deprecated
   public void setSemanticHighlighting(final SemanticHighlightingServerCapabilities semanticHighlighting) {
     this.semanticHighlighting = semanticHighlighting;
   }

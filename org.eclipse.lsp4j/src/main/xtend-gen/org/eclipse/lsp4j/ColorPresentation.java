@@ -30,7 +30,7 @@ public class ColorPresentation {
   
   /**
    * An edit which is applied to a document when selecting
-   * this presentation for the color.  When `null` the label is used.
+   * this presentation for the color. When `null` the label is used.
    */
   private TextEdit textEdit;
   
@@ -80,7 +80,7 @@ public class ColorPresentation {
   
   /**
    * An edit which is applied to a document when selecting
-   * this presentation for the color.  When `null` the label is used.
+   * this presentation for the color. When `null` the label is used.
    */
   @Pure
   public TextEdit getTextEdit() {
@@ -89,7 +89,7 @@ public class ColorPresentation {
   
   /**
    * An edit which is applied to a document when selecting
-   * this presentation for the color.  When `null` the label is used.
+   * this presentation for the color. When `null` the label is used.
    */
   public void setTextEdit(final TextEdit textEdit) {
     this.textEdit = textEdit;

@@ -163,8 +163,11 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
    */
   @Beta
+  @Deprecated
   private SemanticHighlightingCapabilities semanticHighlightingCapabilities;
   
   /**
@@ -533,15 +536,21 @@ public class TextDocumentClientCapabilities {
   
   /**
    * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
    */
   @Pure
+  @Deprecated
   public SemanticHighlightingCapabilities getSemanticHighlightingCapabilities() {
     return this.semanticHighlightingCapabilities;
   }
   
   /**
    * Capabilities specific to {@code textDocument/semanticHighlighting}.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
    */
+  @Deprecated
   public void setSemanticHighlightingCapabilities(final SemanticHighlightingCapabilities semanticHighlightingCapabilities) {
     this.semanticHighlightingCapabilities = semanticHighlightingCapabilities;
   }

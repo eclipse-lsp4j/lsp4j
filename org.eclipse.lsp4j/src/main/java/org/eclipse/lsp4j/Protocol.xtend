@@ -1161,8 +1161,11 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
  * <b>Note:</b> the <a href=
  * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
  * language feature</a> is not yet part of the official LSP specification.
+ *
+ * @deprecated Use {@code SemanticTokens} API instead.
  */
 @Beta
+@Deprecated
 @JsonRpcData
 class SemanticHighlightingCapabilities {
 
@@ -1481,8 +1484,11 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to {@code textDocument/semanticHighlighting}.
+	 *
+	 * @deprecated Use {@code SemanticTokens} API instead.
 	 */
 	@Beta
+	@Deprecated
 	SemanticHighlightingCapabilities semanticHighlightingCapabilities
 
 	/**
@@ -2333,7 +2339,7 @@ class DidChangeWatchedFilesRegistrationOptions {
 @JsonRpcData
 class FileSystemWatcher {
 	/**
-	 * The  glob pattern to watch
+	 * The glob pattern to watch
 	 */
 	@NonNull
 	String globPattern
@@ -4324,8 +4330,11 @@ class ServerCapabilities {
 
 	/**
 	 * Semantic highlighting server capabilities.
+	 *
+	 * @deprecated Use {@code SemanticTokens} API instead.
 	 */
 	@Beta
+	@Deprecated
 	SemanticHighlightingServerCapabilities semanticHighlighting
 
 	/**
@@ -4398,8 +4407,11 @@ class WorkspaceServerCapabilities {
  * <b>Note:</b> the <a href=
  * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
  * language feature</a> is not yet part of the official LSP specification.
+ *
+ * @deprecated Use {@code SemanticTokens} API instead.
  */
 @Beta
+@Deprecated
 @JsonRpcData
 class SemanticHighlightingServerCapabilities {
 
@@ -4447,7 +4459,7 @@ class ShowMessageRequestParams extends MessageParams {
 class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	/**
 	 * The signature help context. This is only available if the client specifies
-	 * to send this using the client capability  `textDocument.signatureHelp.contextSupport === true`
+	 * to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
 	 *
 	 * Since 3.15.0
 	 */
@@ -5141,7 +5153,7 @@ class TextDocumentItem {
 	int version
 
 	/**
-	 * The content of the opened  text document.
+	 * The content of the opened text document.
 	 */
 	@NonNull
 	String text
@@ -6298,7 +6310,7 @@ class ColorPresentation {
 
 	/**
 	 * An edit which is applied to a document when selecting
-	 * this presentation for the color.  When `null` the label is used.
+	 * this presentation for the color. When `null` the label is used.
 	 */
 	TextEdit textEdit
 
@@ -6393,8 +6405,11 @@ class FoldingRange {
 
 /**
  * Parameters for the semantic highlighting (server-side) push notification.
+ *
+ * @deprecated Use {@code SemanticTokens} API instead.
  */
 @Beta
+@Deprecated
 @JsonRpcData
 class SemanticHighlightingParams {
 	/**
@@ -6420,8 +6435,11 @@ class SemanticHighlightingParams {
 
 /**
  * Represents a semantic highlighting information that has to be applied on a specific line of the text document.
+ *
+ * @deprecated Use {@code SemanticTokens} API instead.
  */
 @Beta
+@Deprecated
 @JsonRpcData
 class SemanticHighlightingInformation {
 	/**
@@ -6452,7 +6470,7 @@ class SemanticHighlightingInformation {
  */
 @Beta
 @JsonRpcData
-class CallHierarchyPrepareParams  extends TextDocumentPositionAndWorkDoneProgressParams {
+class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
 
 }
 
