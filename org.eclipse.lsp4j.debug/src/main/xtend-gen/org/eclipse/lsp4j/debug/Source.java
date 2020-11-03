@@ -45,8 +45,8 @@ public class Source {
   private String path;
   
   /**
-   * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-   * is specified).
+   * If sourceReference &gt; 0 the contents of the source must be retrieved through the SourceRequest (even if a
+   * path is specified).
    * <p>
    * A sourceReference is only valid for a session, so it must not be used to persist a source.
    * <p>
@@ -148,8 +148,8 @@ public class Source {
   }
   
   /**
-   * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-   * is specified).
+   * If sourceReference &gt; 0 the contents of the source must be retrieved through the SourceRequest (even if a
+   * path is specified).
    * <p>
    * A sourceReference is only valid for a session, so it must not be used to persist a source.
    * <p>
@@ -163,8 +163,8 @@ public class Source {
   }
   
   /**
-   * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-   * is specified).
+   * If sourceReference &gt; 0 the contents of the source must be retrieved through the SourceRequest (even if a
+   * path is specified).
    * <p>
    * A sourceReference is only valid for a session, so it must not be used to persist a source.
    * <p>

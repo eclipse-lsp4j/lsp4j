@@ -233,7 +233,7 @@ class OutputEventArguments {
 	 */
 	OutputEventArgumentsGroup group;
 	/**
-	 * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
+	 * If an attribute 'variablesReference' exists and its value is &gt; 0, the output contains objects which can be
 	 * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
 	 * 2147483647 (2^31 - 1).
 	 * <p>
@@ -1413,7 +1413,7 @@ class SetVariableResponse {
 	 */
 	String type;
 	/**
-	 * If variablesReference is > 0, the new value is structured and its children can be retrieved by passing
+	 * If variablesReference is &gt; 0, the new value is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 * <p>
 	 * The value should be less than or equal to 2147483647 (2^31 - 1).
@@ -1614,7 +1614,7 @@ class EvaluateResponse {
 	 */
 	VariablePresentationHint presentationHint;
 	/**
-	 * If variablesReference is > 0, the evaluate result is structured and its children can be retrieved by passing
+	 * If variablesReference is &gt; 0, the evaluate result is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 * <p>
 	 * The value should be less than or equal to 2147483647 (2^31 - 1).
@@ -1740,7 +1740,7 @@ class SetExpressionResponse {
 	 */
 	VariablePresentationHint presentationHint;
 	/**
-	 * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
+	 * If variablesReference is &gt; 0, the value is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 * <p>
 	 * The value should be less than or equal to 2147483647 (2^31 - 1).
@@ -2531,8 +2531,8 @@ class Source {
 	 */
 	String path;
 	/**
-	 * If sourceReference > 0 the contents of the source must be retrieved through the SourceRequest (even if a path
-	 * is specified).
+	 * If sourceReference &gt; 0 the contents of the source must be retrieved through the SourceRequest (even if a
+	 * path is specified).
 	 * <p>
 	 * A sourceReference is only valid for a session, so it must not be used to persist a source.
 	 * <p>
@@ -2821,7 +2821,7 @@ class Variable {
 	 */
 	String evaluateName;
 	/**
-	 * If variablesReference is > 0, the variable is structured and its children can be retrieved by passing
+	 * If variablesReference is &gt; 0, the variable is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 */
 	int variablesReference;
@@ -3256,7 +3256,7 @@ enum SteppingGranularity {
 	 * The meaning of a
 	 * statement is determined by the adapter and it may be considered equivalent to a line.
 	 * For example 'for(int i =
-	 * 0; i < 10; i++) could be considered to have 3 statements 'int i = 0', 'i < 10', and 'i++'.
+	 * 0; i &lt; 10; i++) could be considered to have 3 statements 'int i = 0', 'i &lt; 10', and 'i++'.
 	 */
 	STATEMENT,
 	/**

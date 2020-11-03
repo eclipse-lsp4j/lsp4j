@@ -21,7 +21,7 @@ public enum SteppingGranularity {
    * The meaning of a
    * statement is determined by the adapter and it may be considered equivalent to a line.
    * For example 'for(int i =
-   * 0; i < 10; i++) could be considered to have 3 statements 'int i = 0', 'i < 10', and 'i++'.
+   * 0; i &lt; 10; i++) could be considered to have 3 statements 'int i = 0', 'i &lt; 10', and 'i++'.
    */
   STATEMENT,
   

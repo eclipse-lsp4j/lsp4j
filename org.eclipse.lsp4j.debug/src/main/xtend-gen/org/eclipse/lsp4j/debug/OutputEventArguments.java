@@ -46,7 +46,7 @@ public class OutputEventArguments {
   private OutputEventArgumentsGroup group;
   
   /**
-   * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
+   * If an attribute 'variablesReference' exists and its value is &gt; 0, the output contains objects which can be
    * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
    * 2147483647 (2^31 - 1).
    * <p>
@@ -142,7 +142,7 @@ public class OutputEventArguments {
   }
   
   /**
-   * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
+   * If an attribute 'variablesReference' exists and its value is &gt; 0, the output contains objects which can be
    * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
    * 2147483647 (2^31 - 1).
    * <p>
@@ -154,7 +154,7 @@ public class OutputEventArguments {
   }
   
   /**
-   * If an attribute 'variablesReference' exists and its value is > 0, the output contains objects which can be
+   * If an attribute 'variablesReference' exists and its value is &gt; 0, the output contains objects which can be
    * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
    * 2147483647 (2^31 - 1).
    * <p>

@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -55,12 +56,34 @@ public class TracingMessageConsumer implements MessageConsumer {
 			Map<String, RequestMetadata> receivedRequests,
 			PrintWriter printWriter,
 			Clock clock) {
+		this(messageConsumer, sentRequests, receivedRequests, printWriter, clock, null);
+	}
+
+	/**
+	 * @param messageConsumer The {@link MessageConsumer} to wrap.
+	 * @param sentRequests A map that keeps track of pending sent request data.
+	 * @param receivedRequests A map that keeps track of pending received request data.
+	 * @param printWriter Where to write the log to.
+	 * @param clock The clock that is used to calculate timestamps and durations.
+	 * @param locale THe Locale to format the timestamps and durations, or <code>null</code> to use default locale.
+	 */
+	public TracingMessageConsumer(
+			MessageConsumer messageConsumer,
+			Map<String, RequestMetadata> sentRequests,
+			Map<String, RequestMetadata> receivedRequests,
+			PrintWriter printWriter,
+			Clock clock,
+			Locale locale) {
 		this.messageConsumer = Objects.requireNonNull(messageConsumer);
 		this.sentRequests = Objects.requireNonNull(sentRequests);
 		this.receivedRequests = Objects.requireNonNull(receivedRequests);
 		this.printWriter = Objects.requireNonNull(printWriter);
 		this.clock = Objects.requireNonNull(clock);
-		this.dateTimeFormatter = DateTimeFormatter.ofPattern("KK:mm:ss a").withZone(clock.getZone());
+		if (locale == null) {
+			this.dateTimeFormatter = DateTimeFormatter.ofPattern("KK:mm:ss a").withZone(clock.getZone());
+		} else {
+			this.dateTimeFormatter = DateTimeFormatter.ofPattern("KK:mm:ss a", locale).withZone(clock.getZone());
+		}
 	}
 
 	/**

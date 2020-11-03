@@ -46,7 +46,7 @@ public class SetExpressionResponse {
   private VariablePresentationHint presentationHint;
   
   /**
-   * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
+   * If variablesReference is &gt; 0, the value is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
@@ -138,7 +138,7 @@ public class SetExpressionResponse {
   }
   
   /**
-   * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
+   * If variablesReference is &gt; 0, the value is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
@@ -151,7 +151,7 @@ public class SetExpressionResponse {
   }
   
   /**
-   * If variablesReference is > 0, the value is structured and its children can be retrieved by passing
+   * If variablesReference is &gt; 0, the value is structured and its children can be retrieved by passing
    * variablesReference to the VariablesRequest.
    * <p>
    * The value should be less than or equal to 2147483647 (2^31 - 1).
