@@ -51,6 +51,10 @@
 									file="${basedir}/target/lsp4j.p2-repository-0.10.0-SNAPSHOT.zip"
 									tofile="${root-dir}/build/p2-repository/../lsp4j.p2-repository-0.10.0-SNAPSHOT.zip">
 								</copy>
+								<copy
+									file="${basedir}/target/lsp4j.p2-repository-0.10.0-SNAPSHOT.zip"
+									tofile="${root-dir}/build/p2-repository/v0.10.0.zip">
+								</copy>
 							</tasks>
 						</configuration>
 					</execution>
