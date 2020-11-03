@@ -41,7 +41,6 @@ find maven-repository -name '*.pom' | while read i
 do
     base="${i%.*}"
     $ECHO /shared/common/apache-maven-latest/bin/mvn \
-        -s /opt/public/hipp/homes/genie.lsp4j/.m2/settings-deploy-ossrh.xml \
         gpg:sign-and-deploy-file \
         -DpomFile=${base}.pom \
         -Dfile=${base}.jar \
