@@ -1,5 +1,10 @@
 ## LSP4J Change Log
 
+### v0.11.0 (Date TBD)
+
+Fixed issues: https://github.com/eclipse/lsp4j/milestone/18?closed=1
+
+
 ### v0.10.0 (Nov. 2020)
 
  * Implemented LSP version 3.16.0 (specification is not finalized yet)
