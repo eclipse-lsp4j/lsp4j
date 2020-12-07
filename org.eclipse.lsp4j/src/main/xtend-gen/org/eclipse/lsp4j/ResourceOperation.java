@@ -11,7 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
+import org.eclipse.lsp4j.ChangeAnnotation;
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
@@ -21,8 +23,19 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @JsonAdapter(ResourceOperationTypeAdapter.class)
 @SuppressWarnings("all")
 public abstract class ResourceOperation {
+  /**
+   * The kind of resource operation. For allowed values, see {@link ResourceOperationKind}
+   */
   @NonNull
   private String kind;
+  
+  /**
+   * An optional annotation describing the operation.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private ChangeAnnotation annotation;
   
   public ResourceOperation() {
   }
@@ -31,14 +44,39 @@ public abstract class ResourceOperation {
     this.kind = Preconditions.<String>checkNotNull(kind, "kind");
   }
   
+  /**
+   * The kind of resource operation. For allowed values, see {@link ResourceOperationKind}
+   */
   @Pure
   @NonNull
   public String getKind() {
     return this.kind;
   }
   
+  /**
+   * The kind of resource operation. For allowed values, see {@link ResourceOperationKind}
+   */
   public void setKind(@NonNull final String kind) {
     this.kind = Preconditions.checkNotNull(kind, "kind");
+  }
+  
+  /**
+   * An optional annotation describing the operation.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public ChangeAnnotation getAnnotation() {
+    return this.annotation;
+  }
+  
+  /**
+   * An optional annotation describing the operation.
+   * 
+   * Since 3.16.0
+   */
+  public void setAnnotation(final ChangeAnnotation annotation) {
+    this.annotation = annotation;
   }
   
   @Override
@@ -46,6 +84,7 @@ public abstract class ResourceOperation {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("kind", this.kind);
+    b.add("annotation", this.annotation);
     return b.toString();
   }
   
@@ -64,12 +103,20 @@ public abstract class ResourceOperation {
         return false;
     } else if (!this.kind.equals(other.kind))
       return false;
+    if (this.annotation == null) {
+      if (other.annotation != null)
+        return false;
+    } else if (!this.annotation.equals(other.annotation))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.kind== null) ? 0 : this.kind.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
+    return prime * result + ((this.annotation== null) ? 0 : this.annotation.hashCode());
   }
 }

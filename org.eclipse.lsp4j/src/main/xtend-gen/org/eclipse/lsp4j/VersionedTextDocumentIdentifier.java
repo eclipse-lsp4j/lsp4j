@@ -19,7 +19,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * An identifier to denote a specific version of a text document.
+ * An identifier to denote a specific version of a text document. This information usually flows from the client to the server.
  */
 @JsonAdapter(VersionedTextDocumentIdentifierTypeAdapter.Factory.class)
 @SuppressWarnings("all")

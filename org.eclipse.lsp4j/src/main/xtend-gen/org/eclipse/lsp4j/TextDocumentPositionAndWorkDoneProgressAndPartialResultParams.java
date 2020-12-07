@@ -32,7 +32,7 @@ public abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultPar
    * An optional token that a server can use to report partial results (e.g. streaming) to
    * the client.
    */
-  private Either<String, Number> partialResultToken;
+  private Either<String, Integer> partialResultToken;
   
   public TextDocumentPositionAndWorkDoneProgressAndPartialResultParams() {
   }
@@ -46,7 +46,7 @@ public abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultPar
    * the client.
    */
   @Pure
-  public Either<String, Number> getPartialResultToken() {
+  public Either<String, Integer> getPartialResultToken() {
     return this.partialResultToken;
   }
   
@@ -54,7 +54,7 @@ public abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultPar
    * An optional token that a server can use to report partial results (e.g. streaming) to
    * the client.
    */
-  public void setPartialResultToken(final Either<String, Number> partialResultToken) {
+  public void setPartialResultToken(final Either<String, Integer> partialResultToken) {
     this.partialResultToken = partialResultToken;
   }
   
@@ -66,7 +66,7 @@ public abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultPar
     this.partialResultToken = Either.forLeft(partialResultToken);
   }
   
-  public void setPartialResultToken(final Number partialResultToken) {
+  public void setPartialResultToken(final Integer partialResultToken) {
     if (partialResultToken == null) {
       this.partialResultToken = null;
       return;

@@ -28,7 +28,7 @@ public enum TextDocumentSyncKind {
 	
 	/**
 	 * Documents are synced by sending the full content on open. After that only incremental
-     * updates to the document are send.
+	 * updates to the document are send.
 	 */
 	Incremental;
 	

@@ -11,7 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
+import org.eclipse.lsp4j.GeneralClientCapabilities;
 import org.eclipse.lsp4j.TextDocumentClientCapabilities;
 import org.eclipse.lsp4j.WindowClientCapabilities;
 import org.eclipse.lsp4j.WorkspaceClientCapabilities;
@@ -48,6 +50,14 @@ public class ClientCapabilities {
    * Window specific client capabilities.
    */
   private WindowClientCapabilities window;
+  
+  /**
+   * General client capabilities.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private GeneralClientCapabilities general;
   
   /**
    * Experimental client capabilities.
@@ -117,6 +127,25 @@ public class ClientCapabilities {
   }
   
   /**
+   * General client capabilities.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public GeneralClientCapabilities getGeneral() {
+    return this.general;
+  }
+  
+  /**
+   * General client capabilities.
+   * 
+   * Since 3.16.0
+   */
+  public void setGeneral(final GeneralClientCapabilities general) {
+    this.general = general;
+  }
+  
+  /**
    * Experimental client capabilities.
    */
   @Pure
@@ -138,6 +167,7 @@ public class ClientCapabilities {
     b.add("workspace", this.workspace);
     b.add("textDocument", this.textDocument);
     b.add("window", this.window);
+    b.add("general", this.general);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -167,6 +197,11 @@ public class ClientCapabilities {
         return false;
     } else if (!this.window.equals(other.window))
       return false;
+    if (this.general == null) {
+      if (other.general != null)
+        return false;
+    } else if (!this.general.equals(other.general))
+      return false;
     if (this.experimental == null) {
       if (other.experimental != null)
         return false;
@@ -183,6 +218,7 @@ public class ClientCapabilities {
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
     result = prime * result + ((this.textDocument== null) ? 0 : this.textDocument.hashCode());
     result = prime * result + ((this.window== null) ? 0 : this.window.hashCode());
+    result = prime * result + ((this.general== null) ? 0 : this.general.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

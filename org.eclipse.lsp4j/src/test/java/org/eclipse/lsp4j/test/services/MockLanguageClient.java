@@ -14,9 +14,13 @@ package org.eclipse.lsp4j.test.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.google.common.annotations.Beta;
+
 import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
+import org.eclipse.lsp4j.ShowDocumentParams;
+import org.eclipse.lsp4j.ShowDocumentResult;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.services.LanguageClient;
@@ -37,6 +41,12 @@ public class MockLanguageClient implements LanguageClient {
 
 	@Override
 	public CompletableFuture<MessageActionItem> showMessageRequest(ShowMessageRequestParams requestParams) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Beta
+	@Override
+	public CompletableFuture<ShowDocumentResult> showDocument(ShowDocumentParams requestParams) {
 		throw new UnsupportedOperationException();
 	}
 

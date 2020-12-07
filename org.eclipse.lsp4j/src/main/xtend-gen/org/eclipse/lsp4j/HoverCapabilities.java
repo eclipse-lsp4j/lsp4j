@@ -22,8 +22,9 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 @SuppressWarnings("all")
 public class HoverCapabilities extends DynamicRegistrationCapabilities {
   /**
-   * Client supports the following content formats for the content
-   * property. The order describes the preferred format of the client.
+   * Client supports the following content formats if the content
+   * property refers to {@link MarkupContent}.
+   * The order describes the preferred format of the client.
    * 
    * See {@link MarkupKind} for allowed values.
    */
@@ -42,8 +43,9 @@ public class HoverCapabilities extends DynamicRegistrationCapabilities {
   }
   
   /**
-   * Client supports the following content formats for the content
-   * property. The order describes the preferred format of the client.
+   * Client supports the following content formats if the content
+   * property refers to {@link MarkupContent}.
+   * The order describes the preferred format of the client.
    * 
    * See {@link MarkupKind} for allowed values.
    */
@@ -53,8 +55,9 @@ public class HoverCapabilities extends DynamicRegistrationCapabilities {
   }
   
   /**
-   * Client supports the following content formats for the content
-   * property. The order describes the preferred format of the client.
+   * Client supports the following content formats if the content
+   * property refers to {@link MarkupContent}.
+   * The order describes the preferred format of the client.
    * 
    * See {@link MarkupKind} for allowed values.
    */

@@ -11,7 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.StaticRegistrationOptions;
+import org.eclipse.lsp4j.AbstractTextDocumentRegistrationAndWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -19,11 +19,55 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * Rename options
  */
 @SuppressWarnings("all")
-public class RenameOptions extends StaticRegistrationOptions {
+public class RenameOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+  /**
+   * The id used to register the request. The id can be used to deregister
+   * the request again. See also Registration#id.
+   * 
+   * @deprecated This options object is not specified for StaticRegistrationOptions
+   */
+  @Deprecated
+  private String id;
+  
   /**
    * Renames should be checked and tested before being executed.
    */
   private Boolean prepareProvider;
+  
+  public RenameOptions() {
+  }
+  
+  @Deprecated
+  public RenameOptions(final String id) {
+    this.id = id;
+  }
+  
+  public RenameOptions(final Boolean prepareProvider) {
+    this.prepareProvider = prepareProvider;
+  }
+  
+  /**
+   * The id used to register the request. The id can be used to deregister
+   * the request again. See also Registration#id.
+   * 
+   * @deprecated This options object is not specified for StaticRegistrationOptions
+   */
+  @Pure
+  @Deprecated
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * The id used to register the request. The id can be used to deregister
+   * the request again. See also Registration#id.
+   * 
+   * @deprecated This options object is not specified for StaticRegistrationOptions
+   */
+  @Deprecated
+  public void setId(final String id) {
+    this.id = id;
+  }
   
   /**
    * Renames should be checked and tested before being executed.
@@ -44,8 +88,9 @@ public class RenameOptions extends StaticRegistrationOptions {
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
+    b.add("id", this.id);
     b.add("prepareProvider", this.prepareProvider);
-    b.add("id", getId());
+    b.add("workDoneProgress", getWorkDoneProgress());
     b.add("documentSelector", getDocumentSelector());
     return b.toString();
   }
@@ -62,6 +107,11 @@ public class RenameOptions extends StaticRegistrationOptions {
     if (!super.equals(obj))
       return false;
     RenameOptions other = (RenameOptions) obj;
+    if (this.id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!this.id.equals(other.id))
+      return false;
     if (this.prepareProvider == null) {
       if (other.prepareProvider != null)
         return false;
@@ -73,6 +123,9 @@ public class RenameOptions extends StaticRegistrationOptions {
   @Override
   @Pure
   public int hashCode() {
-    return 31 * super.hashCode() + ((this.prepareProvider== null) ? 0 : this.prepareProvider.hashCode());
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((this.id== null) ? 0 : this.id.hashCode());
+    return prime * result + ((this.prepareProvider== null) ? 0 : this.prepareProvider.hashCode());
   }
 }

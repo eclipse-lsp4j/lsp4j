@@ -43,8 +43,8 @@ public enum CompletionTriggerKind {
 		return value;
 	}
 	
-	public static FileChangeType forValue(int value) {
-		FileChangeType[] allValues = FileChangeType.values();
+	public static CompletionTriggerKind forValue(int value) {
+		CompletionTriggerKind[] allValues = CompletionTriggerKind.values();
 		if (value < 1 || value > allValues.length)
 			throw new IllegalArgumentException("Illegal enum value: " + value);
 		return allValues[value - 1];

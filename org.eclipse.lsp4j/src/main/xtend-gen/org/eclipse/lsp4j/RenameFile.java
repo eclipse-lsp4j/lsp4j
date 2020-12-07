@@ -52,9 +52,7 @@ public class RenameFile extends ResourceOperation {
   }
   
   public RenameFile(@NonNull final String oldUri, @NonNull final String newUri, final RenameFileOptions options) {
-    super(ResourceOperationKind.Rename);
-    this.oldUri = Preconditions.<String>checkNotNull(oldUri, "oldUri");
-    this.newUri = Preconditions.<String>checkNotNull(newUri, "newUri");
+    this(oldUri, newUri);
     this.options = options;
   }
   
@@ -113,6 +111,7 @@ public class RenameFile extends ResourceOperation {
     b.add("newUri", this.newUri);
     b.add("options", this.options);
     b.add("kind", getKind());
+    b.add("annotation", getAnnotation());
     return b.toString();
   }
   

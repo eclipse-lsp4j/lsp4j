@@ -12,11 +12,14 @@
 
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
+
 /**
  * Symbol tags are extra annotations that tweak the rendering of a symbol.
  * 
  * Since 3.16
  */
+@Beta
 public enum SymbolTag {
 
 	/**
@@ -32,5 +35,12 @@ public enum SymbolTag {
 	
 	public int getValue() {
 		return value;
+	}
+
+	public static SymbolTag forValue(int value) {
+		SymbolTag[] allValues = SymbolTag.values();
+		if (value < 1 || value > allValues.length)
+			throw new IllegalArgumentException("Illegal enum value: " + value);
+		return allValues[value - 1];
 	}
 }

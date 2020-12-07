@@ -46,7 +46,7 @@ public class Diagnostic {
   /**
    * The diagnostic's code. Can be omitted.
    */
-  private Either<String, Number> code;
+  private Either<String, Integer> code;
   
   /**
    * An optional property to describe the error code.
@@ -148,14 +148,14 @@ public class Diagnostic {
    * The diagnostic's code. Can be omitted.
    */
   @Pure
-  public Either<String, Number> getCode() {
+  public Either<String, Integer> getCode() {
     return this.code;
   }
   
   /**
    * The diagnostic's code. Can be omitted.
    */
-  public void setCode(final Either<String, Number> code) {
+  public void setCode(final Either<String, Integer> code) {
     this.code = code;
   }
   
@@ -167,7 +167,7 @@ public class Diagnostic {
     this.code = Either.forLeft(code);
   }
   
-  public void setCode(final Number code) {
+  public void setCode(final Integer code) {
     if (code == null) {
       this.code = null;
       return;

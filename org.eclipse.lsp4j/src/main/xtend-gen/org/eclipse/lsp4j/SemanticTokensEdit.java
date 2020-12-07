@@ -17,7 +17,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @since 3.16.0
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")

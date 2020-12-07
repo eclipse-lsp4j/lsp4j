@@ -69,7 +69,7 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     }
   }
   
-  private static final TypeToken<Either<String, Number>> WORKDONETOKEN_TYPE_TOKEN = new TypeToken<Either<String, Number>>() {};
+  private static final TypeToken<Either<String, Integer>> WORKDONETOKEN_TYPE_TOKEN = new TypeToken<Either<String, Integer>>() {};
   
   private static final TypeToken<List<WorkspaceFolder>> WORKSPACEFOLDERS_TYPE_TOKEN = new TypeToken<List<WorkspaceFolder>>() {};
   
@@ -114,6 +114,9 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     	case "clientInfo":
     		result.setClientInfo(readClientInfo(in));
     		break;
+    	case "locale":
+    		result.setLocale(readLocale(in));
+    		break;
     	case "trace":
     		result.setTrace(readTrace(in));
     		break;
@@ -128,7 +131,7 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     return result;
   }
   
-  protected Either<String, Number> readWorkDoneToken(final JsonReader in) throws IOException {
+  protected Either<String, Integer> readWorkDoneToken(final JsonReader in) throws IOException {
     return gson.fromJson(in, WORKDONETOKEN_TYPE_TOKEN.getType());
   }
   
@@ -154,6 +157,10 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
   
   protected ClientInfo readClientInfo(final JsonReader in) throws IOException {
     return gson.fromJson(in, ClientInfo.class);
+  }
+  
+  protected String readLocale(final JsonReader in) throws IOException {
+    return gson.fromJson(in, String.class);
   }
   
   protected String readTrace(final JsonReader in) throws IOException {
@@ -187,6 +194,8 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     writeClientName(out, value.getClientName());
     out.name("clientInfo");
     writeClientInfo(out, value.getClientInfo());
+    out.name("locale");
+    writeLocale(out, value.getLocale());
     out.name("trace");
     writeTrace(out, value.getTrace());
     out.name("workspaceFolders");
@@ -194,7 +203,7 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
     out.endObject();
   }
   
-  protected void writeWorkDoneToken(final JsonWriter out, final Either<String, Number> value) throws IOException {
+  protected void writeWorkDoneToken(final JsonWriter out, final Either<String, Integer> value) throws IOException {
     gson.toJson(value, WORKDONETOKEN_TYPE_TOKEN.getType(), out);
   }
   
@@ -219,6 +228,10 @@ public class InitializeParamsTypeAdapter extends TypeAdapter<InitializeParams> {
   
   protected void writeClientInfo(final JsonWriter out, final ClientInfo value) throws IOException {
     gson.toJson(value, ClientInfo.class, out);
+  }
+  
+  protected void writeLocale(final JsonWriter out, final String value) throws IOException {
+    out.value(value);
   }
   
   protected void writeTrace(final JsonWriter out, final String value) throws IOException {

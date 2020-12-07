@@ -21,7 +21,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * @since 3.16.0
+ * Since 3.16.0
  */
 @Beta
 @SuppressWarnings("all")
@@ -45,12 +45,28 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
   private List<String> tokenModifiers;
   
   /**
-   * The tokens the client supports.
+   * The formats the client supports.
    * 
    * See {@link TokenFormat} for allowed values.
    */
   @NonNull
   private List<String> formats;
+  
+  /**
+   * Whether the client supports tokens that can overlap each other.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean overlappingTokenSupport;
+  
+  /**
+   * Whether the client supports tokens that can span multiple lines.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean multilineTokenSupport;
   
   public SemanticTokensCapabilities(final Boolean dynamicRegistration) {
     super(dynamicRegistration);
@@ -120,7 +136,7 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
   }
   
   /**
-   * The tokens the client supports.
+   * The formats the client supports.
    * 
    * See {@link TokenFormat} for allowed values.
    */
@@ -131,12 +147,50 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
   }
   
   /**
-   * The tokens the client supports.
+   * The formats the client supports.
    * 
    * See {@link TokenFormat} for allowed values.
    */
   public void setFormats(@NonNull final List<String> formats) {
     this.formats = Preconditions.checkNotNull(formats, "formats");
+  }
+  
+  /**
+   * Whether the client supports tokens that can overlap each other.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getOverlappingTokenSupport() {
+    return this.overlappingTokenSupport;
+  }
+  
+  /**
+   * Whether the client supports tokens that can overlap each other.
+   * 
+   * Since 3.16.0
+   */
+  public void setOverlappingTokenSupport(final Boolean overlappingTokenSupport) {
+    this.overlappingTokenSupport = overlappingTokenSupport;
+  }
+  
+  /**
+   * Whether the client supports tokens that can span multiple lines.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getMultilineTokenSupport() {
+    return this.multilineTokenSupport;
+  }
+  
+  /**
+   * Whether the client supports tokens that can span multiple lines.
+   * 
+   * Since 3.16.0
+   */
+  public void setMultilineTokenSupport(final Boolean multilineTokenSupport) {
+    this.multilineTokenSupport = multilineTokenSupport;
   }
   
   @Override
@@ -147,6 +201,8 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
     b.add("tokenTypes", this.tokenTypes);
     b.add("tokenModifiers", this.tokenModifiers);
     b.add("formats", this.formats);
+    b.add("overlappingTokenSupport", this.overlappingTokenSupport);
+    b.add("multilineTokenSupport", this.multilineTokenSupport);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -183,6 +239,16 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
         return false;
     } else if (!this.formats.equals(other.formats))
       return false;
+    if (this.overlappingTokenSupport == null) {
+      if (other.overlappingTokenSupport != null)
+        return false;
+    } else if (!this.overlappingTokenSupport.equals(other.overlappingTokenSupport))
+      return false;
+    if (this.multilineTokenSupport == null) {
+      if (other.multilineTokenSupport != null)
+        return false;
+    } else if (!this.multilineTokenSupport.equals(other.multilineTokenSupport))
+      return false;
     return true;
   }
   
@@ -194,6 +260,8 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
     result = prime * result + ((this.requests== null) ? 0 : this.requests.hashCode());
     result = prime * result + ((this.tokenTypes== null) ? 0 : this.tokenTypes.hashCode());
     result = prime * result + ((this.tokenModifiers== null) ? 0 : this.tokenModifiers.hashCode());
-    return prime * result + ((this.formats== null) ? 0 : this.formats.hashCode());
+    result = prime * result + ((this.formats== null) ? 0 : this.formats.hashCode());
+    result = prime * result + ((this.overlappingTokenSupport== null) ? 0 : this.overlappingTokenSupport.hashCode());
+    return prime * result + ((this.multilineTokenSupport== null) ? 0 : this.multilineTokenSupport.hashCode());
   }
 }

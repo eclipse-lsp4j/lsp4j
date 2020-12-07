@@ -63,6 +63,18 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
   @Beta
   private CodeActionResolveSupportCapabilities resolveSupport;
   
+  /**
+   * Whether the client honors the change annotations in
+   * text edits and resource operations returned via the
+   * `CodeAction#edit` property by for example presenting
+   * the workspace edit in the user interface and asking
+   * for confirmation.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Boolean honorsChangeAnnotations;
+  
   public CodeActionCapabilities() {
   }
   
@@ -179,6 +191,33 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     this.resolveSupport = resolveSupport;
   }
   
+  /**
+   * Whether the client honors the change annotations in
+   * text edits and resource operations returned via the
+   * `CodeAction#edit` property by for example presenting
+   * the workspace edit in the user interface and asking
+   * for confirmation.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Boolean getHonorsChangeAnnotations() {
+    return this.honorsChangeAnnotations;
+  }
+  
+  /**
+   * Whether the client honors the change annotations in
+   * text edits and resource operations returned via the
+   * `CodeAction#edit` property by for example presenting
+   * the workspace edit in the user interface and asking
+   * for confirmation.
+   * 
+   * Since 3.16.0
+   */
+  public void setHonorsChangeAnnotations(final Boolean honorsChangeAnnotations) {
+    this.honorsChangeAnnotations = honorsChangeAnnotations;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -188,6 +227,7 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     b.add("disabledSupport", this.disabledSupport);
     b.add("dataSupport", this.dataSupport);
     b.add("resolveSupport", this.resolveSupport);
+    b.add("honorsChangeAnnotations", this.honorsChangeAnnotations);
     b.add("dynamicRegistration", getDynamicRegistration());
     return b.toString();
   }
@@ -229,6 +269,11 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
         return false;
     } else if (!this.resolveSupport.equals(other.resolveSupport))
       return false;
+    if (this.honorsChangeAnnotations == null) {
+      if (other.honorsChangeAnnotations != null)
+        return false;
+    } else if (!this.honorsChangeAnnotations.equals(other.honorsChangeAnnotations))
+      return false;
     return true;
   }
   
@@ -241,6 +286,7 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
     result = prime * result + ((this.isPreferredSupport== null) ? 0 : this.isPreferredSupport.hashCode());
     result = prime * result + ((this.disabledSupport== null) ? 0 : this.disabledSupport.hashCode());
     result = prime * result + ((this.dataSupport== null) ? 0 : this.dataSupport.hashCode());
-    return prime * result + ((this.resolveSupport== null) ? 0 : this.resolveSupport.hashCode());
+    result = prime * result + ((this.resolveSupport== null) ? 0 : this.resolveSupport.hashCode());
+    return prime * result + ((this.honorsChangeAnnotations== null) ? 0 : this.honorsChangeAnnotations.hashCode());
   }
 }

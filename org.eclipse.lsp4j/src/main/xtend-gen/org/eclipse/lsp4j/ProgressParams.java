@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.WorkDoneProgressNotification;
 import org.eclipse.lsp4j.adapters.WorkDoneProgressNotificationAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -33,47 +34,52 @@ public class ProgressParams {
   /**
    * The progress token provided by the client or server.
    */
-  private Either<String, Number> token;
+  @NonNull
+  private Either<String, Integer> token;
   
   /**
    * The progress data.
    */
+  @NonNull
   @JsonAdapter(WorkDoneProgressNotificationAdapter.Factory.class)
   private WorkDoneProgressNotification value;
   
   public ProgressParams() {
   }
   
-  public ProgressParams(@NonNull final Either<String, Number> token, final WorkDoneProgressNotification value) {
-    this.token = token;
-    this.value = value;
+  public ProgressParams(@NonNull final Either<String, Integer> token, @NonNull final WorkDoneProgressNotification value) {
+    this.token = Preconditions.<Either<String, Integer>>checkNotNull(token, "token");
+    this.value = Preconditions.<WorkDoneProgressNotification>checkNotNull(value, "value");
   }
   
   /**
    * The progress token provided by the client or server.
    */
   @Pure
-  public Either<String, Number> getToken() {
+  @NonNull
+  public Either<String, Integer> getToken() {
     return this.token;
   }
   
   /**
    * The progress token provided by the client or server.
    */
-  public void setToken(final Either<String, Number> token) {
-    this.token = token;
+  public void setToken(@NonNull final Either<String, Integer> token) {
+    this.token = Preconditions.checkNotNull(token, "token");
   }
   
   public void setToken(final String token) {
     if (token == null) {
+      Preconditions.checkNotNull(token, "token");
       this.token = null;
       return;
     }
     this.token = Either.forLeft(token);
   }
   
-  public void setToken(final Number token) {
+  public void setToken(final Integer token) {
     if (token == null) {
+      Preconditions.checkNotNull(token, "token");
       this.token = null;
       return;
     }
@@ -84,6 +90,7 @@ public class ProgressParams {
    * The progress data.
    */
   @Pure
+  @NonNull
   public WorkDoneProgressNotification getValue() {
     return this.value;
   }
@@ -91,8 +98,8 @@ public class ProgressParams {
   /**
    * The progress data.
    */
-  public void setValue(final WorkDoneProgressNotification value) {
-    this.value = value;
+  public void setValue(@NonNull final WorkDoneProgressNotification value) {
+    this.value = Preconditions.checkNotNull(value, "value");
   }
   
   @Override

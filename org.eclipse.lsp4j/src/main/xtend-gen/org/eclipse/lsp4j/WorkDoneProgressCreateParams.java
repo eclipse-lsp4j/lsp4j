@@ -13,48 +13,56 @@ package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The {@code window/workDoneProgress/create} request is sent from the server to the client to ask the client to create a work done progress.
+ */
 @SuppressWarnings("all")
 public class WorkDoneProgressCreateParams {
   /**
    * The token to be used to report progress.
    */
-  private Either<String, Number> token;
+  @NonNull
+  private Either<String, Integer> token;
   
   public WorkDoneProgressCreateParams() {
   }
   
-  public WorkDoneProgressCreateParams(@NonNull final Either<String, Number> token) {
-    this.token = token;
+  public WorkDoneProgressCreateParams(@NonNull final Either<String, Integer> token) {
+    this.token = Preconditions.<Either<String, Integer>>checkNotNull(token, "token");
   }
   
   /**
    * The token to be used to report progress.
    */
   @Pure
-  public Either<String, Number> getToken() {
+  @NonNull
+  public Either<String, Integer> getToken() {
     return this.token;
   }
   
   /**
    * The token to be used to report progress.
    */
-  public void setToken(final Either<String, Number> token) {
-    this.token = token;
+  public void setToken(@NonNull final Either<String, Integer> token) {
+    this.token = Preconditions.checkNotNull(token, "token");
   }
   
   public void setToken(final String token) {
     if (token == null) {
+      Preconditions.checkNotNull(token, "token");
       this.token = null;
       return;
     }
     this.token = Either.forLeft(token);
   }
   
-  public void setToken(final Number token) {
+  public void setToken(final Integer token) {
     if (token == null) {
+      Preconditions.checkNotNull(token, "token");
       this.token = null;
       return;
     }

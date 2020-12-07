@@ -11,20 +11,51 @@
  */
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.StaticRegistrationOptions;
+import org.eclipse.lsp4j.AbstractTextDocumentRegistrationAndWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
- * Folding range provider options.
+ * Folding range options.
  */
 @SuppressWarnings("all")
-public class FoldingRangeProviderOptions extends StaticRegistrationOptions {
+public class FoldingRangeProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+  /**
+   * The id used to register the request. The id can be used to deregister
+   * the request again. See also Registration#id.
+   */
+  private String id;
+  
+  public FoldingRangeProviderOptions() {
+  }
+  
+  public FoldingRangeProviderOptions(final String id) {
+    this.id = id;
+  }
+  
+  /**
+   * The id used to register the request. The id can be used to deregister
+   * the request again. See also Registration#id.
+   */
+  @Pure
+  public String getId() {
+    return this.id;
+  }
+  
+  /**
+   * The id used to register the request. The id can be used to deregister
+   * the request again. See also Registration#id.
+   */
+  public void setId(final String id) {
+    this.id = id;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
-    b.add("id", getId());
+    b.add("id", this.id);
+    b.add("workDoneProgress", getWorkDoneProgress());
     b.add("documentSelector", getDocumentSelector());
     return b.toString();
   }
@@ -40,12 +71,18 @@ public class FoldingRangeProviderOptions extends StaticRegistrationOptions {
       return false;
     if (!super.equals(obj))
       return false;
+    FoldingRangeProviderOptions other = (FoldingRangeProviderOptions) obj;
+    if (this.id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!this.id.equals(other.id))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return super.hashCode();
+    return 31 * super.hashCode() + ((this.id== null) ? 0 : this.id.hashCode());
   }
 }

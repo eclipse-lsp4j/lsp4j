@@ -22,7 +22,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * It is up to the client to do the necessary conversion. If a scope URI is provided the client
  * should return the setting scoped to the provided resource. If the client for example uses
  * EditorConfig to manage its settings the configuration should be returned for the passed resource
- * URI. If the client can’t provide a configuration setting for a given scope then null needs to be
+ * URI. If the client can't provide a configuration setting for a given scope then null needs to be
  * present in the returned array.
  * 
  * Since 3.6.0

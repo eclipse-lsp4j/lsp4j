@@ -21,8 +21,8 @@ import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.FoldingRangeProviderOptions;
+import org.eclipse.lsp4j.MonikerRegistrationOptions;
 import org.eclipse.lsp4j.RenameOptions;
-import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SemanticTokensWithRegistrationOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
@@ -34,11 +34,15 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The server can signal these capabilities
+ */
 @SuppressWarnings("all")
 public class ServerCapabilities {
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
-   * for backwards compatibility the TextDocumentSyncKind number.
+   * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
+   * {@link TextDocumentSyncKind#None}
    */
   private Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync;
   
@@ -165,15 +169,6 @@ public class ServerCapabilities {
   private WorkspaceServerCapabilities workspace;
   
   /**
-   * Semantic highlighting server capabilities.
-   * 
-   * @deprecated Use {@code SemanticTokens} API instead.
-   */
-  @Beta
-  @Deprecated
-  private SemanticHighlightingServerCapabilities semanticHighlighting;
-  
-  /**
    * Server capability for calculating super- and subtype hierarchies.
    * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
    * 
@@ -201,12 +196,28 @@ public class ServerCapabilities {
   private Either<Boolean, StaticRegistrationOptions> selectionRangeProvider;
   
   /**
+   * The server provides linked editing range support.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider;
+  
+  /**
    * The server provides semantic tokens support.
    * 
    * Since 3.16.0
    */
   @Beta
   private SemanticTokensWithRegistrationOptions semanticTokensProvider;
+  
+  /**
+   * Whether server provides moniker support.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private Either<Boolean, MonikerRegistrationOptions> monikerProvider;
   
   /**
    * Experimental server capabilities.
@@ -216,7 +227,8 @@ public class ServerCapabilities {
   
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
-   * for backwards compatibility the TextDocumentSyncKind number.
+   * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
+   * {@link TextDocumentSyncKind#None}
    */
   @Pure
   public Either<TextDocumentSyncKind, TextDocumentSyncOptions> getTextDocumentSync() {
@@ -225,7 +237,8 @@ public class ServerCapabilities {
   
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
-   * for backwards compatibility the TextDocumentSyncKind number.
+   * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
+   * {@link TextDocumentSyncKind#None}
    */
   public void setTextDocumentSync(final Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync) {
     this.textDocumentSync = textDocumentSync;
@@ -714,27 +727,6 @@ public class ServerCapabilities {
   }
   
   /**
-   * Semantic highlighting server capabilities.
-   * 
-   * @deprecated Use {@code SemanticTokens} API instead.
-   */
-  @Pure
-  @Deprecated
-  public SemanticHighlightingServerCapabilities getSemanticHighlighting() {
-    return this.semanticHighlighting;
-  }
-  
-  /**
-   * Semantic highlighting server capabilities.
-   * 
-   * @deprecated Use {@code SemanticTokens} API instead.
-   */
-  @Deprecated
-  public void setSemanticHighlighting(final SemanticHighlightingServerCapabilities semanticHighlighting) {
-    this.semanticHighlighting = semanticHighlighting;
-  }
-  
-  /**
    * Server capability for calculating super- and subtype hierarchies.
    * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
    * 
@@ -848,6 +840,41 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides linked editing range support.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getLinkedEditingRangeProvider() {
+    return this.linkedEditingRangeProvider;
+  }
+  
+  /**
+   * The server provides linked editing range support.
+   * 
+   * Since 3.16.0
+   */
+  public void setLinkedEditingRangeProvider(final Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider) {
+    this.linkedEditingRangeProvider = linkedEditingRangeProvider;
+  }
+  
+  public void setLinkedEditingRangeProvider(final Boolean linkedEditingRangeProvider) {
+    if (linkedEditingRangeProvider == null) {
+      this.linkedEditingRangeProvider = null;
+      return;
+    }
+    this.linkedEditingRangeProvider = Either.forLeft(linkedEditingRangeProvider);
+  }
+  
+  public void setLinkedEditingRangeProvider(final StaticRegistrationOptions linkedEditingRangeProvider) {
+    if (linkedEditingRangeProvider == null) {
+      this.linkedEditingRangeProvider = null;
+      return;
+    }
+    this.linkedEditingRangeProvider = Either.forRight(linkedEditingRangeProvider);
+  }
+  
+  /**
    * The server provides semantic tokens support.
    * 
    * Since 3.16.0
@@ -864,6 +891,41 @@ public class ServerCapabilities {
    */
   public void setSemanticTokensProvider(final SemanticTokensWithRegistrationOptions semanticTokensProvider) {
     this.semanticTokensProvider = semanticTokensProvider;
+  }
+  
+  /**
+   * Whether server provides moniker support.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Either<Boolean, MonikerRegistrationOptions> getMonikerProvider() {
+    return this.monikerProvider;
+  }
+  
+  /**
+   * Whether server provides moniker support.
+   * 
+   * Since 3.16.0
+   */
+  public void setMonikerProvider(final Either<Boolean, MonikerRegistrationOptions> monikerProvider) {
+    this.monikerProvider = monikerProvider;
+  }
+  
+  public void setMonikerProvider(final Boolean monikerProvider) {
+    if (monikerProvider == null) {
+      this.monikerProvider = null;
+      return;
+    }
+    this.monikerProvider = Either.forLeft(monikerProvider);
+  }
+  
+  public void setMonikerProvider(final MonikerRegistrationOptions monikerProvider) {
+    if (monikerProvider == null) {
+      this.monikerProvider = null;
+      return;
+    }
+    this.monikerProvider = Either.forRight(monikerProvider);
   }
   
   /**
@@ -908,11 +970,12 @@ public class ServerCapabilities {
     b.add("declarationProvider", this.declarationProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
-    b.add("semanticHighlighting", this.semanticHighlighting);
     b.add("typeHierarchyProvider", this.typeHierarchyProvider);
     b.add("callHierarchyProvider", this.callHierarchyProvider);
     b.add("selectionRangeProvider", this.selectionRangeProvider);
+    b.add("linkedEditingRangeProvider", this.linkedEditingRangeProvider);
     b.add("semanticTokensProvider", this.semanticTokensProvider);
+    b.add("monikerProvider", this.monikerProvider);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -1042,11 +1105,6 @@ public class ServerCapabilities {
         return false;
     } else if (!this.workspace.equals(other.workspace))
       return false;
-    if (this.semanticHighlighting == null) {
-      if (other.semanticHighlighting != null)
-        return false;
-    } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
-      return false;
     if (this.typeHierarchyProvider == null) {
       if (other.typeHierarchyProvider != null)
         return false;
@@ -1062,10 +1120,20 @@ public class ServerCapabilities {
         return false;
     } else if (!this.selectionRangeProvider.equals(other.selectionRangeProvider))
       return false;
+    if (this.linkedEditingRangeProvider == null) {
+      if (other.linkedEditingRangeProvider != null)
+        return false;
+    } else if (!this.linkedEditingRangeProvider.equals(other.linkedEditingRangeProvider))
+      return false;
     if (this.semanticTokensProvider == null) {
       if (other.semanticTokensProvider != null)
         return false;
     } else if (!this.semanticTokensProvider.equals(other.semanticTokensProvider))
+      return false;
+    if (this.monikerProvider == null) {
+      if (other.monikerProvider != null)
+        return false;
+    } else if (!this.monikerProvider.equals(other.monikerProvider))
       return false;
     if (this.experimental == null) {
       if (other.experimental != null)
@@ -1103,11 +1171,12 @@ public class ServerCapabilities {
     result = prime * result + ((this.declarationProvider== null) ? 0 : this.declarationProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
-    result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
     result = prime * result + ((this.typeHierarchyProvider== null) ? 0 : this.typeHierarchyProvider.hashCode());
     result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
     result = prime * result + ((this.selectionRangeProvider== null) ? 0 : this.selectionRangeProvider.hashCode());
+    result = prime * result + ((this.linkedEditingRangeProvider== null) ? 0 : this.linkedEditingRangeProvider.hashCode());
     result = prime * result + ((this.semanticTokensProvider== null) ? 0 : this.semanticTokensProvider.hashCode());
+    result = prime * result + ((this.monikerProvider== null) ? 0 : this.monikerProvider.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

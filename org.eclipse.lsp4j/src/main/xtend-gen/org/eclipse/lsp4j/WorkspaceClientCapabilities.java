@@ -11,9 +11,12 @@
  */
 package org.eclipse.lsp4j;
 
+import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.CodeLensWorkspaceCapabilities;
 import org.eclipse.lsp4j.DidChangeConfigurationCapabilities;
 import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilities;
 import org.eclipse.lsp4j.ExecuteCommandCapabilities;
+import org.eclipse.lsp4j.SemanticTokensWorkspaceCapabilities;
 import org.eclipse.lsp4j.SymbolCapabilities;
 import org.eclipse.lsp4j.WorkspaceEditCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -68,6 +71,24 @@ public class WorkspaceClientCapabilities {
    * Since 3.6.0
    */
   private Boolean configuration;
+  
+  /**
+   * Capabilities specific to the semantic token requests scoped to the
+   * workspace.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private SemanticTokensWorkspaceCapabilities semanticTokens;
+  
+  /**
+   * Capabilities specific to the code lens requests scoped to the
+   * workspace.
+   * 
+   * Since 3.16.0
+   */
+  @Beta
+  private CodeLensWorkspaceCapabilities codeLens;
   
   /**
    * The client supports applying batch edits to the workspace by supporting
@@ -199,6 +220,48 @@ public class WorkspaceClientCapabilities {
     this.configuration = configuration;
   }
   
+  /**
+   * Capabilities specific to the semantic token requests scoped to the
+   * workspace.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public SemanticTokensWorkspaceCapabilities getSemanticTokens() {
+    return this.semanticTokens;
+  }
+  
+  /**
+   * Capabilities specific to the semantic token requests scoped to the
+   * workspace.
+   * 
+   * Since 3.16.0
+   */
+  public void setSemanticTokens(final SemanticTokensWorkspaceCapabilities semanticTokens) {
+    this.semanticTokens = semanticTokens;
+  }
+  
+  /**
+   * Capabilities specific to the code lens requests scoped to the
+   * workspace.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public CodeLensWorkspaceCapabilities getCodeLens() {
+    return this.codeLens;
+  }
+  
+  /**
+   * Capabilities specific to the code lens requests scoped to the
+   * workspace.
+   * 
+   * Since 3.16.0
+   */
+  public void setCodeLens(final CodeLensWorkspaceCapabilities codeLens) {
+    this.codeLens = codeLens;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -211,6 +274,8 @@ public class WorkspaceClientCapabilities {
     b.add("executeCommand", this.executeCommand);
     b.add("workspaceFolders", this.workspaceFolders);
     b.add("configuration", this.configuration);
+    b.add("semanticTokens", this.semanticTokens);
+    b.add("codeLens", this.codeLens);
     return b.toString();
   }
   
@@ -264,6 +329,16 @@ public class WorkspaceClientCapabilities {
         return false;
     } else if (!this.configuration.equals(other.configuration))
       return false;
+    if (this.semanticTokens == null) {
+      if (other.semanticTokens != null)
+        return false;
+    } else if (!this.semanticTokens.equals(other.semanticTokens))
+      return false;
+    if (this.codeLens == null) {
+      if (other.codeLens != null)
+        return false;
+    } else if (!this.codeLens.equals(other.codeLens))
+      return false;
     return true;
   }
   
@@ -279,6 +354,8 @@ public class WorkspaceClientCapabilities {
     result = prime * result + ((this.symbol== null) ? 0 : this.symbol.hashCode());
     result = prime * result + ((this.executeCommand== null) ? 0 : this.executeCommand.hashCode());
     result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
-    return prime * result + ((this.configuration== null) ? 0 : this.configuration.hashCode());
+    result = prime * result + ((this.configuration== null) ? 0 : this.configuration.hashCode());
+    result = prime * result + ((this.semanticTokens== null) ? 0 : this.semanticTokens.hashCode());
+    return prime * result + ((this.codeLens== null) ? 0 : this.codeLens.hashCode());
   }
 }

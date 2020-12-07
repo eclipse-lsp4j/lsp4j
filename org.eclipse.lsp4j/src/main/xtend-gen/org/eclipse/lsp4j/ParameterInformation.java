@@ -29,7 +29,7 @@ public class ParameterInformation {
    * 
    * Either a string or an inclusive start and exclusive end offsets within its containing
    * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
-   * string representation as {@code Position} and {@code Range} does.
+   * string representation as {@link Position} and {@link Range} does.
    * 
    * <em>Note</em>: a label of type string should be a substring of its containing signature label.
    * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
@@ -64,7 +64,7 @@ public class ParameterInformation {
    * 
    * Either a string or an inclusive start and exclusive end offsets within its containing
    * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
-   * string representation as {@code Position} and {@code Range} does.
+   * string representation as {@link Position} and {@link Range} does.
    * 
    * <em>Note</em>: a label of type string should be a substring of its containing signature label.
    * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.
@@ -80,7 +80,7 @@ public class ParameterInformation {
    * 
    * Either a string or an inclusive start and exclusive end offsets within its containing
    * signature label (see {@link SignatureInformation#label}). The offsets are based on a UTF-16
-   * string representation as {@code Position} and {@code Range} does.
+   * string representation as {@link Position} and {@link Range} does.
    * 
    * <em>Note</em>: a label of type string should be a substring of its containing signature label.
    * Its intended use case is to highlight the parameter label part in the {@link SignatureInformation#label}.

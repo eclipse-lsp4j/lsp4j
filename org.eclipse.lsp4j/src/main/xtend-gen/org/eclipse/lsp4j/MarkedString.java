@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * 
  * Note that markdown strings will be sanitized - that means html will be escaped.
  * 
- * @deprecated Use MarkupContent instead.
+ * @deprecated Use {@link MarkupContent} instead.
  */
 @Deprecated
 @SuppressWarnings("all")

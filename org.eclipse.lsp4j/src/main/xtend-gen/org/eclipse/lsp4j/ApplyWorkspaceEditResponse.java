@@ -21,6 +21,21 @@ public class ApplyWorkspaceEditResponse {
    */
   private boolean applied;
   
+  /**
+   * An optional textual description for why the edit was not applied.
+   * This may be used by the server for diagnostic logging or to provide
+   * a suitable error for a request that triggered the edit.
+   */
+  private String failureReason;
+  
+  /**
+   * Depending on the client's failure handling strategy `failedChange`
+   * might contain the index of the change that failed. This property is
+   * only available if the client signals a `failureHandlingStrategy`
+   * in its client capabilities.
+   */
+  private Integer failedChange;
+  
   public ApplyWorkspaceEditResponse() {
   }
   
@@ -43,11 +58,53 @@ public class ApplyWorkspaceEditResponse {
     this.applied = applied;
   }
   
+  /**
+   * An optional textual description for why the edit was not applied.
+   * This may be used by the server for diagnostic logging or to provide
+   * a suitable error for a request that triggered the edit.
+   */
+  @Pure
+  public String getFailureReason() {
+    return this.failureReason;
+  }
+  
+  /**
+   * An optional textual description for why the edit was not applied.
+   * This may be used by the server for diagnostic logging or to provide
+   * a suitable error for a request that triggered the edit.
+   */
+  public void setFailureReason(final String failureReason) {
+    this.failureReason = failureReason;
+  }
+  
+  /**
+   * Depending on the client's failure handling strategy `failedChange`
+   * might contain the index of the change that failed. This property is
+   * only available if the client signals a `failureHandlingStrategy`
+   * in its client capabilities.
+   */
+  @Pure
+  public Integer getFailedChange() {
+    return this.failedChange;
+  }
+  
+  /**
+   * Depending on the client's failure handling strategy `failedChange`
+   * might contain the index of the change that failed. This property is
+   * only available if the client signals a `failureHandlingStrategy`
+   * in its client capabilities.
+   */
+  public void setFailedChange(final Integer failedChange) {
+    this.failedChange = failedChange;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("applied", this.applied);
+    b.add("failureReason", this.failureReason);
+    b.add("failedChange", this.failedChange);
     return b.toString();
   }
   
@@ -63,12 +120,26 @@ public class ApplyWorkspaceEditResponse {
     ApplyWorkspaceEditResponse other = (ApplyWorkspaceEditResponse) obj;
     if (other.applied != this.applied)
       return false;
+    if (this.failureReason == null) {
+      if (other.failureReason != null)
+        return false;
+    } else if (!this.failureReason.equals(other.failureReason))
+      return false;
+    if (this.failedChange == null) {
+      if (other.failedChange != null)
+        return false;
+    } else if (!this.failedChange.equals(other.failedChange))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + (this.applied ? 1231 : 1237);
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (this.applied ? 1231 : 1237);
+    result = prime * result + ((this.failureReason== null) ? 0 : this.failureReason.hashCode());
+    return prime * result + ((this.failedChange== null) ? 0 : this.failedChange.hashCode());
   }
 }
