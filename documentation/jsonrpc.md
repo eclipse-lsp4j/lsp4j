@@ -36,7 +36,7 @@ The returned `CompletableFuture` will complete once a corresponsing result messa
 
 # Cancelling Requests
 
-The LSP defines an extension to the JSON RPC, that allows to cancel requests. It is done through a special notification message, that contains the request id that should be cancelled. If you want a pending request in LSP4J, you can simply call `cancel(true)` on the returned `CompletableFuture`. The `RemoteEndpoint` will send the cancellation notification. If you are implementing a request message, you should return a `CompletableFuture` created through [`CompletebleFutures.computeAsync`] (../org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/CompletableFutures.java#L24). It accepts a lambda that is provided with a `CancelChecker`, which you need to ask `checkCanceled` and which will throw a `CancellationException` in case the request got canceled.
+The LSP defines an extension to the JSON RPC, that allows to cancel requests. It is done through a special notification message, that contains the request id that should be cancelled. If you want to cancel a pending request in LSP4J, you can simply call `cancel(true)` on the returned `CompletableFuture`. The `RemoteEndpoint` will send the cancellation notification. If you are implementing a request message, you should return a `CompletableFuture` created through [`CompletebleFutures.computeAsync`] (../org.eclipse.lsp4j.jsonrpc/src/main/java/org/eclipse/lsp4j/jsonrpc/CompletableFutures.java#L24). It accepts a lambda that is provided with a `CancelChecker`, which you need to ask `checkCanceled` and which will throw a `CancellationException` in case the request got canceled.
 
 ``` java
 @JsonRequest
