@@ -18,12 +18,12 @@ package org.eclipse.lsp4j;
  * can be modified later using the {@code $/setTrace} notification.
  */
 public class TraceValue {
-  private TraceValue() {
-  }
+	private TraceValue() {
+	}
 
-  public static final String Off = "off";
+	public static final String Off = "off";
 
-  public static final String Message = "message";
+	public static final String Message = "message";
 
-  public static final String Verbose = "verbose";
+	public static final String Verbose = "verbose";
 }

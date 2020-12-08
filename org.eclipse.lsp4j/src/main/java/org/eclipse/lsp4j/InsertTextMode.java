@@ -29,7 +29,7 @@ public enum InsertTextMode {
 	 * The client will not apply any kind of adjustments to the
 	 * string.
 	 */
-  AsIs(1),
+	AsIs(1),
 	
 	/**
 	 * The editor adjusts leading whitespace of new lines so that
@@ -40,7 +40,7 @@ public enum InsertTextMode {
 	 * multi line completion item is indented using 2 tabs and all
 	 * following lines inserted will be indented using 2 tabs as well.
 	 */
-  AdjustIndentation(2);
+	AdjustIndentation(2);
 	
 	private final int value;
 	
