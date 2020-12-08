@@ -19,7 +19,6 @@ public interface Endpoint {
 	CompletableFuture<?> request(String method, Object parameter);
 	
 	void notify(String method, Object parameter);
-	
 }
 ```
 
