@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.WorkDoneProgressAndPartialResultParams;
@@ -25,7 +24,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * 
  * Since 3.16.0
  */
-@Beta
 @SuppressWarnings("all")
 public class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
   /**

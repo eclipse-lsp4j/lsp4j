@@ -18,7 +18,7 @@ import java.util.Queue;
 import org.eclipse.lsp4j.DocumentSymbol;
 
 /**
- * Utilities for {@link DocumentSymbols document symbols}.
+ * Utilities for {@link DocumentSymbol document symbols}.
  */
 public final class DocumentSymbols {
 

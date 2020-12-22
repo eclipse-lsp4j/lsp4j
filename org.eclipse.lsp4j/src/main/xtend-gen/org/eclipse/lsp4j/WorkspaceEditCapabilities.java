@@ -13,6 +13,7 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 import java.util.List;
+import org.eclipse.lsp4j.WorkspaceEditChangeAnnotationSupportCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -64,7 +65,6 @@ public class WorkspaceEditCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean normalizesLineEndings;
   
   /**
@@ -73,8 +73,7 @@ public class WorkspaceEditCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
-  private Boolean changeAnnotationSupport;
+  private WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport;
   
   public WorkspaceEditCapabilities() {
   }
@@ -204,7 +203,7 @@ public class WorkspaceEditCapabilities {
    * Since 3.16.0
    */
   @Pure
-  public Boolean getChangeAnnotationSupport() {
+  public WorkspaceEditChangeAnnotationSupportCapabilities getChangeAnnotationSupport() {
     return this.changeAnnotationSupport;
   }
   
@@ -214,7 +213,7 @@ public class WorkspaceEditCapabilities {
    * 
    * Since 3.16.0
    */
-  public void setChangeAnnotationSupport(final Boolean changeAnnotationSupport) {
+  public void setChangeAnnotationSupport(final WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport) {
     this.changeAnnotationSupport = changeAnnotationSupport;
   }
   

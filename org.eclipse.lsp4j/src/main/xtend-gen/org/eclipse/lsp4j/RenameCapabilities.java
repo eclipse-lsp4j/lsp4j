@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.lsp4j.PrepareSupportDefaultBehavior;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -37,7 +36,6 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private PrepareSupportDefaultBehavior prepareSupportDefaultBehavior;
   
   /**
@@ -49,7 +47,6 @@ public class RenameCapabilities extends DynamicRegistrationCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean honorsChangeAnnotations;
   
   public RenameCapabilities() {

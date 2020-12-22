@@ -12,14 +12,11 @@
 
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
-
 /**
  * Symbol tags are extra annotations that tweak the rendering of a symbol.
  * 
  * Since 3.16
  */
-@Beta
 public enum SymbolTag {
 
 	/**

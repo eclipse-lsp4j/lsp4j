@@ -173,7 +173,6 @@ public class TextDocumentClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CallHierarchyCapabilities callHierarchy;
   
   /**
@@ -188,7 +187,6 @@ public class TextDocumentClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private SemanticTokensCapabilities semanticTokens;
   
   /**
@@ -196,7 +194,6 @@ public class TextDocumentClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private MonikerCapabilities moniker;
   
   /**
@@ -204,7 +201,6 @@ public class TextDocumentClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private LinkedEditingRangeCapabilities linkedEditingRange;
   
   @Pure

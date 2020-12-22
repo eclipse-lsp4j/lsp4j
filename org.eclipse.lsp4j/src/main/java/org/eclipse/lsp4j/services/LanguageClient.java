@@ -100,7 +100,6 @@ public interface LanguageClient {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest("window/showDocument")
 	default CompletableFuture<ShowDocumentResult> showDocument(ShowDocumentParams params) {
 		throw new UnsupportedOperationException();
@@ -176,7 +175,6 @@ public interface LanguageClient {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonNotification("$/logTrace")
 	default void logTrace(LogTraceParams params) {
 		throw new UnsupportedOperationException();
@@ -187,7 +185,6 @@ public interface LanguageClient {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonNotification("$/setTrace")
 	default void setTrace(SetTraceParams params) {
 		throw new UnsupportedOperationException();
@@ -204,7 +201,6 @@ public interface LanguageClient {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest("workspace/semanticTokens/refresh")
 	default CompletableFuture<Void> refreshSemanticTokens() {
 		throw new UnsupportedOperationException();
@@ -220,7 +216,6 @@ public interface LanguageClient {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest("workspace/codeLens/refresh")
 	default CompletableFuture<Void> refreshCodeLenses() {
 		throw new UnsupportedOperationException();

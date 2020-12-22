@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.ShowDocumentCapabilities;
 import org.eclipse.lsp4j.WindowShowMessageRequestCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -35,7 +34,6 @@ public class WindowClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private WindowShowMessageRequestCapabilities showMessage;
   
   /**
@@ -43,7 +41,6 @@ public class WindowClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private ShowDocumentCapabilities showDocument;
   
   /**

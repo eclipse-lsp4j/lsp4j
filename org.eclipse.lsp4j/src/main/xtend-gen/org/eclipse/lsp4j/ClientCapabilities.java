@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import org.eclipse.lsp4j.GeneralClientCapabilities;
 import org.eclipse.lsp4j.TextDocumentClientCapabilities;
@@ -56,7 +55,6 @@ public class ClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private GeneralClientCapabilities general;
   
   /**

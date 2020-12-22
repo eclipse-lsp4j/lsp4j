@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.MarkdownCapabilities;
 import org.eclipse.lsp4j.RegularExpressionsCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -22,7 +21,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * 
  * Since 3.16.0
  */
-@Beta
 @SuppressWarnings("all")
 public class GeneralClientCapabilities {
   /**

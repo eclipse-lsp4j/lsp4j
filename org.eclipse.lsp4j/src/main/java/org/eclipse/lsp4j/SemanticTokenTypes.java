@@ -11,12 +11,9 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
-
 /**
  * Since 3.16.0
  */
-@Beta
 public final class SemanticTokenTypes {
     private SemanticTokenTypes() {
     }
@@ -52,7 +49,7 @@ public final class SemanticTokenTypes {
     public static final String Function = "function";
 
     /**
-     * @deprecated This was erroneously named prior to finalization. Use {@link Method} instead.
+     * @deprecated This was erroneously named prior to finalization. Use {@link #Method} instead.
      */
     @Deprecated
     public static final String Member = "member";

@@ -16,6 +16,7 @@ import com.google.gson.annotations.JsonAdapter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.lsp4j.ChangeAnnotation;
 import org.eclipse.lsp4j.ResourceChange;
 import org.eclipse.lsp4j.ResourceOperation;
 import org.eclipse.lsp4j.TextDocumentEdit;
@@ -60,6 +61,16 @@ public class WorkspaceEdit {
   @JsonAdapter(ResourceChangeListAdapter.class)
   @Deprecated
   private List<Either<ResourceChange, TextDocumentEdit>> resourceChanges;
+  
+  /**
+   * A map of change annotations that can be referenced in
+   * {@link AnnotatedTextEdit}s or {@link ResourceOperation}s.
+   * 
+   * Client support depends on {@link WorkspaceEditCapabilities#changeAnnotationSupport}.
+   * 
+   * Since 3.16.0
+   */
+  private Map<String, ChangeAnnotation> changeAnnotations;
   
   public WorkspaceEdit() {
     LinkedHashMap<String, List<TextEdit>> _linkedHashMap = new LinkedHashMap<String, List<TextEdit>>();
@@ -137,6 +148,31 @@ public class WorkspaceEdit {
     this.resourceChanges = resourceChanges;
   }
   
+  /**
+   * A map of change annotations that can be referenced in
+   * {@link AnnotatedTextEdit}s or {@link ResourceOperation}s.
+   * 
+   * Client support depends on {@link WorkspaceEditCapabilities#changeAnnotationSupport}.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Map<String, ChangeAnnotation> getChangeAnnotations() {
+    return this.changeAnnotations;
+  }
+  
+  /**
+   * A map of change annotations that can be referenced in
+   * {@link AnnotatedTextEdit}s or {@link ResourceOperation}s.
+   * 
+   * Client support depends on {@link WorkspaceEditCapabilities#changeAnnotationSupport}.
+   * 
+   * Since 3.16.0
+   */
+  public void setChangeAnnotations(final Map<String, ChangeAnnotation> changeAnnotations) {
+    this.changeAnnotations = changeAnnotations;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -144,6 +180,7 @@ public class WorkspaceEdit {
     b.add("changes", this.changes);
     b.add("documentChanges", this.documentChanges);
     b.add("resourceChanges", this.resourceChanges);
+    b.add("changeAnnotations", this.changeAnnotations);
     return b.toString();
   }
   
@@ -172,6 +209,11 @@ public class WorkspaceEdit {
         return false;
     } else if (!this.resourceChanges.equals(other.resourceChanges))
       return false;
+    if (this.changeAnnotations == null) {
+      if (other.changeAnnotations != null)
+        return false;
+    } else if (!this.changeAnnotations.equals(other.changeAnnotations))
+      return false;
     return true;
   }
   
@@ -182,6 +224,7 @@ public class WorkspaceEdit {
     int result = 1;
     result = prime * result + ((this.changes== null) ? 0 : this.changes.hashCode());
     result = prime * result + ((this.documentChanges== null) ? 0 : this.documentChanges.hashCode());
-    return prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
+    result = prime * result + ((this.resourceChanges== null) ? 0 : this.resourceChanges.hashCode());
+    return prime * result + ((this.changeAnnotations== null) ? 0 : this.changeAnnotations.hashCode());
   }
 }

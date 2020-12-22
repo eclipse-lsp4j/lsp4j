@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.ClientCapabilities;
@@ -94,7 +93,6 @@ public class InitializeParams implements WorkDoneProgressParams {
    * 
    * Since 3.16.0
    */
-  @Beta
   private String locale;
   
   /**

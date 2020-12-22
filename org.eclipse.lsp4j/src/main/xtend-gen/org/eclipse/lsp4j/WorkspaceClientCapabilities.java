@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CodeLensWorkspaceCapabilities;
 import org.eclipse.lsp4j.DidChangeConfigurationCapabilities;
 import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilities;
@@ -78,7 +77,6 @@ public class WorkspaceClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private SemanticTokensWorkspaceCapabilities semanticTokens;
   
   /**
@@ -87,7 +85,6 @@ public class WorkspaceClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CodeLensWorkspaceCapabilities codeLens;
   
   /**

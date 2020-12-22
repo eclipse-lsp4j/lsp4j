@@ -44,7 +44,6 @@ public class MockLanguageClient implements LanguageClient {
 		throw new UnsupportedOperationException();
 	}
 
-	@Beta
 	@Override
 	public CompletableFuture<ShowDocumentResult> showDocument(ShowDocumentParams requestParams) {
 		throw new UnsupportedOperationException();

@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.ParameterInformation;
@@ -50,7 +49,6 @@ public class SignatureInformation {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Integer activeParameter;
   
   public SignatureInformation() {

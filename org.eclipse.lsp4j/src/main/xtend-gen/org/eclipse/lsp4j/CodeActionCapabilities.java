@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.CodeActionLiteralSupportCapabilities;
 import org.eclipse.lsp4j.CodeActionResolveSupportCapabilities;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
@@ -41,7 +40,6 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean disabledSupport;
   
   /**
@@ -51,7 +49,6 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean dataSupport;
   
   /**
@@ -60,7 +57,6 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CodeActionResolveSupportCapabilities resolveSupport;
   
   /**
@@ -72,7 +68,6 @@ public class CodeActionCapabilities extends DynamicRegistrationCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean honorsChangeAnnotations;
   
   public CodeActionCapabilities() {

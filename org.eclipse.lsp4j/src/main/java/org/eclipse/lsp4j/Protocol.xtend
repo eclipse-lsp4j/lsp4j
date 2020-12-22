@@ -98,7 +98,6 @@ class WorkspaceEditCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean normalizesLineEndings
 
 	/**
@@ -107,8 +106,7 @@ class WorkspaceEditCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
-	Boolean changeAnnotationSupport
+	WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport
 
 	new() {
 	}
@@ -163,7 +161,6 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	SymbolTagSupportCapabilities tagSupport
 
 	new() {
@@ -252,7 +249,6 @@ class WorkspaceClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	SemanticTokensWorkspaceCapabilities semanticTokens
 
 	/**
@@ -261,7 +257,6 @@ class WorkspaceClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	CodeLensWorkspaceCapabilities codeLens
 }
 
@@ -353,7 +348,6 @@ class CompletionItemCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean insertReplaceSupport
 
 	/**
@@ -363,7 +357,6 @@ class CompletionItemCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	CompletionItemResolveSupportCapabilities resolveSupport
 
 	/**
@@ -373,7 +366,6 @@ class CompletionItemCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport
 
 	new() {
@@ -416,7 +408,6 @@ class CompletionItemTagSupportCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CompletionItemResolveSupportCapabilities {
 	/**
@@ -441,7 +432,6 @@ class CompletionItemResolveSupportCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CompletionItemInsertTextModeSupportCapabilities {
 	@NonNull
@@ -572,7 +562,6 @@ class SignatureInformationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean activeParameterSupport
 
 	new() {
@@ -694,7 +683,6 @@ class SymbolKindCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SymbolTagSupportCapabilities {
 	/**
@@ -734,7 +722,6 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	SymbolTagSupportCapabilities tagSupport
 
 	/**
@@ -743,7 +730,6 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean labelSupport
 
 	new() {
@@ -956,7 +942,6 @@ class CodeActionLiteralSupportCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CodeActionResolveSupportCapabilities {
 	/**
@@ -997,7 +982,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean disabledSupport
 
 	/**
@@ -1007,7 +991,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean dataSupport
 
 	/**
@@ -1016,7 +999,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	CodeActionResolveSupportCapabilities resolveSupport
 
 	/**
@@ -1028,7 +1010,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean honorsChangeAnnotations
 
 	new() {
@@ -1068,7 +1049,6 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CodeLensWorkspaceCapabilities {
 
@@ -1154,7 +1134,6 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	PrepareSupportDefaultBehavior prepareSupportDefaultBehavior
 
 	/**
@@ -1166,7 +1145,6 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean honorsChangeAnnotations
 
 	new() {
@@ -1218,7 +1196,6 @@ class PublishDiagnosticsCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean codeDescriptionSupport
 
 	/**
@@ -1228,7 +1205,6 @@ class PublishDiagnosticsCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean dataSupport
 
 	new() {
@@ -1312,7 +1288,6 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
@@ -1328,7 +1303,6 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
 }
@@ -1336,7 +1310,6 @@ class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
@@ -1360,7 +1333,6 @@ class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequestsFull {
 
@@ -1381,7 +1353,6 @@ class SemanticTokensClientCapabilitiesRequestsFull {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequests {
 
@@ -1423,7 +1394,6 @@ class SemanticTokensClientCapabilitiesRequests {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 
@@ -1458,7 +1428,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean overlappingTokenSupport
 
 	/**
@@ -1466,7 +1435,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean multilineTokenSupport
 
 	new(Boolean dynamicRegistration) {
@@ -1496,7 +1464,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
 }
@@ -1507,7 +1474,6 @@ class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensWorkspaceCapabilities {
 	/**
@@ -1534,7 +1500,6 @@ class SemanticTokensWorkspaceCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class MonikerCapabilities extends DynamicRegistrationCapabilities {
 }
@@ -1544,7 +1509,6 @@ class MonikerCapabilities extends DynamicRegistrationCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class WindowShowMessageRequestCapabilities {
 	/**
@@ -1561,7 +1525,6 @@ class WindowShowMessageRequestCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class ShowDocumentCapabilities {
 	/**
@@ -1583,7 +1546,6 @@ class ShowDocumentCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class WindowShowMessageRequestActionItemCapabilities {
 	/**
@@ -1606,7 +1568,6 @@ class WindowShowMessageRequestActionItemCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class RegularExpressionsCapabilities {
 	/**
@@ -1638,7 +1599,6 @@ class RegularExpressionsCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class MarkdownCapabilities {
 	/**
@@ -1664,6 +1624,30 @@ class MarkdownCapabilities {
 		this.version = version
 	}
 }
+
+/**
+ * Whether the client in general supports change annotations on text edits,
+ * create file, rename file and delete file changes.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class WorkspaceEditChangeAnnotationSupportCapabilities {
+	/**
+	 * Whether the client groups edits with equal labels into tree nodes,
+	 * for instance all edits labelled with "Changes in Strings" would
+	 * be a tree node.
+	 */
+	Boolean groupsOnLabel
+
+	new() {
+	}
+
+	new(Boolean groupsOnLabel) {
+		this.groupsOnLabel = groupsOnLabel
+	}
+}
+
 
 /**
  * Text document specific client capabilities.
@@ -1796,7 +1780,6 @@ class TextDocumentClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	CallHierarchyCapabilities callHierarchy
 
 	/**
@@ -1811,7 +1794,6 @@ class TextDocumentClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	SemanticTokensCapabilities semanticTokens
 
 	/**
@@ -1819,7 +1801,6 @@ class TextDocumentClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	MonikerCapabilities moniker
 
 	/**
@@ -1827,7 +1808,6 @@ class TextDocumentClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	LinkedEditingRangeCapabilities linkedEditingRange
 }
 
@@ -1849,7 +1829,6 @@ class WindowClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	WindowShowMessageRequestCapabilities showMessage
 
 	/**
@@ -1857,7 +1836,6 @@ class WindowClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	ShowDocumentCapabilities showDocument
 }
 
@@ -1866,7 +1844,6 @@ class WindowClientCapabilities {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class GeneralClientCapabilities {
 	/**
@@ -1919,7 +1896,6 @@ class ClientCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	GeneralClientCapabilities general
 
 	/**
@@ -1999,7 +1975,6 @@ class CodeAction {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	CodeActionDisabled disabled
 
 	/**
@@ -2020,7 +1995,6 @@ class CodeAction {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 
@@ -2049,7 +2023,6 @@ class CodeAction {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CodeActionDisabled {
 	/**
@@ -2195,7 +2168,6 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Boolean resolveProvider
 
 	new() {
@@ -2361,7 +2333,6 @@ class CompletionItem {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	InsertTextMode insertTextMode
 
 	/**
@@ -2512,7 +2483,6 @@ class Diagnostic {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	DiagnosticCodeDescription codeDescription
 
 	/**
@@ -2547,7 +2517,6 @@ class Diagnostic {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 
@@ -2606,7 +2575,6 @@ class DiagnosticRelatedInformation {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class DiagnosticCodeDescription {
 	/**
@@ -3346,13 +3314,11 @@ class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	String label
 
 	new() {
 	}
 
-	@Beta
 	new(String label) {
 		this.label = label
 	}
@@ -4083,7 +4049,6 @@ class InitializeParams implements WorkDoneProgressParams {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	String locale
 
 	/**
@@ -4323,7 +4288,6 @@ class MessageParams {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class LogTraceParams {
 	/**
@@ -4356,7 +4320,6 @@ class LogTraceParams {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SetTraceParams {
 	/**
@@ -4608,7 +4571,6 @@ class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressParams {
 }
@@ -4618,7 +4580,6 @@ class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressPa
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class LinkedEditingRangeOptions extends AbstractWorkDoneProgressOptions {
 }
@@ -4628,7 +4589,6 @@ class LinkedEditingRangeOptions extends AbstractWorkDoneProgressOptions {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -4653,7 +4613,6 @@ class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistra
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class LinkedEditingRanges {
 	/**
@@ -4689,7 +4648,6 @@ class LinkedEditingRanges {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensLegend {
 
@@ -4717,7 +4675,6 @@ class SemanticTokensLegend {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensServerFull {
 
@@ -4737,7 +4694,6 @@ class SemanticTokensServerFull {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
 
@@ -4953,7 +4909,6 @@ class ServerCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
 
 	/**
@@ -4968,7 +4923,6 @@ class ServerCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider
 
 	/**
@@ -4976,7 +4930,6 @@ class ServerCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	SemanticTokensWithRegistrationOptions semanticTokensProvider
 
 	/**
@@ -4984,7 +4937,6 @@ class ServerCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Either<Boolean, MonikerRegistrationOptions> monikerProvider
 
 	/**
@@ -5066,7 +5018,6 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -5083,7 +5034,6 @@ class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokens {
 
@@ -5114,7 +5064,6 @@ class SemanticTokens {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensPartialResult {
 
@@ -5131,7 +5080,6 @@ class SemanticTokensPartialResult {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -5156,7 +5104,6 @@ class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensEdit {
 
@@ -5185,7 +5132,6 @@ class SemanticTokensEdit {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensDelta {
 
@@ -5210,7 +5156,6 @@ class SemanticTokensDelta {
 /**
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensDeltaPartialResult {
 
@@ -5227,7 +5172,6 @@ class SemanticTokensDeltaPartialResult {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -5401,7 +5345,6 @@ class SignatureInformation {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	Integer activeParameter
 
 	new() {
@@ -5544,7 +5487,6 @@ class DocumentSymbol {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	List<SymbolTag> tags
 
 	/**
@@ -5607,7 +5549,6 @@ class SymbolInformation {
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
 	List<SymbolTag> tags
 
 	/**
@@ -5874,7 +5815,6 @@ class TextEdit {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class ChangeAnnotation {
 	/**
@@ -5909,21 +5849,20 @@ class ChangeAnnotation {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class AnnotatedTextEdit extends TextEdit {
 	/**
-	 * The actual annotation
+	 * The actual annotation identifier
 	 */
 	@NonNull
-	ChangeAnnotation annotation
+	String annotationId
 
 	new() {
 	}
 
-	new(@NonNull Range range, @NonNull String newText, @NonNull ChangeAnnotation annotation) {
+	new(@NonNull Range range, @NonNull String newText, @NonNull String annotationId) {
 		super(range, newText)
-		this.annotation = Preconditions.checkNotNull(annotation, 'annotation')
+		this.annotationId = Preconditions.checkNotNull(annotationId, 'annotationId')
 	}
 }
 
@@ -5932,7 +5871,6 @@ class AnnotatedTextEdit extends TextEdit {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class InsertReplaceEdit {
 	/**
@@ -6030,12 +5968,11 @@ abstract class ResourceOperation {
 	String kind
 
 	/**
-	 * An optional annotation describing the operation.
+	 * An optional annotation identifer describing the operation.
 	 *
 	 * Since 3.16.0
 	 */
-	@Beta
-	ChangeAnnotation annotation
+	String annotationId
 
 	new() {
 	}
@@ -6283,6 +6220,16 @@ class WorkspaceEdit {
 	@JsonAdapter(ResourceChangeListAdapter)
 	@Deprecated
 	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
+
+	/**
+	 * A map of change annotations that can be referenced in
+	 * {@link AnnotatedTextEdit}s or {@link ResourceOperation}s.
+	 *
+	 * Client support depends on {@link WorkspaceEditCapabilities#changeAnnotationSupport}.
+	 *
+	 * Since 3.16.0
+	 */
+	Map<String, ChangeAnnotation> changeAnnotations
 
 	new() {
 		this.changes = new LinkedHashMap
@@ -7110,7 +7057,6 @@ class FoldingRange {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
 
@@ -7121,7 +7067,6 @@ class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgress
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
@@ -7140,7 +7085,6 @@ class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultP
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
@@ -7159,7 +7103,6 @@ class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultP
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyIncomingCall {
 	/**
@@ -7189,7 +7132,6 @@ class CallHierarchyIncomingCall {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyOutgoingCall {
 	/**
@@ -7220,7 +7162,6 @@ class CallHierarchyOutgoingCall {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class CallHierarchyItem {
 	/**
@@ -7506,7 +7447,6 @@ class PrepareRenameParams extends TextDocumentPositionParams {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class MonikerOptions extends AbstractWorkDoneProgressOptions {
 }
@@ -7516,7 +7456,6 @@ class MonikerOptions extends AbstractWorkDoneProgressOptions {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class MonikerRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
@@ -7526,7 +7465,6 @@ class MonikerRegistrationOptions extends AbstractTextDocumentRegistrationAndWork
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
 }
@@ -7536,7 +7474,6 @@ class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialRes
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class Moniker {
 	/**
@@ -7622,7 +7559,6 @@ class WorkDoneProgressCancelParams {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class ShowDocumentParams {
 	/**
@@ -7668,7 +7604,6 @@ class ShowDocumentParams {
  *
  * Since 3.16.0
  */
-@Beta
 @JsonRpcData
 class ShowDocumentResult {
 	/**

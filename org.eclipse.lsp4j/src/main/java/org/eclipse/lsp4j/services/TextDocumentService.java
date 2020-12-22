@@ -265,7 +265,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest(value="codeAction/resolve", useSegment = false)
 	default CompletableFuture<CodeAction> resolveCodeAction(CodeAction unresolved) {
 		throw new UnsupportedOperationException();
@@ -348,7 +347,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<LinkedEditingRanges> linkedEditingRange(LinkedEditingRangeParams params) {
 		throw new UnsupportedOperationException();
@@ -528,7 +526,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<CallHierarchyItem>> prepareCallHierarchy(CallHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
@@ -541,7 +538,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	*/
-	@Beta
 	@JsonRequest(value="callHierarchy/incomingCalls", useSegment = false)
 	default CompletableFuture<List<CallHierarchyIncomingCall>> callHierarchyIncomingCalls(CallHierarchyIncomingCallsParams params) {
 		throw new UnsupportedOperationException();
@@ -554,7 +550,6 @@ public interface TextDocumentService {
 	* 
 	* Since 3.16.0
 	*/
-	@Beta
 	@JsonRequest(value="callHierarchy/outgoingCalls", useSegment = false)
 	default CompletableFuture<List<CallHierarchyOutgoingCall>> callHierarchyOutgoingCalls(CallHierarchyOutgoingCallsParams params) {
 		throw new UnsupportedOperationException();
@@ -578,7 +573,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest(value="textDocument/semanticTokens/full", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensFull(SemanticTokensParams params) {
 		throw new UnsupportedOperationException();
@@ -590,7 +584,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest(value="textDocument/semanticTokens/full/delta", useSegment = false)
 	@ResponseJsonAdapter(SemanticTokensFullDeltaResponseAdapter.class)
 	default CompletableFuture<Either<SemanticTokens, SemanticTokensDelta>> semanticTokensFullDelta(SemanticTokensDeltaParams params) {
@@ -610,7 +603,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest(value="textDocument/semanticTokens/range", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensRange(SemanticTokensRangeParams params) {
 		throw new UnsupportedOperationException();
@@ -629,7 +621,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<Moniker>> moniker(MonikerParams params) {
 		throw new UnsupportedOperationException();

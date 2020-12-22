@@ -111,7 +111,7 @@ public class RenameFile extends ResourceOperation {
     b.add("newUri", this.newUri);
     b.add("options", this.options);
     b.add("kind", getKind());
-    b.add("annotation", getAnnotation());
+    b.add("annotationId", getAnnotationId());
     return b.toString();
   }
   

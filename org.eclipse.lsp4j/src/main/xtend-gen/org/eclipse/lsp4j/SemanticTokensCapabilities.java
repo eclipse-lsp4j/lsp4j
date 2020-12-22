@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.lsp4j.SemanticTokensClientCapabilitiesRequests;
@@ -23,7 +22,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 /**
  * Since 3.16.0
  */
-@Beta
 @SuppressWarnings("all")
 public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
   /**
@@ -57,7 +55,6 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean overlappingTokenSupport;
   
   /**
@@ -65,7 +62,6 @@ public class SemanticTokensCapabilities extends DynamicRegistrationCapabilities 
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean multilineTokenSupport;
   
   public SemanticTokensCapabilities(final Boolean dynamicRegistration) {

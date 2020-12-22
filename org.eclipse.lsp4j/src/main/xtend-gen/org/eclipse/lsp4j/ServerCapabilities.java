@@ -185,7 +185,6 @@ public class ServerCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Either<Boolean, StaticRegistrationOptions> callHierarchyProvider;
   
   /**
@@ -200,7 +199,6 @@ public class ServerCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider;
   
   /**
@@ -208,7 +206,6 @@ public class ServerCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private SemanticTokensWithRegistrationOptions semanticTokensProvider;
   
   /**
@@ -216,7 +213,6 @@ public class ServerCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Either<Boolean, MonikerRegistrationOptions> monikerProvider;
   
   /**

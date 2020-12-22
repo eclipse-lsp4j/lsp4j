@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -21,7 +20,6 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * 
  * Since 3.16.0
  */
-@Beta
 @SuppressWarnings("all")
 public class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
   public CallHierarchyCapabilities() {

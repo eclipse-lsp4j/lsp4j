@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.Command;
@@ -111,7 +110,6 @@ public class CompletionItem {
    * 
    * Since 3.16.0
    */
-  @Beta
   private InsertTextMode insertTextMode;
   
   /**

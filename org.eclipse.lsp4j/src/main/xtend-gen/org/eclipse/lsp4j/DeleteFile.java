@@ -87,7 +87,7 @@ public class DeleteFile extends ResourceOperation {
     b.add("uri", this.uri);
     b.add("options", this.options);
     b.add("kind", getKind());
-    b.add("annotation", getAnnotation());
+    b.add("annotationId", getAnnotationId());
     return b.toString();
   }
   

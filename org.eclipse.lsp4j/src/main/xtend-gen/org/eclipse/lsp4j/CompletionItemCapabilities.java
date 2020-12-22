@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.CompletionItemInsertTextModeSupportCapabilities;
 import org.eclipse.lsp4j.CompletionItemResolveSupportCapabilities;
@@ -71,7 +70,6 @@ public class CompletionItemCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean insertReplaceSupport;
   
   /**
@@ -81,7 +79,6 @@ public class CompletionItemCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CompletionItemResolveSupportCapabilities resolveSupport;
   
   /**
@@ -91,7 +88,6 @@ public class CompletionItemCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport;
   
   public CompletionItemCapabilities() {

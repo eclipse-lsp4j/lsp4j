@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DiagnosticsTagSupport;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -53,7 +52,6 @@ public class PublishDiagnosticsCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean codeDescriptionSupport;
   
   /**
@@ -63,7 +61,6 @@ public class PublishDiagnosticsCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean dataSupport;
   
   public PublishDiagnosticsCapabilities() {

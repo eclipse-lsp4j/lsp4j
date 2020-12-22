@@ -11,15 +11,12 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
-
 /**
  * The value indicates the default behavior used by the
  * client.
  *
  * Since version 3.16.0
  */
-@Beta
 public enum PrepareSupportDefaultBehavior {
 	
 	/**

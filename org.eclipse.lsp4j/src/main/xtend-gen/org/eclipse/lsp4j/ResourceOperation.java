@@ -11,9 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
-import org.eclipse.lsp4j.ChangeAnnotation;
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.eclipse.lsp4j.util.Preconditions;
@@ -30,12 +28,11 @@ public abstract class ResourceOperation {
   private String kind;
   
   /**
-   * An optional annotation describing the operation.
+   * An optional annotation identifer describing the operation.
    * 
    * Since 3.16.0
    */
-  @Beta
-  private ChangeAnnotation annotation;
+  private String annotationId;
   
   public ResourceOperation() {
   }
@@ -61,22 +58,22 @@ public abstract class ResourceOperation {
   }
   
   /**
-   * An optional annotation describing the operation.
+   * An optional annotation identifer describing the operation.
    * 
    * Since 3.16.0
    */
   @Pure
-  public ChangeAnnotation getAnnotation() {
-    return this.annotation;
+  public String getAnnotationId() {
+    return this.annotationId;
   }
   
   /**
-   * An optional annotation describing the operation.
+   * An optional annotation identifer describing the operation.
    * 
    * Since 3.16.0
    */
-  public void setAnnotation(final ChangeAnnotation annotation) {
-    this.annotation = annotation;
+  public void setAnnotationId(final String annotationId) {
+    this.annotationId = annotationId;
   }
   
   @Override
@@ -84,7 +81,7 @@ public abstract class ResourceOperation {
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("kind", this.kind);
-    b.add("annotation", this.annotation);
+    b.add("annotationId", this.annotationId);
     return b.toString();
   }
   
@@ -103,10 +100,10 @@ public abstract class ResourceOperation {
         return false;
     } else if (!this.kind.equals(other.kind))
       return false;
-    if (this.annotation == null) {
-      if (other.annotation != null)
+    if (this.annotationId == null) {
+      if (other.annotationId != null)
         return false;
-    } else if (!this.annotation.equals(other.annotation))
+    } else if (!this.annotationId.equals(other.annotationId))
       return false;
     return true;
   }
@@ -117,6 +114,6 @@ public abstract class ResourceOperation {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((this.kind== null) ? 0 : this.kind.hashCode());
-    return prime * result + ((this.annotation== null) ? 0 : this.annotation.hashCode());
+    return prime * result + ((this.annotationId== null) ? 0 : this.annotationId.hashCode());
   }
 }
