@@ -23,6 +23,7 @@ import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.FoldingRangeProviderOptions;
 import org.eclipse.lsp4j.MonikerRegistrationOptions;
 import org.eclipse.lsp4j.RenameOptions;
+import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SemanticTokensWithRegistrationOptions;
 import org.eclipse.lsp4j.SignatureHelpOptions;
 import org.eclipse.lsp4j.StaticRegistrationOptions;
@@ -167,6 +168,15 @@ public class ServerCapabilities {
    * Workspace specific server capabilities
    */
   private WorkspaceServerCapabilities workspace;
+  
+  /**
+   * Semantic highlighting server capabilities.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
+   */
+  @Beta
+  @Deprecated
+  private SemanticHighlightingServerCapabilities semanticHighlighting;
   
   /**
    * Server capability for calculating super- and subtype hierarchies.
@@ -723,6 +733,27 @@ public class ServerCapabilities {
   }
   
   /**
+   * Semantic highlighting server capabilities.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
+   */
+  @Pure
+  @Deprecated
+  public SemanticHighlightingServerCapabilities getSemanticHighlighting() {
+    return this.semanticHighlighting;
+  }
+  
+  /**
+   * Semantic highlighting server capabilities.
+   * 
+   * @deprecated Use {@code SemanticTokens} API instead.
+   */
+  @Deprecated
+  public void setSemanticHighlighting(final SemanticHighlightingServerCapabilities semanticHighlighting) {
+    this.semanticHighlighting = semanticHighlighting;
+  }
+  
+  /**
    * Server capability for calculating super- and subtype hierarchies.
    * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
    * 
@@ -966,6 +997,7 @@ public class ServerCapabilities {
     b.add("declarationProvider", this.declarationProvider);
     b.add("executeCommandProvider", this.executeCommandProvider);
     b.add("workspace", this.workspace);
+    b.add("semanticHighlighting", this.semanticHighlighting);
     b.add("typeHierarchyProvider", this.typeHierarchyProvider);
     b.add("callHierarchyProvider", this.callHierarchyProvider);
     b.add("selectionRangeProvider", this.selectionRangeProvider);
@@ -1101,6 +1133,11 @@ public class ServerCapabilities {
         return false;
     } else if (!this.workspace.equals(other.workspace))
       return false;
+    if (this.semanticHighlighting == null) {
+      if (other.semanticHighlighting != null)
+        return false;
+    } else if (!this.semanticHighlighting.equals(other.semanticHighlighting))
+      return false;
     if (this.typeHierarchyProvider == null) {
       if (other.typeHierarchyProvider != null)
         return false;
@@ -1167,6 +1204,7 @@ public class ServerCapabilities {
     result = prime * result + ((this.declarationProvider== null) ? 0 : this.declarationProvider.hashCode());
     result = prime * result + ((this.executeCommandProvider== null) ? 0 : this.executeCommandProvider.hashCode());
     result = prime * result + ((this.workspace== null) ? 0 : this.workspace.hashCode());
+    result = prime * result + ((this.semanticHighlighting== null) ? 0 : this.semanticHighlighting.hashCode());
     result = prime * result + ((this.typeHierarchyProvider== null) ? 0 : this.typeHierarchyProvider.hashCode());
     result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
     result = prime * result + ((this.selectionRangeProvider== null) ? 0 : this.selectionRangeProvider.hashCode());

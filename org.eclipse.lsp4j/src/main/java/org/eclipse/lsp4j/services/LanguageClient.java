@@ -23,6 +23,7 @@ import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.ProgressParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.RegistrationParams;
+import org.eclipse.lsp4j.SemanticHighlightingParams;
 import org.eclipse.lsp4j.SetTraceParams;
 import org.eclipse.lsp4j.ShowDocumentParams;
 import org.eclipse.lsp4j.ShowDocumentResult;
@@ -138,6 +139,30 @@ public interface LanguageClient {
 	 */
 	@JsonRequest("workspace/configuration")
 	default CompletableFuture<List<Object>> configuration(ConfigurationParams configurationParams) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code textDocument/semanticHighlighting} notification is pushed from the server to the client
+	 * to inform the client about additional semantic highlighting information that has to be applied
+	 * on the text document. It is the server's responsibility to decide which lines are included in
+	 * the highlighting information. In other words, the server is capable of sending only a delta
+	 * information. For instance, after opening the text document ({@code DidOpenTextDocumentNotification})
+	 * the server sends the semantic highlighting information for the entire document, but if the server
+	 * receives a {@code DidChangeTextDocumentNotification}, it pushes the information only about
+	 * the affected lines in the document.
+	 * 
+	 * <p>
+	 * <b>Note:</b> the <a href=
+	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
+	 * language feature</a> is not yet part of the official LSP specification.
+	 * 
+	 * @deprecated Use {@code SemanticTokens} API instead.
+	 */
+	@Beta
+	@Deprecated
+	@JsonNotification("textDocument/semanticHighlighting")
+	default void semanticHighlighting(SemanticHighlightingParams params) {
 		throw new UnsupportedOperationException();
 	}
 
