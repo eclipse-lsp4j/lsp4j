@@ -26,6 +26,8 @@ import org.eclipse.lsp4j.FoldingRangeCapabilities;
 import org.eclipse.lsp4j.FormattingCapabilities;
 import org.eclipse.lsp4j.HoverCapabilities;
 import org.eclipse.lsp4j.ImplementationCapabilities;
+import org.eclipse.lsp4j.LinkedEditingRangeCapabilities;
+import org.eclipse.lsp4j.MonikerCapabilities;
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities;
 import org.eclipse.lsp4j.PublishDiagnosticsCapabilities;
 import org.eclipse.lsp4j.RangeFormattingCapabilities;
@@ -49,113 +51,113 @@ public class TextDocumentClientCapabilities {
   private SynchronizationCapabilities synchronization;
   
   /**
-   * Capabilities specific to the `textDocument/completion`
+   * Capabilities specific to the {@code textDocument/completion}
    */
   private CompletionCapabilities completion;
   
   /**
-   * Capabilities specific to the `textDocument/hover`
+   * Capabilities specific to the {@code textDocument/hover}
    */
   private HoverCapabilities hover;
   
   /**
-   * Capabilities specific to the `textDocument/signatureHelp`
+   * Capabilities specific to the {@code textDocument/signatureHelp}
    */
   private SignatureHelpCapabilities signatureHelp;
   
   /**
-   * Capabilities specific to the `textDocument/references`
+   * Capabilities specific to the {@code textDocument/references}
    */
   private ReferencesCapabilities references;
   
   /**
-   * Capabilities specific to the `textDocument/documentHighlight`
+   * Capabilities specific to the {@code textDocument/documentHighlight}
    */
   private DocumentHighlightCapabilities documentHighlight;
   
   /**
-   * Capabilities specific to the `textDocument/documentSymbol`
+   * Capabilities specific to the {@code textDocument/documentSymbol}
    */
   private DocumentSymbolCapabilities documentSymbol;
   
   /**
-   * Capabilities specific to the `textDocument/formatting`
+   * Capabilities specific to the {@code textDocument/formatting}
    */
   private FormattingCapabilities formatting;
   
   /**
-   * Capabilities specific to the `textDocument/rangeFormatting`
+   * Capabilities specific to the {@code textDocument/rangeFormatting}
    */
   private RangeFormattingCapabilities rangeFormatting;
   
   /**
-   * Capabilities specific to the `textDocument/onTypeFormatting`
+   * Capabilities specific to the {@code textDocument/onTypeFormatting}
    */
   private OnTypeFormattingCapabilities onTypeFormatting;
   
   /**
-   * Capabilities specific to the `textDocument/declaration`
+   * Capabilities specific to the {@code textDocument/declaration}
    * 
    * Since 3.14.0
    */
   private DeclarationCapabilities declaration;
   
   /**
-   * Capabilities specific to the `textDocument/definition`
+   * Capabilities specific to the {@code textDocument/definition}
    * 
    * Since 3.14.0
    */
   private DefinitionCapabilities definition;
   
   /**
-   * Capabilities specific to the `textDocument/typeDefinition`
+   * Capabilities specific to the {@code textDocument/typeDefinition}
    * 
    * Since 3.6.0
    */
   private TypeDefinitionCapabilities typeDefinition;
   
   /**
-   * Capabilities specific to the `textDocument/implementation`
+   * Capabilities specific to the {@code textDocument/implementation}
    * 
    * Since 3.6.0
    */
   private ImplementationCapabilities implementation;
   
   /**
-   * Capabilities specific to the `textDocument/codeAction`
+   * Capabilities specific to the {@code textDocument/codeAction}
    */
   private CodeActionCapabilities codeAction;
   
   /**
-   * Capabilities specific to the `textDocument/codeLens`
+   * Capabilities specific to the {@code textDocument/codeLens}
    */
   private CodeLensCapabilities codeLens;
   
   /**
-   * Capabilities specific to the `textDocument/documentLink`
+   * Capabilities specific to the {@code textDocument/documentLink}
    */
   private DocumentLinkCapabilities documentLink;
   
   /**
-   * Capabilities specific to the `textDocument/documentColor` and the
-   * `textDocument/colorPresentation` request.
+   * Capabilities specific to the {@code textDocument/documentColor} and the
+   * {@code textDocument/colorPresentation} request.
    * 
    * Since 3.6.0
    */
   private ColorProviderCapabilities colorProvider;
   
   /**
-   * Capabilities specific to the `textDocument/rename`
+   * Capabilities specific to the {@code textDocument/rename}
    */
   private RenameCapabilities rename;
   
   /**
-   * Capabilities specific to `textDocument/publishDiagnostics`.
+   * Capabilities specific to {@code textDocument/publishDiagnostics}.
    */
   private PublishDiagnosticsCapabilities publishDiagnostics;
   
   /**
-   * Capabilities specific to `textDocument/foldingRange` requests.
+   * Capabilities specific to {@code textDocument/foldingRange} requests.
    * 
    * Since 3.10.0
    */
@@ -181,7 +183,6 @@ public class TextDocumentClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CallHierarchyCapabilities callHierarchy;
   
   /**
@@ -196,8 +197,21 @@ public class TextDocumentClientCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private SemanticTokensCapabilities semanticTokens;
+  
+  /**
+   * Capabilities specific to the {@code textDocument/moniker} request.
+   * 
+   * Since 3.16.0
+   */
+  private MonikerCapabilities moniker;
+  
+  /**
+   * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
+   * 
+   * Since 3.16.0
+   */
+  private LinkedEditingRangeCapabilities linkedEditingRange;
   
   @Pure
   public SynchronizationCapabilities getSynchronization() {
@@ -209,7 +223,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/completion`
+   * Capabilities specific to the {@code textDocument/completion}
    */
   @Pure
   public CompletionCapabilities getCompletion() {
@@ -217,14 +231,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/completion`
+   * Capabilities specific to the {@code textDocument/completion}
    */
   public void setCompletion(final CompletionCapabilities completion) {
     this.completion = completion;
   }
   
   /**
-   * Capabilities specific to the `textDocument/hover`
+   * Capabilities specific to the {@code textDocument/hover}
    */
   @Pure
   public HoverCapabilities getHover() {
@@ -232,14 +246,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/hover`
+   * Capabilities specific to the {@code textDocument/hover}
    */
   public void setHover(final HoverCapabilities hover) {
     this.hover = hover;
   }
   
   /**
-   * Capabilities specific to the `textDocument/signatureHelp`
+   * Capabilities specific to the {@code textDocument/signatureHelp}
    */
   @Pure
   public SignatureHelpCapabilities getSignatureHelp() {
@@ -247,14 +261,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/signatureHelp`
+   * Capabilities specific to the {@code textDocument/signatureHelp}
    */
   public void setSignatureHelp(final SignatureHelpCapabilities signatureHelp) {
     this.signatureHelp = signatureHelp;
   }
   
   /**
-   * Capabilities specific to the `textDocument/references`
+   * Capabilities specific to the {@code textDocument/references}
    */
   @Pure
   public ReferencesCapabilities getReferences() {
@@ -262,14 +276,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/references`
+   * Capabilities specific to the {@code textDocument/references}
    */
   public void setReferences(final ReferencesCapabilities references) {
     this.references = references;
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentHighlight`
+   * Capabilities specific to the {@code textDocument/documentHighlight}
    */
   @Pure
   public DocumentHighlightCapabilities getDocumentHighlight() {
@@ -277,14 +291,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentHighlight`
+   * Capabilities specific to the {@code textDocument/documentHighlight}
    */
   public void setDocumentHighlight(final DocumentHighlightCapabilities documentHighlight) {
     this.documentHighlight = documentHighlight;
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentSymbol`
+   * Capabilities specific to the {@code textDocument/documentSymbol}
    */
   @Pure
   public DocumentSymbolCapabilities getDocumentSymbol() {
@@ -292,14 +306,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentSymbol`
+   * Capabilities specific to the {@code textDocument/documentSymbol}
    */
   public void setDocumentSymbol(final DocumentSymbolCapabilities documentSymbol) {
     this.documentSymbol = documentSymbol;
   }
   
   /**
-   * Capabilities specific to the `textDocument/formatting`
+   * Capabilities specific to the {@code textDocument/formatting}
    */
   @Pure
   public FormattingCapabilities getFormatting() {
@@ -307,14 +321,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/formatting`
+   * Capabilities specific to the {@code textDocument/formatting}
    */
   public void setFormatting(final FormattingCapabilities formatting) {
     this.formatting = formatting;
   }
   
   /**
-   * Capabilities specific to the `textDocument/rangeFormatting`
+   * Capabilities specific to the {@code textDocument/rangeFormatting}
    */
   @Pure
   public RangeFormattingCapabilities getRangeFormatting() {
@@ -322,14 +336,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/rangeFormatting`
+   * Capabilities specific to the {@code textDocument/rangeFormatting}
    */
   public void setRangeFormatting(final RangeFormattingCapabilities rangeFormatting) {
     this.rangeFormatting = rangeFormatting;
   }
   
   /**
-   * Capabilities specific to the `textDocument/onTypeFormatting`
+   * Capabilities specific to the {@code textDocument/onTypeFormatting}
    */
   @Pure
   public OnTypeFormattingCapabilities getOnTypeFormatting() {
@@ -337,14 +351,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/onTypeFormatting`
+   * Capabilities specific to the {@code textDocument/onTypeFormatting}
    */
   public void setOnTypeFormatting(final OnTypeFormattingCapabilities onTypeFormatting) {
     this.onTypeFormatting = onTypeFormatting;
   }
   
   /**
-   * Capabilities specific to the `textDocument/declaration`
+   * Capabilities specific to the {@code textDocument/declaration}
    * 
    * Since 3.14.0
    */
@@ -354,7 +368,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/declaration`
+   * Capabilities specific to the {@code textDocument/declaration}
    * 
    * Since 3.14.0
    */
@@ -363,7 +377,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/definition`
+   * Capabilities specific to the {@code textDocument/definition}
    * 
    * Since 3.14.0
    */
@@ -373,7 +387,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/definition`
+   * Capabilities specific to the {@code textDocument/definition}
    * 
    * Since 3.14.0
    */
@@ -382,7 +396,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/typeDefinition`
+   * Capabilities specific to the {@code textDocument/typeDefinition}
    * 
    * Since 3.6.0
    */
@@ -392,7 +406,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/typeDefinition`
+   * Capabilities specific to the {@code textDocument/typeDefinition}
    * 
    * Since 3.6.0
    */
@@ -401,7 +415,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/implementation`
+   * Capabilities specific to the {@code textDocument/implementation}
    * 
    * Since 3.6.0
    */
@@ -411,7 +425,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/implementation`
+   * Capabilities specific to the {@code textDocument/implementation}
    * 
    * Since 3.6.0
    */
@@ -420,7 +434,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/codeAction`
+   * Capabilities specific to the {@code textDocument/codeAction}
    */
   @Pure
   public CodeActionCapabilities getCodeAction() {
@@ -428,14 +442,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/codeAction`
+   * Capabilities specific to the {@code textDocument/codeAction}
    */
   public void setCodeAction(final CodeActionCapabilities codeAction) {
     this.codeAction = codeAction;
   }
   
   /**
-   * Capabilities specific to the `textDocument/codeLens`
+   * Capabilities specific to the {@code textDocument/codeLens}
    */
   @Pure
   public CodeLensCapabilities getCodeLens() {
@@ -443,14 +457,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/codeLens`
+   * Capabilities specific to the {@code textDocument/codeLens}
    */
   public void setCodeLens(final CodeLensCapabilities codeLens) {
     this.codeLens = codeLens;
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentLink`
+   * Capabilities specific to the {@code textDocument/documentLink}
    */
   @Pure
   public DocumentLinkCapabilities getDocumentLink() {
@@ -458,15 +472,15 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentLink`
+   * Capabilities specific to the {@code textDocument/documentLink}
    */
   public void setDocumentLink(final DocumentLinkCapabilities documentLink) {
     this.documentLink = documentLink;
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentColor` and the
-   * `textDocument/colorPresentation` request.
+   * Capabilities specific to the {@code textDocument/documentColor} and the
+   * {@code textDocument/colorPresentation} request.
    * 
    * Since 3.6.0
    */
@@ -476,8 +490,8 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/documentColor` and the
-   * `textDocument/colorPresentation` request.
+   * Capabilities specific to the {@code textDocument/documentColor} and the
+   * {@code textDocument/colorPresentation} request.
    * 
    * Since 3.6.0
    */
@@ -486,7 +500,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/rename`
+   * Capabilities specific to the {@code textDocument/rename}
    */
   @Pure
   public RenameCapabilities getRename() {
@@ -494,14 +508,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to the `textDocument/rename`
+   * Capabilities specific to the {@code textDocument/rename}
    */
   public void setRename(final RenameCapabilities rename) {
     this.rename = rename;
   }
   
   /**
-   * Capabilities specific to `textDocument/publishDiagnostics`.
+   * Capabilities specific to {@code textDocument/publishDiagnostics}.
    */
   @Pure
   public PublishDiagnosticsCapabilities getPublishDiagnostics() {
@@ -509,14 +523,14 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to `textDocument/publishDiagnostics`.
+   * Capabilities specific to {@code textDocument/publishDiagnostics}.
    */
   public void setPublishDiagnostics(final PublishDiagnosticsCapabilities publishDiagnostics) {
     this.publishDiagnostics = publishDiagnostics;
   }
   
   /**
-   * Capabilities specific to `textDocument/foldingRange` requests.
+   * Capabilities specific to {@code textDocument/foldingRange} requests.
    * 
    * Since 3.10.0
    */
@@ -526,7 +540,7 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to `textDocument/foldingRange` requests.
+   * Capabilities specific to {@code textDocument/foldingRange} requests.
    * 
    * Since 3.10.0
    */
@@ -627,6 +641,44 @@ public class TextDocumentClientCapabilities {
     this.semanticTokens = semanticTokens;
   }
   
+  /**
+   * Capabilities specific to the {@code textDocument/moniker} request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public MonikerCapabilities getMoniker() {
+    return this.moniker;
+  }
+  
+  /**
+   * Capabilities specific to the {@code textDocument/moniker} request.
+   * 
+   * Since 3.16.0
+   */
+  public void setMoniker(final MonikerCapabilities moniker) {
+    this.moniker = moniker;
+  }
+  
+  /**
+   * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public LinkedEditingRangeCapabilities getLinkedEditingRange() {
+    return this.linkedEditingRange;
+  }
+  
+  /**
+   * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
+   * 
+   * Since 3.16.0
+   */
+  public void setLinkedEditingRange(final LinkedEditingRangeCapabilities linkedEditingRange) {
+    this.linkedEditingRange = linkedEditingRange;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -657,6 +709,8 @@ public class TextDocumentClientCapabilities {
     b.add("callHierarchy", this.callHierarchy);
     b.add("selectionRange", this.selectionRange);
     b.add("semanticTokens", this.semanticTokens);
+    b.add("moniker", this.moniker);
+    b.add("linkedEditingRange", this.linkedEditingRange);
     return b.toString();
   }
   
@@ -800,6 +854,16 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.semanticTokens.equals(other.semanticTokens))
       return false;
+    if (this.moniker == null) {
+      if (other.moniker != null)
+        return false;
+    } else if (!this.moniker.equals(other.moniker))
+      return false;
+    if (this.linkedEditingRange == null) {
+      if (other.linkedEditingRange != null)
+        return false;
+    } else if (!this.linkedEditingRange.equals(other.linkedEditingRange))
+      return false;
     return true;
   }
   
@@ -833,6 +897,8 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
     result = prime * result + ((this.callHierarchy== null) ? 0 : this.callHierarchy.hashCode());
     result = prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
-    return prime * result + ((this.semanticTokens== null) ? 0 : this.semanticTokens.hashCode());
+    result = prime * result + ((this.semanticTokens== null) ? 0 : this.semanticTokens.hashCode());
+    result = prime * result + ((this.moniker== null) ? 0 : this.moniker.hashCode());
+    return prime * result + ((this.linkedEditingRange== null) ? 0 : this.linkedEditingRange.hashCode());
   }
 }

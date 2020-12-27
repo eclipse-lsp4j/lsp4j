@@ -15,6 +15,9 @@ import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Since 3.16.0
+ */
 @SuppressWarnings("all")
 public class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
   @Override

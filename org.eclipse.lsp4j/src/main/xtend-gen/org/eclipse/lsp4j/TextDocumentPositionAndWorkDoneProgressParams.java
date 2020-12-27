@@ -31,7 +31,7 @@ public abstract class TextDocumentPositionAndWorkDoneProgressParams extends Text
   /**
    * An optional token that a server can use to report work done progress.
    */
-  private Either<String, Number> workDoneToken;
+  private Either<String, Integer> workDoneToken;
   
   public TextDocumentPositionAndWorkDoneProgressParams() {
   }
@@ -44,14 +44,14 @@ public abstract class TextDocumentPositionAndWorkDoneProgressParams extends Text
    * An optional token that a server can use to report work done progress.
    */
   @Pure
-  public Either<String, Number> getWorkDoneToken() {
+  public Either<String, Integer> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
   /**
    * An optional token that a server can use to report work done progress.
    */
-  public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
+  public void setWorkDoneToken(final Either<String, Integer> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }
   
@@ -63,7 +63,7 @@ public abstract class TextDocumentPositionAndWorkDoneProgressParams extends Text
     this.workDoneToken = Either.forLeft(workDoneToken);
   }
   
-  public void setWorkDoneToken(final Number workDoneToken) {
+  public void setWorkDoneToken(final Integer workDoneToken) {
     if (workDoneToken == null) {
       this.workDoneToken = null;
       return;

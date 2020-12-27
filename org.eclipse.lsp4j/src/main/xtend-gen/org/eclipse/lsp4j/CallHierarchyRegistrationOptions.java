@@ -15,6 +15,9 @@ import org.eclipse.lsp4j.AbstractTextDocumentRegistrationAndWorkDoneProgressOpti
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Since 3.16.0
+ */
 @SuppressWarnings("all")
 public class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
   @Override

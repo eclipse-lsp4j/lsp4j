@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import com.google.gson.annotations.JsonAdapter;
 import java.util.List;
 import org.eclipse.lsp4j.CodeActionDisabled;
@@ -78,7 +77,6 @@ public class CodeAction {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CodeActionDisabled disabled;
   
   /**
@@ -99,7 +97,6 @@ public class CodeAction {
    * 
    * Since 3.16.0
    */
-  @Beta
   @JsonAdapter(JsonElementTypeAdapter.Factory.class)
   private Object data;
   

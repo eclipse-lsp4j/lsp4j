@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -24,13 +23,11 @@ public class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
    * 
    * Since 3.16.0
    */
-  @Beta
   private String label;
   
   public DocumentSymbolOptions() {
   }
   
-  @Beta
   public DocumentSymbolOptions(final String label) {
     this.label = label;
   }

@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SymbolKind;
@@ -66,7 +65,6 @@ public class DocumentSymbol {
    * 
    * Since 3.16.0
    */
-  @Beta
   private List<SymbolTag> tags;
   
   /**

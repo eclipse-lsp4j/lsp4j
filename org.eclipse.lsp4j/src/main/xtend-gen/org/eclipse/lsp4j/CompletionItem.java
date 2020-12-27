@@ -16,9 +16,12 @@ import java.util.List;
 import org.eclipse.lsp4j.Command;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.CompletionItemTag;
+import org.eclipse.lsp4j.InsertReplaceEdit;
 import org.eclipse.lsp4j.InsertTextFormat;
+import org.eclipse.lsp4j.InsertTextMode;
 import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.TextEdit;
+import org.eclipse.lsp4j.adapters.CompletionItemTextEditTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
@@ -101,13 +104,40 @@ public class CompletionItem {
   private InsertTextFormat insertTextFormat;
   
   /**
-   * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-   * `insertText` is ignored.
+   * How whitespace and indentation is handled during completion
+   * item insertion. If not provided, the client's default value depends on
+   * the `textDocument.completion.insertTextMode` client capability.
    * 
-   * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
-   * has been requested.
+   * Since 3.16.0
    */
-  private TextEdit textEdit;
+  private InsertTextMode insertTextMode;
+  
+  /**
+   * An edit which is applied to a document when selecting this completion.
+   * When an edit is provided the value of `insertText` is ignored.
+   * 
+   * *Note:* The range of the edit must be a single line range and it must
+   * contain the position at which completion has been requested.
+   * 
+   * Most editors support two different operations when accepting a completion
+   * item. One is to insert a completion text and the other is to replace an
+   * existing text with a completion text. Since this can usually not be
+   * predetermined by a server it can report both ranges. Clients need to
+   * signal support for `InsertReplaceEdits` via the
+   * `textDocument.completion.insertReplaceSupport` client capability
+   * property.
+   * 
+   * *Note 1:* The text edit's range as well as both ranges from an insert
+   * replace edit must be a [single line] and they must contain the position
+   * at which completion has been requested.
+   * *Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range
+   * must be a prefix of the edit's replace range, that means it must be
+   * contained and starting at the same position.
+   * 
+   * Since 3.16.0 additional type `InsertReplaceEdit`
+   */
+  @JsonAdapter(CompletionItemTextEditTypeAdapter.class)
+  private Either<TextEdit, InsertReplaceEdit> textEdit;
   
   /**
    * An optional array of additional text edits that are applied when
@@ -350,25 +380,82 @@ public class CompletionItem {
   }
   
   /**
-   * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-   * `insertText` is ignored.
+   * How whitespace and indentation is handled during completion
+   * item insertion. If not provided, the client's default value depends on
+   * the `textDocument.completion.insertTextMode` client capability.
    * 
-   * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
-   * has been requested.
+   * Since 3.16.0
    */
   @Pure
-  public TextEdit getTextEdit() {
+  public InsertTextMode getInsertTextMode() {
+    return this.insertTextMode;
+  }
+  
+  /**
+   * How whitespace and indentation is handled during completion
+   * item insertion. If not provided, the client's default value depends on
+   * the `textDocument.completion.insertTextMode` client capability.
+   * 
+   * Since 3.16.0
+   */
+  public void setInsertTextMode(final InsertTextMode insertTextMode) {
+    this.insertTextMode = insertTextMode;
+  }
+  
+  /**
+   * An edit which is applied to a document when selecting this completion.
+   * When an edit is provided the value of `insertText` is ignored.
+   * 
+   * *Note:* The range of the edit must be a single line range and it must
+   * contain the position at which completion has been requested.
+   * 
+   * Most editors support two different operations when accepting a completion
+   * item. One is to insert a completion text and the other is to replace an
+   * existing text with a completion text. Since this can usually not be
+   * predetermined by a server it can report both ranges. Clients need to
+   * signal support for `InsertReplaceEdits` via the
+   * `textDocument.completion.insertReplaceSupport` client capability
+   * property.
+   * 
+   * *Note 1:* The text edit's range as well as both ranges from an insert
+   * replace edit must be a [single line] and they must contain the position
+   * at which completion has been requested.
+   * *Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range
+   * must be a prefix of the edit's replace range, that means it must be
+   * contained and starting at the same position.
+   * 
+   * Since 3.16.0 additional type `InsertReplaceEdit`
+   */
+  @Pure
+  public Either<TextEdit, InsertReplaceEdit> getTextEdit() {
     return this.textEdit;
   }
   
   /**
-   * An edit which is applied to a document when selecting this completion. When an edit is provided the value of
-   * `insertText` is ignored.
+   * An edit which is applied to a document when selecting this completion.
+   * When an edit is provided the value of `insertText` is ignored.
    * 
-   * *Note:* The range of the edit must be a single line range and it must contain the position at which completion
-   * has been requested.
+   * *Note:* The range of the edit must be a single line range and it must
+   * contain the position at which completion has been requested.
+   * 
+   * Most editors support two different operations when accepting a completion
+   * item. One is to insert a completion text and the other is to replace an
+   * existing text with a completion text. Since this can usually not be
+   * predetermined by a server it can report both ranges. Clients need to
+   * signal support for `InsertReplaceEdits` via the
+   * `textDocument.completion.insertReplaceSupport` client capability
+   * property.
+   * 
+   * *Note 1:* The text edit's range as well as both ranges from an insert
+   * replace edit must be a [single line] and they must contain the position
+   * at which completion has been requested.
+   * *Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range
+   * must be a prefix of the edit's replace range, that means it must be
+   * contained and starting at the same position.
+   * 
+   * Since 3.16.0 additional type `InsertReplaceEdit`
    */
-  public void setTextEdit(final TextEdit textEdit) {
+  public void setTextEdit(final Either<TextEdit, InsertReplaceEdit> textEdit) {
     this.textEdit = textEdit;
   }
   
@@ -467,6 +554,7 @@ public class CompletionItem {
     b.add("filterText", this.filterText);
     b.add("insertText", this.insertText);
     b.add("insertTextFormat", this.insertTextFormat);
+    b.add("insertTextMode", this.insertTextMode);
     b.add("textEdit", this.textEdit);
     b.add("additionalTextEdits", this.additionalTextEdits);
     b.add("commitCharacters", this.commitCharacters);
@@ -540,6 +628,11 @@ public class CompletionItem {
         return false;
     } else if (!this.insertTextFormat.equals(other.insertTextFormat))
       return false;
+    if (this.insertTextMode == null) {
+      if (other.insertTextMode != null)
+        return false;
+    } else if (!this.insertTextMode.equals(other.insertTextMode))
+      return false;
     if (this.textEdit == null) {
       if (other.textEdit != null)
         return false;
@@ -584,6 +677,7 @@ public class CompletionItem {
     result = prime * result + ((this.filterText== null) ? 0 : this.filterText.hashCode());
     result = prime * result + ((this.insertText== null) ? 0 : this.insertText.hashCode());
     result = prime * result + ((this.insertTextFormat== null) ? 0 : this.insertTextFormat.hashCode());
+    result = prime * result + ((this.insertTextMode== null) ? 0 : this.insertTextMode.hashCode());
     result = prime * result + ((this.textEdit== null) ? 0 : this.textEdit.hashCode());
     result = prime * result + ((this.additionalTextEdits== null) ? 0 : this.additionalTextEdits.hashCode());
     result = prime * result + ((this.commitCharacters== null) ? 0 : this.commitCharacters.hashCode());

@@ -11,8 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
+import org.eclipse.lsp4j.CompletionItemInsertTextModeSupportCapabilities;
 import org.eclipse.lsp4j.CompletionItemResolveSupportCapabilities;
 import org.eclipse.lsp4j.CompletionItemTagSupportCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -70,7 +70,6 @@ public class CompletionItemCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean insertReplaceSupport;
   
   /**
@@ -80,8 +79,16 @@ public class CompletionItemCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private CompletionItemResolveSupportCapabilities resolveSupport;
+  
+  /**
+   * The client supports the {@link CompletionItem#insertTextMode} property on
+   * a completion item to override the whitespace handling mode
+   * as defined by the client.
+   * 
+   * Since 3.16.0
+   */
+  private CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport;
   
   public CompletionItemCapabilities() {
   }
@@ -246,6 +253,29 @@ public class CompletionItemCapabilities {
     this.resolveSupport = resolveSupport;
   }
   
+  /**
+   * The client supports the {@link CompletionItem#insertTextMode} property on
+   * a completion item to override the whitespace handling mode
+   * as defined by the client.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public CompletionItemInsertTextModeSupportCapabilities getInsertTextModeSupport() {
+    return this.insertTextModeSupport;
+  }
+  
+  /**
+   * The client supports the {@link CompletionItem#insertTextMode} property on
+   * a completion item to override the whitespace handling mode
+   * as defined by the client.
+   * 
+   * Since 3.16.0
+   */
+  public void setInsertTextModeSupport(final CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport) {
+    this.insertTextModeSupport = insertTextModeSupport;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -258,6 +288,7 @@ public class CompletionItemCapabilities {
     b.add("tagSupport", this.tagSupport);
     b.add("insertReplaceSupport", this.insertReplaceSupport);
     b.add("resolveSupport", this.resolveSupport);
+    b.add("insertTextModeSupport", this.insertTextModeSupport);
     return b.toString();
   }
   
@@ -311,6 +342,11 @@ public class CompletionItemCapabilities {
         return false;
     } else if (!this.resolveSupport.equals(other.resolveSupport))
       return false;
+    if (this.insertTextModeSupport == null) {
+      if (other.insertTextModeSupport != null)
+        return false;
+    } else if (!this.insertTextModeSupport.equals(other.insertTextModeSupport))
+      return false;
     return true;
   }
   
@@ -326,6 +362,7 @@ public class CompletionItemCapabilities {
     result = prime * result + ((this.preselectSupport== null) ? 0 : this.preselectSupport.hashCode());
     result = prime * result + ((this.tagSupport== null) ? 0 : this.tagSupport.hashCode());
     result = prime * result + ((this.insertReplaceSupport== null) ? 0 : this.insertReplaceSupport.hashCode());
-    return prime * result + ((this.resolveSupport== null) ? 0 : this.resolveSupport.hashCode());
+    result = prime * result + ((this.resolveSupport== null) ? 0 : this.resolveSupport.hashCode());
+    return prime * result + ((this.insertTextModeSupport== null) ? 0 : this.insertTextModeSupport.hashCode());
   }
 }

@@ -56,7 +56,11 @@ import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.HoverParams;
 import org.eclipse.lsp4j.ImplementationParams;
 import org.eclipse.lsp4j.Location;
+import org.eclipse.lsp4j.Moniker;
+import org.eclipse.lsp4j.MonikerParams;
 import org.eclipse.lsp4j.LocationLink;
+import org.eclipse.lsp4j.LinkedEditingRangeParams;
+import org.eclipse.lsp4j.LinkedEditingRanges;
 import org.eclipse.lsp4j.PrepareRenameParams;
 import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
@@ -233,6 +237,8 @@ public interface TextDocumentService {
 	 * {@code true}. More details on this difference between the LSP and the LSP4J
 	 * can be found <a href="https://github.com/eclipse/lsp4j/issues/252">here</a>.
 	 * </p>
+	 * 
+	 * Servers should whenever possible return {@code DocumentSymbol} since it is the richer data structure.
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(DocumentSymbolResponseAdapter.class)
@@ -325,6 +331,24 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	default CompletableFuture<WorkspaceEdit> rename(RenameParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The linked editing range request is sent from the client to the server to return
+	 * for a given position in a document the range of the symbol at the position
+	 * and all ranges that have the same content. Optionally a word pattern can be
+	 * returned to describe valid contents. A rename to one of the ranges can be
+	 * applied to all other ranges if the new content is valid. If no result-specific
+	 * word pattern is provided, the word pattern from the client's language configuration
+	 * is used.
+	 * 
+	 * Registration Options: LinkedEditingRangeRegistrationOptions
+	 * 
+	 * Since 3.16.0
+	 */
+	@JsonRequest
+	default CompletableFuture<LinkedEditingRanges> linkedEditingRange(LinkedEditingRangeParams params) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -502,7 +526,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<CallHierarchyItem>> prepareCallHierarchy(CallHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
@@ -515,7 +538,6 @@ public interface TextDocumentService {
 	 * 
 	 * Since 3.16.0
 	*/
-	@Beta
 	@JsonRequest(value="callHierarchy/incomingCalls", useSegment = false)
 	default CompletableFuture<List<CallHierarchyIncomingCall>> callHierarchyIncomingCalls(CallHierarchyIncomingCallsParams params) {
 		throw new UnsupportedOperationException();
@@ -528,7 +550,6 @@ public interface TextDocumentService {
 	* 
 	* Since 3.16.0
 	*/
-	@Beta
 	@JsonRequest(value="callHierarchy/outgoingCalls", useSegment = false)
 	default CompletableFuture<List<CallHierarchyOutgoingCall>> callHierarchyOutgoingCalls(CallHierarchyOutgoingCallsParams params) {
 		throw new UnsupportedOperationException();
@@ -584,6 +605,24 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/range", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensRange(SemanticTokensRangeParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Language Server Index Format (LSIF) introduced the concept of symbol monikers to help associate symbols across
+	 * different indexes. This request adds capability for LSP server implementations to provide the same symbol moniker
+	 * information given a text document position. Clients can utilize this method to get the moniker at the current
+	 * location in a file user is editing and do further code navigation queries in other services that rely on LSIF indexes
+	 * and link symbols together.
+	 *
+	 * The {@code textDocument/moniker} request is sent from the client to the server to get the symbol monikers for a given
+	 * text document position. An array of Moniker types is returned as response to indicate possible monikers at the given location.
+	 * If no monikers can be calculated, an empty array or null should be returned.
+	 * 
+	 * Since 3.16.0
+	 */
+	@JsonRequest
+	default CompletableFuture<List<Moniker>> moniker(MonikerParams params) {
 		throw new UnsupportedOperationException();
 	}
 }

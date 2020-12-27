@@ -45,8 +45,7 @@ public class CreateFile extends ResourceOperation {
   }
   
   public CreateFile(@NonNull final String uri, final CreateFileOptions options) {
-    super(ResourceOperationKind.Create);
-    this.uri = Preconditions.<String>checkNotNull(uri, "uri");
+    this(uri);
     this.options = options;
   }
   
@@ -88,6 +87,7 @@ public class CreateFile extends ResourceOperation {
     b.add("uri", this.uri);
     b.add("options", this.options);
     b.add("kind", getKind());
+    b.add("annotationId", getAnnotationId());
     return b.toString();
   }
   

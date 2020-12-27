@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import org.eclipse.lsp4j.DynamicRegistrationCapabilities;
 import org.eclipse.lsp4j.SymbolKindCapabilities;
 import org.eclipse.lsp4j.SymbolTagSupportCapabilities;
@@ -40,7 +39,6 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
    * 
    * Since 3.16.0
    */
-  @Beta
   private SymbolTagSupportCapabilities tagSupport;
   
   /**
@@ -49,7 +47,6 @@ public class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities 
    * 
    * Since 3.16.0
    */
-  @Beta
   private Boolean labelSupport;
   
   public DocumentSymbolCapabilities() {

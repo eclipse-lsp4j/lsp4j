@@ -11,6 +11,8 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.ShowDocumentCapabilities;
+import org.eclipse.lsp4j.WindowShowMessageRequestCapabilities;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
@@ -26,6 +28,20 @@ public class WindowClientCapabilities {
    * Since 3.15.0
    */
   private Boolean workDoneProgress;
+  
+  /**
+   * Capabilities specific to the showMessage request
+   * 
+   * Since 3.16.0
+   */
+  private WindowShowMessageRequestCapabilities showMessage;
+  
+  /**
+   * Client capabilities for the show document request.
+   * 
+   * Since 3.16.0
+   */
+  private ShowDocumentCapabilities showDocument;
   
   /**
    * Whether client supports handling progress notifications. If set servers are allowed to
@@ -48,11 +64,51 @@ public class WindowClientCapabilities {
     this.workDoneProgress = workDoneProgress;
   }
   
+  /**
+   * Capabilities specific to the showMessage request
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public WindowShowMessageRequestCapabilities getShowMessage() {
+    return this.showMessage;
+  }
+  
+  /**
+   * Capabilities specific to the showMessage request
+   * 
+   * Since 3.16.0
+   */
+  public void setShowMessage(final WindowShowMessageRequestCapabilities showMessage) {
+    this.showMessage = showMessage;
+  }
+  
+  /**
+   * Client capabilities for the show document request.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public ShowDocumentCapabilities getShowDocument() {
+    return this.showDocument;
+  }
+  
+  /**
+   * Client capabilities for the show document request.
+   * 
+   * Since 3.16.0
+   */
+  public void setShowDocument(final ShowDocumentCapabilities showDocument) {
+    this.showDocument = showDocument;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("workDoneProgress", this.workDoneProgress);
+    b.add("showMessage", this.showMessage);
+    b.add("showDocument", this.showDocument);
     return b.toString();
   }
   
@@ -71,12 +127,26 @@ public class WindowClientCapabilities {
         return false;
     } else if (!this.workDoneProgress.equals(other.workDoneProgress))
       return false;
+    if (this.showMessage == null) {
+      if (other.showMessage != null)
+        return false;
+    } else if (!this.showMessage.equals(other.showMessage))
+      return false;
+    if (this.showDocument == null) {
+      if (other.showDocument != null)
+        return false;
+    } else if (!this.showDocument.equals(other.showDocument))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.workDoneProgress== null) ? 0 : this.workDoneProgress.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.workDoneProgress== null) ? 0 : this.workDoneProgress.hashCode());
+    result = prime * result + ((this.showMessage== null) ? 0 : this.showMessage.hashCode());
+    return prime * result + ((this.showDocument== null) ? 0 : this.showDocument.hashCode());
   }
 }

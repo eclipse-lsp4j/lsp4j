@@ -30,8 +30,8 @@ public enum CallHierarchyDirection {
 		return value;
 	}
 
-	public static InsertTextFormat forValue(int value) {
-		InsertTextFormat[] allValues = InsertTextFormat.values();
+	public static CallHierarchyDirection forValue(int value) {
+		CallHierarchyDirection[] allValues = CallHierarchyDirection.values();
 		if (value < 1 || value > allValues.length) {
 			throw new IllegalArgumentException("Illegal enum value: " + value);
 		}

@@ -33,4 +33,11 @@ public enum SymbolTag {
 	public int getValue() {
 		return value;
 	}
+
+	public static SymbolTag forValue(int value) {
+		SymbolTag[] allValues = SymbolTag.values();
+		if (value < 1 || value > allValues.length)
+			throw new IllegalArgumentException("Illegal enum value: " + value);
+		return allValues[value - 1];
+	}
 }

@@ -32,7 +32,7 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * An optional token that a server can use to report work done progress.
    */
-  private Either<String, Number> workDoneToken;
+  private Either<String, Integer> workDoneToken;
   
   /**
    * The process Id of the parent process that started the server.
@@ -42,7 +42,7 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecated Use rootUri instead.
+   * @deprecated Use {@link #workspaceFolders} instead.
    */
   @Deprecated
   private String rootPath;
@@ -50,7 +50,10 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * The rootUri of the workspace. Is null if no folder is open.
    * If both `rootPath` and `rootUri` are set, `rootUri` wins.
+   * 
+   * @deprecated Use {@link #workspaceFolders} instead.
    */
+  @Deprecated
   private String rootUri;
   
   /**
@@ -68,7 +71,7 @@ public class InitializeParams implements WorkDoneProgressParams {
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
    * 
-   * @deprecated Use clientInfo instead.
+   * @deprecated Use {@link #clientInfo} instead.
    */
   @Deprecated
   private String clientName;
@@ -81,9 +84,20 @@ public class InitializeParams implements WorkDoneProgressParams {
   private ClientInfo clientInfo;
   
   /**
-   * The initial trace setting. If omitted trace is disabled ('off').
+   * The locale the client is currently showing the user interface
+   * in. This must not necessarily be the locale of the operating
+   * system.
    * 
-   * Legal values: 'off' | 'messages' | 'verbose'
+   * Uses IETF language tags as the value's syntax
+   * (See https://en.wikipedia.org/wiki/IETF_language_tag)
+   * 
+   * Since 3.16.0
+   */
+  private String locale;
+  
+  /**
+   * The initial trace setting.
+   * For values, see {@link TraceValue}. If omitted trace is disabled ({@link TraceValue#Off}).
    */
   private String trace;
   
@@ -101,14 +115,14 @@ public class InitializeParams implements WorkDoneProgressParams {
    * An optional token that a server can use to report work done progress.
    */
   @Pure
-  public Either<String, Number> getWorkDoneToken() {
+  public Either<String, Integer> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
   /**
    * An optional token that a server can use to report work done progress.
    */
-  public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
+  public void setWorkDoneToken(final Either<String, Integer> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }
   
@@ -120,7 +134,7 @@ public class InitializeParams implements WorkDoneProgressParams {
     this.workDoneToken = Either.forLeft(workDoneToken);
   }
   
-  public void setWorkDoneToken(final Number workDoneToken) {
+  public void setWorkDoneToken(final Integer workDoneToken) {
     if (workDoneToken == null) {
       this.workDoneToken = null;
       return;
@@ -146,7 +160,7 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecated Use rootUri instead.
+   * @deprecated Use {@link #workspaceFolders} instead.
    */
   @Pure
   @Deprecated
@@ -157,7 +171,7 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * The rootPath of the workspace. Is null if no folder is open.
    * 
-   * @deprecated Use rootUri instead.
+   * @deprecated Use {@link #workspaceFolders} instead.
    */
   @Deprecated
   public void setRootPath(final String rootPath) {
@@ -167,8 +181,11 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * The rootUri of the workspace. Is null if no folder is open.
    * If both `rootPath` and `rootUri` are set, `rootUri` wins.
+   * 
+   * @deprecated Use {@link #workspaceFolders} instead.
    */
   @Pure
+  @Deprecated
   public String getRootUri() {
     return this.rootUri;
   }
@@ -176,7 +193,10 @@ public class InitializeParams implements WorkDoneProgressParams {
   /**
    * The rootUri of the workspace. Is null if no folder is open.
    * If both `rootPath` and `rootUri` are set, `rootUri` wins.
+   * 
+   * @deprecated Use {@link #workspaceFolders} instead.
    */
+  @Deprecated
   public void setRootUri(final String rootUri) {
     this.rootUri = rootUri;
   }
@@ -215,7 +235,7 @@ public class InitializeParams implements WorkDoneProgressParams {
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
    * 
-   * @deprecated Use clientInfo instead.
+   * @deprecated Use {@link #clientInfo} instead.
    */
   @Pure
   @Deprecated
@@ -227,7 +247,7 @@ public class InitializeParams implements WorkDoneProgressParams {
    * An optional extension to the protocol.
    * To tell the server what client (editor) is talking to it.
    * 
-   * @deprecated Use clientInfo instead.
+   * @deprecated Use {@link #clientInfo} instead.
    */
   @Deprecated
   public void setClientName(final String clientName) {
@@ -254,9 +274,37 @@ public class InitializeParams implements WorkDoneProgressParams {
   }
   
   /**
-   * The initial trace setting. If omitted trace is disabled ('off').
+   * The locale the client is currently showing the user interface
+   * in. This must not necessarily be the locale of the operating
+   * system.
    * 
-   * Legal values: 'off' | 'messages' | 'verbose'
+   * Uses IETF language tags as the value's syntax
+   * (See https://en.wikipedia.org/wiki/IETF_language_tag)
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public String getLocale() {
+    return this.locale;
+  }
+  
+  /**
+   * The locale the client is currently showing the user interface
+   * in. This must not necessarily be the locale of the operating
+   * system.
+   * 
+   * Uses IETF language tags as the value's syntax
+   * (See https://en.wikipedia.org/wiki/IETF_language_tag)
+   * 
+   * Since 3.16.0
+   */
+  public void setLocale(final String locale) {
+    this.locale = locale;
+  }
+  
+  /**
+   * The initial trace setting.
+   * For values, see {@link TraceValue}. If omitted trace is disabled ({@link TraceValue#Off}).
    */
   @Pure
   public String getTrace() {
@@ -264,9 +312,8 @@ public class InitializeParams implements WorkDoneProgressParams {
   }
   
   /**
-   * The initial trace setting. If omitted trace is disabled ('off').
-   * 
-   * Legal values: 'off' | 'messages' | 'verbose'
+   * The initial trace setting.
+   * For values, see {@link TraceValue}. If omitted trace is disabled ({@link TraceValue#Off}).
    */
   public void setTrace(final String trace) {
     this.trace = trace;
@@ -309,6 +356,7 @@ public class InitializeParams implements WorkDoneProgressParams {
     b.add("capabilities", this.capabilities);
     b.add("clientName", this.clientName);
     b.add("clientInfo", this.clientInfo);
+    b.add("locale", this.locale);
     b.add("trace", this.trace);
     b.add("workspaceFolders", this.workspaceFolders);
     return b.toString();
@@ -364,6 +412,11 @@ public class InitializeParams implements WorkDoneProgressParams {
         return false;
     } else if (!this.clientInfo.equals(other.clientInfo))
       return false;
+    if (this.locale == null) {
+      if (other.locale != null)
+        return false;
+    } else if (!this.locale.equals(other.locale))
+      return false;
     if (this.trace == null) {
       if (other.trace != null)
         return false;
@@ -390,6 +443,7 @@ public class InitializeParams implements WorkDoneProgressParams {
     result = prime * result + ((this.capabilities== null) ? 0 : this.capabilities.hashCode());
     result = prime * result + ((this.clientName== null) ? 0 : this.clientName.hashCode());
     result = prime * result + ((this.clientInfo== null) ? 0 : this.clientInfo.hashCode());
+    result = prime * result + ((this.locale== null) ? 0 : this.locale.hashCode());
     result = prime * result + ((this.trace== null) ? 0 : this.trace.hashCode());
     return prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
   }

@@ -30,7 +30,7 @@ public class ExecuteCommandParams implements WorkDoneProgressParams {
   /**
    * An optional token that a server can use to report work done progress.
    */
-  private Either<String, Number> workDoneToken;
+  private Either<String, Integer> workDoneToken;
   
   /**
    * The identifier of the actual command handler.
@@ -53,7 +53,7 @@ public class ExecuteCommandParams implements WorkDoneProgressParams {
     this.arguments = arguments;
   }
   
-  public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments, final Either<String, Number> workDoneToken) {
+  public ExecuteCommandParams(@NonNull final String command, final List<Object> arguments, final Either<String, Integer> workDoneToken) {
     this(command, arguments);
     this.workDoneToken = workDoneToken;
   }
@@ -62,14 +62,14 @@ public class ExecuteCommandParams implements WorkDoneProgressParams {
    * An optional token that a server can use to report work done progress.
    */
   @Pure
-  public Either<String, Number> getWorkDoneToken() {
+  public Either<String, Integer> getWorkDoneToken() {
     return this.workDoneToken;
   }
   
   /**
    * An optional token that a server can use to report work done progress.
    */
-  public void setWorkDoneToken(final Either<String, Number> workDoneToken) {
+  public void setWorkDoneToken(final Either<String, Integer> workDoneToken) {
     this.workDoneToken = workDoneToken;
   }
   
@@ -81,7 +81,7 @@ public class ExecuteCommandParams implements WorkDoneProgressParams {
     this.workDoneToken = Either.forLeft(workDoneToken);
   }
   
-  public void setWorkDoneToken(final Number workDoneToken) {
+  public void setWorkDoneToken(final Integer workDoneToken) {
     if (workDoneToken == null) {
       this.workDoneToken = null;
       return;

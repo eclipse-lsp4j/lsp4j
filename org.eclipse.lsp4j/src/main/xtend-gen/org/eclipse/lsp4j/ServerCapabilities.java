@@ -21,6 +21,7 @@ import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.FoldingRangeProviderOptions;
+import org.eclipse.lsp4j.MonikerRegistrationOptions;
 import org.eclipse.lsp4j.RenameOptions;
 import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.SemanticTokensWithRegistrationOptions;
@@ -34,11 +35,15 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * The server can signal these capabilities
+ */
 @SuppressWarnings("all")
 public class ServerCapabilities {
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
-   * for backwards compatibility the TextDocumentSyncKind number.
+   * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
+   * {@link TextDocumentSyncKind#None}
    */
   private Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync;
   
@@ -190,7 +195,6 @@ public class ServerCapabilities {
    * 
    * Since 3.16.0
    */
-  @Beta
   private Either<Boolean, StaticRegistrationOptions> callHierarchyProvider;
   
   /**
@@ -201,12 +205,25 @@ public class ServerCapabilities {
   private Either<Boolean, StaticRegistrationOptions> selectionRangeProvider;
   
   /**
+   * The server provides linked editing range support.
+   * 
+   * Since 3.16.0
+   */
+  private Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider;
+  
+  /**
    * The server provides semantic tokens support.
    * 
    * Since 3.16.0
    */
-  @Beta
   private SemanticTokensWithRegistrationOptions semanticTokensProvider;
+  
+  /**
+   * Whether server provides moniker support.
+   * 
+   * Since 3.16.0
+   */
+  private Either<Boolean, MonikerRegistrationOptions> monikerProvider;
   
   /**
    * Experimental server capabilities.
@@ -216,7 +233,8 @@ public class ServerCapabilities {
   
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
-   * for backwards compatibility the TextDocumentSyncKind number.
+   * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
+   * {@link TextDocumentSyncKind#None}
    */
   @Pure
   public Either<TextDocumentSyncKind, TextDocumentSyncOptions> getTextDocumentSync() {
@@ -225,7 +243,8 @@ public class ServerCapabilities {
   
   /**
    * Defines how text documents are synced. Is either a detailed structure defining each notification or
-   * for backwards compatibility the TextDocumentSyncKind number.
+   * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
+   * {@link TextDocumentSyncKind#None}
    */
   public void setTextDocumentSync(final Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync) {
     this.textDocumentSync = textDocumentSync;
@@ -848,6 +867,41 @@ public class ServerCapabilities {
   }
   
   /**
+   * The server provides linked editing range support.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Either<Boolean, StaticRegistrationOptions> getLinkedEditingRangeProvider() {
+    return this.linkedEditingRangeProvider;
+  }
+  
+  /**
+   * The server provides linked editing range support.
+   * 
+   * Since 3.16.0
+   */
+  public void setLinkedEditingRangeProvider(final Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider) {
+    this.linkedEditingRangeProvider = linkedEditingRangeProvider;
+  }
+  
+  public void setLinkedEditingRangeProvider(final Boolean linkedEditingRangeProvider) {
+    if (linkedEditingRangeProvider == null) {
+      this.linkedEditingRangeProvider = null;
+      return;
+    }
+    this.linkedEditingRangeProvider = Either.forLeft(linkedEditingRangeProvider);
+  }
+  
+  public void setLinkedEditingRangeProvider(final StaticRegistrationOptions linkedEditingRangeProvider) {
+    if (linkedEditingRangeProvider == null) {
+      this.linkedEditingRangeProvider = null;
+      return;
+    }
+    this.linkedEditingRangeProvider = Either.forRight(linkedEditingRangeProvider);
+  }
+  
+  /**
    * The server provides semantic tokens support.
    * 
    * Since 3.16.0
@@ -864,6 +918,41 @@ public class ServerCapabilities {
    */
   public void setSemanticTokensProvider(final SemanticTokensWithRegistrationOptions semanticTokensProvider) {
     this.semanticTokensProvider = semanticTokensProvider;
+  }
+  
+  /**
+   * Whether server provides moniker support.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public Either<Boolean, MonikerRegistrationOptions> getMonikerProvider() {
+    return this.monikerProvider;
+  }
+  
+  /**
+   * Whether server provides moniker support.
+   * 
+   * Since 3.16.0
+   */
+  public void setMonikerProvider(final Either<Boolean, MonikerRegistrationOptions> monikerProvider) {
+    this.monikerProvider = monikerProvider;
+  }
+  
+  public void setMonikerProvider(final Boolean monikerProvider) {
+    if (monikerProvider == null) {
+      this.monikerProvider = null;
+      return;
+    }
+    this.monikerProvider = Either.forLeft(monikerProvider);
+  }
+  
+  public void setMonikerProvider(final MonikerRegistrationOptions monikerProvider) {
+    if (monikerProvider == null) {
+      this.monikerProvider = null;
+      return;
+    }
+    this.monikerProvider = Either.forRight(monikerProvider);
   }
   
   /**
@@ -912,7 +1001,9 @@ public class ServerCapabilities {
     b.add("typeHierarchyProvider", this.typeHierarchyProvider);
     b.add("callHierarchyProvider", this.callHierarchyProvider);
     b.add("selectionRangeProvider", this.selectionRangeProvider);
+    b.add("linkedEditingRangeProvider", this.linkedEditingRangeProvider);
     b.add("semanticTokensProvider", this.semanticTokensProvider);
+    b.add("monikerProvider", this.monikerProvider);
     b.add("experimental", this.experimental);
     return b.toString();
   }
@@ -1062,10 +1153,20 @@ public class ServerCapabilities {
         return false;
     } else if (!this.selectionRangeProvider.equals(other.selectionRangeProvider))
       return false;
+    if (this.linkedEditingRangeProvider == null) {
+      if (other.linkedEditingRangeProvider != null)
+        return false;
+    } else if (!this.linkedEditingRangeProvider.equals(other.linkedEditingRangeProvider))
+      return false;
     if (this.semanticTokensProvider == null) {
       if (other.semanticTokensProvider != null)
         return false;
     } else if (!this.semanticTokensProvider.equals(other.semanticTokensProvider))
+      return false;
+    if (this.monikerProvider == null) {
+      if (other.monikerProvider != null)
+        return false;
+    } else if (!this.monikerProvider.equals(other.monikerProvider))
       return false;
     if (this.experimental == null) {
       if (other.experimental != null)
@@ -1107,7 +1208,9 @@ public class ServerCapabilities {
     result = prime * result + ((this.typeHierarchyProvider== null) ? 0 : this.typeHierarchyProvider.hashCode());
     result = prime * result + ((this.callHierarchyProvider== null) ? 0 : this.callHierarchyProvider.hashCode());
     result = prime * result + ((this.selectionRangeProvider== null) ? 0 : this.selectionRangeProvider.hashCode());
+    result = prime * result + ((this.linkedEditingRangeProvider== null) ? 0 : this.linkedEditingRangeProvider.hashCode());
     result = prime * result + ((this.semanticTokensProvider== null) ? 0 : this.semanticTokensProvider.hashCode());
+    result = prime * result + ((this.monikerProvider== null) ? 0 : this.monikerProvider.hashCode());
     return prime * result + ((this.experimental== null) ? 0 : this.experimental.hashCode());
   }
 }

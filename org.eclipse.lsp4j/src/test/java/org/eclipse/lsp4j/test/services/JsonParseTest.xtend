@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2019 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.test.services
@@ -105,40 +105,40 @@ import org.junit.Test
 import static org.junit.Assert.*
 
 class JsonParseTest {
-	
+
 	/**
 	 * Gson parses numbers with {@link LazilyParsedNumber}, which is not
 	 * equals-compatible with {@link Integer}.
 	 */
 	@FinalFieldsConstructor
 	private static class MyInteger extends Number {
-		
+
 		val int value
-		
+
 		override doubleValue() { value }
 		override floatValue() { value }
 		override intValue() { value }
 		override longValue() { value }
-		
+
 		override equals(Object obj) {
 			if (obj instanceof Number) {
 				return value as double == obj.doubleValue
 			}
 			return false
 		}
-		
+
 		override hashCode() {
 			Integer.hashCode(value)
 		}
-		
+
 		override toString() {
 			Integer.toString(value)
 		}
-		
+
 	}
-	
+
 	MessageJsonHandler jsonHandler
-	
+
 	@Before
 	def void setup() {
 		val methods = ServiceEndpoints.getSupportedMethods(LanguageServer)
@@ -148,13 +148,13 @@ class JsonParseTest {
 		all.putAll(clientMethods)
 		jsonHandler = new MessageJsonHandler(all)
 	}
-	
+
 	private def void assertParse(CharSequence json, Message expected) {
 		val actual = jsonHandler.parseMessage(json)
 		assertEquals(expected.toString, actual.toString)
 		assertEquals(expected, actual)
 	}
-	
+
 	@Test
 	def void testCompletion() {
 		'''
@@ -182,14 +182,14 @@ class JsonParseTest {
 				]
 				position = new Position => [
 					line = 4
-					character = 22 
+					character = 22
 				]
 			]
 		])
 	}
-	
 
-	
+
+
 	@Test
 	def void testDidChange() {
 		'''
@@ -240,7 +240,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testPublishDiagnostics() {
 		'''
@@ -287,7 +287,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testDocumentSymbolResponse1() {
 		jsonHandler.methodProvider = [ id |
@@ -337,7 +337,7 @@ class JsonParseTest {
 			))
 		])
 	}
-	
+
 	@Test
 	def void testDocumentSymbolResponse2() {
 		jsonHandler.methodProvider = [ id |
@@ -395,7 +395,7 @@ class JsonParseTest {
 			))
 		])
 	}
-	
+
 	@Test
 	def void testCodeActionResponse1() {
 		jsonHandler.methodProvider = [ id |
@@ -425,7 +425,7 @@ class JsonParseTest {
 			))
 		])
 	}
-	
+
 	@Test
 	def void testCodeActionResponse2() {
 		jsonHandler.methodProvider = [ id |
@@ -487,7 +487,7 @@ class JsonParseTest {
 			))
 		])
 	}
-	
+
 	@Test
 	def void testPrepareRenameResponse1() {
 		jsonHandler.methodProvider = [ id |
@@ -525,7 +525,7 @@ class JsonParseTest {
 			])
 		])
 	}
-	
+
 	@Test
 	def void testPrepareRenameResponse2() {
 		jsonHandler.methodProvider = [ id |
@@ -557,7 +557,7 @@ class JsonParseTest {
 			])
 		])
 	}
-	
+
 	@Test
 	def void testRenameResponse1() {
 		jsonHandler.methodProvider = [ id |
@@ -627,7 +627,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testRenameResponse3() {
 		jsonHandler.methodProvider = [ id |
@@ -717,7 +717,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testResponseError() {
 		jsonHandler.methodProvider = [ id |
@@ -744,7 +744,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testTelemetry() {
 		'''
@@ -762,7 +762,7 @@ class JsonParseTest {
 			params = newLinkedHashMap('foo' -> 12.3, 'bar' -> 'qwertz')
 		])
 	}
-	
+
 	@Test
 	def void testHoverResponse1() {
 		jsonHandler.methodProvider = [ id |
@@ -890,7 +890,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testCodeLensResponse() {
 		val json = '''
@@ -987,7 +987,7 @@ class JsonParseTest {
 				new Location('foo', new Range(new Position(7, 12), new Position(8, 16)))
 			])
 		])
-		
+
 	}
 
 	@Test
@@ -1206,7 +1206,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testDocumentFormatting() {
 		'''
@@ -1239,7 +1239,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testMessageIssue() {
 		val issue = jsonHandler.gson.fromJson('''
@@ -1259,7 +1259,7 @@ class JsonParseTest {
 		assertEquals('Foo', issue.cause.message)
 		assertEquals('Bar', issue.cause.cause.message)
 	}
-	
+
 	@Test
 	def void testInitialize() {
 		'''
@@ -1280,7 +1280,7 @@ class JsonParseTest {
 			]
 		])
 	}
-	
+
 	@Test
 	def void testInitializeClientCapabilities() {
 		'''
@@ -1457,9 +1457,9 @@ class JsonParseTest {
 			]
 		])
 	}
-	
-	
-	
+
+
+
 	@Test
 	def void testProgressCreate() {
 		'''
@@ -1479,7 +1479,7 @@ class JsonParseTest {
 				token = Either.forLeft("progress-token")
 			]
 		])
-		
+
 		'''
 			{
 				"jsonrpc": "2.0",
@@ -1494,11 +1494,11 @@ class JsonParseTest {
 			id = 1
 			method = MessageMethods.PROGRESS_CREATE
 			params = new WorkDoneProgressCreateParams => [
-				token = Either.forRight(new LazilyParsedNumber("1234"))
+				token = Either.forRight(1234)
 			]
 		])
 	}
-	
+
 	@Test
 	def void testProgressCancel() {
 		'''
@@ -1518,7 +1518,7 @@ class JsonParseTest {
 				token = Either.forLeft("progress-token")
 			]
 		])
-		
+
 		'''
 			{
 				"jsonrpc": "2.0",
@@ -1533,11 +1533,11 @@ class JsonParseTest {
 			id = 1
 			method = MessageMethods.PROGRESS_CANCEL
 			params = new WorkDoneProgressCancelParams => [
-				token = Either.forRight(new LazilyParsedNumber("1234"))
+				token = Either.forRight(1234)
 			]
 		])
 	}
-	
+
 	@Test
 	def void testProgressNotify() {
 		'''
@@ -1564,7 +1564,7 @@ class JsonParseTest {
 				]
 			]
 		])
-		
+
 		'''
 			{
 				"jsonrpc": "2.0",
@@ -1583,7 +1583,7 @@ class JsonParseTest {
 			id = 1
 			method = MessageMethods.PROGRESS_NOTIFY
 			params = new ProgressParams => [
-				token = Either.forRight(new LazilyParsedNumber("1234"))
+				token = Either.forRight(1234)
 				value = new WorkDoneProgressEnd => [
 					message = "message"
 				]

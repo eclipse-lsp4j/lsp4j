@@ -11,7 +11,6 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import org.eclipse.lsp4j.AbstractWorkDoneProgressOptions;
 import org.eclipse.lsp4j.DocumentFilter;
@@ -23,7 +22,9 @@ import org.eclipse.lsp4j.util.Preconditions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
-@Beta
+/**
+ * Since 3.16.0
+ */
 @SuppressWarnings("all")
 public class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
   /**

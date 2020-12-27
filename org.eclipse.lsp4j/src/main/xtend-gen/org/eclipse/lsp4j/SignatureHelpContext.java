@@ -39,7 +39,7 @@ public class SignatureHelpContext {
   private String triggerCharacter;
   
   /**
-   * `true` if signature help was already showing when it was triggered.
+   * {@code true} if signature help was already showing when it was triggered.
    * 
    * Retriggers occur when the signature help is already active and can be caused by actions such as
    * typing a trigger character, a cursor move, or document content changes.
@@ -58,7 +58,7 @@ public class SignatureHelpContext {
   }
   
   public SignatureHelpContext(@NonNull final SignatureHelpTriggerKind triggerKind, final boolean isRetrigger) {
-    this.triggerKind = triggerKind;
+    this.triggerKind = Preconditions.<SignatureHelpTriggerKind>checkNotNull(triggerKind, "triggerKind");
     this.isRetrigger = isRetrigger;
   }
   
@@ -98,7 +98,7 @@ public class SignatureHelpContext {
   }
   
   /**
-   * `true` if signature help was already showing when it was triggered.
+   * {@code true} if signature help was already showing when it was triggered.
    * 
    * Retriggers occur when the signature help is already active and can be caused by actions such as
    * typing a trigger character, a cursor move, or document content changes.
@@ -109,7 +109,7 @@ public class SignatureHelpContext {
   }
   
   /**
-   * `true` if signature help was already showing when it was triggered.
+   * {@code true} if signature help was already showing when it was triggered.
    * 
    * Retriggers occur when the signature help is already active and can be caused by actions such as
    * typing a trigger character, a cursor move, or document content changes.

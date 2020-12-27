@@ -24,11 +24,11 @@ public interface PartialResultParams {
    * An optional token that a server can use to report partial results (e.g. streaming) to
    * the client.
    */
-  public abstract Either<String, Number> getPartialResultToken();
+  public abstract Either<String, Integer> getPartialResultToken();
   
   /**
    * An optional token that a server can use to report partial results (e.g. streaming) to
    * the client.
    */
-  public abstract void setPartialResultToken(final Either<String, Number> token);
+  public abstract void setPartialResultToken(final Either<String, Integer> token);
 }

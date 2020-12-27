@@ -11,18 +11,19 @@
  */
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
-
 /**
- * @since 3.16.0
+ * Since 3.16.0
  */
-@Beta
 public final class SemanticTokenTypes {
     private SemanticTokenTypes() {
     }
 
     public static final String Namespace = "namespace";
 
+    /**
+     * Represents a generic type. Acts as a fallback for types which
+     * can't be mapped to a specific type like class or enum.
+     */
     public static final String Type = "type";
 
     public static final String Class = "class";
@@ -47,7 +48,13 @@ public final class SemanticTokenTypes {
 
     public static final String Function = "function";
 
+    /**
+     * @deprecated This was erroneously named prior to finalization. Use {@link #Method} instead.
+     */
+    @Deprecated
     public static final String Member = "member";
+
+    public static final String Method = "method";
 
     public static final String Macro = "macro";
 
