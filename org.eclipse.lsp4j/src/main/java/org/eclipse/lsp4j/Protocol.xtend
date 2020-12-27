@@ -1263,34 +1263,6 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Capabilities specific to {@code textDocument/semanticHighlighting}.
- *
- * <p>
- * <b>Note:</b> the <a href=
- * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
- * language feature</a> is not yet part of the official LSP specification.
- *
- * @deprecated Use {@code SemanticTokens} API instead.
- */
-@Beta
-@Deprecated
-@JsonRpcData
-class SemanticHighlightingCapabilities {
-
-	/**
-	 * The client supports semantic highlighting.
-	 */
-	Boolean semanticHighlighting
-
-	new() {
-	}
-
-	new(Boolean semanticHighlighting) {
-		this.semanticHighlighting = semanticHighlighting
-	}
-}
-
-/**
  * Capabilities specific to the {@code textDocument/typeHierarchy}.
  *
  * <p>
@@ -1796,15 +1768,6 @@ class TextDocumentClientCapabilities {
 	 * Since 3.10.0
 	 */
 	FoldingRangeCapabilities foldingRange
-
-	/**
-	 * Capabilities specific to {@code textDocument/semanticHighlighting}.
-	 *
-	 * @deprecated Use {@code SemanticTokens} API instead.
-	 */
-	@Beta
-	@Deprecated
-	SemanticHighlightingCapabilities semanticHighlightingCapabilities
 
 	/**
 	 * Capabilities specific to {@code textDocument/typeHierarchy}.
@@ -4930,15 +4893,6 @@ class ServerCapabilities {
 	WorkspaceServerCapabilities workspace
 
 	/**
-	 * Semantic highlighting server capabilities.
-	 *
-	 * @deprecated Use {@code SemanticTokens} API instead.
-	 */
-	@Beta
-	@Deprecated
-	SemanticHighlightingServerCapabilities semanticHighlighting
-
-	/**
 	 * Server capability for calculating super- and subtype hierarchies.
 	 * The LS supports the type hierarchy language feature, if this capability is set to {@code true}.
 	 *
@@ -5011,38 +4965,6 @@ class WorkspaceServerCapabilities {
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
 	}
-}
-
-/**
- * Semantic highlighting server capabilities.
- *
- * <p>
- * <b>Note:</b> the <a href=
- * "https://github.com/Microsoft/vscode-languageserver-node/pull/367">{@code textDocument/semanticHighlighting}
- * language feature</a> is not yet part of the official LSP specification.
- *
- * @deprecated Use {@code SemanticTokens} API instead.
- */
-@Beta
-@Deprecated
-@JsonRpcData
-class SemanticHighlightingServerCapabilities {
-
-	/**
-	 * A "lookup table" of semantic highlighting <a href="https://manual.macromates.com/en/language_grammars">TextMate scopes</a>
-	 * supported by the language server. If not defined or empty, then the server does not support the semantic highlighting
-	 * feature. Otherwise, clients should reuse this "lookup table" when receiving semantic highlighting notifications from
-	 * the server.
-	 */
-	List<List<String>> scopes
-
-	new() {
-	}
-
-	new(List<List<String>> scopes) {
-		this.scopes = scopes
-	}
-
 }
 
 /**
@@ -7127,66 +7049,6 @@ class FoldingRange {
 	new(int startLine, int endLine) {
 		this.startLine = startLine
 		this.endLine = endLine
-	}
-}
-
-/**
- * Parameters for the semantic highlighting (server-side) push notification.
- *
- * @deprecated Use {@code SemanticTokens} API instead.
- */
-@Beta
-@Deprecated
-@JsonRpcData
-class SemanticHighlightingParams {
-	/**
-	 * The text document that has to be decorated with the semantic highlighting information.
-	 */
-	@NonNull
-	VersionedTextDocumentIdentifier textDocument
-
-	/**
-	 * An array of semantic highlighting information.
-	 */
-	@NonNull
-	List<SemanticHighlightingInformation> lines
-
-	new() {
-	}
-
-	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<SemanticHighlightingInformation> lines) {
-		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
-		this.lines = Preconditions.checkNotNull(lines, 'lines')
-	}
-}
-
-/**
- * Represents a semantic highlighting information that has to be applied on a specific line of the text document.
- *
- * @deprecated Use {@code SemanticTokens} API instead.
- */
-@Beta
-@Deprecated
-@JsonRpcData
-class SemanticHighlightingInformation {
-	/**
-	 * The zero-based line position in the text document.
-	 */
-	int line
-
-	/**
-	 * A base64 encoded string representing every single highlighted ranges in the line with its start position, length
-	 * and the "lookup table" index of of the semantic highlighting <a href="https://manual.macromates.com/en/language_grammars">
-	 * TextMate scopes</a>. If the {@code tokens} is empty or not defined, then no highlighted positions are available for the line.
-	 */
-	String tokens
-
-	new() {
-	}
-
-	new(int line, String tokens) {
-		this.line = line
-		this.tokens = tokens
 	}
 }
 
