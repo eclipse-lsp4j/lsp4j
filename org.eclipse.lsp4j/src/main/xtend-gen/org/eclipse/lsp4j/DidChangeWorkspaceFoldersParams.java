@@ -23,6 +23,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
  * default if both ServerCapabilities/workspace/workspaceFolders and
  * ClientCapabilities/workspace/workspaceFolders are true; or if the server has registered to
  * receive this notification it first.
+ * 
+ * Since 3.6.0
  */
 @SuppressWarnings("all")
 public class DidChangeWorkspaceFoldersParams {

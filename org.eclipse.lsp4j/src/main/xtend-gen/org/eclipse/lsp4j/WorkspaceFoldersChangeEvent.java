@@ -21,6 +21,8 @@ import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
 /**
  * The workspace folder change event.
+ * 
+ * Since 3.6.0
  */
 @SuppressWarnings("all")
 public class WorkspaceFoldersChangeEvent {
