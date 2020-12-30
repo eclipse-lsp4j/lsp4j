@@ -10,6 +10,8 @@
 			<unit id="com.google.guava.source" version="27.1.0.v20190517-1946"/>
 			<unit id="javax.websocket" version="0.0.0"/>
 			<unit id="javax.websocket.source" version="0.0.0"/>
+			<unit id="jakarta.websocket" version="0.0.0"/>
+			<unit id="jakarta.websocket.source" version="0.0.0"/>
 		</location>
 	</locations>
 </target>

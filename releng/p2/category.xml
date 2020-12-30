@@ -7,5 +7,7 @@
 	<bundle id="com.google.guava.source" version="0.0.0"/>
 	<bundle id="javax.websocket" version="0.0.0"/>
 	<bundle id="javax.websocket.source" version="0.0.0"/>
+	<bundle id="jakarta.websocket" version="0.0.0"/>
+	<bundle id="jakarta.websocket.source" version="0.0.0"/>
    <category-def name="lsp4j" label="Lsp4j"/>
 </site>
