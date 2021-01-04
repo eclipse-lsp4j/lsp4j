@@ -258,6 +258,13 @@ class WorkspaceClientCapabilities {
 	 * Since 3.16.0
 	 */
 	CodeLensWorkspaceCapabilities codeLens
+
+	/**
+	 * The client has support for file requests/notifications.
+	 *
+	 * Since 3.16.0
+	 */
+	FileOperationsWorkspaceCapabilities fileOperations
 }
 
 @JsonRpcData
@@ -1068,6 +1075,47 @@ class CodeLensWorkspaceCapabilities {
 
 	new(Boolean refreshSupport) {
 		this.refreshSupport = refreshSupport
+	}
+}
+
+/**
+ * The client has support for file requests/notifications.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileOperationsWorkspaceCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client has support for sending didCreateFiles notifications.
+	 */
+	Boolean didCreate
+
+	/**
+	 * The client has support for sending willCreateFiles requests.
+	 */
+	Boolean willCreate
+
+	/**
+	 * The client has support for sending didRenameFiles notifications.
+	 */
+	Boolean didRename
+
+	/**
+	 * The client has support for sending willRenameFiles requests.
+	 */
+	Boolean willRename
+
+	/**
+	 * The client has support for sending didDeleteFiles notifications.
+	 */
+	Boolean didDelete
+
+	/**
+	 * The client has support for sending willDeleteFiles requests.
+	 */
+	Boolean willDelete
+
+	new() {
 	}
 }
 
@@ -5005,6 +5053,13 @@ class WorkspaceServerCapabilities {
 	 */
 	WorkspaceFoldersOptions workspaceFolders
 
+	/**
+	 * The server is interested in file notifications/requests.
+	 *
+	 * Since 3.16.0
+	 */
+	FileOperationsServerCapabilities fileOperations
+
 	new() {
 	}
 
@@ -6813,6 +6868,8 @@ class WorkspaceFolder {
 
 /**
  * The workspace folder change event.
+ *
+ * Since 3.6.0
  */
 @JsonRpcData
 class WorkspaceFoldersChangeEvent {
@@ -6843,6 +6900,8 @@ class WorkspaceFoldersChangeEvent {
  * default if both ServerCapabilities/workspace/workspaceFolders and
  * ClientCapabilities/workspace/workspaceFolders are true; or if the server has registered to
  * receive this notification it first.
+ *
+ * Since 3.6.0
  */
 @JsonRpcData
 class DidChangeWorkspaceFoldersParams {
@@ -6857,6 +6916,301 @@ class DidChangeWorkspaceFoldersParams {
 
 	new(@NonNull WorkspaceFoldersChangeEvent event) {
 		this.event = Preconditions.checkNotNull(event, 'event')
+	}
+}
+
+/**
+ * The server is interested in file notifications/requests.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileOperationsServerCapabilities {
+	/**
+	 * The server is interested in receiving didCreateFiles notifications.
+	 */
+	FileOperationOptions didCreate
+
+	/**
+	 * The server is interested in receiving willCreateFiles requests.
+	 */
+	FileOperationOptions willCreate
+
+	/**
+	 * The server is interested in receiving didRenameFiles notifications.
+	 */
+	FileOperationOptions didRename
+
+	/**
+	 * The server is interested in receiving willRenameFiles requests.
+	 */
+	FileOperationOptions willRename
+
+	/**
+	 * The server is interested in receiving didDeleteFiles file notifications.
+	 */
+	FileOperationOptions didDelete
+
+	/**
+	 * The server is interested in receiving willDeleteFiles file requests.
+	 */
+	FileOperationOptions willDelete
+
+	new() {
+	}
+}
+
+/**
+ * The options for file operations.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileOperationOptions {
+	/**
+	 * The actual filters.
+	 */
+	@NonNull
+	List<FileOperationFilter> filters = new ArrayList
+
+	new() {
+	}
+
+	new(@NonNull List<FileOperationFilter> filters) {
+		this.filters = Preconditions.checkNotNull(filters, 'filters')
+	}
+}
+
+/**
+ * A filter to describe in which file operation requests or notifications
+ * the server is interested in.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileOperationFilter {
+	/**
+	 * The actual file operation pattern.
+	 */
+	@NonNull
+	FileOperationPattern pattern
+
+	/**
+	 * A Uri like {@code file} or {@code untitled}.
+	 */
+	String scheme
+
+	new() {
+	}
+
+	new(@NonNull FileOperationPattern pattern) {
+		this.pattern = Preconditions.checkNotNull(pattern, 'pattern')
+	}
+
+	new(@NonNull FileOperationPattern pattern, String scheme) {
+		this(pattern)
+		this.scheme = scheme
+	}
+}
+
+/**
+ * A pattern to describe in which file operation requests or notifications
+ * the server is interested in.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileOperationPattern {
+	/**
+	 * The glob pattern to match. Glob patterns can have the following syntax:
+	 * - `*` to match one or more characters in a path segment		 * - `*` to match one or more characters in a path segment
+	 * - `?` to match on one character in a path segment		 * - `?` to match on one character in a path segment
+	 * - `**` to match any number of path segments, including none		 * - `**` to match any number of path segments, including none
+	 * - `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)		 * - `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript
+	 * - `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)		 *   and JavaScript files)
+	 * - `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)		 * - `[]` to declare a range of characters to match in a path segment
+	 *   (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+	 * - `[!...]` to negate a range of characters to match in a path segment
+	 *   (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but
+	 *   not `example.0`)
+	 */
+	@NonNull
+	String glob
+
+	/**
+	 * Whether to match files or folders with this pattern.
+	 *
+	 * Matches both if undefined.
+	 */
+	FileOperationPatternKind matches
+
+	/**
+	 * Additional options used during matching.
+	 */
+	FileOperationPatternOptions options
+
+	new() {
+	}
+
+	new(@NonNull String glob) {
+		this.glob = Preconditions.checkNotNull(glob, 'glob')
+	}
+}
+
+/**
+ * Matching options for the file operation pattern.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileOperationPatternOptions {
+	/**
+	 * The pattern should be matched ignoring casing.
+	 */
+	Boolean ignoreCase
+
+	new() {
+	}
+
+	new(Boolean ignoreCase) {
+		this.ignoreCase = ignoreCase
+	}
+}
+
+/**
+ * The parameters sent in notifications/requests for user-initiated creation
+ * of files.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class CreateFilesParams {
+	/**
+	 * An array of all files/folders created in this operation.
+	 */
+	@NonNull
+	List<FileCreate> files = new ArrayList
+
+	new() {
+	}
+
+	new(@NonNull List<FileCreate> files) {
+		this.files = Preconditions.checkNotNull(files, 'files')
+	}
+}
+
+/**
+ * Represents information on a file/folder create.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileCreate {
+	/**
+	 * A file:// URI for the location of the file/folder being created.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+	}
+}
+
+/**
+ * The parameters sent in notifications/requests for user-initiated renames
+ * of files.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class RenameFilesParams {
+	/**
+	 * An array of all files/folders renamed in this operation. When a folder
+	 * is renamed, only the folder will be included, and not its children.
+	 */
+	@NonNull
+	List<FileRename> files = new ArrayList
+
+	new() {
+	}
+
+	new(@NonNull List<FileRename> files) {
+		this.files = Preconditions.checkNotNull(files, 'files')
+	}
+}
+
+/**
+ * Represents information on a file/folder rename.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileRename {
+	/**
+	 * A file:// URI for the original location of the file/folder being renamed.
+	 */
+	@NonNull
+	String oldUri
+
+	/**
+	 * A file:// URI for the new location of the file/folder being renamed.
+	 */
+	@NonNull
+	String newUri
+
+	new() {
+	}
+
+	new(@NonNull String oldUri, @NonNull String newUri) {
+		this.oldUri = Preconditions.checkNotNull(oldUri, 'oldUri')
+		this.newUri = Preconditions.checkNotNull(newUri, 'newUri')
+	}
+}
+
+/**
+ * The parameters sent in notifications/requests for user-initiated deletes
+ * of files.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class DeleteFilesParams {
+	/**
+	 * An array of all files/folders deleted in this operation.
+	 */
+	@NonNull
+	List<FileDelete> files = new ArrayList
+
+	new() {
+	}
+
+	new(@NonNull List<FileDelete> files) {
+		this.files = Preconditions.checkNotNull(files, 'files')
+	}
+}
+
+/**
+ * Represents information on a file/folder delete.
+ *
+ * Since 3.16.0
+ */
+@JsonRpcData
+class FileDelete {
+	/**
+	 * A file:// URI for the location of the file/folder being deleted.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 }
 

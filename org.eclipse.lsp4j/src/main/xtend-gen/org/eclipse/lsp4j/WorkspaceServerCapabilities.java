@@ -11,6 +11,7 @@
  */
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.FileOperationsServerCapabilities;
 import org.eclipse.lsp4j.WorkspaceFoldersOptions;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
@@ -26,6 +27,13 @@ public class WorkspaceServerCapabilities {
    * Since 3.6.0
    */
   private WorkspaceFoldersOptions workspaceFolders;
+  
+  /**
+   * The server is interested in file notifications/requests.
+   * 
+   * Since 3.16.0
+   */
+  private FileOperationsServerCapabilities fileOperations;
   
   public WorkspaceServerCapabilities() {
   }
@@ -53,11 +61,31 @@ public class WorkspaceServerCapabilities {
     this.workspaceFolders = workspaceFolders;
   }
   
+  /**
+   * The server is interested in file notifications/requests.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public FileOperationsServerCapabilities getFileOperations() {
+    return this.fileOperations;
+  }
+  
+  /**
+   * The server is interested in file notifications/requests.
+   * 
+   * Since 3.16.0
+   */
+  public void setFileOperations(final FileOperationsServerCapabilities fileOperations) {
+    this.fileOperations = fileOperations;
+  }
+  
   @Override
   @Pure
   public String toString() {
     ToStringBuilder b = new ToStringBuilder(this);
     b.add("workspaceFolders", this.workspaceFolders);
+    b.add("fileOperations", this.fileOperations);
     return b.toString();
   }
   
@@ -76,12 +104,20 @@ public class WorkspaceServerCapabilities {
         return false;
     } else if (!this.workspaceFolders.equals(other.workspaceFolders))
       return false;
+    if (this.fileOperations == null) {
+      if (other.fileOperations != null)
+        return false;
+    } else if (!this.fileOperations.equals(other.fileOperations))
+      return false;
     return true;
   }
   
   @Override
   @Pure
   public int hashCode() {
-    return 31 * 1 + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
+    return prime * result + ((this.fileOperations== null) ? 0 : this.fileOperations.hashCode());
   }
 }

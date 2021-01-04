@@ -15,6 +15,7 @@ import org.eclipse.lsp4j.CodeLensWorkspaceCapabilities;
 import org.eclipse.lsp4j.DidChangeConfigurationCapabilities;
 import org.eclipse.lsp4j.DidChangeWatchedFilesCapabilities;
 import org.eclipse.lsp4j.ExecuteCommandCapabilities;
+import org.eclipse.lsp4j.FileOperationsWorkspaceCapabilities;
 import org.eclipse.lsp4j.SemanticTokensWorkspaceCapabilities;
 import org.eclipse.lsp4j.SymbolCapabilities;
 import org.eclipse.lsp4j.WorkspaceEditCapabilities;
@@ -86,6 +87,13 @@ public class WorkspaceClientCapabilities {
    * Since 3.16.0
    */
   private CodeLensWorkspaceCapabilities codeLens;
+  
+  /**
+   * The client has support for file requests/notifications.
+   * 
+   * Since 3.16.0
+   */
+  private FileOperationsWorkspaceCapabilities fileOperations;
   
   /**
    * The client supports applying batch edits to the workspace by supporting
@@ -259,6 +267,25 @@ public class WorkspaceClientCapabilities {
     this.codeLens = codeLens;
   }
   
+  /**
+   * The client has support for file requests/notifications.
+   * 
+   * Since 3.16.0
+   */
+  @Pure
+  public FileOperationsWorkspaceCapabilities getFileOperations() {
+    return this.fileOperations;
+  }
+  
+  /**
+   * The client has support for file requests/notifications.
+   * 
+   * Since 3.16.0
+   */
+  public void setFileOperations(final FileOperationsWorkspaceCapabilities fileOperations) {
+    this.fileOperations = fileOperations;
+  }
+  
   @Override
   @Pure
   public String toString() {
@@ -273,6 +300,7 @@ public class WorkspaceClientCapabilities {
     b.add("configuration", this.configuration);
     b.add("semanticTokens", this.semanticTokens);
     b.add("codeLens", this.codeLens);
+    b.add("fileOperations", this.fileOperations);
     return b.toString();
   }
   
@@ -336,6 +364,11 @@ public class WorkspaceClientCapabilities {
         return false;
     } else if (!this.codeLens.equals(other.codeLens))
       return false;
+    if (this.fileOperations == null) {
+      if (other.fileOperations != null)
+        return false;
+    } else if (!this.fileOperations.equals(other.fileOperations))
+      return false;
     return true;
   }
   
@@ -353,6 +386,7 @@ public class WorkspaceClientCapabilities {
     result = prime * result + ((this.workspaceFolders== null) ? 0 : this.workspaceFolders.hashCode());
     result = prime * result + ((this.configuration== null) ? 0 : this.configuration.hashCode());
     result = prime * result + ((this.semanticTokens== null) ? 0 : this.semanticTokens.hashCode());
-    return prime * result + ((this.codeLens== null) ? 0 : this.codeLens.hashCode());
+    result = prime * result + ((this.codeLens== null) ? 0 : this.codeLens.hashCode());
+    return prime * result + ((this.fileOperations== null) ? 0 : this.fileOperations.hashCode());
   }
 }
