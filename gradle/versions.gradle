@@ -16,8 +16,8 @@ ext.versions = [
 	'xtend_lib': '2.19.0',
 	'guava': '[14.0,28)',
 	'guava_orbit': '27.1.0.v20190517-1946',
-	'gson': '2.8.2',
-	'gson_orbit': '2.8.2.v20180104-1110',
+	'gson': '2.8.6',
+	'gson_orbit': '2.8.6.v20201231-1626',
 	'websocket': '1.0',
 	'junit': '4.12'
 ]
