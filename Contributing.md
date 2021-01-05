@@ -33,6 +33,12 @@ See full documentation for the [GitHub Pull Request plug-in for Jenkins](https:/
 
 The Pull Request Builder polls the GitHub repo at 5 minute intervals, so there may be a short delay before the check shows up as Pending on GitHub.
 
+# Generated files in git `xtend-gen`
+
+The LSP4J project has checked in the generated xtend files (in `xtend-gen`) directories. The canonical versions of these files are determined by building with gradle which uses a fixed xtend version (See [versions.gradle](https://github.com/eclipse/lsp4j/blob/985a92bc0a0f543aa379edecbf0ddd56bed4df6f/gradle/versions.gradle#L16) for the `xtend_lib` version used as part of the official build.) When using external tools, such as Xtend IDE installed in Eclipse, those generated files may have different content. It should be possible to configure an Eclipse install with the same version of Xtend as `xtend_lib` documents, but that is generally not necessary, so outside of the scope here.
+
+Files committed to the git repo should be generated with the version of xtend that is in versions.gradle. This is most easily accomplished by running `./gradlew build` to build the code and the generated files.
+
 # Eclipse
 
 To develop with Eclipse this is the recommended flow:
