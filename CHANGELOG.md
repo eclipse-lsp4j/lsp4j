@@ -2,7 +2,7 @@
 
 ### v0.11.0 (Date TBD)
 
- * Added new module `org.eclipse.lsp4j.websocket.jakarta` for using LSP4J over Jakarta websockets
+ * Replaced `org.eclipse.lsp4j.websocket` by `org.eclipse.lsp4j.websocket.jakarta` for using LSP4J over Jakarta websockets
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/18?closed=1
 
