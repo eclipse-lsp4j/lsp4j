@@ -34,7 +34,6 @@ import org.eclipse.lsp4j.RangeFormattingCapabilities;
 import org.eclipse.lsp4j.ReferencesCapabilities;
 import org.eclipse.lsp4j.RenameCapabilities;
 import org.eclipse.lsp4j.SelectionRangeCapabilities;
-import org.eclipse.lsp4j.SemanticHighlightingCapabilities;
 import org.eclipse.lsp4j.SemanticTokensCapabilities;
 import org.eclipse.lsp4j.SignatureHelpCapabilities;
 import org.eclipse.lsp4j.SynchronizationCapabilities;
@@ -162,15 +161,6 @@ public class TextDocumentClientCapabilities {
    * Since 3.10.0
    */
   private FoldingRangeCapabilities foldingRange;
-  
-  /**
-   * Capabilities specific to {@code textDocument/semanticHighlighting}.
-   * 
-   * @deprecated Use {@code SemanticTokens} API instead.
-   */
-  @Beta
-  @Deprecated
-  private SemanticHighlightingCapabilities semanticHighlightingCapabilities;
   
   /**
    * Capabilities specific to {@code textDocument/typeHierarchy}.
@@ -549,27 +539,6 @@ public class TextDocumentClientCapabilities {
   }
   
   /**
-   * Capabilities specific to {@code textDocument/semanticHighlighting}.
-   * 
-   * @deprecated Use {@code SemanticTokens} API instead.
-   */
-  @Pure
-  @Deprecated
-  public SemanticHighlightingCapabilities getSemanticHighlightingCapabilities() {
-    return this.semanticHighlightingCapabilities;
-  }
-  
-  /**
-   * Capabilities specific to {@code textDocument/semanticHighlighting}.
-   * 
-   * @deprecated Use {@code SemanticTokens} API instead.
-   */
-  @Deprecated
-  public void setSemanticHighlightingCapabilities(final SemanticHighlightingCapabilities semanticHighlightingCapabilities) {
-    this.semanticHighlightingCapabilities = semanticHighlightingCapabilities;
-  }
-  
-  /**
    * Capabilities specific to {@code textDocument/typeHierarchy}.
    */
   @Pure
@@ -704,7 +673,6 @@ public class TextDocumentClientCapabilities {
     b.add("rename", this.rename);
     b.add("publishDiagnostics", this.publishDiagnostics);
     b.add("foldingRange", this.foldingRange);
-    b.add("semanticHighlightingCapabilities", this.semanticHighlightingCapabilities);
     b.add("typeHierarchyCapabilities", this.typeHierarchyCapabilities);
     b.add("callHierarchy", this.callHierarchy);
     b.add("selectionRange", this.selectionRange);
@@ -829,11 +797,6 @@ public class TextDocumentClientCapabilities {
         return false;
     } else if (!this.foldingRange.equals(other.foldingRange))
       return false;
-    if (this.semanticHighlightingCapabilities == null) {
-      if (other.semanticHighlightingCapabilities != null)
-        return false;
-    } else if (!this.semanticHighlightingCapabilities.equals(other.semanticHighlightingCapabilities))
-      return false;
     if (this.typeHierarchyCapabilities == null) {
       if (other.typeHierarchyCapabilities != null)
         return false;
@@ -893,7 +856,6 @@ public class TextDocumentClientCapabilities {
     result = prime * result + ((this.rename== null) ? 0 : this.rename.hashCode());
     result = prime * result + ((this.publishDiagnostics== null) ? 0 : this.publishDiagnostics.hashCode());
     result = prime * result + ((this.foldingRange== null) ? 0 : this.foldingRange.hashCode());
-    result = prime * result + ((this.semanticHighlightingCapabilities== null) ? 0 : this.semanticHighlightingCapabilities.hashCode());
     result = prime * result + ((this.typeHierarchyCapabilities== null) ? 0 : this.typeHierarchyCapabilities.hashCode());
     result = prime * result + ((this.callHierarchy== null) ? 0 : this.callHierarchy.hashCode());
     result = prime * result + ((this.selectionRange== null) ? 0 : this.selectionRange.hashCode());
