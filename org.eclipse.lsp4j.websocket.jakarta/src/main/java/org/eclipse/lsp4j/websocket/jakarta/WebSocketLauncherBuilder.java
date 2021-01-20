@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2019 TypeFox and others.
+ * Copyright (c) 2019, 2021 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9,11 +9,11 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.websocket;
+package org.eclipse.lsp4j.websocket.jakarta;
 
 import java.util.Collection;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.Launcher;

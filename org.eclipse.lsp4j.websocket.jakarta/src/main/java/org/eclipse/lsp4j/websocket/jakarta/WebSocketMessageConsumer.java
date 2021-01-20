@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2019 TypeFox and others.
+ * Copyright (c) 2019, 2021 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9,12 +9,13 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.websocket;
+package org.eclipse.lsp4j.websocket.jakarta;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
@@ -64,7 +65,7 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 				}
 			}
 		} else {
-			LOG.info("Ignoring message due to closed session: " + message);
+			LOG.log(Level.INFO, "Ignoring message due to closed session: {0}", message);
 		}
 	}
 	

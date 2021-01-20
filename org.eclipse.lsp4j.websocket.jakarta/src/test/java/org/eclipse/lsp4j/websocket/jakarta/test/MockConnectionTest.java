@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2019 TypeFox and others.
+ * Copyright (c) 2019, 2021 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9,7 +9,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.websocket.test;
+package org.eclipse.lsp4j.websocket.jakarta.test;
 
 import java.util.Collection;
 import java.util.Random;
@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
-import org.eclipse.lsp4j.websocket.WebSocketEndpoint;
+import org.eclipse.lsp4j.websocket.jakarta.WebSocketEndpoint;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

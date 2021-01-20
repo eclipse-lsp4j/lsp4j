@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2019 TypeFox and others.
+ * Copyright (c) 2019, 2021 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9,13 +9,13 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.websocket;
+package org.eclipse.lsp4j.websocket.jakarta;
 
 import java.util.Collection;
 
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.Session;
+import jakarta.websocket.Endpoint;
+import jakarta.websocket.EndpointConfig;
+import jakarta.websocket.Session;
 
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 
@@ -28,7 +28,7 @@ public abstract class WebSocketEndpoint<T> extends Endpoint {
 	
 	@Override
 	public void onOpen(Session session, EndpointConfig config) {
-		WebSocketLauncherBuilder<T> builder = new WebSocketLauncherBuilder<T>();
+		WebSocketLauncherBuilder<T> builder = new WebSocketLauncherBuilder<>();
 		builder.setSession(session);
 		configure(builder);
 		Launcher<T> launcher = builder.create();
@@ -40,7 +40,7 @@ public abstract class WebSocketEndpoint<T> extends Endpoint {
 	 * {@link Launcher.Builder#setLocalService(Object) local service} and the
 	 * {@link Launcher.Builder#setRemoteInterface(Class) remote interface}.
 	 */
-	abstract protected void configure(Launcher.Builder<T> builder);
+	protected abstract void configure(Launcher.Builder<T> builder);
 	
 	/**
 	 * Override this in order to connect the local services to the remote service proxy.

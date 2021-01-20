@@ -10,12 +10,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
-ext.title = 'LSP4J WebSocket'
-description = 'WebSocket support for LSP4J'
+ext.title = 'LSP4J WebSocket Jakarta'
+description = 'Jakarta WebSocket support for LSP4J'
 
 dependencies {
 	compile project(":org.eclipse.lsp4j.jsonrpc")
-	compile "javax.websocket:javax.websocket-api:${versions.websocket}"
+	compile "jakarta.websocket:jakarta.websocket-api:$versions.websocket_jakarta"
 	testCompile "junit:junit:$versions.junit"
 }
 

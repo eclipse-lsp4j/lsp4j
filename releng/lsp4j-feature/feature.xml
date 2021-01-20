@@ -101,17 +101,16 @@ SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.lsp4j.websocket"
+         id="org.eclipse.lsp4j.websocket.jakarta"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.lsp4j.websocket.source"
+         id="org.eclipse.lsp4j.websocket.jakarta.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
 </feature>

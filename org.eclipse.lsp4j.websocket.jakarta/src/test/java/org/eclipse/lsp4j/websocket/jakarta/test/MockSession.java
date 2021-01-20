@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2019 TypeFox and others.
+ * Copyright (c) 2019, 2021 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -9,7 +9,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.websocket.test;
+package org.eclipse.lsp4j.websocket.jakarta.test;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,16 +26,18 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
-import javax.websocket.CloseReason;
-import javax.websocket.EncodeException;
-import javax.websocket.Endpoint;
-import javax.websocket.Extension;
-import javax.websocket.MessageHandler;
-import javax.websocket.RemoteEndpoint;
-import javax.websocket.SendHandler;
-import javax.websocket.SendResult;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
+import jakarta.websocket.CloseReason;
+import jakarta.websocket.EncodeException;
+import jakarta.websocket.Endpoint;
+import jakarta.websocket.Extension;
+import jakarta.websocket.MessageHandler;
+import jakarta.websocket.MessageHandler.Partial;
+import jakarta.websocket.MessageHandler.Whole;
+import jakarta.websocket.RemoteEndpoint;
+import jakarta.websocket.SendHandler;
+import jakarta.websocket.SendResult;
+import jakarta.websocket.Session;
+import jakarta.websocket.WebSocketContainer;
 
 public class MockSession implements Session {
 	
@@ -84,6 +86,17 @@ public class MockSession implements Session {
 	public void addMessageHandler(MessageHandler handler) throws IllegalStateException {
 		if (!messageHandlers.add(handler))
 			throw new IllegalStateException();
+	}
+	
+
+	@Override
+	public <T> void addMessageHandler(Class<T> clazz, Whole<T> handler) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public <T> void addMessageHandler(Class<T> clazz, Partial<T> handler) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
