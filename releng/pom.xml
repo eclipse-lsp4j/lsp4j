@@ -59,6 +59,12 @@
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
 			<version>0.11.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google</groupId>
+					<artifactId>com.google.guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
