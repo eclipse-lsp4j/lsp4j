@@ -13,9 +13,9 @@
 version = '0.11.0-SNAPSHOT'
 
 ext.versions = [
-	'xtend_lib': '2.19.0',
-	'guava': '[14.0,28)',
-	'guava_orbit': '27.1.0.v20190517-1946',
+	'xtend_lib': '2.24.0',
+	'guava': '[14.0,31)',
+	'guava_orbit': '30.1.0.v20210127-2300',
 	'gson': '2.8.6',
 	'gson_orbit': '2.8.6.v20201231-1626',
 	'websocket_jakarta': '2.0.0',
