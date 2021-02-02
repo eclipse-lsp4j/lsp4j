@@ -23,6 +23,7 @@ import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Type
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder
+import com.google.gson.annotations.JsonAdapter
 
 class JsonRpcDataProcessor extends AbstractClassProcessor {
 
@@ -56,6 +57,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			val deprecated = field.findAnnotation(Deprecated.findTypeGlobally)
 			accessorsUtil.addGetter(field, Visibility.PUBLIC)
 			val hasNonNull = field.findAnnotation(NonNull.newTypeReference.type) !== null
+			val hasJsonAdapter = field.findAnnotation(JsonAdapter.newTypeReference.type) !== null
 			impl.findDeclaredMethod(accessorsUtil.getGetterName(field)) => [
 				docComment = field.docComment
 				if (hasNonNull) {
@@ -84,7 +86,11 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 				if (!childTypes.empty) {
 					val jsonTypes = childTypes.map[type.jsonType].toList
 					if (jsonTypes.size !== jsonTypes.toSet.size) {
-						field.addWarning('''The json types of an Either must be distinct.''')
+						// If there is a JsonAdapter on the field, the warning is expected to be unneeded because
+						// the adapter will handle the resolution of the either
+						if (!hasJsonAdapter) {
+							field.addWarning('''The json types of an Either must be distinct.''')
+						}
 					} else {
 						for (childType : childTypes) {
 							field.addEitherSetter(setterName, childType, context)
