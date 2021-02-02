@@ -3,6 +3,7 @@
 bin/
 target/
 build/
+xtend-gen/
 .gradle/
 .idea/
 META-INF/
