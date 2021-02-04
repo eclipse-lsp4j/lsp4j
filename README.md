@@ -12,7 +12,6 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
 #### Maven Repositories
 
  * [Maven Central](https://repo.maven.apache.org/maven2/org/eclipse/lsp4j/): https://repo.maven.apache.org/maven2/
- * [Bintray](https://bintray.com/bintray/jcenter/org.eclipse.lsp4j%3Aorg.eclipse.lsp4j/): https://jcenter.bintray.com/
 
 #### p2 Update Sites
 
