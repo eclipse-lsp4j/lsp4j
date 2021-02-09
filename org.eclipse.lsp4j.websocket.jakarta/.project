@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>org.eclipse.lsp4j.websocket.jakarta</name>
-	<comment>WebSocket support for LSP4J</comment>
+	<comment>Jakarta WebSocket support for LSP4J</comment>
 	<projects/>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
