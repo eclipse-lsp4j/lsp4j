@@ -489,6 +489,34 @@ class JsonParseTest {
 	}
 
 	@Test
+	def void testCodeActionResponse3() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_CODE_ACTION
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"title": "fixme"
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either.forRight(
+				new CodeAction => [
+					title = "fixme"
+				]
+			))
+		])
+	}
+
+	@Test
 	def void testPrepareRenameResponse1() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
