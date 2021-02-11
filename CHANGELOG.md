@@ -2,9 +2,15 @@
 
 ### v0.11.0 (Date TBD)
 
+ * Implemented DAP version 1.43.0
+ * Implemented DAP version 1.44.0
  * Replaced `org.eclipse.lsp4j.websocket` by `org.eclipse.lsp4j.websocket.jakarta` for using LSP4J over Jakarta websockets
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/18?closed=1
+
+Deprecated API changes:
+ * In DAP Protocol `VariablePresentationHintKind.DATA_BREAKPOINT` has been marked @Deprecated to match its deprecation in the protocol in 1.44.
+ * In DAP Protocol `SetBreakpointsArguments.lines` has been marked @Deprecated to match its deprecation in protocol many versions ago.
 
 ### v0.10.0 (Nov. 2020)
 

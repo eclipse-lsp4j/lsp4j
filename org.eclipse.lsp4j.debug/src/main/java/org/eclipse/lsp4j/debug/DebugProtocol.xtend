@@ -26,7 +26,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.42.0";
+	public static final String SCHEMA_VERSION = "1.44.0";
 }
 
 /**
@@ -235,7 +235,7 @@ class OutputEventArguments {
 	/**
 	 * If an attribute 'variablesReference' exists and its value is &gt; 0, the output contains objects which can be
 	 * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
-	 * 2147483647 (2^31 - 1).
+	 * 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -619,13 +619,13 @@ class InvalidatedEventArguments {
 @JsonRpcData
 class RunInTerminalResponse {
 	/**
-	 * The process ID. The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The process ID. The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
 	Integer processId;
 	/**
-	 * The process ID of the terminal shell. The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The process ID of the terminal shell. The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -650,7 +650,8 @@ class RunInTerminalRequestArguments {
 	 */
 	String title;
 	/**
-	 * Working directory of the command.
+	 * Working directory for the command. For non-empty, valid paths this typically results in execution of a change
+	 * directory command.
 	 */
 	@NonNull
 	String cwd;
@@ -956,7 +957,10 @@ class SetBreakpointsArguments {
 	 * Deprecated: The code locations of the breakpoints.
 	 * <p>
 	 * This is an optional property.
+	 * <p>
+	 * @deprecated Use the line field in the breakpoints property instead.
 	 */
+	@Deprecated
 	int[] lines;
 	/**
 	 * A value of true indicates that the underlying source has been modified which results in new breakpoint
@@ -999,10 +1003,19 @@ class SetFunctionBreakpointsArguments {
 @JsonRpcData
 class SetExceptionBreakpointsArguments {
 	/**
-	 * IDs of checked exception options. The set of IDs is returned via the 'exceptionBreakpointFilters' capability.
+	 * Set of exception filters specified by their ID. The set of all possible exception filters is defined by the
+	 * 'exceptionBreakpointFilters' capability. The 'filter' and 'filterOptions' sets are additive.
 	 */
 	@NonNull
 	String[] filters;
+	/**
+	 * Set of exception filters and their options. The set of all possible exception filters is defined by the
+	 * 'exceptionBreakpointFilters' capability. This attribute is only honored by a debug adapter if the capability
+	 * 'supportsExceptionFilterOptions' is true. The 'filter' and 'filterOptions' sets are additive.
+	 * <p>
+	 * This is an optional property.
+	 */
+	ExceptionFilterOptions[] filterOptions;
 	/**
 	 * Configuration options for selected exceptions.
 	 * <p>
@@ -1057,7 +1070,7 @@ class DataBreakpointInfoArguments {
 	/**
 	 * The name of the Variable's child to obtain data breakpoint information for.
 	 * <p>
-	 * If variableReference isn’t provided, this can be an expression.
+	 * If variablesReference isn’t provided, this can be an expression.
 	 */
 	@NonNull
 	String name;
@@ -1278,7 +1291,10 @@ class StackTraceResponse {
 	@NonNull
 	StackFrame[] stackFrames;
 	/**
-	 * The total number of frames available.
+	 * The total number of frames available in the stack. If omitted or if totalFrames is larger than the available
+	 * frames, a client is expected to request frames until a request returns less frames than requested (which
+	 * indicates the end of the stack). Returning monotonically increasing totalFrames values for subsequent requests
+	 * can be used to enforce paging in the client.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1416,7 +1432,7 @@ class SetVariableResponse {
 	 * If variablesReference is &gt; 0, the new value is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1426,7 +1442,7 @@ class SetVariableResponse {
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1436,7 +1452,7 @@ class SetVariableResponse {
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1617,7 +1633,7 @@ class EvaluateResponse {
 	 * If variablesReference is &gt; 0, the evaluate result is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 */
 	int variablesReference;
 	/**
@@ -1625,7 +1641,7 @@ class EvaluateResponse {
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1635,7 +1651,7 @@ class EvaluateResponse {
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1743,7 +1759,7 @@ class SetExpressionResponse {
 	 * If variablesReference is &gt; 0, the value is structured and its children can be retrieved by passing
 	 * variablesReference to the VariablesRequest.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1753,7 +1769,7 @@ class SetExpressionResponse {
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1763,7 +1779,7 @@ class SetExpressionResponse {
 	 * <p>
 	 * The client can use this optional information to present the variables in a paged UI and fetch them in chunks.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2077,7 +2093,7 @@ class Capabilities {
 	 */
 	Boolean supportsEvaluateForHovers;
 	/**
-	 * Available filters or options for the setExceptionBreakpoints request.
+	 * Available exception filter options for the 'setExceptionBreakpoints' request.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2177,7 +2193,7 @@ class Capabilities {
 	Boolean supportTerminateDebuggee;
 	/**
 	 * The debug adapter supports the delayed loading of parts of the stack, which requires that both the 'startFrame'
-	 * and 'levels' arguments and the 'totalFrames' result of the 'StackTrace' request are supported.
+	 * and 'levels' arguments and an optional 'totalFrames' result of the 'StackTrace' request are supported.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2260,30 +2276,44 @@ class Capabilities {
 	 * This is an optional property.
 	 */
 	Boolean supportsInstructionBreakpoints;
+	/**
+	 * The debug adapter supports 'filterOptions' as an argument on the 'setExceptionBreakpoints' request.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsExceptionFilterOptions;
 }
 
 /**
- * An ExceptionBreakpointsFilter is shown in the UI as an option for configuring how exceptions are dealt with.
+ * An ExceptionBreakpointsFilter is shown in the UI as an filter option for configuring how exceptions are dealt
+ * with.
  */
 @JsonRpcData
 class ExceptionBreakpointsFilter {
 	/**
-	 * The internal ID of the filter. This value is passed to the setExceptionBreakpoints request.
+	 * The internal ID of the filter option. This value is passed to the 'setExceptionBreakpoints' request.
 	 */
 	@NonNull
 	String filter;
 	/**
-	 * The name of the filter. This will be shown in the UI.
+	 * The name of the filter option. This will be shown in the UI.
 	 */
 	@NonNull
 	String label;
 	/**
-	 * Initial value of the filter. If not specified a value 'false' is assumed.
+	 * Initial value of the filter option. If not specified a value 'false' is assumed.
 	 * <p>
 	 * This is an optional property.
 	 */
 	@SerializedName(value="default")
 	Boolean default_;
+	/**
+	 * Controls whether a condition can be specified for this filter option. If false or missing, a condition can not
+	 * be set.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Boolean supportsCondition;
 }
 
 /**
@@ -2536,7 +2566,7 @@ class Source {
 	 * <p>
 	 * A sourceReference is only valid for a session, so it must not be used to persist a source.
 	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31 - 1).
+	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2934,8 +2964,12 @@ interface VariablePresentationHintKind {
 	 */
 	public static final String VIRTUAL = "virtual";
 	/**
-	 * Indicates that a data breakpoint is registered for the object.
+	 * Deprecated: Indicates that a data breakpoint is registered for the object. The 'hasDataBreakpoint' attribute
+	 * should generally be used instead.
+	 * <p>
+	 * @deprecated The 'hasDataBreakpoint' attribute should generally be used instead.
 	 */
+	@Deprecated
 	public static final String DATA_BREAKPOINT = "dataBreakpoint";
 }
 
@@ -2973,6 +3007,10 @@ interface VariablePresentationHintAttributes {
 	 * Indicates that the evaluation had side effects.
 	 */
 	public static final String HAS_SIDE_EFFECTS = "hasSideEffects";
+	/**
+	 * Indicates that the object has its value tracked by a data breakpoint.
+	 */
+	public static final String HAS_DATA_BREAKPOINT = "hasDataBreakpoint";
 }
 
 /**
@@ -3516,6 +3554,27 @@ class StackFrameFormat extends ValueFormat {
 	 * This is an optional property.
 	 */
 	Boolean includeAll;
+}
+
+/**
+ * An ExceptionFilterOptions is used to specify an exception filter together with a condition for the
+ * setExceptionsFilter request.
+ */
+@JsonRpcData
+class ExceptionFilterOptions {
+	/**
+	 * ID of an exception filter returned by the 'exceptionBreakpointFilters' capability.
+	 */
+	@NonNull
+	String filterId;
+	/**
+	 * An optional expression for conditional exceptions.
+	 * <p>
+	 * The exception will break into the debugger if the result of the condition is true.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String condition;
 }
 
 /**
