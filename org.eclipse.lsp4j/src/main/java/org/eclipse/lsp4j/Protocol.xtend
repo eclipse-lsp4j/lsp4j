@@ -1360,6 +1360,18 @@ class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
  */
 @JsonRpcData
 class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
@@ -3374,6 +3386,20 @@ class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
 
 @JsonRpcData
 class DocumentSymbolRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * A human-readable string that is shown when multiple outlines trees
+	 * are shown for the same document.
+	 *
+	 * Since 3.16.0
+	 */
+	String label
+
+	new() {
+	}
+
+	new(String label) {
+		this.label = label
+	}
 }
 
 /**
@@ -4767,6 +4793,12 @@ class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOpti
 	 * the document selector provided on the client side will be used.
 	 */
 	List<DocumentFilter> documentSelector
+
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
 
 	new() {
 	}
@@ -6561,11 +6593,26 @@ class SignatureHelpRegistrationOptions extends AbstractTextDocumentRegistrationA
 	 */
 	List<String> triggerCharacters
 
+	/**
+	 * List of characters that re-trigger signature help.
+	 *
+	 * These trigger characters are only active when signature help is already showing. All trigger characters
+	 * are also counted as re-trigger characters.
+	 *
+	 * Since 3.15.0
+	 */
+	List<String> retriggerCharacters
+
 	new() {
 	}
 
 	new(List<String> triggerCharacters) {
 		this.triggerCharacters = triggerCharacters
+	}
+
+	new(List<String> triggerCharacters, List<String> retriggerCharacters) {
+		this(triggerCharacters)
+		this.retriggerCharacters = retriggerCharacters
 	}
 }
 
@@ -7678,6 +7725,18 @@ class DeclarationOptions extends AbstractWorkDoneProgressOptions {
 
 @JsonRpcData
 class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
@@ -7722,6 +7781,18 @@ class TypeDefinitionOptions extends AbstractWorkDoneProgressOptions {
 
 @JsonRpcData
 class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
@@ -7744,6 +7815,18 @@ class ImplementationOptions extends AbstractWorkDoneProgressOptions {
 
 @JsonRpcData
 class ImplementationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
