@@ -58,3 +58,4 @@ LSP4J is published under two licenses:
  * [Eclipse Distribution License v. 1.0](https://www.eclipse.org/org/documents/edl-v10.php), a [BSD-3-clause license](https://opensource.org/licenses/BSD-3-Clause)
 
 SPDX-License-Identifier: `EPL-2.0 OR BSD-3-Clause`
+#Dummy edit to test PR builds
