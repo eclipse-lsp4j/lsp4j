@@ -20,6 +20,7 @@ pipeline {
     stage('Gradle') {
       steps {
         timeout(activity: true, time: 20) {
+          sh "java -version"
           sh "./gradlew \
                 --no-daemon \
                 -PignoreTestFailures=true \
