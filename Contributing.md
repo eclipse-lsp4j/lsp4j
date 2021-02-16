@@ -72,8 +72,6 @@ To develop with Eclipse this is the recommended flow:
     - This seems to happen because sometimes Buildship plug-ins don't remove previously created Error markers, but restarting clears them
   - If you can reliably reproduce one of the above cases, then it would be great to file a bug report with the projects that provide the corresponding Eclipse plug-ins (e.g. Xtend, Buildship, JDT)
 
-- Some of the committed Eclipse files (such as `.project`) occassionally show as different once a project is imported into Eclipse. This is due to differing versions of Eclipse IDE, gradle and other tools that may be writing to these filese. The change will normally have the same effective content, but the order of the XML elements may differ. If you have a case which causes you concern, please reach out to the devlopers by [raising an issue](https://github.com/eclipse/lsp4j/issues/new) or [sending an email](https://accounts.eclipse.org/mailing-list/lsp4j-dev).
-
 Edit the `.xtend` files, not the files in `xtend-gen` directories. If you are in a Java file within the xtend-gen directory, right click and choose "Open Generated File".
 
 The `org.eclipse.lsp4j.generator` project is used by the Xtend generator as an additional processor to contribute to the generated Java files. For example, the generator uses the `@JsonRpcData` annotation to convert the Xtend file and add things like `equals`, `toString`, `hashCode`.
