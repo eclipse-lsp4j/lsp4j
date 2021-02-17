@@ -21,6 +21,8 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -221,6 +223,13 @@ public class DebugIntegrationTest {
 		PipedInputStream in2 = new PipedInputStream();
 		PipedOutputStream out2 = new PipedOutputStream();
 
+		// See https://github.com/eclipse/lsp4j/issues/510 for full details.
+		// Make sure that the thread that writes to the PipedOutputStream stays alive
+		// until the read from the PipedInputStream. Using a cached thread pool
+		// does not 100% guarantee that, but increases the probability that the
+		// selected thread will exist for the lifetime of the test.
+		ExecutorService executor = Executors.newCachedThreadPool();
+
 		in.connect(out2);
 		out.connect(in2);
 
@@ -233,7 +242,7 @@ public class DebugIntegrationTest {
 					tries++;
 					throw new UnsupportedOperationException();
 				}
-				return CompletableFutures.computeAsync(cancelToken -> {
+				return CompletableFutures.computeAsync(executor, cancelToken -> {
 					if (tries++ == 1)
 						throw new UnsupportedOperationException();
 					return param;
