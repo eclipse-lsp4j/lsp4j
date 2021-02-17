@@ -385,7 +385,7 @@ public class IntegrationTest {
 			Assert.assertNotNull(((ResponseErrorException)e.getCause()).getResponseError().getMessage());
 		}
 		CompletableFuture<MyParam> goodFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
-		Assert.assertEquals("FOO", goodFuture.get().value);
+		Assert.assertEquals("FOO", goodFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
 	}
 
 	@Test
