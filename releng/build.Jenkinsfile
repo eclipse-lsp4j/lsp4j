@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  tools {
+    maven 'apache-maven-latest'
+    jdk 'oracle-jdk8-latest'
+  }
   options {
     timestamps()
     disableConcurrentBuilds()
@@ -20,6 +24,9 @@ pipeline {
     stage('Gradle') {
       steps {
         timeout(activity: true, time: 20) {
+          sh "echo $JAVA_HOME"
+          sh "java -version"
+          sh "which java"
           sh "./gradlew \
                 --no-daemon \
                 -PignoreTestFailures=true \
@@ -33,7 +40,7 @@ pipeline {
     stage('Maven') {
       steps {
         timeout(activity: true, time: 20) {
-          sh "/shared/common/apache-maven-latest/bin/mvn \
+          sh "mvn \
                 -f releng/pom.xml \
                 -Dmaven.repo.local=.repository \
                 --batch-mode --update-snapshots \
