@@ -21,6 +21,8 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -331,8 +333,7 @@ public class IntegrationTest {
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32800,\"message\":\"The request (id: 1, method: \\u0027askServer\\u0027) has been cancelled\"}}",
 				out.toString());
 	}
-	
-	
+
 	@Test
 	public void testVersatility() throws Exception {
 		Logger.getLogger(RemoteEndpoint.class.getName()).setLevel(Level.OFF);
@@ -342,6 +343,13 @@ public class IntegrationTest {
 		PipedInputStream in2 = new PipedInputStream();
 		PipedOutputStream out2 = new PipedOutputStream();
 		
+		// See https://github.com/eclipse/lsp4j/issues/510 for full details.
+		// Make sure that the thread that writes to the PipedOutputStream stays alive
+		// until the read from the PipedInputStream. Using a cached thread pool
+		// does not 100% guarantee that, but increases the probability that the
+		// selected thread will exist for the lifetime of the test.
+		ExecutorService executor = Executors.newCachedThreadPool();
+
 		in.connect(out2);
 		out.connect(in2);
 		
@@ -354,7 +362,7 @@ public class IntegrationTest {
 					tries++;
 					throw new UnsupportedOperationException();
 				}
-				return CompletableFutures.computeAsync(cancelToken -> {
+				return CompletableFutures.computeAsync(executor, cancelToken -> {
 					if (tries++ == 1)
 						throw new UnsupportedOperationException();
 					return param;
