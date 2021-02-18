@@ -53,13 +53,15 @@ pipeline {
       steps {
         timeout(activity: true, time: 20) {
           withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING')]) {
-            sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
-              // Skip Deploy on release builds
-              // XXX: Can release vs snapshot be detected automatically so that
-              // the following line does not have to be commented/uncommented
-              // on each change to/from SNAPSHOT?
-              sh './releng/deploy-build.sh'
-            }
+              sh 'gpg --batch --import "${KEYRING}"'
+              sh 'for fpr in $(gpg --list-keys --with-colons  | awk -F: \'/fpr:/ {print $10}\' | sort -u); do echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key ${fpr} trust; done'
+          }
+          sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+            // Skip Deploy on release builds
+            // XXX: Can release vs snapshot be detected automatically so that
+            // the following line does not have to be commented/uncommented
+            // on each change to/from SNAPSHOT?
+            sh './releng/deploy-build.sh'
           }
         }
       }
