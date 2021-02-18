@@ -4,22 +4,28 @@ set -u # run with unset flag error so that missing parameters cause build failur
 set -e # error out on any failed commands
 set -x # echo all commands used for debugging purposes
 
+
+SSHUSER="genie.lsp4j@projects-storage.eclipse.org"
+SSH="ssh ${SSHUSER}"
+SCP="scp"
+
+
 DOWNLOAD=download.eclipse.org/lsp4j/builds/$BRANCH_NAME
 DOWNLOAD_MOUNT=/home/data/httpd/$DOWNLOAD
 
 # Deploying build to nightly location on download.eclipse.org
-if test -e ${DOWNLOAD_MOUNT}-new; then
-    rm -r ${DOWNLOAD_MOUNT}-new
+if $SSH test -e ${DOWNLOAD_MOUNT}-new; then
+    $SSH rm -r ${DOWNLOAD_MOUNT}-new
 fi
-if test -e ${DOWNLOAD_MOUNT}-last; then
-    rm -r ${DOWNLOAD_MOUNT}-last
+if $SSH test -e ${DOWNLOAD_MOUNT}-last; then
+    $SSH rm -r ${DOWNLOAD_MOUNT}-last
 fi
-mkdir -p ${DOWNLOAD_MOUNT}-new
-cp -rpvf build/p2-repository/* ${DOWNLOAD_MOUNT}-new
-if test -e ${DOWNLOAD_MOUNT}; then
-    mv ${DOWNLOAD_MOUNT} ${DOWNLOAD_MOUNT}-last
+$SSH mkdir -p ${DOWNLOAD_MOUNT}-new
+$SCP -rp build/p2-repository/* "${SSHUSER}:"${DOWNLOAD_MOUNT}-new
+if $SSH test -e ${DOWNLOAD_MOUNT}; then
+    $SSH mv ${DOWNLOAD_MOUNT} ${DOWNLOAD_MOUNT}-last
 fi
-mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
+$SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 
 # Only maven deploy specific branches
 case $BRANCH_NAME in
@@ -28,8 +34,7 @@ case $BRANCH_NAME in
         find build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"
-            /shared/common/apache-maven-latest/bin/mvn \
-                -s /opt/public/hipp/homes/genie.lsp4j/.m2/settings-deploy-ossrh.xml \
+            mvn \
                 gpg:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
                 -Dfile=${base}.jar \
