@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+    agent {
+        kubernetes {
+            // See comment in deplog-build.sh (gpg:sign-and-deploy-file)
+            label 'centos-7'
+        }
+    }
   tools {
     maven 'apache-maven-latest'
     jdk 'oracle-jdk8-latest'
