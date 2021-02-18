@@ -1,5 +1,18 @@
 pipeline {
-  agent any
+  agent {
+    kubernetes {
+        // See comment in release-eclipse.sh (gpg:sign-and-deploy-file)
+        label 'centos-7'
+    }
+  }
+  tools {
+    maven 'apache-maven-latest'
+    jdk 'oracle-jdk8-latest'
+  }
+  options {
+    timestamps()
+    disableConcurrentBuilds()
+  }
   parameters {
     booleanParam(defaultValue: true, description: 'Do a dry run of the build. All commands will be echoed. First run with this on, then when you are sure it is right, choose rebuild in the passing job and uncheck this box', name: 'DRY_RUN')
     string(defaultValue: 'updates/milestones/S201911261515', description: 'The relative path in LSP4J downloads area to publish promoted build to (e.g. updates/milestones/S201911261515, updates/releases/0.11.0)', name: 'LSP4J_PUBLISH_LOCATION')
@@ -9,7 +22,13 @@ pipeline {
   stages {
     stage('Upload') {
       steps {
-        sh './releng/release-eclipse.sh'
+        withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING')]) {
+            sh 'gpg --batch --import "${KEYRING}"'
+            sh 'for fpr in $(gpg --list-keys --with-colons  | awk -F: \'/fpr:/ {print $10}\' | sort -u); do echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key ${fpr} trust; done'
+        }
+        sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+          sh './releng/release-eclipse.sh'
+        }
       }
     }
   }
