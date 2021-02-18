@@ -52,12 +52,14 @@ pipeline {
     stage('Deploy Snapshot') {
       steps {
         timeout(activity: true, time: 20) {
-          sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
-            // Skip Deploy on release builds
-            // XXX: Can release vs snapshot be detected automatically so that
-            // the following line does not have to be commented/uncommented
-            // on each change to/from SNAPSHOT?
-            sh './releng/deploy-build.sh'
+          withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING')]) {
+            sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+              // Skip Deploy on release builds
+              // XXX: Can release vs snapshot be detected automatically so that
+              // the following line does not have to be commented/uncommented
+              // on each change to/from SNAPSHOT?
+              sh './releng/deploy-build.sh'
+            }
           }
         }
       }
