@@ -5046,7 +5046,7 @@ class ServerCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	Either<Boolean, StaticRegistrationOptions> linkedEditingRangeProvider
+	Either<Boolean, LinkedEditingRangeRegistrationOptions> linkedEditingRangeProvider
 
 	/**
 	 * The server provides semantic tokens support.
@@ -7703,6 +7703,18 @@ class SelectionRangeOptions extends AbstractWorkDoneProgressOptions {
  */
 @JsonRpcData
 class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also Registration#id.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
