@@ -2239,6 +2239,35 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 }
 
 /**
+ * Code Action registration options.
+ */
+@JsonRpcData
+class CodeActionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * CodeActionKinds that this server may return.
+	 *
+	 * The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+	 * may list out every specific kind they provide.
+	 */
+	List<String> codeActionKinds
+
+	/**
+	 * The server provides support to resolve additional
+	 * information for a code action.
+	 *
+	 * Since 3.16.0
+	 */
+	Boolean resolveProvider
+
+	new() {
+	}
+
+	new(List<String> codeActionKinds) {
+		this.codeActionKinds = codeActionKinds
+	}
+}
+
+/**
  * Code Lens options.
  */
 @JsonRpcData
@@ -2916,6 +2945,20 @@ class DocumentFormattingParams implements WorkDoneProgressParams {
 }
 
 /**
+ * Document formatting options.
+ */
+@JsonRpcData
+class DocumentFormattingOptions extends AbstractWorkDoneProgressOptions {
+}
+
+/**
+ * Document formatting registration options.
+ */
+@JsonRpcData
+class DocumentFormattingRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+}
+
+/**
  * A document highlight is a range inside a text document which deserves special attention. Usually a document highlight
  * is visualized by changing the background color of its range.
  */
@@ -3026,7 +3069,7 @@ class DocumentLinkParams extends WorkDoneProgressAndPartialResultParams {
  * Document link options
  */
 @JsonRpcData
-class DocumentLinkOptions {
+class DocumentLinkOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * Document links have a resolve provider as well.
 	 */
@@ -4853,7 +4896,7 @@ class ServerCapabilities {
 	/**
 	 * The server provides hover support.
 	 */
-	Boolean hoverProvider
+	Either<Boolean, HoverOptions> hoverProvider
 
 	/**
 	 * The server provides completion support.
@@ -4868,41 +4911,41 @@ class ServerCapabilities {
 	/**
 	 * The server provides goto definition support.
 	 */
-	Boolean definitionProvider
+	Either<Boolean, DefinitionOptions> definitionProvider
 
 	/**
 	 * The server provides Goto Type Definition support.
 	 *
 	 * Since 3.6.0
 	 */
-	Either<Boolean, StaticRegistrationOptions> typeDefinitionProvider
+	Either<Boolean, TypeDefinitionRegistrationOptions> typeDefinitionProvider
 
 	/**
 	 * The server provides Goto Implementation support.
 	 *
 	 * Since 3.6.0
 	 */
-	Either<Boolean, StaticRegistrationOptions> implementationProvider
+	Either<Boolean, ImplementationRegistrationOptions> implementationProvider
 
 	/**
 	 * The server provides find references support.
 	 */
-	Boolean referencesProvider
+	Either<Boolean, ReferenceOptions> referencesProvider
 
 	/**
 	 * The server provides document highlight support.
 	 */
-	Boolean documentHighlightProvider
+	Either<Boolean, DocumentHighlightOptions> documentHighlightProvider
 
 	/**
 	 * The server provides document symbol support.
 	 */
-	Boolean documentSymbolProvider
+	Either<Boolean, DocumentSymbolOptions> documentSymbolProvider
 
 	/**
 	 * The server provides workspace symbol support.
 	 */
-	Boolean workspaceSymbolProvider
+	Either<Boolean, WorkspaceSymbolOptions> workspaceSymbolProvider
 
 	/**
 	 * The server provides code actions. The `CodeActionOptions` return type is only
@@ -4919,12 +4962,12 @@ class ServerCapabilities {
 	/**
 	 * The server provides document formatting.
 	 */
-	Boolean documentFormattingProvider
+	Either<Boolean, DocumentFormattingOptions> documentFormattingProvider
 
 	/**
 	 * The server provides document range formatting.
 	 */
-	Boolean documentRangeFormattingProvider
+	Either<Boolean, DocumentRangeFormattingOptions> documentRangeFormattingProvider
 
 	/**
 	 * The server provides document formatting on typing.
@@ -4960,7 +5003,7 @@ class ServerCapabilities {
 	 *
 	 * Since 3.14.0
 	 */
-	Either<Boolean, StaticRegistrationOptions> declarationProvider
+	Either<Boolean, DeclarationRegistrationOptions> declarationProvider
 
 	/**
 	 * The server provides execute command support.
@@ -4989,14 +5032,14 @@ class ServerCapabilities {
 	 *
 	 * Since 3.16.0
 	 */
-	Either<Boolean, StaticRegistrationOptions> callHierarchyProvider
+	Either<Boolean, CallHierarchyRegistrationOptions> callHierarchyProvider
 
 	/**
 	 * The server provides selection range support.
 	 *
 	 * Since 3.15.0
 	 */
-	Either<Boolean, StaticRegistrationOptions> selectionRangeProvider
+	Either<Boolean, SelectionRangeRegistrationOptions> selectionRangeProvider
 
 	/**
 	 * The server provides linked editing range support.
@@ -6559,7 +6602,7 @@ class TextDocumentSaveRegistrationOptions extends TextDocumentRegistrationOption
 }
 
 @JsonRpcData
-class CompletionRegistrationOptions extends TextDocumentRegistrationOptions {
+class CompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * Most tools trigger completion request automatically without explicitly requesting
 	 * it using a keyboard shortcut (e.g. Ctrl+Space). Typically they do so when the user
@@ -6617,7 +6660,7 @@ class SignatureHelpRegistrationOptions extends AbstractTextDocumentRegistrationA
 }
 
 @JsonRpcData
-class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions {
+class CodeLensRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * Code lens has a resolve provider as well.
 	 */
@@ -6632,7 +6675,7 @@ class CodeLensRegistrationOptions extends TextDocumentRegistrationOptions {
 }
 
 @JsonRpcData
-class DocumentLinkRegistrationOptions extends TextDocumentRegistrationOptions {
+class DocumentLinkRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * Document links have a resolve provider as well.
 	 */
