@@ -1587,9 +1587,9 @@ class JsonParseTest {
 			method = MessageMethods.PROGRESS_NOTIFY
 			params = new ProgressParams => [
 				token = Either.forLeft("progress-token")
-				value = new WorkDoneProgressEnd => [
+				value = Either.forLeft(new WorkDoneProgressEnd => [
 					message = "message"
-				]
+				])
 			]
 		])
 
@@ -1601,8 +1601,7 @@ class JsonParseTest {
 				"params": {
 					"token": 1234,
 					"value": {
-						"kind": "end",
-						"message": "message"
+						"foo": "bar"
 					}
 				}
 			}
@@ -1612,9 +1611,9 @@ class JsonParseTest {
 			method = MessageMethods.PROGRESS_NOTIFY
 			params = new ProgressParams => [
 				token = Either.forRight(1234)
-				value = new WorkDoneProgressEnd => [
-					message = "message"
-				]
+				value = Either.forRight(new JsonObject => [
+					addProperty("foo", "bar")
+				])
 			]
 		])
 	}
