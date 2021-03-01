@@ -8,7 +8,10 @@
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/18?closed=1
 
-Deprecated API changes:
+Breaking API changes:
+ * Type of `ProgressParams.value` changed from `WorkDoneProgressNotification` to `Either<? extends WorkDoneProgressNotification, ? extends JsonElement>`
+
+ Deprecated API changes:
  * In DAP Protocol `VariablePresentationHintKind.DATA_BREAKPOINT` has been marked @Deprecated to match its deprecation in the protocol in 1.44.
  * In DAP Protocol `SetBreakpointsArguments.lines` has been marked @Deprecated to match its deprecation in protocol many versions ago.
 
