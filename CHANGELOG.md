@@ -23,7 +23,7 @@ Breaking API changes:
  * Type of `ServerCapabilities.callHierarchyProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, CallHierarchyRegistrationOptions>`
  * Type of `ServerCapabilities.selectionRangeProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, SelectionRangeRegistrationOptions>`
  * Type of `ServerCapabilities.linkedEditingRangeProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, LinkedEditingRangeRegistrationOptions>`
- * Type of `ProgressParams.value` changed from `WorkDoneProgressNotification` to `Either<? extends WorkDoneProgressNotification, ? extends JsonElement>`
+ * Type of `ProgressParams.value` changed from `WorkDoneProgressNotification` to `Either<? extends WorkDoneProgressNotification, ? extends Object>`
 
 Deprecated API changes:
  * In DAP Protocol `VariablePresentationHintKind.DATA_BREAKPOINT` has been marked @Deprecated to match its deprecation in the protocol in 1.44.

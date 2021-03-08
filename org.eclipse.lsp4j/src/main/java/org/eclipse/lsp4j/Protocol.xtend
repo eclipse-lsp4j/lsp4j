@@ -3912,12 +3912,12 @@ class ProgressParams {
 	 */
 	@NonNull
 	@JsonAdapter(ProgressNotificationAdapter)
-	Either<? extends WorkDoneProgressNotification, ? extends JsonElement> value
+	Either<? extends WorkDoneProgressNotification, ? extends Object> value
 
 	new() {
 	}
 
-	new(@NonNull Either<String, Integer> token, @NonNull Either<? extends WorkDoneProgressNotification, ? extends JsonElement> value) {
+	new(@NonNull Either<String, Integer> token, @NonNull Either<? extends WorkDoneProgressNotification, ? extends Object> value) {
 		this.token = Preconditions.checkNotNull(token, 'token')
 		this.value = Preconditions.checkNotNull(value, 'value')
 	}
