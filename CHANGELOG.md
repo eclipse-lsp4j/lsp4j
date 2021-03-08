@@ -8,6 +8,22 @@
 
 Fixed issues: https://github.com/eclipse/lsp4j/milestone/18?closed=1
 
+Breaking API changes:
+ * Type of `ServerCapabilities.hoverProvider` changed from `Boolean` to `Either<Boolean, HoverOptions>`
+ * Type of `ServerCapabilities.definitionProvider` changed from `Boolean` to `Either<Boolean, DefinitionOptions>`
+ * Type of `ServerCapabilities.typeDefinitionProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, TypeDefinitionRegistrationOptions>`
+ * Type of `ServerCapabilities.implementationProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, ImplementationRegistrationOptions>`
+ * Type of `ServerCapabilities.referencesProvider` changed from `Boolean` to `Either<Boolean, ReferenceOptions>`
+ * Type of `ServerCapabilities.documentHighlightProvider` changed from `Boolean` to `Either<Boolean, DocumentHighlightOptions>`
+ * Type of `ServerCapabilities.documentSymbolProvider` changed from `Boolean` to `Either<Boolean, DocumentSymbolOptions>`
+ * Type of `ServerCapabilities.workspaceSymbolProvider` changed from `Boolean` to `Either<Boolean, WorkspaceSymbolOptions>`
+ * Type of `ServerCapabilities.documentFormattingProvider` changed from `Boolean` to `Either<Boolean, DocumentFormattingOptions>`
+ * Type of `ServerCapabilities.documentRangeFormattingProvider` changed from `Boolean` to `Either<Boolean, DocumentRangeFormattingOptions>`
+ * Type of `ServerCapabilities.declarationProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, DeclarationRegistrationOptions>`
+ * Type of `ServerCapabilities.callHierarchyProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, CallHierarchyRegistrationOptions>`
+ * Type of `ServerCapabilities.selectionRangeProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, SelectionRangeRegistrationOptions>`
+ * Type of `ServerCapabilities.linkedEditingRangeProvider` changed from `Either<Boolean, StaticRegistrationOptions>` to `Either<Boolean, LinkedEditingRangeRegistrationOptions>`
+
 Deprecated API changes:
  * In DAP Protocol `VariablePresentationHintKind.DATA_BREAKPOINT` has been marked @Deprecated to match its deprecation in the protocol in 1.44.
  * In DAP Protocol `SetBreakpointsArguments.lines` has been marked @Deprecated to match its deprecation in protocol many versions ago.
