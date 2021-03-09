@@ -2,6 +2,8 @@
 
 ### v0.11.0 (Date TBD)
 
+ * Implemented LSP version 3.16.0 (to finalized specification)
+ * Implemented LSP version 3.15.0's Progress specification
  * Implemented DAP version 1.43.0
  * Implemented DAP version 1.44.0
  * Replaced `org.eclipse.lsp4j.websocket` by `org.eclipse.lsp4j.websocket.jakarta` for using LSP4J over Jakarta websockets
