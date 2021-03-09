@@ -12,8 +12,10 @@
 package org.eclipse.lsp4j
 
 import com.google.common.annotations.Beta
+import com.google.gson.JsonElement
 import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
+import java.util.Arrays
 import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
@@ -21,11 +23,11 @@ import org.eclipse.lsp4j.adapters.CompletionItemTextEditTypeAdapter
 import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
+import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
 import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
-import org.eclipse.lsp4j.adapters.WorkDoneProgressNotificationAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
@@ -33,7 +35,6 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.util.Preconditions
-import java.util.Arrays
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -3910,13 +3911,13 @@ class ProgressParams {
 	 * The progress data.
 	 */
 	@NonNull
-	@JsonAdapter(WorkDoneProgressNotificationAdapter.Factory)
-	WorkDoneProgressNotification value
+	@JsonAdapter(ProgressNotificationAdapter)
+	Either<WorkDoneProgressNotification, Object> value
 
 	new() {
 	}
 
-	new(@NonNull Either<String, Integer> token, @NonNull WorkDoneProgressNotification value) {
+	new(@NonNull Either<String, Integer> token, @NonNull Either<WorkDoneProgressNotification, Object> value) {
 		this.token = Preconditions.checkNotNull(token, 'token')
 		this.value = Preconditions.checkNotNull(value, 'value')
 	}

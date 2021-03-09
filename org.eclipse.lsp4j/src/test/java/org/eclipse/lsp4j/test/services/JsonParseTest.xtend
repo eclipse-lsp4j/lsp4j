@@ -83,6 +83,7 @@ import org.eclipse.lsp4j.VersionedTextDocumentIdentifier
 import org.eclipse.lsp4j.WorkDoneProgressCancelParams
 import org.eclipse.lsp4j.WorkDoneProgressCreateParams
 import org.eclipse.lsp4j.WorkDoneProgressEnd
+import org.eclipse.lsp4j.WorkDoneProgressNotification
 import org.eclipse.lsp4j.WorkspaceClientCapabilities
 import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
@@ -1587,9 +1588,9 @@ class JsonParseTest {
 			method = MessageMethods.PROGRESS_NOTIFY
 			params = new ProgressParams => [
 				token = Either.forLeft("progress-token")
-				value = new WorkDoneProgressEnd => [
+				value = Either.<WorkDoneProgressNotification, Object>forLeft(new WorkDoneProgressEnd => [
 					message = "message"
-				]
+				])
 			]
 		])
 
@@ -1601,8 +1602,7 @@ class JsonParseTest {
 				"params": {
 					"token": 1234,
 					"value": {
-						"kind": "end",
-						"message": "message"
+						"foo": "bar"
 					}
 				}
 			}
@@ -1612,9 +1612,9 @@ class JsonParseTest {
 			method = MessageMethods.PROGRESS_NOTIFY
 			params = new ProgressParams => [
 				token = Either.forRight(1234)
-				value = new WorkDoneProgressEnd => [
-					message = "message"
-				]
+				value = Either.<WorkDoneProgressNotification, Object>forRight(new JsonObject => [
+					addProperty("foo", "bar")
+				])
 			]
 		])
 	}
