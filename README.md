@@ -26,7 +26,7 @@ The snapshots are deployed during the build to:
 
 ### Supported LSP Versions
 
- * LSP4J 0.11.&ast; &rarr; LSP 3.16.0 (specification is not finalized yet)
+ * LSP4J 0.11.&ast; &rarr; LSP 3.16.0
  * LSP4J 0.10.&ast; &rarr; LSP 3.16.0 (specification is not finalized yet)
  * LSP4J 0.9.&ast; &rarr; LSP 3.15.0 (except Progress)
  * LSP4J 0.7.&ast;, 0.8.&ast; &rarr; LSP 3.14.0
