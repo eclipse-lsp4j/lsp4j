@@ -1,6 +1,6 @@
 ## LSP4J Change Log
 
-### v0.11.0 (Date TBD)
+### v0.11.0 (Mar. 2021)
 
  * Implemented LSP version 3.16.0 (to finalized specification)
  * Implemented LSP version 3.15.0's Progress specification
