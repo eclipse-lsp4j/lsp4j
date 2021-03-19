@@ -21,11 +21,13 @@ Items in the days ahead of Release day:
 - [ ] Schedule the release and if needed schedule a release review on the [PMI](https://projects.eclipse.org/projects/technology.lsp4j). A release review is needed every 12 months, not with each release.
 - [ ] Check [CHANGELOG.md](https://github.com/eclipse/lsp4j/blob/master/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
 - [ ] Check [README.md](https://github.com/eclipse/lsp4j/blob/master/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
+- [ ] Check all closed PRs and Issues to make sure their milestone is set. (*Note:* this was not until after 0.10.0 release so many old PRs and Issues have no milestone, therefore only consider items back to approx 5 Nov 2020). [This search may be useful to identify such closed issues](https://github.com/eclipse/lsp4j/issues?q=is%3Aclosed+no%3Amilestone+updated%3A%3E%3D2020-11-06)
 
 Items on Release day:
 
 - [ ] Prepare the repo for release by:
-    - [ ] removing `-SNAPSHOT` from [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/master/gradle/versions.gradle) and  [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/master/releng/pom.xml) entries in `<dependencies>` section.
+    - [ ] removing `-SNAPSHOT` from [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/master/gradle/versions.gradle)
+    - [ ] removing `-SNAPSHOT` from [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/master/releng/pom.xml) entries in `<dependencies>` section.
     - [ ] disabling `sh './releng/deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse/lsp4j/blob/master/releng/build.Jenkinsfile) 
     - see commit https://github.com/eclipse/lsp4j/commit/328ce8a4c89b0cd84fb62118f459b6cf79b09e90 for a past example
 - [ ] Push the above change
@@ -41,7 +43,7 @@ Items on Release day:
         - To obtain permission add request to [OSSRH-26079](https://issues.sonatype.org/browse/OSSRH-26079)
     - go to *Staging Repositories*, after a short delay the staged LSP4J release should appear
     - click the staged LSP4J repo
-    - press the *Close* button. This runs activities, including checking various rules
+    - press the *Close* button located in the toolbar. This runs activities, including checking various rules
     - once the rules are done (if successful), press the *Release* button
     - check https://search.maven.org/search?q=g:org.eclipse.lsp4j to make sure the latest release has arrived - this takes a while, 15 minutes for the files to be [on the server](https://repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j/) and even longer for the [search indexes](https://search.maven.org/search?q=g:org.eclipse.lsp4j) to update
 - [ ] Update the meta-data on [PMI downloads page](https://projects.eclipse.org/projects/technology.lsp4j/downloads)
