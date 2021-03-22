@@ -7054,8 +7054,10 @@ class FileOperationPattern {
 	 * Whether to match files or folders with this pattern.
 	 *
 	 * Matches both if undefined.
+	 *
+	 * See {@link FileOperationPatternKind} for allowed values.
 	 */
-	FileOperationPatternKind matches
+	String matches
 
 	/**
 	 * Additional options used during matching.
