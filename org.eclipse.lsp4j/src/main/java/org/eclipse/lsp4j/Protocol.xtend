@@ -7053,10 +7053,9 @@ class FileOperationPattern {
 	/**
 	 * Whether to match files or folders with this pattern.
 	 *
-	 * The match kind could be <code>FileOperationPatternKind.File</code>,
-	 * <code>FileOperationPatternKind.Folder</code> and undefined.
-	 *
 	 * Matches both if undefined.
+	 *
+	 * See {@link FileOperationPatternKind} for allowed values.
 	 */
 	String matches
 
