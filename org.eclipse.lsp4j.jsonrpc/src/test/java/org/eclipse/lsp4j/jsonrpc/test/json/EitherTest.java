@@ -197,4 +197,40 @@ public class EitherTest {
 		}
 	}
 
+	@Test
+	public void testSerializeJsonObjectEither3() {
+		MyObjectD object = new MyObjectD();
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("foo", "bar");
+		object.myProperty = Either3.forThird(jsonObject);
+		assertSerialize("{\"myProperty\":{\"foo\":\"bar\"}}", object);
+	}
+
+	@Test
+	public void testParseJsonObjectEither3() {
+		MyObjectD object = new MyObjectD();
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("foo", "bar");
+		object.myProperty = Either3.forThird(jsonObject);
+		assertParse(object, "{\"myProperty\":{\"foo\":\"bar\"}}");
+	}
+
+	protected static class MyObjectD {
+		public Either3<String, Integer, Object> myProperty;
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof MyObjectD) {
+				MyObjectD other = (MyObjectD) obj;
+				return Objects.equals(this.myProperty, other.myProperty);
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hashCode(this.myProperty);
+		}
+	}
+
 }
