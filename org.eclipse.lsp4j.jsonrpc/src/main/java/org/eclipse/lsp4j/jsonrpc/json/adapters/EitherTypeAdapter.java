@@ -228,7 +228,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		@SuppressWarnings("unchecked")
 		public EitherTypeArgument(Gson gson, Type type) {
 			this.typeToken = (TypeToken<T>) TypeToken.get(type);
-			this.adapter = gson.getAdapter(this.typeToken);
+			this.adapter = (type == Object.class) ? (TypeAdapter<T>) new JsonElementTypeAdapter(gson) : gson.getAdapter(this.typeToken);
 			this.expectedTokens = new HashSet<>();
 			for (Type expectedType : TypeUtils.getExpectedTypes(type)) {
 				Class<?> rawType = TypeToken.get(expectedType).getRawType();

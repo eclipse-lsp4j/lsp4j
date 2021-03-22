@@ -21,6 +21,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -157,6 +158,42 @@ public class EitherTest {
 			if (myProperty != null)
 				return myProperty.hashCode();
 			return 0;
+		}
+	}
+
+	@Test
+	public void testSerializeJsonObject() {
+		MyObjectC object = new MyObjectC();
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("foo", "bar");
+		object.myProperty = Either.forRight(jsonObject);
+		assertSerialize("{\"myProperty\":{\"foo\":\"bar\"}}", object);
+	}
+
+	@Test
+	public void testParseJsonObject() {
+		MyObjectC object = new MyObjectC();
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("foo", "bar");
+		object.myProperty = Either.forRight(jsonObject);
+		assertParse(object, "{\"myProperty\":{\"foo\":\"bar\"}}");
+	}
+
+	protected static class MyObjectC {
+		public Either<String, Object> myProperty;
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof MyObjectC) {
+				MyObjectC other = (MyObjectC) obj;
+				return Objects.equals(this.myProperty, other.myProperty);
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hashCode(this.myProperty);
 		}
 	}
 
