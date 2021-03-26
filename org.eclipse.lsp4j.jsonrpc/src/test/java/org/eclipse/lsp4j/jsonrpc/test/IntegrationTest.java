@@ -421,7 +421,7 @@ public class IntegrationTest {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			MyServer server = new MyServerImpl();
 			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
-			serverSideLauncher.startListening();
+			serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 			
 			logMessages.await(Level.WARNING, "Unsupported notification method: foo1");
 			logMessages.await(Level.WARNING, "Unsupported request method: foo2");
@@ -459,7 +459,7 @@ public class IntegrationTest {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			MyServer server = new MyServerImpl();
 			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
-			serverSideLauncher.startListening();
+			serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 			
 			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
 			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
@@ -561,7 +561,7 @@ public class IntegrationTest {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			MyServer server = new MyServerImpl();
 			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
-			serverSideLauncher.startListening();
+			serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 			
 			logMessages.await(Level.SEVERE, "com.google.gson.stream.MalformedJsonException: Expected value at line 2 column 22 path $.params.value");
 			Assert.assertEquals("Content-Length: 51" + CRLF + CRLF
