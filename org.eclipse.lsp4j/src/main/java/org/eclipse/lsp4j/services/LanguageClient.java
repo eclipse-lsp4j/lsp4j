@@ -33,8 +33,6 @@ import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
-import com.google.common.annotations.Beta;
-
 public interface LanguageClient {
 	/**
 	 * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.

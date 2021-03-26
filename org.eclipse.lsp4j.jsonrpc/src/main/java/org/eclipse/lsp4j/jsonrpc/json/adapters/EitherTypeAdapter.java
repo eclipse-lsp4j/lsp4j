@@ -177,7 +177,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		boolean matchesRight = right.isAssignable(nextToken);
 		if (matchesLeft && matchesRight) {
 			if (leftChecker != null || rightChecker != null) {
-				JsonElement element = new JsonParser().parse(in);
+				JsonElement element = JsonParser.parseReader(in);
 				if (leftChecker != null && leftChecker.test(element))
 					// Parse the left alternative from the JSON element tree
 					return createLeft(left.read(element));
@@ -194,7 +194,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			return createRight(right.read(in));
 		} else if (leftChecker != null || rightChecker != null) {
 			// If result is not the list but directly the only item in the list
-			JsonElement element = new JsonParser().parse(in);
+			JsonElement element = JsonParser.parseReader(in);
 			if (leftChecker != null && leftChecker.test(element))
 				// Parse the left alternative from the JSON element tree
 				return createLeft(left.read(element));

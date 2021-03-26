@@ -20,5 +20,6 @@ dependencies {
 
 jar.manifest {
 	instruction 'Import-Package', "com.google.common.*;version=\"$versions.guava\""
+	instruction 'Import-Package', "com.google.gson.*;version=\"$versions.gson\""
 	instruction 'Import-Package', '*'
 }
