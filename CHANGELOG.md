@@ -4,6 +4,14 @@
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/19?closed=1>
 
+Breaking changes in behavior:
+
+ * In case a type argument for `Either` is declared as `Object`,
+   `EitherTypeAdapter` now uses `JsonElementTypeAdapter` for parsing/serializing
+   the corresponding value. Notably, this can affect parsing of properties
+   `SemanticTokensClientCapabilitiesRequests.range` and `SemanticTokensWithRegistrationOptions.range`;
+   their right-hand side, declared as `Object`, will be parsed into a `JsonElement` now.
+
 ### v0.11.0 (Mar. 2021)
 
  * Implemented LSP version 3.16.0 (to finalized specification)

@@ -12,7 +12,6 @@
 package org.eclipse.lsp4j
 
 import com.google.common.annotations.Beta
-import com.google.gson.JsonElement
 import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
 import java.util.Arrays
