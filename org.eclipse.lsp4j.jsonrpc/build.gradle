@@ -19,5 +19,6 @@ dependencies {
 }
 
 jar.manifest {
+	instruction 'Import-Package', "com.google.gson.*;version=\"$versions.gson\""
 	instruction 'Import-Package', '*'
 }

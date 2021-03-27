@@ -295,7 +295,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		} else if ("response".equals(messageType) && success != null && success) {
 			return super.parseResult(in, Integer.toString(request_seq));
 		} else {
-			return new JsonParser().parse(in);
+			return JsonParser.parseReader(in);
 		}
 	}
 

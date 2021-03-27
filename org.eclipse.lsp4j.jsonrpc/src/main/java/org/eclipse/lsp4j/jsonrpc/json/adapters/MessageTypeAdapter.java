@@ -265,7 +265,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			}
 			return parameters;
 		}
-		JsonElement rawParams = new JsonParser().parse(in);
+		JsonElement rawParams = JsonParser.parseReader(in);
 		if (method != null && parameterTypes.length == 0 && (
 				rawParams.isJsonArray() && rawParams.getAsJsonArray().size() == 0
 				|| rawParams.isJsonObject() && rawParams.getAsJsonObject().size() == 0)) {
@@ -324,7 +324,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 
 	protected Object fromJson(JsonReader in, Type type) throws JsonIOException {
 		if (isNullOrVoidType(type)) {
-			return new JsonParser().parse(in);
+			return JsonParser.parseReader(in);
 		}
 		return gson.fromJson(in, type);
 	}

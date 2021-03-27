@@ -14,8 +14,6 @@ package org.eclipse.lsp4j.test.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.google.common.annotations.Beta;
-
 import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;

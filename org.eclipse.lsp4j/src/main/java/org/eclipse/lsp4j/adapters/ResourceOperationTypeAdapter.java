@@ -69,7 +69,7 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 
 		@Override
 		public ResourceOperation read(JsonReader in) throws IOException {
-			JsonObject objectJson = new JsonParser().parse(in).getAsJsonObject();
+			JsonObject objectJson = JsonParser.parseReader(in).getAsJsonObject();
 			JsonElement value = objectJson.get("kind");
 			if (value != null && value.isJsonPrimitive()) {
 				String kindValue = value.getAsString();

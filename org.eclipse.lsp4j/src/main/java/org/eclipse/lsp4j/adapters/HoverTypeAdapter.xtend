@@ -43,7 +43,7 @@ class HoverTypeAdapter {
 			val value = gson.fromJson(in, LIST_STRING_MARKEDSTRING.type)
 			return Either.forLeft(value)
 		} else {
-			val object = new JsonParser().parse(in) as JsonObject
+			val object = JsonParser.parseReader(in) as JsonObject
 			if (object.has("language")) {
 				val List<Either<String, MarkedString>> value = newArrayList(Either.forRight(gson.fromJson(object, MarkedString)))
 				return Either.forLeft(value)
