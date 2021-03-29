@@ -4,6 +4,10 @@
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/19?closed=1>
 
+Breaking API changes:
+
+ * Type of `CodeLensOptions.resolveProvider` changed from `boolean` to `Boolean`
+
 Breaking changes in behavior:
 
  * In case a type argument for `Either` is declared as `Object`,
