@@ -311,7 +311,7 @@ public class DebugIntegrationTest {
 				}
 			};
 			Launcher<MyClient> serverSideLauncher = DebugLauncher.createLauncher(server, MyClient.class, in, out);
-			serverSideLauncher.startListening();
+			serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 
 			logMessages.await(Level.WARNING, "Unsupported notification method: foo1");
 			logMessages.await(Level.WARNING, "Unsupported request method: foo2");
@@ -354,7 +354,7 @@ public class DebugIntegrationTest {
 				}
 			};
 			Launcher<MyClient> serverSideLauncher = DebugLauncher.createLauncher(server, MyClient.class, in, out);
-			serverSideLauncher.startListening();
+			serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 
 			logMessages.await(Level.INFO, "Unsupported notification method: $/foo1");
 			logMessages.await(Level.INFO, "Unsupported request method: $/foo2");
