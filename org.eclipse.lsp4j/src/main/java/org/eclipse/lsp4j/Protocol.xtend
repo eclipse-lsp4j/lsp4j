@@ -152,12 +152,12 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
-	 * Specific capabilities for the `SymbolKind` in the `workspace/symbol` request.
+	 * Specific capabilities for the {@link SymbolKind} in the `workspace/symbol` request.
 	 */
 	SymbolKindCapabilities symbolKind
 
 	/**
-	 * The client supports tags on `SymbolInformation`.
+	 * The client supports tags on {@link SymbolInformation}.
 	 * Clients supporting tags have to handle unknown tags gracefully.
 	 *
 	 * Since 3.16.0
@@ -206,7 +206,7 @@ class WorkspaceClientCapabilities {
 	Boolean applyEdit
 
 	/**
-	 * Capabilities specific to `WorkspaceEdit`s
+	 * Capabilities specific to {@link WorkspaceEdit}s
 	 */
 	WorkspaceEditCapabilities workspaceEdit
 
@@ -305,7 +305,7 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * The client supports the following `CompletionItem` specific capabilities.
+ * The client supports the following {@link CompletionItem} specific capabilities.
  */
 @JsonRpcData
 class CompletionItemCapabilities {
@@ -360,8 +360,8 @@ class CompletionItemCapabilities {
 
 	/**
 	 * Indicates which properties a client can resolve lazily on a completion
-	 * item. Before version 3.16.0 only the predefined properties `documentation`
-	 * and `details` could be resolved lazily.
+	 * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
+	 * and {@link CompletionItem#details} could be resolved lazily.
 	 *
 	 * Since 3.16.0
 	 */
@@ -411,8 +411,8 @@ class CompletionItemTagSupportCapabilities {
 
 /**
  * Indicates which properties a client can resolve lazily on a completion
- * item. Before version 3.16.0 only the predefined properties `documentation`
- * and `details` could be resolved lazily.
+ * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
+ * and {@link CompletionItem#details} could be resolved lazily.
  *
  * Since 3.16.0
  */
@@ -455,7 +455,7 @@ class CompletionItemInsertTextModeSupportCapabilities {
 }
 
 /**
- * The client supports the following `CompletionItemKind` specific
+ * The client supports the following {@link CompletionItemKind} specific
  * capabilities.
  */
 @JsonRpcData
@@ -467,8 +467,8 @@ class CompletionItemKindCapabilities {
 	 * to a default value when unknown.
 	 *
 	 * If this property is not present the client only supports
-	 * the completion items kinds from `Text` to `Reference` as defined in
-	 * the initial version of the protocol.
+	 * the completion items kinds from {@link CompletionItemKind#Text} to
+	 * {@link CompletionItemKind#Reference} as defined in the initial version of the protocol.
 	 */
 	List<CompletionItemKind> valueSet
 
@@ -486,13 +486,13 @@ class CompletionItemKindCapabilities {
 @JsonRpcData
 class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	/**
-	 * The client supports the following `CompletionItem` specific
+	 * The client supports the following {@link CompletionItem} specific
 	 * capabilities.
 	 */
 	CompletionItemCapabilities completionItem
 
 	/**
-	 * The client supports the following `CompletionItemKind` specific
+	 * The client supports the following {@link CompletionItemKind} specific
 	 * capabilities.
 	 */
 	CompletionItemKindCapabilities completionItemKind
@@ -547,7 +547,7 @@ class HoverCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * The client supports the following `SignatureInformation` specific properties.
+ * The client supports the following {@link SignatureInformation} specific properties.
  */
 @JsonRpcData
 class SignatureInformationCapabilities {
@@ -565,8 +565,7 @@ class SignatureInformationCapabilities {
 	ParameterInformationCapabilities parameterInformation
 
 	/**
-	 * The client supports the `activeParameter` property on `SignatureInformation`
-	 * literal.
+	 * The client supports the {@link SignatureInformation#activeParameter} property.
 	 *
 	 * Since 3.16.0
 	 */
@@ -607,7 +606,7 @@ class ParameterInformationCapabilities {
 @JsonRpcData
 class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
 	/**
-	 * The client supports the following `SignatureInformation`
+	 * The client supports the following {@link SignatureInformation}
 	 * specific properties.
 	 */
 	SignatureInformationCapabilities signatureInformation
@@ -615,8 +614,7 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports to send additional context information for a
 	 * `textDocument/signatureHelp` request. A client that opts into
-	 * contextSupport will also support the `retriggerCharacters` on
-	 * `SignatureHelpOptions`.
+	 * contextSupport will also support {@link SignatureHelpOptions#retriggerCharacters}.
 	 *
 	 * Since 3.15.0
 	 */
@@ -662,7 +660,7 @@ class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Specific capabilities for the `SymbolKind`.
+ * Specific capabilities for the {@link SymbolKind}.
  */
 @JsonRpcData
 class SymbolKindCapabilities {
@@ -673,8 +671,8 @@ class SymbolKindCapabilities {
 	 * to a default value when unknown.
 	 *
 	 * If this property is not present the client only supports
-	 * the symbol kinds from `File` to `Array` as defined in
-	 * the initial version of the protocol.
+	 * the symbol kinds from {@link SymbolKind#File} to
+	 * {@link SymbolKind#Array} as defined in the initial version of the protocol.
 	 */
 	List<SymbolKind> valueSet
 
@@ -687,7 +685,7 @@ class SymbolKindCapabilities {
 }
 
 /**
- * Specific capabilities for the `SymbolTag`.
+ * Specific capabilities for the {@link SymbolTag}.
  *
  * Since 3.16.0
  */
@@ -714,7 +712,7 @@ class SymbolTagSupportCapabilities {
 @JsonRpcData
 class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	/**
-	 * Specific capabilities for the `SymbolKind`.
+	 * Specific capabilities for the {@link SymbolKind}.
 	 */
 	SymbolKindCapabilities symbolKind
 
@@ -724,8 +722,8 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	Boolean hierarchicalDocumentSymbolSupport
 
 	/**
-	 * The client supports tags on `SymbolInformation`. Tags are supported on
-	 * `DocumentSymbol` if `hierarchicalDocumentSymbolSupport` is set to true.
+	 * The client supports tags on {@link SymbolInformation}. Tags are supported on
+	 * {@link DocumentSymbol} if {@link #hierarchicalDocumentSymbolSupport} is set to true.
 	 * Clients supporting tags have to handle unknown tags gracefully.
 	 *
 	 * Since 3.16.0
@@ -979,21 +977,21 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	CodeActionLiteralSupportCapabilities codeActionLiteralSupport
 
 	/**
-	 * Whether code action supports the `isPreferred` property.
+	 * Whether code action supports the {@link CodeAction#isPreferred} property.
 	 *
 	 * Since 3.15.0
 	 */
 	Boolean isPreferredSupport
 
 	/**
-	 * Whether code action supports the `disabled` property.
+	 * Whether code action supports the {@link CodeAction#disabled} property.
 	 *
 	 * Since 3.16.0
 	 */
 	Boolean disabledSupport
 
 	/**
-	 * Whether code action supports the `data` property which is
+	 * Whether code action supports the {@link CodeAction#data} property which is
 	 * preserved between a `textDocument/codeAction` and a
 	 * `codeAction/resolve` request.
 	 *
@@ -1012,7 +1010,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client honors the change annotations in
 	 * text edits and resource operations returned via the
-	 * `CodeAction#edit` property by for example presenting
+	 * {@link CodeAction#edit} property by for example presenting
 	 * the workspace edit in the user interface and asking
 	 * for confirmation.
 	 *
@@ -1127,7 +1125,7 @@ class FileOperationsWorkspaceCapabilities extends DynamicRegistrationCapabilitie
 class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
-	 * Whether the client supports the `tooltip` property on `DocumentLink`.
+	 * Whether the client supports the {@link DocumentLink#tooltip} property.
 	 *
 	 * Since 3.15.0
 	 */
@@ -1248,7 +1246,7 @@ class PublishDiagnosticsCapabilities {
 	Boolean codeDescriptionSupport
 
 	/**
-	 * Whether code action supports the `data` property which is
+	 * Whether code action supports the {@link Diagnostic#data} property which is
 	 * preserved between a `textDocument/publishDiagnostics` and
 	 * `textDocument/codeAction` request.
 	 *
@@ -1306,7 +1304,7 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * If set, the client signals that it only supports folding complete lines. If set, client will
-	 * ignore specified `startCharacter` and `endCharacter` properties in a FoldingRange.
+	 * ignore specified {@link FoldingRange#startCharacter} and {@link FoldingRange#endCharacter} properties.
 	 */
 	Boolean lineFoldingOnly
 }
@@ -1573,7 +1571,7 @@ class MonikerCapabilities extends DynamicRegistrationCapabilities {
 @JsonRpcData
 class WindowShowMessageRequestCapabilities {
 	/**
-	 * Capabilities specific to the `MessageActionItem` type.
+	 * Capabilities specific to the {@link MessageActionItem} type.
 	 */
 	WindowShowMessageRequestActionItemCapabilities messageActionItem
 
@@ -1603,7 +1601,7 @@ class ShowDocumentCapabilities {
 }
 
 /**
- * Capabilities specific to the `MessageActionItem` type of show message request.
+ * Capabilities specific to the {@link MessageActionItem} type of show message request.
  *
  * Since 3.16.0
  */
@@ -1924,7 +1922,7 @@ class GeneralClientCapabilities {
 
 /**
  * `ClientCapabilities` now define capabilities for dynamic registration, workspace and text document features the client supports.
- * The `experimental` can be used to pass experimental capabilities under development.
+ * The {@link #experimental} can be used to pass experimental capabilities under development.
  * For future compatibility a `ClientCapabilities` object literal can have more properties set than currently defined.
  * Servers receiving a `ClientCapabilities` object literal with unknown properties should ignore these properties.
  * A missing property should be interpreted as an absence of the capability.
@@ -1932,7 +1930,7 @@ class GeneralClientCapabilities {
  *
  * Client capabilities got introduced with the version 3.0 of the protocol. They therefore only describe capabilities that got introduced in 3.x or later.
  * Capabilities that existed in the 2.x version of the protocol are still mandatory for clients. Clients cannot opt out of providing them.
- * So even if a client omits the `ClientCapabilities.textDocument.synchronization`
+ * So even if a client omits the {@link TextDocumentClientCapabilities#synchronization}
  * it is still required that the client provides text document synchronization (e.g. open, changed and close notifications).
  */
 @JsonRpcData
@@ -1986,7 +1984,8 @@ class ClientCapabilities {
  * A code action represents a change that can be performed in code, e.g. to fix a problem or
  * to refactor code.
  *
- * A CodeAction must set either `edit` and/or a `command`. If both are supplied, the `edit` is applied first, then the `command` is executed.
+ * A CodeAction must set either {@link #edit} and/or a {@link #command}.
+ * If both are supplied, the {@link #edit} is applied first, then the {@link #command} is executed.
  */
 @JsonRpcData
 class CodeAction {
@@ -2024,15 +2023,15 @@ class CodeAction {
 	 *
 	 * Clients should follow the following guidelines regarding disabled code actions:
 	 *
-	 *   - Disabled code actions are not shown in automatic [lightbulb](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
+	 *   - Disabled code actions are not shown in automatic <a href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</a>
 	 *     code action menu.
 	 *
 	 *   - Disabled actions are shown as faded out in the code action menu when the user request a more specific type
 	 *     of code action, such as refactorings.
 	 *
-	 *   - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+	 *   - If the user has a <a href="https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions">keybinding</a>
 	 *     that auto applies a code action and only a disabled code actions are returned, the client should show the user an
-	 *     error message with `reason` in the editor.
+	 *     error message with {@link CodeActionDisabled#reason} in the editor.
 	 *
 	 * Since 3.16.0
 	 */
@@ -2072,15 +2071,15 @@ class CodeAction {
  *
  * Clients should follow the following guidelines regarding disabled code actions:
  *
- *   - Disabled code actions are not shown in automatic [lightbulb](https://code.visualstudio.com/docs/editor/editingevolved#_code-action)
+ *   - Disabled code actions are not shown in automatic <a href="https://code.visualstudio.com/docs/editor/editingevolved#_code-action">lightbulb</a>
  *     code action menu.
  *
  *   - Disabled actions are shown as faded out in the code action menu when the user request a more specific type
  *     of code action, such as refactorings.
  *
- *   - If the user has a [keybinding](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+ *   - If the user has a <a href="https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions">keybinding</a>
  *     that auto applies a code action and only a disabled code actions are returned, the client should show the user an
- *     error message with `reason` in the editor.
+ *     error message with {@link #reason} in the editor.
  *
  * Since 3.16.0
  */
@@ -2218,7 +2217,7 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * CodeActionKinds that this server may return.
 	 *
-	 * The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+	 * The list of kinds may be generic, such as {@link CodeActionKind#Refactor}, or the server
 	 * may list out every specific kind they provide.
 	 */
 	List<String> codeActionKinds
@@ -2247,7 +2246,7 @@ class CodeActionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	/**
 	 * CodeActionKinds that this server may return.
 	 *
-	 * The list of kinds may be generic, such as `CodeActionKind.Refactor`, or the server
+	 * The list of kinds may be generic, such as {@link CodeActionKind#Refactor}, or the server
 	 * may list out every specific kind they provide.
 	 */
 	List<String> codeActionKinds
@@ -2381,7 +2380,7 @@ class CompletionItem {
 	/**
 	 * Indicates if this item is deprecated.
 	 *
-	 * @deprecated Use `tags` instead if supported.
+	 * @deprecated Use {@link #tags} instead if supported.
 	 */
 	@Deprecated
 	Boolean deprecated
@@ -2411,8 +2410,8 @@ class CompletionItem {
 	String insertText
 
 	/**
-	 * The format of the insert text. The format applies to both the `insertText` property
-	 * and the `newText` property of a provided `textEdit`.
+	 * The format of the insert text. The format applies to both the {@link #insertText} property
+	 * and the {@code newText} property of a provided {@link #textEdit}.
 	 */
 	InsertTextFormat insertTextFormat
 
@@ -2427,7 +2426,7 @@ class CompletionItem {
 
 	/**
 	 * An edit which is applied to a document when selecting this completion.
-	 * When an edit is provided the value of `insertText` is ignored.
+	 * When an edit is provided the value of {@link #insertText} is ignored.
 	 *
 	 * *Note:* The range of the edit must be a single line range and it must
 	 * contain the position at which completion has been requested.
@@ -2436,18 +2435,18 @@ class CompletionItem {
 	 * item. One is to insert a completion text and the other is to replace an
 	 * existing text with a completion text. Since this can usually not be
 	 * predetermined by a server it can report both ranges. Clients need to
-	 * signal support for `InsertReplaceEdits` via the
-	 * `textDocument.completion.insertReplaceSupport` client capability
+	 * signal support for {@link InsertReplaceEdit}s via the
+	 * {@link CompletionItemCapabilities#insertReplaceSupport} client capability
 	 * property.
 	 *
 	 * *Note 1:* The text edit's range as well as both ranges from an insert
 	 * replace edit must be a [single line] and they must contain the position
 	 * at which completion has been requested.
-	 * *Note 2:* If an `InsertReplaceEdit` is returned the edit's insert range
+	 * *Note 2:* If an {@link InsertReplaceEdit} is returned the edit's insert range
 	 * must be a prefix of the edit's replace range, that means it must be
 	 * contained and starting at the same position.
 	 *
-	 * Since 3.16.0 additional type `InsertReplaceEdit`
+	 * Since 3.16.0 additional type {@link InsertReplaceEdit}
 	 */
 	@JsonAdapter(CompletionItemTextEditTypeAdapter)
 	Either<TextEdit, InsertReplaceEdit> textEdit
@@ -2465,7 +2464,7 @@ class CompletionItem {
 
 	/**
 	 * An optional set of characters that when pressed while this completion is active will accept it first and
-	 * then type that character. *Note* that all commit characters should have `length=1` and that superfluous
+	 * then type that character. *Note* that all commit characters should have {@code length=1} and that superfluous
 	 * characters will be ignored.
 	 */
 	List<String> commitCharacters
@@ -3656,9 +3655,10 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 /**
  * A MarkupContent literal represents a string value which content is interpreted based on its
- * kind flag. Currently the protocol supports `plaintext` and `markdown` as markup kinds.
+ * kind flag. Currently the protocol supports {@link MarkupKind#PLAINTEXT plaintext} and
+ * {@link MarkupKind#MARKDOWN markdown} as markup kinds.
  *
- * If the kind is `markdown` then the value can contain fenced code blocks like in GitHub issues.
+ * If the kind is {@link MarkupKind#MARKDOWN markdown} then the value can contain fenced code blocks like in GitHub issues.
  * See https://help.github.com/articles/creating-and-highlighting-code-blocks/#syntax-highlighting
  *
  * Please Note that clients might sanitize the return markdown. A client could decide to
@@ -3805,7 +3805,7 @@ class WorkDoneProgressBegin implements WorkDoneProgressNotification {
 
 	/**
 	 * Optional, more detailed associated progress message. Contains
-	 * complementary information to the `title`.
+	 * complementary information to the {@link #title}.
 	 *
 	 * Examples: "3/25 files", "project/src/module2", "node_modules/some_dep".
 	 * If unset, the previous progress message (if any) is still valid.
@@ -3840,7 +3840,7 @@ class WorkDoneProgressReport implements WorkDoneProgressNotification {
 
 	/**
 	 * Controls enablement state of a cancel button. This property is only valid if a cancel
-	 * button got requested in the `WorkDoneProgressStart` payload.
+	 * button got requested in the {@link WorkDoneProgressBegin} payload.
 	 *
 	 * Clients that don't support cancellation or don't support control the button's
 	 * enablement state are allowed to ignore the setting.
@@ -3849,7 +3849,7 @@ class WorkDoneProgressReport implements WorkDoneProgressNotification {
 
 	/**
 	 * Optional, more detailed associated progress message. Contains
-	 * complementary information to the `title`.
+	 * complementary information to the {@link WorkDoneProgressBegin#title}.
 	 *
 	 * Examples: "3/25 files", "project/src/module2", "node_modules/some_dep".
 	 * If unset, the previous progress message (if any) is still valid.
@@ -4084,7 +4084,7 @@ class InitializeError {
 }
 
 /**
- * Known error codes for an `InitializeError`
+ * Known error codes for an {@link InitializeError}
  */
 interface InitializeErrorCode {
 	/**
@@ -4123,7 +4123,7 @@ class InitializeParams implements WorkDoneProgressParams {
 
 	/**
 	 * The rootUri of the workspace. Is null if no folder is open.
-	 * If both `rootPath` and `rootUri` are set, `rootUri` wins.
+	 * If both {@link #rootPath} and `rootUri` are set, `rootUri` wins.
 	 *
 	 * @deprecated Use {@link #workspaceFolders} instead.
 	 */
@@ -4329,7 +4329,7 @@ class LocationLink {
 
 	/**
 	 * The range that should be selected and revealed when this link is being followed, e.g the name of a function.
-	 * Must be contained by the the `targetRange`. See also `DocumentSymbol#range`
+	 * Must be contained by the the {@link #targetRange}. See also {@link DocumentSymbol#range}
 	 */
 	@NonNull
 	Range targetSelectionRange
@@ -4949,9 +4949,9 @@ class ServerCapabilities {
 	Either<Boolean, WorkspaceSymbolOptions> workspaceSymbolProvider
 
 	/**
-	 * The server provides code actions. The `CodeActionOptions` return type is only
+	 * The server provides code actions. The {@link CodeActionOptions} return type is only
 	 * valid if the client signals code action literal support via the property
-	 * `textDocument.codeAction.codeActionLiteralSupport`.
+	 * {@link CodeActionCapabilities#codeActionLiteralSupport}.
 	 */
 	Either<Boolean, CodeActionOptions> codeActionProvider
 
@@ -5125,7 +5125,7 @@ class ShowMessageRequestParams extends MessageParams {
 class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	/**
 	 * The signature help context. This is only available if the client specifies
-	 * to send this using the client capability `textDocument.signatureHelp.contextSupport === true`
+	 * to send this using the client capability {@link SignatureHelpCapabilities#contextSupport} as true.
 	 *
 	 * Since 3.15.0
 	 */
@@ -5339,7 +5339,7 @@ class SignatureHelpContext {
 	/**
 	 * Character that caused signature help to be triggered.
 	 *
-	 * This is undefined when `triggerKind !== SignatureHelpTriggerKind.TriggerCharacter`
+	 * This is undefined when {@link #triggerKind} is not {@link SignatureHelpTriggerKind#TriggerCharacter}
 	 */
 	String triggerCharacter
 
@@ -5352,9 +5352,9 @@ class SignatureHelpContext {
 	boolean isRetrigger
 
 	/**
-	 * The currently active `SignatureHelp`.
+	 * The currently active {@link SignatureHelp}.
 	 *
-	 * The `activeSignatureHelp` has its `SignatureHelp.activeSignature` field updated based on
+	 * The `activeSignatureHelp` has its {@link SignatureHelp#activeSignature} field updated based on
 	 * the user navigating through available signatures.
 	 */
 	SignatureHelp activeSignatureHelp
@@ -5382,8 +5382,8 @@ class SignatureHelp {
 
 	/**
 	 * The active signature. If omitted or the value lies outside the
-	 * range of `signatures` the value defaults to zero or is ignored if
-	 * `signatures.length === 0`. Whenever possible implementors should
+	 * range of {@link #signatures} the value defaults to zero or is ignored if
+	 * the {@code SignatureHelp} has no signatures. Whenever possible implementors should
 	 * make an active decision about the active signature and shouldn't
 	 * rely on a default value.
 	 * In future version of the protocol this property might become
@@ -5393,7 +5393,7 @@ class SignatureHelp {
 
 	/**
 	 * The active parameter of the active signature. If omitted or the value
-	 * lies outside the range of `signatures[activeSignature].parameters`
+	 * lies outside the range of {@code signatures[activeSignature].parameters}
 	 * defaults to 0 if the active signature has parameters. If
 	 * the active signature has no parameters it is ignored.
 	 * In future version of the protocol this property might become
@@ -5472,7 +5472,7 @@ class SignatureInformation {
 	/**
 	 * The index of the active parameter.
 	 *
-	 * If provided, this is used in place of `SignatureHelp.activeParameter`.
+	 * If provided, this is used in place of {@link SignatureHelp#activeParameter}.
 	 *
 	 * Since 3.16.0
 	 */
@@ -5602,7 +5602,7 @@ class DocumentSymbol {
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-	 * Must be contained by the `range`.
+	 * Must be contained by the {@link #range}.
 	 */
 	@NonNull
 	Range selectionRange
@@ -5623,7 +5623,7 @@ class DocumentSymbol {
 	/**
 	 * Indicates if this symbol is deprecated.
 	 *
-	 * @deprecated Use `tags` instead if supported.
+	 * @deprecated Use {@link #tags} instead if supported.
 	 */
 	@Deprecated
 	Boolean deprecated
@@ -5685,7 +5685,7 @@ class SymbolInformation {
 	/**
 	 * Indicates if this symbol is deprecated.
 	 *
-	 * @deprecated Use `tags` instead if supported.
+	 * @deprecated Use {@link #tags} instead if supported.
 	 */
 	@Deprecated
 	Boolean deprecated
@@ -5870,8 +5870,8 @@ class TextDocumentPositionParams {
 @JsonRpcData
 class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
 	/**
-	 * The completion context. This is only available it the client specifies
-	 * to send this using `ClientCapabilities.textDocument.completion.contextSupport === true`
+	 * The completion context. This is only available if the client specifies
+	 * to send this using {@link CompletionCapabilities#contextSupport} as true.
 	 */
 	CompletionContext context
 
@@ -5898,7 +5898,7 @@ class CompletionContext {
 
 	/**
 	 * The trigger character (a single character) that has trigger code complete.
-	 * Is undefined if `triggerKind !== CompletionTriggerKind.TriggerCharacter`
+	 * Is undefined if {@link #triggerKind} is not {@link CompletionTriggerKind#TriggerCharacter}.
 	 */
 	String triggerCharacter
 
@@ -6063,7 +6063,7 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 
 /**
  * Describes textual changes on a single text document.
- * The text document is referred to as a `VersionedTextDocumentIdentifier`
+ * The text document is referred to as a {@link VersionedTextDocumentIdentifier}
  * to allow clients to check the text document version before an edit is applied.
  */
 @JsonRpcData
@@ -6119,7 +6119,7 @@ abstract class ResourceOperation {
 @JsonRpcData
 class CreateFileOptions {
 	/**
-	 * Overwrite existing file. Overwrite wins over `ignoreIfExists`
+	 * Overwrite existing file. Overwrite wins over {@link #ignoreIfExists}
 	 */
 	Boolean overwrite
 
@@ -6174,7 +6174,7 @@ class CreateFile extends ResourceOperation {
 @JsonRpcData
 class RenameFileOptions {
 	/**
-	 * Overwrite target if existing. Overwrite wins over `ignoreIfExists`
+	 * Overwrite target if existing. Overwrite wins over {@link #ignoreIfExists}
 	 */
 	Boolean overwrite
 
@@ -6319,8 +6319,8 @@ class ResourceChange {
 
 /**
  * A workspace edit represents changes to many resources managed in the workspace.
- * The edit should either provide `changes` or `documentChanges`.
- * If documentChanges are present they are preferred over `changes`
+ * The edit should either provide {@link #changes} or {@link #documentChanges}.
+ * If documentChanges are present they are preferred over changes
  * if the client can handle versioned document edits.
  */
 @JsonRpcData
@@ -6331,9 +6331,19 @@ class WorkspaceEdit {
 	Map<String, List<TextEdit>> changes
 
 	/**
-	 * An array of `TextDocumentEdit`s to express changes to specific a specific
-	 * version of a text document. Whether a client supports versioned document
-	 * edits is expressed via `WorkspaceClientCapabilities.versionedWorkspaceEdit`.
+	 * Depending on the client capability
+	 * {@link WorkspaceEditCapabilities#resourceOperations} document changes are either
+	 * an array of {@link TextDocumentEdit}s to express changes to n different text
+	 * documents where each text document edit addresses a specific version of
+	 * a text document. Or it can contain above {@link TextDocumentEdit}s mixed with
+	 * create, rename and delete file / folder operations.
+	 *
+	 * Whether a client supports versioned document edits is expressed via
+	 * {@link WorkspaceEditCapabilities#documentChanges} client capability.
+	 *
+	 * If a client neither supports {@link WorkspaceEditCapabilities#documentChanges} nor
+	 * {@link WorkspaceEditCapabilities#resourceOperations} then only plain {@link TextEdit}s
+	 * using the {@link #changes} property are supported.
 	 */
 	@JsonAdapter(DocumentChangeListAdapter)
 	List<Either<TextDocumentEdit, ResourceOperation>> documentChanges
@@ -6811,8 +6821,8 @@ class ApplyWorkspaceEditResponse {
 	/**
 	 * Depending on the client's failure handling strategy `failedChange`
 	 * might contain the index of the change that failed. This property is
-	 * only available if the client signals a `failureHandlingStrategy`
-	 * in its client capabilities.
+	 * only available if the client signals a {@link WorkspaceEditCapabilities#failureHandling}
+	 * strategy in its client capabilities.
 	 */
 	Integer failedChange
 
@@ -7036,16 +7046,12 @@ class FileOperationFilter {
 class FileOperationPattern {
 	/**
 	 * The glob pattern to match. Glob patterns can have the following syntax:
-	 * - `*` to match one or more characters in a path segment		 * - `*` to match one or more characters in a path segment
-	 * - `?` to match on one character in a path segment		 * - `?` to match on one character in a path segment
-	 * - `**` to match any number of path segments, including none		 * - `**` to match any number of path segments, including none
-	 * - `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)		 * - `{}` to group conditions (e.g. `**​/*.{ts,js}` matches all TypeScript
-	 * - `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)		 *   and JavaScript files)
-	 * - `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)		 * - `[]` to declare a range of characters to match in a path segment
-	 *   (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
-	 * - `[!...]` to negate a range of characters to match in a path segment
-	 *   (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but
-	 *   not `example.0`)
+	 * - `*` to match one or more characters in a path segment
+	 * - `?` to match on one character in a path segment
+	 * - `**` to match any number of path segments, including none
+	 * - `{}` to group sub patterns into an OR expression. (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
+	 * - `[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
+	 * - `[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)
 	 */
 	@NonNull
 	String glob
@@ -7484,9 +7490,9 @@ class FoldingRange {
 	Integer endCharacter
 
 	/**
-	 * Describes the kind of the folding range such as `comment' or 'region'. The kind
-	 * is used to categorize folding ranges and used by commands like 'Fold all comments'. See
-	 * FoldingRangeKind for an enumeration of standardized kinds.
+	 * Describes the kind of the folding range such as {@link FoldingRangeKind#Comment} or {@link FoldingRangeKind#Region}.
+	 * The kind is used to categorize folding ranges and used by commands like 'Fold all comments'.
+	 * See {@link FoldingRangeKind} for an enumeration of standardized kinds.
 	 */
 	String kind
 
@@ -7560,7 +7566,7 @@ class CallHierarchyIncomingCall {
 
 	/**
 	 * The range at which at which the calls appears. This is relative to the caller
-	 * denoted by [`this.from`](#CallHierarchyIncomingCall.from).
+	 * denoted by {@link #from}.
 	 */
 	@NonNull
 	List<Range> fromRanges
@@ -7588,9 +7594,7 @@ class CallHierarchyOutgoingCall {
 	CallHierarchyItem to
 
 	/**
-	 * The range at which this item is called. This is the range relative to the caller, e.g the item
-	 * passed to [`provideCallHierarchyOutgoingCalls`](#CallHierarchyItemProvider.provideCallHierarchyOutgoingCalls)
-	 * and not [`this.to`](#CallHierarchyOutgoingCall.to).
+	 * The range at which this item is called. This is the range relative to the caller, e.g. the {@link CallHierarchyOutgoingCallsParams#item}.
 	 */
 	@NonNull
 	List<Range> fromRanges
@@ -7730,13 +7734,13 @@ class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistration
 class SelectionRange {
 
 	/**
-	 * The [range](#Range) of this selection range.
+	 * The range of this selection range.
 	 */
 	@NonNull
 	Range range
 
 	/**
-	 * The parent selection range containing this range. Therefore `parent.range` must contain `this.range`.
+	 * The parent selection range containing this range. Therefore `parent.range` must contain {@link #range}.
 	 */
 	SelectionRange parent
 
