@@ -361,7 +361,7 @@ class CompletionItemCapabilities {
 	/**
 	 * Indicates which properties a client can resolve lazily on a completion
 	 * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
-	 * and {@link CompletionItem#details} could be resolved lazily.
+	 * and {@link CompletionItem#detail} could be resolved lazily.
 	 *
 	 * Since 3.16.0
 	 */
@@ -412,7 +412,7 @@ class CompletionItemTagSupportCapabilities {
 /**
  * Indicates which properties a client can resolve lazily on a completion
  * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
- * and {@link CompletionItem#details} could be resolved lazily.
+ * and {@link CompletionItem#detail} could be resolved lazily.
  *
  * Since 3.16.0
  */
