@@ -2275,12 +2275,12 @@ class CodeLensOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * Code lens has a resolve provider as well.
 	 */
-	boolean resolveProvider
+	Boolean resolveProvider
 
 	new() {
 	}
 
-	new(boolean resolveProvider) {
+	new(Boolean resolveProvider) {
 		this.resolveProvider = resolveProvider
 	}
 }
