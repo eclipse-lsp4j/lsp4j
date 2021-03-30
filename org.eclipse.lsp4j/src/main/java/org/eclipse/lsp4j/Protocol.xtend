@@ -2416,9 +2416,8 @@ class CompletionItem {
 	InsertTextFormat insertTextFormat
 
 	/**
-	 * How whitespace and indentation is handled during completion
-	 * item insertion. If not provided, the client's default value depends on
-	 * the `textDocument.completion.insertTextMode` client capability.
+	 * How whitespace and indentation is handled during completion item
+	 * insertion. If not provided, the client's default value is used.
 	 *
 	 * Since 3.16.0
 	 */
@@ -7594,7 +7593,7 @@ class CallHierarchyOutgoingCall {
 	CallHierarchyItem to
 
 	/**
-	 * The range at which this item is called. This is the range relative to the caller, e.g. the {@link CallHierarchyOutgoingCallsParams#item}.
+	 * The range at which this item is called. This is the range relative to the caller, i.e. the {@link CallHierarchyOutgoingCallsParams#item}.
 	 */
 	@NonNull
 	List<Range> fromRanges
