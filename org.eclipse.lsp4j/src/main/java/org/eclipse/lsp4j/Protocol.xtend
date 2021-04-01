@@ -76,7 +76,7 @@ class WorkspaceEditCapabilities {
 	 *
 	 * See {@link ResourceOperationKind} for allowed values.
 	 *
-	 * Since 3.13.0
+	 * @since LSP 3.13.0
 	 */
 	List<String> resourceOperations
 
@@ -86,7 +86,7 @@ class WorkspaceEditCapabilities {
 	 *
 	 * See {@link FailureHandlingKind} for allowed values.
 	 *
-	 * Since 3.13.0
+	 * @since LSP 3.13.0
 	 */
 	String failureHandling
 
@@ -96,7 +96,7 @@ class WorkspaceEditCapabilities {
 	 * If set to {@code true} the client will normalize line ending characters
 	 * in a workspace edit to the client specific new line character(s).
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean normalizesLineEndings
 
@@ -104,7 +104,7 @@ class WorkspaceEditCapabilities {
 	 * Whether the client in general supports change annotations on text edits,
 	 * create file, rename file and delete file changes.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport
 
@@ -159,7 +159,7 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	 * The client supports tags on {@link SymbolInformation}.
 	 * Clients supporting tags have to handle unknown tags gracefully.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	SymbolTagSupportCapabilities tagSupport
 
@@ -232,14 +232,14 @@ class WorkspaceClientCapabilities {
 	/**
 	 * The client has support for workspace folders.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	Boolean workspaceFolders
 
 	/**
 	 * The client supports `workspace/configuration` requests.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	Boolean configuration
 
@@ -247,7 +247,7 @@ class WorkspaceClientCapabilities {
 	 * Capabilities specific to the semantic token requests scoped to the
 	 * workspace.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	SemanticTokensWorkspaceCapabilities semanticTokens
 
@@ -255,14 +255,14 @@ class WorkspaceClientCapabilities {
 	 * Capabilities specific to the code lens requests scoped to the
 	 * workspace.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	CodeLensWorkspaceCapabilities codeLens
 
 	/**
 	 * The client has support for file requests/notifications.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	FileOperationsWorkspaceCapabilities fileOperations
 }
@@ -345,7 +345,7 @@ class CompletionItemCapabilities {
 	 * preserve unknown tags when sending a completion item back to the server in
 	 * a resolve call.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	CompletionItemTagSupportCapabilities tagSupport
 
@@ -353,7 +353,7 @@ class CompletionItemCapabilities {
 	 * Client support insert replace edit to control different behavior if a
 	 * completion item is inserted in the text or should replace text.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean insertReplaceSupport
 
@@ -362,7 +362,7 @@ class CompletionItemCapabilities {
 	 * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
 	 * and {@link CompletionItem#detail} could be resolved lazily.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	CompletionItemResolveSupportCapabilities resolveSupport
 
@@ -371,7 +371,7 @@ class CompletionItemCapabilities {
 	 * a completion item to override the whitespace handling mode
 	 * as defined by the client.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport
 
@@ -389,7 +389,7 @@ class CompletionItemCapabilities {
  * preserve unknown tags when sending a completion item back to the server in
  * a resolve call.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class CompletionItemTagSupportCapabilities {
@@ -413,7 +413,7 @@ class CompletionItemTagSupportCapabilities {
  * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
  * and {@link CompletionItem#detail} could be resolved lazily.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CompletionItemResolveSupportCapabilities {
@@ -437,7 +437,7 @@ class CompletionItemResolveSupportCapabilities {
  * a completion item to override the whitespace handling mode
  * as defined by the client.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CompletionItemInsertTextModeSupportCapabilities {
@@ -566,7 +566,7 @@ class SignatureInformationCapabilities {
 	/**
 	 * The client supports the {@link SignatureInformation#activeParameter} property.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean activeParameterSupport
 
@@ -587,7 +587,7 @@ class ParameterInformationCapabilities {
 	 * The client supports processing label offsets instead of a
 	 * simple label string.
 	 *
-	 * Since 3.14.0
+	 * @since LSP 3.14.0
 	 */
 	Boolean labelOffsetSupport
 
@@ -615,7 +615,7 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
 	 * `textDocument/signatureHelp` request. A client that opts into
 	 * contextSupport will also support {@link SignatureHelpOptions#retriggerCharacters}.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Boolean contextSupport
 
@@ -686,7 +686,7 @@ class SymbolKindCapabilities {
 /**
  * Specific capabilities for the {@link SymbolTag}.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SymbolTagSupportCapabilities {
@@ -725,7 +725,7 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	 * {@link DocumentSymbol} if {@link #hierarchicalDocumentSymbolSupport} is set to true.
 	 * Clients supporting tags have to handle unknown tags gracefully.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	SymbolTagSupportCapabilities tagSupport
 
@@ -733,7 +733,7 @@ class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	 * The client supports an additional label presented in the UI when
 	 * registering a document symbol provider.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean labelSupport
 
@@ -802,7 +802,7 @@ class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the `textDocument/definition`
  *
- * Since 3.14.0
+ * @since LSP 3.14.0
  */
 @JsonRpcData
 class DefinitionCapabilities extends DynamicRegistrationCapabilities {
@@ -827,7 +827,7 @@ class DefinitionCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the `textDocument/declaration`
  *
- * Since 3.14.0
+ * @since LSP 3.14.0
  */
 @JsonRpcData
 class DeclarationCapabilities extends DynamicRegistrationCapabilities {
@@ -852,14 +852,14 @@ class DeclarationCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the `textDocument/typeDefinition`
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports additional metadata in the form of definition links.
 	 *
-	 * Since 3.14.0
+	 * @since LSP 3.14.0
 	 */
 	Boolean linkSupport
 
@@ -879,14 +879,14 @@ class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the `textDocument/implementation`.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class ImplementationCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports additional metadata in the form of definition links.
 	 *
-	 * Since 3.14.0
+	 * @since LSP 3.14.0
 	 */
 	Boolean linkSupport
 
@@ -945,7 +945,7 @@ class CodeActionLiteralSupportCapabilities {
  * Whether the client supports resolving additional code action
  * properties via a separate `codeAction/resolve` request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CodeActionResolveSupportCapabilities {
@@ -978,14 +978,14 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether code action supports the {@link CodeAction#isPreferred} property.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Boolean isPreferredSupport
 
 	/**
 	 * Whether code action supports the {@link CodeAction#disabled} property.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean disabledSupport
 
@@ -994,7 +994,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * preserved between a `textDocument/codeAction` and a
 	 * `codeAction/resolve` request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean dataSupport
 
@@ -1002,7 +1002,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * Whether the client supports resolving additional code action
 	 * properties via a separate `codeAction/resolve` request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	CodeActionResolveSupportCapabilities resolveSupport
 
@@ -1013,7 +1013,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * the workspace edit in the user interface and asking
 	 * for confirmation.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean honorsChangeAnnotations
 
@@ -1052,7 +1052,7 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
  * Capabilities specific to the code lens requests scoped to the
  * workspace.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CodeLensWorkspaceCapabilities {
@@ -1079,7 +1079,7 @@ class CodeLensWorkspaceCapabilities {
 /**
  * The client has support for file requests/notifications.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileOperationsWorkspaceCapabilities extends DynamicRegistrationCapabilities {
@@ -1126,7 +1126,7 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports the {@link DocumentLink#tooltip} property.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Boolean tooltipSupport
 
@@ -1147,7 +1147,7 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
  * Capabilities specific to the `textDocument/documentColor` and the
  * `textDocument/colorPresentation` request.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
@@ -1169,7 +1169,7 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 * Client supports testing for validity of rename operations
 	 * before execution.
 	 *
-	 * Since 3.12.0
+	 * @since LSP 3.12.0
 	 */
 	Boolean prepareSupport
 
@@ -1178,7 +1178,7 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 *
 	 * The value indicates the default behavior used by the client.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	PrepareSupportDefaultBehavior prepareSupportDefaultBehavior
 
@@ -1189,7 +1189,7 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 * the workspace edit in the user interface and asking
 	 * for confirmation.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean honorsChangeAnnotations
 
@@ -1225,7 +1225,7 @@ class PublishDiagnosticsCapabilities {
 	 * keep this implementation compatible with intermediate clients (including
 	 * vscode-language-client &lt; 6.0.0) we add an either type here.
 	 *
-	 * Since 3.15
+	 * @since LSP 3.15
 	 */
 	Either<Boolean, DiagnosticsTagSupport> tagSupport
 
@@ -1233,14 +1233,14 @@ class PublishDiagnosticsCapabilities {
 	 * Whether the client interprets the version property of the
 	 * `textDocument/publishDiagnostics` notification's parameter.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Boolean versionSupport
 
 	/**
 	 * Client supports a codeDescription property
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean codeDescriptionSupport
 
@@ -1249,7 +1249,7 @@ class PublishDiagnosticsCapabilities {
 	 * preserved between a `textDocument/publishDiagnostics` and
 	 * `textDocument/codeAction` request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean dataSupport
 
@@ -1291,7 +1291,7 @@ class DiagnosticsTagSupport {
 /**
  * Capabilities specific to `textDocument/foldingRange` requests.
  *
- * Since 3.10.0
+ * @since LSP 3.10.0
  */
 @JsonRpcData
 class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
@@ -1332,7 +1332,7 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the {@code textDocument/prepareCallHierarchy}.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
@@ -1347,14 +1347,14 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -1375,7 +1375,7 @@ class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationA
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
@@ -1389,7 +1389,7 @@ class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequestsFull {
@@ -1409,7 +1409,7 @@ class SemanticTokensClientCapabilitiesRequestsFull {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequests {
@@ -1450,7 +1450,7 @@ class SemanticTokensClientCapabilitiesRequests {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
@@ -1484,14 +1484,14 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports tokens that can overlap each other.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean overlappingTokenSupport
 
 	/**
 	 * Whether the client supports tokens that can span multiple lines.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean multilineTokenSupport
 
@@ -1520,7 +1520,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
@@ -1530,7 +1530,7 @@ class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
  * Capabilities specific to the semantic token requests scoped to the
  * workspace.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensWorkspaceCapabilities {
@@ -1556,7 +1556,7 @@ class SemanticTokensWorkspaceCapabilities {
 /**
  * Capabilities specific to the {@code textDocument/moniker} request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class MonikerCapabilities extends DynamicRegistrationCapabilities {
@@ -1565,7 +1565,7 @@ class MonikerCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Show message request client capabilities
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class WindowShowMessageRequestCapabilities {
@@ -1581,7 +1581,7 @@ class WindowShowMessageRequestCapabilities {
 /**
  * Client capabilities for the show document request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class ShowDocumentCapabilities {
@@ -1602,7 +1602,7 @@ class ShowDocumentCapabilities {
 /**
  * Capabilities specific to the {@link MessageActionItem} type of show message request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class WindowShowMessageRequestActionItemCapabilities {
@@ -1624,7 +1624,7 @@ class WindowShowMessageRequestActionItemCapabilities {
 /**
  * Client capabilities specific to regular expressions.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class RegularExpressionsCapabilities {
@@ -1655,7 +1655,7 @@ class RegularExpressionsCapabilities {
 /**
  * Client capabilities specific to the used markdown parser.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class MarkdownCapabilities {
@@ -1687,7 +1687,7 @@ class MarkdownCapabilities {
  * Whether the client in general supports change annotations on text edits,
  * create file, rename file and delete file changes.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class WorkspaceEditChangeAnnotationSupportCapabilities {
@@ -1762,28 +1762,28 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to the {@code textDocument/declaration}
 	 *
-	 * Since 3.14.0
+	 * @since LSP 3.14.0
 	 */
 	DeclarationCapabilities declaration
 
 	/**
 	 * Capabilities specific to the {@code textDocument/definition}
 	 *
-	 * Since 3.14.0
+	 * @since LSP 3.14.0
 	 */
 	DefinitionCapabilities definition
 
 	/**
 	 * Capabilities specific to the {@code textDocument/typeDefinition}
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	TypeDefinitionCapabilities typeDefinition
 
 	/**
 	 * Capabilities specific to the {@code textDocument/implementation}
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	ImplementationCapabilities implementation
 
@@ -1806,7 +1806,7 @@ class TextDocumentClientCapabilities {
 	 * Capabilities specific to the {@code textDocument/documentColor} and the
 	 * {@code textDocument/colorPresentation} request.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	ColorProviderCapabilities colorProvider
 
@@ -1823,7 +1823,7 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to {@code textDocument/foldingRange} requests.
 	 *
-	 * Since 3.10.0
+	 * @since LSP 3.10.0
 	 */
 	FoldingRangeCapabilities foldingRange
 
@@ -1836,35 +1836,35 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	CallHierarchyCapabilities callHierarchy
 
 	/**
 	 * Capabilities specific to `textDocument/selectionRange` requests
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	SelectionRangeCapabilities selectionRange
 
 	/**
 	 * Capabilities specific to {@code textDocument/semanticTokens}.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	SemanticTokensCapabilities semanticTokens
 
 	/**
 	 * Capabilities specific to the {@code textDocument/moniker} request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	MonikerCapabilities moniker
 
 	/**
 	 * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	LinkedEditingRangeCapabilities linkedEditingRange
 }
@@ -1878,21 +1878,21 @@ class WindowClientCapabilities {
 	 * Whether client supports handling progress notifications. If set servers are allowed to
 	 * report in `workDoneProgress` property in the request specific server capabilities.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Boolean workDoneProgress
 
 	/**
 	 * Capabilities specific to the showMessage request
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	WindowShowMessageRequestCapabilities showMessage
 
 	/**
 	 * Client capabilities for the show document request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	ShowDocumentCapabilities showDocument
 }
@@ -1900,21 +1900,21 @@ class WindowClientCapabilities {
 /**
  * General client capabilities.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class GeneralClientCapabilities {
 	/**
 	 * Client capabilities specific to regular expressions.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	RegularExpressionsCapabilities regularExpressions
 
 	/**
 	 * Client capabilities specific to the client's markdown parser.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	MarkdownCapabilities markdown
 }
@@ -1952,7 +1952,7 @@ class ClientCapabilities {
 	/**
 	 * General client capabilities.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	GeneralClientCapabilities general
 
@@ -2013,7 +2013,7 @@ class CodeAction {
 	 * A quick fix should be marked preferred if it properly addresses the underlying error.
 	 * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Boolean isPreferred
 
@@ -2032,7 +2032,7 @@ class CodeAction {
 	 *     that auto applies a code action and only a disabled code actions are returned, the client should show the user an
 	 *     error message with {@link CodeActionDisabled#reason} in the editor.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	CodeActionDisabled disabled
 
@@ -2052,7 +2052,7 @@ class CodeAction {
 	 * A data entry field that is preserved on a code action between
 	 * a `textDocument/codeAction` and a `codeAction/resolve` request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
@@ -2080,7 +2080,7 @@ class CodeAction {
  *     that auto applies a code action and only a disabled code actions are returned, the client should show the user an
  *     error message with {@link #reason} in the editor.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CodeActionDisabled {
@@ -2225,7 +2225,7 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * The server provides support to resolve additional
 	 * information for a code action.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean resolveProvider
 
@@ -2254,7 +2254,7 @@ class CodeActionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	 * The server provides support to resolve additional
 	 * information for a code action.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Boolean resolveProvider
 
@@ -2362,7 +2362,7 @@ class CompletionItem {
 	/**
 	 * Tags for this completion item.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	List<CompletionItemTag> tags
 
@@ -2418,7 +2418,7 @@ class CompletionItem {
 	 * How whitespace and indentation is handled during completion item
 	 * insertion. If not provided, the client's default value is used.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	InsertTextMode insertTextMode
 
@@ -2444,7 +2444,7 @@ class CompletionItem {
 	 * must be a prefix of the edit's replace range, that means it must be
 	 * contained and starting at the same position.
 	 *
-	 * Since 3.16.0 additional type {@link InsertReplaceEdit}
+	 * Since LSP 3.16.0 additional type {@link InsertReplaceEdit}
 	 */
 	@JsonAdapter(CompletionItemTextEditTypeAdapter)
 	Either<TextEdit, InsertReplaceEdit> textEdit
@@ -2568,7 +2568,7 @@ class Diagnostic {
 	/**
 	 * An optional property to describe the error code.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	DiagnosticCodeDescription codeDescription
 
@@ -2586,7 +2586,7 @@ class Diagnostic {
 	/**
 	 * Additional metadata about the diagnostic.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	 List<DiagnosticTag> tags
 
@@ -2594,7 +2594,7 @@ class Diagnostic {
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
 	 * all definitions can be marked via this property.
 	 *
-	 * Since 3.7.0
+	 * @since LSP 3.7.0
 	 */
 	List<DiagnosticRelatedInformation> relatedInformation
 
@@ -2602,7 +2602,7 @@ class Diagnostic {
 	 * A data entry field that is preserved between a `textDocument/publishDiagnostics`
 	 * notification and `textDocument/codeAction` request.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
@@ -2632,7 +2632,7 @@ class Diagnostic {
  * used to point to code locations that cause or related to a diagnostics, e.g when duplicating
  * a symbol in a scope.
  *
- * Since 3.7.0
+ * @since LSP 3.7.0
  */
 @JsonRpcData
 class DiagnosticRelatedInformation {
@@ -2660,7 +2660,7 @@ class DiagnosticRelatedInformation {
 /**
  * Structure to capture a description for an error code.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class DiagnosticCodeDescription {
@@ -3010,7 +3010,7 @@ class DocumentLink {
 	 * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
 	 * user settings, and localization.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	String tooltip
 
@@ -3413,7 +3413,7 @@ class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
 	 * A human-readable string that is shown when multiple outlines trees
 	 * are shown for the same document.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	String label
 
@@ -3431,7 +3431,7 @@ class DocumentSymbolRegistrationOptions extends AbstractTextDocumentRegistration
 	 * A human-readable string that is shown when multiple outlines trees
 	 * are shown for the same document.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	String label
 
@@ -3573,7 +3573,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	/**
 	 * Trim trailing whitespace on a line.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	def boolean isTrimTrailingWhitespace() {
 		val value = getBoolean(TRIM_TRAILING_WHITESPACE)
@@ -3590,7 +3590,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	/**
 	 * Insert a newline character at the end of the file if one does not exist.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	def boolean isInsertFinalNewline() {
 		val value = getBoolean(INSERT_FINAL_NEWLINE)
@@ -3607,7 +3607,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	/**
 	 * Trim all newlines after the final newline at the end of the file.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	def boolean isTrimFinalNewlines() {
 		val value = getBoolean(TRIM_FINAL_NEWLINES)
@@ -3764,7 +3764,7 @@ class MarkedString {
 /**
  * The $/progress notification payload interface.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 interface WorkDoneProgressNotification {
 	def WorkDoneProgressKind getKind()
@@ -3773,7 +3773,7 @@ interface WorkDoneProgressNotification {
 /**
  * The $/progress notification payload to start progress reporting.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class WorkDoneProgressBegin implements WorkDoneProgressNotification {
@@ -3824,7 +3824,7 @@ class WorkDoneProgressBegin implements WorkDoneProgressNotification {
 /**
  * The notification payload about progress reporting.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class WorkDoneProgressReport implements WorkDoneProgressNotification {
@@ -3869,7 +3869,7 @@ class WorkDoneProgressReport implements WorkDoneProgressNotification {
  * The notification payload about progress reporting.
  * Signaling the end of a progress reporting is done using the following payload:
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class WorkDoneProgressEnd implements WorkDoneProgressNotification {
@@ -3895,7 +3895,7 @@ class WorkDoneProgressEnd implements WorkDoneProgressNotification {
  * and partial result progress to support streaming of results.
  * A progress notification has the following properties:
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class ProgressParams {
@@ -3925,7 +3925,7 @@ class ProgressParams {
 /**
  * A parameter literal used to pass a work done progress token.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 interface WorkDoneProgressParams {
 	/**
@@ -3942,7 +3942,7 @@ interface WorkDoneProgressParams {
 /**
  * Options to signal work done progress support in server capabilities.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 interface WorkDoneProgressOptions {
 
@@ -3956,7 +3956,7 @@ interface WorkDoneProgressOptions {
  * Options to signal work done progress support in server capabilities.
  * It is not present in protocol specification, so it's just "dry" class.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 abstract class AbstractWorkDoneProgressOptions implements WorkDoneProgressOptions {
@@ -3967,7 +3967,7 @@ abstract class AbstractWorkDoneProgressOptions implements WorkDoneProgressOption
  * Options to signal work done progress support in server capabilities and TextDocumentRegistrationOptions.
  * It is not present in protocol specification, so it's just "dry" class.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 abstract class AbstractTextDocumentRegistrationAndWorkDoneProgressOptions extends TextDocumentRegistrationOptions implements WorkDoneProgressOptions {
@@ -3984,7 +3984,7 @@ abstract class AbstractTextDocumentRegistrationAndWorkDoneProgressOptions extend
 /**
  * A parameter literal used to pass a partial result token.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 interface PartialResultParams {
 	/**
@@ -4004,7 +4004,7 @@ interface PartialResultParams {
  * Abstract class which implements work done progress and partial result request parameter.
  * It is not present in protocol specification, so it's just "dry" class.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 abstract class WorkDoneProgressAndPartialResultParams implements WorkDoneProgressParams, PartialResultParams {
@@ -4024,7 +4024,7 @@ abstract class WorkDoneProgressAndPartialResultParams implements WorkDoneProgres
  * Abstract class which extends TextDocumentPosition and implements work done progress request parameter.
  * It is not present in protocol specification, so it's just "dry" class.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 abstract class TextDocumentPositionAndWorkDoneProgressParams extends TextDocumentPositionParams implements WorkDoneProgressParams {
@@ -4045,7 +4045,7 @@ abstract class TextDocumentPositionAndWorkDoneProgressParams extends TextDocumen
  * Abstract class which extends TextDocumentPosition and implements work done progress and partial result request parameter.
  * It is not present in protocol specification, so it's just "dry" class.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultParams extends TextDocumentPositionAndWorkDoneProgressParams implements PartialResultParams {
@@ -4151,7 +4151,7 @@ class InitializeParams implements WorkDoneProgressParams {
 	/**
 	 * Information about the client
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	ClientInfo clientInfo
 
@@ -4163,7 +4163,7 @@ class InitializeParams implements WorkDoneProgressParams {
 	 * Uses IETF language tags as the value's syntax
 	 * (See https://en.wikipedia.org/wiki/IETF_language_tag)
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	String locale
 
@@ -4179,7 +4179,7 @@ class InitializeParams implements WorkDoneProgressParams {
 	 * It can be `null` if the client supports workspace folders but none are
 	 * configured.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	List<WorkspaceFolder> workspaceFolders
 }
@@ -4195,7 +4195,7 @@ class InitializeResult {
 	/**
 	 * Information about the server.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	ServerInfo serverInfo
 
@@ -4219,7 +4219,7 @@ class InitializedParams {
 /**
  * Information about the client
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class ClientInfo {
@@ -4250,7 +4250,7 @@ class ClientInfo {
 /**
  * Information about the server.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class ServerInfo {
@@ -4402,7 +4402,7 @@ class MessageParams {
  * depends on the current trace configuration. If trace is 'off', the server should not send any logTrace
  * notification. If trace is 'message', the server should not add the 'verbose' field.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class LogTraceParams {
@@ -4434,7 +4434,7 @@ class LogTraceParams {
 /**
  * A notification that should be used by the client to modify the trace setting of the server.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SetTraceParams {
@@ -4538,7 +4538,7 @@ class PublishDiagnosticsParams {
 	/**
 	 * Optional the version number of the document the diagnostics are published for.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Integer version
 
@@ -4685,7 +4685,7 @@ class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
  * The linked editing range request is sent from the client to the server to return for a given position
  * in a document the range of the symbol at the position and all ranges that have the same content.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressParams {
@@ -4694,7 +4694,7 @@ class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressPa
 /**
  * Linked editing range options.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class LinkedEditingRangeOptions extends AbstractWorkDoneProgressOptions {
@@ -4703,7 +4703,7 @@ class LinkedEditingRangeOptions extends AbstractWorkDoneProgressOptions {
 /**
  * Linked editing range registration options.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -4727,7 +4727,7 @@ class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistra
  *
  * Optionally a word pattern can be returned to describe valid contents.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class LinkedEditingRanges {
@@ -4762,7 +4762,7 @@ class LinkedEditingRanges {
 /**
  * The legend used by the server
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensLegend {
@@ -4789,7 +4789,7 @@ class SemanticTokensLegend {
 /**
  * Server supports providing semantic tokens for a full document.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensServerFull {
@@ -4808,7 +4808,7 @@ class SemanticTokensServerFull {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
@@ -4915,14 +4915,14 @@ class ServerCapabilities {
 	/**
 	 * The server provides Goto Type Definition support.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	Either<Boolean, TypeDefinitionRegistrationOptions> typeDefinitionProvider
 
 	/**
 	 * The server provides Goto Implementation support.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	Either<Boolean, ImplementationRegistrationOptions> implementationProvider
 
@@ -4986,21 +4986,21 @@ class ServerCapabilities {
 	/**
 	 * The server provides color provider support.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	Either<Boolean, ColorProviderOptions> colorProvider
 
 	/**
 	 * The server provides folding provider support.
 	 *
-	 * Since 3.10.0
+	 * @since LSP 3.10.0
 	 */
 	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
 
 	/**
 	 * The server provides go to declaration support.
 	 *
-	 * Since 3.14.0
+	 * @since LSP 3.14.0
 	 */
 	Either<Boolean, DeclarationRegistrationOptions> declarationProvider
 
@@ -5029,35 +5029,35 @@ class ServerCapabilities {
 	/**
 	 * The server provides Call Hierarchy support.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Either<Boolean, CallHierarchyRegistrationOptions> callHierarchyProvider
 
 	/**
 	 * The server provides selection range support.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	Either<Boolean, SelectionRangeRegistrationOptions> selectionRangeProvider
 
 	/**
 	 * The server provides linked editing range support.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Either<Boolean, LinkedEditingRangeRegistrationOptions> linkedEditingRangeProvider
 
 	/**
 	 * The server provides semantic tokens support.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	SemanticTokensWithRegistrationOptions semanticTokensProvider
 
 	/**
 	 * Whether server provides moniker support.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Either<Boolean, MonikerRegistrationOptions> monikerProvider
 
@@ -5077,14 +5077,14 @@ class WorkspaceServerCapabilities {
 	/**
 	 * The server supports workspace folder.
 	 *
-	 * Since 3.6.0
+	 * @since LSP 3.6.0
 	 */
 	WorkspaceFoldersOptions workspaceFolders
 
 	/**
 	 * The server is interested in file notifications/requests.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	FileOperationsServerCapabilities fileOperations
 
@@ -5125,7 +5125,7 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
 	 * The signature help context. This is only available if the client specifies
 	 * to send this using the client capability {@link SignatureHelpCapabilities#contextSupport} as true.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	SignatureHelpContext context
 
@@ -5145,7 +5145,7 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
 /**
  * The request is sent from the client to the server to resolve semantic tokens for a given whole file.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
@@ -5161,7 +5161,7 @@ class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokens {
@@ -5191,7 +5191,7 @@ class SemanticTokens {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensPartialResult {
@@ -5207,7 +5207,7 @@ class SemanticTokensPartialResult {
 /**
  * The request is sent from the client to the server to resolve semantic token deltas for a given whole file.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
@@ -5231,7 +5231,7 @@ class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensEdit {
@@ -5259,7 +5259,7 @@ class SemanticTokensEdit {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensDelta {
@@ -5283,7 +5283,7 @@ class SemanticTokensDelta {
 }
 
 /**
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensDeltaPartialResult {
@@ -5299,7 +5299,7 @@ class SemanticTokensDeltaPartialResult {
 /**
  * The request is sent from the client to the server to resolve semantic tokens for a range in a given file.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
@@ -5324,7 +5324,7 @@ class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 /**
  * Additional information about the context in which a signature help request was triggered.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class SignatureHelpContext {
@@ -5428,7 +5428,7 @@ class SignatureHelpOptions extends AbstractWorkDoneProgressOptions {
 	 * These trigger characters are only active when signature help is already showing. All trigger characters
 	 * are also counted as re-trigger characters.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	List<String> retriggerCharacters
 
@@ -5472,7 +5472,7 @@ class SignatureInformation {
 	 *
 	 * If provided, this is used in place of {@link SignatureHelp#activeParameter}.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Integer activeParameter
 
@@ -5614,7 +5614,7 @@ class DocumentSymbol {
 	/**
 	 * Tags for this document symbol.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	List<SymbolTag> tags
 
@@ -5676,7 +5676,7 @@ class SymbolInformation {
 	/**
 	 * Tags for this symbol.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	List<SymbolTag> tags
 
@@ -5942,7 +5942,7 @@ class TextEdit {
 /**
  * Additional information that describes document changes.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class ChangeAnnotation {
@@ -5976,7 +5976,7 @@ class ChangeAnnotation {
 /**
  * A special text edit with an additional change annotation.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class AnnotatedTextEdit extends TextEdit {
@@ -5998,7 +5998,7 @@ class AnnotatedTextEdit extends TextEdit {
 /**
  * A special text edit to provide an insert and a replace operation.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class InsertReplaceEdit {
@@ -6099,7 +6099,7 @@ abstract class ResourceOperation {
 	/**
 	 * An optional annotation identifer describing the operation.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	String annotationId
 
@@ -6366,7 +6366,7 @@ class WorkspaceEdit {
 	 *
 	 * Client support depends on {@link WorkspaceEditCapabilities#changeAnnotationSupport}.
 	 *
-	 * Since 3.16.0
+	 * @since LSP 3.16.0
 	 */
 	Map<String, ChangeAnnotation> changeAnnotations
 
@@ -6651,7 +6651,7 @@ class SignatureHelpRegistrationOptions extends AbstractTextDocumentRegistrationA
 	 * These trigger characters are only active when signature help is already showing. All trigger characters
 	 * are also counted as re-trigger characters.
 	 *
-	 * Since 3.15.0
+	 * @since LSP 3.15.0
 	 */
 	List<String> retriggerCharacters
 
@@ -6890,7 +6890,7 @@ class WorkspaceFolder {
 /**
  * The workspace folder change event.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class WorkspaceFoldersChangeEvent {
@@ -6922,7 +6922,7 @@ class WorkspaceFoldersChangeEvent {
  * ClientCapabilities/workspace/workspaceFolders are true; or if the server has registered to
  * receive this notification it first.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class DidChangeWorkspaceFoldersParams {
@@ -6943,7 +6943,7 @@ class DidChangeWorkspaceFoldersParams {
 /**
  * The server is interested in file notifications/requests.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileOperationsServerCapabilities {
@@ -6984,7 +6984,7 @@ class FileOperationsServerCapabilities {
 /**
  * The options for file operations.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileOperationOptions {
@@ -7006,7 +7006,7 @@ class FileOperationOptions {
  * A filter to describe in which file operation requests or notifications
  * the server is interested in.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileOperationFilter {
@@ -7038,7 +7038,7 @@ class FileOperationFilter {
  * A pattern to describe in which file operation requests or notifications
  * the server is interested in.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileOperationPattern {
@@ -7079,7 +7079,7 @@ class FileOperationPattern {
 /**
  * Matching options for the file operation pattern.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileOperationPatternOptions {
@@ -7100,7 +7100,7 @@ class FileOperationPatternOptions {
  * The parameters sent in notifications/requests for user-initiated creation
  * of files.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CreateFilesParams {
@@ -7121,7 +7121,7 @@ class CreateFilesParams {
 /**
  * Represents information on a file/folder create.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileCreate {
@@ -7143,7 +7143,7 @@ class FileCreate {
  * The parameters sent in notifications/requests for user-initiated renames
  * of files.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class RenameFilesParams {
@@ -7165,7 +7165,7 @@ class RenameFilesParams {
 /**
  * Represents information on a file/folder rename.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileRename {
@@ -7194,7 +7194,7 @@ class FileRename {
  * The parameters sent in notifications/requests for user-initiated deletes
  * of files.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class DeleteFilesParams {
@@ -7215,7 +7215,7 @@ class DeleteFilesParams {
 /**
  * Represents information on a file/folder delete.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class FileDelete {
@@ -7240,7 +7240,7 @@ class FileDelete {
  * {@link ConfigurationItem}s (e.g. the first item in the response is the result for the first
  * configuration item in the params).
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class ConfigurationParams {
@@ -7266,7 +7266,7 @@ class ConfigurationParams {
  * URI. If the client can't provide a configuration setting for a given scope then null needs to be
  * present in the returned array.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class ConfigurationItem {
@@ -7285,7 +7285,7 @@ class ConfigurationItem {
  * The document color request is sent from the client to the server to list all color references
  * found in a given text document. Along with the range, a color value in RGB is returned.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class DocumentColorParams extends WorkDoneProgressAndPartialResultParams {
@@ -7366,7 +7366,7 @@ class Color {
  * The color presentation request is sent from the client to the server to obtain a list of presentations
  * for a color value at a given location.
  *
- * Since 3.6.0
+ * @since LSP 3.6.0
  */
 @JsonRpcData
 class ColorPresentationParams extends WorkDoneProgressAndPartialResultParams {
@@ -7506,7 +7506,7 @@ class FoldingRange {
 /**
  * The parameter of a `textDocument/prepareCallHierarchy` request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
@@ -7516,7 +7516,7 @@ class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgress
 /**
  * The parameter of a `callHierarchy/incomingCalls` request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultParams {
@@ -7534,7 +7534,7 @@ class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultP
 /**
  * The parameter of a `callHierarchy/outgoingCalls` request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
@@ -7552,7 +7552,7 @@ class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultP
 /**
  * Represents an incoming call, e.g. a caller of a method or constructor.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyIncomingCall {
@@ -7581,7 +7581,7 @@ class CallHierarchyIncomingCall {
 /**
  * Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyOutgoingCall {
@@ -7609,7 +7609,7 @@ class CallHierarchyOutgoingCall {
 /**
  * The result of a {@code textDocument/prepareCallHierarchy} request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class CallHierarchyItem {
@@ -7667,7 +7667,7 @@ class CallHierarchyItem {
 /**
  * A parameter literal used in selection range requests.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
@@ -7695,7 +7695,7 @@ class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
 /**
  * Selection range options.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class SelectionRangeOptions extends AbstractWorkDoneProgressOptions {
@@ -7704,7 +7704,7 @@ class SelectionRangeOptions extends AbstractWorkDoneProgressOptions {
 /**
  * Selection range registration options.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -7726,7 +7726,7 @@ class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistration
  * A selection range represents a part of a selection hierarchy. A selection range
  * may have a parent selection range that contains it.
  *
- * Since 3.15.0
+ * @since LSP 3.15.0
  */
 @JsonRpcData
 class SelectionRange {
@@ -7942,7 +7942,7 @@ class PrepareRenameParams extends TextDocumentPositionParams {
 /**
  * Moniker options.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class MonikerOptions extends AbstractWorkDoneProgressOptions {
@@ -7951,7 +7951,7 @@ class MonikerOptions extends AbstractWorkDoneProgressOptions {
 /**
  * Moniker registration options.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class MonikerRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -7960,7 +7960,7 @@ class MonikerRegistrationOptions extends AbstractTextDocumentRegistrationAndWork
 /**
  * The moniker request is sent from the client to the server to get the symbol monikers for a given text document position.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
@@ -7969,7 +7969,7 @@ class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialRes
 /**
  * Moniker definition to match LSIF 0.5 moniker definition.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class Moniker {
@@ -8054,7 +8054,7 @@ class WorkDoneProgressCancelParams {
 /**
  * Params to show a document.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class ShowDocumentParams {
@@ -8099,7 +8099,7 @@ class ShowDocumentParams {
 /**
  * The result of an show document request.
  *
- * Since 3.16.0
+ * @since LSP 3.16.0
  */
 @JsonRpcData
 class ShowDocumentResult {
