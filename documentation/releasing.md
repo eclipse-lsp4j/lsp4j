@@ -44,8 +44,8 @@ Items on Release day:
     - go to *Staging Repositories*, after a short delay the staged LSP4J release should appear
     - click the staged LSP4J repo
     - press the *Close* button located in the toolbar. This runs activities, including checking various rules
-    - once the rules are done (if successful), press the *Release* button
-    - check https://search.maven.org/search?q=g:org.eclipse.lsp4j to make sure the latest release has arrived - this takes a while, 15 minutes for the files to be [on the server](https://repo1.maven.org/maven2/org/eclipse/lsp4j/org.eclipse.lsp4j/) and even longer for the [search indexes](https://search.maven.org/search?q=g:org.eclipse.lsp4j) to update
+    - once the rules are done (if successful), press the *Release* button (you may need to press *Refresh* to enable the *Release* button)
+    - check https://search.maven.org/search?q=g:org.eclipse.lsp4j to make sure the latest release has arrived - this takes a while, 15 minutes for the files to be [on the server](https://repo1.maven.org/maven2/org/eclipse/lsp4j/) and even longer for the [search indexes](https://search.maven.org/search?q=g:org.eclipse.lsp4j) to update
 - [ ] Update the meta-data on [PMI downloads page](https://projects.eclipse.org/projects/technology.lsp4j/downloads)
 - [ ] Tag the release. Example: `git tag -a v0.12.0 HEAD -m"LSP4J 0.12.0" && git push origin v0.12.0`
 - [ ] Contribute to Simrel. See [Simrel contribution example](https://git.eclipse.org/r/#/c/158624/)
