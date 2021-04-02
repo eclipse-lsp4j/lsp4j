@@ -1,5 +1,9 @@
 ## LSP4J Change Log
 
+### v0.13.0 (Date TBD)
+
+Fixed issues: <https://github.com/eclipse/lsp4j/milestone/20?closed=1>
+
 ### v0.12.0 (Apr. 2021)
 
  * Restored `org.eclipse.lsp4j.websocket` which will be included along with `org.eclipse.lsp4j.websocket.jakarta`. This will allow use of LSP4J
