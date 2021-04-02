@@ -4,6 +4,9 @@
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/19?closed=1>
 
+ * Restored `org.eclipse.lsp4j.websocket` which will be included along with `org.eclipse.lsp4j.websocket.jakarta`. This will allow use of LSP4J
+   over Jakarta websockets and pre-Jakarta websockets. See <https://github.com/eclipse/lsp4j/issues/536> for more details.
+
 Breaking API changes:
 
  * Type of `CodeLensOptions.resolveProvider` changed from `boolean` to `Boolean`
