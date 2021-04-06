@@ -2534,6 +2534,19 @@ class CompletionOptions extends AbstractWorkDoneProgressOptions {
 	 */
 	List<String> triggerCharacters
 
+	/**
+	 * The list of all possible characters that commit a completion. This field
+	 * can be used if clients don't support individual commit characters per
+	 * completion item. See client capability
+	 * {@link CompletionItemCapabilities#commitCharactersSupport}.
+	 *
+	 * If a server provides both {@code allCommitCharacters} and commit characters on
+	 * an individual completion item the ones on the completion item win.
+	 *
+	 * Since 3.2.0
+	 */
+	List<String> allCommitCharacters
+
 	new() {
 	}
 
