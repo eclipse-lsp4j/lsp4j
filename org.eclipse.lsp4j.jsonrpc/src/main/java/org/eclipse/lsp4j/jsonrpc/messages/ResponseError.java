@@ -20,7 +20,7 @@ import com.google.gson.annotations.JsonAdapter;
 public class ResponseError {
 
 	/**
-	 * A number indicating the error type that occured.
+	 * A number indicating the error type that occurred.
 	 */
 	@NonNull
 	private int code;
@@ -39,7 +39,7 @@ public class ResponseError {
 	}
 
 	/**
-	 * A string providing a short decription of the error.
+	 * A string providing a short description of the error.
 	 */
 	@NonNull
 	private String message;
