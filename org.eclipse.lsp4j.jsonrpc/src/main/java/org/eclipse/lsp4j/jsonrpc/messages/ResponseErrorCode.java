@@ -41,7 +41,12 @@ public enum ResponseErrorCode {
 	@Deprecated
 	serverErrorStart(-32099),
 	
-	/** Should be {@code ServerNotInitialized} */
+	/**
+	 * Error code indicating that a server received a notification or
+	 * request before the server has received the {@code initialize} request.
+	 * 
+	 * Should be {@code ServerNotInitialized}
+	 */
 	serverNotInitialized(-32002),
 	
 	UnknownErrorCode(-32001),
