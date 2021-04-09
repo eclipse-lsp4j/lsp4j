@@ -26,15 +26,76 @@ public enum ResponseErrorCode {
 	
 	InternalError(-32603),
 	
+	/**
+	 * This is the start range of JSON RPC reserved error codes.
+	 * It doesn't denote a real error code. No LSP error codes should
+	 * be defined between the start and end range. For backwards
+	 * compatibility the {@link #serverNotInitialized} and the
+	 * {@link #UnknownErrorCode} are left in the range.
+	 *
+	 * Since 3.16.0
+	 */
+	jsonrpcReservedErrorRangeStart(-32099),
+	
+	/** @deprecated use {@link #jsonrpcReservedErrorRangeStart} */
+	@Deprecated
 	serverErrorStart(-32099),
 	
-	serverErrorEnd(-32000),
-	
+	/**
+	 * Error code indicating that a server received a notification or
+	 * request before the server has received the {@code initialize} request.
+	 * 
+	 * Should be {@code ServerNotInitialized}
+	 */
 	serverNotInitialized(-32002),
 	
 	UnknownErrorCode(-32001),
 	
-	RequestCancelled(-32800);
+	/**
+	 * This is the start range of JSON RPC reserved error codes.
+	 * It doesn't denote a real error code.
+	 * 
+	 * Since 3.16.0
+	 */
+	jsonrpcReservedErrorRangeEnd(-32000),
+	
+	/** @deprecated use {@link #jsonrpcReservedErrorRangeEnd} */
+	@Deprecated
+	serverErrorEnd(-32000),
+	
+	/**
+	 * This is the start range of LSP reserved error codes.
+	 * It doesn't denote a real error code.
+	 *
+	 * Since 3.16.0
+	 */
+	lspReservedErrorRangeStart(-32899),
+	
+	/**
+	 * The server detected that the content of a document got
+	 * modified outside normal conditions. A server should
+	 * NOT send this error code if it detects a content change
+	 * in it unprocessed messages. The result even computed
+	 * on an older state might still be useful for the client.
+	 *
+	 * If a client decides that a result is not of any use anymore
+	 * the client should cancel the request.
+	 */
+	ContentModified(-32801),
+	
+	/**
+	 * The client has canceled a request and a server as detected
+	 * the cancel.
+	 */
+	RequestCancelled(-32800),
+	
+	/**
+	 * This is the end range of LSP reserved error codes.
+	 * It doesn't denote a real error code.
+	 *
+	 * Since 3.16.0
+	 */
+	lspReservedErrorRangeEnd(-32800);
 	
 	private final int value;
 	
