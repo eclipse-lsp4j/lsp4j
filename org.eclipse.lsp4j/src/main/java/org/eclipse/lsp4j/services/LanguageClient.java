@@ -23,7 +23,6 @@ import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.ProgressParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.RegistrationParams;
-import org.eclipse.lsp4j.SetTraceParams;
 import org.eclipse.lsp4j.ShowDocumentParams;
 import org.eclipse.lsp4j.ShowDocumentResult;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
@@ -175,16 +174,6 @@ public interface LanguageClient {
 	 */
 	@JsonNotification("$/logTrace")
 	default void logTrace(LogTraceParams params) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * A notification that should be used by the client to modify the trace setting of the server.
-	 * 
-	 * Since 3.16.0
-	 */
-	@JsonNotification("$/setTrace")
-	default void setTrace(SetTraceParams params) {
 		throw new UnsupportedOperationException();
 	}
 
