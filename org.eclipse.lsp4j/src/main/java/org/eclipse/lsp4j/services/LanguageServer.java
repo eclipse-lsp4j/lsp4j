@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.InitializedParams;
+import org.eclipse.lsp4j.SetTraceParams;
 import org.eclipse.lsp4j.WorkDoneProgressCancelParams;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
@@ -95,5 +96,14 @@ public interface LanguageServer {
 	default void cancelProgress(WorkDoneProgressCancelParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
+	/**
+	 * A notification that should be used by the client to modify the trace setting of the server.
+	 *
+	 * Since 3.16.0
+	 */
+	@JsonNotification("$/setTrace")
+	default void setTrace(SetTraceParams params) {
+		throw new UnsupportedOperationException();
+	}
 }

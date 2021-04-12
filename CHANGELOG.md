@@ -4,6 +4,11 @@
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/20?closed=1>
 
+Breaking API changes:
+
+ * Method `LanguageClient.setTrace` moved to `LanguageServer`, where it should
+   have been according to the specification
+
 ### v0.12.0 (Apr. 2021)
 
  * Restored `org.eclipse.lsp4j.websocket` which will be included along with `org.eclipse.lsp4j.websocket.jakarta`. This will allow use of LSP4J
