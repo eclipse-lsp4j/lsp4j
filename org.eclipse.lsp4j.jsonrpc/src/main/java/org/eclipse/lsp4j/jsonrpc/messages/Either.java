@@ -15,6 +15,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
@@ -24,11 +25,11 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 public class Either<L, R> {
 
 	public static <L, R> Either<L, R> forLeft(@NonNull L left) {
-		return new Either<L, R>(left, null);
+		return new Either<>(left, null);
 	}
 
 	public static <L, R> Either<L, R> forRight(@NonNull R right) {
-		return new Either<L, R>(null, right);
+		return new Either<>(null, right);
 	}
 
 	private final L left;
@@ -63,7 +64,17 @@ public class Either<L, R> {
 	public boolean isRight() {
 		return right != null;
 	}
-	
+
+	public <T> T map(@NonNull Function<? super L, ? extends T> mapLeft, @NonNull Function <? super R, ? extends T> mapRight) {
+		if (isLeft()) {
+			return mapLeft.apply(getLeft());
+		}
+		if (isRight()) {
+			return mapRight.apply(getRight());
+		}
+		return null;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Either<?, ?>) {

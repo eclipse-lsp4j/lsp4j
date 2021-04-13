@@ -11,6 +11,10 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Objects;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
@@ -22,9 +26,6 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 
 public class EitherTest {
@@ -105,6 +106,18 @@ public class EitherTest {
 		Either<Object, String> either2 = Either.forRight("Testing");
 
 		assertFalse(either1.equals(either2));
+	}
+
+	@Test
+	public void testMap() {
+		Either<byte[], String> either =Either.forLeft(new byte[] { 'f', 'o', 'o'});
+		assertEquals("foo", either.map(
+				String::new,
+				String::toUpperCase));
+		either = Either.forRight("barlol");
+		assertEquals("BARLOL", either.map(
+				String::new,
+				String::toUpperCase));
 	}
 
 	protected static class MyObjectA {
