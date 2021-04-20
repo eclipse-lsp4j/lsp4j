@@ -37,7 +37,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 ext.signMethod = { jarfile -> 
 	println "Signing $jarfile"
-	def SIGNING_SERVICE = 'http://build.eclipse.org:31338/sign'
+	def SIGNING_SERVICE = 'https://cbi.eclipse.org/jarsigner/sign'
 	def STDOUT_FORMAT = '    %{size_upload} bytes uploaded, %{size_download} bytes downloaded (%{time_total} s)\\n'
 
 	ProcessBuilder curl_pb = new ProcessBuilder("curl", 
