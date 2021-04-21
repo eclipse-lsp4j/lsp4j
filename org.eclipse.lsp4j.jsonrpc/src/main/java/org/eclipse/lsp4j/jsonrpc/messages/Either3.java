@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
+import java.util.function.Function;
+
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
 /**
@@ -79,6 +81,22 @@ public class Either3<T1, T2, T3> extends Either<T1, Either<T2, T3>> {
 	
 	public boolean isThird() {
 		return isRight() && getRight().isRight();
+	}
+
+	public <T> T map(
+			@NonNull Function<? super T1, ? extends T> mapFirst,
+			@NonNull Function<? super T2, ? extends T> mapSecond,
+			@NonNull Function<? super T3, ? extends T> mapThird) {
+		if (isFirst()) {
+			return mapFirst.apply(getFirst());
+		}
+		if (isSecond()) {
+			return mapSecond.apply(getSecond());
+		}
+		if (isThird()) {
+			return mapThird.apply(getThird());
+		}
+		return null;
 	}
 
 	@Override
