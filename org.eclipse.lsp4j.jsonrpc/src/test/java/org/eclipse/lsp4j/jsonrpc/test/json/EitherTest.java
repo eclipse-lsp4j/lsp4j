@@ -16,6 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -110,14 +111,31 @@ public class EitherTest {
 
 	@Test
 	public void testMap() {
-		Either<byte[], String> either =Either.forLeft(new byte[] { 'f', 'o', 'o'});
+		Either<char[], String> either = Either.forLeft(new char[] { 'f', 'o', 'o' });
 		assertEquals("foo", either.map(
 				String::new,
 				String::toUpperCase));
-		either = Either.forRight("barlol");
-		assertEquals("BARLOL", either.map(
+		either = Either.forRight("bar");
+		assertEquals("BAR", either.map(
 				String::new,
 				String::toUpperCase));
+	}
+
+	@Test
+	public void testMapEither3() {
+		Either3<String, Integer, Boolean> either3;
+		Function<String, String> mapFirst = s -> s.toUpperCase();
+		Function<Integer, String> mapSecond = x -> x.toString();
+		Function<Boolean, String> mapThird = b -> b.toString();
+
+		either3 = Either3.forFirst("abc");
+		assertEquals("ABC", either3.map(mapFirst, mapSecond, mapThird));
+
+		either3 = Either3.forSecond(123);
+		assertEquals("123", either3.map(mapFirst, mapSecond, mapThird));
+
+		either3 = Either3.forThird(Boolean.TRUE);
+		assertEquals("true", either3.map(mapFirst, mapSecond, mapThird));
 	}
 
 	protected static class MyObjectA {

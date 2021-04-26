@@ -65,7 +65,9 @@ public class Either<L, R> {
 		return right != null;
 	}
 
-	public <T> T map(@NonNull Function<? super L, ? extends T> mapLeft, @NonNull Function <? super R, ? extends T> mapRight) {
+	public <T> T map(
+			@NonNull Function<? super L, ? extends T> mapLeft,
+			@NonNull Function<? super R, ? extends T> mapRight) {
 		if (isLeft()) {
 			return mapLeft.apply(getLeft());
 		}
