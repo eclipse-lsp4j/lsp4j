@@ -25,6 +25,10 @@ The snapshots are deployed during the build to:
 
  * <https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/lsp4j/>
 
+##### Small note
+
+The p2 Update Sites and the Snapshots point to _signed jars_. If you plan to simply add them to your own jar, know that you'll need to [remove/exclude](https://stackoverflow.com/a/6743609/14376491) or [update/override](https://stackoverflow.com/a/46014819/14376491) these signatures.
+
 ### Supported LSP Versions
 
  * LSP4J 0.13.&ast; &rarr; LSP 3.16.0
