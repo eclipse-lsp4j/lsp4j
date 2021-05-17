@@ -13,7 +13,7 @@ See https://eclipse.org/legal/ECA.php for details
 
 All GitHub Pull Requests run the following checks.
 
-## ip-validation
+## eclipsefdn/eca
 
 All Pull Requests must be by authors who have signed the ECA. The "ip-validation" status check on GitHub will check this.
 
