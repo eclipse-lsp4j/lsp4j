@@ -15,7 +15,7 @@ All GitHub Pull Requests run the following checks.
 
 ## ip-validation
 
-All Pull Requests must be by authors who have signed the ECA, and if they are not committers they must "Sign off" their commits. The "ip-validation" status check on GitHub will check this.
+All Pull Requests must be by authors who have signed the ECA. The "ip-validation" status check on GitHub will check this.
 
 ## Jenkins PR Build
 
