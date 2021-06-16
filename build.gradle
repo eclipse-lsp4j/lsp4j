@@ -39,6 +39,15 @@ subprojects {
 	apply from: "${rootDir}/gradle/xtend-compiler-settings.gradle"
 	apply from: "${rootDir}/gradle/maven-deployment.gradle"
 	apply from: "${rootDir}/gradle/manifest-gen.gradle"
+
+	configurations.all {
+		if (name.contains("Tooling")) {
+			dependencies {
+				add(name, "org.eclipse.xtend:org.eclipse.xtend.core:${versions.xtend_lib}")
+				add(name, platform("org.eclipse.xtext:xtext-dev-bom:${versions.xtend_lib}"))
+			}
+		}
+	}
 }
 
 task clean(type: Delete) {
