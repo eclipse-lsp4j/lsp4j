@@ -36,7 +36,7 @@ The returned `CompletableFuture` will complete once a corresponsing result messa
 
 ## Errors
 
-If requests are malformed, or for any other reason laid out by the LSP, a `ResponseError` must be sent instead.
+The receiver of a request always needs to return a response message to conform to the JSON RPC specification. In case the result value cannot be provided in a response because of an error, the `error` property of the `ResponseMessage` must be set to a `ResponseError` describing the failure.
 
 This is done by throwing a `ResponseErrorException`, which carries the `ResponseError` to attach to the response. Simple example:
 ```java
@@ -130,4 +130,3 @@ public interface NamingExample {
     CompletableFuture<?> yetanothername();
 }
 ```
-
