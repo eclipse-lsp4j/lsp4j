@@ -34,7 +34,7 @@ For requests, the story is slightly more complicated. When a request message com
 For the other direction, if the implementation calls request on the RemoteEndpoint, the message is send and tracked locally. 
 The returned `CompletableFuture` will complete once a corresponsing result message is received.
 
-## Errors
+## Response Errors
 
 The receiver of a request always needs to return a response message to conform to the JSON RPC specification. In case the result value cannot be provided in a response because of an error, the `error` property of the `ResponseMessage` must be set to a `ResponseError` describing the failure.
 
