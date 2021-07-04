@@ -42,7 +42,7 @@ This is done by throwing a `ResponseErrorException`, which carries the `Response
 ```java
    @Override
    public CompletableFuture<Object> shutdown() {
-      if (this.state == "not initialized") {
+      if (!isInitialized()) {
          ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
          throw new ResponseErrorException(error);
       }
