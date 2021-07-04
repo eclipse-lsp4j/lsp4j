@@ -46,7 +46,7 @@ This is done by throwing a `ResponseErrorException`, which carries the `Response
          ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
          throw new ResponseErrorException(error);
       }
-      this.state = "shutdown";
+      doShutdown();
       return null;
    }
 ```
