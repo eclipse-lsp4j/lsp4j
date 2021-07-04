@@ -39,7 +39,7 @@ public interface LanguageServer {
 	 *    This will allow the client to exit a server without an initialize request.
 	 *  
 	 * Until the server has responded to the initialize request with an InitializeResult,
-	 * the client must not sent any additional requests or notifications to the server.
+	 * the client must not send any additional requests or notifications to the server.
 	 * 
 	 * During the initialize request, the server is allowed to send the notifications window/showMessage,
 	 * window/logMessage, and telemetry/event, as well as the request window/showMessageRequest, to the client.
