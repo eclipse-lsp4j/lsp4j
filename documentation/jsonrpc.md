@@ -38,7 +38,9 @@ The returned `CompletableFuture` will complete once a corresponsing result messa
 
 The receiver of a request always needs to return a response message to conform to the JSON RPC specification. In case the result value cannot be provided in a response because of an error, the `error` property of the `ResponseMessage` must be set to a `ResponseError` describing the failure.
 
-This is done by throwing a `ResponseErrorException`, which carries the `ResponseError` to attach to the response. Simple example:
+This can be done by throwing a `ResponseErrorException` from the request message handler in a local endpoint. The exception carries a `ResponseError` to attach to the response. The `RemoteEndpoint` will handle the exception and send a response message with the attached error object.
+
+For example:
 ```java
    @Override
    public CompletableFuture<Object> shutdown() {
