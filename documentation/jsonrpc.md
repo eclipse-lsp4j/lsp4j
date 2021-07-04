@@ -29,10 +29,27 @@ You always work with two `Endpoints`. Usually one of the endpoints, a `RemoteEnd
 
 # Requests
 
-For requests the story is slightly more complicated. When a request message comes in, the `RemoteEndpoint` tracks the request `id` and invokes `request` on the local endpoint. In addition it adds completion stage to the returned `CompletableFuture`, that translates the result into a JSON RPC response message.
+For requests, the story is slightly more complicated. When a request message comes in, the `RemoteEndpoint` tracks the request `id` and invokes `request` on the local endpoint. In addition it adds completion stage to the returned `CompletableFuture`, that translates the result into a JSON RPC response message.
 
 For the other direction, if the implementation calls request on the RemoteEndpoint, the message is send and tracked locally. 
 The returned `CompletableFuture` will complete once a corresponsing result message is received.
+
+## Errors
+
+If requests are malformed, or for any other reason laid out by the LSP, a `ResponseError` must be sent instead.
+
+This is done by throwing a `ResponseErrorException`, which carries the `ResponseError` to attach to the response. Simple example:
+```java
+   @Override
+   public CompletableFuture<Object> shutdown() {
+      if (this.state == "not initialized") {
+         ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
+         throw new ResponseErrorException(error);
+      }
+      this.state = "shutdown";
+      return null;
+   }
+```
 
 # Cancelling Requests
 
