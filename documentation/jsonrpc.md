@@ -48,8 +48,7 @@ For example:
          ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
          throw new ResponseErrorException(error);
       }
-      doShutdown();
-      return null;
+      return doShutdown();
    }
 ```
 
