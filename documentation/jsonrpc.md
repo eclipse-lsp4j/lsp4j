@@ -29,10 +29,28 @@ You always work with two `Endpoints`. Usually one of the endpoints, a `RemoteEnd
 
 # Requests
 
-For requests the story is slightly more complicated. When a request message comes in, the `RemoteEndpoint` tracks the request `id` and invokes `request` on the local endpoint. In addition it adds completion stage to the returned `CompletableFuture`, that translates the result into a JSON RPC response message.
+For requests, the story is slightly more complicated. When a request message comes in, the `RemoteEndpoint` tracks the request `id` and invokes `request` on the local endpoint. In addition it adds completion stage to the returned `CompletableFuture`, that translates the result into a JSON RPC response message.
 
 For the other direction, if the implementation calls request on the RemoteEndpoint, the message is send and tracked locally. 
 The returned `CompletableFuture` will complete once a corresponsing result message is received.
+
+## Response Errors
+
+The receiver of a request always needs to return a response message to conform to the JSON RPC specification. In case the result value cannot be provided in a response because of an error, the `error` property of the `ResponseMessage` must be set to a `ResponseError` describing the failure.
+
+This can be done by throwing a `ResponseErrorException` from the request message handler in a local endpoint. The exception carries a `ResponseError` to attach to the response. The `RemoteEndpoint` will handle the exception and send a response message with the attached error object.
+
+For example:
+```java
+   @Override
+   public CompletableFuture<Object> shutdown() {
+      if (!isInitialized()) {
+         ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
+         throw new ResponseErrorException(error);
+      }
+      return doShutdown();
+   }
+```
 
 # Cancelling Requests
 
@@ -113,4 +131,3 @@ public interface NamingExample {
     CompletableFuture<?> yetanothername();
 }
 ```
-
