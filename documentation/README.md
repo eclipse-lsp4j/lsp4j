@@ -82,7 +82,7 @@ Note that to implement a debug adapter client, you need to get the `org.eclipse.
 
 Now, the code actually connect to a debug adapter server should be something as:
 
-```
+```java
 IDebugProtocolClient client = <...>  // Custom client that will handle the messages received from the server.
 Process process = <...>  // Handle to the debug adapter process.
 InputStream in = process.getInputStream();
