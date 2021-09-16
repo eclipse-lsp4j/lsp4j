@@ -17,7 +17,7 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
 
  * Releases: <http://download.eclipse.org/lsp4j/updates/releases/>
  * Milestones: <http://download.eclipse.org/lsp4j/updates/milestones/>
- * Nightly: <https://download.eclipse.org/lsp4j/builds/master/>
+ * Nightly: <https://download.eclipse.org/lsp4j/builds/main/>
 
 #### Snapshots
 
@@ -57,7 +57,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Building and Contributing
 
-To build and contribute to LSP4J please consult the [Contribution Guide](https://github.com/eclipse/lsp4j/blob/master/Contributing.md).
+To build and contribute to LSP4J please consult the [Contribution Guide](https://github.com/eclipse/lsp4j/blob/main/Contributing.md).
 
 ### Licenses
 

@@ -29,7 +29,7 @@ $SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 
 # Only maven deploy specific branches
 case $BRANCH_NAME in
-    master | release_*)
+    main | release_*)
         # GPG Sign and Deploy to Maven Central snapshot
         find build/maven-repository -name '*.pom' | while read i
         do
@@ -52,6 +52,6 @@ case $BRANCH_NAME in
         done
         ;;
     *)
-        echo "Maven deployments only done on master and release branches"
+        echo "Maven deployments only done on main and release branches"
         ;;
 esac
