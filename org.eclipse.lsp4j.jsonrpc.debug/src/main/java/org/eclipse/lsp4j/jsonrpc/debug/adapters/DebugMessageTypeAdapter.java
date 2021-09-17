@@ -47,7 +47,7 @@ import com.google.gson.stream.MalformedJsonException;
  * Server Protocol style JSON to/from LSP4J's JSONRPC implementation. The Debug
  * Server Protocol (DSP) has its own message format that is quite similar to
  * JSON-RPC 2.0. The DSP is defined in a <a href=
- * "https://github.com/Microsoft/vscode-debugadapter-node/blob/master/debugProtocol.json">JSON
+ * "https://github.com/Microsoft/vscode-debugadapter-node/blob/main/debugProtocol.json">JSON
  * schema in the VS Code Debug Adapter</a>. This section documents how LSP4J's
  * jsonrpc classes maps to the Debug Protocol, using some extensions in the DSP
  * code to the lsp4j's {@link Message}s.
