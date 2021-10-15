@@ -1,6 +1,6 @@
 # Introduction
 
-A brief description for using LSP4J to develop a language server.
+A brief description for using LSP4J to develop a language server. On top of below explanation, a minimal working example with interaction between client and server is available in the _setup_ method of this [test](../org.eclipse.lsp4j/src/test/java/org/eclipse/lsp4j/test/launch/LauncherTest.java).
 
 # Implement your language server
 
