@@ -52,7 +52,7 @@ public enum ResponseErrorCode {
 	UnknownErrorCode(-32001),
 	
 	/**
-	 * This is the start range of JSON RPC reserved error codes.
+	 * This is the end range of JSON RPC reserved error codes.
 	 * It doesn't denote a real error code.
 	 * 
 	 * Since 3.16.0

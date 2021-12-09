@@ -23,7 +23,13 @@ public class TraceValue {
 
 	public static final String Off = "off";
 
+	/**
+	 * @deprecated Use {@link #Messages} instead. This was a typo in the spec.
+	 */
+	@Deprecated
 	public static final String Message = "message";
+
+	public static final String Messages = "messages";
 
 	public static final String Verbose = "verbose";
 }
