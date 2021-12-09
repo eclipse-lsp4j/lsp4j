@@ -2390,23 +2390,27 @@ class CompletionItem {
 	Boolean preselect
 
 	/**
-	 * A string that should be used when comparing this item with other items. When `falsy` the label is used.
+	 * A string that should be used when comparing this item with other items. When omitted or empty,
+	 * the {@link #label} is used as the sort text for this item.
 	 */
 	String sortText
 
 	/**
-	 * A string that should be used when filtering a set of completion items. When `falsy` the label is used.
+	 * A string that should be used when filtering a set of completion items. When omitted or empty,
+	 * the {@link #label} is used as the filter text for this item.
 	 */
 	String filterText
 
 	/**
-	 * A string that should be inserted a document when selecting this completion. When `falsy` the label is used.
+	 * A string that should be inserted a document when selecting this completion. When omitted or empty,
+	 * the {@link #label} is used as the insert text for this item.
 	 */
 	String insertText
 
 	/**
 	 * The format of the insert text. The format applies to both the {@link #insertText} property
-	 * and the {@code newText} property of a provided {@link #textEdit}.
+	 * and the {@code newText} property of a provided {@link #textEdit}. If omitted, defaults to
+	 * {@link InsertTextFormat#PlainText}.
 	 */
 	InsertTextFormat insertTextFormat
 
@@ -2491,7 +2495,7 @@ class CompletionItem {
 @JsonRpcData
 class CompletionList {
 	/**
-	 * This list it not complete. Further typing should result in recomputing this list.
+	 * This list is not complete. Further typing should result in recomputing this list.
 	 */
 	boolean isIncomplete
 
