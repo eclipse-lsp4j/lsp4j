@@ -23,7 +23,7 @@ public class TraceValue {
 
 	public static final String Off = "off";
 
-	public static final String Message = "message";
+	public static final String Message = "messages";
 
 	public static final String Verbose = "verbose";
 }
