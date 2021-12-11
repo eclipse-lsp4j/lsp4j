@@ -2117,6 +2117,14 @@ class CodeActionContext {
 	 */
 	List<String> only
 
+	/**
+	 * The reason why code actions were requested.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	CodeActionTriggerKind triggerKind
+
 	new() {
 	}
 
