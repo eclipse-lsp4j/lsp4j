@@ -376,6 +376,14 @@ class CompletionItemCapabilities {
 	 */
 	CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport
 
+	/**
+	 * The client has support for completion item label details (see also {@link CompletionItemLabelDetails}).
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Boolean labelDetailsSupport
+
 	new() {
 	}
 
@@ -481,6 +489,33 @@ class CompletionItemKindCapabilities {
 }
 
 /**
+ * The client supports the following {@link CompletionList} specific
+ * capabilities.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class CompletionListCapabilities {
+	/**
+	 * The client supports the the following itemDefaults on
+	 * a completion list.
+	 * <p>
+	 * The value lists the supported property names of the
+	 * {@link CompletionList#itemDefaults} object. If omitted,
+	 * no properties are supported.
+	 */
+	List<String> itemDefaults
+
+	new() {
+	}
+
+	new(List<String> itemDefaults) {
+		this.itemDefaults = itemDefaults
+	}
+}
+
+/**
  * Capabilities specific to the `textDocument/completion`
  */
 @JsonRpcData
@@ -502,6 +537,24 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	 * `textDocument/completion` request.
 	 */
 	Boolean contextSupport
+
+	/**
+	 * The client's default when the completion item doesn't provide a
+	 * {@link CompletionItem#insertTextMode} property.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	InsertTextMode insertTextMode
+
+	/**
+	 * The client supports the following {@link CompletionList} specific
+	 * capabilities.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	CompletionListCapabilities completionList
 
 	new() {
 	}
@@ -2337,6 +2390,32 @@ class Command {
 }
 
 /**
+ * Additional details for a completion item label.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class CompletionItemLabelDetails {
+	/**
+	 * An optional string which is rendered less prominently directly after
+	 * {@link CompletionItem#label}, without any spacing. Should be
+	 * used for function signatures or type annotations.
+	 */
+	String detail
+
+	/**
+	 * An optional string which is rendered less prominently after
+	 * {@link #detail}. Should be used for fully qualified
+	 * names or file path.
+	 */
+	String description
+
+	new() {
+	}
+}
+
+/**
  * The Completion request is sent from the client to the server to compute completion items at a given cursor position.
  * Completion items are presented in the IntelliSense user class. If computing complete completion items is expensive
  * servers can additional provide a handler for the resolve completion item request. This request is send when a
@@ -2346,9 +2425,19 @@ class Command {
 class CompletionItem {
 	/**
 	 * The label of this completion item. By default also the text that is inserted when selecting this completion.
+	 * <p>
+	 * If label details are provided, the label itself should be an unqualified name of the completion item.
 	 */
 	@NonNull
 	String label
+
+	/**
+	 * Additional details for the label
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	CompletionItemLabelDetails labelDetails
 
 	/**
 	 * The kind of this completion item. Based of the kind an icon is chosen by the editor.
@@ -2411,12 +2500,15 @@ class CompletionItem {
 	 * The format of the insert text. The format applies to both the {@link #insertText} property
 	 * and the {@code newText} property of a provided {@link #textEdit}. If omitted, defaults to
 	 * {@link InsertTextFormat#PlainText}.
+	 * <p>
+	 * Please note that this doesn't apply to {@link #additionalTextEdits}.
 	 */
 	InsertTextFormat insertTextFormat
 
 	/**
 	 * How whitespace and indentation is handled during completion item
-	 * insertion. If not provided, the client's default value is used.
+	 * insertion. If not provided, the client's default value depends on
+	 * the {@link CompletionCapabilities#insertTextMode} client capability.
 	 * <p>
 	 * Since 3.16.0
 	 */
@@ -2490,6 +2582,75 @@ class CompletionItem {
 }
 
 /**
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InsertReplaceRange {
+	/**
+	 * The range if the insert is requested
+	 */
+	@NonNull
+	Range insert
+
+	/**
+	 * The range if the replace is requested.
+	 */
+	@NonNull
+	Range replace
+
+	new() {
+	}
+
+	new(@NonNull Range insert, @NonNull Range replace) {
+		this.insert = Preconditions.checkNotNull(insert, 'insert')
+		this.replace = Preconditions.checkNotNull(replace, 'replace')
+	}
+}
+
+/**
+ * In many cases the items of an actual completion result share the same
+ * value for properties like {@link CompletionItem#commitCharacters} or the range of a text
+ * edit. A completion list can therefore define item defaults which will
+ * be used if a completion item itself doesn't specify the value.
+ * <p>
+ * If a completion list specifies a default value and a completion item
+ * also specifies a corresponding value the one from the item is used.
+ * <p>
+ * Servers are only allowed to return default values if the client
+ * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
+ * capability.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class CompletionItemDefaults {
+	/**
+	 * A default commit character set.
+	 */
+	List<String> commitCharacters
+
+	/**
+	 * A default edit range
+	 */
+	Either<Range, InsertReplaceRange> editRange
+
+	/**
+	 * A default insert text format
+	 */
+	InsertTextFormat insertTextFormat
+
+	/**
+	 * A default insert text mode
+	 */
+	InsertTextMode insertTextMode
+
+	new() {
+	}
+}
+
+/**
  * Represents a collection of completion items to be presented in the editor.
  */
 @JsonRpcData
@@ -2505,6 +2666,24 @@ class CompletionList {
 	@NonNull
 	List<CompletionItem> items
 
+	/**
+	 * In many cases the items of an actual completion result share the same
+	 * value for properties like {@link CompletionItem#commitCharacters} or the range of a text
+	 * edit. A completion list can therefore define item defaults which will
+	 * be used if a completion item itself doesn't specify the value.
+	 * <p>
+	 * If a completion list specifies a default value and a completion item
+	 * also specifies a corresponding value the one from the item is used.
+	 * <p>
+	 * Servers are only allowed to return default values if the client
+	 * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
+	 * capability.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	CompletionItemDefaults itemDefaults
+
 	new() {
 		this(new ArrayList)
 	}
@@ -2516,6 +2695,12 @@ class CompletionList {
 	new(boolean isIncomplete, @NonNull List<CompletionItem> items) {
 		this(items)
 		this.isIncomplete = isIncomplete
+	}
+
+	@Beta
+	new(boolean isIncomplete, @NonNull List<CompletionItem> items, CompletionItemDefaults itemDefaults) {
+		this(isIncomplete, items)
+		this.itemDefaults = itemDefaults
 	}
 }
 
@@ -2548,12 +2733,42 @@ class CompletionOptions extends AbstractWorkDoneProgressOptions {
 	 */
 	List<String> allCommitCharacters
 
+	/**
+	 * The server supports the following {@link CompletionItem} specific capabilities.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	CompletionItemOptions completionItem
+
 	new() {
 	}
 
 	new(Boolean resolveProvider, List<String> triggerCharacters) {
 		this.resolveProvider = resolveProvider
 		this.triggerCharacters = triggerCharacters
+	}
+}
+
+/**
+ * The server supports the following {@link CompletionItem} specific capabilities.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class CompletionItemOptions {
+	/**
+	 * The server has support for completion item label details (see also {@link CompletionItemLabelDetails}) when receiving
+	 * a completion item in a resolve call.
+	 */
+	Boolean labelDetailsSupport
+
+	new() {
+	}
+
+	new(Boolean labelDetailsSupport) {
+		this.labelDetailsSupport = labelDetailsSupport
 	}
 }
 
@@ -6028,13 +6243,13 @@ class InsertReplaceEdit {
 	String newText
 
 	/**
-	 * The range if the insert that is requested
+	 * The range if the insert is requested
 	 */
 	@NonNull
 	Range insert
 
 	/**
-	 * The range if the replace that is requested.
+	 * The range if the replace is requested.
 	 */
 	@NonNull
 	Range replace
@@ -6661,6 +6876,14 @@ class CompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	 * Since 3.2.0
 	 */
 	List<String> allCommitCharacters
+
+	/**
+	 * The server supports the following {@link CompletionItem} specific capabilities.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	CompletionItemOptions completionItem
 
 	new() {
 	}
