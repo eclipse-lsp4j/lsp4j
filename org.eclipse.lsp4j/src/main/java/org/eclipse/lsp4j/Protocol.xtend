@@ -1723,6 +1723,14 @@ class MarkdownCapabilities {
 	 */
 	String version
 
+	/**
+	 * A list of HTML tags that the client allows / supports in Markdown.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	List<String> allowedTags
+
 	new() {
 	}
 
@@ -1733,6 +1741,38 @@ class MarkdownCapabilities {
 	new(@NonNull String parser, String version) {
 		this(parser)
 		this.version = version
+	}
+}
+
+/**
+ * Client capability that signals how the client handles stale requests
+ * (e.g. a request for which the client will not process the response
+ * anymore since the information is outdated).
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class StaleRequestCapabilities {
+	/**
+	 * The client will actively cancel the request.
+	 */
+	boolean cancel
+
+	/**
+	 * The list of requests for which the client will retry the request if it receives
+	 * a response with error code {@code ContentModified}
+	 */
+	@NonNull
+	List<String> retryOnContentModified
+
+	new() {
+		this.retryOnContentModified = new ArrayList
+	}
+
+	new(boolean cancel, @NonNull List<String> retryOnContentModified) {
+		this.cancel = cancel
+		this.retryOnContentModified = Preconditions.checkNotNull(retryOnContentModified, 'retryOnContentModified')
 	}
 }
 
@@ -1970,6 +2010,16 @@ class GeneralClientCapabilities {
 	 * Since 3.16.0
 	 */
 	MarkdownCapabilities markdown
+
+	/**
+	 * Client capability that signals how the client handles stale requests
+	 * (e.g. a request for which the client will not process the response
+	 * anymore since the information is outdated).
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	StaleRequestCapabilities staleRequestSupport
 }
 
 /**
@@ -6331,7 +6381,7 @@ abstract class ResourceOperation {
 	String kind
 
 	/**
-	 * An optional annotation identifer describing the operation.
+	 * An optional annotation identifier describing the operation.
 	 * <p>
 	 * Since 3.16.0
 	 */
@@ -7058,6 +7108,11 @@ class ApplyWorkspaceEditParams {
 	}
 }
 
+/**
+ * The result of the `workspace/applyEdit` request.
+ * <p>
+ * Referred to as {@code ApplyWorkspaceEditResult} in the spec.
+ */
 @JsonRpcData
 class ApplyWorkspaceEditResponse {
 	/**
