@@ -27,6 +27,7 @@ import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
+import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
@@ -145,8 +146,35 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
 }
 
 /**
+ * The client support partial workspace symbols. The client will send the
+ * request `workspaceSymbol/resolve` to the server to resolve additional
+ * properties.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceSymbolResolveSupportCapabilities {
+	/**
+	 * The properties that a client can resolve lazily. Usually
+	 * {@code location.range}
+	 */
+	@NonNull
+	List<String> properties
+
+	new() {
+		this.properties = new ArrayList
+	}
+
+	new(@NonNull List<String> properties) {
+		this.properties = Preconditions.checkNotNull(properties, 'properties')
+	}
+}
+
+/**
  * Capabilities specific to the `workspace/symbol` request.
- * Referred to in the spec as WorkspaceSymbolClientCapabilities.
+ * <p>
+ * Referred to in the spec as {@code WorkspaceSymbolClientCapabilities}.
  */
 @JsonRpcData
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
@@ -157,12 +185,22 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	SymbolKindCapabilities symbolKind
 
 	/**
-	 * The client supports tags on {@link SymbolInformation}.
+	 * The client supports tags on {@link SymbolInformation} and {@link WorkspaceSymbol}.
 	 * Clients supporting tags have to handle unknown tags gracefully.
 	 * <p>
 	 * Since 3.16.0
 	 */
 	SymbolTagSupportCapabilities tagSupport
+
+	/**
+	 * The client support partial workspace symbols. The client will send the
+	 * request `workspaceSymbol/resolve` to the server to resolve additional
+	 * properties.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	WorkspaceSymbolResolveSupportCapabilities resolveSupport
 
 	new() {
 	}
@@ -5949,7 +5987,10 @@ class DocumentSymbol {
 
 /**
  * Represents information about programming constructs like variables, classes, interfaces etc.
+ *
+ * @deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead
  */
+@Deprecated
 @JsonRpcData
 @JsonAdapter(SymbolInformationTypeAdapter.Factory)
 class SymbolInformation {
@@ -6012,6 +6053,85 @@ class SymbolInformation {
 	}
 
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
+		this(name, kind, location)
+		this.containerName = containerName
+	}
+}
+
+/**
+ * A special workspace symbol that supports locations without a range
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceSymbolLocation {
+	/**
+	 * The DocumentUri of this symbol.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+	}
+}
+
+/**
+ * A special workspace symbol that supports locations without a range
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceSymbol {
+	/**
+	 * The name of this symbol.
+	 */
+	@NonNull
+	String name
+
+	/**
+	 * The kind of this symbol.
+	 */
+	@NonNull
+	SymbolKind kind
+
+	/**
+	 * Tags for this completion item.
+	 */
+	List<SymbolTag> tags
+
+	/**
+	 * The location of this symbol.
+	 * <p>
+	 * See also {@link SymbolInformation#location}.
+	 */
+	@NonNull
+	@JsonAdapter(WorkspaceSymbolLocationTypeAdapter)
+	Either<Location, WorkspaceSymbolLocation> location
+
+	/**
+	 * The name of the symbol containing this symbol. This information is for
+	 * user interface purposes (e.g. to render a qualifier in the user interface
+	 * if necessary). It can't be used to re-infer a hierarchy for the document
+	 * symbols.
+	 */
+	String containerName
+
+	new() {
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Either<Location, WorkspaceSymbolLocation> location) {
+		this.name = Preconditions.checkNotNull(name, 'name')
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.location = Preconditions.checkNotNull(location, 'location')
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Either<Location, WorkspaceSymbolLocation> location, String containerName) {
 		this(name, kind, location)
 		this.containerName = containerName
 	}
@@ -6676,13 +6796,27 @@ class WorkspaceEdit {
 	}
 }
 
-
 /**
  * The options of a Workspace Symbol Request.
  */
 @JsonRpcData
 class WorkspaceSymbolOptions extends AbstractWorkDoneProgressOptions {
+	/**
+	 * The server provides support to resolve additional
+	 * information for a workspace symbol.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Boolean resolveProvider
 
+	new() {
+	}
+
+	@Beta
+	new(Boolean resolveProvider) {
+		this.resolveProvider = resolveProvider
+	}
 }
 
 /**
