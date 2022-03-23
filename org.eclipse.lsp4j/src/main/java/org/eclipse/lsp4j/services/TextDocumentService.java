@@ -66,7 +66,6 @@ import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
-import org.eclipse.lsp4j.ResolveTypeHierarchyItemParams;
 import org.eclipse.lsp4j.SelectionRange;
 import org.eclipse.lsp4j.SelectionRangeParams;
 import org.eclipse.lsp4j.SemanticTokens;
@@ -81,7 +80,9 @@ import org.eclipse.lsp4j.TextDocumentRegistrationOptions;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.TypeDefinitionParams;
 import org.eclipse.lsp4j.TypeHierarchyItem;
-import org.eclipse.lsp4j.TypeHierarchyParams;
+import org.eclipse.lsp4j.TypeHierarchyPrepareParams;
+import org.eclipse.lsp4j.TypeHierarchySubtypesParams;
+import org.eclipse.lsp4j.TypeHierarchySupertypesParams;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
@@ -483,39 +484,47 @@ public interface TextDocumentService {
 	}
 
 	/**
-	 * The {@code textDocument/typeHierarchy} request is sent from the client to the
-	 * server to retrieve a {@link TypeHierarchyItem type hierarchy item} based on
-	 * the {@link TypeHierarchyParams cursor position in the text document}. This
-	 * request would also allow to specify if the item should be resolved and
-	 * whether sub- or supertypes are to be resolved. If no type hierarchy item can
-	 * be found under the given text document position, resolves to {@code null}.
-	 * 
+	 * The type hierarchy request is sent from the client to the server to return a type hierarchy for
+	 * the language element of given text document positions. Will return {@code null} if the server 
+	 * couldn't infer a valid type from the position. The type hierarchy requests are executed in two steps:
+	 * 1. first a type hierarchy item is prepared for the given text document position.
+	 * 2. for a type hierarchy item the supertype or subtype type hierarchy items are resolved.
 	 * <p>
-	 * <b>Note:</b> the <a href=
-	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
-	 * language feature</a> is not yet part of the official LSP specification.
+	 * Since 3.17.0
 	 */
 	@Beta
 	@JsonRequest
-	default CompletableFuture<TypeHierarchyItem> typeHierarchy(TypeHierarchyParams params) {
+	default CompletableFuture<List<TypeHierarchyItem>> prepareTypeHierarchy(TypeHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * The {@code typeHierarchy/resolve} request is sent from the client to the
-	 * server to resolve an unresolved {@link TypeHierarchyItem type hierarchy
-	 * item}. A type hierarchy item is unresolved if the if the
-	 * {@link TypeHierarchyItem#getParents parents} or the
-	 * {@link TypeHierarchyItem#getChildren children} is not defined.
-	 * 
+	 * The request is sent from the client to the server to resolve the supertypes for
+	 * a given type hierarchy item. Will return {@code null} if the server couldn't infer
+	 * a valid type from {@link TypeHierarchySupertypesParams#item}. The request doesn't define
+	 * its own client and server capabilities. It is only issued if a server registers for the
+	 * {@code textDocument/prepareTypeHierarchy} request.
 	 * <p>
-	 * <b>Note:</b> the <a href=
-	 * "https://github.com/Microsoft/vscode-languageserver-node/pull/426">{@code textDocument/typeHierarchy}
-	 * language feature</a> is not yet part of the official LSP specification.
+	 * Since 3.17.0
 	 */
 	@Beta
-	@JsonRequest(value="typeHierarchy/resolve", useSegment = false)
-	default CompletableFuture<TypeHierarchyItem> resolveTypeHierarchy(ResolveTypeHierarchyItemParams params) {
+	@JsonRequest(value="typeHierarchy/supertypes", useSegment = false)
+	default CompletableFuture<List<TypeHierarchyItem>> typeHierarchySupertypes(TypeHierarchySupertypesParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The request is sent from the client to the server to resolve the subtypes for
+	 * a given type hierarchy item. Will return {@code null} if the server couldn't infer
+	 * a valid type from {@link TypeHierarchySubtypesParams#item}. The request doesn't define
+	 * its own client and server capabilities. It is only issued if a server registers for the
+	 * {@code textDocument/prepareTypeHierarchy} request.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest(value="typeHierarchy/subtypes", useSegment = false)
+	default CompletableFuture<List<TypeHierarchyItem>> typeHierarchySubtypes(TypeHierarchySubtypesParams params) {
 		throw new UnsupportedOperationException();
 	}
 
