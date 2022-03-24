@@ -266,6 +266,14 @@ class WorkspaceClientCapabilities {
 	 * Since 3.16.0
 	 */
 	FileOperationsWorkspaceCapabilities fileOperations
+
+	/**
+	 * Client workspace capabilities specific to inlay hints.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	InlayHintWorkspaceCapabilities inlayHint
 }
 
 @JsonRpcData
@@ -1960,6 +1968,14 @@ class TextDocumentClientCapabilities {
 	 * Since 3.16.0
 	 */
 	LinkedEditingRangeCapabilities linkedEditingRange
+
+	/**
+	 * Capabilities specific to the {@code textDocument/inlayHint} request.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	InlayHintCapabilities inlayHint
 }
 
 /**
@@ -5352,6 +5368,14 @@ class ServerCapabilities {
 	Either<Boolean, MonikerRegistrationOptions> monikerProvider
 
 	/**
+	 * The server provides inlay hints.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Either<Boolean, InlayHintRegistrationOptions> inlayHintProvider
+
+	/**
 	 * Experimental server capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
@@ -8435,4 +8459,259 @@ class ShowDocumentResult {
 	new(boolean success) {
 		this.success = success
 	}
+}
+
+/**
+ * Capabilities specific to the {@code textDocument/inlayHint} request.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHintCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * Indicates which properties a client can resolve lazily on a inlay hint.
+	 */
+	InlayHintResolveSupportCapabilities resolveSupport
+}
+
+/**
+ * Indicates which properties a client can resolve lazily on a inlay hint.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHintResolveSupportCapabilities {
+	/**
+	 * The properties that a client can resolve lazily.
+	 */
+	@NonNull
+	List<String> properties
+
+	new() {
+		this.properties = new ArrayList
+	}
+
+	new(@NonNull List<String> properties) {
+		this.properties = Preconditions.checkNotNull(properties, 'properties')
+	}
+}
+
+/**
+ * Inlay hint options used during static or dynamic registration.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHintRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	/**
+	 * The server provides support to resolve additional
+	 * information for an inlay hint item.
+	 */
+	Boolean resolveProvider
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
+}
+
+/**
+ * A parameter literal used in inlay hint requests.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHintParams implements WorkDoneProgressParams {
+	/**
+	 * An optional token that a server can use to report work done progress.
+	 */
+	Either<String, Integer> workDoneToken
+
+	/**
+	 * The document to format.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The visible document range for which inlay hints should be computed.
+	 */
+	@NonNull
+	Range range
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.range = Preconditions.checkNotNull(range, 'range')
+	}
+}
+
+/**
+ * Inlay hint information.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHint {
+	/**
+	 * The position of this hint.
+	 */
+	@NonNull
+	Position position
+
+	/**
+	 * The label of this hint. A human readable string or an array of
+	 * {@link InlayHintLabelPart} label parts.
+	 * <p>
+	 * *Note* that neither the string nor the label part can be empty.
+	 */
+	@NonNull
+	Either<String, List<InlayHintLabelPart>> label
+
+	/**
+	 * The kind of this hint. Can be omitted in which case the client
+	 * should fall back to a reasonable default.
+	 */
+	InlayHintKind kind
+
+	/**
+	 * Optional text edits that are performed when accepting this inlay hint.
+	 * <p>
+	 * *Note* that edits are expected to change the document so that the inlay
+	 * hint (or its nearest variant) is now part of the document and the inlay
+	 * hint itself is now obsolete.
+	 * <p>
+	 * Depending on the client capability {@link InlayHintCapabilities#resolveSupport} clients
+	 * might resolve this property late using the resolve request.
+	 */
+	List<TextEdit> textEdits
+
+	/**
+	 * The tooltip text when you hover over this item.
+	 * <p>
+	 * Depending on the client capability {@link InlayHintCapabilities#resolveSupport} clients
+	 * might resolve this property late using the resolve request.
+	 */
+	Either<String, MarkupContent> tooltip
+
+	/**
+	 * Render padding before the hint.
+	 * <p>
+	 * Note: Padding should use the editor's background color, not the
+	 * background color of the hint itself. That means padding can be used
+	 * to visually align/separate an inlay hint.
+	 */
+	Boolean paddingLeft
+
+	/**
+	 * Render padding after the hint.
+	 * <p>
+	 * Note: Padding should use the editor's background color, not the
+	 * background color of the hint itself. That means padding can be used
+	 * to visually align/separate an inlay hint.
+	 */
+	Boolean paddingRight
+
+	/**
+	 * A data entry field that is preserved on a inlay hint between
+	 * a {@code textDocument/inlayHint} and a {@code inlayHint/resolve} request.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
+	new() {
+	}
+
+	new(@NonNull Position position, @NonNull Either<String, List<InlayHintLabelPart>> label) {
+		this.position = Preconditions.checkNotNull(position, 'position')
+		this.label = Preconditions.checkNotNull(label, 'label')
+	}
+}
+
+/**
+ * An inlay hint label part allows for interactive and composite labels
+ * of inlay hints.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHintLabelPart {
+	/**
+	 * The value of this label part.
+	 */
+	@NonNull
+	String value
+
+	/**
+	 * The tooltip text when you hover over this label part. Depending on
+	 * the client capability {@link InlayHintCapabilities#resolveSupport} clients might resolve
+	 * this property late using the resolve request.
+	 */
+	Either<String, MarkupContent> tooltip
+
+	/**
+	 * An optional source code location that represents this
+	 * label part.
+	 * <p>
+	 * The editor will use this location for the hover and for code navigation
+	 * features: This part will become a clickable link that resolves to the
+	 * definition of the symbol at the given location (not necessarily the
+	 * location itself), it shows the hover that shows at the given location,
+	 * and it shows a context menu with further code navigation commands.
+	 * <p>
+	 * Depending on the client capability {@link InlayHintCapabilities#resolveSupport} clients
+	 * might resolve this property late using the resolve request.
+	 */
+	Location location
+
+	/**
+	 * An optional command for this label part.
+	 * <p>
+	 * Depending on the client capability {@link InlayHintCapabilities#resolveSupport} clients
+	 * might resolve this property late using the resolve request.
+	 */
+	Command command
+
+	new() {
+	}
+
+	new(@NonNull String value) {
+		this.value = Preconditions.checkNotNull(value, 'value')
+	}
+}
+
+/**
+ * Client workspace capabilities specific to inlay hints.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlayHintWorkspaceCapabilities {
+	/**
+	 * Whether the client implementation supports a refresh request sent from
+	 * the server to the client.
+	 * <p>
+	 * Note that this event is global and will force the client to refresh all
+	 * inlay hints currently shown. It should be used with absolute care and
+	 * is useful for situation where a server for example detects a project wide
+	 * change that requires such a calculation.
+	 */
+	Boolean refreshSupport
 }
