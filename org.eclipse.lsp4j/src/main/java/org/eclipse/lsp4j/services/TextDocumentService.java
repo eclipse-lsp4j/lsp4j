@@ -95,9 +95,9 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
+@SuppressWarnings("deprecation")
 @JsonSegment("textDocument")
 public interface TextDocumentService {
-
 	/**
 	 * The Completion request is sent from the client to the server to compute
 	 * completion items at a given cursor position. Completion items are

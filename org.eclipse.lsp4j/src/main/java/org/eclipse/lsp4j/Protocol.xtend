@@ -147,7 +147,7 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
 
 /**
  * The client support partial workspace symbols. The client will send the
- * request `workspaceSymbol/resolve` to the server to resolve additional
+ * request {@code workspaceSymbol/resolve} to the server to resolve additional
  * properties.
  * <p>
  * Since 3.17.0
@@ -172,15 +172,14 @@ class WorkspaceSymbolResolveSupportCapabilities {
 }
 
 /**
- * Capabilities specific to the `workspace/symbol` request.
+ * Capabilities specific to the {@code workspace/symbol} request.
  * <p>
  * Referred to in the spec as {@code WorkspaceSymbolClientCapabilities}.
  */
 @JsonRpcData
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
-
 	/**
-	 * Specific capabilities for the {@link SymbolKind} in the `workspace/symbol` request.
+	 * Specific capabilities for the {@link SymbolKind} in the {@code workspace/symbol} request.
 	 */
 	SymbolKindCapabilities symbolKind
 
@@ -193,8 +192,8 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	SymbolTagSupportCapabilities tagSupport
 
 	/**
-	 * The client support partial workspace symbols. The client will send the
-	 * request `workspaceSymbol/resolve` to the server to resolve additional
+	 * The client supports partial workspace symbols. The client will send the
+	 * request {@code workspaceSymbol/resolve} to the server to resolve additional
 	 * properties.
 	 * <p>
 	 * Since 3.17.0
@@ -5988,7 +5987,7 @@ class DocumentSymbol {
 /**
  * Represents information about programming constructs like variables, classes, interfaces etc.
  *
- * @deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead
+ * @deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead if supported.
  */
 @Deprecated
 @JsonRpcData
@@ -6106,7 +6105,9 @@ class WorkspaceSymbol {
 	List<SymbolTag> tags
 
 	/**
-	 * The location of this symbol.
+	 * The location of this symbol. Whether a server is allowed to
+	 * return a location without a range depends on the client
+	 * capability {@link SymbolCapabilities#resolveSupport}.
 	 * <p>
 	 * See also {@link SymbolInformation#location}.
 	 */
