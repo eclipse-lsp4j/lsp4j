@@ -1556,6 +1556,32 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	Boolean multilineTokenSupport
 
+	/**
+	 * Whether the client allows the server to actively cancel a
+	 * semantic token request, e.g. supports returning
+	 * {@link org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode#ServerCancelled}.
+	 * If a server does, the client needs to retrigger the request.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Boolean serverCancelSupport
+
+	/**
+	 * Whether the client uses semantic tokens to augment existing
+	 * syntax tokens. If set to {@code true} client side created syntax
+	 * tokens and semantic tokens are both used for colorization. If
+	 * set to {@code false} the client only uses the returned semantic tokens
+	 * for colorization.
+	 * <p>
+	 * If the value is omitted then the client behavior is not
+	 * specified.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Boolean augmentsSyntaxTokens
+
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
