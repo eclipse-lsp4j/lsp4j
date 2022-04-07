@@ -8,6 +8,12 @@ Breaking API changes:
 
  * Method `LanguageClient.setTrace` moved to `LanguageServer`, where it should
    have been according to the specification
+ * Return type of `workspace/symbol` changed from `List<? extends SymbolInformation>` to
+   `Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>`
+
+Deprecated API changes:
+
+  * `SymbolInformation` is deprecated in favor of `DocumentSymbol` or `WorkspaceSymbol`
 
 ### v0.12.0 (Apr. 2021)
 

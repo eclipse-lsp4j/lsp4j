@@ -14,6 +14,8 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.google.common.annotations.Beta;
+
 import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
 import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
 import org.eclipse.lsp4j.ConfigurationParams;
@@ -205,6 +207,22 @@ public interface LanguageClient {
 	 */
 	@JsonRequest("workspace/codeLens/refresh")
 	default CompletableFuture<Void> refreshCodeLenses() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code workspace/inlayHint/refresh} request is sent from the server to the client.
+	 * Servers can use it to ask clients to refresh the inlay hints currently shown in editors.
+	 * As a result the client should ask the server to recompute the inlay hints for these editors.
+	 * This is useful if a server detects a configuration change which requires a re-calculation of 
+	 * all inlay hints. Note that the client still has the freedom to delay the re-calculation of 
+	 * the inlay hints if for example an editor is currently not visible.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest("workspace/inlayHint/refresh")
+	default CompletableFuture<Void> refreshInlayHints() {
 		throw new UnsupportedOperationException();
 	}
 }

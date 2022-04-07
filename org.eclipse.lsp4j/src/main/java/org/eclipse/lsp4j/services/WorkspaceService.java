@@ -23,11 +23,16 @@ import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.RenameFilesParams;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
+import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
+import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
+import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
+@SuppressWarnings("deprecation")
 @JsonSegment("workspace")
 public interface WorkspaceService {
 	/**
@@ -36,8 +41,8 @@ public interface WorkspaceService {
 	 * server creates a WorkspaceEdit structure and applies the changes to the
 	 * workspace using the request workspace/applyEdit which is sent from the
 	 * server to the client.
-	 *
-	 * Registration Options: ExecuteCommandRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.ExecuteCommandRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
@@ -47,11 +52,23 @@ public interface WorkspaceService {
 	/**
 	 * The workspace symbol request is sent from the client to the server to
 	 * list project-wide symbols matching the query string.
-	 *
-	 * Registration Options: void
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.WorkspaceSymbolRegistrationOptions}
 	 */
 	@JsonRequest
-	default CompletableFuture<List<? extends SymbolInformation>> symbol(WorkspaceSymbolParams params) {
+	@ResponseJsonAdapter(WorkspaceSymbolResponseAdapter.class)
+	default CompletableFuture<Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>> symbol(WorkspaceSymbolParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The request is sent from the client to the server to resolve additional information
+	 * for a given workspace symbol.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@JsonRequest(value="workspaceSymbol/resolve", useSegment=false)
+	default CompletableFuture<WorkspaceSymbol> resolveWorkspaceSymbol(WorkspaceSymbol workspaceSymbol) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -75,7 +92,7 @@ public interface WorkspaceService {
 	 * The notification is sent by default if both ServerCapabilities/workspaceFolders
 	 * and ClientCapabilities/workspace/workspaceFolders are true; or if the server has
 	 * registered to receive this notification it first.
-	 * 
+	 * <p>
 	 * Since 3.6.0
 	 */
 	@JsonNotification
@@ -90,7 +107,7 @@ public interface WorkspaceService {
 	 * before the files are created. Please note that clients might drop results if computing
 	 * the edit took too long or if a server constantly fails on this request. This is
 	 * done to keep creates fast and reliable.
-	 *
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest
@@ -101,7 +118,7 @@ public interface WorkspaceService {
 	/**
 	 * The did create files notification is sent from the client to the server when files
 	 * were created from within the client.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonNotification
@@ -116,7 +133,7 @@ public interface WorkspaceService {
 	 * before the files are renamed. Please note that clients might drop results if computing
 	 * the edit took too long or if a server constantly fails on this request. This is
 	 * done to keep renames fast and reliable.
-	 *
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest
@@ -127,7 +144,7 @@ public interface WorkspaceService {
 	/**
 	 * The did rename files notification is sent from the client to the server when files
 	 * were renamed from within the client.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonNotification
@@ -142,7 +159,7 @@ public interface WorkspaceService {
 	 * before the files are deleted. Please note that clients might drop results if computing
 	 * the edit took too long or if a server constantly fails on this request. This is
 	 * done to keep deletes fast and reliable.
-	 *
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest
@@ -153,7 +170,7 @@ public interface WorkspaceService {
 	/**
 	 * The did delete files notification is sent from the client to the server when files
 	 * were deleted from within the client.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonNotification

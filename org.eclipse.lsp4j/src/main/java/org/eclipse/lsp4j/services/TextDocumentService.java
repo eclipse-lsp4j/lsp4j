@@ -55,6 +55,8 @@ import org.eclipse.lsp4j.FoldingRangeRequestParams;
 import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.HoverParams;
 import org.eclipse.lsp4j.ImplementationParams;
+import org.eclipse.lsp4j.InlayHint;
+import org.eclipse.lsp4j.InlayHintParams;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Moniker;
 import org.eclipse.lsp4j.MonikerParams;
@@ -96,9 +98,9 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
+@SuppressWarnings("deprecation")
 @JsonSegment("textDocument")
 public interface TextDocumentService {
-
 	/**
 	 * The Completion request is sent from the client to the server to compute
 	 * completion items at a given cursor position. Completion items are
@@ -632,6 +634,31 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	default CompletableFuture<List<Moniker>> moniker(MonikerParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The inlay hints request is sent from the client to the server to compute inlay hints for a given [text document, range]
+	 * tuple that may be rendered in the editor in place with other text.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<List<InlayHint>> inlayHint(InlayHintParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The request is sent from the client to the server to resolve additional information for a given inlay hint.
+	 * This is usually used to compute the {@code tooltip}, {@code location} or {@code command} properties of an
+	 * inlay hint's label part to avoid its unnecessary computation during the {@code textDocument/inlayHint} request.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest(value="inlayHint/resolve", useSegment = false)
+	default CompletableFuture<InlayHint> resolveInlayHint(InlayHint unresolved) {
 		throw new UnsupportedOperationException();
 	}
 }
