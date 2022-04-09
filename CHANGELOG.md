@@ -11,9 +11,13 @@ Breaking API changes:
  * Return type of `workspace/symbol` changed from `List<? extends SymbolInformation>` to
    `Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>`
 
+Breaking Beta API changes:
+
+ * Significant updates were made to the `TypeHierarchy` features to replace the non-standard implementation
+
 Deprecated API changes:
 
-  * `SymbolInformation` is deprecated in favor of `DocumentSymbol` or `WorkspaceSymbol`
+ * `SymbolInformation` is deprecated in favor of `DocumentSymbol` or `WorkspaceSymbol`
 
 ### v0.12.0 (Apr. 2021)
 
