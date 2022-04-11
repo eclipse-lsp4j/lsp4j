@@ -311,6 +311,14 @@ class WorkspaceClientCapabilities {
 	 */
 	@Beta
 	InlayHintWorkspaceCapabilities inlayHint
+
+	/**
+	 * Client workspace capabilities specific to inline values.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	InlineValueWorkspaceCapabilities inlineValue
 }
 
 @JsonRpcData
@@ -2060,6 +2068,14 @@ class TextDocumentClientCapabilities {
 	 */
 	@Beta
 	InlayHintCapabilities inlayHint
+
+	/**
+	 * Client capabilities specific to inline values.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	InlineValueCapabilities inlineValue
 }
 
 /**
@@ -5451,6 +5467,14 @@ class ServerCapabilities {
 	Either<Boolean, InlayHintRegistrationOptions> inlayHintProvider
 
 	/**
+	 * The server provides inline values.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
+
+	/**
 	 * Experimental server capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
@@ -8711,7 +8735,7 @@ class InlayHintParams implements WorkDoneProgressParams {
 	Either<String, Integer> workDoneToken
 
 	/**
-	 * The document to format.
+	 * The text document.
 	 */
 	@NonNull
 	TextDocumentIdentifier textDocument
@@ -8885,4 +8909,305 @@ class InlayHintWorkspaceCapabilities {
 	 * change that requires such a calculation.
 	 */
 	Boolean refreshSupport
+
+	new() {
+	}
+
+	new(Boolean refreshSupport) {
+		this.refreshSupport = refreshSupport
+	}
+}
+
+/**
+ * Client capabilities specific to inline values.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+}
+
+/**
+ * Inline value options used during static or dynamic registration.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
+}
+
+/**
+ * A parameter literal used in inline value requests.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueParams implements WorkDoneProgressParams {
+	/**
+	 * An optional token that a server can use to report work done progress.
+	 */
+	Either<String, Integer> workDoneToken
+
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The visible document range for which inlay hints should be computed.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * Additional information about the context in which inline values were
+	 * requested.
+	 */
+	@NonNull
+	InlineValueContext context
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range, @NonNull InlineValueContext context) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.context = Preconditions.checkNotNull(context, 'context')
+	}
+}
+
+/**
+ * Additional information about the context in which inline values were
+ * requested.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueContext {
+	/**
+	 * The document range where execution has stopped.
+	 * Typically the end position of the range denotes the line where the
+	 * inline values are shown.
+	 */
+	@NonNull
+	Range stoppedLocation
+
+	new() {
+	}
+
+	new(@NonNull Range stoppedLocation) {
+		this.stoppedLocation = Preconditions.checkNotNull(stoppedLocation, 'stoppedLocation')
+	}
+}
+
+/**
+ * Provide inline value as text.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueText {
+	/**
+	 * The document range for which the inline value applies.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The text of the inline value.
+	 */
+	@NonNull
+	String text
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull String text) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.text = Preconditions.checkNotNull(text, 'text')
+	}
+}
+
+/**
+ * Provide inline value through a variable lookup.
+ * <p>
+ * If only a range is specified, the variable name will be extracted from
+ * the underlying document.
+ * <p>
+ * An optional variable name can be used to override the extracted name.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueVariableLookup {
+	/**
+	 * The document range for which the inline value applies.
+	 * The range is used to extract the variable name from the underlying
+	 * document.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * If specified the name of the variable to look up.
+	 */
+	String variableName
+
+	/**
+	 * How to perform the lookup.
+	 */
+	boolean caseSensitiveLookup
+
+	new() {
+	}
+
+	new(@NonNull Range range, boolean caseSensitiveLookup) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.caseSensitiveLookup = Preconditions.checkNotNull(caseSensitiveLookup, 'caseSensitiveLookup')
+	}
+
+	new(@NonNull Range range, boolean caseSensitiveLookup, String variableName) {
+		this(range, caseSensitiveLookup)
+		this.variableName = Preconditions.checkNotNull(variableName, 'variableName')
+	}
+}
+
+/**
+ * Provide an inline value through an expression evaluation.
+ * <p>
+ * If only a range is specified, the expression will be extracted from the
+ * underlying document.
+ * <p>
+ * An optional expression can be used to override the extracted expression.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueEvaluatableExpression {
+	/**
+	 * The document range for which the inline value applies.
+	 * The range is used to extract the evaluatable expression from the
+	 * underlying document.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * If specified the name of the variable to look up.
+	 */
+	String expression
+
+	new() {
+	}
+
+	new(@NonNull Range range) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+	}
+
+	new(@NonNull Range range, String expression) {
+		this(range)
+		this.expression = Preconditions.checkNotNull(expression, 'expression')
+	}
+}
+
+/**
+ * Inline value information can be provided by different means:
+ * - directly as a text value ({@link InlineValueText}).
+ * - as a name to use for a variable lookup ({@link InlineValueVariableLookup})
+ * - as an evaluatable expression ({@link InlineValueEvaluatableExpression})
+ * The InlineValue types combines all inline value types into one type.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValue extends Either3<InlineValueText, InlineValueVariableLookup, InlineValueEvaluatableExpression> {
+	new(@NonNull InlineValueText inlineValueText) {
+		super(Preconditions.checkNotNull(inlineValueText, 'inlineValueText'), null)
+	}
+
+	new(@NonNull InlineValueVariableLookup inlineValueVariableLookup) {
+		super(null, Either.<InlineValueVariableLookup, InlineValueEvaluatableExpression>forLeft(Preconditions.checkNotNull(inlineValueVariableLookup, 'inlineValueVariableLookup')))
+	}
+
+	new(@NonNull InlineValueEvaluatableExpression inlineValueEvaluatableExpression) {
+		super(null, Either.<InlineValueVariableLookup, InlineValueEvaluatableExpression>forRight(Preconditions.checkNotNull(inlineValueEvaluatableExpression, 'inlineValueEvaluatableExpression')))
+	}
+
+	def InlineValueText getInlineValueText() {
+		super.getFirst
+	}
+
+	def boolean isInlineValueText() {
+		super.isFirst
+	}
+
+	def InlineValueVariableLookup getInlineValueVariableLookup() {
+		super.getSecond
+	}
+
+	def boolean isInlineValueVariableLookup() {
+		super.isSecond
+	}
+
+	def InlineValueEvaluatableExpression getInlineValueEvaluatableExpression() {
+		super.getThird
+	}
+
+	def boolean isInlineValueEvaluatableExpression() {
+		super.isThird
+	}
+}
+
+/**
+ * Client workspace capabilities specific to inline values.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class InlineValueWorkspaceCapabilities {
+	/**
+	 * Whether the client implementation supports a refresh request sent from
+	 * the server to the client.
+	 * <p>
+	 * Note that this event is global and will force the client to refresh all
+	 * inline values currently shown. It should be used with absolute care and
+	 * is useful for situation where a server for example detect a project wide
+	 * change that requires such a calculation.
+	 */
+	Boolean refreshSupport
+
+	new() {
+	}
+
+	new(Boolean refreshSupport) {
+		this.refreshSupport = refreshSupport
+	}
 }

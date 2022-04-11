@@ -36,7 +36,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 public interface LanguageClient {
 	/**
-	 * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
+	 * The {@code workspace/applyEdit} request is sent from the server to the client to modify resource on the client side.
 	 */
 	@JsonRequest("workspace/applyEdit")
 	default CompletableFuture<ApplyWorkspaceEditResponse> applyEdit(ApplyWorkspaceEditParams params) {
@@ -44,7 +44,7 @@ public interface LanguageClient {
 	}
 
 	/**
-	 * The client/registerCapability request is sent from the server to the client
+	 * The {@code client/registerCapability} request is sent from the server to the client
 	 * to register for a new capability on the client side.
 	 * Not all clients need to support dynamic capability registration.
 	 * A client opts in via the ClientCapabilities.dynamicRegistration property
@@ -55,7 +55,7 @@ public interface LanguageClient {
 	}
 
 	/**
-	 * The client/unregisterCapability request is sent from the server to the client
+	 * The {@code client/unregisterCapability} request is sent from the server to the client
 	 * to unregister a previously register capability.
 	 */
 	@JsonRequest("client/unregisterCapability")
@@ -96,7 +96,7 @@ public interface LanguageClient {
 	/**
 	 * The show document request is sent from a server to a client to ask the
 	 * client to display a particular document in the user interface.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest("window/showDocument")
@@ -112,14 +112,14 @@ public interface LanguageClient {
 	void logMessage(MessageParams message);
 
 	/**
-	 * The workspace/workspaceFolders request is sent from the server to the client
+	 * The {@code workspace/workspaceFolders} request is sent from the server to the client
 	 * to fetch the current open list of workspace folders.
-	 *
+	 * <p>
+	 * Since 3.6.0
+	 * 
 	 * @return null in the response if only a single file is open in the tool,
 	 *         an empty array if a workspace is open but no folders are configured,
 	 *         the workspace folders otherwise.
-	 * 
-	 * Since 3.6.0
 	 */
 	@JsonRequest("workspace/workspaceFolders")
 	default CompletableFuture<List<WorkspaceFolder>> workspaceFolders() {
@@ -127,12 +127,12 @@ public interface LanguageClient {
 	}
 	
 	/**
-	 * The workspace/configuration request is sent from the server to the client to fetch
+	 * The {@code workspace/configuration} request is sent from the server to the client to fetch
 	 * configuration settings from the client. The request can fetch several configuration settings
 	 * in one roundtrip. The order of the returned configuration settings correspond to the
 	 * order of the passed ConfigurationItems (e.g. the first item in the response is the
 	 * result for the first configuration item in the params).
-	 * 
+	 * <p>
 	 * Since 3.6.0
 	 */
 	@JsonRequest("workspace/configuration")
@@ -142,7 +142,7 @@ public interface LanguageClient {
 
 	/**
 	 * This request is sent from the server to the client to ask the client to create a work done progress.
-	 * 
+	 * <p>
 	 * Since 3.15.0
 	 */
 	@JsonRequest("window/workDoneProgress/create")
@@ -155,7 +155,7 @@ public interface LanguageClient {
 	 * This mechanism can be used to report any kind of progress including work done progress
 	 * (usually used to report progress in the user interface using a progress bar)
 	 * and partial result progress to support streaming of results.
-	 * 
+	 * <p>
 	 * Since 3.15.0
 	 */
 	@JsonNotification("$/progress")
@@ -168,10 +168,10 @@ public interface LanguageClient {
 	 * notifications depends on the current trace configuration. If trace is 'off', the server
 	 * should not send any logTrace notification. If trace is 'message', the server should not
 	 * add the 'verbose' field in the LogTraceParams.
-	 *
-	 * $/logTrace should be used for systematic trace reporting. For single debugging messages,
+	 * <p>
+	 * {@code $/logTrace} should be used for systematic trace reporting. For single debugging messages,
 	 * the server should send window/logMessage notifications.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonNotification("$/logTrace")
@@ -180,14 +180,14 @@ public interface LanguageClient {
 	}
 
 	/**
-	 * The `workspace/semanticTokens/refresh` request is sent from the server to the client.
+	 * The {@code workspace/semanticTokens/refresh} request is sent from the server to the client.
 	 * Servers can use it to ask clients to refresh the editors for which this server
 	 * provides semantic tokens. As a result the client should ask the server to recompute
 	 * the semantic tokens for these editors. This is useful if a server detects a project wide
 	 * configuration change which requires a re-calculation of all semantic tokens.
 	 * Note that the client still has the freedom to delay the re-calculation of the semantic tokens
 	 * if for example an editor is currently not visible.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest("workspace/semanticTokens/refresh")
@@ -202,7 +202,7 @@ public interface LanguageClient {
 	 * This is useful if a server detects a configuration change which requires a re-calculation of
 	 * all code lenses. Note that the client still has the freedom to delay the re-calculation of
 	 * the code lenses if for example an editor is currently not visible.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest("workspace/codeLens/refresh")
@@ -214,8 +214,8 @@ public interface LanguageClient {
 	 * The {@code workspace/inlayHint/refresh} request is sent from the server to the client.
 	 * Servers can use it to ask clients to refresh the inlay hints currently shown in editors.
 	 * As a result the client should ask the server to recompute the inlay hints for these editors.
-	 * This is useful if a server detects a configuration change which requires a re-calculation of 
-	 * all inlay hints. Note that the client still has the freedom to delay the re-calculation of 
+	 * This is useful if a server detects a configuration change which requires a re-calculation of
+	 * all inlay hints. Note that the client still has the freedom to delay the re-calculation of
 	 * the inlay hints if for example an editor is currently not visible.
 	 * <p>
 	 * Since 3.17.0
@@ -223,6 +223,22 @@ public interface LanguageClient {
 	@Beta
 	@JsonRequest("workspace/inlayHint/refresh")
 	default CompletableFuture<Void> refreshInlayHints() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code workspace/inlineValue/refresh} request is sent from the server to the client.
+	 * Servers can use it to ask clients to refresh the inline values currently shown in editors.
+	 * As a result the client should ask the server to recompute the inline values for these editors.
+	 * This is useful if a server detects a configuration change which requires a re-calculation of
+	 * all inline values. Note that the client still has the freedom to delay the re-calculation of
+	 * the inline values if for example an editor is currently not visible.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest("workspace/inlineValue/refresh")
+	default CompletableFuture<Void> refreshInlineValues() {
 		throw new UnsupportedOperationException();
 	}
 }
