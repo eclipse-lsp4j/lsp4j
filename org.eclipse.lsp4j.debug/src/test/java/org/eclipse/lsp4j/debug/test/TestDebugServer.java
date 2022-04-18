@@ -42,6 +42,7 @@ import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetDataBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetDataBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetExceptionBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExpressionArguments;
 import org.eclipse.lsp4j.debug.SetExpressionResponse;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsArguments;
@@ -62,6 +63,8 @@ import org.eclipse.lsp4j.debug.TerminateThreadsArguments;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.VariablesArguments;
 import org.eclipse.lsp4j.debug.VariablesResponse;
+import org.eclipse.lsp4j.debug.WriteMemoryArguments;
+import org.eclipse.lsp4j.debug.WriteMemoryResponse;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 
 public class TestDebugServer implements IDebugProtocolServer {
@@ -112,7 +115,7 @@ public class TestDebugServer implements IDebugProtocolServer {
 	}
 
 	@Override
-	public CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
+	public CompletableFuture<SetExceptionBreakpointsResponse> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
 		return CompletableFuture.completedFuture(null);
 	}
 
@@ -253,6 +256,11 @@ public class TestDebugServer implements IDebugProtocolServer {
 
 	@Override
 	public CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	@Override
+	public CompletableFuture<WriteMemoryResponse> writeMemory(WriteMemoryArguments args) {
 		return CompletableFuture.completedFuture(null);
 	}
 
