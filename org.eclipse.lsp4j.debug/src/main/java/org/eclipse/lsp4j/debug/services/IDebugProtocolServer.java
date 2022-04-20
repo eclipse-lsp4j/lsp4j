@@ -57,6 +57,7 @@ import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetDataBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetDataBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
+import org.eclipse.lsp4j.debug.SetExceptionBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExpressionArguments;
 import org.eclipse.lsp4j.debug.SetExpressionResponse;
 import org.eclipse.lsp4j.debug.SetFunctionBreakpointsArguments;
@@ -79,6 +80,8 @@ import org.eclipse.lsp4j.debug.TerminateThreadsArguments;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.VariablesArguments;
 import org.eclipse.lsp4j.debug.VariablesResponse;
+import org.eclipse.lsp4j.debug.WriteMemoryArguments;
+import org.eclipse.lsp4j.debug.WriteMemoryResponse;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 /**
@@ -90,7 +93,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.42.0";
+	public static final String SCHEMA_VERSION = "1.55.0";
 
 	/**
 	 * The 'cancel' request is used by the frontend in two situations:
@@ -221,20 +224,16 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The 'disconnect' request is sent from the client to the debug adapter in
-	 * order to stop debugging.
+	 * The 'disconnect' request asks the debug adapter to disconnect from the debuggee
+	 * (thus ending the debug session) and then to shut down itself (the debug adapter).
 	 * <p>
-	 * It asks the debug adapter to disconnect from the debuggee and to terminate
-	 * the debug adapter.
+	 * In addition, the debug adapter must terminate the debuggee if it was started with
+	 * the 'launch' request. If an 'attach' request was used to connect to the debuggee,
+	 * then the debug adapter must not terminate the debuggee.
 	 * <p>
-	 * If the debuggee has been started with the 'launch' request, the 'disconnect'
-	 * request terminates the debuggee.
-	 * <p>
-	 * If the 'attach' request was used to connect to the debuggee, 'disconnect'
-	 * does not terminate the debuggee.
-	 * <p>
-	 * This behavior can be controlled with the 'terminateDebuggee' argument (if
-	 * supported by the debug adapter).
+	 * This implicit behavior of when to terminate the debuggee can be overridden with
+	 * the optional argument 'terminateDebuggee' (which is only supported by a debug
+	 * adapter if the corresponding capability {@link Capabilities#supportTerminateDebuggee} is true).
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> disconnect(DisconnectArguments args) {
@@ -242,11 +241,20 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The 'terminate' request is sent from the client to the debug adapter in order
-	 * to give the debuggee a chance for terminating itself.
+	 * The 'terminate' request is sent from the client to the debug adapter in order to
+	 * shut down the debuggee gracefully. Clients should only call this request if the
+	 * capability {@link Capabilities#supportsTerminateRequest} is true.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsTerminateRequest' is true.
+	 * Typically a debug adapter implements 'terminate' by sending a software signal
+	 * which the debuggee intercepts in order to clean things up properly before terminating itself.
+	 * <p>
+	 * Please note that this request does not directly affect the state of the debug
+	 * session: if the debuggee decides to veto the graceful shutdown for any reason
+	 * by not terminating itself, then the debug session will just continue.
+	 * <p>
+	 * Clients can surface the 'terminate' request as an explicit command or they can
+	 * integrate it into a two stage Stop command that first sends 'terminate' to request
+	 * a graceful shutdown, and if that fails uses 'disconnect' for a forceful shutdown.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> terminate(TerminateArguments args) {
@@ -306,7 +314,7 @@ public interface IDebugProtocolServer {
 	 * 'exceptionBreakpointFilters' returns one or more filters.
 	 */
 	@JsonRequest
-	default CompletableFuture<Void> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
+	default CompletableFuture<SetExceptionBreakpointsResponse> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -340,7 +348,7 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Replaces all existing instruction breakpoints. Typically, instruction
-	 * breakpoints would be set from a diassembly window.
+	 * breakpoints would be set from a disassembly window.
 	 * <p>
 	 * To clear all instruction breakpoints, specify an empty array.
 	 * <p>
@@ -357,7 +365,10 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to run again.
+	 * The request resumes execution of all threads. If the debug adapter supports
+	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests})
+	 * setting the 'singleThread' argument to true resumes only the specified thread.
+	 * If not all threads were resumed, the 'allThreadsContinued' attribute of the response must be set to false.
 	 */
 	@JsonRequest(value = "continue")
 	default CompletableFuture<ContinueResponse> continue_(ContinueArguments args) {
@@ -365,7 +376,12 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to run again for one step.
+	 * The request executes one step (in the given granularity) for the specified
+	 * thread and allows all other threads to run freely by resuming them.
+	 * <p>
+	 * If the debug adapter supports single thread execution (see capability
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'step') after the step has completed.
@@ -376,16 +392,19 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to step into a function/method if possible.
+	 * The request resumes the given thread to step into a function/method and allows all
+	 * other threads to run freely by resuming them.
 	 * <p>
-	 * If it cannot step into a target, 'stepIn' behaves like 'next'.
+	 * If the debug adapter supports single thread execution (see capability
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * 'singleThread' argument to true prevents other suspended threads from resuming.
+	 * <p>
+	 * If the request cannot step into a target, 'stepIn' behaves like the 'next' request.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'step') after the step has completed.
 	 * <p>
-	 * If there are multiple function/method calls (or other targets) on the source
-	 * line,
-	 * <p>
+	 * If there are multiple function/method calls (or other targets) on the source line,
 	 * the optional argument 'targetId' can be used to control into which target the
 	 * 'stepIn' should occur.
 	 * <p>
@@ -398,7 +417,12 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to run again for one step.
+	 * The request resumes the given thread to step out (return) from a function/method and
+	 * allows all other threads to run freely by resuming them.
+	 * <p>
+	 * If the debug adapter supports single thread execution (see capability
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'step') after the step has completed.
@@ -409,7 +433,12 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to run one step backwards.
+	 * The request executes one backward step (in the given granularity) for the specified
+	 * thread and allows all other threads to run backward freely by resuming them.
+	 * <p>
+	 * If the debug adapter supports single thread execution (see capability
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'step') after the step has completed.
@@ -423,7 +452,10 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request starts the debuggee to run backward.
+	 * The request resumes backward execution of all threads. If the debug adapter supports
+	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests})
+	 * setting the 'singleThread' argument to true resumes only the specified thread. If not
+	 * all threads were resumed, the 'allThreadsContinued' attribute of the response must be set to false.
 	 * <p>
 	 * Clients should only call this request if the capability 'supportsStepBack' is
 	 * true.
@@ -522,6 +554,9 @@ public interface IDebugProtocolServer {
 	 * Set the variable with the given name in the variable container to a new
 	 * value. Clients should only call this request if the capability
 	 * 'supportsSetVariable' is true.
+	 * <p>
+	 * If a debug adapter implements both setVariable and setExpression, a client
+	 * will only use setExpression if the variable has an evaluateName property.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetVariableResponse> setVariable(SetVariableArguments args) {
@@ -597,6 +632,9 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * Clients should only call this request if the capability
 	 * 'supportsSetExpression' is true.
+	 * <p>
+	 * If a debug adapter implements both setExpression and setVariable, a client
+	 * will only use setExpression if the variable has an evaluateName property.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
@@ -664,6 +702,19 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Writes bytes to memory at the provided location.
+	 * <p>
+	 * Clients should only call this request if the capability
+	 * {@link Capabilities#supportsWriteMemoryRequest} is true.
+	 * <p>
+	 * Since 1.48
+	 */
+	@JsonRequest
+	default CompletableFuture<WriteMemoryResponse> writeMemory(WriteMemoryArguments args) {
 		throw new UnsupportedOperationException();
 	}
 

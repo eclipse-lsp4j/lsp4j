@@ -2,6 +2,8 @@
 
 ### v0.13.0 (Date TBD)
 
+ * Implemented DAP versions 1.45.0 - 1.55.0
+
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/20?closed=1>
 
 Breaking API changes:
@@ -10,6 +12,7 @@ Breaking API changes:
    have been according to the specification
  * Return type of `workspace/symbol` changed from `List<? extends SymbolInformation>` to
    `Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>`
+ * In DAP, return type of `IDebugProtocolServer.setExceptionBreakpoints` changed from `Void` to `SetExceptionBreakpointsResponse`
 
 Breaking Beta API changes:
 
