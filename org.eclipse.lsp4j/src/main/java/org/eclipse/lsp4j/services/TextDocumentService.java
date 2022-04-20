@@ -57,6 +57,8 @@ import org.eclipse.lsp4j.HoverParams;
 import org.eclipse.lsp4j.ImplementationParams;
 import org.eclipse.lsp4j.InlayHint;
 import org.eclipse.lsp4j.InlayHintParams;
+import org.eclipse.lsp4j.InlineValue;
+import org.eclipse.lsp4j.InlineValueParams;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.Moniker;
 import org.eclipse.lsp4j.MonikerParams;
@@ -659,6 +661,18 @@ public interface TextDocumentService {
 	@Beta
 	@JsonRequest(value="inlayHint/resolve", useSegment = false)
 	default CompletableFuture<InlayHint> resolveInlayHint(InlayHint unresolved) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The inline value request is sent from the client to the server to compute inline values for a given text document
+	 * that may be rendered in the editor at the end of lines.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<List<InlineValue>> inlineValue(InlineValueParams params) {
 		throw new UnsupportedOperationException();
 	}
 }
