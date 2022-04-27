@@ -14,6 +14,8 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.google.common.annotations.Beta;
+
 import org.eclipse.lsp4j.CreateFilesParams;
 import org.eclipse.lsp4j.DeleteFilesParams;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
@@ -23,6 +25,8 @@ import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.RenameFilesParams;
 import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.WorkspaceEdit;
+import org.eclipse.lsp4j.WorkspaceDiagnosticParams;
+import org.eclipse.lsp4j.WorkspaceDiagnosticReport;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
@@ -175,6 +179,22 @@ public interface WorkspaceService {
 	 */
 	@JsonNotification
 	default void didDeleteFiles(DeleteFilesParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The workspace diagnostic request is sent from the client to the server to ask the server to
+	 * compute workspace wide diagnostics which previously where pushed from the server to the client.
+	 * In contrast to the document diagnostic request the workspace request can be long running and
+	 * is not bound to a specific workspace or document state. If the client supports streaming for
+	 * the workspace diagnostic pull it is legal to provide a document diagnostic report multiple times
+	 * for the same document URI. The last one reported will win over previous reports.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<WorkspaceDiagnosticReport> diagnostic(WorkspaceDiagnosticParams params) {
 		throw new UnsupportedOperationException();
 	}
 }

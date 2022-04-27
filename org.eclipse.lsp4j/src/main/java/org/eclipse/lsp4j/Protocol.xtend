@@ -319,6 +319,14 @@ class WorkspaceClientCapabilities {
 	 */
 	@Beta
 	InlineValueWorkspaceCapabilities inlineValue
+
+	/**
+	 * Client workspace capabilities specific to diagnostics.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	DiagnosticWorkspaceCapabilities diagnostics
 }
 
 @JsonRpcData
@@ -2076,6 +2084,14 @@ class TextDocumentClientCapabilities {
 	 */
 	@Beta
 	InlineValueCapabilities inlineValue
+
+	/**
+	 * Capabilities specific to the diagnostic pull model.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	DiagnosticCapabilities diagnostic
 }
 
 /**
@@ -5473,6 +5489,14 @@ class ServerCapabilities {
 	 */
 	@Beta
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
+
+	/**
+	 * The server has support for pull model diagnostics.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	DiagnosticRegistrationOptions diagnosticProvider
 
 	/**
 	 * Experimental server capabilities.
@@ -9201,6 +9225,537 @@ class InlineValueWorkspaceCapabilities {
 	 * inline values currently shown. It should be used with absolute care and
 	 * is useful for situation where a server for example detect a project wide
 	 * change that requires such a calculation.
+	 */
+	Boolean refreshSupport
+
+	new() {
+	}
+
+	new(Boolean refreshSupport) {
+		this.refreshSupport = refreshSupport
+	}
+}
+
+/**
+ * Client capabilities specific to diagnostic pull requests.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * Whether the clients supports related documents for document diagnostic pulls.
+	 */
+	Boolean relatedDocumentSupport
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		this.dynamicRegistration = dynamicRegistration
+	}
+
+	new(Boolean dynamicRegistration, Boolean relatedDocumentSupport) {
+		this(dynamicRegistration)
+		this.relatedDocumentSupport = relatedDocumentSupport
+	}
+}
+
+/**
+ * Diagnostic registration options.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DiagnosticRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	/**
+	 * An optional identifier under which the diagnostics are
+	 * managed by the client.
+	 */
+	String identifier
+
+	/**
+	 * Whether the language has inter file dependencies meaning that
+	 * editing code in one file can result in a different diagnostic
+	 * set in another file. Inter file dependencies are common for
+	 * most programming languages and typically uncommon for linters.
+	 */
+	boolean interFileDependencies
+
+	/**
+	 * The server provides support for workspace diagnostics as well.
+	 */
+	boolean workspaceDiagnostics
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
+
+	new(boolean interFileDependencies, boolean workspaceDiagnostics) {
+		this.interFileDependencies = interFileDependencies
+		this.workspaceDiagnostics = workspaceDiagnostics
+	}
+}
+
+/**
+ * Parameters of the document diagnostic request.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DocumentDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
+	/**
+	 * The text document.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The additional identifier provided during registration.
+	 */
+	String identifier
+
+	/**
+	 * The result id of a previous response if provided.
+	 */
+	String previousResultId
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+	}
+}
+
+/**
+ * The result of a document diagnostic pull request. A report can
+ * either be a full report containing all diagnostics for the
+ * requested document or a unchanged report indicating that nothing
+ * has changed in terms of diagnostics in comparison to the last
+ * pull request.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DocumentDiagnosticReport extends Either<RelatedFullDocumentDiagnosticReport, RelatedUnchangedDocumentDiagnosticReport> {
+	new(@NonNull RelatedFullDocumentDiagnosticReport relatedFullDocumentDiagnosticReport) {
+		super(Preconditions.checkNotNull(relatedFullDocumentDiagnosticReport, 'relatedFullDocumentDiagnosticReport'), null)
+	}
+
+	new(@NonNull RelatedUnchangedDocumentDiagnosticReport relatedUnchangedDocumentDiagnosticReport) {
+		super(null, Preconditions.checkNotNull(relatedUnchangedDocumentDiagnosticReport, 'relatedUnchangedDocumentDiagnosticReport'))
+	}
+
+	def RelatedFullDocumentDiagnosticReport getRelatedFullDocumentDiagnosticReport() {
+		super.getLeft
+	}
+
+	def boolean isRelatedFullDocumentDiagnosticReport() {
+		super.isLeft
+	}
+
+	def RelatedUnchangedDocumentDiagnosticReport getRelatedUnchangedDocumentDiagnosticReport() {
+		super.getRight
+	}
+
+	def boolean isRelatedUnchangedDocumentDiagnosticReport() {
+		super.isRight
+	}
+}
+
+/**
+ * The document diagnostic report kinds.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+final class DocumentDiagnosticReportKind {
+	/**
+	 * A diagnostic report with a full
+	 * set of problems.
+	 */
+	public static val Full = 'full'
+
+	/**
+	 * A report indicating that the last
+	 * returned report is still accurate.
+	 */
+	public static val Unchanged = 'unchanged'
+
+	private new() {}
+}
+
+/**
+ * A diagnostic report with a full set of problems.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class FullDocumentDiagnosticReport {
+	/**
+	 * A full document diagnostic report.
+	 */
+	@NonNull
+	val kind = DocumentDiagnosticReportKind.Full
+
+	/**
+	 * An optional result id. If provided it will
+	 * be sent on the next diagnostic request for the
+	 * same document.
+	 */
+	String resultId
+
+	/**
+	 * The actual items.
+	 */
+	@NonNull
+	List<Diagnostic> items
+
+	new() {
+	}
+
+	new(@NonNull List<Diagnostic> items) {
+		this.items = Preconditions.checkNotNull(items, 'items')
+	}
+}
+
+/**
+ * A diagnostic report indicating that the last returned
+ * report is still accurate.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class UnchangedDocumentDiagnosticReport {
+	/**
+	 * A document diagnostic report indicating
+	 * no changes to the last result. A server can
+	 * only return `unchanged` if result ids are
+	 * provided.
+	 */
+	@NonNull
+	val kind = DocumentDiagnosticReportKind.Unchanged
+
+	/**
+	 * A result id which will be sent on the next
+	 * diagnostic request for the same document.
+	 */
+	@NonNull
+	String resultId
+
+	new() {
+	}
+
+	new(@NonNull String resultId) {
+		this.resultId = Preconditions.checkNotNull(resultId, 'resultId')
+	}
+}
+
+/**
+ * A full diagnostic report with a set of related documents.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class RelatedFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
+	/**
+	 * Diagnostics of related documents. This information is useful
+	 * in programming languages where code in a file A can generate
+	 * diagnostics in a file B which A depends on. An example of
+	 * such a language is C/C++ where marco definitions in a file
+	 * a.cpp and result in errors in a header file b.hpp.
+	 */
+	Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments
+
+	new() {
+	}
+
+	new(@NonNull List<Diagnostic> items) {
+		super(items)
+	}
+}
+
+/**
+ * An unchanged diagnostic report with a set of related documents.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnosticReport {
+	/**
+	 * Diagnostics of related documents. This information is useful
+	 * in programming languages where code in a file A can generate
+	 * diagnostics in a file B which A depends on. An example of
+	 * such a language is C/C++ where marco definitions in a file
+	 * a.cpp and result in errors in a header file b.hpp.
+	 */
+	Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments
+
+	new() {
+	}
+
+	new(@NonNull String resultId) {
+		super(resultId)
+	}
+}
+
+/**
+ * A partial result for a document diagnostic report.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DocumentDiagnosticReportPartialResult {
+	@NonNull
+	Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments
+
+	new(@NonNull Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments) {
+		this.relatedDocuments = Preconditions.checkNotNull(relatedDocuments, 'relatedDocuments')
+	}
+}
+
+/**
+ * Cancellation data returned from a diagnostic request.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DiagnosticServerCancellationData {
+	boolean retriggerRequest
+
+	new() {
+	}
+
+	new(boolean retriggerRequest) {
+		this.retriggerRequest = retriggerRequest
+	}
+}
+
+/**
+ * Parameters of the workspace diagnostic request.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
+	/**
+	 * The additional identifier provided during registration.
+	 */
+	String identifier
+
+	/**
+	 * The currently known diagnostic reports with their
+	 * previous result ids.
+	 */
+	@NonNull
+	List<PreviousResultId> previousResultIds
+
+	new() {
+	}
+
+	new(@NonNull List<PreviousResultId> previousResultIds) {
+		this.previousResultIds = Preconditions.checkNotNull(previousResultIds, 'previousResultIds')
+	}
+}
+
+/**
+ * A previous result id in a workspace pull request.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class PreviousResultId {
+	/**
+	 * The URI for which the client knowns a
+	 * result id.
+	 */
+	@NonNull
+	String uri
+
+	/**
+	 * The value of the previous result id.
+	 */
+	@NonNull
+	String value
+
+	new() {
+	}
+
+	new(@NonNull String uri, @NonNull String value) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.value = Preconditions.checkNotNull(value, 'value')
+	}
+}
+
+/**
+ * A workspace diagnostic report.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceDiagnosticReport {
+	@NonNull
+	List<WorkspaceDocumentDiagnosticReport> items
+
+	new() {
+	}
+
+	new(@NonNull List<WorkspaceDocumentDiagnosticReport> items) {
+		this.items = Preconditions.checkNotNull(items, 'items')
+	}
+}
+
+/**
+ * A full document diagnostic report for a workspace diagnostic result.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
+	/**
+	 * The URI for which diagnostic information is reported.
+	 */
+	@NonNull
+	String uri
+
+	/**
+	 * The version number for which the diagnostics are reported.
+	 * If the document is not marked as open {@code null} can be provided.
+	 */
+	Integer version
+
+	new() {
+	}
+
+	new(@NonNull List<Diagnostic> items, @NonNull String uri, Integer version) {
+		super(items)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.version = version
+	}
+}
+
+/**
+ * An unchanged document diagnostic report for a workspace diagnostic result.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnosticReport {
+	/**
+	 * The URI for which diagnostic information is reported.
+	 */
+	@NonNull
+	String uri
+
+	/**
+	 * The version number for which the diagnostics are reported.
+	 * If the document is not marked as open `null` can be provided.
+	 */
+	Integer version
+
+	new() {
+	}
+
+	new(@NonNull String resultId, @NonNull String uri, Integer version) {
+		super(resultId)
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.version = version
+	}
+}
+
+/**
+ * A workspace diagnostic document report.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport> {
+	new(@NonNull WorkspaceFullDocumentDiagnosticReport workspaceFullDocumentDiagnosticReport) {
+		super(Preconditions.checkNotNull(workspaceFullDocumentDiagnosticReport, 'workspaceFullDocumentDiagnosticReport'), null)
+	}
+
+	new(@NonNull WorkspaceUnchangedDocumentDiagnosticReport workspaceUnchangedDocumentDiagnosticReport) {
+		super(null, Preconditions.checkNotNull(workspaceUnchangedDocumentDiagnosticReport, 'workspaceUnchangedDocumentDiagnosticReport'))
+	}
+
+	def WorkspaceFullDocumentDiagnosticReport getWorkspaceFullDocumentDiagnosticReport() {
+		super.getLeft
+	}
+
+	def boolean isWorkspaceFullDocumentDiagnosticReport() {
+		super.isLeft
+	}
+
+	def WorkspaceUnchangedDocumentDiagnosticReport getWorkspaceUnchangedDocumentDiagnosticReport() {
+		super.getRight
+	}
+
+	def boolean isWorkspaceUnchangedDocumentDiagnosticReport() {
+		super.isRight
+	}
+}
+
+/**
+ * A partial result for a workspace diagnostic report.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class WorkspaceDiagnosticReportPartialResult {
+	@NonNull
+	List<WorkspaceDocumentDiagnosticReport> items
+
+	new() {
+	}
+
+	new(@NonNull List<WorkspaceDocumentDiagnosticReport> items) {
+		this.items = Preconditions.checkNotNull(items, 'items')
+	}
+}
+
+/**
+ * Workspace client capabilities specific to diagnostic pull requests.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class DiagnosticWorkspaceCapabilities {
+	/**
+	 * Whether the client implementation supports a refresh request sent from
+	 * the server to the client.
+	 * <p>
+	 * Note that this event is global and will force the client to refresh all
+	 * pulled diagnostics currently shown. It should be used with absolute care
+	 * and is useful for situations where a server for example detects a project
+	 * wide change that requires such a calculation.
 	 */
 	Boolean refreshSupport
 
