@@ -45,8 +45,9 @@ case $BRANCH_NAME in
                 gpg:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
                 -Dfile=${base}.jar \
-                -Dsources=${base}-sources.jar \
-                -Djavadoc=${base}-javadoc.jar \
+                -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
+                -Dclassifiers=sources,javadoc \
+                -Dtypes=jar,jar \
                 -Durl=https://oss.sonatype.org/content/repositories/snapshots/ \
                 -DrepositoryId=ossrh
         done
