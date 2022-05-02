@@ -42,7 +42,7 @@ case $BRANCH_NAME in
             # If centos changes we may need to add the gpg arguments to some pom.xml
             # somewhere
             mvn \
-                gpg:sign-and-deploy-file \
+                org.apache.maven.plugins:maven-gpg-plugin:1.6:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
                 -Dfile=${base}.jar \
                 -Dsources=${base}-sources.jar \
