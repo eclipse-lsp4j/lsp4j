@@ -35,6 +35,8 @@ import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.CompletionParams;
 import org.eclipse.lsp4j.DeclarationParams;
 import org.eclipse.lsp4j.DefinitionParams;
+import org.eclipse.lsp4j.DocumentDiagnosticParams;
+import org.eclipse.lsp4j.DocumentDiagnosticReport;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidCloseTextDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
@@ -673,6 +675,19 @@ public interface TextDocumentService {
 	@Beta
 	@JsonRequest
 	default CompletableFuture<List<InlineValue>> inlineValue(InlineValueParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The text document diagnostic request is sent from the client to the server to ask the server to compute the diagnostics
+	 * for a given document. As with other pull requests the server is asked to compute the diagnostics for the currently
+	 * synced version of the document.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest
+	default CompletableFuture<DocumentDiagnosticReport> diagnostic(DocumentDiagnosticParams params) {
 		throw new UnsupportedOperationException();
 	}
 }

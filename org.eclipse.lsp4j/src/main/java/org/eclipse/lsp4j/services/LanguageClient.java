@@ -241,4 +241,18 @@ public interface LanguageClient {
 	default CompletableFuture<Void> refreshInlineValues() {
 		throw new UnsupportedOperationException();
 	}
+
+	/**
+	 * The {@code workspace/diagnostic/refresh} request is sent from the server to the client.
+	 * Servers can use it to ask clients to refresh all needed document and workspace diagnostics.
+	 * This is useful if a server detects a project wide configuration change which requires a
+	 * re-calculation of all diagnostics.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	@JsonRequest("workspace/diagnostic/refresh")
+	default CompletableFuture<Void> refreshDiagnostics() {
+		throw new UnsupportedOperationException();
+	}
 }
