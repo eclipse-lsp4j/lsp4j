@@ -41,7 +41,7 @@ case $BRANCH_NAME in
             # --pinentry-mode loopback needs to be added as gpg argument in the pom.xml.
             # If centos changes we may need to add the gpg arguments to some pom.xml
             # somewhere
-            mvn \
+            mvn -X \
                 gpg:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
                 -Dfile=${base}.jar \
