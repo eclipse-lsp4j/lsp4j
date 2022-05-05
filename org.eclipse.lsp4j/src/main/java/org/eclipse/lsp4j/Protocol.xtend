@@ -23,7 +23,6 @@ import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
-import org.eclipse.lsp4j.adapters.ResourceChangeListAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
@@ -60,16 +59,6 @@ class WorkspaceEditCapabilities {
 	 * The client supports versioned document changes in {@link WorkspaceEdit}s
 	 */
 	Boolean documentChanges
-
-	/**
-	 * The client supports resource changes
-	 * in {@link WorkspaceEdit}s.
-	 *
-	 * @deprecated Since LSP introduced resource operations, use {@link #resourceOperations}
-	 */
-	@Deprecated
-	@Beta
-	Boolean resourceChanges
 
 	/**
 	 * The resource operations the client supports. Clients should at least
@@ -137,6 +126,15 @@ class DidChangeConfigurationCapabilities extends DynamicRegistrationCapabilities
  */
 @JsonRpcData
 class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * Whether the client has support for relative patterns
+	 * or not.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	Boolean relativePatternSupport
+
 	new() {
 	}
 
@@ -327,6 +325,9 @@ class WorkspaceClientCapabilities {
 	 */
 	@Beta
 	DiagnosticWorkspaceCapabilities diagnostics
+
+	new() {
+	}
 }
 
 @JsonRpcData
@@ -1026,7 +1027,7 @@ class CodeActionKindCapabilities {
 	 * handle values outside its set gracefully and falls back
 	 * to a default value when unknown.
 	 * <p>
-	 * See {@link CodeActionKind} for allowed values.
+	 * See {@link CodeActionKind} for some predefined code action kinds.
 	 */
 	@NonNull
 	List<String> valueSet
@@ -1171,7 +1172,6 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class CodeLensWorkspaceCapabilities {
-
 	/**
 	 * Whether the client implementation supports a refresh request sent from the
 	 * server to the client.
@@ -1237,7 +1237,6 @@ class FileOperationsWorkspaceCapabilities extends DynamicRegistrationCapabilitie
  */
 @JsonRpcData
 class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
-
 	/**
 	 * Whether the client supports the {@link DocumentLink#tooltip} property.
 	 * <p>
@@ -1279,7 +1278,6 @@ class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class RenameCapabilities extends DynamicRegistrationCapabilities {
-
 	/**
 	 * Client supports testing for validity of rename operations
 	 * before execution.
@@ -1404,6 +1402,54 @@ class DiagnosticsTagSupport {
 }
 
 /**
+ * Specific options for the folding range kind.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class FoldingRangeKindSupportCapabilities {
+	/**
+	 * The folding range kind values the client supports. When this
+	 * property exists the client also guarantees that it will
+	 * handle values outside its set gracefully and falls back
+	 * to a default value when unknown.
+	 * <p>
+	 * See {@link FoldingRangeKind} for some predefined folding range kinds.
+	 */
+	List<String> valueSet
+
+	new() {
+	}
+
+	new(List<String> valueSet) {
+		this.valueSet = valueSet
+	}
+}
+
+/**
+ * Specific options for the folding range.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+@JsonRpcData
+class FoldingRangeSupportCapabilities {
+	/**
+	 * If set, the client signals that it supports setting {@link FoldingRange#collapsedText} on
+	 * folding ranges to display custom labels instead of the default text.
+	 */
+	Boolean collapsedText
+
+	new() {
+	}
+
+	new(Boolean collapsedText) {
+		this.collapsedText = collapsedText
+	}
+}
+
+/**
  * Capabilities specific to `textDocument/foldingRange` requests.
  * <p>
  * Since 3.10.0
@@ -1421,6 +1467,25 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	 * ignore specified {@link FoldingRange#startCharacter} and {@link FoldingRange#endCharacter} properties.
 	 */
 	Boolean lineFoldingOnly
+
+	/**
+	 * Specific options for the folding range kind.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	FoldingRangeKindSupportCapabilities foldingRangeKind
+
+	/**
+	 * Specific options for the folding range.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	FoldingRangeSupportCapabilities foldingRange
+
+	new() {
+	}
 }
 
 /**
@@ -1431,18 +1496,18 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 @Beta
 @JsonRpcData
 class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
-
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
-
 }
 
 
 /**
+ * Type hierarchy registration options.
+ * <p>
  * Since 3.17.0
  */
 @Beta
@@ -1450,7 +1515,7 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 class TypeHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -1469,14 +1534,12 @@ class TypeHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationA
  */
 @JsonRpcData
 class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
-
 	new() {
 	}
 
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
-
 }
 
 /**
@@ -1493,7 +1556,7 @@ class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
 class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -1512,7 +1575,6 @@ class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationA
  */
 @JsonRpcData
 class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
-
 	new() {
 	}
 
@@ -1526,7 +1588,6 @@ class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequestsFull {
-
 	/**
 	* The client will send the `textDocument/semanticTokens/full/delta` request if
 	* the server provides a corresponding handler.
@@ -1546,7 +1607,6 @@ class SemanticTokensClientCapabilitiesRequestsFull {
  */
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequests {
-
 	/**
 	* The client will send the `textDocument/semanticTokens/range` request if
 	* the server provides a corresponding handler.
@@ -1579,7 +1639,6 @@ class SemanticTokensClientCapabilitiesRequests {
 		this.full = full
 		this.range = range
 	}
-
 }
 
 /**
@@ -1587,7 +1646,6 @@ class SemanticTokensClientCapabilitiesRequests {
  */
 @JsonRpcData
 class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
-
 	/**
 	 * Which requests the client supports and might send to the server.
 	 */
@@ -1654,6 +1712,9 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	@Beta
 	Boolean augmentsSyntaxTokens
 
+	new() {
+	}
+
 	new(Boolean dynamicRegistration) {
 		super(dynamicRegistration)
 	}
@@ -1665,7 +1726,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 		this.formats = Preconditions.checkNotNull(formats, 'formats')
 	}
 
-
 	new(Boolean dynamicRegistration, @NonNull SemanticTokensClientCapabilitiesRequests requests, @NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers, @NonNull List<String> formats) {
 		super(dynamicRegistration)
 		this.requests = Preconditions.checkNotNull(requests, 'requests')
@@ -1673,7 +1733,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
 		this.formats = Preconditions.checkNotNull(formats, 'formats')
 	}
-
 }
 
 /**
@@ -1683,6 +1742,12 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -1719,6 +1784,12 @@ class SemanticTokensWorkspaceCapabilities {
  */
 @JsonRpcData
 class MonikerCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -2092,6 +2163,9 @@ class TextDocumentClientCapabilities {
 	 */
 	@Beta
 	DiagnosticCapabilities diagnostic
+
+	new() {
+	}
 }
 
 /**
@@ -2120,6 +2194,9 @@ class WindowClientCapabilities {
 	 * Since 3.16.0
 	 */
 	ShowDocumentCapabilities showDocument
+
+	new() {
+	}
 }
 
 /**
@@ -2152,6 +2229,34 @@ class GeneralClientCapabilities {
 	 */
 	@Beta
 	StaleRequestCapabilities staleRequestSupport
+
+	/**
+	 * The position encodings supported by the client. Client and server
+	 * have to agree on the same position encoding to ensure that offsets
+	 * (e.g. character position in a line) are interpreted the same on both
+	 * side.
+	 * <p>
+	 * To keep the protocol backwards compatible the following applies: if
+	 * the value 'utf-16' is missing from the array of position encodings
+	 * servers can assume that the client supports UTF-16. UTF-16 is
+	 * therefore a mandatory encoding.
+	 * <p>
+	 * If omitted it defaults to [{@link PositionEncodingKind#UTF16}].
+	 * <p>
+	 * Implementation considerations: since the conversion from one encoding
+	 * into another requires the content of the file / line the conversion
+	 * is best done where the file is read which is usually on the server
+	 * side.
+	 * <p>
+	 * See {@link PositionEncodingKind} for some predefined position encoding kinds.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	List<String> positionEncodings
+
+	new() {
+	}
 }
 
 /**
@@ -2215,6 +2320,97 @@ class ClientCapabilities {
 }
 
 /**
+ * The kind of a code action.
+ * <p>
+ * Kinds are a hierarchical list of identifiers separated by {@code .},
+ * e.g. {@code "refactor.extract.function"}.
+ * <p>
+ * The set of kinds is open and client needs to announce the kinds it supports
+ * to the server during initialization.
+ */
+final class CodeActionKind {
+	/**
+	 * Empty kind.
+	 */
+	public static val Empty = ''
+
+	/**
+	 * Base kind for quickfix actions: "quickfix"
+	 */
+	public static val QuickFix = 'quickfix'
+
+	/**
+	 * Base kind for refactoring actions: "refactor"
+	 */
+	public static val Refactor = 'refactor'
+
+	/**
+	 * Base kind for refactoring extraction actions: "refactor.extract"
+	 * <p>
+	 * Example extract actions:
+	 * <p><ul>
+	 * <li>Extract method
+	 * <li>Extract function
+	 * <li>Extract variable
+	 * <li>Extract interface from class
+	 * <li>...
+	 * </ul>
+	 */
+	public static val RefactorExtract = 'refactor.extract'
+
+	/**
+	 * Base kind for refactoring inline actions: "refactor.inline"
+	 * <p>
+	 * Example inline actions:
+	 * <p><ul>
+	 * <li>Inline function
+	 * <li>Inline variable
+	 * <li>Inline constant
+	 * <li>...
+	 * </ul>
+	 */
+	public static val RefactorInline = 'refactor.inline'
+
+	/**
+	 * Base kind for refactoring rewrite actions: "refactor.rewrite"
+	 * <p>
+	 * Example rewrite actions:
+	 * <p><ul>
+	 * <li>Convert function to class
+	 * <li>Add or remove parameter
+	 * <li>Encapsulate field
+	 * <li>Make method static
+	 * <li>Move method to base class
+	 * <li>...
+	 * </ul>
+	 */
+	public static val RefactorRewrite = 'refactor.rewrite'
+
+	/**
+	 * Base kind for source actions: "source"
+	 * <p>
+	 * Source code actions apply to the entire file.
+	 */
+	public static val Source = 'source'
+
+	/**
+	 * Base kind for an organize imports source action: "source.organizeImports"
+	 */
+	public static val SourceOrganizeImports = 'source.organizeImports'
+
+	/**
+	 * Base kind for a 'fix all' source action: "source.fixAll".
+	 * <p>
+	 * 'Fix all' actions automatically fix errors that have a clear fix that
+	 * do not require user input. They should not suppress errors or perform
+	 * unsafe fixes such as generating new types or classes.
+	 */
+	public static val SourceFixAll = 'source.fixAll'
+
+	private new() {}
+}
+
+/**
  * A code action represents a change that can be performed in code, e.g. to fix a problem or
  * to refactor code.
  * <p>
@@ -2233,6 +2429,8 @@ class CodeAction {
 	 * The kind of the code action.
 	 * <p>
 	 * Used to filter code actions.
+	 * <p>
+	 * See {@link CodeActionKind} for some predefined code action kinds.
 	 */
 	String kind
 
@@ -2348,7 +2546,7 @@ class CodeActionContext {
 	 * Actions not of this kind are filtered out by the client before being shown. So servers
 	 * can omit computing them.
 	 * <p>
-	 * See {@link CodeActionKind} for allowed values.
+	 * See {@link CodeActionKind} for some predefined code action kinds.
 	 */
 	List<String> only
 
@@ -2731,6 +2929,21 @@ class CompletionItem {
 	 */
 	@JsonAdapter(CompletionItemTextEditTypeAdapter)
 	Either<TextEdit, InsertReplaceEdit> textEdit
+
+	/**
+	 * The edit text used if the completion item is part of a CompletionList and
+	 * CompletionList defines an item default for the text edit range.
+	 * <p>
+	 * Clients will only honor this property if they opt into completion list
+	 * item defaults using the capability {@link CompletionListCapabilities#itemDefaults}.
+	 * <p>
+	 * If not provided and a list's default range is provided the label
+	 * property is used as a text.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	String textEditText
 
 	/**
 	 * An optional array of additional text edits that are applied when
@@ -3198,28 +3411,60 @@ class DidChangeWatchedFilesRegistrationOptions {
 @JsonRpcData
 class FileSystemWatcher {
 	/**
-	 * The glob pattern to watch
+	 * The glob pattern to watch. Either a string pattern relative to the base path or a relative pattern.
 	 */
 	@NonNull
-	String globPattern
+	Either<String, RelativePattern> globPattern
 
 	/**
 	 * The kind of events of interest. If omitted it defaults
-	 * to WatchKind.Create | WatchKind.Change | WatchKind.Delete
-	 * which is 7.
+	 * to {@link WatchKind#Create} | {@link WatchKind#Change} | {@link WatchKind#Delete}
+	 * which is {@code 7}.
 	 */
 	Integer kind
 
 	new() {
 	}
 
-	new(@NonNull String globPattern) {
+	new(@NonNull Either<String, RelativePattern> globPattern) {
 		this.globPattern = Preconditions.checkNotNull(globPattern, 'globPattern')
 	}
 
-	new(@NonNull String globPattern, Integer kind) {
+	new(@NonNull Either<String, RelativePattern> globPattern, Integer kind) {
 		this(globPattern)
 		this.kind = kind
+	}
+}
+
+/**
+ * A relative pattern is a helper to construct glob patterns that are matched
+ * relatively to a base URI. The common value for a {@link #baseUri} is a workspace
+ * folder root, but it can be another absolute URI as well.
+ * <p>
+ * Since 3.17
+ */
+@Beta
+@JsonRpcData
+class RelativePattern {
+	/**
+	 * A workspace folder or a base URI as a string to which this pattern will be matched
+	 * against relatively.
+	 */
+	@NonNull
+	Either<WorkspaceFolder, String> baseUri
+
+	/**
+	 * The actual glob pattern.
+	 */
+	@NonNull
+	String pattern
+
+	new() {
+	}
+
+	new(@NonNull Either<WorkspaceFolder, String> baseUri, @NonNull String pattern) {
+		this.baseUri = Preconditions.checkNotNull(baseUri, 'baseUri')
+		this.pattern = Preconditions.checkNotNull(pattern, 'pattern')
 	}
 }
 
@@ -3505,7 +3750,6 @@ class DocumentLinkOptions extends AbstractWorkDoneProgressOptions {
  */
 @JsonRpcData
 class ExecuteCommandOptions extends AbstractWorkDoneProgressOptions {
-
 	/**
 	 * The commands to be executed on the server
 	 */
@@ -3540,19 +3784,12 @@ class SaveOptions {
 }
 
 /**
- * Rename options
+ * Rename options.
+ * <p>
+ * Referred to as {@code RenameRegistrationOptions} in the LSP spec.
  */
 @JsonRpcData
 class RenameOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
-	/**
-	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
-	 *
-	 * @deprecated This options object is not specified for StaticRegistrationOptions
-	 */
-	@Deprecated
-	String id
-
 	/**
 	 * Renames should be checked and tested before being executed.
 	 */
@@ -3561,24 +3798,21 @@ class RenameOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressO
 	new() {
 	}
 
-	@Deprecated
-	new(String id) {
-		this.id = id
-	}
-
 	new(Boolean prepareProvider) {
 		this.prepareProvider = prepareProvider
 	}
 }
 
 /**
- * Document color options
+ * Document color options.
+ * <p>
+ * Referred to as {@code DocumentColorRegistrationOptions} in the LSP spec.
  */
 @JsonRpcData
 class ColorProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -3592,12 +3826,16 @@ class ColorProviderOptions extends AbstractTextDocumentRegistrationAndWorkDonePr
 
 /**
  * Folding range options.
+ * <p>
+ * Since 3.10.0
+ * <p>
+ * Referred to as {@code FoldingRangeRegistrationOptions} in the LSP spec.
  */
 @JsonRpcData
 class FoldingRangeProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -3615,23 +3853,30 @@ class TextDocumentSyncOptions {
 	 * Open and close notifications are sent to the server.
 	 */
 	Boolean openClose
+
 	/**
 	 * Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
 	 * and TextDocumentSyncKind.Incremental.
 	 */
 	TextDocumentSyncKind change
+
 	/**
 	 * Will save notifications are sent to the server.
 	 */
 	Boolean willSave
+
 	/**
 	 * Will save wait until requests are sent to the server.
 	 */
 	Boolean willSaveWaitUntil
+
 	/**
 	 * Save notifications are sent to the server.
 	 */
 	Either<Boolean, SaveOptions> save
+
+	new() {
+	}
 }
 
 /**
@@ -3782,6 +4027,12 @@ class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentReg
 @Beta
 @JsonRpcData
 class TypeHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
 }
 
 /**
@@ -3799,7 +4050,15 @@ class TypeHierarchySupertypesParams extends WorkDoneProgressAndPartialResultPara
 	/**
 	 * Representation of an item that carries type information.
 	 */
+	@NonNull
 	TypeHierarchyItem item
+
+	new() {
+	}
+
+	new(@NonNull TypeHierarchyItem item) {
+		this.item = Preconditions.checkNotNull(item, 'item')
+	}
 }
 
 /**
@@ -3817,7 +4076,15 @@ class TypeHierarchySubtypesParams extends WorkDoneProgressAndPartialResultParams
 	/**
 	 * Representation of an item that carries type information.
 	 */
+	@NonNull
 	TypeHierarchyItem item
+
+	new() {
+	}
+
+	new(@NonNull TypeHierarchyItem item) {
+		this.item = Preconditions.checkNotNull(item, 'item')
+	}
 }
 
 @JsonRpcData
@@ -3905,7 +4172,6 @@ class FileEvent {
  * Value-object describing what options formatting should use.
  */
 class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Boolean>> {
-
 	static val TAB_SIZE = 'tabSize'
 	static val INSERT_SPACES = 'insertSpaces'
 	static val TRIM_TRAILING_WHITESPACE = 'trimTrailingWhitespace'
@@ -4552,8 +4818,9 @@ class InitializeParams implements WorkDoneProgressParams {
 	Object initializationOptions
 
 	/**
-	 * The capabilities provided by the client (editor)
+	 * The capabilities provided by the client (editor or tool)
 	 */
+	@NonNull
 	ClientCapabilities capabilities
 
 	/**
@@ -4562,6 +4829,7 @@ class InitializeParams implements WorkDoneProgressParams {
 	 *
 	 * @deprecated Use {@link #clientInfo} instead.
 	 */
+	@Beta
 	@Deprecated
 	String clientName
 
@@ -4599,6 +4867,9 @@ class InitializeParams implements WorkDoneProgressParams {
 	 * Since 3.6.0
 	 */
 	List<WorkspaceFolder> workspaceFolders
+
+	new() {
+	}
 }
 
 @JsonRpcData
@@ -5106,6 +5377,12 @@ class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
  */
 @JsonRpcData
 class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
 }
 
 /**
@@ -5126,7 +5403,7 @@ class LinkedEditingRangeOptions extends AbstractWorkDoneProgressOptions {
 class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -5183,7 +5460,6 @@ class LinkedEditingRanges {
  */
 @JsonRpcData
 class SemanticTokensLegend {
-
 	/**
 	 * The token types that the client supports.
 	 */
@@ -5195,6 +5471,9 @@ class SemanticTokensLegend {
 	 */
 	@NonNull
 	List<String> tokenModifiers
+
+	new() {
+	}
 
 	new(@NonNull List<String> tokenTypes, @NonNull List<String> tokenModifiers) {
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
@@ -5210,7 +5489,6 @@ class SemanticTokensLegend {
  */
 @JsonRpcData
 class SemanticTokensServerFull {
-
 	/**
 	* The server supports deltas for full documents.
 	*/
@@ -5499,11 +5777,26 @@ class ServerCapabilities {
 	DiagnosticRegistrationOptions diagnosticProvider
 
 	/**
+	 * The position encoding the server picked from the encodings offered
+	 * by the client via the client capability {@link GeneralClientCapabilities.positionEncodings}.
+	 * <p>
+	 * If the client didn't provide any position encodings the only valid
+	 * value that a server can return is {@link PositionEncodingKind#UTF16}.
+	 * <p>
+	 * If omitted it defaults to {@link PositionEncodingKind#UTF16}.
+	 * <p>
+	 * See {@link PositionEncodingKind} for some predefined position encoding kinds.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	String positionEncoding
+
+	/**
 	 * Experimental server capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object experimental
-
 }
 
 /**
@@ -5592,6 +5885,9 @@ class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
 	TextDocumentIdentifier textDocument
 
+	new() {
+	}
+
 	new(@NonNull TextDocumentIdentifier textDocument) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 	}
@@ -5602,7 +5898,6 @@ class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
  */
 @JsonRpcData
 class SemanticTokens {
-
 	/**
 	 * An optional result id. If provided and clients support delta updating
 	 * the client will include the result id in the next semantic token request.
@@ -5616,6 +5911,9 @@ class SemanticTokens {
 	 */
 	@NonNull
 	List<Integer> data
+
+	new() {
+	}
 
 	new(@NonNull List<Integer> data) {
 		this.data = Preconditions.checkNotNull(data, 'data')
@@ -5632,9 +5930,11 @@ class SemanticTokens {
  */
 @JsonRpcData
 class SemanticTokensPartialResult {
-
 	@NonNull
 	List<Integer> data
+
+	new() {
+	}
 
 	new(@NonNull List<Integer> data) {
 		this.data = Preconditions.checkNotNull(data, 'data')
@@ -5661,6 +5961,9 @@ class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
 	String previousResultId
 
+	new() {
+	}
+
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull String previousResultId) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.previousResultId = Preconditions.checkNotNull(previousResultId, 'previousResultId')
@@ -5672,7 +5975,6 @@ class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
  */
 @JsonRpcData
 class SemanticTokensEdit {
-
 	/**
 	 * The start offset of the edit.
 	 */
@@ -5688,6 +5990,9 @@ class SemanticTokensEdit {
 	 */
 	List<Integer> data
 
+	new() {
+	}
+
 	new(int start, int deleteCount, List<Integer> data) {
 		this.start = start
 		this.deleteCount = deleteCount
@@ -5700,7 +6005,6 @@ class SemanticTokensEdit {
  */
 @JsonRpcData
 class SemanticTokensDelta {
-
 	String resultId
 
 	/**
@@ -5708,6 +6012,9 @@ class SemanticTokensDelta {
 	 */
 	@NonNull
 	List<SemanticTokensEdit> edits
+
+	new() {
+	}
 
 	new(@NonNull List<SemanticTokensEdit> edits) {
 		this.edits = Preconditions.checkNotNull(edits, 'edits')
@@ -5724,9 +6031,11 @@ class SemanticTokensDelta {
  */
 @JsonRpcData
 class SemanticTokensDeltaPartialResult {
-
 	@NonNull
 	List<SemanticTokensEdit> edits
+
+	new() {
+	}
 
 	new(@NonNull List<SemanticTokensEdit> edits) {
 		this.edits = Preconditions.checkNotNull(edits, 'edits')
@@ -5751,6 +6060,9 @@ class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 	 */
 	@NonNull
 	Range range
+
+	new() {
+	}
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Range range) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
@@ -6260,7 +6572,7 @@ class TextDocumentContentChangeEvent {
 	/**
 	 * The length of the range that got replaced.
 	 *
-	 * @deprecated Use range instead.
+	 * @deprecated Use {@link #range} instead.
 	 */
 	@Deprecated
 	Integer rangeLength
@@ -6278,6 +6590,12 @@ class TextDocumentContentChangeEvent {
 		this.text = Preconditions.checkNotNull(text, 'text')
 	}
 
+	new(Range range, @NonNull String text) {
+		this(text)
+		this.range = range
+	}
+
+	@Deprecated
 	new(Range range, Integer rangeLength, @NonNull String text) {
 		this(text)
 		this.range = range
@@ -6805,38 +7123,6 @@ class DeleteFile extends ResourceOperation {
 }
 
 /**
- * A resource change.
- * <p><ul>
- * <li>If both current and newUri has valid values this is considered to be a move operation.
- * <li>If current has a valid value while newUri is null it is treated as a delete operation.
- * <li>If current is null and newUri has a valid value a create operation is executed.
- * </ul>
- *
- * @deprecated As LSP introduces resource operation, use the {@link ResourceOperation} instead.
- */
-@JsonRpcData
-@Beta
-@Deprecated
-class ResourceChange {
-
-	/**
-	 * The Uri for current resource. Required for delete and move operations
-	 * otherwise it is null.
-	 */
-	String current
-
-	/**
-	 * The new uri for the resource. Required for create and move operations.
-	 * otherwise null.
-	 * <p>
-	 * Must be compatible with the current uri ie. must be a file
-	 * uri if current is not null and is a file uri.
-	 */
-	String newUri
-
-}
-
-/**
  * A workspace edit represents changes to many resources managed in the workspace.
  * The edit should either provide {@link #changes} or {@link #documentChanges}.
  * If documentChanges are present they are preferred over changes
@@ -6866,21 +7152,6 @@ class WorkspaceEdit {
 	 */
 	@JsonAdapter(DocumentChangeListAdapter)
 	List<Either<TextDocumentEdit, ResourceOperation>> documentChanges
-
-	/**
-	 * If resource changes are supported the `WorkspaceEdit`
-	 * uses the property `resourceChanges` which are either a
-	 * rename, move, delete or content change.
-	 * <p>
-	 * These changes are applied in the order that they are supplied,
-	 * however clients may group the changes for optimization
-	 *
-	 * @deprecated Since LSP introduces resource operations, use the {@link #documentChanges} instead
-	 */
-	@Beta
-	@JsonAdapter(ResourceChangeListAdapter)
-	@Deprecated
-	List<Either<ResourceChange, TextDocumentEdit>> resourceChanges
 
 	/**
 	 * A map of change annotations that can be referenced in
@@ -7362,7 +7633,7 @@ class ApplyWorkspaceEditParams {
 /**
  * The result of the `workspace/applyEdit` request.
  * <p>
- * Referred to as {@code ApplyWorkspaceEditResult} in the spec.
+ * Referred to as {@code ApplyWorkspaceEditResult} in the LSP spec.
  */
 @JsonRpcData
 class ApplyWorkspaceEditResponse {
@@ -8006,6 +8277,8 @@ class ColorPresentation {
 /**
  * The folding range request is sent from the client to the server to return all folding
  * ranges found in a given text document.
+ * <p>
+ * Since 3.10.0
  */
 @JsonRpcData
 class FoldingRangeRequestParams extends WorkDoneProgressAndPartialResultParams {
@@ -8024,11 +8297,36 @@ class FoldingRangeRequestParams extends WorkDoneProgressAndPartialResultParams {
 }
 
 /**
+ * A set of predefined range kinds.
+ * <p>
+ * Since 3.10.0
+ */
+final class FoldingRangeKind {
+	/**
+	 * Folding range for a comment
+	 */
+	public static val Comment = 'comment'
+
+	/**
+	 * Folding range for a imports or includes
+	 */
+	public static val Imports = 'imports'
+
+	/**
+	 * Folding range for a region
+	 */
+	public static val Region = 'region'
+
+	private new() {}
+}
+
+/**
  * Represents a folding range.
+ * <p>
+ * Since 3.10.0
  */
 @JsonRpcData
 class FoldingRange {
-
 	/**
 	 * The zero-based line number from where the folded range starts.
 	 */
@@ -8058,6 +8356,16 @@ class FoldingRange {
 	 */
 	String kind
 
+	/**
+	 * The text that the client should show when the specified range is
+	 * collapsed. If not defined or not supported by the client, a default
+	 * will be chosen by the client.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@Beta
+	String collapsedText
+
 	new() {
 	}
 
@@ -8074,7 +8382,12 @@ class FoldingRange {
  */
 @JsonRpcData
 class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
+	new() {
+	}
 
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
 }
 
 /**
@@ -8226,6 +8539,17 @@ class CallHierarchyItem {
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
+
+	new() {
+	}
+
+	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull String uri, @NonNull Range range, @NonNull Range selectionRange) {
+		this.name = Preconditions.checkNotNull(name, 'name')
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.selectionRange = Preconditions.checkNotNull(selectionRange, 'selectionRange')
+	}
 }
 
 /**
@@ -8274,7 +8598,7 @@ class SelectionRangeOptions extends AbstractWorkDoneProgressOptions {
 class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -8294,7 +8618,6 @@ class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistration
  */
 @JsonRpcData
 class SelectionRange {
-
 	/**
 	 * The range of this selection range.
 	 */
@@ -8351,7 +8674,7 @@ class DeclarationOptions extends AbstractWorkDoneProgressOptions {
 class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -8407,7 +8730,7 @@ class TypeDefinitionOptions extends AbstractWorkDoneProgressOptions {
 class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -8441,7 +8764,7 @@ class ImplementationOptions extends AbstractWorkDoneProgressOptions {
 class ImplementationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The id used to register the request. The id can be used to deregister
-	 * the request again. See also Registration#id.
+	 * the request again. See also {@link Registration#id}.
 	 */
 	String id
 
@@ -8528,6 +8851,12 @@ class MonikerRegistrationOptions extends AbstractTextDocumentRegistrationAndWork
  */
 @JsonRpcData
 class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
 }
 
 /**
@@ -8692,6 +9021,13 @@ class InlayHintCapabilities extends DynamicRegistrationCapabilities {
 	 * Indicates which properties a client can resolve lazily on a inlay hint.
 	 */
 	InlayHintResolveSupportCapabilities resolveSupport
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
 }
 
 /**
@@ -8929,7 +9265,7 @@ class InlayHintWorkspaceCapabilities {
 	 * <p>
 	 * Note that this event is global and will force the client to refresh all
 	 * inlay hints currently shown. It should be used with absolute care and
-	 * is useful for situation where a server for example detects a project wide
+	 * is useful for situations where a server for example detects a project wide
 	 * change that requires such a calculation.
 	 */
 	Boolean refreshSupport
@@ -9223,7 +9559,7 @@ class InlineValueWorkspaceCapabilities {
 	 * <p>
 	 * Note that this event is global and will force the client to refresh all
 	 * inline values currently shown. It should be used with absolute care and
-	 * is useful for situation where a server for example detect a project wide
+	 * is useful for situations where a server for example detect a project wide
 	 * change that requires such a calculation.
 	 */
 	Boolean refreshSupport
@@ -9234,6 +9570,39 @@ class InlineValueWorkspaceCapabilities {
 	new(Boolean refreshSupport) {
 		this.refreshSupport = refreshSupport
 	}
+}
+
+/**
+ * A set of predefined position encoding kinds indicating how
+ * positions are encoded, specifically what column offsets mean.
+ * <p>
+ * Since 3.17.0
+ */
+@Beta
+final class PositionEncodingKind {
+	/**
+	 * Character offsets count UTF-8 code units.
+	 */
+	public static val UTF8 = 'utf-8'
+
+	/**
+	 * Character offsets count UTF-16 code units.
+	 * <p>
+	 * This is the default and must always be supported
+	 * by servers.
+	 */
+	public static val UTF16 = 'utf-16'
+
+	/**
+	 * Character offsets count UTF-32 code units.
+	 * <p>
+	 * Implementation note: these are the same as Unicode code points,
+	 * so this kind may also be used for an encoding-agnostic
+	 * representation of character offsets.
+	 */
+	public static val UTF32 = 'utf-32'
+
+	private new() {}
 }
 
 /**
