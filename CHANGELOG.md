@@ -1,7 +1,8 @@
 ## LSP4J Change Log
 
-### v0.13.0 (Date TBD)
+### v0.13.0 (May 2022)
 
+ * Implemented LSP version 3.17.0
  * Implemented DAP versions 1.45.0 - 1.55.0
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/20?closed=1>
