@@ -31,7 +31,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported LSP Versions
 
- * LSP4J 0.13.&ast; &rarr; LSP 3.16.0
+ * LSP4J 0.13.&ast; &rarr; LSP 3.17.0
  * LSP4J 0.12.&ast; &rarr; LSP 3.16.0
  * LSP4J 0.11.&ast; &rarr; LSP 3.16.0
  * LSP4J 0.10.&ast; &rarr; LSP 3.16.0 (specification is not finalized yet)
