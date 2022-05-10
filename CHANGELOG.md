@@ -10,13 +10,17 @@ Breaking API changes:
 
  * Method `LanguageClient.setTrace` moved to `LanguageServer`, where it should
    have been according to the specification
+ * Removed `RenameOptions.id` as it was never specified for `StaticRegistrationOptions`
  * Return type of `workspace/symbol` changed from `List<? extends SymbolInformation>` to
    `Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>`
+ * Type of `FileSystemWatcher.globPattern` changed from `String` to `Either<String, RelativePattern>`
  * In DAP, return type of `IDebugProtocolServer.setExceptionBreakpoints` changed from `Void` to `SetExceptionBreakpointsResponse`
 
 Breaking Beta API changes:
 
  * Significant updates were made to the `TypeHierarchy` features to replace the non-standard implementation
+ * Removed `WorkspaceEdit.resourceChanges`, `WorkspaceEditCapabilities.resourceChanges`, and `ResourceChange` as they have been deprecated
+   for numerous versions and are not specified
 
 Deprecated API changes:
 
