@@ -14,7 +14,7 @@ package org.eclipse.lsp4j;
 /**
  * The value indicates the default behavior used by the
  * client.
- *
+ * <p>
  * Since version 3.16.0
  */
 public enum PrepareSupportDefaultBehavior {

@@ -15,30 +15,30 @@ package org.eclipse.lsp4j;
 /**
  * Completion item tags are extra annotations that tweak the rendering of a completion
  * item.
- * 
+ * <p>
  * Since 3.15.0
  */
 public enum CompletionItemTag {
 
-    /**
-     * Render a completion as obsolete, usually using a strike-out.
-     */
-    Deprecated(1);
+	/**
+	 * Render a completion as obsolete, usually using a strike-out.
+	 */
+	Deprecated(1);
 
-    private final int value;
+	private final int value;
 
-    CompletionItemTag(int value) {
-        this.value = value;
-    }
+	CompletionItemTag(int value) {
+		this.value = value;
+	}
 
-    public int getValue() {
-        return value;
-    }
+	public int getValue() {
+		return value;
+	}
 
-    public static CompletionItemTag forValue(int value) {
-        CompletionItemTag[] allValues = CompletionItemTag.values();
-        if (value < 1 || value > allValues.length)
-            throw new IllegalArgumentException("Illegal enum value: " + value);
-        return allValues[value - 1];
-    }
+	public static CompletionItemTag forValue(int value) {
+		CompletionItemTag[] allValues = CompletionItemTag.values();
+		if (value < 1 || value > allValues.length)
+			throw new IllegalArgumentException("Illegal enum value: " + value);
+		return allValues[value - 1];
+	}
 }

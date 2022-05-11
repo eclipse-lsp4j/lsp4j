@@ -24,7 +24,7 @@ public enum InsertTextFormat {
 	
 	/**
 	 * The primary text to be inserted is treated as a snippet.
-	 *
+	 * <p>
 	 * A snippet can define tab stops and placeholders with `$1`, `$2`
 	 * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
 	 * the end of the snippet. Placeholders with equal identifiers are linked,

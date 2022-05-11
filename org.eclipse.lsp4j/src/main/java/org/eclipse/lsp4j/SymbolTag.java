@@ -14,7 +14,7 @@ package org.eclipse.lsp4j;
 
 /**
  * Symbol tags are extra annotations that tweak the rendering of a symbol.
- * 
+ * <p>
  * Since 3.16
  */
 public enum SymbolTag {

@@ -112,8 +112,8 @@ public interface TextDocumentService {
 	 * completion items is expensive servers can additional provide a handler
 	 * for the resolve completion item request. This request is sent when a
 	 * completion item is selected in the user interface.
-	 * 
-	 * Registration Options: CompletionRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.CompletionRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(CompletionParams position) {
@@ -132,8 +132,8 @@ public interface TextDocumentService {
 	/**
 	 * The hover request is sent from the client to the server to request hover
 	 * information at a given text document position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.HoverRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<Hover> hover(HoverParams params) {
@@ -143,8 +143,8 @@ public interface TextDocumentService {
 	/**
 	 * The signature help request is sent from the client to the server to
 	 * request signature information at a given cursor position.
-	 * 
-	 * Registration Options: SignatureHelpRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.SignatureHelpRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<SignatureHelp> signatureHelp(SignatureHelpParams params) {
@@ -154,9 +154,9 @@ public interface TextDocumentService {
 	/**
 	 * The go to declaration request is sent from the client to the server to resolve
 	 * the declaration location of a symbol at a given text document position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
-	 * 
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DeclarationRegistrationOptions}
+	 * <p>
 	 * Since 3.14.0
 	 */
 	@JsonRequest
@@ -168,8 +168,8 @@ public interface TextDocumentService {
 	/**
 	 * The goto definition request is sent from the client to the server to resolve
 	 * the definition location of a symbol at a given text document position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DefinitionRegistrationOptions}
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
@@ -180,9 +180,9 @@ public interface TextDocumentService {
 	/**
 	 * The goto type definition request is sent from the client to the server to resolve
 	 * the type definition location of a symbol at a given text document position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
-	 * 
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TypeDefinitionRegistrationOptions}
+	 * <p>
 	 * Since 3.6.0
 	 */
 	@JsonRequest
@@ -194,9 +194,9 @@ public interface TextDocumentService {
 	/**
 	 * The goto implementation request is sent from the client to the server to resolve
 	 * the implementation location of a symbol at a given text document position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
-	 * 
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.ImplementationRegistrationOptions}
+	 * <p>
 	 * Since 3.6.0
 	 */
 	@JsonRequest
@@ -209,8 +209,8 @@ public interface TextDocumentService {
 	 * The references request is sent from the client to the server to resolve
 	 * project-wide references for the symbol denoted by the given text document
 	 * position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.ReferenceRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
@@ -220,8 +220,8 @@ public interface TextDocumentService {
 	/**
 	 * The document highlight request is sent from the client to the server to
 	 * to resolve a document highlights for a given text document position.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DocumentHighlightRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends DocumentHighlight>> documentHighlight(DocumentHighlightParams params) {
@@ -231,9 +231,8 @@ public interface TextDocumentService {
 	/**
 	 * The document symbol request is sent from the client to the server to list all
 	 * symbols found in a given text document.
-	 * 
+	 * <p>
 	 * Registration Options: {@link TextDocumentRegistrationOptions}
-	 * 
 	 * <p>
 	 * <b>Caveat</b>: although the return type allows mixing the
 	 * {@link DocumentSymbol} and {@link SymbolInformation} instances into a list do
@@ -244,8 +243,7 @@ public interface TextDocumentService {
 	 * {@code true}. More details on this difference between the LSP and the LSP4J
 	 * can be found <a href="https://github.com/eclipse/lsp4j/issues/252">here</a>.
 	 * </p>
-	 * 
-	 * Servers should whenever possible return {@code DocumentSymbol} since it is the richer data structure.
+	 * Servers should whenever possible return {@link DocumentSymbol} since it is the richer data structure.
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(DocumentSymbolResponseAdapter.class)
@@ -257,8 +255,8 @@ public interface TextDocumentService {
 	 * The code action request is sent from the client to the server to compute
 	 * commands for a given text document and range. These commands are
 	 * typically code fixes to either fix problems or to beautify/refactor code.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.CodeActionRegistrationOptions}
 	 */
 	@JsonRequest
 	@ResponseJsonAdapter(CodeActionResponseAdapter.class)
@@ -269,7 +267,7 @@ public interface TextDocumentService {
 	/**
 	 * The request is sent from the client to the server to resolve additional information for a given code action. This is usually used to compute
 	 * the `edit` property of a code action to avoid its unnecessary computation during the `textDocument/codeAction` request.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest(value="codeAction/resolve", useSegment = false)
@@ -280,8 +278,8 @@ public interface TextDocumentService {
 	/**
 	 * The code lens request is sent from the client to the server to compute
 	 * code lenses for a given text document.
-	 * 
-	 * Registration Options: CodeLensRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.CodeLensRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends CodeLens>> codeLens(CodeLensParams params) {
@@ -300,8 +298,8 @@ public interface TextDocumentService {
 	/**
 	 * The document formatting request is sent from the client to the server to
 	 * format a whole document.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DocumentFormattingRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> formatting(DocumentFormattingParams params) {
@@ -311,8 +309,8 @@ public interface TextDocumentService {
 	/**
 	 * The document range formatting request is sent from the client to the
 	 * server to format a given range in a document.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DocumentRangeFormattingRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params) {
@@ -322,8 +320,8 @@ public interface TextDocumentService {
 	/**
 	 * The document on type formatting request is sent from the client to the
 	 * server to format parts of the document during typing.
-	 * 
-	 * Registration Options: DocumentOnTypeFormattingRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DocumentOnTypeFormattingRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
@@ -333,8 +331,8 @@ public interface TextDocumentService {
 	/**
 	 * The rename request is sent from the client to the server to do a
 	 * workspace wide rename of a symbol.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.RenameOptions RenameRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<WorkspaceEdit> rename(RenameParams params) {
@@ -349,9 +347,9 @@ public interface TextDocumentService {
 	 * applied to all other ranges if the new content is valid. If no result-specific
 	 * word pattern is provided, the word pattern from the client's language configuration
 	 * is used.
-	 * 
-	 * Registration Options: LinkedEditingRangeRegistrationOptions
-	 * 
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.LinkedEditingRangeRegistrationOptions}
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest
@@ -364,8 +362,8 @@ public interface TextDocumentService {
 	 * signal newly opened text documents. The document's truth is now managed
 	 * by the client and the server must not try to read the document's truth
 	 * using the document's uri.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentRegistrationOptions}
 	 */
 	@JsonNotification
 	void didOpen(DidOpenTextDocumentParams params);
@@ -373,8 +371,8 @@ public interface TextDocumentService {
 	/**
 	 * The document change notification is sent from the client to the server to
 	 * signal changes to a text document.
-	 * 
-	 * Registration Options: TextDocumentChangeRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentChangeRegistrationOptions}
 	 */
 	@JsonNotification
 	void didChange(DidChangeTextDocumentParams params);
@@ -384,8 +382,8 @@ public interface TextDocumentService {
 	 * when the document got closed in the client. The document's truth now
 	 * exists where the document's uri points to (e.g. if the document's uri is
 	 * a file uri the truth now exists on disk).
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentRegistrationOptions}
 	 */
 	@JsonNotification
 	void didClose(DidCloseTextDocumentParams params);
@@ -393,16 +391,16 @@ public interface TextDocumentService {
 	/**
 	 * The document save notification is sent from the client to the server when
 	 * the document for saved in the client.
-	 * 
-	 * Registration Options: TextDocumentSaveRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentSaveRegistrationOptions}
 	 */
 	@JsonNotification
 	void didSave(DidSaveTextDocumentParams params);
 
 	/**
 	 * The document will save notification is sent from the client to the server before the document is actually saved.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentRegistrationOptions}
 	 */
 	@JsonNotification
 	default void willSave(WillSaveTextDocumentParams params) {}
@@ -412,8 +410,8 @@ public interface TextDocumentService {
 	 * The request can return an array of TextEdits which will be applied to the text document before it is saved.
 	 * Please note that clients might drop results if computing the text edits took too long or if a server constantly fails on this request.
 	 * This is done to keep the save fast and reliable.
-	 * 
-	 * Registration Options: TextDocumentRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<TextEdit>> willSaveWaitUntil(WillSaveTextDocumentParams params) {
@@ -422,8 +420,8 @@ public interface TextDocumentService {
 	
 	/**
 	 * The document links request is sent from the client to the server to request the location of links in a document.
-	 * 
-	 * Registration Options: DocumentLinkRegistrationOptions
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DocumentLinkRegistrationOptions}
 	 */
 	@JsonRequest
 	default CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
@@ -441,11 +439,13 @@ public interface TextDocumentService {
 	/**
 	 * The document color request is sent from the client to the server to list all color references found in a given text
 	 * document. Along with the range, a color value in RGB is returned.
-	 * 
+	 * <p>
 	 * Clients can use the result to decorate color references in an editor. For example:
-	 *  - Color boxes showing the actual color next to the reference
-	 *  - Show a color picker when a color reference is edited
-	 * 
+	 * <p><ul>
+	 * <li>Color boxes showing the actual color next to the reference
+	 * <li>Show a color picker when a color reference is edited
+	 * </ul>
+	 * <p>
 	 * Since 3.6.0
 	 */
 	@JsonRequest
@@ -456,9 +456,11 @@ public interface TextDocumentService {
 	/**
 	 * The color presentation request is sent from the client to the server to obtain a list of presentations for a color
 	 * value at a given location. Clients can use the result to
-	 *  - modify a color reference.
-	 *  - show in a color picker and let users pick one of the presentations
-	 * 
+	 * <p><ul>
+	 * <li>modify a color reference.
+	 * <li>show in a color picker and let users pick one of the presentations
+	 * </ul>
+	 * <p>
 	 * Since 3.6.0
 	 */
 	@JsonRequest
@@ -469,7 +471,7 @@ public interface TextDocumentService {
 	/**
 	 * The folding range request is sent from the client to the server to return all folding
 	 * ranges found in a given text document.
-	 * 
+	 * <p>
 	 * Since 3.10.0
 	 */
 	@JsonRequest
@@ -480,7 +482,7 @@ public interface TextDocumentService {
 	/**
 	 * The prepare rename request is sent from the client to the server to setup and test the validity of a rename
 	 * operation at a given location.
-	 * 
+	 * <p>
 	 * Since 3.12.0
 	 */
 	@JsonRequest
@@ -493,8 +495,10 @@ public interface TextDocumentService {
 	 * The type hierarchy request is sent from the client to the server to return a type hierarchy for
 	 * the language element of given text document positions. Will return {@code null} if the server 
 	 * couldn't infer a valid type from the position. The type hierarchy requests are executed in two steps:
-	 * 1. first a type hierarchy item is prepared for the given text document position.
-	 * 2. for a type hierarchy item the supertype or subtype type hierarchy items are resolved.
+	 * <p><ol>
+	 * <li>first a type hierarchy item is prepared for the given text document position.
+	 * <li>for a type hierarchy item the supertype or subtype type hierarchy items are resolved.
+	 * </ol>
 	 * <p>
 	 * Since 3.17.0
 	 */
@@ -538,7 +542,7 @@ public interface TextDocumentService {
 	 * Bootstraps call hierarchy by returning the item that is denoted by the given document
 	 * and position. This item will be used as entry into the call graph. Providers should
 	 * return null when there is no item at the given location.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest
@@ -550,7 +554,7 @@ public interface TextDocumentService {
 	 * Provide all incoming calls for an item, e.g all callers for a method. In graph terms this describes directed
 	 * and annotated edges inside the call graph, e.g the given item is the starting node and the result is the nodes
 	 * that can be reached.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	*/
 	@JsonRequest(value="callHierarchy/incomingCalls", useSegment = false)
@@ -562,7 +566,7 @@ public interface TextDocumentService {
 	* Provide all outgoing calls for an item, e.g call calls to functions, methods, or constructors from the given item. In
 	* graph terms this describes directed and annotated edges inside the call graph, e.g the given item is the starting
 	* node and the result is the nodes that can be reached.
-	* 
+	* <p>
 	* Since 3.16.0
 	*/
 	@JsonRequest(value="callHierarchy/outgoingCalls", useSegment = false)
@@ -574,7 +578,7 @@ public interface TextDocumentService {
 	 * The {@code textDocument/selectionRange} request is sent from the client to the server to return
 	 * suggested selection ranges at an array of given positions. A selection range is a range around
 	 * the cursor position which the user might be interested in selecting.
-	 * 
+	 * <p>
 	 * Since 3.15.0
 	 */
 	@JsonRequest
@@ -585,7 +589,7 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/full} request is sent from the client to the server to return
 	 * the semantic tokens for a whole file.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/full", useSegment = false)
@@ -596,7 +600,7 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/full/delta} request is sent from the client to the server to return
 	 * the semantic tokens delta for a whole file.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/full/delta", useSegment = false)
@@ -608,14 +612,14 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/range} request is sent from the client to the server to return
 	 * the semantic tokens delta for a range.
-	 *
+	 * <p>
 	 * When a user opens a file it can be beneficial to only compute the semantic tokens for the visible range
 	 * (faster rendering of the tokens in the user interface). If a server can compute these tokens faster than
 	 * for the whole file it can provide a handler for the textDocument/semanticTokens/range request to handle
 	 * this case special. Please note that if a client also announces that it will send the
 	 * textDocument/semanticTokens/range server should implement this request as well to allow for flicker free
 	 * scrolling and semantic coloring of a minimap.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest(value="textDocument/semanticTokens/range", useSegment = false)
@@ -629,11 +633,11 @@ public interface TextDocumentService {
 	 * information given a text document position. Clients can utilize this method to get the moniker at the current
 	 * location in a file user is editing and do further code navigation queries in other services that rely on LSIF indexes
 	 * and link symbols together.
-	 *
+	 * <p>
 	 * The {@code textDocument/moniker} request is sent from the client to the server to get the symbol monikers for a given
 	 * text document position. An array of Moniker types is returned as response to indicate possible monikers at the given location.
 	 * If no monikers can be calculated, an empty array or null should be returned.
-	 * 
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonRequest
