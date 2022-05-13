@@ -109,6 +109,67 @@ class WorkspaceEditCapabilities {
 }
 
 /**
+ * The kind of resource operations supported by the client.
+ * <p>
+ * Since 3.13.0
+ */
+final class ResourceOperationKind {
+	/**
+	 * Supports creating new files and folders.
+	 */
+	public static val Create = 'create'
+
+	/**
+	 * Supports renaming existing files and folders.
+	 */
+	public static val Rename = 'rename'
+
+	/**
+	 * Supports deleting existing files and folders.
+	 */
+	public static val Delete = 'delete'
+
+	private new() {
+	}
+}
+
+/**
+ * The kind of failure handling supported by the client.
+ * <p>
+ * Since 3.13.0
+ */
+final class FailureHandlingKind {
+	/**
+	 * Applying the workspace change is simply aborted if one of the changes
+	 * provided fails. All operations executed before the failing operation stay
+	 * executed.
+	 */
+	public static val Abort = 'abort'
+
+	/**
+	 * All operations are executed transactional. That means they either all succeed
+	 * or no changes at all are applied to the workspace.
+	 */
+	public static val Transactional = 'transactional'
+
+	/**
+	 * If the workspace edit contains only textual file changes they are executed
+	 * transactional. If resource changes (create, rename or delete file) are part
+	 * of the change the failure handling strategy is abort.
+	 */
+	public static val TextOnlyTransactional = 'textOnlyTransactional'
+
+	/**
+	 * The client tries to undo the operations already executed. But there is no
+	 * guarantee that this is succeeding.
+	 */
+	public static val Undo = 'undo'
+
+	private new() {
+	}
+}
+
+/**
  * Capabilities specific to the `workspace/didChangeConfiguration` notification.
  */
 @JsonRpcData
@@ -178,6 +239,8 @@ class WorkspaceSymbolResolveSupportCapabilities {
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Specific capabilities for the {@link SymbolKind} in the {@code workspace/symbol} request.
+	 * <p>
+	 * Since 3.4.0
 	 */
 	SymbolKindCapabilities symbolKind
 
@@ -383,22 +446,32 @@ class CompletionItemCapabilities {
 
 	/**
 	 * Client supports commit characters on a completion item.
+	 * <p>
+	 * Since 3.2.0
 	 */
 	Boolean commitCharactersSupport
 
 	/**
 	 * Client supports the following content formats for the documentation
 	 * property. The order describes the preferred format of the client.
+	 * <p>
+	 * See {@link MarkupKind} for allowed values.
+	 * <p>
+	 * Since 3.3.0
 	 */
 	List<String> documentationFormat
 
 	/**
 	 * Client supports the deprecated property on a completion item.
+	 * <p>
+	 * Since 3.8.0
 	 */
 	Boolean deprecatedSupport
 
 	/**
 	 * Client supports the preselect property on a completion item.
+	 * <p>
+	 * Since 3.9.0
 	 */
 	Boolean preselectSupport
 
@@ -527,6 +600,8 @@ class CompletionItemInsertTextModeSupportCapabilities {
 /**
  * The client supports the following {@link CompletionItemKind} specific
  * capabilities.
+ * <p>
+ * Since 3.4.0
  */
 @JsonRpcData
 class CompletionItemKindCapabilities {
@@ -591,12 +666,16 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports the following {@link CompletionItemKind} specific
 	 * capabilities.
+	 * <p>
+	 * Since 3.4.0
 	 */
 	CompletionItemKindCapabilities completionItemKind
 
 	/**
 	 * The client supports sending additional context information for a
 	 * `textDocument/completion` request.
+	 * <p>
+	 * Since 3.3.0
 	 */
 	Boolean contextSupport
 
@@ -645,6 +724,8 @@ class HoverCapabilities extends DynamicRegistrationCapabilities {
 	 * The order describes the preferred format of the client.
 	 * <p>
 	 * See {@link MarkupKind} for allowed values.
+	 * <p>
+	 * Since 3.3.0
 	 */
 	List<String> contentFormat
 
@@ -671,11 +752,15 @@ class SignatureInformationCapabilities {
 	 * property. The order describes the preferred format of the client.
 	 * <p>
 	 * See {@link MarkupKind} for allowed values.
+	 * <p>
+	 * Since 3.3.0
 	 */
 	List<String> documentationFormat
 
 	/**
 	 * Client capabilities specific to parameter information.
+	 * <p>
+	 * Since 3.14.0
 	 */
 	ParameterInformationCapabilities parameterInformation
 
@@ -696,14 +781,14 @@ class SignatureInformationCapabilities {
 
 /**
  * Client capabilities specific to parameter information.
+ * <p>
+ * Since 3.14.0
  */
 @JsonRpcData
 class ParameterInformationCapabilities {
 	/**
 	 * The client supports processing label offsets instead of a
 	 * simple label string.
-	 * <p>
-	 * Since 3.14.0
 	 */
 	Boolean labelOffsetSupport
 
@@ -776,6 +861,8 @@ class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Specific capabilities for the {@link SymbolKind}.
+ * <p>
+ * Since 3.4.0
  */
 @JsonRpcData
 class SymbolKindCapabilities {
@@ -828,11 +915,15 @@ class SymbolTagSupportCapabilities {
 class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Specific capabilities for the {@link SymbolKind}.
+	 * <p>
+	 * Since 3.4.0
 	 */
 	SymbolKindCapabilities symbolKind
 
 	/**
 	 * The client support hierarchical document symbols.
+	 * <p>
+	 * Since 3.10.0
 	 */
 	Boolean hierarchicalDocumentSymbolSupport
 
@@ -1654,12 +1745,16 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * The token types that the client supports.
+	 * <p>
+	 * See {@link SemanticTokenTypes} for allowed values.
 	 */
 	@NonNull
 	List<String> tokenTypes
 
 	/**
 	 * The token modifiers that the client supports.
+	 * <p>
+	 * See {@link SemanticTokenModifiers} for allowed values.
 	 */
 	@NonNull
 	List<String> tokenModifiers
@@ -2655,6 +2750,8 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * The list of kinds may be generic, such as {@link CodeActionKind#Refactor}, or the server
 	 * may list out every specific kind they provide.
+	 * <p>
+	 * Since 3.11.0
 	 */
 	List<String> codeActionKinds
 
@@ -2684,6 +2781,8 @@ class CodeActionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	 * <p>
 	 * The list of kinds may be generic, such as {@link CodeActionKind#Refactor}, or the server
 	 * may list out every specific kind they provide.
+	 * <p>
+	 * Since 3.11.0
 	 */
 	List<String> codeActionKinds
 
@@ -2851,6 +2950,8 @@ class CompletionItem {
 
 	/**
 	 * Indicates if this item is deprecated.
+	 * <p>
+	 * Since 3.8.0
 	 *
 	 * @deprecated Use {@link #tags} instead if supported.
 	 */
@@ -2863,6 +2964,8 @@ class CompletionItem {
 	 * <em>Note</em> that only one completion item can be selected and that the
 	 * tool / client decides which item that is. The rule is that the <em>first</em>
 	 * item of those that match best is selected.
+	 * <p>
+	 * Since 3.9.0
 	 */
 	Boolean preselect
 
@@ -2960,6 +3063,8 @@ class CompletionItem {
 	 * An optional set of characters that when pressed while this completion is active will accept it first and
 	 * then type that character. <em>Note</em> that all commit characters should have {@code length=1} and that superfluous
 	 * characters will be ignored.
+	 * <p>
+	 * Since 3.2.0
 	 */
 	List<String> commitCharacters
 
@@ -3436,6 +3541,26 @@ class FileSystemWatcher {
 	}
 }
 
+final class WatchKind {
+	/**
+	 * Interested in create events.
+	 */
+	public static val Create = 1
+
+	/**
+	 * Interested in change events
+	 */
+	public static val Change = 2
+
+	/**
+	 * Interested in delete events
+	 */
+	public static val Delete = 4
+
+	private new() {
+	}
+}
+
 /**
  * A relative pattern is a helper to construct glob patterns that are matched
  * relatively to a base URI. The common value for a {@link #baseUri} is a workspace
@@ -3681,6 +3806,8 @@ class DocumentLink {
 	/**
 	 * A data entry field that is preserved on a document link between a
 	 * DocumentLinkRequest and a DocumentLinkResolveRequest.
+	 * <p>
+	 * Since 3.8.0
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
@@ -3807,6 +3934,8 @@ class RenameOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressO
  * Document color options.
  * <p>
  * Referred to as {@code DocumentColorRegistrationOptions} in the LSP spec.
+ * <p>
+ * Since 3.6.0
  */
 @JsonRpcData
 class ColorProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -3827,9 +3956,9 @@ class ColorProviderOptions extends AbstractTextDocumentRegistrationAndWorkDonePr
 /**
  * Folding range options.
  * <p>
- * Since 3.10.0
- * <p>
  * Referred to as {@code FoldingRangeRegistrationOptions} in the LSP spec.
+ * <p>
+ * Since 3.10.0
  */
 @JsonRpcData
 class FoldingRangeProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -4327,7 +4456,30 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 			putString(entry.key, entry.value)
 		}
 	}
+}
 
+/**
+ * Describes the content type that a client supports in various
+ * result literals like {@link Hover}, {@link ParameterInfo} or {@link CompletionItem}.
+ * <p>
+ * Please note that {@code MarkupKind}s must not start with a {@code $}. These kinds
+ * are reserved for internal usage.
+ * <p>
+ * Since 3.3.0
+ */
+final class MarkupKind {
+	/**
+	 * Plain text is supported as a content format.
+	 */
+	public static val PLAINTEXT = 'plaintext'
+
+	/**
+	 * Markdown is supported as a content format.
+	 */
+	public static val MARKDOWN = 'markdown'
+
+	private new() {
+	}
 }
 
 /**
@@ -4340,11 +4492,15 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
  * <p>
  * Please Note that clients might sanitize the return markdown. A client could decide to
  * remove HTML from the markdown to avoid script execution.
+ * <p>
+ * Since 3.3.0
  */
 @JsonRpcData
 class MarkupContent {
 	/**
 	 * The type of the Markup.
+	 * <p>
+	 * See {@link MarkupKind} for allowed values.
 	 */
 	@NonNull
 	String kind
@@ -4988,6 +5144,8 @@ class Location {
 
 /**
  * Represents a link between a source and a target location.
+ * <p>
+ * Since 3.14.0
  */
 @JsonRpcData
 class LocationLink {
@@ -5116,6 +5274,22 @@ class LogTraceParams {
 	new(@NonNull String message, String verbose) {
 		this.message = Preconditions.checkNotNull(message, 'message')
 		this.verbose = verbose
+	}
+}
+
+/**
+ * A TraceValue represents the level of verbosity with which the server systematically reports its execution
+ * trace using {@code $/logTrace} notifications. The initial trace value is set by the client at initialization and
+ * can be modified later using the {@code $/setTrace} notification.
+ */
+final class TraceValue {
+	public static val Off = 'off'
+
+	public static val Messages = 'messages'
+
+	public static val Verbose = 'verbose'
+
+	private new() {
 	}
 }
 
@@ -5322,8 +5496,26 @@ class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialR
 }
 
 /**
+ * The prepare rename request is sent from the client to the server to setup and test the validity of a
+ * rename operation at a given location.
+ * <p>
+ * Since 3.12.0
+ */
+@JsonRpcData
+class PrepareRenameParams extends TextDocumentPositionParams {
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
+		super(textDocument, position)
+	}
+}
+
+/**
  * One of the result types of the `textDocument/prepareRename` request.
  * Provides the range of the string to rename and a placeholder text of the string content to be renamed.
+ * <p>
+ * Since 3.12.0
  */
 @JsonRpcData
 class PrepareRenameResult {
@@ -5454,6 +5646,100 @@ class LinkedEditingRanges {
 }
 
 /**
+ * Since 3.16.0
+ */
+final class SemanticTokenTypes {
+	public static val Namespace = 'namespace'
+
+	/**
+	 * Represents a generic type. Acts as a fallback for types which
+	 * can't be mapped to a specific type like class or enum.
+	 */
+	public static val Type = 'type'
+
+	public static val Class = 'class'
+
+	public static val Enum = 'enum'
+
+	public static val Interface = 'interface'
+
+	public static val Struct = 'struct'
+
+	public static val TypeParameter = 'typeParameter'
+
+	public static val Parameter = 'parameter'
+
+	public static val Variable = 'variable'
+
+	public static val Property = 'property'
+
+	public static val EnumMember = 'enumMember'
+
+	public static val Event = 'event'
+
+	public static val Function = 'function'
+
+	public static val Method = 'method'
+
+	public static val Macro = 'macro'
+
+	public static val Keyword = 'keyword'
+
+	public static val Modifier = 'modifier'
+
+	public static val Comment = 'comment'
+
+	public static val String = 'string'
+
+	public static val Number = 'number'
+
+	public static val Regexp = 'regexp'
+
+	public static val Operator = 'operator'
+
+	private new() {
+	}
+}
+
+/**
+ * Since 3.16.0
+ */
+final class SemanticTokenModifiers {
+	public static val Declaration = 'declaration'
+
+	public static val Definition = 'definition'
+
+	public static val Readonly = 'readonly'
+
+	public static val Static = 'static'
+
+	public static val Deprecated = 'deprecated'
+
+	public static val Abstract = 'abstract'
+
+	public static val Async = 'async'
+
+	public static val Modification = 'modification'
+
+	public static val Documentation = 'documentation'
+
+	public static val DefaultLibrary = 'defaultLibrary'
+
+	private new() {
+	}
+}
+
+/**
+ * Since 3.16.0
+ */
+final class TokenFormat {
+	public static val Relative = 'relative'
+
+	private new() {
+	}
+}
+
+/**
  * The legend used by the server
  * <p>
  * Since 3.16.0
@@ -5462,12 +5748,16 @@ class LinkedEditingRanges {
 class SemanticTokensLegend {
 	/**
 	 * The token types that the client supports.
+	 * <p>
+	 * See {@link SemanticTokenTypes} for allowed values.
 	 */
 	@NonNull
 	List<String> tokenTypes
 
 	/**
 	 * The token modifiers that the client supports.
+	 * <p>
+	 * See {@link SemanticTokenModifiers} for allowed values.
 	 */
 	@NonNull
 	List<String> tokenModifiers
@@ -5479,7 +5769,6 @@ class SemanticTokensLegend {
 		this.tokenTypes = Preconditions.checkNotNull(tokenTypes, 'tokenTypes')
 		this.tokenModifiers = Preconditions.checkNotNull(tokenModifiers, 'tokenModifiers')
 	}
-
 }
 
 /**
@@ -5507,7 +5796,6 @@ class SemanticTokensServerFull {
  */
 @JsonRpcData
 class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
-
 	/**
 	 * The legend used by the server
 	 */
@@ -5572,7 +5860,6 @@ class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOpti
 		this.range = range
 		this.documentSelector = documentSelector
 	}
-
 }
 
 /**
@@ -6324,6 +6611,8 @@ class TypeHierarchyItem {
  * Represents programming constructs like variables, classes, interfaces etc. that appear in a document. Document symbols can be
  * hierarchical and they have two ranges: one that encloses its definition and one that points to its most interesting range,
  * e.g. the range of an identifier.
+ * <p>
+ * Since 3.10.0
  */
 @JsonRpcData
 class DocumentSymbol {
@@ -6434,6 +6723,8 @@ class SymbolInformation {
 
 	/**
 	 * Indicates if this symbol is deprecated.
+	 * <p>
+	 * Since 3.8.0
 	 *
 	 * @deprecated Use {@link #tags} instead if supported.
 	 */
@@ -6709,6 +7000,8 @@ class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartial
 	/**
 	 * The completion context. This is only available if the client specifies
 	 * to send this using {@link CompletionCapabilities#contextSupport} as true.
+	 * <p>
+	 * Since 3.3.0
 	 */
 	CompletionContext context
 
@@ -6725,6 +7018,9 @@ class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartial
 	}
 }
 
+/**
+ * Since 3.3.0
+ */
 @JsonRpcData
 class CompletionContext {
 	/**
@@ -6952,6 +7248,8 @@ abstract class ResourceOperation {
 
 /**
  * Options to create a file.
+ * <p>
+ * Since 3.13.0
  */
 @JsonRpcData
 class CreateFileOptions {
@@ -6976,6 +7274,8 @@ class CreateFileOptions {
 
 /**
  * Create file operation
+ * <p>
+ * Since 3.13.0
  */
 @JsonRpcData
 class CreateFile extends ResourceOperation {
@@ -7007,6 +7307,8 @@ class CreateFile extends ResourceOperation {
 
 /**
  * Rename file options
+ * <p>
+ * Since 3.13.0
  */
 @JsonRpcData
 class RenameFileOptions {
@@ -7031,6 +7333,8 @@ class RenameFileOptions {
 
 /**
  * Rename file operation
+ * <p>
+ * Since 3.13.0
  */
 @JsonRpcData
 class RenameFile extends ResourceOperation {
@@ -7069,6 +7373,8 @@ class RenameFile extends ResourceOperation {
 
 /**
  * Delete file options
+ * <p>
+ * Since 3.13.0
  */
 @JsonRpcData
 class DeleteFileOptions {
@@ -7093,6 +7399,8 @@ class DeleteFileOptions {
 
 /**
  * Delete file operation
+ * <p>
+ * Since 3.13.0
  */
 @JsonRpcData
 class DeleteFile extends ResourceOperation {
@@ -7388,8 +7696,7 @@ class UnregistrationParams {
 @JsonRpcData
 class TextDocumentChangeRegistrationOptions extends TextDocumentRegistrationOptions {
 	/**
-	 * How documents are synced to the server. See TextDocumentSyncKind.Full
-	 * and TextDocumentSyncKind.Incremental.
+	 * How documents are synced to the server.
 	 */
 	@NonNull
 	TextDocumentSyncKind syncKind
@@ -7694,6 +8001,8 @@ class WorkspaceFoldersOptions {
  * the current open list of workspace folders. Returns null in the response if only a single
  * file is open in the tool. Returns an empty array if a workspace is open but no folders
  * are configured.
+ * <p>
+ * Since 3.6.0
  */
 @JsonRpcData
 class WorkspaceFolder {
@@ -7908,6 +8217,27 @@ class FileOperationPattern {
 
 	new(@NonNull String glob) {
 		this.glob = Preconditions.checkNotNull(glob, 'glob')
+	}
+}
+
+/**
+ * A pattern kind describing if a glob pattern matches a file a folder or
+ * both.
+ * <p>
+ * Since 3.16.0
+ */
+final class FileOperationPatternKind {
+	/**
+	 * The pattern matches a file only.
+	 */
+	public static val File = 'file'
+
+	/**
+	 * The pattern matches a folder only.
+	 */
+	public static val Folder = 'folder'
+
+	private new() {
 	}
 }
 
@@ -8138,6 +8468,9 @@ class DocumentColorParams extends WorkDoneProgressAndPartialResultParams {
 	}
 }
 
+/**
+ * Since 3.6.0
+ */
 @JsonRpcData
 class ColorInformation {
 	/**
@@ -8163,6 +8496,8 @@ class ColorInformation {
 
 /**
  * Represents a color in RGBA space.
+ * <p>
+ * Since 3.6.0
  */
 @JsonRpcData
 class Color {
@@ -8233,6 +8568,9 @@ class ColorPresentationParams extends WorkDoneProgressAndPartialResultParams {
 	}
 }
 
+/**
+ * Since 3.6.0
+ */
 @JsonRpcData
 class ColorPresentation {
 	/**
@@ -8666,10 +9004,16 @@ class HoverParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	}
 }
 
+/**
+ * Since 3.14.0
+ */
 @JsonRpcData
 class DeclarationOptions extends AbstractWorkDoneProgressOptions {
 }
 
+/**
+ * Since 3.14.0
+ */
 @JsonRpcData
 class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -8689,6 +9033,8 @@ class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAnd
 /**
  * The go to declaration request is sent from the client to the server to resolve the declaration
  * location of a symbol at a given text document position.
+ * <p>
+ * Since 3.14.0
  */
 @JsonRpcData
 class DeclarationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
@@ -8722,10 +9068,16 @@ class DefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartial
 	}
 }
 
+/**
+ * Since 3.6.0
+ */
 @JsonRpcData
 class TypeDefinitionOptions extends AbstractWorkDoneProgressOptions {
 }
 
+/**
+ * Since 3.6.0
+ */
 @JsonRpcData
 class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -8745,6 +9097,8 @@ class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistration
 /**
  * The go to type definition request is sent from the client to the server to resolve the type definition
  * location of a symbol at a given text document position.
+ * <p>
+ * Since 3.6.0
  */
 @JsonRpcData
 class TypeDefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
@@ -8756,10 +9110,16 @@ class TypeDefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPar
 	}
 }
 
+/**
+ * Since 3.6.0
+ */
 @JsonRpcData
 class ImplementationOptions extends AbstractWorkDoneProgressOptions {
 }
 
+/**
+ * Since 3.6.0
+ */
 @JsonRpcData
 class ImplementationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -8779,6 +9139,8 @@ class ImplementationRegistrationOptions extends AbstractTextDocumentRegistration
 /**
  * The go to implementation request is sent from the client to the server to resolve the implementation
  * location of a symbol at a given text document position.
+ * <p>
+ * Since 3.6.0
  */
 @JsonRpcData
 class ImplementationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
@@ -8804,20 +9166,6 @@ class DocumentHighlightRegistrationOptions extends AbstractTextDocumentRegistrat
  */
 @JsonRpcData
 class DocumentHighlightParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
-	new() {
-	}
-
-	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
-		super(textDocument, position)
-	}
-}
-
-/**
- * The prepare rename request is sent from the client to the server to setup and test the validity of a
- * rename operation at a given location.
- */
-@JsonRpcData
-class PrepareRenameParams extends TextDocumentPositionParams {
 	new() {
 	}
 
@@ -8856,6 +9204,67 @@ class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialRes
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
 		super(textDocument, position)
+	}
+}
+
+/**
+ * Moniker uniqueness level to define scope of the moniker.
+ * <p>
+ * Since 3.16.0
+ */
+final class UniquenessLevel {
+	/**
+	 * The moniker is only unique inside a document
+	 */
+	public static val Document = 'document'
+
+	/**
+	 * The moniker is unique inside a project for which a dump got created
+	 */
+	public static val Project = 'project'
+
+	/**
+	 * The moniker is unique inside the group to which a project belongs
+	 */
+	public static val Group = 'group'
+
+	/**
+	 * The moniker is unique inside the moniker scheme.
+	 */
+	public static val Scheme = 'scheme'
+
+	/**
+	 * The moniker is globally unique
+	 */
+	public static val Global = 'global'
+
+	private new() {
+	}
+}
+
+/**
+ * The moniker kind.
+ * <p>
+ * Since 3.16.0
+ */
+final class MonikerKind {
+	/**
+	 * The moniker represents a symbol that is imported into a project
+	 */
+	public static val Import = 'import'
+
+	/**
+	 * The moniker represents a symbol that is exported from a project
+	 */
+	public static val Export = 'export'
+
+	/**
+	 * The moniker represents a symbol that is local to a project (e.g. a local
+	 * variable of a function, a class not visible outside the project, ...)
+	 */
+	public static val Local = 'local'
+
+	private new() {
 	}
 }
 

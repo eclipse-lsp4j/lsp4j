@@ -30,6 +30,8 @@ public enum CompletionTriggerKind {
 	
 	/**
 	 * Completion was re-triggered as the current completion list is incomplete.
+	 * <p>
+	 * Since 3.6.0
 	 */
 	TriggerForIncompleteCompletions(3);
 	

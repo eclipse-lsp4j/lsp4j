@@ -30,17 +30,19 @@ public interface LanguageServer {
 	/**
 	 * The initialize request is sent as the first request from the client to
 	 * the server.
-	 * 
+	 * <p>
 	 * If the server receives requests or notifications before the initialize request, it should act as follows:
-	 *  - for a request, the response should be errored with:
-	 *    {@link org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode#serverNotInitialized}.
+	 * <p><ul>
+	 * <li>for a request, the response should be errored with:
+	 *    {@link org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode#ServerNotInitialized}.
 	 *    The message can be picked by the server.
-	 *  - notifications should be dropped, except for the exit notification.
+	 * <li>notifications should be dropped, except for the exit notification.
 	 *    This will allow the client to exit a server without an initialize request.
-	 *  
+	 * </ul>
+	 * <p>
 	 * Until the server has responded to the initialize request with an InitializeResult,
 	 * the client must not send any additional requests or notifications to the server.
-	 * 
+	 * <p>
 	 * During the initialize request, the server is allowed to send the notifications window/showMessage,
 	 * window/logMessage, and telemetry/event, as well as the request window/showMessageRequest, to the client.
 	 */

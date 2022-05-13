@@ -11,7 +11,13 @@ Breaking API changes:
 
  * Method `LanguageClient.setTrace` moved to `LanguageServer`, where it should
    have been according to the specification
- * Removed `RenameOptions.id` as it was never specified for `StaticRegistrationOptions`
+ * Removed `RenameOptions.id` as it was already deprecated and never specified for `StaticRegistrationOptions`
+ * Removed `SemanticTokenTypes.Member` as it was already deprecated and not specified
+ * Removed `TraceValue.Message` as it was already deprecated and not specified
+ * Changed `TraceValue` to be `final` matching similar classes
+ * Removed duplicate `ResponseErrorCode` as it has been deprecated for several versions
+ * Removed `ResponseErrorCode.serverErrorStart` and `ResponseErrorCode.serverErrorEnd` as they were
+   already deprecated and just boundaries not actual error codes
  * Return type of `workspace/symbol` changed from `List<? extends SymbolInformation>` to
    `Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>`
  * Type of `FileSystemWatcher.globPattern` changed from `String` to `Either<String, RelativePattern>`
@@ -26,6 +32,7 @@ Breaking Beta API changes:
 Deprecated API changes:
 
  * `SymbolInformation` is deprecated in favor of `DocumentSymbol` or `WorkspaceSymbol`
+ * `ResponseErrorCode.serverNotInitialized` deprecated in favor of `ResponseErrorCode.ServerNotInitialized`
 
 ### v0.12.0 (Apr. 2021)
 
