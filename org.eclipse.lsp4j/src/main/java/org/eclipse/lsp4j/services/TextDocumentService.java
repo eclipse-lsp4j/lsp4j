@@ -14,8 +14,6 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.google.common.annotations.Beta;
-
 import org.eclipse.lsp4j.CallHierarchyIncomingCall;
 import org.eclipse.lsp4j.CallHierarchyIncomingCallsParams;
 import org.eclipse.lsp4j.CallHierarchyItem;
@@ -502,7 +500,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<TypeHierarchyItem>> prepareTypeHierarchy(TypeHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
@@ -517,7 +514,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest(value="typeHierarchy/supertypes", useSegment = false)
 	default CompletableFuture<List<TypeHierarchyItem>> typeHierarchySupertypes(TypeHierarchySupertypesParams params) {
 		throw new UnsupportedOperationException();
@@ -532,7 +528,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest(value="typeHierarchy/subtypes", useSegment = false)
 	default CompletableFuture<List<TypeHierarchyItem>> typeHierarchySubtypes(TypeHierarchySubtypesParams params) {
 		throw new UnsupportedOperationException();
@@ -651,7 +646,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<InlayHint>> inlayHint(InlayHintParams params) {
 		throw new UnsupportedOperationException();
@@ -664,7 +658,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest(value="inlayHint/resolve", useSegment = false)
 	default CompletableFuture<InlayHint> resolveInlayHint(InlayHint unresolved) {
 		throw new UnsupportedOperationException();
@@ -676,7 +669,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<List<InlineValue>> inlineValue(InlineValueParams params) {
 		throw new UnsupportedOperationException();
@@ -689,7 +681,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<DocumentDiagnosticReport> diagnostic(DocumentDiagnosticParams params) {
 		throw new UnsupportedOperationException();

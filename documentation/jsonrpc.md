@@ -1,6 +1,6 @@
 # JSON-RPC Core Concepts
 
-The LSP is based on an extended version of [JSON-RPC v2.0](http://www.jsonrpc.org/specification), for which LSP4J provides a Java implementation. There are basically three levels of interaction:
+The LSP is based on an extended version of [JSON-RPC v2.0](https://www.jsonrpc.org/specification), for which LSP4J provides a Java implementation. There are basically three levels of interaction:
 
 ## Basic Message Sending
 

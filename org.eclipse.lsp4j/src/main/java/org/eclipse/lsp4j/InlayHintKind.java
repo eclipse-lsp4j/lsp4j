@@ -11,14 +11,11 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
-
 /**
  * Inlay hint kinds.
  * <p>
  * Since 3.17.0
  */
-@Beta
 public enum InlayHintKind {
 	/**
 	 * An inlay hint that for a type annotation.
