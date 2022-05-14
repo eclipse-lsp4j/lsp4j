@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.util.Preconditions
@@ -1784,7 +1785,7 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client allows the server to actively cancel a
 	 * semantic token request, e.g. supports returning
-	 * {@link org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode#ServerCancelled}.
+	 * {@link ResponseErrorCode#ServerCancelled}.
 	 * If a server does, the client needs to retrigger the request.
 	 * <p>
 	 * Since 3.17.0
@@ -4460,7 +4461,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 /**
  * Describes the content type that a client supports in various
- * result literals like {@link Hover}, {@link ParameterInfo} or {@link CompletionItem}.
+ * result literals like {@link Hover}, {@link ParameterInformation} or {@link CompletionItem}.
  * <p>
  * Please note that {@code MarkupKind}s must not start with a {@code $}. These kinds
  * are reserved for internal usage.
@@ -6065,7 +6066,7 @@ class ServerCapabilities {
 
 	/**
 	 * The position encoding the server picked from the encodings offered
-	 * by the client via the client capability {@link GeneralClientCapabilities.positionEncodings}.
+	 * by the client via the client capability {@link GeneralClientCapabilities#positionEncodings}.
 	 * <p>
 	 * If the client didn't provide any position encodings the only valid
 	 * value that a server can return is {@link PositionEncodingKind#UTF16}.
