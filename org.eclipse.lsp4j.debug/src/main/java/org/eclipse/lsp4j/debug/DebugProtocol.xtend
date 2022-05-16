@@ -1081,11 +1081,11 @@ class SetBreakpointsArguments {
 	 */
 	SourceBreakpoint[] breakpoints;
 	/**
-	 * Deprecated: The code locations of the breakpoints.
+	 * The code locations of the breakpoints.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * @deprecated Use the line field in the breakpoints property instead.
+	 *
+	 * @deprecated Use {@link SourceBreakpoint#line} of {@link #breakpoints} instead.
 	 */
 	@Deprecated
 	int[] lines;
@@ -3327,10 +3327,9 @@ interface VariablePresentationHintKind {
 	 */
 	public static final String VIRTUAL = "virtual";
 	/**
-	 * Deprecated: Indicates that a data breakpoint is registered for the object. The 'hasDataBreakpoint' attribute
-	 * should generally be used instead.
-	 * <p>
-	 * @deprecated The 'hasDataBreakpoint' attribute should generally be used instead.
+	 * Indicates that a data breakpoint is registered for the object.
+	 *
+	 * @deprecated The {@link VariablePresentationHintAttributes#hasDataBreakpoint} attribute should generally be used instead.
 	 */
 	@Deprecated
 	public static final String DATA_BREAKPOINT = "dataBreakpoint";
