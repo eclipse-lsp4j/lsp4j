@@ -33,8 +33,6 @@ import org.eclipse.lsp4j.debug.ReadMemoryResponse;
 import org.eclipse.lsp4j.debug.RestartArguments;
 import org.eclipse.lsp4j.debug.RestartFrameArguments;
 import org.eclipse.lsp4j.debug.ReverseContinueArguments;
-import org.eclipse.lsp4j.debug.RunInTerminalRequestArguments;
-import org.eclipse.lsp4j.debug.RunInTerminalResponse;
 import org.eclipse.lsp4j.debug.ScopesArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
@@ -68,11 +66,6 @@ import org.eclipse.lsp4j.debug.WriteMemoryResponse;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 
 public class TestDebugServer implements IDebugProtocolServer {
-	@Override
-	public CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
-		return CompletableFuture.completedFuture(null);
-	}
-
 	@Override
 	public CompletableFuture<Capabilities> initialize(InitializeRequestArguments args) {
 		return CompletableFuture.completedFuture(null);

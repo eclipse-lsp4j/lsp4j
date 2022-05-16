@@ -48,8 +48,6 @@ import org.eclipse.lsp4j.debug.ReadMemoryResponse;
 import org.eclipse.lsp4j.debug.RestartArguments;
 import org.eclipse.lsp4j.debug.RestartFrameArguments;
 import org.eclipse.lsp4j.debug.ReverseContinueArguments;
-import org.eclipse.lsp4j.debug.RunInTerminalRequestArguments;
-import org.eclipse.lsp4j.debug.RunInTerminalResponse;
 import org.eclipse.lsp4j.debug.ScopesArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
@@ -132,22 +130,6 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> cancel(CancelArguments args) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * This optional request is sent from the debug adapter to the client to run a
-	 * command in a terminal.
-	 * <p>
-	 * This is typically used to launch the debuggee in a terminal provided by the
-	 * client.
-	 * <p>
-	 * This request should only be called if the client has passed the value true
-	 * for the 'supportsRunInTerminalRequest' capability of the 'initialize'
-	 * request.
-	 */
-	@JsonRequest
-	default CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
 		throw new UnsupportedOperationException();
 	}
 
