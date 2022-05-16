@@ -11,14 +11,11 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
-
 /**
  * The reason why code actions were requested.
  * <p>
  * Since 3.17.0
  */
-@Beta
 public enum CodeActionTriggerKind {
 	/**
 	 * Code actions were explicitly requested by the user or by an extension.

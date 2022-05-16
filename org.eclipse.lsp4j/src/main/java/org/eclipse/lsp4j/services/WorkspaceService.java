@@ -14,8 +14,6 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.google.common.annotations.Beta;
-
 import org.eclipse.lsp4j.CreateFilesParams;
 import org.eclipse.lsp4j.DeleteFilesParams;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
@@ -192,7 +190,6 @@ public interface WorkspaceService {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest
 	default CompletableFuture<WorkspaceDiagnosticReport> diagnostic(WorkspaceDiagnosticParams params) {
 		throw new UnsupportedOperationException();

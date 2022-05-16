@@ -194,7 +194,6 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Boolean relativePatternSupport
 
 	new() {
@@ -212,7 +211,6 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceSymbolResolveSupportCapabilities {
 	/**
@@ -260,7 +258,6 @@ class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	WorkspaceSymbolResolveSupportCapabilities resolveSupport
 
 	new() {
@@ -371,7 +368,6 @@ class WorkspaceClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	InlayHintWorkspaceCapabilities inlayHint
 
 	/**
@@ -379,7 +375,6 @@ class WorkspaceClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	InlineValueWorkspaceCapabilities inlineValue
 
 	/**
@@ -387,7 +382,6 @@ class WorkspaceClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	DiagnosticWorkspaceCapabilities diagnostics
 
 	new() {
@@ -517,7 +511,6 @@ class CompletionItemCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Boolean labelDetailsSupport
 
 	new() {
@@ -632,7 +625,6 @@ class CompletionItemKindCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class CompletionListCapabilities {
 	/**
@@ -686,7 +678,6 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	InsertTextMode insertTextMode
 
 	/**
@@ -695,7 +686,6 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	CompletionListCapabilities completionList
 
 	new() {
@@ -1498,7 +1488,6 @@ class DiagnosticsTagSupport {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class FoldingRangeKindSupportCapabilities {
 	/**
@@ -1524,7 +1513,6 @@ class FoldingRangeKindSupportCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class FoldingRangeSupportCapabilities {
 	/**
@@ -1565,7 +1553,6 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	FoldingRangeKindSupportCapabilities foldingRangeKind
 
 	/**
@@ -1573,7 +1560,6 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	FoldingRangeSupportCapabilities foldingRange
 
 	new() {
@@ -1585,7 +1571,6 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -1602,7 +1587,6 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class TypeHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -1790,7 +1774,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Boolean serverCancelSupport
 
 	/**
@@ -1805,7 +1788,6 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Boolean augmentsSyntaxTokens
 
 	new() {
@@ -2001,7 +1983,6 @@ class MarkdownCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	List<String> allowedTags
 
 	new() {
@@ -2024,7 +2005,6 @@ class MarkdownCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class StaleRequestCapabilities {
 	/**
@@ -2198,7 +2178,6 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	TypeHierarchyCapabilities typeHierarchy
 
 	/**
@@ -2241,7 +2220,6 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	InlayHintCapabilities inlayHint
 
 	/**
@@ -2249,7 +2227,6 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	InlineValueCapabilities inlineValue
 
 	/**
@@ -2257,7 +2234,6 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	DiagnosticCapabilities diagnostic
 
 	new() {
@@ -2323,7 +2299,6 @@ class GeneralClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	StaleRequestCapabilities staleRequestSupport
 
 	/**
@@ -2348,7 +2323,6 @@ class GeneralClientCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	List<String> positionEncodings
 
 	new() {
@@ -2651,7 +2625,6 @@ class CodeActionContext {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	CodeActionTriggerKind triggerKind
 
 	new() {
@@ -2882,7 +2855,6 @@ class Command {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class CompletionItemLabelDetails {
 	/**
@@ -2924,7 +2896,6 @@ class CompletionItem {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	CompletionItemLabelDetails labelDetails
 
 	/**
@@ -3046,7 +3017,6 @@ class CompletionItem {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	String textEditText
 
 	/**
@@ -3093,7 +3063,6 @@ class CompletionItem {
 /**
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InsertReplaceRange {
 	/**
@@ -3132,7 +3101,6 @@ class InsertReplaceRange {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class CompletionItemDefaults {
 	/**
@@ -3190,7 +3158,6 @@ class CompletionList {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	CompletionItemDefaults itemDefaults
 
 	new() {
@@ -3206,7 +3173,6 @@ class CompletionList {
 		this.isIncomplete = isIncomplete
 	}
 
-	@Beta
 	new(boolean isIncomplete, @NonNull List<CompletionItem> items, CompletionItemDefaults itemDefaults) {
 		this(isIncomplete, items)
 		this.itemDefaults = itemDefaults
@@ -3247,7 +3213,6 @@ class CompletionOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	CompletionItemOptions completionItem
 
 	new() {
@@ -3264,7 +3229,6 @@ class CompletionOptions extends AbstractWorkDoneProgressOptions {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class CompletionItemOptions {
 	/**
@@ -3567,9 +3531,8 @@ final class WatchKind {
  * relatively to a base URI. The common value for a {@link #baseUri} is a workspace
  * folder root, but it can be another absolute URI as well.
  * <p>
- * Since 3.17
+ * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class RelativePattern {
 	/**
@@ -4154,7 +4117,6 @@ class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentReg
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class TypeHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	new() {
@@ -4174,7 +4136,6 @@ class TypeHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgress
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class TypeHierarchySupertypesParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -4200,7 +4161,6 @@ class TypeHierarchySupertypesParams extends WorkDoneProgressAndPartialResultPara
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class TypeHierarchySubtypesParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -6002,7 +5962,6 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Either<Boolean, TypeHierarchyRegistrationOptions> typeHierarchyProvider
 
 	/**
@@ -6045,7 +6004,6 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Either<Boolean, InlayHintRegistrationOptions> inlayHintProvider
 
 	/**
@@ -6053,7 +6011,6 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
 
 	/**
@@ -6061,7 +6018,6 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	DiagnosticRegistrationOptions diagnosticProvider
 
 	/**
@@ -6077,7 +6033,6 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	String positionEncoding
 
 	/**
@@ -6540,7 +6495,6 @@ class SignatureInformation {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class TypeHierarchyItem {
 	/**
@@ -6774,7 +6728,6 @@ class SymbolInformation {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceSymbolLocation {
 	/**
@@ -6796,7 +6749,6 @@ class WorkspaceSymbolLocation {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceSymbol {
 	/**
@@ -7496,13 +7448,11 @@ class WorkspaceSymbolOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	Boolean resolveProvider
 
 	new() {
 	}
 
-	@Beta
 	new(Boolean resolveProvider) {
 		this.resolveProvider = resolveProvider
 	}
@@ -7762,7 +7712,6 @@ class CompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	CompletionItemOptions completionItem
 
 	new() {
@@ -8702,7 +8651,6 @@ class FoldingRange {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	String collapsedText
 
 	new() {
@@ -9424,7 +9372,6 @@ class ShowDocumentResult {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHintCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -9445,7 +9392,6 @@ class InlayHintCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHintResolveSupportCapabilities {
 	/**
@@ -9468,7 +9414,6 @@ class InlayHintResolveSupportCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHintRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9496,7 +9441,6 @@ class InlayHintRegistrationOptions extends AbstractTextDocumentRegistrationAndWo
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHintParams implements WorkDoneProgressParams {
 	/**
@@ -9530,7 +9474,6 @@ class InlayHintParams implements WorkDoneProgressParams {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHint {
 	/**
@@ -9614,7 +9557,6 @@ class InlayHint {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHintLabelPart {
 	/**
@@ -9666,7 +9608,6 @@ class InlayHintLabelPart {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlayHintWorkspaceCapabilities {
 	/**
@@ -9693,7 +9634,6 @@ class InlayHintWorkspaceCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -9709,7 +9649,6 @@ class InlineValueCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9731,7 +9670,6 @@ class InlineValueRegistrationOptions extends AbstractTextDocumentRegistrationAnd
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueParams implements WorkDoneProgressParams {
 	/**
@@ -9774,9 +9712,13 @@ class InlineValueParams implements WorkDoneProgressParams {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueContext {
+	/**
+	 * The stack frame (as a DAP Id) where the execution has stopped.
+	 */
+	int frameId
+
 	/**
 	 * The document range where execution has stopped.
 	 * Typically the end position of the range denotes the line where the
@@ -9788,7 +9730,8 @@ class InlineValueContext {
 	new() {
 	}
 
-	new(@NonNull Range stoppedLocation) {
+	new(int frameId, @NonNull Range stoppedLocation) {
+		this.frameId = frameId
 		this.stoppedLocation = Preconditions.checkNotNull(stoppedLocation, 'stoppedLocation')
 	}
 }
@@ -9798,7 +9741,6 @@ class InlineValueContext {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueText {
 	/**
@@ -9832,7 +9774,6 @@ class InlineValueText {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueVariableLookup {
 	/**
@@ -9877,7 +9818,6 @@ class InlineValueVariableLookup {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueEvaluatableExpression {
 	/**
@@ -9915,7 +9855,6 @@ class InlineValueEvaluatableExpression {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValue extends Either3<InlineValueText, InlineValueVariableLookup, InlineValueEvaluatableExpression> {
 	new(@NonNull InlineValueText inlineValueText) {
@@ -9960,7 +9899,6 @@ class InlineValue extends Either3<InlineValueText, InlineValueVariableLookup, In
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class InlineValueWorkspaceCapabilities {
 	/**
@@ -9988,7 +9926,6 @@ class InlineValueWorkspaceCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 final class PositionEncodingKind {
 	/**
 	 * Character offsets count UTF-8 code units.
@@ -10020,7 +9957,6 @@ final class PositionEncodingKind {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -10046,7 +9982,6 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DiagnosticRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -10092,7 +10027,6 @@ class DiagnosticRegistrationOptions extends AbstractTextDocumentRegistrationAndW
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DocumentDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -10128,7 +10062,6 @@ class DocumentDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DocumentDiagnosticReport extends Either<RelatedFullDocumentDiagnosticReport, RelatedUnchangedDocumentDiagnosticReport> {
 	new(@NonNull RelatedFullDocumentDiagnosticReport relatedFullDocumentDiagnosticReport) {
@@ -10161,7 +10094,6 @@ class DocumentDiagnosticReport extends Either<RelatedFullDocumentDiagnosticRepor
  * <p>
  * Since 3.17.0
  */
-@Beta
 final class DocumentDiagnosticReportKind {
 	/**
 	 * A diagnostic report with a full
@@ -10183,7 +10115,6 @@ final class DocumentDiagnosticReportKind {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class FullDocumentDiagnosticReport {
 	/**
@@ -10219,7 +10150,6 @@ class FullDocumentDiagnosticReport {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class UnchangedDocumentDiagnosticReport {
 	/**
@@ -10251,7 +10181,6 @@ class UnchangedDocumentDiagnosticReport {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class RelatedFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
 	/**
@@ -10276,7 +10205,6 @@ class RelatedFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnosticReport {
 	/**
@@ -10301,7 +10229,6 @@ class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnost
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DocumentDiagnosticReportPartialResult {
 	@NonNull
@@ -10317,7 +10244,6 @@ class DocumentDiagnosticReportPartialResult {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DiagnosticServerCancellationData {
 	boolean retriggerRequest
@@ -10335,7 +10261,6 @@ class DiagnosticServerCancellationData {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -10363,7 +10288,6 @@ class WorkspaceDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class PreviousResultId {
 	/**
@@ -10393,7 +10317,6 @@ class PreviousResultId {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceDiagnosticReport {
 	@NonNull
@@ -10412,7 +10335,6 @@ class WorkspaceDiagnosticReport {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
 	/**
@@ -10442,7 +10364,6 @@ class WorkspaceFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnosticReport {
 	/**
@@ -10472,7 +10393,6 @@ class WorkspaceUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagno
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport> {
 	new(@NonNull WorkspaceFullDocumentDiagnosticReport workspaceFullDocumentDiagnosticReport) {
@@ -10505,7 +10425,6 @@ class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiag
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class WorkspaceDiagnosticReportPartialResult {
 	@NonNull
@@ -10524,7 +10443,6 @@ class WorkspaceDiagnosticReportPartialResult {
  * <p>
  * Since 3.17.0
  */
-@Beta
 @JsonRpcData
 class DiagnosticWorkspaceCapabilities {
 	/**

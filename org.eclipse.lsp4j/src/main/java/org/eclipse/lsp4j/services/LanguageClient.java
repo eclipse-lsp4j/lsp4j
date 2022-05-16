@@ -14,8 +14,6 @@ package org.eclipse.lsp4j.services;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.google.common.annotations.Beta;
-
 import org.eclipse.lsp4j.ApplyWorkspaceEditParams;
 import org.eclipse.lsp4j.ApplyWorkspaceEditResponse;
 import org.eclipse.lsp4j.ConfigurationParams;
@@ -220,7 +218,6 @@ public interface LanguageClient {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest("workspace/inlayHint/refresh")
 	default CompletableFuture<Void> refreshInlayHints() {
 		throw new UnsupportedOperationException();
@@ -236,7 +233,6 @@ public interface LanguageClient {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest("workspace/inlineValue/refresh")
 	default CompletableFuture<Void> refreshInlineValues() {
 		throw new UnsupportedOperationException();
@@ -250,7 +246,6 @@ public interface LanguageClient {
 	 * <p>
 	 * Since 3.17.0
 	 */
-	@Beta
 	@JsonRequest("workspace/diagnostic/refresh")
 	default CompletableFuture<Void> refreshDiagnostics() {
 		throw new UnsupportedOperationException();

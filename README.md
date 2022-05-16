@@ -1,6 +1,6 @@
 ## Eclipse LSP4J
 
-Java binding for the [Language Server Protocol](https://github.com/Microsoft/language-server-protocol) and the [Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/).
+Java binding for the [Language Server Protocol](https://microsoft.github.io/language-server-protocol) and the [Debug Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol).
 
 ### How To Use
 
@@ -15,8 +15,8 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
 
 #### p2 Update Sites
 
- * Releases: <http://download.eclipse.org/lsp4j/updates/releases/>
- * Milestones: <http://download.eclipse.org/lsp4j/updates/milestones/>
+ * Releases: <https://download.eclipse.org/lsp4j/updates/releases/>
+ * Milestones: <https://download.eclipse.org/lsp4j/updates/milestones/>
  * Nightly: <https://download.eclipse.org/lsp4j/builds/main/>
 
 #### Snapshots
@@ -31,7 +31,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported LSP Versions
 
- * LSP4J 0.13.&ast; &rarr; LSP 3.17.0
+ * LSP4J 0.13.&ast; &rarr; LSP 3.17.0 (except Notebook support)
  * LSP4J 0.12.&ast; &rarr; LSP 3.16.0
  * LSP4J 0.11.&ast; &rarr; LSP 3.16.0
  * LSP4J 0.10.&ast; &rarr; LSP 3.16.0 (specification is not finalized yet)
