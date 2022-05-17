@@ -12,6 +12,8 @@
 
 package org.eclipse.lsp4j.debug.services;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.lsp4j.debug.BreakpointEventArguments;
 import org.eclipse.lsp4j.debug.CapabilitiesEventArguments;
 import org.eclipse.lsp4j.debug.ContinuedEventArguments;
@@ -26,10 +28,13 @@ import org.eclipse.lsp4j.debug.ProcessEventArguments;
 import org.eclipse.lsp4j.debug.ProgressEndEventArguments;
 import org.eclipse.lsp4j.debug.ProgressStartEventArguments;
 import org.eclipse.lsp4j.debug.ProgressUpdateEventArguments;
+import org.eclipse.lsp4j.debug.RunInTerminalRequestArguments;
+import org.eclipse.lsp4j.debug.RunInTerminalResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArguments;
 import org.eclipse.lsp4j.debug.TerminatedEventArguments;
 import org.eclipse.lsp4j.debug.ThreadEventArguments;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
+import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 /**
  * Declaration of client notifications for the
@@ -248,5 +253,21 @@ public interface IDebugProtocolClient {
 	 */
 	@JsonNotification
 	default void memory(MemoryEventArguments args) {
+	}
+
+	/**
+	 * This optional request is sent from the debug adapter to the client to run a
+	 * command in a terminal.
+	 * <p>
+	 * This is typically used to launch the debuggee in a terminal provided by the
+	 * client.
+	 * <p>
+	 * This request should only be called if the client has passed the value true
+	 * for the 'supportsRunInTerminalRequest' capability of the 'initialize'
+	 * request.
+	 */
+	@JsonRequest
+	default CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
+		throw new UnsupportedOperationException();
 	}
 }

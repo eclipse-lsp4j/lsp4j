@@ -11,6 +11,8 @@ Breaking API changes:
 
  * Method `LanguageClient.setTrace` moved to `LanguageServer`, where it should
    have been according to the specification
+ * Method `IDebugProtocolServer.runInTerminal` moved to `IDebugProtocolClient`, where it should
+   have been according to the specification
  * Removed `RenameOptions.id` as it was already deprecated and never specified for `StaticRegistrationOptions`
  * Removed `SemanticTokenTypes.Member` as it was already deprecated and not specified
  * Removed `TraceValue.Message` as it was already deprecated and not specified
