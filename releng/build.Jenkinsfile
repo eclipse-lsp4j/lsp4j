@@ -54,6 +54,13 @@ pipeline {
         }
       }
     }
+    stage('japicmp') {
+      steps {
+        timeout(activity: true, time: 20) {
+          sh "./releng/runjapicmp.sh"
+        }
+      }
+    }
     stage('Deploy Snapshot') {
       steps {
         timeout(activity: true, time: 20) {
