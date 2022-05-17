@@ -60,8 +60,9 @@ public interface LanguageServer {
 	default void initialized(InitializedParams params) {
 		initialized();
 	}
+
 	/**
-	 * @deprecated see initialized(InitializedParams)
+	 * @deprecated Use {@link #initialized(InitializedParams)} instead.
 	 */
 	@Deprecated
 	default void initialized() {
@@ -96,6 +97,8 @@ public interface LanguageServer {
 	
 	/**
 	 * This notification is sent from the client to the server to cancel a progress initiated on the server side.
+	 * <p>
+	 * Since 3.15.0
 	 */
 	@JsonNotification("window/workDoneProgress/cancel")
 	default void cancelProgress(WorkDoneProgressCancelParams params) {
@@ -104,7 +107,7 @@ public interface LanguageServer {
 
 	/**
 	 * A notification that should be used by the client to modify the trace setting of the server.
-	 *
+	 * <p>
 	 * Since 3.16.0
 	 */
 	@JsonNotification("$/setTrace")

@@ -36,7 +36,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 	 * @param messageConsumer - processes messages and potentially forwards them to other consumers
 	 * @param executorService - the thread is started using this service
 	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
-	 * @deprecated Please use the non-static ConcurrentMessageProcessor.beginProcessing() instead.
+	 * @deprecated Please use the non-static {@link #beginProcessing} instead.
 	 */
 	@Deprecated
 	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
