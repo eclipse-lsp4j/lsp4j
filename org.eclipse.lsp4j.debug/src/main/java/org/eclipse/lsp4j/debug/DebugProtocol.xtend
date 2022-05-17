@@ -12,8 +12,10 @@
 
 package org.eclipse.lsp4j.debug;
 
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import java.util.Map
+import org.eclipse.lsp4j.debug.adapters.RestartArgumentsTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
@@ -938,6 +940,7 @@ class RestartArguments {
 	 * <p>
 	 * Since 1.47
 	 */
+	@JsonAdapter(RestartArgumentsTypeAdapter)
 	Either<LaunchRequestArguments, AttachRequestArguments> arguments;
 }
 
