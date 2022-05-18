@@ -35,6 +35,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.util.Preconditions
+import org.eclipse.lsp4j.adapters.CompletionItemDefaultsEditRangeTypeAdapter
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -3111,6 +3112,7 @@ class CompletionItemDefaults {
 	/**
 	 * A default edit range
 	 */
+	@JsonAdapter(CompletionItemDefaultsEditRangeTypeAdapter)
 	Either<Range, InsertReplaceRange> editRange
 
 	/**

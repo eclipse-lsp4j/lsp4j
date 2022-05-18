@@ -9,7 +9,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-package org.eclipse.lsp4j.debug.test;
+package org.eclipse.lsp4j.debug.test.adapters;
 
 import static org.junit.Assert.assertTrue;
 
@@ -19,7 +19,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class RestartArgumentsTypeAdapterFactoryTest {
+public class RestartArgumentsArgumentsTypeAdapterTest {
 
 	@Test
 	public void test() {
