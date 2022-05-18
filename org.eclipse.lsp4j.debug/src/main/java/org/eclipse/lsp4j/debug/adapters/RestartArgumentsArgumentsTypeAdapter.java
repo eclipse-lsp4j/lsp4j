@@ -25,7 +25,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
-public class RestartArgumentsTypeAdapter implements TypeAdapterFactory {
+public class RestartArgumentsArgumentsTypeAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<Either<LaunchRequestArguments, AttachRequestArguments>> ELEMENT_TYPE = new TypeToken<Either<LaunchRequestArguments, AttachRequestArguments>>() {
 	};
