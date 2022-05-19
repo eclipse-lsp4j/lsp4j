@@ -33,7 +33,7 @@ do
     names+=($name)
     oldjar=${name}-${BASELINE}.jar
     oldjars+=($oldjar)
-    curl -s https://repo1.maven.org/maven2/org/eclipse/lsp4j/${name}/0.12.0/${name}-${BASELINE}.jar > ${oldjar}
+    curl -s https://repo1.maven.org/maven2/org/eclipse/lsp4j/${name}/${BASELINE}/${name}-${BASELINE}.jar > ${oldjar}
 done
 
 for i in ${!newjars[@]}

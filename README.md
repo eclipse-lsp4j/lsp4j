@@ -19,6 +19,10 @@ A brief overview of how to use LSP4J to implement a server or a client can be fo
  * Milestones: <https://download.eclipse.org/lsp4j/updates/milestones/>
  * Nightly: <https://download.eclipse.org/lsp4j/builds/main/>
 
+#### japicmp reports
+
+ * The p2 Update sites listed above (since 0.13.0) contain a japicmp report against the last released version to make it easier to identify API changes.
+
 #### Snapshots
 
 The snapshots are deployed during the build to:
