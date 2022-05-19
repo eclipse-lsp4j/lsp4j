@@ -35,6 +35,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported LSP Versions
 
+ * LSP4J 0.14.&ast; &rarr; LSP 3.17.0 (except Notebook support)
  * LSP4J 0.13.&ast; &rarr; LSP 3.17.0 (except Notebook support)
  * LSP4J 0.12.&ast; &rarr; LSP 3.16.0
  * LSP4J 0.11.&ast; &rarr; LSP 3.16.0
@@ -49,6 +50,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported DAP Versions
 
+ * LSP4J 0.14.&ast; &rarr; DAP 1.55.0
  * LSP4J 0.13.&ast; &rarr; DAP 1.55.0
  * LSP4J 0.12.&ast; &rarr; DAP 1.44.0
  * LSP4J 0.11.&ast; &rarr; DAP 1.44.0
