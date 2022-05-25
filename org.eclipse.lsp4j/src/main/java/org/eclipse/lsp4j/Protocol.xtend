@@ -629,7 +629,7 @@ class CompletionItemKindCapabilities {
 @JsonRpcData
 class CompletionListCapabilities {
 	/**
-	 * The client supports the the following itemDefaults on
+	 * The client supports the following itemDefaults on
 	 * a completion list.
 	 * <p>
 	 * The value lists the supported property names of the
@@ -3125,6 +3125,12 @@ class CompletionItemDefaults {
 	 */
 	InsertTextMode insertTextMode
 
+	/**
+	 * A default data value.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
 	new() {
 	}
 }
@@ -5136,7 +5142,7 @@ class LocationLink {
 
 	/**
 	 * The range that should be selected and revealed when this link is being followed, e.g the name of a function.
-	 * Must be contained by the the {@link #targetRange}. See also {@link DocumentSymbol#range}
+	 * Must be contained by the {@link #targetRange}. See also {@link DocumentSymbol#range}
 	 */
 	@NonNull
 	Range targetSelectionRange
@@ -5465,7 +5471,7 @@ class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialR
  * Since 3.12.0
  */
 @JsonRpcData
-class PrepareRenameParams extends TextDocumentPositionParams {
+class PrepareRenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	new() {
 	}
 
@@ -5659,6 +5665,11 @@ final class SemanticTokenTypes {
 	public static val Regexp = 'regexp'
 
 	public static val Operator = 'operator'
+
+	/**
+	 * Since 3.17.0
+	 */
+	public static val Decorator = 'decorator'
 
 	private new() {
 	}
@@ -6587,8 +6598,8 @@ class DocumentSymbol {
 
 	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
-	 * like comments. This information is typically used to determine if the clients cursor is
-	 * inside the symbol to reveal in the symbol in the UI.
+	 * like comments. This information is typically used to determine if the client's cursor is
+	 * inside the symbol to reveal the symbol in the UI.
 	 */
 	@NonNull
 	Range range
@@ -8809,15 +8820,15 @@ class CallHierarchyItem {
 
 	/**
 	 * The range enclosing this symbol not including leading/trailing whitespace but everything else
-	 * like comments. This information is typically used to determine if the the clients cursor is
-	 * inside the symbol to reveal in the symbol in the UI.
+	 * like comments. This information is typically used to determine if the client's cursor is
+	 * inside the symbol to reveal the symbol in the UI.
 	 */
 	@NonNull
 	Range range
 
 	/**
 	 * The range that should be selected and revealed when this symbol is being picked, e.g the name of a function.
-	 * Must be contained by the the {@link CallHierarchyItem#getRange range}.
+	 * Must be contained by the {@link CallHierarchyItem#getRange range}.
 	 */
 	@NonNull
 	Range selectionRange
