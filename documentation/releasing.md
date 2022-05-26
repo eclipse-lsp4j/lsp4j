@@ -9,7 +9,6 @@ Items at the beginning of development
     - [ ] Make sure any previous edits made to [Endgame issues](https://github.com/eclipse/lsp4j/labels/endgame) of previous releases are updated in [documentation/releasing.md](https://github.com/eclipse/lsp4j/blob/main/documentation/releasing.md)
 - [ ] Ensure all previous [Endgame issues](https://github.com/eclipse/lsp4j/labels/endgame) are done.
 - [ ] Create a [New milestone](https://github.com/eclipse/lsp4j/milestones/new) for the release
-- [ ] Create release on [PMI](https://projects.eclipse.org/projects/technology.lsp4j)
 - [ ] Check [CHANGELOG.md](https://github.com/eclipse/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
 - [ ] Check [README.md](https://github.com/eclipse/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
 - [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/0.13.0/0.14.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/main/gradle/versions.gradle) and  [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/main/releng/pom.xml)
@@ -18,6 +17,7 @@ Items at the beginning of development
 
 Items in the days ahead of Release day:
 
+- [ ] Create release on [PMI](https://projects.eclipse.org/projects/technology.lsp4j)
 - [ ] Schedule the release and if needed schedule a release review on the [PMI](https://projects.eclipse.org/projects/technology.lsp4j). A release review is needed every 12 months, not with each release.
 - [ ] Check [CHANGELOG.md](https://github.com/eclipse/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
 - [ ] Check [README.md](https://github.com/eclipse/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
@@ -38,6 +38,7 @@ Items on Release day:
     - `LSP4J_PUBLISH_LOCATION` -> `updates/releases/0.14.0` ( <-- check version number)
     - `PROJECT` -> `lsp4j-multi-build/job/main`
     - `LSP4J_BUILD_NUMBER` -> the build that was just run above
+    - `DRY_RUN` -> `false`
 - [ ] Add to the deploy job description `v0.14.0`
 - [ ] Promote the staged repository to maven central
     - [Login to Nexus](https://oss.sonatype.org/#stagingRepositories)
