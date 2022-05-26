@@ -43,7 +43,7 @@ do
     name=${names[$i]}
 
     mkdir -p japicmp-report/
-    java -jar japicmp.jar --html-file japicmp-report/${name}.html --only-incompatible --ignore-missing-classes -n ${newjar} --new-classpath $(classpath ${newjars[@]}) -o ${oldjar} --old-classpath $(classpath org.eclipse.*) 
+    java -jar japicmp.jar --html-file japicmp-report/${name}.html --only-modified --ignore-missing-classes -n ${newjar} --new-classpath $(classpath ${newjars[@]}) -o ${oldjar} --old-classpath $(classpath org.eclipse.*)
     zip -u japicmp-report.zip japicmp-report/${name}.html
 done
 
