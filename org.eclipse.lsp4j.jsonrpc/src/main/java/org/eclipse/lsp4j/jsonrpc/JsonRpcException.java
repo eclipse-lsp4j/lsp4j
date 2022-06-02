@@ -27,7 +27,9 @@ public class JsonRpcException extends RuntimeException {
 	public static boolean indicatesStreamClosed(Throwable thr) {
 		return thr instanceof InterruptedIOException
 				|| thr instanceof ClosedChannelException
-				|| thr instanceof IOException && "Pipe closed".equals(thr.getMessage())
+				|| thr instanceof IOException &&
+					("Stream closed".equals(thr.getMessage()) ||
+					 "Pipe closed".equals(thr.getMessage()))
 				|| thr instanceof SocketException && 
 					("Connection reset".equals(thr.getMessage()) || 
 					 "Socket closed".equals(thr.getMessage()) || 
