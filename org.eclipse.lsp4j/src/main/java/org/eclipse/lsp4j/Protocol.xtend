@@ -6800,6 +6800,13 @@ class WorkspaceSymbol {
 	 */
 	String containerName
 
+	/**
+	 * A data entry field that is preserved on a workspace symbol between a
+	 * workspace symbol request and a workspace symbol resolve request.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object data
+
 	new() {
 	}
 
