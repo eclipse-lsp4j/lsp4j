@@ -3168,19 +3168,21 @@ class Variable {
 	String name;
 	/**
 	 * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
-	 */
-	@NonNull
-	String value;
-	/**
-	 * The variable's value.
-	 * <p>
-	 * This can be a multi-line text, e.g. for a function the body of a function.
 	 * <p>
 	 * For structured variables (which do not have a simple value), it is recommended to provide a
 	 * one line representation of the structured object. This helps to identify the structured object
 	 * in the collapsed state when its children are not yet visible.
 	 * <p>
 	 * An empty string can be used if no value should be shown in the UI.
+	 */
+	@NonNull
+	String value;
+	/**
+	 * The type of the variable's value. Typically shown in the UI when hovering over the value.
+	 * <p>
+	 * This attribute should only be returned by a debug adapter if the client has
+	 * passed the value true for the 'supportsVariableType' capability of the
+	 * 'initialize' request.
 	 * <p>
 	 * This is an optional property.
 	 */
