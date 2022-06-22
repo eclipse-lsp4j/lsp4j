@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.websocket;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import javax.websocket.SendHandler;
@@ -33,13 +34,12 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 	
 	private final Session session;
 	private final MessageJsonHandler jsonHandler;
-	private ConcurrentLinkedQueue<String> messageQueue;
-	private WebSocketSendHandler handler;
+	private final ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<>();
+	private final WebSocketSendHandler handler = new WebSocketSendHandler();
 	
 	public WebSocketMessageConsumer(Session session, MessageJsonHandler jsonHandler) {
 		this.session = session;
 		this.jsonHandler = jsonHandler;
-		this.messageQueue = new ConcurrentLinkedQueue<>();
 	}
 	
 	public Session getSession() {
@@ -61,7 +61,7 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 			int length = message.length();
 			if (length <= session.getMaxTextMessageBufferSize()) {
 				messageQueue.add(message);
-				handleNextMessage();
+				handler.handleNextMessage();
 			} else {
 				int currentOffset = 0;
 				while (currentOffset < length) {
@@ -76,18 +76,20 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 	}
 	
 	class WebSocketSendHandler implements SendHandler {
+		private final AtomicBoolean isSending = new AtomicBoolean();
+		
 		@Override
 		public void onResult(SendResult result) {
-			handler = null;
+			isSending.set(false);
 			handleNextMessage();
+		}
+		
+		private void handleNextMessage() {
+			if (session.isOpen() && !messageQueue.isEmpty() && isSending.compareAndSet(false, true)) {
+				session.getAsyncRemote().sendText(messageQueue.poll(), this);
+			}
 		}
 	}
 	
-	private void handleNextMessage() {
-		if (handler == null && !messageQueue.isEmpty() && session.isOpen()) {
-			handler = new WebSocketSendHandler();
-			session.getAsyncRemote().sendText(messageQueue.poll(), handler);
-		}
-	}
 	
 }
