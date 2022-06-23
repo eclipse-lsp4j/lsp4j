@@ -12,9 +12,13 @@
 package org.eclipse.lsp4j.websocket.jakarta;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import jakarta.websocket.SendHandler;
+import jakarta.websocket.SendResult;
 import jakarta.websocket.Session;
 
 import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
@@ -31,6 +35,8 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 	
 	private final Session session;
 	private final MessageJsonHandler jsonHandler;
+	private final ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<>();
+	private final WebSocketSendHandler handler = new WebSocketSendHandler();
 	
 	public WebSocketMessageConsumer(Session session, MessageJsonHandler jsonHandler) {
 		this.session = session;
@@ -55,7 +61,8 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 		if (session.isOpen()) {
 			int length = message.length();
 			if (length <= session.getMaxTextMessageBufferSize()) {
-				session.getAsyncRemote().sendText(message);
+				messageQueue.add(message);
+				handler.handleNextMessage();
 			} else {
 				int currentOffset = 0;
 				while (currentOffset < length) {
@@ -66,6 +73,22 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 			}
 		} else {
 			LOG.log(Level.INFO, "Ignoring message due to closed session: {0}", message);
+		}
+	}
+	
+	private class WebSocketSendHandler implements SendHandler {
+		private final AtomicBoolean isSending = new AtomicBoolean();
+		
+		@Override
+		public void onResult(SendResult result) {
+			isSending.set(false);
+			handleNextMessage();
+		}
+		
+		void handleNextMessage() {
+			if (session.isOpen() && !messageQueue.isEmpty() && isSending.compareAndSet(false, true)) {
+				session.getAsyncRemote().sendText(messageQueue.poll(), this);
+			}
 		}
 	}
 	
