@@ -75,7 +75,7 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 		}
 	}
 	
-	class WebSocketSendHandler implements SendHandler {
+	private class WebSocketSendHandler implements SendHandler {
 		private final AtomicBoolean isSending = new AtomicBoolean();
 		
 		@Override
@@ -84,7 +84,7 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 			handleNextMessage();
 		}
 		
-		private void handleNextMessage() {
+		void handleNextMessage() {
 			if (session.isOpen() && !messageQueue.isEmpty() && isSending.compareAndSet(false, true)) {
 				session.getAsyncRemote().sendText(messageQueue.poll(), this);
 			}
