@@ -3951,13 +3951,14 @@ class FoldingRangeProviderOptions extends AbstractTextDocumentRegistrationAndWor
 @JsonRpcData
 class TextDocumentSyncOptions {
 	/**
-	 * Open and close notifications are sent to the server.
+	 * Open and close notifications are sent to the server. If omitted open
+	 * close notifications should not be sent.
 	 */
 	Boolean openClose
 
 	/**
-	 * Change notifications are sent to the server. See TextDocumentSyncKind.None, TextDocumentSyncKind.Full
-	 * and TextDocumentSyncKind.Incremental.
+	 * Change notifications are sent to the server. If omitted it defaults to
+	 * {@link TextDocumentSyncKind#None}.
 	 */
 	TextDocumentSyncKind change
 
@@ -5844,7 +5845,7 @@ class ServerCapabilities {
 	/**
 	 * Defines how text documents are synced. Is either a detailed structure defining each notification or
 	 * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
-	 * {@link TextDocumentSyncKind#None}
+	 * {@link TextDocumentSyncKind#None}.
 	 */
 	Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync
 
@@ -10311,7 +10312,7 @@ class WorkspaceDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
 @JsonRpcData
 class PreviousResultId {
 	/**
-	 * The URI for which the client knowns a
+	 * The URI for which the client knows a
 	 * result id.
 	 */
 	@NonNull
