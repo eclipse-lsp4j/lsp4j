@@ -70,11 +70,14 @@ public class MockConnectionTest {
 	
 	@Test
 	public void testManyConcurrentNotifications() throws Exception {
-		for (int i = 0; i < 10; i ++) {
+		String expectedResult = "";
+		for (int i = 0; i < 20; i ++) {
 			client.server.notify(String.valueOf(i));
+			expectedResult += i;
 		}
-		await(() -> server.result.length() == 10);
-		Assert.assertEquals("0123456789", server.result);
+		int expectedResultLenght = expectedResult.length();
+		await(() -> server.result.length() == expectedResultLenght);
+		Assert.assertEquals(expectedResult, server.result);
 	}
 	
 	@Test
