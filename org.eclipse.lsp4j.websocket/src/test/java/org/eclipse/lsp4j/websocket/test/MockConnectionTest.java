@@ -71,12 +71,17 @@ public class MockConnectionTest {
 	@Test
 	public void testManyConcurrentNotifications() throws Exception {
 		String expectedResult = "";
-		for (int i = 0; i < 20; i ++) {
-			client.server.notify(String.valueOf(i));
-			expectedResult += i;
+		for (char i = 'a'; i <= 'z'; i ++) {
+			String x = Character.toString(i);
+			client.server.notify(x);
+			expectedResult += x;
 		}
 		int expectedResultLenght = expectedResult.length();
-		await(() -> server.result.length() == expectedResultLenght);
+		try {
+			await(() -> server.result.length() == expectedResultLenght);
+		} catch (Error e) {
+			// discard this error so that the nice error displays in the assertEquals
+		}
 		Assert.assertEquals(expectedResult, server.result);
 	}
 	
