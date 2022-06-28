@@ -12,8 +12,12 @@
 package org.eclipse.lsp4j.websocket;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
+import javax.websocket.SendHandler;
+import javax.websocket.SendResult;
 import javax.websocket.Session;
 
 import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
@@ -30,6 +34,8 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 	
 	private final Session session;
 	private final MessageJsonHandler jsonHandler;
+	private final ConcurrentLinkedQueue<String> messageQueue = new ConcurrentLinkedQueue<>();
+	private final WebSocketSendHandler handler = new WebSocketSendHandler();
 	
 	public WebSocketMessageConsumer(Session session, MessageJsonHandler jsonHandler) {
 		this.session = session;
@@ -54,7 +60,8 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 		if (session.isOpen()) {
 			int length = message.length();
 			if (length <= session.getMaxTextMessageBufferSize()) {
-				session.getAsyncRemote().sendText(message);
+				messageQueue.add(message);
+				handler.handleNextMessage();
 			} else {
 				int currentOffset = 0;
 				while (currentOffset < length) {
@@ -65,6 +72,22 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 			}
 		} else {
 			LOG.info("Ignoring message due to closed session: " + message);
+		}
+	}
+	
+	private class WebSocketSendHandler implements SendHandler {
+		private final AtomicBoolean isSending = new AtomicBoolean();
+		
+		@Override
+		public void onResult(SendResult result) {
+			isSending.set(false);
+			handleNextMessage();
+		}
+		
+		void handleNextMessage() {
+			if (session.isOpen() && !messageQueue.isEmpty() && isSending.compareAndSet(false, true)) {
+				session.getAsyncRemote().sendText(messageQueue.poll(), this);
+			}
 		}
 	}
 	

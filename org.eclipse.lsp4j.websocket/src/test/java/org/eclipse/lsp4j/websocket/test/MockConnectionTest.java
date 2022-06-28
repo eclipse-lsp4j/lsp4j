@@ -69,6 +69,23 @@ public class MockConnectionTest {
 	}
 	
 	@Test
+	public void testManyConcurrentNotifications() throws Exception {
+		String expectedResult = "";
+		for (char i = 'a'; i <= 'z'; i ++) {
+			String x = Character.toString(i);
+			client.server.notify(x);
+			expectedResult += x;
+		}
+		int expectedResultLenght = expectedResult.length();
+		try {
+			await(() -> server.result.length() == expectedResultLenght);
+		} catch (Error e) {
+			// discard this error so that the nice error displays in the assertEquals
+		}
+		Assert.assertEquals(expectedResult, server.result);
+	}
+	
+	@Test
 	public void testChunkedNotification() throws Exception {
 		StringBuilder messageBuilder = new StringBuilder();
 		Random random = new Random(1);
