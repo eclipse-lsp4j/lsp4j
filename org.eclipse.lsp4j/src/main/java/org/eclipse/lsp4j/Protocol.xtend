@@ -2250,7 +2250,15 @@ class NotebookDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to notebook document synchronization
 	 */
+	@NonNull
 	NotebookDocumentSyncClientCapabilities synchronization
+
+	new() {
+	}
+
+	new(@NonNull NotebookDocumentSyncClientCapabilities synchronization) {
+		this.synchronization = Preconditions.checkNotNull(synchronization, 'synchronization')
+	}
 }
 
 /**
@@ -10604,26 +10612,6 @@ class NotebookCell {
 	new(int kind, @NonNull String document) {
 		this.kind = kind
 		this.document = Preconditions.checkNotNull(document, 'document')
-	}
-}
-
-/**
- * A notebook cell kind.
- * <p>
- * Since 3.17.0
- */
-final class NotebookCellKind {
-	/**
-	 * A markup-cell is formatted source that is used for display.
-	 */
-	public static int Markup = 1
-
-	/**
-	 * A code-cell is source code.
-	 */
-	public static int Code = 2
-
-	private new() {
 	}
 }
 
