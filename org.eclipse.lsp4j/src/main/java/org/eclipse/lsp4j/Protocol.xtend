@@ -10582,10 +10582,9 @@ class NotebookDocument {
 class NotebookCell {
 	/**
 	 * The cell's kind
-	 * <p>
-	 * See {@link NotebookCellKind} for allowed values.
 	 */
-	int kind
+	@NonNull
+	NotebookCellKind kind
 
 	/**
 	 * The URI of the cell's text document
@@ -10609,8 +10608,8 @@ class NotebookCell {
 	new() {
 	}
 
-	new(int kind, @NonNull String document) {
-		this.kind = kind
+	new(@NonNull NotebookCellKind kind, @NonNull String document) {
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
 		this.document = Preconditions.checkNotNull(document, 'document')
 	}
 }
