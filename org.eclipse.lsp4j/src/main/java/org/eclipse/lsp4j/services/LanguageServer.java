@@ -84,6 +84,16 @@ public interface LanguageServer {
 	void exit();
 
 	/**
+	 * Provides access to the notebookDocument services.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	@JsonDelegate
+	default NotebookDocumentService getNotebookDocumentService() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
 	 * Provides access to the textDocument services.
 	 */
 	@JsonDelegate

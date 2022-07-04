@@ -14,19 +14,24 @@ package org.eclipse.lsp4j.test.services;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
+import org.eclipse.lsp4j.DidChangeNotebookDocumentParams;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
+import org.eclipse.lsp4j.DidCloseNotebookDocumentParams;
 import org.eclipse.lsp4j.DidCloseTextDocumentParams;
+import org.eclipse.lsp4j.DidOpenNotebookDocumentParams;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
+import org.eclipse.lsp4j.DidSaveNotebookDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.WorkDoneProgressCancelParams;
 import org.eclipse.lsp4j.services.LanguageServer;
+import org.eclipse.lsp4j.services.NotebookDocumentService;
 import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
 
-public class MockLanguageServer implements LanguageServer, TextDocumentService, WorkspaceService {
+public class MockLanguageServer implements LanguageServer, NotebookDocumentService, TextDocumentService, WorkspaceService {
 
 	@Override
 	public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
@@ -40,6 +45,11 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 
 	@Override
 	public void exit() {
+	}
+
+	@Override
+	public NotebookDocumentService getNotebookDocumentService() {
+		return this;
 	}
 
 	@Override
@@ -74,6 +84,22 @@ public class MockLanguageServer implements LanguageServer, TextDocumentService, 
 
 	@Override
 	public void didSave(DidSaveTextDocumentParams params) {
+	}
+
+	@Override
+	public void didOpen(DidOpenNotebookDocumentParams params) {
+	}
+
+	@Override
+	public void didChange(DidChangeNotebookDocumentParams params) {
+	}
+
+	@Override
+	public void didClose(DidCloseNotebookDocumentParams params) {
+	}
+
+	@Override
+	public void didSave(DidSaveNotebookDocumentParams params) {
 	}
 
 	@Override
