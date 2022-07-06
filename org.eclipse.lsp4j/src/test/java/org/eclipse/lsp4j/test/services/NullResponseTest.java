@@ -29,6 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.services.LanguageServer;
+import org.eclipse.lsp4j.services.NotebookDocumentService;
 import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
 import org.eclipse.lsp4j.test.LogMessageAccumulator;
@@ -81,6 +82,11 @@ public class NullResponseTest implements LanguageServer {
 	@Override
 	public void exit() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public NotebookDocumentService getNotebookDocumentService() {
+		return null;
 	}
 
 	@Override

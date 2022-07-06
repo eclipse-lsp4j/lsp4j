@@ -1582,7 +1582,6 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 	}
 }
 
-
 /**
  * Type hierarchy registration options.
  * <p>
@@ -2242,6 +2241,27 @@ class TextDocumentClientCapabilities {
 }
 
 /**
+ * Capabilities specific to the notebook document support.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentClientCapabilities {
+	/**
+	 * Capabilities specific to notebook document synchronization
+	 */
+	@NonNull
+	NotebookDocumentSyncClientCapabilities synchronization
+
+	new() {
+	}
+
+	new(@NonNull NotebookDocumentSyncClientCapabilities synchronization) {
+		this.synchronization = Preconditions.checkNotNull(synchronization, 'synchronization')
+	}
+}
+
+/**
  * Window specific client capabilities.
  */
 @JsonRpcData
@@ -2354,6 +2374,13 @@ class ClientCapabilities {
 	 * Text document specific client capabilities.
 	 */
 	TextDocumentClientCapabilities textDocument
+
+	/**
+	 * Capabilities specific to the notebook document support.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	NotebookDocumentClientCapabilities notebookDocument
 
 	/**
 	 * Window specific client capabilities.
@@ -5843,11 +5870,33 @@ class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOpti
 @JsonRpcData
 class ServerCapabilities {
 	/**
+	 * The position encoding the server picked from the encodings offered
+	 * by the client via the client capability {@link GeneralClientCapabilities#positionEncodings}.
+	 * <p>
+	 * If the client didn't provide any position encodings the only valid
+	 * value that a server can return is {@link PositionEncodingKind#UTF16}.
+	 * <p>
+	 * If omitted it defaults to {@link PositionEncodingKind#UTF16}.
+	 * <p>
+	 * See {@link PositionEncodingKind} for some predefined position encoding kinds.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	String positionEncoding
+
+	/**
 	 * Defines how text documents are synced. Is either a detailed structure defining each notification or
 	 * for backwards compatibility the TextDocumentSyncKind number. If omitted it defaults to
 	 * {@link TextDocumentSyncKind#None}.
 	 */
 	Either<TextDocumentSyncKind, TextDocumentSyncOptions> textDocumentSync
+
+	/**
+	 * Defines how notebook documents are synced.
+	 * <p>
+	 * Since 3.17.0
+	 */
+	NotebookDocumentSyncRegistrationOptions notebookDocumentSync
 
 	/**
 	 * The server provides hover support.
@@ -6033,21 +6082,6 @@ class ServerCapabilities {
 	 * Since 3.17.0
 	 */
 	DiagnosticRegistrationOptions diagnosticProvider
-
-	/**
-	 * The position encoding the server picked from the encodings offered
-	 * by the client via the client capability {@link GeneralClientCapabilities#positionEncodings}.
-	 * <p>
-	 * If the client didn't provide any position encodings the only valid
-	 * value that a server can return is {@link PositionEncodingKind#UTF16}.
-	 * <p>
-	 * If omitted it defaults to {@link PositionEncodingKind#UTF16}.
-	 * <p>
-	 * See {@link PositionEncodingKind} for some predefined position encoding kinds.
-	 * <p>
-	 * Since 3.17.0
-	 */
-	String positionEncoding
 
 	/**
 	 * Experimental server capabilities.
@@ -10482,5 +10516,663 @@ class DiagnosticWorkspaceCapabilities {
 
 	new(Boolean refreshSupport) {
 		this.refreshSupport = refreshSupport
+	}
+}
+
+/**
+ * A notebook document.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocument {
+	/**
+	 * The notebook document's URI.
+	 */
+	@NonNull
+	String uri
+
+	/**
+	 * The type of the notebook.
+	 */
+	@NonNull
+	String notebookType
+
+	/**
+	 * The version number of this document (it will increase after each
+	 * change, including undo/redo).
+	 */
+	int version
+
+	/**
+	 * Additional metadata stored with the notebook
+	 * document.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object metadata
+
+	/**
+	 * The cells of a notebook.
+	 */
+	@NonNull
+	List<NotebookCell> cells
+
+	new() {
+		this.cells = new ArrayList
+	}
+
+	new(@NonNull String uri, @NonNull String notebookType, int version, @NonNull List<NotebookCell> cells) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+		this.notebookType = Preconditions.checkNotNull(notebookType, 'notebookType')
+		this.version = version
+		this.cells = Preconditions.checkNotNull(cells, 'cells')
+	}
+}
+
+/**
+ * A notebook cell.
+ * <p>
+ * A cell's document URI must be unique across ALL notebook
+ * cells and can therefore be used to uniquely identify a
+ * notebook cell or the cell's text document.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookCell {
+	/**
+	 * The cell's kind
+	 */
+	@NonNull
+	NotebookCellKind kind
+
+	/**
+	 * The URI of the cell's text document
+	 * content.
+	 */
+	@NonNull
+	String document
+
+	/**
+	 * Additional metadata stored with the cell.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object metadata
+
+	/**
+	 * Additional execution summary information
+	 * if supported by the client.
+	 */
+	ExecutionSummary executionSummary
+
+	new() {
+	}
+
+	new(@NonNull NotebookCellKind kind, @NonNull String document) {
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.document = Preconditions.checkNotNull(document, 'document')
+	}
+}
+
+/**
+ * Since 3.17.0
+ */
+@JsonRpcData
+class ExecutionSummary {
+	/**
+	 * A strict monotonically increasing value
+	 * indicating the execution order of a cell
+	 * inside a notebook.
+	 */
+	int executionOrder
+
+	/**
+	 * Whether the execution was successful or
+	 * not if known by the client.
+	 */
+	Boolean success
+
+	new() {
+	}
+
+	new(int executionOrder) {
+		this.executionOrder = executionOrder
+	}
+
+	new(int executionOrder, Boolean success) {
+		this(executionOrder)
+		this.success = success
+	}
+}
+
+/**
+ * A notebook cell text document filter denotes a cell text
+ * document by different properties.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookCellTextDocumentFilter {
+	/**
+	 * A filter that matches against the notebook
+	 * containing the notebook cell. If a string
+	 * value is provided it matches against the
+	 * notebook type. '*' matches every notebook.
+	 */
+	@NonNull
+	Either<String, NotebookDocumentFilter> notebook
+
+	/**
+	 * A language id like `python`.
+	 * <p>
+	 * Will be matched against the language id of the
+	 * notebook cell document. '*' matches every language.
+	 */
+	String language
+
+	new() {
+	}
+
+	new(@NonNull Either<String, NotebookDocumentFilter> notebook) {
+		this.notebook = Preconditions.checkNotNull(notebook, 'notebook')
+	}
+
+	new(@NonNull Either<String, NotebookDocumentFilter> notebook, String language) {
+		this(notebook)
+		this.language = language
+	}
+}
+
+/**
+ * A notebook document filter denotes a notebook document by
+ * different properties.
+ * <p>
+ * At least one of either {@link #notebookType}, {@link #scheme},
+ * or {@link #pattern} is required.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentFilter {
+	/**
+	 * The type of the enclosing notebook.
+	 */
+	String notebookType
+
+	/**
+	 * A Uri scheme, like `file` or `untitled`.
+	 */
+	String scheme
+
+	/**
+	 * A glob pattern.
+	 */
+	String pattern
+
+	new() {
+	}
+}
+
+/**
+ * Notebook specific client capabilities.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentSyncClientCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * The client supports sending execution summary data per cell.
+	 */
+	Boolean executionSummarySupport
+
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+
+	new(Boolean dynamicRegistration, Boolean executionSummarySupport) {
+		this(dynamicRegistration)
+		this.executionSummarySupport = executionSummarySupport
+	}
+}
+
+/**
+ * The notebooks to be synced.
+ * <p>
+ * At least one of either {@link #notebook} or {@link #cells} is required.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookSelector {
+	/**
+	 * The notebook to be synced. If a string
+	 * value is provided it matches against the
+	 * notebook type. '*' matches every notebook.
+	 */
+	Either<String, NotebookDocumentFilter> notebook
+
+	/**
+	 * The cells of the matching notebook to be synced.
+	 */
+	List<NotebookSelectorCell> cells
+
+	new() {
+	}
+}
+
+/**
+ * The cell of the matching notebook to be synced.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookSelectorCell {
+	/**
+	 * The cells of the matching notebook to be synced.
+	 */
+	@NonNull
+	String language
+
+	new() {
+	}
+
+	new(@NonNull String language) {
+		this.language = Preconditions.checkNotNull(language, 'language')
+	}
+}
+
+/**
+ * Options specific to a notebook plus
+ * its cells to be synced to the server.
+ * <p>
+ * If a selector provides a notebook document
+ * filter but no cell selector all cells of a
+ * matching notebook document will be synced.
+ * <p>
+ * If a selector provides no notebook document
+ * filter but only a cell selector all notebook
+ * documents that contain at least one matching
+ * cell will be synced.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentSyncOptions {
+	/**
+	 * The notebooks to be synced
+	 */
+	@NonNull
+	List<NotebookSelector> notebookSelector
+
+	/**
+	 * Whether save notification should be forwarded to
+	 * the server. Will only be honored if mode === `notebook`.
+	 */
+	Boolean save
+
+	new() {
+		this.notebookSelector = new ArrayList
+	}
+
+	new(@NonNull List<NotebookSelector> notebookSelector) {
+		this.notebookSelector = Preconditions.checkNotNull(notebookSelector, 'notebookSelector')
+	}
+
+	new(@NonNull List<NotebookSelector> notebookSelector, Boolean save) {
+		this(notebookSelector)
+		this.save = save
+	}
+}
+
+/**
+ * Registration options specific to a notebook.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentSyncRegistrationOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	/**
+	 * The notebooks to be synced
+	 */
+	@NonNull
+	List<NotebookSelector> notebookSelector
+
+	/**
+	 * Whether save notification should be forwarded to
+	 * the server. Will only be honored if mode === `notebook`.
+	 */
+	Boolean save
+
+	new() {
+		this.notebookSelector = new ArrayList
+	}
+
+	new(@NonNull List<NotebookSelector> notebookSelector) {
+		this.notebookSelector = Preconditions.checkNotNull(notebookSelector, 'notebookSelector')
+	}
+
+	new(@NonNull List<NotebookSelector> notebookSelector, Boolean save) {
+		this(notebookSelector)
+		this.save = save
+	}
+}
+
+/**
+ * The params sent in an open notebook document notification.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class DidOpenNotebookDocumentParams {
+	/**
+	 * The notebook document that got opened.
+	 */
+	@NonNull
+	NotebookDocument notebookDocument
+
+	/**
+	 * The text documents that represent the content
+	 * of a notebook cell.
+	 */
+	@NonNull
+	List<TextDocumentItem> cellTextDocuments
+
+	new() {
+		this.cellTextDocuments = new ArrayList
+	}
+
+	new(@NonNull NotebookDocument notebookDocument, @NonNull List<TextDocumentItem> cellTextDocuments) {
+		this.notebookDocument = Preconditions.checkNotNull(notebookDocument, 'notebookDocument')
+		this.cellTextDocuments = Preconditions.checkNotNull(cellTextDocuments, 'cellTextDocuments')
+	}
+}
+
+/**
+ * The params sent in a change notebook document notification.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class DidChangeNotebookDocumentParams {
+	/**
+	 * The notebook document that did change. The version number points
+	 * to the version after all provided changes have been applied.
+	 */
+	@NonNull
+	VersionedNotebookDocumentIdentifier notebookDocument
+
+	/**
+	 * The actual changes to the notebook document.
+	 * <p>
+	 * The change describes single state change to the notebook document.
+	 * So it moves a notebook document, its cells and its cell text document
+	 * contents from state S to S'.
+	 * <p>
+	 * To mirror the content of a notebook using change events use the
+	 * following approach:
+	 * <p><ul>
+	 * <li>start with the same initial content
+	 * <li>apply the 'notebookDocument/didChange' notifications in the order
+	 * you receive them.
+	 * </ul>
+	 */
+	@NonNull
+	NotebookDocumentChangeEvent change
+
+	new() {
+	}
+
+	new(@NonNull VersionedNotebookDocumentIdentifier notebookDocument, @NonNull NotebookDocumentChangeEvent change) {
+		this.notebookDocument = Preconditions.checkNotNull(notebookDocument, 'notebookDocument')
+		this.change = Preconditions.checkNotNull(change, 'change')
+	}
+}
+
+/**
+ * A versioned notebook document identifier.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class VersionedNotebookDocumentIdentifier {
+	/**
+	 * The version number of this notebook document.
+	 */
+	int version
+
+	/**
+	 * The notebook document's URI.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(int version, @NonNull String uri) {
+		this.version = version
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+	}
+}
+
+/**
+ * A change event for a notebook document.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentChangeEvent {
+	/**
+	 * The changed meta data if any.
+	 */
+	@JsonAdapter(JsonElementTypeAdapter.Factory)
+	Object metadata
+
+	/**
+	 * Changes to cells
+	 */
+	NotebookDocumentChangeEventCells cells
+
+	new() {
+	}
+}
+
+/**
+ * Changes to cells
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentChangeEventCells {
+	/**
+	 * Changes to the cell structure to add or
+	 * remove cells.
+	 */
+	NotebookDocumentChangeEventCellStructure structure
+
+	/**
+	 * Changes to notebook cells properties like its
+	 * kind, execution summary or metadata.
+	 */
+	List<NotebookCell> data
+
+	/**
+	 * Changes to the text content of notebook cells.
+	 */
+	List<NotebookDocumentChangeEventCellTextContent> textContent
+
+	new() {
+	}
+}
+
+/**
+ * Changes to the cell structure to add or
+ * remove cells.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentChangeEventCellStructure {
+	/**
+	 * The change to the cell array.
+	 */
+	@NonNull
+	NotebookCellArrayChange array
+
+	/**
+	 * Additional opened cell text documents.
+	 */
+	List<TextDocumentItem> didOpen
+
+	/**
+	 * Additional closed cell text documents.
+	 */
+	List<TextDocumentIdentifier> didClose
+
+	new() {
+	}
+
+	new(@NonNull NotebookCellArrayChange array) {
+		this.array = Preconditions.checkNotNull(array, 'array')
+	}
+}
+
+/**
+ * Changes to the text content of notebook cells.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentChangeEventCellTextContent {
+	@NonNull
+	VersionedTextDocumentIdentifier document
+
+	@NonNull
+	List<TextDocumentContentChangeEvent> changes
+
+	new() {
+		this.changes = new ArrayList
+	}
+
+	new(@NonNull VersionedTextDocumentIdentifier document, @NonNull List<TextDocumentContentChangeEvent> changes) {
+		this.document = Preconditions.checkNotNull(document, 'document')
+		this.changes = Preconditions.checkNotNull(changes, 'changes')
+	}
+}
+
+/**
+ * A change describing how to move a `NotebookCell`
+ * array from state S to S'.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookCellArrayChange {
+	/**
+	 * The start offset of the cell that changed.
+	 */
+	int start
+
+	/**
+	 * The deleted cells
+	 */
+	int deleteCount
+
+	/**
+	 * The new cells, if any
+	 */
+	List<NotebookCell> cells
+
+	new() {
+	}
+
+	new(int start, int deleteCount) {
+		this.start = start
+		this.deleteCount = deleteCount
+	}
+
+	new(int start, int deleteCount, List<NotebookCell> cells) {
+		this(start, deleteCount)
+		this.cells = cells
+	}
+}
+
+/**
+ * The params sent in a save notebook document notification.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class DidSaveNotebookDocumentParams {
+	/**
+	 * The notebook document that got saved.
+	 */
+	@NonNull
+	NotebookDocumentIdentifier notebookDocument
+
+	new() {
+	}
+
+	new(@NonNull NotebookDocumentIdentifier notebookDocument) {
+		this.notebookDocument = Preconditions.checkNotNull(notebookDocument, 'notebookDocument')
+	}
+}
+
+/**
+ * The params sent in a close notebook document notification.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class DidCloseNotebookDocumentParams {
+	/**
+	 * The notebook document that got closed.
+	 */
+	@NonNull
+	NotebookDocumentIdentifier notebookDocument
+
+	/**
+	 * The text documents that represent the content
+	 * of a notebook cell that got closed.
+	 */
+	@NonNull
+	List<TextDocumentIdentifier> cellTextDocuments
+
+	new() {
+	}
+
+	new(@NonNull NotebookDocumentIdentifier notebookDocument, @NonNull List<TextDocumentIdentifier> cellTextDocuments) {
+		this.notebookDocument = Preconditions.checkNotNull(notebookDocument, 'notebookDocument')
+		this.cellTextDocuments = Preconditions.checkNotNull(cellTextDocuments, 'cellTextDocuments')
+	}
+}
+
+/**
+ * A literal to identify a notebook document in the client.
+ * <p>
+ * Since 3.17.0
+ */
+@JsonRpcData
+class NotebookDocumentIdentifier {
+	/**
+	 * The notebook document's URI.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 }

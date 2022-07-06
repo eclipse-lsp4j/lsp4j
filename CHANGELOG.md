@@ -2,14 +2,16 @@
 
 ### v0.15.0 (TBD)
 
+ * Added Notebook support
+ * Added `WorkspaceSymbol.data`
+
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/22?closed=1>
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### v0.14.0 (May 2022)
 
- * Implemented LSP version 3.17.0 (except Notebook support) - includes changes to the LSP 3.17
- specification that were added after specification was published as done.
+ * Added changes to the LSP 3.17 specification that were added after specification was published as done.
    * See [#630](https://github.com/eclipse/lsp4j/pull/630) for all changes.
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/21?closed=1>

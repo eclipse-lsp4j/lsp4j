@@ -19,10 +19,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CompletionException
 import java.util.concurrent.TimeUnit
 import org.eclipse.lsp4j.DidChangeConfigurationParams
+import org.eclipse.lsp4j.DidChangeNotebookDocumentParams
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams
+import org.eclipse.lsp4j.DidCloseNotebookDocumentParams
 import org.eclipse.lsp4j.DidCloseTextDocumentParams
+import org.eclipse.lsp4j.DidOpenNotebookDocumentParams
 import org.eclipse.lsp4j.DidOpenTextDocumentParams
+import org.eclipse.lsp4j.DidSaveNotebookDocumentParams
 import org.eclipse.lsp4j.DidSaveTextDocumentParams
 import org.eclipse.lsp4j.HoverParams
 import org.eclipse.lsp4j.InitializeParams
@@ -36,6 +40,7 @@ import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint
 import org.eclipse.lsp4j.launch.LSPLauncher
 import org.eclipse.lsp4j.services.LanguageClient
 import org.eclipse.lsp4j.services.LanguageServer
+import org.eclipse.lsp4j.services.NotebookDocumentService
 import org.eclipse.lsp4j.services.TextDocumentService
 import org.eclipse.lsp4j.services.WorkspaceService
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -108,6 +113,12 @@ class LSPEndpointTest {
 
 	@Accessors
 	private static class DummyServer implements LanguageServer {
+		val notebookDocumentService = new NotebookDocumentService {
+			override didChange(DidChangeNotebookDocumentParams params) {}
+			override didClose(DidCloseNotebookDocumentParams params) {}
+			override didOpen(DidOpenNotebookDocumentParams params) {}
+			override didSave(DidSaveNotebookDocumentParams params) {}
+		}
 
 		val textDocumentService = new TextDocumentService {
 			override didChange(DidChangeTextDocumentParams params) {}
