@@ -88,7 +88,7 @@ class StoppedEventArguments {
 	 */
 	Integer threadId;
 	/**
-	 * A value of true hints to the frontend that this event should not change the focus.
+	 * A value of true hints to the client that this event should not change the focus.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -356,9 +356,9 @@ enum OutputEventArgumentsGroup {
 	 */
 	START_COLLAPSED,
 	/**
-	 * End the current group and decreases the indentation of subsequent output events.
+	 * End the current group and decrease the indentation of subsequent output events.
 	 * <p>
-	 * A non empty 'output' attribute is shown as the unindented end of the group.
+	 * A nonempty 'output' attribute is shown as the unindented end of the group.
 	 */
 	END
 }
@@ -514,10 +514,10 @@ enum ProcessEventArgumentsStartMethod {
 /**
  * The event indicates that one or more capabilities have changed.
  * <p>
- * Since the capabilities are dependent on the frontend and its UI, it might not be possible to change that at
+ * Since the capabilities are dependent on the client and its UI, it might not be possible to change that at
  * random times (or too late).
  * <p>
- * Consequently this event has a hint characteristic: a frontend can only be expected to make a 'best effort' in
+ * Consequently this event has a hint characteristic: a client can only be expected to make a 'best effort' in
  * honouring individual capabilities but there are no guarantees.
  * <p>
  * Only changed capabilities need to be included, all other capabilities keep their values.
@@ -534,9 +534,8 @@ class CapabilitiesEventArguments {
 }
 
 /**
- * The event signals that a long running operation is about to start and
- * <p>
- * provides additional information for the client to set up a corresponding progress and cancellation UI.
+ * The event signals that a long running operation is about to start and provides additional information
+ * for the client to set up a corresponding progress and cancellation UI.
  * <p>
  * The client is free to delay the showing of the UI in order to reduce flicker.
  * <p>
@@ -562,7 +561,6 @@ class ProgressStartEventArguments {
 	String title;
 	/**
 	 * The request ID that this progress report is related to. If specified a debug adapter is expected to emit
-	 * <p>
 	 * progress events for the long running request until the request has been either completed or cancelled.
 	 * <p>
 	 * If the request ID is omitted, the progress report is assumed to be related to some general activity of the
@@ -572,7 +570,7 @@ class ProgressStartEventArguments {
 	 */
 	Integer requestId;
 	/**
-	 * If true, the request that reports progress may be canceled with a 'cancel' request.
+	 * If true, the request that reports progress may be cancelled with a 'cancel' request.
 	 * <p>
 	 * So this property basically controls whether the client should use UX that supports cancellation.
 	 * <p>
@@ -596,7 +594,7 @@ class ProgressStartEventArguments {
 }
 
 /**
- * The event signals that the progress reporting needs to updated with a new message and/or percentage.
+ * The event signals that the progress reporting needs to be updated with a new message and/or percentage.
  * <p>
  * The client does not have to update the UI immediately, but the clients needs to keep track of the message
  * and/or percentage values.
@@ -668,7 +666,7 @@ class InvalidatedEventArguments {
 	/**
 	 * Optional set of logical areas that got invalidated. This property has a hint characteristic: a client can only
 	 * be expected to make a 'best effort' in honouring the areas but there are no guarantees. If this property is
-	 * missing, empty, or if values are not understand the client should assume a single value 'all'.
+	 * missing, empty, or if values are not understood, the client should assume a single value 'all'.
 	 * <p>
 	 * This is an optional property.
 	 * <p>
@@ -783,13 +781,13 @@ enum RunInTerminalRequestArgumentsKind {
 @JsonRpcData
 class InitializeRequestArguments {
 	/**
-	 * The ID of the (frontend) client using this adapter.
+	 * The ID of the client using this adapter.
 	 * <p>
 	 * This is an optional property.
 	 */
 	String clientID;
 	/**
-	 * The human readable name of the (frontend) client using this adapter.
+	 * The human-readable name of the client using this adapter.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -800,7 +798,7 @@ class InitializeRequestArguments {
 	@NonNull
 	String adapterID;
 	/**
-	 * The ISO-639 locale of the (frontend) client using this adapter, e.g. en-US or de-CH.
+	 * The ISO-639 locale of the client using this adapter, e.g. en-US or de-CH.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -894,7 +892,7 @@ class ConfigurationDoneArguments {
 @JsonRpcData
 class LaunchRequestArguments {
 	/**
-	 * If noDebug is true the launch request should launch the program without enabling debugging.
+	 * If noDebug is true, the launch request should launch the program without enabling debugging.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1144,6 +1142,8 @@ class SetExceptionBreakpointsArguments {
 	 * 'supportsExceptionFilterOptions' is true. The 'filter' and 'filterOptions' sets are additive.
 	 * <p>
 	 * This is an optional property.
+	 * <p>
+	 * Since 1.43
 	 */
 	ExceptionFilterOptions[] filterOptions;
 	/**
@@ -1206,7 +1206,7 @@ class DataBreakpointInfoResponse {
 	@NonNull
 	String description;
 	/**
-	 * Optional attribute listing the available access types for a potential data breakpoint. A UI frontend could
+	 * Optional attribute listing the available access types for a potential data breakpoint. A UI client could
 	 * surface this information.
 	 * <p>
 	 * This is an optional property.
@@ -1715,7 +1715,7 @@ class SourceResponse {
 	@NonNull
 	String content;
 	/**
-	 * Optional content type (mime type) of the source.
+	 * Optional content type (MIME type) of the source.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1736,7 +1736,7 @@ class SourceArguments {
 	/**
 	 * The reference to the source. This is the same as source.sourceReference.
 	 * <p>
-	 * This is provided for backward compatibility since old backends do not understand the 'source' attribute.
+	 * This is provided for backward compatibility since old clients do not understand the 'source' attribute.
 	 */
 	int sourceReference;
 }
@@ -1842,7 +1842,7 @@ class EvaluateResponse {
 	 */
 	String type;
 	/**
-	 * Properties of a evaluate result that can be used to determine how to render the result in the UI.
+	 * Properties of an evaluate result that can be used to determine how to render the result in the UI.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2153,7 +2153,7 @@ class ExceptionInfoResponse {
 	@NonNull
 	String exceptionId;
 	/**
-	 * Descriptive text for the exception provided by the debug adapter.
+	 * Descriptive text for the exception.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2585,6 +2585,8 @@ class Capabilities {
 	 * The debug adapter supports 'filterOptions' as an argument on the 'setExceptionBreakpoints' request.
 	 * <p>
 	 * This is an optional property.
+	 * <p>
+	 * Since 1.43
 	 */
 	Boolean supportsExceptionFilterOptions;
 	/**
@@ -2635,6 +2637,8 @@ class ExceptionBreakpointsFilter {
 	 * be set.
 	 * <p>
 	 * This is an optional property.
+	 * <p>
+	 * Since 1.43
 	 */
 	Boolean supportsCondition;
 	/**
@@ -2713,8 +2717,7 @@ class Message {
  * <p>
 
  * <p>
- * To avoid an unnecessary proliferation of additional attributes with similar semantics but different names
- * <p>
+ * To avoid an unnecessary proliferation of additional attributes with similar semantics but different names,
  * we recommend to re-use attributes from the 'recommended' list below first, and only introduce new attributes if
  * nothing appropriate could be found.
  */
@@ -2731,12 +2734,6 @@ class Module {
 	@NonNull
 	String name;
 	/**
-	 * optional but recommended attributes.
-	 * <p>
-	 * always try to use these first before introducing additional attributes.
-	 * <p>
-
-	 * <p>
 	 * Logical full path to the module. The exact definition is implementation defined, but usually this would be a
 	 * full path to the on-disk file for the module.
 	 * <p>
@@ -2762,7 +2759,7 @@ class Module {
 	 */
 	String version;
 	/**
-	 * User understandable description of if symbols were found for the module (ex: 'Symbols Loaded', 'Symbols not
+	 * User-understandable description of if symbols were found for the module (ex: 'Symbols Loaded', 'Symbols not
 	 * found', etc.
 	 * <p>
 	 * This is an optional property.
@@ -2775,7 +2772,7 @@ class Module {
 	 */
 	String symbolFilePath;
 	/**
-	 * Module created or modified.
+	 * Module created or modified, encoded as a RFC 3339 timestamp.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2862,7 +2859,7 @@ class Thread {
 	 */
 	int id;
 	/**
-	 * A name of the thread.
+	 * The name of the thread.
 	 */
 	@NonNull
 	String name;
@@ -2914,8 +2911,7 @@ class Source {
 	 */
 	SourcePresentationHint presentationHint;
 	/**
-	 * The (optional) origin of this source: possible values 'internal module', 'inlined content from source map',
-	 * etc.
+	 * The optional origin of this source. For example, 'internal module', 'inlined content from source map', etc.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -3170,7 +3166,7 @@ class Variable {
 	 * The variable's value. This can be a multi-line text, e.g. for a function the body of a function.
 	 * <p>
 	 * For structured variables (which do not have a simple value), it is recommended to provide a
-	 * one line representation of the structured object. This helps to identify the structured object
+	 * one-line representation of the structured object. This helps to identify the structured object
 	 * in the collapsed state when its children are not yet visible.
 	 * <p>
 	 * An empty string can be used if no value should be shown in the UI.
@@ -3327,8 +3323,7 @@ interface VariablePresentationHintKind {
 	public static final String MOST_DERIVED_CLASS = "mostDerivedClass";
 	/**
 	 * Indicates that the object is virtual, that means it is a synthetic object introduced by the
-	 * adapter for
-	 * rendering purposes, e.g. an index range for large arrays.
+	 * adapter for rendering purposes, e.g. an index range for large arrays.
 	 */
 	public static final String VIRTUAL = "virtual";
 	/**
@@ -3376,6 +3371,8 @@ interface VariablePresentationHintAttributes {
 	public static final String HAS_SIDE_EFFECTS = "hasSideEffects";
 	/**
 	 * Indicates that the object has its value tracked by a data breakpoint.
+	 * <p>
+	 * Since 1.44
 	 */
 	public static final String HAS_DATA_BREAKPOINT = "hasDataBreakpoint";
 }
@@ -3448,7 +3445,7 @@ class SourceBreakpoint {
 	/**
 	 * An optional expression that controls how many hits of the breakpoint are ignored.
 	 * <p>
-	 * The backend is expected to interpret the expression as needed.
+	 * The debug adapter is expected to interpret the expression as needed.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the capability 'supportsHitConditionalBreakpoints' is true.
 	 * <p>
@@ -3456,7 +3453,7 @@ class SourceBreakpoint {
 	 */
 	String hitCondition;
 	/**
-	 * If this attribute exists and is non-empty, the backend must not 'break' (stop)
+	 * If this attribute exists and is non-empty, the debug adapter must not 'break' (stop)
 	 * <p>
 	 * but log the message instead. Expressions within {} are interpolated.
 	 * <p>
@@ -3488,7 +3485,7 @@ class FunctionBreakpoint {
 	/**
 	 * An optional expression that controls how many hits of the breakpoint are ignored.
 	 * <p>
-	 * The backend is expected to interpret the expression as needed.
+	 * The debug adapter is expected to interpret the expression as needed.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the capability 'supportsHitConditionalBreakpoints' is true.
 	 * <p>
@@ -3531,7 +3528,7 @@ class DataBreakpoint {
 	/**
 	 * An optional expression that controls how many hits of the breakpoint are ignored.
 	 * <p>
-	 * The backend is expected to interpret the expression as needed.
+	 * The debug adapter is expected to interpret the expression as needed.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -3570,7 +3567,7 @@ class InstructionBreakpoint {
 	/**
 	 * An optional expression that controls how many hits of the breakpoint are ignored.
 	 * <p>
-	 * The backend is expected to interpret the expression as needed.
+	 * The debug adapter is expected to interpret the expression as needed.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the capability 'supportsHitConditionalBreakpoints' is true.
 	 * <p>
@@ -3593,7 +3590,7 @@ class Breakpoint {
 	 */
 	Integer id;
 	/**
-	 * If true breakpoint could be set (but not necessarily at the desired location).
+	 * If true, breakpoint could be set (but not necessarily at the desired location).
 	 */
 	boolean verified;
 	/**
@@ -3689,6 +3686,38 @@ class StepInTarget {
 	 */
 	@NonNull
 	String label;
+	/**
+	 * An optional line of the step in target.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.56
+	 */
+	Integer line;
+	/**
+	 * An optional column of the step in target.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.56
+	 */
+	Integer column;
+	/**
+	 * An optional end line of the range covered by the step in target.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.56
+	 */
+	Integer endLine;
+	/**
+	 * An optional end column of the range covered by the step in target.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.56
+	 */
+	Integer endColumn;
 }
 
 /**
@@ -3749,13 +3778,13 @@ class CompletionItem {
 	@NonNull
 	String label;
 	/**
-	 * If text is not falsy then it is inserted instead of the label.
+	 * If text is returned and not an empty string, then it is inserted instead of the label.
 	 * <p>
 	 * This is an optional property.
 	 */
 	String text;
 	/**
-	 * A string that should be used when comparing this item with other items. When `falsy` the label is used.
+	 * A string that should be used when comparing this item with other items. If not returned or an empty string, the `label` is used instead.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -3864,7 +3893,7 @@ class Checksum {
 	@NonNull
 	ChecksumAlgorithm algorithm;
 	/**
-	 * Value of the checksum.
+	 * Value of the checksum, encoded as a hexadecimal value.
 	 */
 	@NonNull
 	String checksum;
@@ -3935,6 +3964,8 @@ class StackFrameFormat extends ValueFormat {
 /**
  * An ExceptionFilterOptions is used to specify an exception filter together with a condition for the
  * 'setExceptionBreakpoints' request.
+ * <p>
+ * Since 1.43
  */
 @JsonRpcData
 class ExceptionFilterOptions {
@@ -3996,8 +4027,7 @@ enum ExceptionBreakMode {
  * An ExceptionPathSegment represents a segment in a path that is used to match leafs or nodes in a tree of
  * exceptions.
  * <p>
- * If a segment consists of more than one name, it matches the names provided if 'negate' is false or missing or
- * <p>
+ * If a segment consists of more than one name, it matches the names provided if 'negate' is false or missing, or
  * it matches anything except the names provided if 'negate' is true.
  */
 @JsonRpcData

@@ -91,10 +91,10 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.55.0";
+	public static final String SCHEMA_VERSION = "1.56.0";
 
 	/**
-	 * The 'cancel' request is used by the frontend in two situations:
+	 * The 'cancel' request is used by the client in two situations:
 	 * <ul>
 	 * <li>to indicate that it is no longer interested in the result produced by a
 	 * specific request issued earlier</li>
@@ -107,19 +107,17 @@ public interface IDebugProtocolServer {
 	 * guarantees.
 	 * <p>
 	 * The 'cancel' request may return an error if it could not cancel an operation
-	 * but a frontend should refrain from presenting this error to end users.
+	 * but a client should refrain from presenting this error to end users.
 	 * <p>
-	 * A frontend client should only call this request if the capability
+	 * A client should only call this request if the capability
 	 * 'supportsCancelRequest' is true.
 	 * <p>
-	 * The request that got canceled still needs to send a response back. This can
-	 * either be a normal result ('success' attribute true)
-	 * <p>
-	 * or an error response ('success' attribute false and the 'message' set to
-	 * 'cancelled').
+	 * The request that got cancelled still needs to send a response back. This can
+	 * either be a normal result ('success' attribute true) or an error response
+	 * ('success' attribute false and the 'message' set to 'cancelled').
 	 * <p>
 	 * Returning partial results from a cancelled request is possible but please
-	 * note that a frontend client has no generic way for detecting that a response
+	 * note that a client has no generic way for detecting that a response
 	 * is partial or not.
 	 * <p>
 	 * The progress that got cancelled still needs to send a 'progressEnd' event
@@ -135,9 +133,7 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The 'initialize' request is sent as the first request from the client to the
-	 * debug adapter
-	 * <p>
-	 * in order to configure it with client capabilities and to retrieve
+	 * debug adapter in order to configure it with client capabilities and to retrieve
 	 * capabilities from the debug adapter.
 	 * <p>
 	 * Until the debug adapter has responded to with an 'initialize' response, the
@@ -287,7 +283,7 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request configures the debuggers response to thrown exceptions.
+	 * The request configures the debugger's response to thrown exceptions.
 	 * <p>
 	 * If an exception is configured to break, a 'stopped' event is fired (with
 	 * reason 'exception').
@@ -348,7 +344,7 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The request resumes execution of all threads. If the debug adapter supports
-	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests})
+	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests}),
 	 * setting the 'singleThread' argument to true resumes only the specified thread.
 	 * If not all threads were resumed, the 'allThreadsContinued' attribute of the response must be set to false.
 	 */
@@ -362,7 +358,7 @@ public interface IDebugProtocolServer {
 	 * thread and allows all other threads to run freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
@@ -378,7 +374,7 @@ public interface IDebugProtocolServer {
 	 * other threads to run freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * If the request cannot step into a target, 'stepIn' behaves like the 'next' request.
@@ -403,7 +399,7 @@ public interface IDebugProtocolServer {
 	 * allows all other threads to run freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
@@ -419,7 +415,7 @@ public interface IDebugProtocolServer {
 	 * thread and allows all other threads to run backward freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}) setting the
+	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
@@ -435,7 +431,7 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The request resumes backward execution of all threads. If the debug adapter supports
-	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests})
+	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests}),
 	 * setting the 'singleThread' argument to true resumes only the specified thread. If not
 	 * all threads were resumed, the 'allThreadsContinued' attribute of the response must be set to false.
 	 * <p>
@@ -464,7 +460,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * The request sets the location where the debuggee will continue to run.
 	 * <p>
-	 * This makes it possible to skip the execution of code or to executed code
+	 * This makes it possible to skip the execution of code or to execute code
 	 * again.
 	 * <p>
 	 * The code between the current location and the goto target is not executed but
@@ -498,14 +494,14 @@ public interface IDebugProtocolServer {
 	 * thread.
 	 * <p>
 	 * A client can request all stack frames by omitting the startFrame and levels
-	 * arguments. For performance conscious clients and if the debug adapter's
+	 * arguments. For performance-conscious clients and if the debug adapter's
 	 * 'supportsDelayedStackTraceLoading' capability is true, stack frames can be
 	 * retrieved in a piecemeal way with the startFrame and levels arguments. The
 	 * response of the stackTrace request may contain a totalFrames property that
 	 * hints at the total number of frames in the stack. If a client needs this
 	 * total number upfront, it can issue a request for a single (first) frame and
 	 * depending on the value of totalFrames decide how to proceed. In any case a
-	 * client should be prepared to receive less frames than requested, which is an
+	 * client should be prepared to receive fewer frames than requested, which is an
 	 * indication that the end of the stack has been reached.
 	 */
 	@JsonRequest
@@ -596,7 +592,7 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Evaluates the given expression in the context of the top most stack frame.
+	 * Evaluates the given expression in the context of the topmost stack frame.
 	 * <p>
 	 * The expression has access to any variables and arguments that are in scope.
 	 */
