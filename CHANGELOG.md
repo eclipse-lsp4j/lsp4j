@@ -4,6 +4,7 @@
 
  * Added Notebook support
  * Added `WorkspaceSymbol.data`
+ * Implemented DAP version 1.56.0
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/22?closed=1>
 

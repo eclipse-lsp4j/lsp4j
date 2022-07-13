@@ -52,7 +52,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported DAP Versions
 
- * LSP4J 0.15.&ast; _(Next release)_ &rarr; DAP 1.55.0
+ * LSP4J 0.15.&ast; _(Next release)_ &rarr; DAP 1.56.0
  * LSP4J 0.14.&ast; &rarr; DAP 1.55.0
  * LSP4J 0.13.&ast; &rarr; DAP 1.55.0
  * LSP4J 0.12.&ast; &rarr; DAP 1.44.0

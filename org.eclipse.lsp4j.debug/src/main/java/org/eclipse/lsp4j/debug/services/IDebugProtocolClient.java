@@ -45,7 +45,7 @@ public interface IDebugProtocolClient {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.55.0";
+	public static final String SCHEMA_VERSION = "1.56.0";
 
 	/**
 	 * This event indicates that the debug adapter is ready to accept configuration
@@ -59,14 +59,14 @@ public interface IDebugProtocolClient {
 	 * <ul>
 	 * <li>adapters sends 'initialized' event (after the 'initialize' request has
 	 * returned)</li>
-	 * <li>frontend sends zero or more 'setBreakpoints' requests</li>
-	 * <li>frontend sends one 'setFunctionBreakpoints' request (if capability
+	 * <li>client sends zero or more 'setBreakpoints' requests</li>
+	 * <li>client sends one 'setFunctionBreakpoints' request (if capability
 	 * 'supportsFunctionBreakpoints' is true)</li>
-	 * <li>frontend sends a 'setExceptionBreakpoints' request if one or more
+	 * <li>client sends a 'setExceptionBreakpoints' request if one or more
 	 * 'exceptionBreakpointFilters' have been defined (or if
-	 * 'supportsConfigurationDoneRequest' is not defined or false)</li>
-	 * <li>frontend sends other future configuration requests</li>
-	 * <li>frontend sends one 'configurationDone' request to indicate the end of the
+	 * 'supportsConfigurationDoneRequest' is not true)</li>
+	 * <li>client sends other future configuration requests</li>
+	 * <li>client sends one 'configurationDone' request to indicate the end of the
 	 * configuration.</li>
 	 * </ul>
 	 */
@@ -161,10 +161,10 @@ public interface IDebugProtocolClient {
 	/**
 	 * The event indicates that one or more capabilities have changed.
 	 * <p>
-	 * Since the capabilities are dependent on the frontend and its UI, it might not
+	 * Since the capabilities are dependent on the client and its UI, it might not
 	 * be possible to change that at random times (or too late).
 	 * <p>
-	 * Consequently this event has a hint characteristic: a frontend can only be
+	 * Consequently this event has a hint characteristic: a client can only be
 	 * expected to make a 'best effort' in honouring individual capabilities but
 	 * there are no guarantees.
 	 * <p>
@@ -177,7 +177,6 @@ public interface IDebugProtocolClient {
 
 	/**
 	 * The event signals that a long running operation is about to start and
-	 * <p>
 	 * provides additional information for the client to set up a corresponding
 	 * progress and cancellation UI.
 	 * <p>
@@ -191,7 +190,7 @@ public interface IDebugProtocolClient {
 	}
 
 	/**
-	 * The event signals that the progress reporting needs to updated with a new
+	 * The event signals that the progress reporting needs to be updated with a new
 	 * message and/or percentage.
 	 * <p>
 	 * The client does not have to update the UI immediately, but the clients needs
@@ -244,7 +243,7 @@ public interface IDebugProtocolClient {
 	 * single continuous address range and might overlap.
 	 * <p>
 	 * Debug adapters can use this event to indicate that the contents of a memory range
-	 * has changed due to some other DAP request like `setVariable` or `setExpression`.
+	 * has changed due to some other request like `setVariable` or `setExpression`.
 	 * Debug adapters are not expected to emit this event for each and every memory change of
 	 * a running program, because that information is typically not available from debuggers
 	 * and it would flood clients with too many events.
