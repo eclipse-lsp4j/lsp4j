@@ -5797,7 +5797,7 @@ class SemanticTokensServerFull {
  * Since 3.16.0
  */
 @JsonRpcData
-class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOptions {
+class SemanticTokensWithRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * The legend used by the server
 	 */
@@ -5814,12 +5814,6 @@ class SemanticTokensWithRegistrationOptions extends AbstractWorkDoneProgressOpti
 	 * Server supports providing semantic tokens for a full document.
 	 */
 	Either<Boolean, SemanticTokensServerFull> full
-
-	/**
-	 * A document selector to identify the scope of the registration. If set to null
-	 * the document selector provided on the client side will be used.
-	 */
-	List<DocumentFilter> documentSelector
 
 	/**
 	 * The id used to register the request. The id can be used to deregister
