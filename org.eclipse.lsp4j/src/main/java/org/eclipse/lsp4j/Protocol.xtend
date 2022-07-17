@@ -5538,6 +5538,27 @@ class PrepareRenameResult {
 }
 
 /**
+ * One of the result types of the `textDocument/prepareRename` request.
+ * Indicates that the client should use its default behavior to compute the rename range.
+ * <p>
+ * Since 3.16.0
+ */
+@JsonRpcData
+class PrepareRenameDefaultBehavior {
+	/**
+	 * Indicates that the client should use its default behavior to compute the rename range.
+	 */
+	boolean defaultBehavior
+
+	new() {
+	}
+
+	new(boolean defaultBehavior) {
+		this.defaultBehavior = defaultBehavior
+	}
+}
+
+/**
  * The rename request is sent from the client to the server to do a workspace wide rename of a symbol.
  */
 @JsonRpcData
