@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j
 
-import com.google.common.annotations.Beta
 import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
 import java.util.Arrays
@@ -3448,12 +3447,6 @@ class DidChangeTextDocumentParams {
 	VersionedTextDocumentIdentifier textDocument
 
 	/**
-	 * Legacy property to support protocol version 1.0 requests.
-	 */
-	@Deprecated
-	String uri
-
-	/**
 	 * The actual content changes.
 	 */
 	@NonNull
@@ -3466,13 +3459,6 @@ class DidChangeTextDocumentParams {
 		@NonNull List<TextDocumentContentChangeEvent> contentChanges) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.contentChanges = Preconditions.checkNotNull(contentChanges, 'contentChanges')
-	}
-
-	@Deprecated
-	new(@NonNull VersionedTextDocumentIdentifier textDocument, String uri,
-		@NonNull List<TextDocumentContentChangeEvent> contentChanges) {
-		this(textDocument, contentChanges)
-		this.uri = uri
 	}
 }
 
@@ -3626,23 +3612,11 @@ class DidOpenTextDocumentParams {
 	@NonNull
 	TextDocumentItem textDocument
 
-	/**
-	 * Legacy property to support protocol version 1.0 requests.
-	 */
-	@Deprecated
-	String text
-
 	new() {
 	}
 
 	new(@NonNull TextDocumentItem textDocument) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
-	}
-
-	@Deprecated
-	new(@NonNull TextDocumentItem textDocument, String text) {
-		this(textDocument)
-		this.text = text
 	}
 }
 
@@ -4975,16 +4949,6 @@ class InitializeParams implements WorkDoneProgressParams {
 	 */
 	@NonNull
 	ClientCapabilities capabilities
-
-	/**
-	 * An optional extension to the protocol.
-	 * To tell the server what client (editor) is talking to it.
-	 *
-	 * @deprecated Use {@link #clientInfo} instead.
-	 */
-	@Beta
-	@Deprecated
-	String clientName
 
 	/**
 	 * Information about the client
@@ -6966,12 +6930,6 @@ class TextDocumentPositionParams {
 	TextDocumentIdentifier textDocument
 
 	/**
-	 * Legacy property to support protocol version 1.0 requests.
-	 */
-	@Deprecated
-	String uri
-
-	/**
 	 * The position inside the text document.
 	 */
 	@NonNull
@@ -6982,13 +6940,6 @@ class TextDocumentPositionParams {
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
-		this.position = Preconditions.checkNotNull(position, 'position')
-	}
-
-	@Deprecated
-	new(@NonNull TextDocumentIdentifier textDocument, String uri, @NonNull Position position) {
-		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
-		this.uri = uri
 		this.position = Preconditions.checkNotNull(position, 'position')
 	}
 }
