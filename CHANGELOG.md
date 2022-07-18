@@ -8,6 +8,12 @@
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/22?closed=1>
 
+Breaking API changes:
+
+ * Class `SemanticTokensWithRegistrationOptions` now extends
+   `AbstractTextDocumentRegistrationAndWorkDoneProgressOptions`
+   instead of `AbstractWorkDoneProgressOptions`
+
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### v0.14.0 (May 2022)
