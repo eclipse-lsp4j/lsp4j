@@ -13,6 +13,8 @@ Breaking API changes:
  * Class `SemanticTokensWithRegistrationOptions` now extends
    `AbstractTextDocumentRegistrationAndWorkDoneProgressOptions`
    instead of `AbstractWorkDoneProgressOptions`
+ * Removed unspecified deprecated properties `InitializeParams.clientName`
+ `DidOpenTextDocumentParams.text`, `DidChangeTextDocumentParams.uri`, `TextDocumentPositionParams.uri`
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
