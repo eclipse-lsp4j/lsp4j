@@ -112,8 +112,8 @@ class StoppedEventArguments {
 	 */
 	Boolean allThreadsStopped;
 	/**
-	 * Ids of the breakpoints that triggered the event. In most cases there will
-	 * be only a single breakpoint but here are some examples for multiple
+	 * Ids of the breakpoints that triggered the event. In most cases there is
+	 * only a single breakpoint but here are some examples for multiple
 	 * breakpoints:
 	 * <ul>
 	 * <li>Different types of breakpoints map to the same location.</li>
@@ -290,7 +290,7 @@ class OutputEventArguments {
 	 */
 	Integer column;
 	/**
-	 * Optional data to report. For the 'telemetry' category the data will be sent to telemetry, for the other
+	 * Optional data to report. For the 'telemetry' category the data is sent to telemetry, for the other
 	 * categories the data is shown in JSON format.
 	 * <p>
 	 * This is an optional property.
@@ -466,7 +466,7 @@ class ProcessEventArguments {
 	@NonNull
 	String name;
 	/**
-	 * The system process id of the debugged process. This property will be missing for non-system processes.
+	 * The system process id of the debugged process. This property is missing for non-system processes.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -586,7 +586,7 @@ class ProgressStartEventArguments {
 	 */
 	String message;
 	/**
-	 * Optional progress percentage to display (value range: 0 to 100). If omitted no percentage will be shown.
+	 * Optional progress percentage to display (value range: 0 to 100). If omitted no percentage is shown.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -618,7 +618,7 @@ class ProgressUpdateEventArguments {
 	 */
 	String message;
 	/**
-	 * Optional progress percentage to display (value range: 0 to 100). If omitted no percentage will be shown.
+	 * Optional progress percentage to display (value range: 0 to 100). If omitted no percentage is shown.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1170,7 +1170,7 @@ class SetExceptionBreakpointsArguments {
  * exception breakpoint or filter so that it can be updated subsequently by sending breakpoint events.
  * <p>
  * For backward compatibility both the 'breakpoints' array and the enclosing 'body' are optional. If these elements
- * are missing a client will not be able to show problems for individual exception breakpoints or filters.
+ * are missing a client is not able to show problems for individual exception breakpoints or filters.
  */
 @JsonRpcData
 class SetExceptionBreakpointsResponse {
@@ -2198,7 +2198,7 @@ class ReadMemoryResponse {
 	 * The number of unreadable bytes encountered after the last successfully read byte.
 	 * <p>
 	 * This can be used to determine the number of bytes that must be skipped before a subsequent 'readMemory' request
-	 * will succeed.
+	 * succeeds.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2612,7 +2612,7 @@ class ExceptionBreakpointsFilter {
 	@NonNull
 	String filter;
 	/**
-	 * The name of the filter option. This will be shown in the UI.
+	 * The name of the filter option. This is shown in the UI.
 	 */
 	@NonNull
 	String label;
@@ -2710,12 +2710,10 @@ class Message {
  * <p>
  * The name is used to minimally render the module in the UI.
  * <p>
-
  * <p>
- * Additional attributes can be added to the module. They will show up in the module View if they have a
+ * Additional attributes can be added to the module. They show up in the module View if they have a
  * corresponding ColumnDescriptor.
  * <p>
-
  * <p>
  * To avoid an unnecessary proliferation of additional attributes with similar semantics but different names,
  * we recommend to re-use attributes from the 'recommended' list below first, and only introduce new attributes if
@@ -3269,7 +3267,7 @@ class VariablePresentationHint {
 	 * function.
 	 * <b>
 	 * Please note that in addition to the 'lazy' flag, the variable's
-	 * 'variablesReference' must refer to a variable that will provide the value
+	 * 'variablesReference' must refer to a variable that provides the value
 	 * through another 'variable' request.
 	 * <p>
 	 * This is an optional property.
@@ -3977,7 +3975,7 @@ class ExceptionFilterOptions {
 	/**
 	 * An optional expression for conditional exceptions.
 	 * <p>
-	 * The exception will break into the debugger if the result of the condition is true.
+	 * The exception breaks into the debugger if the result of the condition is true.
 	 * <p>
 	 * This is an optional property.
 	 */

@@ -192,8 +192,8 @@ public interface IDebugProtocolServer {
 	 * Restarts a debug session. Clients should only call this request if the
 	 * capability 'supportsRestartRequest' is true.
 	 * <p>
-	 * If the capability is missing or has the value false, a typical client will
-	 * emulate 'restart' by terminating the debug adapter first and then launching
+	 * If the capability is missing or has the value false, a typical client
+	 * emulates 'restart' by terminating the debug adapter first and then launching
 	 * it anew.
 	 */
 	@JsonRequest
@@ -228,7 +228,7 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * Please note that this request does not directly affect the state of the debug
 	 * session: if the debuggee decides to veto the graceful shutdown for any reason
-	 * by not terminating itself, then the debug session will just continue.
+	 * by not terminating itself, then the debug session just continues.
 	 * <p>
 	 * Clients can surface the 'terminate' request as an explicit command or they can
 	 * integrate it into a two stage Stop command that first sends 'terminate' to request
@@ -534,7 +534,7 @@ public interface IDebugProtocolServer {
 	 * 'supportsSetVariable' is true.
 	 * <p>
 	 * If a debug adapter implements both setVariable and setExpression, a client
-	 * will only use setExpression if the variable has an evaluateName property.
+	 * only uses setExpression if the variable has an evaluateName property.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetVariableResponse> setVariable(SetVariableArguments args) {
@@ -612,7 +612,7 @@ public interface IDebugProtocolServer {
 	 * 'supportsSetExpression' is true.
 	 * <p>
 	 * If a debug adapter implements both setExpression and setVariable, a client
-	 * will only use setExpression if the variable has an evaluateName property.
+	 * only uses setExpression if the variable has an evaluateName property.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
