@@ -33,7 +33,7 @@ The project maintains the following source code repositories:
 
 This project leverages the following third party content.
 
-Google Gson (2.8.9)
+Google Gson (2.9.0)
 
 * License: Apache License, 2.0
 * Project: https://github.com/google/gson
