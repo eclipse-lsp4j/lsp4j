@@ -4,12 +4,15 @@
 
  * Added Notebook support
  * Added `WorkspaceSymbol.data`
+ * Added support for client default behavior on renames
  * Implemented DAP version 1.56.0
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/22?closed=1>
 
 Breaking API changes:
 
+ * Return type of `textDocument/prepareRename` changed from `Either<Range, PrepareRenameResult>`
+   to `Either3<Range, PrepareRenameResult, PrepareRenameDefaultBehavior>`
  * Class `SemanticTokensWithRegistrationOptions` now extends
    `AbstractTextDocumentRegistrationAndWorkDoneProgressOptions`
    instead of `AbstractWorkDoneProgressOptions`

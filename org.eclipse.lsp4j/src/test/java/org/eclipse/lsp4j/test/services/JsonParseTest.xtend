@@ -56,6 +56,7 @@ import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
 import org.eclipse.lsp4j.ParameterInformation
 import org.eclipse.lsp4j.Position
+import org.eclipse.lsp4j.PrepareRenameDefaultBehavior
 import org.eclipse.lsp4j.PrepareRenameResult
 import org.eclipse.lsp4j.ProgressParams
 import org.eclipse.lsp4j.PublishDiagnosticsParams
@@ -88,6 +89,7 @@ import org.eclipse.lsp4j.WorkspaceClientCapabilities
 import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Either
+import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.messages.Message
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage
@@ -545,7 +547,7 @@ class JsonParseTest {
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
 			id = "12"
-			result = Either.forRight(new PrepareRenameResult => [
+			result = Either3.forSecond(new PrepareRenameResult => [
 				range = new Range => [
 					start = new Position(3, 32)
 					end = new Position(3, 35)
@@ -580,9 +582,33 @@ class JsonParseTest {
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
 			id = "12"
-			result =  Either.forLeft(new Range => [
+			result =  Either3.forFirst(new Range => [
 				start = new Position(3, 32)
 				end = new Position(3, 35)
+			])
+		])
+	}
+
+	@Test
+	def void testPrepareRenameResponse3() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_PREPARE_RENAME
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"defaultBehavior": true
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result =  Either3.forThird(new PrepareRenameDefaultBehavior => [
+				defaultBehavior = true
 			])
 		])
 	}

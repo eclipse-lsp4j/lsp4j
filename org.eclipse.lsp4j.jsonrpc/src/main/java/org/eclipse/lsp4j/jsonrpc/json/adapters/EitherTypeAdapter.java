@@ -53,7 +53,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 	}
 	
 	/**
-	 * A predicate that is usedful for checking alternatives in case both the left and the right type
+	 * A predicate that is useful for checking alternatives in case both the left and the right type
 	 * are JSON object types.
 	 */
 	public static class PropertyChecker implements Predicate<JsonElement> {
@@ -132,21 +132,26 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		
 	}
 
-	protected final TypeToken<Either<L, R>> typeToken;
+	protected final TypeToken<? extends Either<L, R>> typeToken;
 	protected final EitherTypeArgument<L> left;
 	protected final EitherTypeArgument<R> right;
 	protected final Predicate<JsonElement> leftChecker;
 	protected final Predicate<JsonElement> rightChecker;
 
-	public EitherTypeAdapter(Gson gson, TypeToken<Either<L, R>> typeToken) {
+	public EitherTypeAdapter(Gson gson, TypeToken<? extends Either<L, R>> typeToken) {
 		this(gson, typeToken, null, null);
 	}
 	
-	public EitherTypeAdapter(Gson gson, TypeToken<Either<L, R>> typeToken, Predicate<JsonElement> leftChecker, Predicate<JsonElement> rightChecker) {
+	public EitherTypeAdapter(Gson gson, TypeToken<? extends Either<L, R>> typeToken, Predicate<JsonElement> leftChecker, Predicate<JsonElement> rightChecker) {
+		this(gson, typeToken, leftChecker, rightChecker, null, null);
+	}
+
+	public EitherTypeAdapter(Gson gson, TypeToken<? extends Either<L, R>> typeToken, Predicate<JsonElement> leftChecker, Predicate<JsonElement> rightChecker,
+			TypeAdapter<L> leftAdapter, TypeAdapter<R> rightAdapter) {
 		this.typeToken = typeToken;
 		Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Either.class);
-		this.left = new EitherTypeArgument<L>(gson, elementTypes[0]);
-		this.right = new EitherTypeArgument<R>(gson, elementTypes[1]);
+		this.left = new EitherTypeArgument<L>(gson, elementTypes[0], leftAdapter);
+		this.right = new EitherTypeArgument<R>(gson, elementTypes[1], rightAdapter);
 		this.leftChecker = leftChecker;
 		this.rightChecker = rightChecker;
 	}
@@ -225,10 +230,15 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		protected final TypeAdapter<T> adapter;
 		protected final Collection<JsonToken> expectedTokens;
 
-		@SuppressWarnings("unchecked")
 		public EitherTypeArgument(Gson gson, Type type) {
+			this(gson, type, null);
+		}
+
+		@SuppressWarnings("unchecked")
+		public EitherTypeArgument(Gson gson, Type type, TypeAdapter<T> adapter) {
 			this.typeToken = (TypeToken<T>) TypeToken.get(type);
-			this.adapter = (type == Object.class) ? (TypeAdapter<T>) new JsonElementTypeAdapter(gson) : gson.getAdapter(this.typeToken);
+			this.adapter = (adapter != null) ? adapter :
+				((type == Object.class) ? (TypeAdapter<T>) new JsonElementTypeAdapter(gson) : gson.getAdapter(this.typeToken));
 			this.expectedTokens = new HashSet<>();
 			for (Type expectedType : TypeUtils.getExpectedTypes(type)) {
 				Class<?> rawType = TypeToken.get(expectedType).getRawType();
