@@ -1,6 +1,6 @@
 ## LSP4J Change Log
 
-### v0.15.0 (TBD)
+### v0.15.0 (August 2022)
 
  * Added Notebook support
  * Added `WorkspaceSymbol.data`
