@@ -1,6 +1,14 @@
 ## LSP4J Change Log
 
-### v0.15.0 (TBD)
+### v0.16.0 (TBD)
+
+Fixed issues: <https://github.com/eclipse/lsp4j/milestone/23?closed=1>
+
+Breaking API changes:
+
+Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+
+### v0.15.0 (August 2022)
 
  * Added Notebook support
  * Added `WorkspaceSymbol.data`
@@ -19,7 +27,7 @@ Breaking API changes:
  * Removed unspecified deprecated properties `InitializeParams.clientName`
  `DidOpenTextDocumentParams.text`, `DidChangeTextDocumentParams.uri`, `TextDocumentPositionParams.uri`
 
-Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.15.0/japicmp-report/>
 
 ### v0.14.0 (May 2022)
 
