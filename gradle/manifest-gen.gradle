@@ -9,8 +9,7 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-
-apply plugin: 'osgi'
+apply plugin: "biz.aQute.bnd.builder"
 
 def baseVersion = project.version
 if (baseVersion.endsWith('-SNAPSHOT'))
@@ -19,13 +18,12 @@ else if (baseVersion.split('\\.').length == 4)
 	baseVersion = baseVersion.substring(0, baseVersion.lastIndexOf('.'))
 def qualifiedVersion = baseVersion + '.v' + buildTime
 
-jar.manifest {
-	version = qualifiedVersion
-	if (project.hasProperty('title'))
-		name = project.title
-	vendor = 'Eclipse LSP4J'
-	instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-}
+jar.bnd (
+	'Bundle-Version': qualifiedVersion,
+	'Bundle-Vendor': 'Eclipse LSP4J',
+	'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+	"-exportcontents": "org.eclipse.lsp4j.*",
+)
 
 //------------------------------------------------------
 // Generate a manifest for the source bundle

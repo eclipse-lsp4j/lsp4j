@@ -10,78 +10,85 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
-// Configuration function for generated POMs
-def configurePom = { pom ->
-	pom.project {
-		if (project.hasProperty('title')) {
-			name = project.title
-			description = project.description
-		}
-		packaging 'jar'
-		url 'https://github.com/eclipse/lsp4j'
-		licenses {
-			license {
-				name 'Eclipse Public License, Version 2.0'
-				url 'https://www.eclipse.org/legal/epl-2.0'
+publishing {
+	publications {
+		LocalMavenRepo(MavenPublication) {
+			from components.java
+
+			artifact sourcesJar
+			artifact javadocJar
+
+			pom {
+				//packaging 'jar'
+				url = 'https://github.com/eclipse/lsp4j'
+				licenses {
+					license {
+						name = 'Eclipse Public License, Version 2.0'
+						url = 'http://www.eclipse.org/legal/epl-2.0'
+					}
+				}
+				scm {
+					connection = 'scm:git:git@github.com:eclipse/lsp4j.git'
+					developerConnection = 'scm:git:git@github.com:eclipse/lsp4j.git'
+					url = 'git@github.com:eclipse/lsp4j.git'
+				}
+
+				developers {
+					developer {
+						name = 'Sven Efftinge'
+						email = 'sven.efftinge@typefox.io'
+						organizationUrl = 'https://typefox.io'
+					}
+					developer {
+						name = 'Jonah Graham'
+						email = 'jonah@kichwacoders.com'
+						organizationUrl = 'https://kichwacoders.com'
+					}
+					developer {
+						name = 'Dennis Hübner'
+						email = 'dennis.huebner@typefox.io'
+						organizationUrl = 'https://typefox.io'
+					}
+					developer {
+						name = 'Akos Kitta'
+						email = 'kittaakos@typefox.io'
+						organizationUrl = 'https://typefox.io'
+					}
+					developer {
+						name = 'Anton Kosyakov'
+						email = 'anton.kosyakov@typefox.io'
+						organizationUrl = 'https://typefox.io'
+					}
+					developer {
+						name = 'Miro Spönemann'
+						email = 'miro.spoenemann@typefox.io'
+						organizationUrl = 'https://typefox.io'
+					}
+					developer {
+						name = 'Yaohai Zheng'
+						email = 'yaozheng@microsoft.com'
+						organizationUrl = 'https://www.microsoft.com/'
+					}
+					developer {
+						name = 'Christian Dietrich'
+						email = 'christian.dietrich@itemis.de'
+						organizationUrl = 'http://www.itemis.com'
+					}
+				}
+				// We need to wait until the project's own build file has been executed
+				// so we can use the title and description settings for setting up Maven publishing.
+				afterEvaluate {
+					if (project.hasProperty('title')) {
+						name = project.title
+						description = project.description
+					}
+                }
 			}
 		}
-		developers {
-			developer {
-				name 'Sven Efftinge'
-				email 'sven.efftinge@typefox.io'
-				organizationUrl 'https://typefox.io'
-			}
-			developer {
-				name 'Jonah Graham'
-				email 'jonah@kichwacoders.com'
-				organizationUrl 'https://kichwacoders.com'
-			}
-			developer {
-				name 'Dennis Hübner'
-				email 'dennis.huebner@typefox.io'
-				organizationUrl 'https://typefox.io'
-			}
-			developer {
-				name 'Akos Kitta'
-				email 'kittaakos@typefox.io'
-				organizationUrl 'https://typefox.io'
-			}
-			developer {
-				name 'Anton Kosyakov'
-				email 'anton.kosyakov@typefox.io'
-				organizationUrl 'https://typefox.io'
-			}
-			developer {
-				name 'Miro Spönemann'
-				email 'miro.spoenemann@typefox.io'
-				organizationUrl 'https://typefox.io'
-			}
-			developer {
-				name 'Yaohai Zheng'
-				email 'yaozheng@microsoft.com'
-				organizationUrl 'https://www.microsoft.com/'
-			}
-		}
-		scm {
-			connection 'scm:git:git@github.com:eclipse/lsp4j.git'
-			developerConnection 'scm:git:git@github.com:eclipse/lsp4j.git'
-			url 'git@github.com:eclipse/lsp4j.git'
+    }
+	repositories {
+		maven {
+			url = "$rootProject.buildDir/maven-repository"
 		}
 	}
-}
-
-// We need to wait until the project's own build file has been executed
-// so we can use the title and description settings for setting up Maven publishing.
-afterEvaluate {
-	
-	task createLocalMavenRepo(type: Upload) {
-		group = 'Upload'
-		description = 'Create or update the local Maven repository'
-		configuration = configurations.archives
-		repositories.mavenDeployer {
-			repository(url: "file:" + file("../build/maven-repository"))
-			configurePom(pom)
-		}
-	}
-
 }

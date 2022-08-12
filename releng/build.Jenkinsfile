@@ -2,7 +2,7 @@ pipeline {
   agent {
     kubernetes {
       // See comment in deplog-build.sh (gpg:sign-and-deploy-file)
-      label 'centos-7'
+      inheritFrom 'centos-7'
     }
   }
   tools {
@@ -37,7 +37,7 @@ pipeline {
                 -PignoreTestFailures=true \
                 --refresh-dependencies \
                 --continue \
-                clean build signJar createLocalMavenRepo \
+                clean build signJar publish \
                 "
         }
       }

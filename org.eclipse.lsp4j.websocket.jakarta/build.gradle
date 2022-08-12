@@ -14,11 +14,11 @@ ext.title = 'LSP4J WebSocket Jakarta'
 description = 'Jakarta WebSocket support for LSP4J'
 
 dependencies {
-	compile project(":org.eclipse.lsp4j.jsonrpc")
-	compile "jakarta.websocket:jakarta.websocket-api:$versions.websocket_jakarta"
-	testCompile "junit:junit:$versions.junit"
+	api project(":org.eclipse.lsp4j.jsonrpc")
+	api "jakarta.websocket:jakarta.websocket-api:$versions.websocket_jakarta"
+	testImplementation "junit:junit:$versions.junit"
 }
 
-jar.manifest {
-	instruction 'Import-Package', '*'
-}
+jar.bnd (
+	'Import-Package': '*'
+)

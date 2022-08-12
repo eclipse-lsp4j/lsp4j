@@ -14,13 +14,12 @@ ext.title = 'LSP4J JSON-RPC Debug'
 description = 'Debug Protocol JSON-RPC implementation'
 
 dependencies {
-	compile project(":org.eclipse.lsp4j.jsonrpc")
-	compile "com.google.code.gson:gson:$versions.gson"
-	testCompile "junit:junit:$versions.junit"
+	api project(":org.eclipse.lsp4j.jsonrpc")
+	api "com.google.code.gson:gson:$versions.gson"
+	testImplementation "junit:junit:$versions.junit"
 }
 
-jar.manifest {
-	instruction 'Import-Package', "com.google.gson.*;version=\"$versions.gson\""
-	instruction 'Import-Package', '*'
-}
+jar.bnd(
+	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
+)
 

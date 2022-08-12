@@ -20,5 +20,5 @@ ext.versions = [
 	'gson_orbit': '2.9.0.v20220704-0629',
 	'websocket_jakarta': '2.0.0',
 	'websocket': '1.0',
-	'junit': '4.12'
+	'junit': '4.13.2'
 ]
