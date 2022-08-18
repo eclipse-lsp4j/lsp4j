@@ -90,7 +90,7 @@ public interface LanguageServer {
 	 */
 	@JsonDelegate
 	default NotebookDocumentService getNotebookDocumentService() {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	/**
