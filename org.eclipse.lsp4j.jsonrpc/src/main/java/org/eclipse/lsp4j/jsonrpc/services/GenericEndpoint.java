@@ -77,7 +77,7 @@ public class GenericEndpoint implements Endpoint {
 				if (delegate != null) {
 					recursiveFindRpcMethods(delegate, visited, visitedForDelegate);
 				} else {
-					LOG.log(Level.SEVERE, "A delegate object is null, jsonrpc methods of '" + method + "' are ignored");
+					LOG.fine("A delegate object is null, jsonrpc methods of '" + method + "' are ignored");
 				}
 			} catch (InvocationTargetException | IllegalAccessException e) {
 				throw new RuntimeException(e);
