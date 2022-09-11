@@ -91,7 +91,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.56.0";
+	public static final String SCHEMA_VERSION = "1.59.0";
 
 	/**
 	 * The 'cancel' request is used by the client in two situations:
@@ -99,18 +99,15 @@ public interface IDebugProtocolServer {
 	 * <li>to indicate that it is no longer interested in the result produced by a
 	 * specific request issued earlier</li>
 	 * <li>to cancel a progress sequence. Clients should only call this request if
-	 * the capability 'supportsCancelRequest' is true.</li>
+	 * the corresponding capability {@link Capabilities#getSupportsCancelRequest} is true.</li>
 	 * </ul>
 	 * <p>
 	 * This request has a hint characteristic: a debug adapter can only be expected
-	 * to make a 'best effort' in honouring this request but there are no
+	 * to make a 'best effort' in honoring this request but there are no
 	 * guarantees.
 	 * <p>
 	 * The 'cancel' request may return an error if it could not cancel an operation
 	 * but a client should refrain from presenting this error to end users.
-	 * <p>
-	 * A client should only call this request if the capability
-	 * 'supportsCancelRequest' is true.
 	 * <p>
 	 * The request that got cancelled still needs to send a response back. This can
 	 * either be a normal result ('success' attribute true) or an error response
@@ -136,7 +133,7 @@ public interface IDebugProtocolServer {
 	 * debug adapter in order to configure it with client capabilities and to retrieve
 	 * capabilities from the debug adapter.
 	 * <p>
-	 * Until the debug adapter has responded to with an 'initialize' response, the
+	 * Until the debug adapter has responded with an 'initialize' response, the
 	 * client must not send any additional requests or events to the debug adapter.
 	 * <p>
 	 * In addition the debug adapter is not allowed to send any requests or events
@@ -150,14 +147,14 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * This optional request indicates that the client has finished initialization
+	 * This request indicates that the client has finished initialization
 	 * of the debug adapter.
 	 * <p>
 	 * So it is the last request in the sequence of configuration requests (which
 	 * was started by the 'initialized' event).
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsConfigurationDoneRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsConfigurationDoneRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> configurationDone(ConfigurationDoneArguments args) {
@@ -190,7 +187,7 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Restarts a debug session. Clients should only call this request if the
-	 * capability 'supportsRestartRequest' is true.
+	 * corresponding capability {@link Capabilities#getSupportsRestartRequest} is true.
 	 * <p>
 	 * If the capability is missing or has the value false, a typical client
 	 * emulates 'restart' by terminating the debug adapter first and then launching
@@ -210,8 +207,8 @@ public interface IDebugProtocolServer {
 	 * then the debug adapter must not terminate the debuggee.
 	 * <p>
 	 * This implicit behavior of when to terminate the debuggee can be overridden with
-	 * the optional argument 'terminateDebuggee' (which is only supported by a debug
-	 * adapter if the corresponding capability {@link Capabilities#supportTerminateDebuggee} is true).
+	 * the 'terminateDebuggee' argument (which is only supported by a debug adapter
+	 * if the corresponding capability {@link Capabilities#getSupportTerminateDebuggee} is true).
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> disconnect(DisconnectArguments args) {
@@ -221,7 +218,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * The 'terminate' request is sent from the client to the debug adapter in order to
 	 * shut down the debuggee gracefully. Clients should only call this request if the
-	 * capability {@link Capabilities#supportsTerminateRequest} is true.
+	 * corresponding capability {@link Capabilities#getSupportsTerminateRequest} is true.
 	 * <p>
 	 * Typically a debug adapter implements 'terminate' by sending a software signal
 	 * which the debuggee intercepts in order to clean things up properly before terminating itself.
@@ -243,8 +240,8 @@ public interface IDebugProtocolServer {
 	 * The 'breakpointLocations' request returns all possible locations for source
 	 * breakpoints in a given range.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsBreakpointLocationsRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsBreakpointLocationsRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<BreakpointLocationsResponse> breakpointLocations(BreakpointLocationsArguments args) {
@@ -273,8 +270,8 @@ public interface IDebugProtocolServer {
 	 * When a function breakpoint is hit, a 'stopped' event (with reason 'function
 	 * breakpoint') is generated.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsFunctionBreakpoints' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsFunctionBreakpoints} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetFunctionBreakpointsResponse> setFunctionBreakpoints(
@@ -288,8 +285,8 @@ public interface IDebugProtocolServer {
 	 * If an exception is configured to break, a 'stopped' event is fired (with
 	 * reason 'exception').
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'exceptionBreakpointFilters' returns one or more filters.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getExceptionBreakpointFilters} returns one or more filters.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetExceptionBreakpointsResponse> setExceptionBreakpoints(SetExceptionBreakpointsArguments args) {
@@ -300,8 +297,8 @@ public interface IDebugProtocolServer {
 	 * Obtains information on a possible data breakpoint that could be set on an
 	 * expression or variable.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsDataBreakpoints' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsDataBreakpoints} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<DataBreakpointInfoResponse> dataBreakpointInfo(DataBreakpointInfoArguments args) {
@@ -316,8 +313,8 @@ public interface IDebugProtocolServer {
 	 * When a data breakpoint is hit, a 'stopped' event (with reason 'data
 	 * breakpoint') is generated.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsDataBreakpoints' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsDataBreakpoints} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetDataBreakpointsResponse> setDataBreakpoints(SetDataBreakpointsArguments args) {
@@ -333,8 +330,8 @@ public interface IDebugProtocolServer {
 	 * When an instruction breakpoint is hit, a 'stopped' event (with reason
 	 * 'instruction breakpoint') is generated.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsInstructionBreakpoints' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsInstructionBreakpoints} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetInstructionBreakpointsResponse> setInstructionBreakpoints(
@@ -344,9 +341,9 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The request resumes execution of all threads. If the debug adapter supports
-	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests}),
+	 * single thread execution (see capability {@link Capabilities#getSupportsSingleThreadExecutionRequests}),
 	 * setting the 'singleThread' argument to true resumes only the specified thread.
-	 * If not all threads were resumed, the 'allThreadsContinued' attribute of the response must be set to false.
+	 * If not all threads were resumed, the 'allThreadsContinued' attribute of the response should be set to false.
 	 */
 	@JsonRequest(value = "continue")
 	default CompletableFuture<ContinueResponse> continue_(ContinueArguments args) {
@@ -358,7 +355,7 @@ public interface IDebugProtocolServer {
 	 * thread and allows all other threads to run freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
+	 * {@link Capabilities#getSupportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
@@ -374,7 +371,7 @@ public interface IDebugProtocolServer {
 	 * other threads to run freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
+	 * {@link Capabilities#getSupportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * If the request cannot step into a target, 'stepIn' behaves like the 'next' request.
@@ -383,7 +380,7 @@ public interface IDebugProtocolServer {
 	 * reason 'step') after the step has completed.
 	 * <p>
 	 * If there are multiple function/method calls (or other targets) on the source line,
-	 * the optional argument 'targetId' can be used to control into which target the
+	 * the argument 'targetId' can be used to control into which target the
 	 * 'stepIn' should occur.
 	 * <p>
 	 * The list of possible targets for a given source line can be retrieved via the
@@ -399,7 +396,7 @@ public interface IDebugProtocolServer {
 	 * allows all other threads to run freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
+	 * {@link Capabilities#getSupportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
@@ -415,14 +412,14 @@ public interface IDebugProtocolServer {
 	 * thread and allows all other threads to run backward freely by resuming them.
 	 * <p>
 	 * If the debug adapter supports single thread execution (see capability
-	 * {@link Capabilities#supportsSingleThreadExecutionRequests}), setting the
+	 * {@link Capabilities#getSupportsSingleThreadExecutionRequests}), setting the
 	 * 'singleThread' argument to true prevents other suspended threads from resuming.
 	 * <p>
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'step') after the step has completed.
 	 * <p>
-	 * Clients should only call this request if the capability 'supportsStepBack' is
-	 * true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsStepBack} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> stepBack(StepBackArguments args) {
@@ -431,12 +428,12 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The request resumes backward execution of all threads. If the debug adapter supports
-	 * single thread execution (see capability {@link Capabilities#supportsSingleThreadExecutionRequests}),
+	 * single thread execution (see capability {@link Capabilities#getSupportsSingleThreadExecutionRequests}),
 	 * setting the 'singleThread' argument to true resumes only the specified thread. If not
-	 * all threads were resumed, the 'allThreadsContinued' attribute of the response must be set to false.
+	 * all threads were resumed, the 'allThreadsContinued' attribute of the response should be set to false.
 	 * <p>
-	 * Clients should only call this request if the capability 'supportsStepBack' is
-	 * true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsStepBack} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> reverseContinue(ReverseContinueArguments args) {
@@ -449,8 +446,8 @@ public interface IDebugProtocolServer {
 	 * The debug adapter first sends the response and then a 'stopped' event (with
 	 * reason 'restart') after the restart has completed.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsRestartFrame' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsRestartFrame} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> restartFrame(RestartFrameArguments args) {
@@ -469,9 +466,9 @@ public interface IDebugProtocolServer {
 	 * The debug adapter first sends the response and then a 'stopped' event with
 	 * reason 'goto'.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsGotoTargetsRequest' is true (because only then goto targets exist
-	 * that can be passed as arguments).
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsGotoTargetsRequest} is true (because only then
+	 * goto targets exist that can be passed as arguments).
 	 */
 	@JsonRequest(value = "goto")
 	default CompletableFuture<Void> goto_(GotoArguments args) {
@@ -494,9 +491,9 @@ public interface IDebugProtocolServer {
 	 * thread.
 	 * <p>
 	 * A client can request all stack frames by omitting the startFrame and levels
-	 * arguments. For performance-conscious clients and if the debug adapter's
-	 * 'supportsDelayedStackTraceLoading' capability is true, stack frames can be
-	 * retrieved in a piecemeal way with the startFrame and levels arguments. The
+	 * arguments. For performance-conscious clients and if the corresponding capability
+	 * {@link Capabilities#getSupportsDelayedStackTraceLoading} is true, stack frames can
+	 * be retrieved in a piecemeal way with the startFrame and levels arguments. The
 	 * response of the stackTrace request may contain a totalFrames property that
 	 * hints at the total number of frames in the stack. If a client needs this
 	 * total number upfront, it can issue a request for a single (first) frame and
@@ -520,7 +517,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Retrieves all child variables for the given variable reference.
 	 * <p>
-	 * An optional filter can be used to limit the fetched children to either named
+	 * A filter can be used to limit the fetched children to either named
 	 * or indexed children.
 	 */
 	@JsonRequest
@@ -530,8 +527,8 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Set the variable with the given name in the variable container to a new
-	 * value. Clients should only call this request if the capability
-	 * 'supportsSetVariable' is true.
+	 * value. Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsSetVariable} is true.
 	 * <p>
 	 * If a debug adapter implements both setVariable and setExpression, a client
 	 * only uses setExpression if the variable has an evaluateName property.
@@ -560,8 +557,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * The request terminates the threads with the given ids.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsTerminateThreadsRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsTerminateThreadsRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> terminateThreads(TerminateThreadsArguments args) {
@@ -572,8 +569,8 @@ public interface IDebugProtocolServer {
 	 * Modules can be retrieved from the debug adapter with this request which can
 	 * either return all modules or a range of modules to support paging.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsModulesRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsModulesRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<ModulesResponse> modules(ModulesArguments args) {
@@ -583,8 +580,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Retrieves the set of all sources currently loaded by the debugged process.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsLoadedSourcesRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsLoadedSourcesRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<LoadedSourcesResponse> loadedSources(LoadedSourcesArguments args) {
@@ -608,11 +605,11 @@ public interface IDebugProtocolServer {
 	 * The expressions have access to any variables and arguments that are in scope
 	 * of the specified frame.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsSetExpression' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsSetExpression} is true.
 	 * <p>
 	 * If a debug adapter implements both setExpression and setVariable, a client
-	 * only uses setExpression if the variable has an evaluateName property.
+	 * uses setExpression if the variable has an evaluateName property.
 	 */
 	@JsonRequest
 	default CompletableFuture<SetExpressionResponse> setExpression(SetExpressionArguments args) {
@@ -620,16 +617,13 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * This request retrieves the possible stepIn targets for the specified stack
+	 * This request retrieves the possible step-in targets for the specified stack
 	 * frame.
 	 * <p>
 	 * These targets can be used in the 'stepIn' request.
 	 * <p>
-	 * The StepInTargets may only be called if the 'supportsStepInTargetsRequest'
-	 * capability exists and is true.
-	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsStepInTargetsRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsStepInTargetsRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<StepInTargetsResponse> stepInTargets(StepInTargetsArguments args) {
@@ -642,8 +636,8 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * These targets can be used in the 'goto' request.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsGotoTargetsRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsGotoTargetsRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<GotoTargetsResponse> gotoTargets(GotoTargetsArguments args) {
@@ -653,8 +647,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Returns a list of possible completions for a given caret position and text.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsCompletionsRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsCompletionsRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<CompletionsResponse> completions(CompletionsArguments args) {
@@ -664,8 +658,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Retrieves the details of the exception that caused this event to be raised.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsExceptionInfoRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsExceptionInfoRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<ExceptionInfoResponse> exceptionInfo(ExceptionInfoArguments args) {
@@ -675,8 +669,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Reads bytes from memory at the provided location.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsReadMemoryRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsReadMemoryRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<ReadMemoryResponse> readMemory(ReadMemoryArguments args) {
@@ -686,8 +680,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Writes bytes to memory at the provided location.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * {@link Capabilities#supportsWriteMemoryRequest} is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsWriteMemoryRequest} is true.
 	 * <p>
 	 * Since 1.48
 	 */
@@ -699,8 +693,8 @@ public interface IDebugProtocolServer {
 	/**
 	 * Disassembles code stored at the provided location.
 	 * <p>
-	 * Clients should only call this request if the capability
-	 * 'supportsDisassembleRequest' is true.
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsDisassembleRequest} is true.
 	 */
 	@JsonRequest
 	default CompletableFuture<DisassembleResponse> disassemble(DisassembleArguments args) {
