@@ -17,17 +17,15 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 dependencies {
-	compile project(":org.eclipse.lsp4j.generator")
-	compile project(":org.eclipse.lsp4j.jsonrpc")
-	testCompile "junit:junit:$versions.junit"
+	api project(":org.eclipse.lsp4j.generator")
+	api project(":org.eclipse.lsp4j.jsonrpc")
+	testImplementation "junit:junit:$versions.junit"
 }
 
 jar {
 	from sourceSets.main.allJava
 }
 
-jar.manifest {
-	instruction 'Import-Package', "com.google.common.*;version=\"$versions.guava\""
-	instruction 'Import-Package', "com.google.gson.*;version=\"$versions.gson\""
-	instruction 'Import-Package', '*'
-}
+jar.bnd (
+	'Import-Package': "com.google.common.*;version=\"$versions.guava\",com.google.gson.*;version=\"$versions.gson\",*"
+)

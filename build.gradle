@@ -14,9 +14,15 @@ import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
 
 buildscript {
-	repositories.mavenCentral()
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
 	dependencies {
-		classpath 'org.xtext:xtext-gradle-plugin:2.0.7'
+		classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:6.3.1"
+		classpath "org.xtext:xtext-gradle-plugin:2.1.0"
 	}
 }
 
@@ -30,10 +36,10 @@ subprojects {
 	group = 'org.eclipse.lsp4j'
 	version = rootProject.version
 	
-	apply plugin: 'java'
+	apply plugin: 'java-library'
 	apply plugin: 'org.xtext.xtend'
 	apply plugin: 'eclipse'
-	apply plugin: 'maven'
+	apply plugin: 'maven-publish'
 	
 	apply from: "${rootDir}/gradle/java-compiler-settings.gradle"
 	apply from: "${rootDir}/gradle/xtend-compiler-settings.gradle"
