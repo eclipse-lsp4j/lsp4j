@@ -3327,7 +3327,7 @@ interface VariablePresentationHintKind {
 	/**
 	 * Indicates that a data breakpoint is registered for the object.
 	 *
-	 * @deprecated The {@link VariablePresentationHintAttributes#hasDataBreakpoint} attribute should generally be used instead.
+	 * @deprecated The {@link VariablePresentationHintAttributes#HAS_DATA_BREAKPOINT} attribute should generally be used instead.
 	 */
 	@Deprecated
 	public static final String DATA_BREAKPOINT = "dataBreakpoint";
