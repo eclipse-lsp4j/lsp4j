@@ -37,6 +37,7 @@ import org.eclipse.lsp4j.DeleteFile
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
+import org.eclipse.lsp4j.DocumentDiagnosticReport
 import org.eclipse.lsp4j.DocumentFormattingParams
 import org.eclipse.lsp4j.DocumentHighlightCapabilities
 import org.eclipse.lsp4j.DocumentLinkCapabilities
@@ -63,6 +64,8 @@ import org.eclipse.lsp4j.PublishDiagnosticsParams
 import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
 import org.eclipse.lsp4j.ReferencesCapabilities
+import org.eclipse.lsp4j.RelatedFullDocumentDiagnosticReport
+import org.eclipse.lsp4j.RelatedUnchangedDocumentDiagnosticReport
 import org.eclipse.lsp4j.RenameCapabilities
 import org.eclipse.lsp4j.RenameFile
 import org.eclipse.lsp4j.ResourceOperation
@@ -86,7 +89,10 @@ import org.eclipse.lsp4j.WorkDoneProgressCreateParams
 import org.eclipse.lsp4j.WorkDoneProgressEnd
 import org.eclipse.lsp4j.WorkDoneProgressNotification
 import org.eclipse.lsp4j.WorkspaceClientCapabilities
+import org.eclipse.lsp4j.WorkspaceDocumentDiagnosticReport
 import org.eclipse.lsp4j.WorkspaceEdit
+import org.eclipse.lsp4j.WorkspaceFullDocumentDiagnosticReport
+import org.eclipse.lsp4j.WorkspaceUnchangedDocumentDiagnosticReport
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
@@ -288,6 +294,110 @@ class JsonParseTest {
 				]
 				version = 1
 			]
+		])
+	}
+
+	@Test
+	def void testDocumentDiagnosticResponse1() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_DIAGNOSTIC
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"kind": "full",
+					"items": []
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new DocumentDiagnosticReport(
+				new RelatedFullDocumentDiagnosticReport
+			)
+		])
+	}
+
+	@Test
+	def void testDocumentDiagnosticResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_DIAGNOSTIC
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"kind": "unchanged"
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new DocumentDiagnosticReport(
+				new RelatedUnchangedDocumentDiagnosticReport
+			)
+		])
+	}
+
+	@Test
+	def void testWorkspaceDocumentDiagnosticResponse1() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.WORKSPACE_DIAGNOSTIC
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"kind": "full",
+					"items": [],
+					"uri": "file:///tmp/foo"
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceDocumentDiagnosticReport(
+				new WorkspaceFullDocumentDiagnosticReport => [
+					uri = "file:///tmp/foo"
+				]
+			)
+		])
+	}
+
+	@Test
+	def void testWorkspaceDocumentDiagnosticResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.WORKSPACE_DIAGNOSTIC
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": {
+					"kind": "unchanged",
+					"uri": "file:///tmp/foo"
+				}
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceDocumentDiagnosticReport(
+				new WorkspaceUnchangedDocumentDiagnosticReport => [
+					uri = "file:///tmp/foo"
+				]
+			)
 		])
 	}
 

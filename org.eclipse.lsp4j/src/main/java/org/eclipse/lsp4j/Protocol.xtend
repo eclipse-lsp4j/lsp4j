@@ -20,14 +20,12 @@ import java.util.Map
 import org.eclipse.lsp4j.adapters.CompletionItemDefaultsEditRangeTypeAdapter
 import org.eclipse.lsp4j.adapters.CompletionItemTextEditTypeAdapter
 import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter
-import org.eclipse.lsp4j.adapters.DocumentDiagnosticReportTypeAdapter
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
-import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -10086,7 +10084,6 @@ class DocumentDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
  * Since 3.17.0
  */
 @JsonRpcData
-@JsonAdapter(DocumentDiagnosticReportTypeAdapter)
 class DocumentDiagnosticReport extends Either<RelatedFullDocumentDiagnosticReport, RelatedUnchangedDocumentDiagnosticReport> {
 	new(@NonNull RelatedFullDocumentDiagnosticReport relatedFullDocumentDiagnosticReport) {
 		super(Preconditions.checkNotNull(relatedFullDocumentDiagnosticReport, 'relatedFullDocumentDiagnosticReport'), null)
@@ -10160,7 +10157,9 @@ class FullDocumentDiagnosticReport {
 	@NonNull
 	List<Diagnostic> items
 
+
 	new() {
+		this.items = new ArrayList
 	}
 
 	new(@NonNull List<Diagnostic> items) {
@@ -10418,7 +10417,6 @@ class WorkspaceUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagno
  * Since 3.17.0
  */
 @JsonRpcData
-@JsonAdapter(WorkspaceDocumentDiagnosticReportTypeAdapter)
 class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport> {
 	new(@NonNull WorkspaceFullDocumentDiagnosticReport workspaceFullDocumentDiagnosticReport) {
 		super(Preconditions.checkNotNull(workspaceFullDocumentDiagnosticReport, 'workspaceFullDocumentDiagnosticReport'), null)

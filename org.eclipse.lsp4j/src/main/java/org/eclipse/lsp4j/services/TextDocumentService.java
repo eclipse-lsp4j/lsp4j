@@ -91,6 +91,7 @@ import org.eclipse.lsp4j.TypeHierarchySupertypesParams;
 import org.eclipse.lsp4j.WillSaveTextDocumentParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
+import org.eclipse.lsp4j.adapters.DocumentDiagnosticReportTypeAdapter;
 import org.eclipse.lsp4j.adapters.DocumentSymbolResponseAdapter;
 import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
@@ -684,6 +685,7 @@ public interface TextDocumentService {
 	 * Since 3.17.0
 	 */
 	@JsonRequest
+	@ResponseJsonAdapter(DocumentDiagnosticReportTypeAdapter.class)
 	default CompletableFuture<DocumentDiagnosticReport> diagnostic(DocumentDiagnosticParams params) {
 		throw new UnsupportedOperationException();
 	}
