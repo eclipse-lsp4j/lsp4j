@@ -13,7 +13,7 @@ package org.eclipse.lsp4j.test.adapters;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Map;
+import java.util.Collections;
 
 import org.eclipse.lsp4j.DocumentDiagnosticReport;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
@@ -25,7 +25,7 @@ public class DocumentDiagnosticReportTypeAdapterTest {
 
 	@Test
 	public void test() {
-		Gson gson = new MessageJsonHandler(Map.of()).getGson();
+		Gson gson = new MessageJsonHandler(Collections.emptyMap()).getGson();
 		assertTrue(gson.fromJson("{'kind': 'full', 'items': []}", DocumentDiagnosticReport.class).isLeft());
 		assertTrue(gson.fromJson("{'kind': 'unchanged'}", DocumentDiagnosticReport.class).isRight());
 	}
