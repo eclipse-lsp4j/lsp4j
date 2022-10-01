@@ -13,7 +13,10 @@ package org.eclipse.lsp4j.test.adapters;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Map;
+
 import org.eclipse.lsp4j.WorkspaceDocumentDiagnosticReport;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -22,7 +25,7 @@ public class WorkspaceDocumentDiagnosticReportTypeAdapterTest {
 
 	@Test
 	public void test() {
-		Gson gson = new Gson();
+		Gson gson = new MessageJsonHandler(Map.of()).getGson();
 		assertTrue(gson.fromJson("{'kind': 'full', 'items': [], 'uri': '/file:///tmp/foo'}",
 				WorkspaceDocumentDiagnosticReport.class).isLeft());
 		assertTrue(gson.fromJson("{'kind': 'unchanged', 'uri': '/file:///tmp/bar'}",
