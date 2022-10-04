@@ -31,7 +31,6 @@ import org.eclipse.lsp4j.debug.ProgressStartEventArguments;
 import org.eclipse.lsp4j.debug.ProgressUpdateEventArguments;
 import org.eclipse.lsp4j.debug.RunInTerminalRequestArguments;
 import org.eclipse.lsp4j.debug.RunInTerminalResponse;
-import org.eclipse.lsp4j.debug.StartDebuggingRequestArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArguments;
 import org.eclipse.lsp4j.debug.TerminatedEventArguments;
 import org.eclipse.lsp4j.debug.ThreadEventArguments;
@@ -47,7 +46,7 @@ public interface IDebugProtocolClient {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.59.0";
+	public static final String SCHEMA_VERSION = "1.58.0";
 
 	/**
 	 * This event indicates that the debug adapter is ready to accept configuration
@@ -279,23 +278,6 @@ public interface IDebugProtocolClient {
 	 */
 	@JsonRequest
 	default CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * This request is sent from the debug adapter to the client to start a new debug session of the same type as the caller.
-	 * <p>
-	 * This event should only be sent if the corresponding client capability
-	 * {@link InitializeRequestArguments#getSupportsStartDebuggingRequest} is true.
-	 * <p>
-	 * A client implementation of `startDebugging` should start a new debug session (of the same type as the caller) in the 
-	 * same way that the caller's session was started. If the client supports hierarchical debug sessions, the newly created 
-	 * session can be treated as a child of the caller session.
-	 * <p>
-	 * Since 1.59
-	 */
-	@JsonRequest
-	default CompletableFuture<Void> startDebugging(StartDebuggingRequestArguments args) {
 		throw new UnsupportedOperationException();
 	}
 }

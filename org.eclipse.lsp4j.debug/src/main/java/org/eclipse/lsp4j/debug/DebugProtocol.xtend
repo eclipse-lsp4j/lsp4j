@@ -15,11 +15,10 @@ package org.eclipse.lsp4j.debug;
 import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import java.util.Map
+import org.eclipse.lsp4j.debug.adapters.RestartArgumentsArgumentsTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
-import org.eclipse.lsp4j.debug.adapters.RestartArgumentsArgumentsTypeAdapter
-import org.eclipse.lsp4j.debug.adapters.StartDebuggingRequestArgumentsConfigurationTypeAdapter
 
 /**
  * Declaration of parameters, response bodies, and event bodies for
@@ -29,7 +28,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.59.0";
+	public static final String SCHEMA_VERSION = "1.58.0";
 }
 
 /**
@@ -887,14 +886,6 @@ class InitializeRequestArguments {
 	 * Since 1.57
 	 */
 	Boolean supportsArgsCanBeInterpretedByShell;
-	/**
-	 * Client supports the `startDebugging` request.
-	 * <p>
-	 * This is an optional property.
-	 * <p>
-	 * Since 1.59
-	 */
-	Boolean supportsStartDebuggingRequest;
 }
 
 /**
@@ -4235,20 +4226,4 @@ interface InvalidatedAreas {
 	 * Previously fetched variable data has become invalid and needs to be refetched.
 	 */
 	public static final String VARIABLES = "variables";
-}
-
-/**
- * Arguments for 'startDebugging' request.
- */
-@JsonRpcData
-class StartDebuggingRequestArguments {
-	/**
-	 * Arguments passed to the new debug session. The arguments must only contain
-	 * properties understood by the `launch` or `attach` requests of the debug
-	 * adapter and they must not contain any client-specific properties (e.g.
-	 * `type`) or client-specific features (e.g. substitutable 'variables').
-	 */
-	@NonNull
-	@JsonAdapter(StartDebuggingRequestArgumentsConfigurationTypeAdapter)
-	Either<LaunchRequestArguments, AttachRequestArguments> configuration;
 }

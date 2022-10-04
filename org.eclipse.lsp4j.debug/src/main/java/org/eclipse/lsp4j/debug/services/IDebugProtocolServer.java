@@ -91,7 +91,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.59.0";
+	public static final String SCHEMA_VERSION = "1.58.0";
 
 	/**
 	 * The 'cancel' request is used by the client in two situations:
