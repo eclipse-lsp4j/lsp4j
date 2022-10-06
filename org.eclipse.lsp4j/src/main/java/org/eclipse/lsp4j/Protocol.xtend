@@ -17,6 +17,7 @@ import java.util.Arrays
 import java.util.LinkedHashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.lsp4j.adapters.CompletionItemDefaultsEditRangeTypeAdapter
 import org.eclipse.lsp4j.adapters.CompletionItemTextEditTypeAdapter
 import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
@@ -34,7 +35,6 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.util.Preconditions
-import org.eclipse.lsp4j.adapters.CompletionItemDefaultsEditRangeTypeAdapter
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -10157,7 +10157,9 @@ class FullDocumentDiagnosticReport {
 	@NonNull
 	List<Diagnostic> items
 
+
 	new() {
+		this.items = new ArrayList
 	}
 
 	new(@NonNull List<Diagnostic> items) {

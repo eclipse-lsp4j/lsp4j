@@ -36,7 +36,9 @@ interface MessageMethods {
 	public static val DOC_TYPE_FORMATTING = 'textDocument/onTypeFormatting'
 	public static val DOC_PREPARE_RENAME = 'textDocument/prepareRename'
 	public static val DOC_RENAME = 'textDocument/rename'
+	public static val DOC_DIAGNOSTIC = 'textDocument/diagnostic'
 	public static val WORKSPACE_SYMBOL = 'workspace/symbol'
+	public static val WORKSPACE_DIAGNOSTIC = 'workspace/diagnostic'
 	
 	public static val DID_OPEN_DOC = 'textDocument/didOpen'
 	public static val DID_CLOSE_DOC = 'textDocument/didClose'
