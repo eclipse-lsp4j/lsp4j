@@ -44,7 +44,7 @@ Items on Release day:
 - [ ] Promote the staged repository to maven central
     - [Login to Nexus](https://oss.sonatype.org/#stagingRepositories)
         - To obtain permission add request to [OSSRH-26079](https://issues.sonatype.org/browse/OSSRH-26079)
-    - go to *Staging Repositories*, after a short delay the staged LSP4J release should appear
+    - go to *Staging Repositories*, after a short delay the staged LSP4J release should appear (you may need to press *Refresh*)
     - click the staged LSP4J repo
     - press the *Close* button located in the toolbar. This runs activities, including checking various rules
     - once the rules are done (if successful), press the *Release* button (you may need to press *Refresh* to enable the *Release* button)
@@ -53,6 +53,7 @@ Items on Release day:
 - [ ] Tag the release. Example: `git tag -a v0.16.0 HEAD -m"LSP4J 0.16.0" && git push origin v0.16.0`
 - [ ] Contribute to Simrel. See [Simrel contribution example](https://git.eclipse.org/r/#/c/158624/)
 - [ ] Create a [release page on github](https://github.com/eclipse/lsp4j/releases/new)
+- [ ] Link the Changelog to the release page
 - [ ] Make an announcement on lsp4j-dev based on the [release page on github](https://github.com/eclipse/lsp4j/releases/tag/v0.16.0). [Example on lsp4j-dev archives](https://www.eclipse.org/lists/lsp4j-dev/msg00063.html)
 - [ ] Update [documentation/releasing.md](https://github.com/eclipse/lsp4j/blob/main/documentation/releasing.md) with any changes that may have been made to the release process.
 - [ ] Create the endgame for the next release right away, especially as version numbers and restoring `-SNAPSHOT` need to be done right away.
