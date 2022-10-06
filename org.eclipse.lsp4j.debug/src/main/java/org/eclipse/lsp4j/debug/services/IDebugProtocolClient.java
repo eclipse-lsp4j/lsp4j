@@ -15,6 +15,7 @@ package org.eclipse.lsp4j.debug.services;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.lsp4j.debug.BreakpointEventArguments;
+import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.CapabilitiesEventArguments;
 import org.eclipse.lsp4j.debug.ContinuedEventArguments;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
@@ -45,11 +46,11 @@ public interface IDebugProtocolClient {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.56.0";
+	public static final String SCHEMA_VERSION = "1.58.0";
 
 	/**
 	 * This event indicates that the debug adapter is ready to accept configuration
-	 * requests (e.g. SetBreakpointsRequest, SetExceptionBreakpointsRequest).
+	 * requests (e.g. `setBreakpoints`, `setExceptionBreakpoints`).
 	 * <p>
 	 * A debug adapter is expected to send this event when it is ready to accept
 	 * configuration requests (but not before the 'initialize' request has
@@ -60,11 +61,11 @@ public interface IDebugProtocolClient {
 	 * <li>adapters sends 'initialized' event (after the 'initialize' request has
 	 * returned)</li>
 	 * <li>client sends zero or more 'setBreakpoints' requests</li>
-	 * <li>client sends one 'setFunctionBreakpoints' request (if capability
-	 * 'supportsFunctionBreakpoints' is true)</li>
+	 * <li>client sends one 'setFunctionBreakpoints' request (if corresponding capability
+	 * {@link Capabilities#getSupportsFunctionBreakpoints} is true)</li>
 	 * <li>client sends a 'setExceptionBreakpoints' request if one or more
 	 * 'exceptionBreakpointFilters' have been defined (or if
-	 * 'supportsConfigurationDoneRequest' is not true)</li>
+	 * {@link Capabilities#getSupportsConfigurationDoneRequest} is not true)</li>
 	 * <li>client sends other future configuration requests</li>
 	 * <li>client sends one 'configurationDone' request to indicate the end of the
 	 * configuration.</li>
@@ -78,7 +79,7 @@ public interface IDebugProtocolClient {
 	 * The event indicates that the execution of the debuggee has stopped due to
 	 * some condition.
 	 * <p>
-	 * This can be caused by a break point previously set, a stepping request has
+	 * This can be caused by a breakpoint previously set, a stepping request has
 	 * completed, by executing a debugger statement etc.
 	 */
 	@JsonNotification
@@ -165,7 +166,7 @@ public interface IDebugProtocolClient {
 	 * be possible to change that at random times (or too late).
 	 * <p>
 	 * Consequently this event has a hint characteristic: a client can only be
-	 * expected to make a 'best effort' in honouring individual capabilities but
+	 * expected to make a 'best effort' in honoring individual capabilities but
 	 * there are no guarantees.
 	 * <p>
 	 * Only changed capabilities need to be included, all other capabilities keep
@@ -182,8 +183,8 @@ public interface IDebugProtocolClient {
 	 * <p>
 	 * The client is free to delay the showing of the UI in order to reduce flicker.
 	 * <p>
-	 * This event should only be sent if the client has passed the value true for
-	 * the 'supportsProgressReporting' capability of the 'initialize' request.
+	 * This event should only be sent if the corresponding capability
+	 * {@link InitializeRequestArguments#getSupportsProgressReporting} is true.
 	 */
 	@JsonNotification
 	default void progressStart(ProgressStartEventArguments args) {
@@ -196,8 +197,8 @@ public interface IDebugProtocolClient {
 	 * The client does not have to update the UI immediately, but the clients needs
 	 * to keep track of the message and/or percentage values.
 	 * <p>
-	 * This event should only be sent if the client has passed the value true for
-	 * the 'supportsProgressReporting' capability of the 'initialize' request.
+	 * This event should only be sent if the corresponding capability
+	 * {@link InitializeRequestArguments#getSupportsProgressReporting} is true.
 	 */
 	@JsonNotification
 	default void progressUpdate(ProgressUpdateEventArguments args) {
@@ -207,8 +208,8 @@ public interface IDebugProtocolClient {
 	 * The event signals the end of the progress reporting with an optional final
 	 * message.
 	 * <p>
-	 * This event should only be sent if the client has passed the value true for
-	 * the 'supportsProgressReporting' capability of the 'initialize' request.
+	 * This event should only be sent if the corresponding capability
+	 * {@link InitializeRequestArguments#getSupportsProgressReporting} is true.
 	 */
 	@JsonNotification
 	default void progressEnd(ProgressEndEventArguments args) {
@@ -224,8 +225,8 @@ public interface IDebugProtocolClient {
 	 * state anyway. But the event can be used for example to refresh the UI after
 	 * rendering formatting has changed in the debug adapter.
 	 * <p>
-	 * This event should only be sent if the debug adapter has received a value true
-	 * for the 'supportsInvalidatedEvent' capability of the 'initialize' request.
+	 * This event should only be sent if the corresponding capability
+	 * {@link InitializeRequestArguments#getSupportsInvalidatedEvent} is true.
 	 */
 	@JsonNotification
 	default void invalidated(InvalidatedEventArguments args) {
@@ -233,8 +234,8 @@ public interface IDebugProtocolClient {
 
 	/**
 	 * This event indicates that some memory range has been updated. It should only
-	 * be sent if the debug adapter has received a value true for the {@link InitializeRequestArguments#supportsMemoryEvent}
-	 * capability of the {@link IDebugProtocolServer#initialize} request.
+	 * be sent if the corresponding capability {@link InitializeRequestArguments#getSupportsMemoryEvent}
+	 * is true.
 	 * <p>
 	 * Clients typically react to the event by re-issuing a `readMemory` request if they
 	 * show the memory identified by the `memoryReference` and if the updated memory range
@@ -255,15 +256,25 @@ public interface IDebugProtocolClient {
 	}
 
 	/**
-	 * This optional request is sent from the debug adapter to the client to run a
+	 * This request is sent from the debug adapter to the client to run a
 	 * command in a terminal.
 	 * <p>
 	 * This is typically used to launch the debuggee in a terminal provided by the
 	 * client.
 	 * <p>
-	 * This request should only be called if the client has passed the value true
-	 * for the 'supportsRunInTerminalRequest' capability of the 'initialize'
-	 * request.
+	 * This request should only be called if the corresponding client capability
+	 * {@link InitializeRequestArguments#getSupportsRunInTerminalRequest} is true.
+	 * <p>
+	 * Client implementations of runInTerminal are free to run the command however they
+	 * choose including issuing the command to a command line interpreter (aka 'shell').
+	 * Argument strings passed to the runInTerminal request must arrive verbatim in the
+	 * command to be run. As a consequence, clients which use a shell are responsible for
+	 * escaping any special shell characters in the argument strings to prevent them from
+	 * being interpreted (and modified) by the shell\nSome users may wish to take advantage
+	 * of shell processing in the argument strings. For clients which implement runInTerminal
+	 * using an intermediary shell, the 'argsCanBeInterpretedByShell' property can be set to
+	 * true. In this case the client is requested not to escape any special shell characters
+	 * in the argument strings.
 	 */
 	@JsonRequest
 	default CompletableFuture<RunInTerminalResponse> runInTerminal(RunInTerminalRequestArguments args) {
