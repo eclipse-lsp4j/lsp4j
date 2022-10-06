@@ -10,7 +10,7 @@ Breaking API changes:
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
-### v0.16.0 (October 2022)
+### [v0.16.0 (October 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.16.0)
 
  * Implemented DAP version 1.58.0
 
@@ -22,7 +22,7 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.16.0/japicmp-report/>
 
-### v0.15.0 (August 2022)
+### [v0.15.0 (August 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.15.0)
 
  * Added Notebook support
  * Added `WorkspaceSymbol.data`
@@ -43,7 +43,7 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.15.0/japicmp-report/>
 
-### v0.14.0 (May 2022)
+### [v0.14.0 (May 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.14.0)
 
  * Added changes to the LSP 3.17 specification that were added after specification was published as done.
    * See [#630](https://github.com/eclipse/lsp4j/pull/630) for all changes.
@@ -52,7 +52,7 @@ Fixed issues: <https://github.com/eclipse/lsp4j/milestone/21?closed=1>
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.14.0/japicmp-report/>
 
-### v0.13.0 (May 2022)
+### [v0.13.0 (May 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.13.0)
 
  * Implemented LSP version 3.17.0 (except Notebook support)
  * Implemented DAP versions 1.45.0 - 1.55.0
@@ -88,7 +88,7 @@ Deprecated API changes:
  * `SymbolInformation` is deprecated in favor of `DocumentSymbol` or `WorkspaceSymbol`
  * `ResponseErrorCode.serverNotInitialized` deprecated in favor of `ResponseErrorCode.ServerNotInitialized`
 
-### v0.12.0 (Apr. 2021)
+### [v0.12.0 (Apr. 2021)](https://github.com/eclipse/lsp4j/releases/tag/v0.12.0)
 
  * Restored `org.eclipse.lsp4j.websocket` which will be included along with `org.eclipse.lsp4j.websocket.jakarta`. This will allow use of LSP4J
    over Jakarta websockets and pre-Jakarta websockets. See <https://github.com/eclipse/lsp4j/issues/536> for more details.
@@ -107,7 +107,7 @@ Breaking changes in behavior:
    `SemanticTokensClientCapabilitiesRequests.range` and `SemanticTokensWithRegistrationOptions.range`;
    their right-hand side, declared as `Object`, will be parsed into a `JsonElement` now.
 
-### v0.11.0 (Mar. 2021)
+### [v0.11.0 (Mar. 2021)](https://github.com/eclipse/lsp4j/releases/tag/v0.11.0)
 
  * Implemented LSP version 3.16.0 (to finalized specification)
  * Implemented LSP version 3.15.0's Progress specification
@@ -143,7 +143,7 @@ Deprecated API changes:
  * In DAP, `VariablePresentationHintKind.DATA_BREAKPOINT` has been marked @Deprecated to match its deprecation in the protocol in 1.44.
  * In DAP, `SetBreakpointsArguments.lines` has been marked @Deprecated to match its deprecation in protocol many versions ago.
 
-### v0.10.0 (Nov. 2020)
+### [v0.10.0 (Nov. 2020)](https://github.com/eclipse/lsp4j/releases/tag/v0.10.0)
 
  * Implemented LSP version 3.16.0 (specification is not finalized yet)
  * Implemented DAP version 1.37.0's CancelRequest
@@ -175,7 +175,7 @@ Deprecated API changes:
 
   * Semantic Highlighting is deprecated in favor of Semantic Tokens
 
-### v0.9.0 (Feb. 2020)
+### [v0.9.0 (Feb. 2020)](https://github.com/eclipse/lsp4j/releases/tag/v0.9.0)
 
  * Implemented DAP version 1.36.0
  * Implemented DAP version 1.37.0 (except CancelRequest)
