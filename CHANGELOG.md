@@ -2,7 +2,7 @@
 
 ### v0.18.0 (TBD)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/24?closed=1>
+Fixed issues: <https://github.com/eclipse/lsp4j/milestone/25?closed=1>
 
 Breaking API changes:
 
