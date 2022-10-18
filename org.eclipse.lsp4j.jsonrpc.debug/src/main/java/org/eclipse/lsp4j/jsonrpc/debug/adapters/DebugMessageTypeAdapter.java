@@ -389,7 +389,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 								if (typeAdapter != null)
 									body = typeAdapter.fromJsonTree(jsonElement);
 								else
-									body = gson.fromJson(jsonElement, returnType);
+									body = fromJson(jsonElement, returnType);
 							}
 						}
 					}
