@@ -23,6 +23,7 @@ jar.bnd (
 	'Bundle-Vendor': 'Eclipse LSP4J',
 	'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
 	"-exportcontents": "org.eclipse.lsp4j.*",
+	"-savemanifest": "$buildDir/tmp/bnd/MANIFEST.MF",
 )
 
 //------------------------------------------------------
@@ -63,7 +64,7 @@ sourcesJar {
 
 task eclipseManifest(type: Copy) {
 	dependsOn(jar)
-    from "$buildDir/tmp/jar/MANIFEST.MF"
+    from "$buildDir/tmp/bnd/MANIFEST.MF"
     into 'META-INF'
 }
 
