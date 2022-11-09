@@ -1,6 +1,19 @@
 ## LSP4J Change Log
 
-### v0.18.0 (TBD)
+### v0.19.0 (TBD)
+
+Fixed issues: <https://github.com/eclipse/lsp4j/milestone/26?closed=1>
+
+Breaking API changes:
+
+ * None.
+
+Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+
+
+### v0.18.0 (November 2022)
+
+ * Fixed issues related to reflection errors so that `--add-opens java.base/java.util.concurrent=ALL-UNNAMED` is no longer needed on Java 17.
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/25?closed=1>
 
@@ -8,7 +21,7 @@ Breaking API changes:
 
  * None.
 
-Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.18.0/japicmp-report/>
 
 ### [v0.17.0 (October 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.17.0)
 
