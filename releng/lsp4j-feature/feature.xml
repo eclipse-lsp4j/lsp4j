@@ -13,7 +13,7 @@
 <feature
       id="org.eclipse.lsp4j.sdk"
       label="LSP4J SDK"
-      version="0.18.0.qualifier"
+      version="0.19.0.qualifier"
       provider-name="Eclipse LSP4J"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
