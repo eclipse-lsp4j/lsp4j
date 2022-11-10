@@ -11,7 +11,7 @@ Breaking API changes:
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 
-### v0.18.0 (November 2022)
+### [v0.18.0 (November 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.18.0)
 
  * Fixed issues related to reflection errors so that `--add-opens java.base/java.util.concurrent=ALL-UNNAMED` is no longer needed on Java 17.
 
