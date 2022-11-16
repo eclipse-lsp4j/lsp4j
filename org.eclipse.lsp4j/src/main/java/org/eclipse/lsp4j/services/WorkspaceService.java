@@ -27,7 +27,6 @@ import org.eclipse.lsp4j.WorkspaceDiagnosticReport;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
-import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportTypeAdapter;
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -192,7 +191,6 @@ public interface WorkspaceService {
 	 * Since 3.17.0
 	 */
 	@JsonRequest
-	@ResponseJsonAdapter(WorkspaceDocumentDiagnosticReportTypeAdapter.class)
 	default CompletableFuture<WorkspaceDiagnosticReport> diagnostic(WorkspaceDiagnosticParams params) {
 		throw new UnsupportedOperationException();
 	}

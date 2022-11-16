@@ -12,11 +12,13 @@
 package org.eclipse.lsp4j.adapters;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.Predicate;
 
 import org.eclipse.lsp4j.WorkspaceDocumentDiagnosticReport;
 import org.eclipse.lsp4j.WorkspaceFullDocumentDiagnosticReport;
 import org.eclipse.lsp4j.WorkspaceUnchangedDocumentDiagnosticReport;
+import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter.PropertyChecker;
 
@@ -26,7 +28,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
-public class WorkspaceDocumentDiagnosticReportTypeAdapter implements TypeAdapterFactory {
+public class WorkspaceDocumentDiagnosticReportListAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<WorkspaceDocumentDiagnosticReport> ELEMENT_TYPE = TypeToken.get(WorkspaceDocumentDiagnosticReport.class);
 
@@ -35,9 +37,9 @@ public class WorkspaceDocumentDiagnosticReportTypeAdapter implements TypeAdapter
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
 		Predicate<JsonElement> leftChecker = new PropertyChecker("kind", "full");
 		Predicate<JsonElement> rightChecker = new PropertyChecker("kind", "unchanged");
-		return (TypeAdapter<T>) new EitherTypeAdapter<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport>(
-				gson, ELEMENT_TYPE, leftChecker, rightChecker) {
-
+		EitherTypeAdapter<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport> elementTypeAdapter =
+				new EitherTypeAdapter<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport>(
+						gson, ELEMENT_TYPE, leftChecker, rightChecker) {
 			@Override
 			protected WorkspaceDocumentDiagnosticReport createLeft(WorkspaceFullDocumentDiagnosticReport obj) throws IOException {
 				return new WorkspaceDocumentDiagnosticReport(obj);
@@ -48,5 +50,6 @@ public class WorkspaceDocumentDiagnosticReportTypeAdapter implements TypeAdapter
 				return new WorkspaceDocumentDiagnosticReport(obj);
 			}
 		};
+		return (TypeAdapter<T>) new CollectionTypeAdapter<>(gson, ELEMENT_TYPE.getType(), elementTypeAdapter, ArrayList::new);
 	}
 }

@@ -6,7 +6,9 @@ Fixed issues: <https://github.com/eclipse/lsp4j/milestone/26?closed=1>
 
 Breaking API changes:
 
- * None.
+ * Removed `WorkspaceDocumentDiagnosticReportTypeAdapter`, which was
+   effectively replaced with `WorkspaceDocumentDiagnosticReportListAdapter`
+   as part of fixing issue <https://github.com/eclipse/lsp4j/issues/682>.
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
