@@ -26,6 +26,7 @@ import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
+import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
@@ -10343,6 +10344,7 @@ class PreviousResultId {
 @JsonRpcData
 class WorkspaceDiagnosticReport {
 	@NonNull
+	@JsonAdapter(WorkspaceDocumentDiagnosticReportListAdapter)
 	List<WorkspaceDocumentDiagnosticReport> items
 
 	new() {
@@ -10451,6 +10453,7 @@ class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiag
 @JsonRpcData
 class WorkspaceDiagnosticReportPartialResult {
 	@NonNull
+	@JsonAdapter(WorkspaceDocumentDiagnosticReportListAdapter)
 	List<WorkspaceDocumentDiagnosticReport> items
 
 	new() {

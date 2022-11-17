@@ -89,6 +89,7 @@ import org.eclipse.lsp4j.WorkDoneProgressCreateParams
 import org.eclipse.lsp4j.WorkDoneProgressEnd
 import org.eclipse.lsp4j.WorkDoneProgressNotification
 import org.eclipse.lsp4j.WorkspaceClientCapabilities
+import org.eclipse.lsp4j.WorkspaceDiagnosticReport
 import org.eclipse.lsp4j.WorkspaceDocumentDiagnosticReport
 import org.eclipse.lsp4j.WorkspaceEdit
 import org.eclipse.lsp4j.WorkspaceFullDocumentDiagnosticReport
@@ -347,7 +348,7 @@ class JsonParseTest {
 	}
 
 	@Test
-	def void testWorkspaceDocumentDiagnosticResponse1() {
+	def void testWorkspaceDiagnosticResponse1() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.WORKSPACE_DIAGNOSTIC
@@ -358,24 +359,28 @@ class JsonParseTest {
 				"jsonrpc": "2.0",
 				"id": "12",
 				"result": {
-					"kind": "full",
-					"items": [],
-					"uri": "file:///tmp/foo"
+					"items": [
+						{
+							"kind": "full",
+							"items": [],
+							"uri": "file:///tmp/foo"
+						}
+					]
 				}
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
 			id = "12"
-			result = new WorkspaceDocumentDiagnosticReport(
+			result = new WorkspaceDiagnosticReport(newArrayList(new WorkspaceDocumentDiagnosticReport(
 				new WorkspaceFullDocumentDiagnosticReport => [
 					uri = "file:///tmp/foo"
 				]
-			)
+			)))
 		])
 	}
 
 	@Test
-	def void testWorkspaceDocumentDiagnosticResponse2() {
+	def void testWorkspaceDiagnosticResponse2() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.WORKSPACE_DIAGNOSTIC
@@ -386,18 +391,24 @@ class JsonParseTest {
 				"jsonrpc": "2.0",
 				"id": "12",
 				"result": {
-					"kind": "unchanged",
-					"uri": "file:///tmp/foo"
+					"items": [
+						{
+							"kind": "unchanged",
+							"resultId": "123",
+							"uri": "file:///tmp/foo"
+						}
+					]
 				}
 			}
 		'''.assertParse(new ResponseMessage => [
 			jsonrpc = "2.0"
 			id = "12"
-			result = new WorkspaceDocumentDiagnosticReport(
+			result = new WorkspaceDiagnosticReport(newArrayList(new WorkspaceDocumentDiagnosticReport(
 				new WorkspaceUnchangedDocumentDiagnosticReport => [
+					resultId = "123"
 					uri = "file:///tmp/foo"
 				]
-			)
+			)))
 		])
 	}
 
