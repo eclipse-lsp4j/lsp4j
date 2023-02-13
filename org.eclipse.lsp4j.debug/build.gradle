@@ -14,9 +14,11 @@ ext.title = 'LSP4J Debug'
 description = 'Java bindings for the Debug Server Protocol'
 
 dependencies {
-	api project(":org.eclipse.lsp4j.generator")
+	compileOnly project(":org.eclipse.lsp4j.generator")
 	api project(":org.eclipse.lsp4j.jsonrpc.debug")
 	testImplementation "junit:junit:$versions.junit"
+	testImplementation "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtend_lib"
+	testImplementation project(":org.eclipse.lsp4j.generator")
 }
 
 jar {

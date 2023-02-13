@@ -17,9 +17,10 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 dependencies {
-	api project(":org.eclipse.lsp4j.generator")
+	compileOnly project(":org.eclipse.lsp4j.generator")
 	api project(":org.eclipse.lsp4j.jsonrpc")
 	testImplementation "junit:junit:$versions.junit"
+	testImplementation project(":org.eclipse.lsp4j.generator")
 }
 
 jar {
