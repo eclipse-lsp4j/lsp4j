@@ -31,6 +31,9 @@ class TypeAdapterImplProcessor extends AbstractClassProcessor {
 		val targetType = typeAdapterImplAnnotation.getClassValue('value')
 		generateImpl(annotatedClass, targetType, context)
 		generateFactory(findClass(annotatedClass.qualifiedName + '.Factory'), annotatedClass, targetType, context)
+		annotatedClass.removeAnnotation(annotatedClass.annotations.findFirst [
+			annotationTypeDeclaration == TypeAdapterImpl.findTypeGlobally
+		])
 	}
 
 	protected def generateImpl(MutableClassDeclaration impl, TypeReference targetType, extension TransformationContext context) {

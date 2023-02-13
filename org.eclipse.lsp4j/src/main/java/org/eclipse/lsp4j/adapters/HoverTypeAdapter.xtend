@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2018 TypeFox and others.
+ * Copyright (c) 2018, 2023 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -37,11 +37,11 @@ class HoverTypeAdapter {
 	
 	protected def readContents(JsonReader in) throws IOException {
 		val nextToken = in.peek()
-		if (nextToken == JsonToken.STRING) {
+		if (nextToken === JsonToken.STRING) {
 			val List<Either<String, MarkedString>> value = new ArrayList<Either<String, MarkedString>>()
 			value.add(Either.forLeft(in.nextString))
 			return Either.forLeft(value)
-		} else if (nextToken == JsonToken.BEGIN_ARRAY) {
+		} else if (nextToken === JsonToken.BEGIN_ARRAY) {
 			val value = gson.fromJson(in, LIST_STRING_MARKEDSTRING.type)
 			return Either.forLeft(value)
 		} else {

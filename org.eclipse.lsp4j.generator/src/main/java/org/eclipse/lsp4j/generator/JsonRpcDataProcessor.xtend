@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.generator
 
-import com.google.common.base.MoreObjects
 import com.google.gson.annotations.JsonAdapter
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor
@@ -160,8 +159,12 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			returnType = string
 			addAnnotation(newAnnotationReference(Override))
 			val accessorsUtil = new AccessorsProcessor.Util(context)
+			val fqn = impl.qualifiedName
+			val char dot = '.'
+			val pkg = fqn.substring(0, fqn.lastIndexOf(dot))
+			val toStringBuilderClassName = (pkg+".util.ToStringBuilder")
 			body = '''
-				«MoreObjects.ToStringHelper» b = «MoreObjects».toStringHelper(this);
+				«toStringBuilderClassName.newTypeReference()» b = new «toStringBuilderClassName.newTypeReference()»(this);
 				«FOR field : toStringFields»
 					b.add("«field.simpleName»", «IF field.declaringType == impl»this.«field.simpleName»«ELSE»«
 						accessorsUtil.getGetterName(field)»()«ENDIF»);
