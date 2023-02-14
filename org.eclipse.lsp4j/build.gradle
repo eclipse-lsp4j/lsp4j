@@ -21,6 +21,7 @@ dependencies {
 	api project(":org.eclipse.lsp4j.jsonrpc")
 	testImplementation "junit:junit:$versions.junit"
 	testImplementation project(":org.eclipse.lsp4j.generator")
+	testImplementation "com.tngtech.archunit:archunit:$versions.archunit"
 }
 
 jar {

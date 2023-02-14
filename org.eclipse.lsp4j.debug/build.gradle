@@ -19,6 +19,7 @@ dependencies {
 	testImplementation "junit:junit:$versions.junit"
 	testImplementation "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtend_lib"
 	testImplementation project(":org.eclipse.lsp4j.generator")
+	testImplementation "com.tngtech.archunit:archunit:$versions.archunit"
 }
 
 jar {
