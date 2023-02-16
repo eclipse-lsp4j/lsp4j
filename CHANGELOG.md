@@ -1,12 +1,20 @@
 ## LSP4J Change Log
 
-### v0.20.0 (TBD)
+### v0.21.0 (TBD)
+
+Fixed issues: <https://github.com/eclipse/lsp4j/milestone/28?closed=1>
+
+Breaking API changes:
+
+Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+
+### [v0.20.0 (February 2023)](https://github.com/eclipse/lsp4j/releases/tag/v0.20.0)
 
 Fixed issues: <https://github.com/eclipse/lsp4j/milestone/27?closed=1>
 
 Breaking API changes:
 
-Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.20.0/japicmp-report/>
 
 ### [v0.19.0 (November 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.19.0)
 
