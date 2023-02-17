@@ -25,7 +25,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
-@SuppressWarnings("deprecation")
 public class WorkspaceSymbolResponseAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>> EITHER_TYPE

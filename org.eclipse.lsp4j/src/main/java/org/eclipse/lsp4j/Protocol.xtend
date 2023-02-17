@@ -6679,9 +6679,12 @@ class DocumentSymbol {
 /**
  * Represents information about programming constructs like variables, classes, interfaces etc.
  *
- * @deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead if supported.
+ * Deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead if supported.
+ *
+ * This class is deprecated in the LSP specification. It is not annotated with Deprecated
+ * annotation because the {@link org.eclipse.lsp4j.services.TextDocumentService.documentSymbol(DocumentSymbolParams)}
+ * method requires it and causes deprecated warning in the code of all users of that API.
  */
-@Deprecated
 @JsonRpcData
 @JsonAdapter(SymbolInformationTypeAdapter.Factory)
 class SymbolInformation {
@@ -6689,12 +6692,14 @@ class SymbolInformation {
 	 * The name of this symbol.
 	 */
 	@NonNull
+	@Deprecated
 	String name
 
 	/**
 	 * The kind of this symbol.
 	 */
 	@NonNull
+	@Deprecated
 	SymbolKind kind
 
 	/**
@@ -6702,6 +6707,7 @@ class SymbolInformation {
 	 * <p>
 	 * Since 3.16.0
 	 */
+	@Deprecated
 	List<SymbolTag> tags
 
 	/**
@@ -6726,6 +6732,7 @@ class SymbolInformation {
 	 * the symbols.
 	 */
 	@NonNull
+	@Deprecated
 	Location location
 
 	/**
@@ -6734,17 +6741,21 @@ class SymbolInformation {
 	 * if necessary). It can't be used to re-infer a hierarchy for the document
 	 * symbols.
 	 */
+	@Deprecated
 	String containerName
 
+	@Deprecated
 	new() {
 	}
 
+	@Deprecated
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location) {
 		this.name = Preconditions.checkNotNull(name, 'name')
 		this.kind = Preconditions.checkNotNull(kind, 'kind')
 		this.location = Preconditions.checkNotNull(location, 'location')
 	}
 
+	@Deprecated
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
 		this(name, kind, location)
 		this.containerName = containerName
