@@ -11,7 +11,7 @@ Items at the beginning of development
 - [ ] Create a [New milestone](https://github.com/eclipse/lsp4j/milestones/new) for the release
 - [ ] Check [CHANGELOG.md](https://github.com/eclipse/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
 - [ ] Check [README.md](https://github.com/eclipse/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
-- [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/0.19.0/0.21.0/g`, `s/0.18.0/0.19.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/main/gradle/versions.gradle) and  [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/main/releng/pom.xml)
+- [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/0.20.0/0.21.0/g`, `s/0.19.0/0.20.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/main/gradle/versions.gradle) and  [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/main/releng/pom.xml)
 - [ ] Enable `sh './releng/deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse/lsp4j/blob/main/releng/build.Jenkinsfile) 
 - [ ] Ensure [the CI build](https://ci.eclipse.org/lsp4j/job/lsp4j-multi-build/job/main/) is stable - it is always better to release a "Green Dot" build
 
