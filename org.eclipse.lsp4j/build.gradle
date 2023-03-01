@@ -17,9 +17,11 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 dependencies {
-	api project(":org.eclipse.lsp4j.generator")
+	compileOnly project(":org.eclipse.lsp4j.generator")
 	api project(":org.eclipse.lsp4j.jsonrpc")
 	testImplementation "junit:junit:$versions.junit"
+	testImplementation project(":org.eclipse.lsp4j.generator")
+	testImplementation "com.tngtech.archunit:archunit:$versions.archunit"
 }
 
 jar {
@@ -27,5 +29,5 @@ jar {
 }
 
 jar.bnd (
-	'Import-Package': "com.google.common.*;version=\"$versions.guava\",com.google.gson.*;version=\"$versions.gson\",*"
+	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
 )
