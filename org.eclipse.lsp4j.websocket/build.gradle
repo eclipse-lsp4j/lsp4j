@@ -20,5 +20,5 @@ dependencies {
 }
 
 jar.bnd(
-	'Import-Package': '*'
+	'Import-Package': '!org.eclipse.lsp4j.websocket*,*'
 )

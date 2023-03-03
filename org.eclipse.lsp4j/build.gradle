@@ -29,5 +29,5 @@ jar {
 }
 
 jar.bnd (
-	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
+	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",!org.eclipse.lsp4j,org.eclipse.lsp4j.jsonrpc*,*"
 )
