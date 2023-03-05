@@ -63,8 +63,10 @@ public class GenericEndpoint implements Endpoint {
 					Method method = methodInfo.method;
 					Object[] arguments = this.getArguments(method, arg);
 					return (CompletableFuture<Object>) method.invoke(current, arguments);
-				} catch (InvocationTargetException | IllegalAccessException e) {
+				} catch (InvocationTargetException e) {
 					throw new RuntimeException(e.getCause());
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException(e);
 				}
 			};
 			if (methodHandlers.put(methodInfo.name, handler) != null) {
