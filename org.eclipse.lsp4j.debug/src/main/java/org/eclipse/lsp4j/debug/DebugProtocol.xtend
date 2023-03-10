@@ -886,6 +886,14 @@ class InitializeRequestArguments {
 	 * Since 1.57
 	 */
 	Boolean supportsArgsCanBeInterpretedByShell;
+	/**
+	 * Client supports the `startDebugging` request.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.59
+	 */
+	Boolean supportsStartDebuggingRequest;
 }
 
 /**
@@ -4226,4 +4234,36 @@ interface InvalidatedAreas {
 	 * Previously fetched variable data has become invalid and needs to be refetched.
 	 */
 	public static final String VARIABLES = "variables";
+}
+
+/**
+ * Indicates whether the new debug session should be started with a `launch`
+ * or `attach` request.
+ */
+enum StartDebuggingRequestArgumentsType {
+	LAUNCH,
+	ATTACH
+}
+
+/**
+ * Arguments for 'startDebugging' request.
+ */
+@JsonRpcData
+class StartDebuggingRequestArguments {
+
+	/**
+	 * Arguments passed to the new debug session. The arguments must only contain
+	 * properties understood by the `launch` or `attach` requests of the debug
+	 * adapter and they must not contain any client-specific properties (e.g.
+	 * `type`) or client-specific features (e.g. substitutable 'variables').
+	 */
+	@NonNull
+	Map<String, ?> configuration;
+
+	/**
+	 * Indicates whether the new debug session should be started with a `launch`
+	 * or `attach` request.
+	 */
+	@NonNull
+	StartDebuggingRequestArgumentsType request;
 }
