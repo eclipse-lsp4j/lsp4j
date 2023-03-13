@@ -7,7 +7,7 @@ set -e # error out on any failed commands
 
 BASELINE=0.20.0
 
-JAPICMP_VERSION=0.15.7
+JAPICMP_VERSION=0.17.2
 WD=$(mktemp -d)
 echo Working in $WD
 
