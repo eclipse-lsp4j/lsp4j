@@ -7,7 +7,7 @@ pipeline {
   }
   tools {
     maven 'apache-maven-latest'
-    jdk 'oracle-jdk8-latest'
+    jdk 'temurin-jdk11-latest'
   }
   options {
     timestamps()
