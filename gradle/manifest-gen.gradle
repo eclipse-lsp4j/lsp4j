@@ -21,7 +21,7 @@ def qualifiedVersion = baseVersion + '.v' + buildTime
 jar.bnd (
 	'Bundle-Version': qualifiedVersion,
 	'Bundle-Vendor': 'Eclipse LSP4J',
-	'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+	'Bundle-RequiredExecutionEnvironment': 'JavaSE-11',
 	"-exportcontents": "org.eclipse.lsp4j.*",
 	"-savemanifest": "$buildDir/tmp/bnd/MANIFEST.MF",
 )

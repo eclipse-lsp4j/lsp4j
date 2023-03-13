@@ -6,6 +6,10 @@ Fixed issues: <https://github.com/eclipse/lsp4j/milestone/28?closed=1>
 
 Breaking API changes:
 
+ * LSP4J now requires Java 11 to build and run. This can be observed in the japicmp
+   report which says class file format version changed from  52.0 to 55.0.
+   <https://github.com/eclipse/lsp4j/issues/547>.
+
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v0.20.1 (February 2023)](https://github.com/eclipse/lsp4j/releases/tag/v0.20.1)

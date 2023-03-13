@@ -13,8 +13,8 @@
 ext.title = 'LSP4J'
 description = 'Java bindings for the Language Server Protocol'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 dependencies {
 	compileOnly project(":org.eclipse.lsp4j.generator")
