@@ -99,8 +99,8 @@ public final class ServiceEndpoints {
 					ResponseJsonAdapter responseTypeAdapterAnnotation = methodInfo.method.getAnnotation(ResponseJsonAdapter.class);
 					if (responseTypeAdapterAnnotation != null) {
 						try {
-							responseTypeAdapter = responseTypeAdapterAnnotation.value().newInstance();
-						} catch (InstantiationException | IllegalAccessException e) {
+							responseTypeAdapter = responseTypeAdapterAnnotation.value().getDeclaredConstructor().newInstance();
+						} catch (ReflectiveOperationException e) {
 							throw new RuntimeException(e);
 						}
 					}
