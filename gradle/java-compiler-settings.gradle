@@ -24,14 +24,14 @@ tasks.withType(JavaCompile) {
 task sourcesJar(type: Jar, dependsOn: classes) {
 	group 'Build'
 	description 'Assembles a jar archive containing the sources.'
-	classifier = 'sources'
+	archiveClassifier = 'sources'
 	from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
 	group 'Build'
 	description 'Assembles a jar archive containing the JavaDoc output.'
-	classifier = 'javadoc'
+	archiveClassifier = 'javadoc'
 	from javadoc.destinationDir
 }
 

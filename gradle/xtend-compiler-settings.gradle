@@ -20,8 +20,8 @@ xtend {
 }
 
 sourceSets {
-	main.xtendOutputDir = 'src/main/xtend-gen'
-	test.xtendOutputDir = 'src/test/xtend-gen'
+	main.xtend.outputDir = 'src/main/xtend-gen'
+	test.xtend.outputDir = 'src/test/xtend-gen'
 }
 
 eclipse {
