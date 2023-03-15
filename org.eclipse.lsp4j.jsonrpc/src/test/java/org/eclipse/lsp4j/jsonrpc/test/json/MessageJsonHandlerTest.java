@@ -786,59 +786,140 @@ public class MessageJsonHandlerTest {
 	
 
 	@Test
-	public void testParamUnwrap_JsonRpc2_0() {
-		MessageJsonHandler handler = createSimpleRequestHandler(String.class, Boolean.class);
+	public void testWrapPrimitive_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, String.class);
 
 		var request = new RequestMessage();
 		request.setId(1);
 		request.setMethod(handler.getMethodProvider().resolveMethod(null));
-		request.setParams(new boolean[] { true }); // fake wrapped primitive [true] for JsonRpc 2.0
-
-		RequestMessage message = (RequestMessage) handler.parseMessage(request.toString());
-
+		request.setParams("param");
+		
+		// check primitive was wrapped into array
+		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"testMethod\",\"params\":[\"param\"]}", handler.serialize(request));
+	}
+	
+	@Test
+	public void testUnwrapPrimitive_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, String.class);
+		var request = "{\n"
+				+ "  \"jsonrpc\": \"2.0\",\n"
+				+ "  \"id\": 1,\n"
+				+ "  \"method\": \"testMethod\",\n"
+				+ "  \"params\": [\n"
+				+ "      \"param\"\n"
+				+ "  ]\n"
+				+ "}";
 		// Check parse - unwrap primitive
-		assertEquals(true, message.getParams());
-
+		RequestMessage message = (RequestMessage) handler.parseMessage(request);
+		assertEquals("param", message.getParams());
 	}
 
 	@Test
-	public void testArrayParamUnwrap_JsonRpc2_0() {
+	public void testWrapArray_JsonRpc2_0() {
 		MessageJsonHandler handler = createSimpleRequestHandler(String.class, new TypeToken<List<Boolean>>() {
 		}.getType());
+		
+		var request = new RequestMessage();
+		request.setId(1);
+		request.setMethod(handler.getMethodProvider().resolveMethod(null));
+		request.setParams(List.of(true,false));
+		
+		// check primitive was wrapped into array
+		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"testMethod\",\"params\":[[true,false]]}", handler.serialize(request));
 
+	}
+	
+	@Test
+	public void testUnwrapArray_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, new TypeToken<List<Boolean>>() {
+		}.getType());
+		
 		var request = "{\n"
 				+ "  \"jsonrpc\": \"2.0\",\n"
 				+ "  \"id\": 1,\n"
 				+ "  \"method\": \"testMethod\",\n"
 				+ "  \"params\": [\n"
 				+ "    [\n"
-				+ "      true\n"
+				+ "      true, false\n"
 				+ "    ]\n"
 				+ "  ]\n"
 				+ "}";
 		RequestMessage message = (RequestMessage) handler.parseMessage(request);
-
+		
 		// Check parse - unwrap array
-		assertEquals(List.of(true), message.getParams());
-
+		assertEquals(List.of(true, false), message.getParams());
+		
 	}
 
 	@Test
-	public void testMultiParamUnwrap_JsonRpc2_0() {
+	public void testWrapMultipleParams_JsonRpc2_0() {
 		MessageJsonHandler handler = createSimpleRequestHandler(String.class, Boolean.class, String.class);
-		
+
 		var request = new RequestMessage();
-		request.setId(1);
 		request.setMethod(handler.getMethodProvider().resolveMethod(null));
-		request.setParams(List.of(true, "string")); // fake wrapped array [true, string] for JsonRpc 2.0
-		
-		RequestMessage message = (RequestMessage) handler.parseMessage(request.toString());
-		
-		// Check parse - unwrap array
-		assertEquals(request.getParams(), message.getParams());
+		request.setParams(List.of(true, "param2"));
+		// Check serialize - wrap primitive wrapper
+		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":null,\"method\":\"testMethod\",\"params\":[true,\"param2\"]}",
+				handler.serialize(request));
 		
 	}
 
+	@Test
+	public void testUnwrapMultipleParams_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, Boolean.class, String.class);
+		
+		var request = "{\n"
+				+ "  \"jsonrpc\": \"2.0\",\n"
+				+ "  \"id\": 1,\n"
+				+ "  \"method\": \"testMethod\",\n"
+				+ "  \"params\": [\n"
+				+ "      true,\n"
+				+ "      \"param2\"\n"
+				+ "  ]\n"
+				+ "}";
+		RequestMessage message = (RequestMessage) handler.parseMessage(request);
+		
+		// Check parse - unwrap array
+		assertEquals(List.of(true, "param2"), message.getParams());
+		
+	}
+	@Test
+	public void testWrapMultipleParamsWithArray_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class,  new TypeToken<List<Boolean>>() {
+		}.getType(), String.class);
+		
+		var request = new RequestMessage();
+		request.setMethod(handler.getMethodProvider().resolveMethod(null));
+		request.setParams(List.of(List.of(true, false), "param2"));
+		// Check serialize - wrap primitive wrapper
+		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":null,\"method\":\"testMethod\",\"params\":[[true,false],\"param2\"]}",
+				handler.serialize(request));
+		
+	}
+	
+	@Test
+	public void testUnwrapMultipleParamsWithArray_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class,  new TypeToken<List<Boolean>>() {
+		}.getType(), String.class);
+		
+		var request = "{\n"
+				+ "  \"jsonrpc\": \"2.0\",\n"
+				+ "  \"id\": 1,\n"
+				+ "  \"method\": \"testMethod\",\n"
+				+ "  \"params\": [\n"
+				+ "    [\n"
+				+ "      true,\n"
+				+ "      false\n"
+				+ "    ],\n"
+				+ "    \"param2\"\n"
+				+ "  ]\n"
+				+ "}";
+		RequestMessage message = (RequestMessage) handler.parseMessage(request);
+		
+		// Check parse - unwrap array
+		assertEquals(List.of(List.of(true, false),"param2"), message.getParams());
+		
+	}
 	private static MessageJsonHandler createSimpleRequestHandler(Class<?> returnType, Type... paramType) {
 		JsonRpcMethod requestMethod = JsonRpcMethod.request("testMethod", returnType, paramType);
 		MessageJsonHandler handler = new MessageJsonHandler(Map.of(requestMethod.getMethodName(), requestMethod));

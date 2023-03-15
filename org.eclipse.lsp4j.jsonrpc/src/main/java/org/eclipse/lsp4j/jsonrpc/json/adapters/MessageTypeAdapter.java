@@ -15,6 +15,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
+import com.google.gson.internal.Primitives;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -420,7 +422,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			if (params == null)
 				writeNullValue(out);
 			else
-				gson.toJson(params, params.getClass(), out);
+				handleParameter(out, params, requestMessage.getMethod());
 		} else if (message instanceof ResponseMessage) {
 			ResponseMessage responseMessage = (ResponseMessage) message;
 			out.name("id");
@@ -445,10 +447,22 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			if (params == null)
 				writeNullValue(out);
 			else
-				gson.toJson(params, params.getClass(), out);
+				handleParameter(out, params, notificationMessage.getMethod());
 		}
 		
 		out.endObject();
+	}
+	
+	protected void handleParameter(JsonWriter out, Object params, String method) {
+		boolean isSingleArray = (getParameterTypes(method).length == 1 && Collection.class.isInstance(params)
+				|| params.getClass().isArray());
+		boolean needsWrap = isSingleArray || params instanceof String || Primitives.isPrimitive(getClass())
+				|| Primitives.isWrapperType(params.getClass());
+		if (needsWrap) {
+			gson.toJson(List.of(params), List.class, out);
+		} else {
+			gson.toJson(params, params.getClass(), out);
+		}
 	}
 	
 	protected void writeId(JsonWriter out, Either<String, Number> id) throws IOException {
