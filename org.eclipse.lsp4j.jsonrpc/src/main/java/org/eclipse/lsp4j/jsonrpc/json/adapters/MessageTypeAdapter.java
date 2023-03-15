@@ -246,6 +246,20 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		Type[] parameterTypes = getParameterTypes(method);
 		if (parameterTypes.length == 1) {
+			if (next == JsonToken.BEGIN_ARRAY) {
+				/* JsonRPC 2.0: §4.2 Parameter Structures.
+				      Wrapping:
+				         "some-value" -> ["some-value"]
+				         ["some-array"] -> [["some-array"]]
+				      By-pass:
+				         {type: "some_obj"} -> {type: "some_obj"}
+				*/
+				// Unwrap by removing the the outermost array.
+				in.beginArray();
+				var singleParameter = fromJson(in, parameterTypes[0]);
+				in.endArray();
+				return singleParameter;
+			}
 			return fromJson(in, parameterTypes[0]);
 		}
 		if (parameterTypes.length > 1 && next == JsonToken.BEGIN_ARRAY) {
