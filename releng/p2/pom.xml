@@ -12,11 +12,6 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-	<properties>
-		<tycho-version>1.7.0</tycho-version>
-		<root-dir>${basedir}/../..</root-dir>
-	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
