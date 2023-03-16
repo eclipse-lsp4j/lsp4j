@@ -20,7 +20,7 @@ publishing {
 
 			pom {
 				//packaging 'jar'
-				url = 'https://github.com/eclipse/lsp4j'
+				url = 'https://github.com/eclipse-lsp4j/lsp4j'
 				licenses {
 					license {
 						name = 'Eclipse Public License, Version 2.0'

@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class DSPDebugServer {
 
-	// This is a test for https://github.com/eclipse/lsp4j/issues/224
+	// This is a test for https://github.com/eclipse-lsp4j/lsp4j/issues/224
 	@Test
 	public void testDebugServerCanBeLaunched() throws IOException {
 		TestDebugServer testDebugServer = new TestDebugServer();

@@ -241,7 +241,7 @@ public interface TextDocumentService {
 	 * {@link DocumentSymbolCapabilities#getHierarchicalDocumentSymbolSupport()
 	 * textDocument.documentSymbol.hierarchicalDocumentSymbolSupport} is
 	 * {@code true}. More details on this difference between the LSP and the LSP4J
-	 * can be found <a href="https://github.com/eclipse/lsp4j/issues/252">here</a>.
+	 * can be found <a href="https://github.com/eclipse-lsp4j/lsp4j/issues/252">here</a>.
 	 * </p>
 	 * Servers should whenever possible return {@link DocumentSymbol} since it is the richer data structure.
 	 */
