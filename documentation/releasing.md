@@ -4,34 +4,34 @@ This is the Release plan and TODO list for LSP4J release v0.21.0.
 
 Items at the beginning of development
 
-- [ ] Create an Endgame Issue to track the release. As a starting point use [documentation/releasing.md](https://github.com/eclipse/lsp4j/blob/main/documentation/releasing.md).
-    - [ ] Add the [Endgame](https://github.com/eclipse/lsp4j/labels/endgame) label and Milestone for the release
-    - [ ] Make sure any previous edits made to [Endgame issues](https://github.com/eclipse/lsp4j/labels/endgame) of previous releases are updated in [documentation/releasing.md](https://github.com/eclipse/lsp4j/blob/main/documentation/releasing.md)
-- [ ] Ensure all previous [Endgame issues](https://github.com/eclipse/lsp4j/labels/endgame) are done.
-- [ ] Create a [New milestone](https://github.com/eclipse/lsp4j/milestones/new) for the release
-- [ ] Check [CHANGELOG.md](https://github.com/eclipse/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
-- [ ] Check [README.md](https://github.com/eclipse/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
-- [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/0.20.0/0.21.0/g`, `s/0.19.0/0.20.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/main/gradle/versions.gradle) and  [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/main/releng/pom.xml)
-- [ ] Enable `sh './releng/deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse/lsp4j/blob/main/releng/build.Jenkinsfile) 
+- [ ] Create an Endgame Issue to track the release. As a starting point use [documentation/releasing.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/documentation/releasing.md).
+    - [ ] Add the [Endgame](https://github.com/eclipse-lsp4j/lsp4j/labels/endgame) label and Milestone for the release
+    - [ ] Make sure any previous edits made to [Endgame issues](https://github.com/eclipse-lsp4j/lsp4j/labels/endgame) of previous releases are updated in [documentation/releasing.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/documentation/releasing.md)
+- [ ] Ensure all previous [Endgame issues](https://github.com/eclipse-lsp4j/lsp4j/labels/endgame) are done.
+- [ ] Create a [New milestone](https://github.com/eclipse-lsp4j/lsp4j/milestones/new) for the release
+- [ ] Check [CHANGELOG.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
+- [ ] Check [README.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
+- [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/0.20.0/0.21.0/g`, `s/0.19.0/0.20.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [gradle/versions.gradle](https://github.com/eclipse-lsp4j/lsp4j/blob/main/gradle/versions.gradle) and  [releng/pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/pom.xml)
+- [ ] Enable `sh './releng/deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/build.Jenkinsfile) 
 - [ ] Ensure [the CI build](https://ci.eclipse.org/lsp4j/job/lsp4j-multi-build/job/main/) is stable - it is always better to release a "Green Dot" build
 
 Items in the days ahead of Release day:
 
 - [ ] Create release on [PMI](https://projects.eclipse.org/projects/technology.lsp4j)
 - [ ] Schedule the release and if needed schedule a release review on the [PMI](https://projects.eclipse.org/projects/technology.lsp4j). A release review is needed every 12 months, not with each release.
-- [ ] Check [CHANGELOG.md](https://github.com/eclipse/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
-- [ ] Check [README.md](https://github.com/eclipse/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
-- [ ] Check all closed PRs and Issues to make sure their milestone is set. (*Note:* this was not until after 0.10.0 release so many old PRs and Issues have no milestone, therefore only consider items back to approx 5 Nov 2020). [This search may be useful to identify such closed issues](https://github.com/eclipse/lsp4j/issues?q=is%3Aclosed+no%3Amilestone+updated%3A%3E%3D2020-11-06)
+- [ ] Check [CHANGELOG.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
+- [ ] Check [README.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
+- [ ] Check all closed PRs and Issues to make sure their milestone is set. (*Note:* this was not until after 0.10.0 release so many old PRs and Issues have no milestone, therefore only consider items back to approx 5 Nov 2020). [This search may be useful to identify such closed issues](https://github.com/eclipse-lsp4j/lsp4j/issues?q=is%3Aclosed+no%3Amilestone+updated%3A%3E%3D2020-11-06)
 - [ ] Create and analyse a [`japicmp`](https://siom79.github.io/japicmp/) report and publish it as part of the build. Ensure that the API versions are incremented accurately based on the report. The reports are part of the build in japicmp-report and generated by `releng/runjapicmp.sh`
 - [ ] Update links in changelog for japicmp from the nightly to the final location
 
 Items on Release day:
 
 - [ ] Prepare the repo for release by:
-    - [ ] removing `-SNAPSHOT` from [gradle/versions.gradle](https://github.com/eclipse/lsp4j/blob/main/gradle/versions.gradle)
-    - [ ] removing `-SNAPSHOT` from [releng/pom.xml](https://github.com/eclipse/lsp4j/blob/main/releng/pom.xml) entries in `<dependencies>` section.
-    - [ ] disabling `sh './releng/deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse/lsp4j/blob/main/releng/build.Jenkinsfile) 
-    - see commit https://github.com/eclipse/lsp4j/commit/328ce8a4c89b0cd84fb62118f459b6cf79b09e90 for a past example
+    - [ ] removing `-SNAPSHOT` from [gradle/versions.gradle](https://github.com/eclipse-lsp4j/lsp4j/blob/main/gradle/versions.gradle)
+    - [ ] removing `-SNAPSHOT` from [releng/pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/pom.xml) entries in `<dependencies>` section.
+    - [ ] disabling `sh './releng/deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/build.Jenkinsfile) 
+    - see commit https://github.com/eclipse-lsp4j/lsp4j/commit/328ce8a4c89b0cd84fb62118f459b6cf79b09e90 for a past example
 - [ ] Push the above change
 - [ ] Run [the CI build](https://ci.eclipse.org/lsp4j/job/lsp4j-multi-build/job/main/)
 - [ ] Mark the build as Keep Forever and add to the description `v0.21.0`
@@ -52,8 +52,8 @@ Items on Release day:
 - [ ] Update the meta-data on [PMI downloads page](https://projects.eclipse.org/projects/technology.lsp4j/downloads)
 - [ ] Tag the release. Example: `git tag -a v0.21.0 HEAD -m"LSP4J 0.21.0" && git push origin v0.21.0`
 - [ ] Contribute to Simrel. See [Simrel contribution example](https://git.eclipse.org/r/#/c/158624/)
-- [ ] Create a [release page on github](https://github.com/eclipse/lsp4j/releases/new)
+- [ ] Create a [release page on github](https://github.com/eclipse-lsp4j/lsp4j/releases/new)
 - [ ] Link the Changelog to the release page
-- [ ] Make an announcement on lsp4j-dev based on the [release page on github](https://github.com/eclipse/lsp4j/releases/tag/v0.21.0). [Example on lsp4j-dev archives](https://www.eclipse.org/lists/lsp4j-dev/msg00063.html)
-- [ ] Update [documentation/releasing.md](https://github.com/eclipse/lsp4j/blob/main/documentation/releasing.md) with any changes that may have been made to the release process.
+- [ ] Make an announcement on lsp4j-dev based on the [release page on github](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.21.0). [Example on lsp4j-dev archives](https://www.eclipse.org/lists/lsp4j-dev/msg00063.html)
+- [ ] Update [documentation/releasing.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/documentation/releasing.md) with any changes that may have been made to the release process.
 - [ ] Create the endgame for the next release right away, especially as version numbers and restoring `-SNAPSHOT` need to be done right away.

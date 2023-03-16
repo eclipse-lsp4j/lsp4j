@@ -78,7 +78,7 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Building and Contributing
 
-To build and contribute to LSP4J please consult the [Contribution Guide](https://github.com/eclipse/lsp4j/blob/main/CONTRIBUTING.md).
+To build and contribute to LSP4J please consult the [Contribution Guide](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CONTRIBUTING.md).
 
 ### Licenses
 

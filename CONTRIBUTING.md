@@ -19,7 +19,7 @@ All Pull Requests must be by authors who have signed the ECA. The "ip-validation
 
 ## GitHub Actions
 
-GitHub Actions are used to validate PRs. See the GitHub [workflows](https://github.com/eclipse/lsp4j/tree/main/.github/workflows) directory and standard [GitHub Actions documentation](https://github.com/features/actions) for more details..
+GitHub Actions are used to validate PRs. See the GitHub [workflows](https://github.com/eclipse-lsp4j/lsp4j/tree/main/.github/workflows) directory and standard [GitHub Actions documentation](https://github.com/features/actions) for more details..
 
 # Eclipse
 

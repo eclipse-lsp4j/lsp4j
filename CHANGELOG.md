@@ -2,49 +2,49 @@
 
 ### v0.21.0 (TBD)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/28?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/28?closed=1>
 
 Breaking API changes:
 
  * LSP4J now requires Java 11 to build and run. This can be observed in the japicmp
    report which says class file format version changed from  52.0 to 55.0.
-   <https://github.com/eclipse/lsp4j/issues/547>.
+   <https://github.com/eclipse-lsp4j/lsp4j/issues/547>.
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
-### [v0.20.1 (February 2023)](https://github.com/eclipse/lsp4j/releases/tag/v0.20.1)
+### [v0.20.1 (February 2023)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.20.1)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/29?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/29?closed=1>
 
 Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.20.1/japicmp-report/>
 
-### [v0.20.0 (February 2023)](https://github.com/eclipse/lsp4j/releases/tag/v0.20.0)
+### [v0.20.0 (February 2023)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.20.0)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/27?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/27?closed=1>
 
 Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.20.0/japicmp-report/>
 
-### [v0.19.0 (November 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.19.0)
+### [v0.19.0 (November 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.19.0)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/26?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/26?closed=1>
 
 Breaking API changes:
 
  * Removed `WorkspaceDocumentDiagnosticReportTypeAdapter`, which was
    effectively replaced with `WorkspaceDocumentDiagnosticReportListAdapter`
-   as part of fixing issue <https://github.com/eclipse/lsp4j/issues/682>.
+   as part of fixing issue <https://github.com/eclipse-lsp4j/lsp4j/issues/682>.
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.19.0/japicmp-report/>
 
-### [v0.18.0 (November 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.18.0)
+### [v0.18.0 (November 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.18.0)
 
  * Fixed issues related to reflection errors so that `--add-opens java.base/java.util.concurrent=ALL-UNNAMED` is no longer needed on Java 17.
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/25?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/25?closed=1>
 
 Breaking API changes:
 
@@ -52,11 +52,11 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.18.0/japicmp-report/>
 
-### [v0.17.0 (October 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.17.0)
+### [v0.17.0 (October 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.17.0)
 
  * Update org.eclipse.xtend.lib dependency to 2.28.0 to address CVE-2020-8908 #672
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/24?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/24?closed=1>
 
 Breaking API changes:
 
@@ -64,11 +64,11 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.17.0/japicmp-report/>
 
-### [v0.16.0 (October 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.16.0)
+### [v0.16.0 (October 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.16.0)
 
  * Implemented DAP version 1.58.0
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/23?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/23?closed=1>
 
 Breaking API changes:
 
@@ -76,14 +76,14 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.16.0/japicmp-report/>
 
-### [v0.15.0 (August 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.15.0)
+### [v0.15.0 (August 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.15.0)
 
  * Added Notebook support
  * Added `WorkspaceSymbol.data`
  * Added support for client default behavior on renames
  * Implemented DAP version 1.56.0
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/22?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/22?closed=1>
 
 Breaking API changes:
 
@@ -97,21 +97,21 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.15.0/japicmp-report/>
 
-### [v0.14.0 (May 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.14.0)
+### [v0.14.0 (May 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.14.0)
 
  * Added changes to the LSP 3.17 specification that were added after specification was published as done.
-   * See [#630](https://github.com/eclipse/lsp4j/pull/630) for all changes.
+   * See [#630](https://github.com/eclipse-lsp4j/lsp4j/pull/630) for all changes.
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/21?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/21?closed=1>
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.14.0/japicmp-report/>
 
-### [v0.13.0 (May 2022)](https://github.com/eclipse/lsp4j/releases/tag/v0.13.0)
+### [v0.13.0 (May 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.13.0)
 
  * Implemented LSP version 3.17.0 (except Notebook support)
  * Implemented DAP versions 1.45.0 - 1.55.0
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/20?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/20?closed=1>
 
 Breaking API changes:
 
@@ -142,12 +142,12 @@ Deprecated API changes:
  * `SymbolInformation` is deprecated in favor of `DocumentSymbol` or `WorkspaceSymbol`
  * `ResponseErrorCode.serverNotInitialized` deprecated in favor of `ResponseErrorCode.ServerNotInitialized`
 
-### [v0.12.0 (Apr. 2021)](https://github.com/eclipse/lsp4j/releases/tag/v0.12.0)
+### [v0.12.0 (Apr. 2021)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.12.0)
 
  * Restored `org.eclipse.lsp4j.websocket` which will be included along with `org.eclipse.lsp4j.websocket.jakarta`. This will allow use of LSP4J
-   over Jakarta websockets and pre-Jakarta websockets. See <https://github.com/eclipse/lsp4j/issues/536> for more details.
+   over Jakarta websockets and pre-Jakarta websockets. See <https://github.com/eclipse-lsp4j/lsp4j/issues/536> for more details.
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/19?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/19?closed=1>
 
 Breaking API changes:
 
@@ -161,7 +161,7 @@ Breaking changes in behavior:
    `SemanticTokensClientCapabilitiesRequests.range` and `SemanticTokensWithRegistrationOptions.range`;
    their right-hand side, declared as `Object`, will be parsed into a `JsonElement` now.
 
-### [v0.11.0 (Mar. 2021)](https://github.com/eclipse/lsp4j/releases/tag/v0.11.0)
+### [v0.11.0 (Mar. 2021)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.11.0)
 
  * Implemented LSP version 3.16.0 (to finalized specification)
  * Implemented LSP version 3.15.0's Progress specification
@@ -169,7 +169,7 @@ Breaking changes in behavior:
  * Implemented DAP version 1.44.0
  * Replaced `org.eclipse.lsp4j.websocket` by `org.eclipse.lsp4j.websocket.jakarta` for using LSP4J over Jakarta websockets
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/18?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/18?closed=1>
 
 Breaking API changes:
 
@@ -197,7 +197,7 @@ Deprecated API changes:
  * In DAP, `VariablePresentationHintKind.DATA_BREAKPOINT` has been marked @Deprecated to match its deprecation in the protocol in 1.44.
  * In DAP, `SetBreakpointsArguments.lines` has been marked @Deprecated to match its deprecation in protocol many versions ago.
 
-### [v0.10.0 (Nov. 2020)](https://github.com/eclipse/lsp4j/releases/tag/v0.10.0)
+### [v0.10.0 (Nov. 2020)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.10.0)
 
  * Implemented LSP version 3.16.0 (specification is not finalized yet)
  * Implemented DAP version 1.37.0's CancelRequest
@@ -207,7 +207,7 @@ Deprecated API changes:
  * Implemented DAP version 1.41.0
  * Implemented DAP version 1.42.0
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/17?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/17?closed=1>
 
 Breaking API changes:
 
@@ -229,14 +229,14 @@ Deprecated API changes:
 
   * Semantic Highlighting is deprecated in favor of Semantic Tokens
 
-### [v0.9.0 (Feb. 2020)](https://github.com/eclipse/lsp4j/releases/tag/v0.9.0)
+### [v0.9.0 (Feb. 2020)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.9.0)
 
  * Implemented DAP version 1.36.0
  * Implemented DAP version 1.37.0 (except CancelRequest)
  * Implemented LSP version 3.15.0 (except Progress)
- * Improved compatibility with prior versions of `vscode-languageclient` (<https://github.com/eclipse/lsp4j/issues/407>)
+ * Improved compatibility with prior versions of `vscode-languageclient` (<https://github.com/eclipse-lsp4j/lsp4j/issues/407>)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/15?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/15?closed=1>
 
 Breaking API changes:
 
@@ -272,14 +272,14 @@ Breaking API changes:
 
 ### v0.8.1 (Sep. 2019)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/16?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/16?closed=1>
 
 ### v0.8.0 (Aug. 2019)
 
  * Implemented DAP version 1.35.0
  * Added new module `org.eclipse.lsp4j.websocket` for using LSP4J over websockets
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/12?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/12?closed=1>
 
 -----
 
@@ -288,18 +288,18 @@ Fixed issues: <https://github.com/eclipse/lsp4j/milestone/12?closed=1>
  * Updated `textDocument/callHierarchy` according to latest proposal (note: changes
    to classes and methods marked with `@Beta` are _not_ regarded as API-breaking).
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/14?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/14?closed=1>
 
 ### v0.7.1 (Apr. 2019)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/13?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/13?closed=1>
 
 ### v0.7.0 (Feb. 2019)
 
  * Implemented LSP version 3.14.0
  * Support tuple of two types with the `Tuple.Two` class
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/11?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/11?closed=1>
 
 Breaking API changes:
 
@@ -317,7 +317,7 @@ Breaking API changes:
 
  * Implemented LSP version 3.13.0
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/10?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/10?closed=1>
 
 Breaking API changes:
 
@@ -332,7 +332,7 @@ Breaking API changes:
  * Implemented LSP version 3.10.0
  * Implemented DAP version 1.31.0
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/3?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/3?closed=1>
 
 Breaking API changes:
 
@@ -345,7 +345,7 @@ Breaking API changes:
 
 ### v0.4.1 (May 2018)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/4?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/4?closed=1>
 
 Breaking API changes:
 
@@ -360,7 +360,7 @@ Breaking API changes:
  * Support multiple local and remote services
  * Improved error handling
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/2?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/2?closed=1>
 
 Breaking API changes:
 
@@ -383,19 +383,19 @@ Breaking API changes:
 
 ### v0.3.1 (Apr. 2018)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/9?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/9?closed=1>
 
 ### v0.3.0 (Sep. 2017)
 
  * Support union of three types with the `Either3` class
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/1?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/1?closed=1>
 
 -----
 
 ### v0.2.1 (Jul. 2017)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/8?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/8?closed=1>
 
 ### v0.2.0 (May 2017)
 
@@ -404,7 +404,7 @@ Fixed issues: <https://github.com/eclipse/lsp4j/milestone/8?closed=1>
  * Support multiple parameters in protocol methods
  * Support custom error codes
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/7?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/7?closed=1>
 
 Breaking API changes:
 
@@ -416,8 +416,8 @@ Breaking API changes:
 
 ### v0.1.2 (Mar. 2017)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/6?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/6?closed=1>
 
 ### v0.1.1 (Jan. 2017)
 
-Fixed issues: <https://github.com/eclipse/lsp4j/milestone/5?closed=1>
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/5?closed=1>

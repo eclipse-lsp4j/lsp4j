@@ -223,7 +223,7 @@ public class DebugIntegrationTest {
 		PipedInputStream in2 = new PipedInputStream();
 		PipedOutputStream out2 = new PipedOutputStream();
 
-		// See https://github.com/eclipse/lsp4j/issues/510 for full details.
+		// See https://github.com/eclipse-lsp4j/lsp4j/issues/510 for full details.
 		// Make sure that the thread that writes to the PipedOutputStream stays alive
 		// until the read from the PipedInputStream. Using a cached thread pool
 		// does not 100% guarantee that, but increases the probability that the

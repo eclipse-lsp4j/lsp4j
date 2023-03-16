@@ -4288,7 +4288,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	}
 
 	/**
-	 * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
 	 */
 	@Deprecated
 	new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
@@ -4402,7 +4402,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	}
 
 	/**
-	 * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
 	 */
 	@Deprecated
 	def Map<String, String> getProperties() {
@@ -4420,7 +4420,7 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	}
 
 	/**
-	 * @deprecated See https://github.com/eclipse/lsp4j/issues/99
+	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
 	 */
 	@Deprecated
 	def void setProperties(Map<String, String> properties) {
