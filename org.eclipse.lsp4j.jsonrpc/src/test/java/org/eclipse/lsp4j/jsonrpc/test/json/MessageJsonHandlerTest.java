@@ -806,15 +806,20 @@ public class MessageJsonHandlerTest {
 		MessageJsonHandler handler = createSimpleRequestHandler(String.class, new TypeToken<List<Boolean>>() {
 		}.getType());
 
-		var request = new RequestMessage();
-		request.setId(1);
-		request.setMethod(handler.getMethodProvider().resolveMethod(null));
-		request.setParams(List.of(new Boolean[] { true })); // fake wrapped array [[true]] for JsonRpc 2.0
-
-		RequestMessage message = (RequestMessage) handler.parseMessage(request.toString());
+		var request = "{\n"
+				+ "  \"jsonrpc\": \"2.0\",\n"
+				+ "  \"id\": 1,\n"
+				+ "  \"method\": \"testMethod\",\n"
+				+ "  \"params\": [\n"
+				+ "    [\n"
+				+ "      true\n"
+				+ "    ]\n"
+				+ "  ]\n"
+				+ "}";
+		RequestMessage message = (RequestMessage) handler.parseMessage(request);
 
 		// Check parse - unwrap array
-		assertEquals(request.getParams(), message.getParams());
+		assertEquals(List.of(true), message.getParams());
 
 	}
 
