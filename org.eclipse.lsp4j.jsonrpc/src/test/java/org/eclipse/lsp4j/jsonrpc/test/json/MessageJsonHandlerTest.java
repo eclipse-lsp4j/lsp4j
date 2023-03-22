@@ -11,6 +11,9 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test.json;
 
+import static org.junit.Assert.assertEquals;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -779,5 +782,67 @@ public class MessageJsonHandlerTest {
 			Assert.assertEquals(Location.class, class1);
 			Assert.assertEquals("dummy://mymodel.mydsl", ((Location)params).uri);
 		});
+	}
+	
+
+	@Test
+	public void testParamUnwrap_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, Boolean.class);
+
+		var request = new RequestMessage();
+		request.setId(1);
+		request.setMethod(handler.getMethodProvider().resolveMethod(null));
+		request.setParams(new boolean[] { true }); // fake wrapped primitive [true] for JsonRpc 2.0
+
+		RequestMessage message = (RequestMessage) handler.parseMessage(request.toString());
+
+		// Check parse - unwrap primitive
+		assertEquals(true, message.getParams());
+
+	}
+
+	@Test
+	public void testArrayParamUnwrap_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, new TypeToken<List<Boolean>>() {
+		}.getType());
+
+		var request = "{\n"
+				+ "  \"jsonrpc\": \"2.0\",\n"
+				+ "  \"id\": 1,\n"
+				+ "  \"method\": \"testMethod\",\n"
+				+ "  \"params\": [\n"
+				+ "    [\n"
+				+ "      true\n"
+				+ "    ]\n"
+				+ "  ]\n"
+				+ "}";
+		RequestMessage message = (RequestMessage) handler.parseMessage(request);
+
+		// Check parse - unwrap array
+		assertEquals(List.of(true), message.getParams());
+
+	}
+
+	@Test
+	public void testMultiParamUnwrap_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(String.class, Boolean.class, String.class);
+		
+		var request = new RequestMessage();
+		request.setId(1);
+		request.setMethod(handler.getMethodProvider().resolveMethod(null));
+		request.setParams(List.of(true, "string")); // fake wrapped array [true, string] for JsonRpc 2.0
+		
+		RequestMessage message = (RequestMessage) handler.parseMessage(request.toString());
+		
+		// Check parse - unwrap array
+		assertEquals(request.getParams(), message.getParams());
+		
+	}
+
+	private static MessageJsonHandler createSimpleRequestHandler(Class<?> returnType, Type... paramType) {
+		JsonRpcMethod requestMethod = JsonRpcMethod.request("testMethod", returnType, paramType);
+		MessageJsonHandler handler = new MessageJsonHandler(Map.of(requestMethod.getMethodName(), requestMethod));
+		handler.setMethodProvider((id) -> requestMethod.getMethodName());
+		return handler;
 	}
 }
