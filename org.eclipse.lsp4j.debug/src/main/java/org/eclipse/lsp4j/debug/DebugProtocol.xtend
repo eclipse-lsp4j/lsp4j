@@ -28,7 +28,14 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.58.0";
+	public static final String SCHEMA_VERSION = "1.60.0";
+
+	/**
+	 * Refer to the Debug Adapter Protocol's
+	 * <a href="https://microsoft.github.io/debug-adapter-protocol/overview">Overview</a> on the
+	 * specification's website.
+	 */
+	public static final String Overview = "Overview";
 }
 
 /**
@@ -264,9 +271,10 @@ class OutputEventArguments {
 	 */
 	OutputEventArgumentsGroup group;
 	/**
-	 * If an attribute 'variablesReference' exists and its value is &gt; 0, the output contains objects which can be
-	 * retrieved by passing 'variablesReference' to the 'variables' request. The value should be less than or equal to
-	 * 2147483647 (2^31-1).
+	 * If an attribute `variablesReference` exists and its value is > 0, the output
+	 * contains objects which can be retrieved by passing `variablesReference` to the
+	 * `variables` request as long as execution remains suspended. See 'Lifetime of
+	 * Object References' in the {@link DebugProtocol#Overview} section for details.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -734,7 +742,7 @@ class RunInTerminalResponse {
 @JsonRpcData
 class RunInTerminalRequestArguments {
 	/**
-	 * What kind of terminal to launch.
+	 * What kind of terminal to launch. Defaults to `integrated` if not specified.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -779,7 +787,7 @@ class RunInTerminalRequestArguments {
 }
 
 /**
- * What kind of terminal to launch.
+ * What kind of terminal to launch. Defaults to `integrated` if not specified.
  */
 enum RunInTerminalRequestArgumentsKind {
 	INTEGRATED,
@@ -1260,6 +1268,8 @@ class DataBreakpointInfoResponse {
 class DataBreakpointInfoArguments {
 	/**
 	 * Reference to the variable container if the data breakpoint is requested for a child of the container.
+	 * The `variablesReference` must have been obtained in the current suspended state.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1271,6 +1281,14 @@ class DataBreakpointInfoArguments {
 	 */
 	@NonNull
 	String name;
+	/**
+	 * When `name` is an expression, evaluate it in the scope of this stack frame.
+	 * If not specified, the expression is evaluated in the global scope. When
+	 * `variablesReference` is specified, this property has no effect.
+	 * <p>
+	 * Since 1.59
+	 */
+	int frameId;
 }
 
 /**
@@ -1498,7 +1516,9 @@ class ReverseContinueArguments {
 @JsonRpcData
 class RestartFrameArguments {
 	/**
-	 * Restart this stackframe.
+	 * Restart the stack frame identified by `frameId`. The `frameId` must
+	 * have been obtained in the current suspended state.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 */
 	int frameId;
 }
@@ -1535,7 +1555,7 @@ class PauseArguments {
 @JsonRpcData
 class StackTraceResponse {
 	/**
-	 * The frames of the stackframe. If the array has length zero, there are no stackframes available.
+	 * The frames of the stack frame. If the array has length zero, there are no stackframes available.
 	 * <p>
 	 * This means that there is no location information available.
 	 */
@@ -1590,7 +1610,7 @@ class StackTraceArguments {
 @JsonRpcData
 class ScopesResponse {
 	/**
-	 * The scopes of the stackframe. If the array has length zero, there are no scopes available.
+	 * The scopes of the stack frame. If the array has length zero, there are no scopes available.
 	 */
 	@NonNull
 	Scope[] scopes;
@@ -1602,7 +1622,9 @@ class ScopesResponse {
 @JsonRpcData
 class ScopesArguments {
 	/**
-	 * Retrieve the scopes for this stackframe.
+	 * Retrieve the scopes for the stack frame identified by `frameId`.
+	 * The `frameId` must have been obtained in the current suspended state.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 */
 	int frameId;
 }
@@ -1625,7 +1647,9 @@ class VariablesResponse {
 @JsonRpcData
 class VariablesArguments {
 	/**
-	 * The Variable reference.
+	 * The variable for which to retrieve its children.
+	 * The `variablesReference` must have been obtained in the current suspended state.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 */
 	int variablesReference;
 	/**
@@ -1682,10 +1706,9 @@ class SetVariableResponse {
 	 */
 	String type;
 	/**
-	 * If variablesReference is &gt; 0, the new value is structured and its children can be retrieved by passing
-	 * `variablesReference` to the `variables` request.
-	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31-1).
+	 * If `variablesReference` is &gt; 0, the new value is structured and its children can be retrieved by passing
+	 * `variablesReference` to the `variables` request as long as execution remains suspended.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1719,6 +1742,8 @@ class SetVariableResponse {
 class SetVariableArguments {
 	/**
 	 * The reference of the variable container.
+	 * The `variablesReference` must have been obtained in the current suspended state.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 */
 	int variablesReference;
 	/**
@@ -1883,8 +1908,9 @@ class EvaluateResponse {
 	 */
 	VariablePresentationHint presentationHint;
 	/**
-	 * If variablesReference is &gt; 0, the evaluate result is structured and its children can be retrieved by passing
-	 * `variablesReference` to the `variables` request.
+	 * If `variablesReference` is &gt; 0, the evaluate result is structured and its children can be retrieved by passing
+	 * `variablesReference` to the `variables` request as long as execution remains suspended.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 * <p>
 	 * The value should be less than or equal to 2147483647 (2^31-1).
 	 */
@@ -1965,12 +1991,6 @@ class EvaluateArguments {
  */
 interface EvaluateArgumentsContext {
 	/**
-	 * evaluate is called from a variables view context.
-	 * <p>
-	 * Since 1.55
-	 */
-	public static final String VARIABLES = "variables";
-	/**
 	 * evaluate is called from a watch view context.
 	 */
 	public static final String WATCH = "watch";
@@ -1990,6 +2010,12 @@ interface EvaluateArgumentsContext {
 	 * {@link Capabilities#getSupportsClipboardContext} is true.
 	 */
 	public static final String CLIPBOARD = "clipboard";
+	/**
+	 * evaluate is called from a variables view context.
+	 * <p>
+	 * Since 1.55
+	 */
+	public static final String VARIABLES = "variables";
 }
 
 /**
@@ -2018,10 +2044,9 @@ class SetExpressionResponse {
 	 */
 	VariablePresentationHint presentationHint;
 	/**
-	 * If variablesReference is &gt; 0, the value is structured and its children can be retrieved by passing
-	 * `variablesReference` to the `variables` request.
-	 * <p>
-	 * The value should be less than or equal to 2147483647 (2^31-1).
+	 * If `variablesReference` is &gt; 0, the evaluate result is structured and its children can be retrieved
+	 * by passing `variablesReference` to the `variables` request as long as execution remains suspended.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2242,7 +2267,10 @@ class ReadMemoryResponse {
 	 */
 	Integer unreadableBytes;
 	/**
-	 * The bytes read from memory, encoded using base64.
+	 * The bytes read from memory, encoded using base64. If the decoded length of
+	 * `data` is less than the requested `count` in the original `readMemory`
+	 * request, and `unreadableBytes` is zero or omitted, then the client should
+	 * assume it's reached the end of readable memory.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2696,7 +2724,11 @@ class ExceptionBreakpointsFilter {
 @JsonRpcData
 class Message {
 	/**
-	 * Unique identifier for the message.
+	 * Unique (within a debug adapter implementation) identifier for the message.
+	 * The purpose of these error IDs is to help extension authors that have the
+	 * requirement that every user visible error message needs a corresponding error
+	 * number, so that users or customer support can find information about the
+	 * specific error more easily.
 	 */
 	int id;
 	/**
@@ -2995,8 +3027,8 @@ class StackFrame {
 	/**
 	 * An identifier for the stack frame. It must be unique across all threads.
 	 * <p>
-	 * This id can be used to retrieve the scopes of the frame with the 'scopesRequest' or to restart the execution of
-	 * a stackframe.
+	 * This id can be used to retrieve the scopes of the frame with the `scopes` request or to restart the execution of
+	 * a stack frame.
 	 */
 	int id;
 	/**
@@ -3039,7 +3071,8 @@ class StackFrame {
 	 * Indicates whether this frame can be restarted with the 'restart' request.
 	 * Clients should only use this if the debug adapter supports the 'restart' request
 	 * and the corresponding capability {@link Capabilities#getSupportsRestartRequest}
-	 * is {@code true}.
+	 * is {@code true}. If a debug adapter has this capability, then `canRestart` defaults
+	 * to `true` if the property is absent.
 	 * <p>
 	 * This is an optional property.
 	 * <p>
@@ -3103,7 +3136,8 @@ class Scope {
 	String presentationHint;
 	/**
 	 * The variables of this scope can be retrieved by passing the value of `variablesReference` to the
-	 * `variables` request.
+	 * `variables` request as long as execution remains suspended.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 */
 	int variablesReference;
 	/**
@@ -3241,8 +3275,9 @@ class Variable {
 	 */
 	String evaluateName;
 	/**
-	 * If variablesReference is &gt; 0, the variable is structured and its children can be retrieved by passing
-	 * variablesReference to the `variables` request.
+	 * If `variablesReference` is &gt; 0, the variable is structured and its children can be retrieved by passing
+	 * `variablesReference` to the `variables` request as long as execution remains suspended.
+	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
 	 */
 	int variablesReference;
 	/**
@@ -3501,6 +3536,10 @@ class SourceBreakpoint {
 	 * The attribute is only honored by a debug adapter if the corresponding capability
 	 * {@link Capabilities#getSupportsHitConditionalBreakpoints} is true.
 	 * <p>
+	 * If both this property and `condition` are specified, `hitCondition` should be
+	 * evaluated only if the `condition` is met, and the debug adapter should
+	 * stop only if both conditions are met.
+	 * <p>
 	 * This is an optional property.
 	 */
 	String hitCondition;
@@ -3511,6 +3550,9 @@ class SourceBreakpoint {
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the corresponding capability
 	 * {@link Capabilities#getSupportsLogPoints} is true.
+	 * <p>
+	 * If either `hitCondition` or `condition` is specified, then the message should only
+	 * be logged if those conditions are met.
 	 * <p>
 	 * This is an optional property.
 	 */
