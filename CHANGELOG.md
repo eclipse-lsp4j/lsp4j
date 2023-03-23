@@ -2,6 +2,8 @@
 
 ### v0.21.0 (TBD)
 
+ * Implemented DAP version 1.60.0
+
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/28?closed=1>
 
 Breaking API changes:

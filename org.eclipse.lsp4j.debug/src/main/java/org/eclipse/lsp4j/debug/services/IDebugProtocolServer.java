@@ -91,7 +91,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.58.0";
+	public static final String SCHEMA_VERSION = "1.60.0";
 
 	/**
 	 * The 'cancel' request is used by the client in two situations:
@@ -441,10 +441,10 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request restarts execution of the specified stackframe.
+	 * The request restarts execution of the specified stack frame.
 	 * <p>
-	 * The debug adapter first sends the response and then a 'stopped' event (with
-	 * reason 'restart') after the restart has completed.
+	 * The debug adapter first sends the response and then a `stopped` event (with
+	 * reason `restart`) after the restart has completed.
 	 * <p>
 	 * Clients should only call this request if the corresponding capability
 	 * {@link Capabilities#getSupportsRestartFrame} is true.
@@ -507,7 +507,7 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * The request returns the variable scopes for a given stackframe ID.
+	 * The request returns the variable scopes for a given stack frame ID.
 	 */
 	@JsonRequest
 	default CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
