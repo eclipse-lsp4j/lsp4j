@@ -30,6 +30,14 @@ Breaking API changes:
 
 japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.20.0/japicmp-report/>
 
+### [v0.19.1 (April 2023)](https://github.com/eclipse/lsp4j/releases/tag/v0.19.1)
+
+Fixed issues: <https://github.com/eclipse/lsp4j/milestone/30?closed=1>
+
+Breaking API changes:
+
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.19.1/japicmp-report/>
+
 ### [v0.19.0 (November 2022)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.19.0)
 
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/26?closed=1>
