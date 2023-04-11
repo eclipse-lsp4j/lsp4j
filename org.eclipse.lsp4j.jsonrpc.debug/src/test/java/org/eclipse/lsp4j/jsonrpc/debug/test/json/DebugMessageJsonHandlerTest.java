@@ -860,7 +860,7 @@ public class DebugMessageJsonHandlerTest {
 
 		String bodyField = "";
 		if (body != null) {
-			bodyField = ",body:" + body;
+			bodyField = ",\"body\":" + body;
 		}
 
 		Message message = handler.parseMessage("{\"seq\":10," //
