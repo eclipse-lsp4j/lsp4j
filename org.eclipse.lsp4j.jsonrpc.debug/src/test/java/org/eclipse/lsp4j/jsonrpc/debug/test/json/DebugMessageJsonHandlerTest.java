@@ -908,7 +908,7 @@ public class DebugMessageJsonHandlerTest {
 	}
 
 	@Test
-	public void testVoidResponse_emptryObject() {
+	public void testVoidResponse_emptyObject() {
 		Object result = voidResponse("{}");
 		Assert.assertTrue(result instanceof JsonObject);
 		JsonObject jsonObject = (JsonObject) result;
