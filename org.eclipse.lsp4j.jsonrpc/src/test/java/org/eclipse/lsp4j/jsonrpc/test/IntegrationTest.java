@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
+
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
@@ -87,6 +88,11 @@ public class IntegrationTest {
 	public static interface MyServer {
 		@JsonRequest
 		CompletableFuture<MyParam> askServer(MyParam param);
+	}
+
+	public static interface MyVoidServer {
+		@JsonRequest
+		CompletableFuture<Void> askServer(MyParam param);
 	}
 	
 	public static class MyServerImpl implements MyServer {
@@ -222,6 +228,45 @@ public class IntegrationTest {
 		Assert.assertEquals("Content-Length: 50" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":42,\"result\":{\"value\":\"foo\"}}",
 				out.toString());
+	}
+
+	@Test
+	public void testVoidResponse() throws Exception {
+		// create client side
+		PipedInputStream in = new PipedInputStream();
+		PipedOutputStream out = new PipedOutputStream();
+		PipedInputStream in2 = new PipedInputStream();
+		PipedOutputStream out2 = new PipedOutputStream();
+
+		in.connect(out2);
+		out.connect(in2);
+
+		MyClient client = new MyClient() {
+			@Override
+			public CompletableFuture<MyParam> askClient(MyParam param) {
+				throw new UnsupportedOperationException("Unused by this test");
+			}
+		};
+		Launcher<MyVoidServer> clientSideLauncher = Launcher.createLauncher(client, MyVoidServer.class, in, out);
+
+		// create server side
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in2, out2);
+
+		clientSideLauncher.startListening();
+		serverSideLauncher.startListening();
+
+		// We call a method that is declared as returning Void, but the other end returns a non-null value
+		// make sure that the json parsing discards that result
+		CompletableFuture<Void> fooFuture = clientSideLauncher.getRemoteProxy().askServer(new MyParam("FOO"));
+
+		Void void1 = fooFuture.get(TIMEOUT, TimeUnit.MILLISECONDS);
+		Assert.assertNull(void1);
 	}
 
 

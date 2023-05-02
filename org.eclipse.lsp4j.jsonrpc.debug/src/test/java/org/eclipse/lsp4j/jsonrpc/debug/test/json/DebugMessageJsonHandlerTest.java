@@ -850,7 +850,7 @@ public class DebugMessageJsonHandlerTest {
 		}
 	}
 
-	private Object voidResponse(String body) {
+	private void voidResponse(String body) {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo", new TypeToken<Void>() {
 		}.getType(), new TypeToken<Void>() {
@@ -870,56 +870,42 @@ public class DebugMessageJsonHandlerTest {
 				+ "\"success\":true"//
 				+ bodyField //
 				+ "}\n");
-		return ((ResponseMessage) message).getResult();
+		Object result = ((ResponseMessage) message).getResult();
+		Assert.assertNull(result);
 	}
 
 	@Test
 	public void testVoidResponse_noBody() {
-		Assert.assertNull(voidResponse(null));
+		voidResponse(null);
 	}
 
 	@Test
 	public void testVoidResponse_null() {
-		Assert.assertNull(voidResponse("null"));
-
+		voidResponse("null");
 	}
 
 	@Test
 	public void testVoidResponse_primitive() {
-		Object result = voidResponse("true");
-		JsonPrimitive jsonPrimitive = (JsonPrimitive) result;
-		Assert.assertTrue(jsonPrimitive.getAsBoolean());
+		voidResponse("true");
 	}
 
 	@Test
 	public void testVoidResponse_emptyArray() {
-		Object result = voidResponse("[]");
-		JsonArray jsonArray = (JsonArray) result;
-		Assert.assertTrue(jsonArray.isEmpty());
+		voidResponse("[]");
 	}
 
 	@Test
 	public void testVoidResponse_array() {
-		Object result = voidResponse("[1,2,3]");
-		JsonArray jsonArray = (JsonArray) result;
-		Assert.assertEquals(1, jsonArray.get(0).getAsInt());
-		Assert.assertEquals(2, jsonArray.get(1).getAsInt());
-		Assert.assertEquals(3, jsonArray.get(2).getAsInt());
+		voidResponse("[1,2,3]");
 	}
 
 	@Test
 	public void testVoidResponse_emptyObject() {
-		Object result = voidResponse("{}");
-		Assert.assertTrue(result instanceof JsonObject);
-		JsonObject jsonObject = (JsonObject) result;
-		Assert.assertTrue(jsonObject.entrySet().isEmpty());
+		voidResponse("{}");
 	}
 
 	@Test
 	public void testVoidResponse_object() {
-		Object result = voidResponse("{\"allThreadsContinued\":false}");
-		Assert.assertTrue(result instanceof JsonObject);
-		JsonObject jsonObject = (JsonObject) result;
-		Assert.assertFalse(jsonObject.getAsJsonPrimitive("allThreadsContinued").getAsBoolean());
+		voidResponse("{\"allThreadsContinued\":false}");
 	}
 }

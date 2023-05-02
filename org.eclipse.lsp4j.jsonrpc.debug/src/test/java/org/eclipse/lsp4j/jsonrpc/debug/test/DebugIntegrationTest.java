@@ -56,6 +56,12 @@ public class DebugIntegrationTest {
 		CompletableFuture<MyParam> askServer(MyParam param);
 	}
 
+
+	public static interface MyVoidServer {
+		@JsonRequest
+		CompletableFuture<Void> askServer(MyParam param);
+	}
+
 	public static interface MyClient {
 		@JsonRequest
 		CompletableFuture<MyParam> askClient(MyParam param);
@@ -97,6 +103,45 @@ public class DebugIntegrationTest {
 
 		Assert.assertEquals("FOO", fooFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
 		Assert.assertEquals("BAR", barFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
+	}
+
+	@Test
+	public void testVoidResponse() throws Exception {
+		// create client side
+		PipedInputStream in = new PipedInputStream();
+		PipedOutputStream out = new PipedOutputStream();
+		PipedInputStream in2 = new PipedInputStream();
+		PipedOutputStream out2 = new PipedOutputStream();
+
+		in.connect(out2);
+		out.connect(in2);
+
+		MyClient client = new MyClient() {
+			@Override
+			public CompletableFuture<MyParam> askClient(MyParam param) {
+				throw new UnsupportedOperationException("Unused by this test");
+			}
+		};
+		Launcher<MyVoidServer> clientSideLauncher = DebugLauncher.createLauncher(client, MyVoidServer.class, in, out);
+
+		// create server side
+		MyServer server = new MyServer() {
+			@Override
+			public CompletableFuture<MyParam> askServer(MyParam param) {
+				return CompletableFuture.completedFuture(param);
+			}
+		};
+		Launcher<MyClient> serverSideLauncher = DebugLauncher.createLauncher(server, MyClient.class, in2, out2);
+
+		clientSideLauncher.startListening();
+		serverSideLauncher.startListening();
+
+		// We call a method that is declared as returning Void, but the other end returns a non-null value
+		// make sure that the json parsing discards that result
+		CompletableFuture<Void> fooFuture = clientSideLauncher.getRemoteProxy().askServer(new MyParam("FOO"));
+
+		Void void1 = fooFuture.get(TIMEOUT, TimeUnit.MILLISECONDS);
+		Assert.assertNull(void1);
 	}
 
 	@Test
