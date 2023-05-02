@@ -350,7 +350,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			return null;
 		}
 		if (isNullOrVoidType(type)) {
-			return element;
+			return null;
 		}
 		Object value = gson.fromJson(element, type);
 		if (isNull(value)) {
