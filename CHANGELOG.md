@@ -1,18 +1,31 @@
 ## LSP4J Change Log
 
-### v0.21.0 (TBD)
+### v0.22.0 (TBD)
+
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/29?closed=1>
+
+Breaking API changes:
+
+Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+
+### [v0.21.0 (May 2023)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.21.0)
 
  * Implemented DAP version 1.60.0
+ * LSP4J's implementation of JSON-RPC 2.0 specification has been fixed regarding
+   de-structure the outermost array wrapper if it's a single array parameter.
+   * See [#553](https://github.com/eclipse-lsp4j/lsp4j/issues/553) for detailed discussion.
+ * xbase's `@Pure` and `ToStringBuilder` is no longer used by LSP4J
+   * See [#494](https://github.com/eclipse-lsp4j/lsp4j/issues/494) for detailed discussion.
 
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/28?closed=1>
 
 Breaking API changes:
 
  * LSP4J now requires Java 11 to build and run. This can be observed in the japicmp
-   report which says class file format version changed from  52.0 to 55.0.
+   report which says class file format version changed from 52.0 to 55.0.
    <https://github.com/eclipse-lsp4j/lsp4j/issues/547>.
 
-Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.21.0/japicmp-report/>
 
 ### [v0.20.1 (February 2023)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.20.1)
 
