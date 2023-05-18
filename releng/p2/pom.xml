@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.eclipse.lsp4j</groupId>
 		<artifactId>lsp4j.releng</artifactId>
-		<version>0.21.0-SNAPSHOT</version>
+		<version>0.21.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
@@ -43,12 +43,12 @@
 									<fileset dir="${basedir}/target/repository/" />
 								</copy>
 								<copy
-									file="${basedir}/target/lsp4j.p2-repository-0.21.0-SNAPSHOT.zip"
-									tofile="${root-dir}/build/p2-repository/../lsp4j.p2-repository-0.21.0-SNAPSHOT.zip">
+									file="${basedir}/target/lsp4j.p2-repository-0.21.1-SNAPSHOT.zip"
+									tofile="${root-dir}/build/p2-repository/../lsp4j.p2-repository-0.21.1-SNAPSHOT.zip">
 								</copy>
 								<copy
-									file="${basedir}/target/lsp4j.p2-repository-0.21.0-SNAPSHOT.zip"
-									tofile="${root-dir}/build/p2-repository/v0.21.0.zip">
+									file="${basedir}/target/lsp4j.p2-repository-0.21.1-SNAPSHOT.zip"
+									tofile="${root-dir}/build/p2-repository/v0.21.1.zip">
 								</copy>
 							</tasks>
 						</configuration>
