@@ -23,7 +23,7 @@ jar.bnd (
 	'Bundle-Vendor': 'Eclipse LSP4J',
 	'Bundle-RequiredExecutionEnvironment': 'JavaSE-11',
 	"-exportcontents": "org.eclipse.lsp4j.*",
-	"-savemanifest": "$buildDir/tmp/bnd/MANIFEST.MF",
+	"-savemanifest": "build/tmp/bnd/MANIFEST.MF",
 )
 
 //------------------------------------------------------
