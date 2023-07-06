@@ -388,7 +388,11 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> stepIn(StepInArguments args) {
-		throw new UnsupportedOperationException();
+		NextArguments nextArgs = new NextArguments();
+		nextArgs.setThreadId(args.getThreadId());
+		nextArgs.setGranularity(args.getGranularity());
+		nextArgs.setSingleThread(args.getSingleThread());
+		return next(nextArgs);
 	}
 
 	/**
@@ -404,7 +408,11 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> stepOut(StepOutArguments args) {
-		throw new UnsupportedOperationException();
+		NextArguments nextArgs = new NextArguments();
+		nextArgs.setThreadId(args.getThreadId());
+		nextArgs.setGranularity(args.getGranularity());
+		nextArgs.setSingleThread(args.getSingleThread());
+		return next(nextArgs);
 	}
 
 	/**
