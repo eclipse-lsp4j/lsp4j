@@ -787,8 +787,34 @@ public class MessageJsonHandlerTest {
 
 	@Test
 	public void testWrapPrimitive_JsonRpc2_0() {
-		MessageJsonHandler handler = createSimpleRequestHandler(String.class, String.class);
+		MessageJsonHandler handler = createSimpleRequestHandler(Boolean.class, int.class);
 
+		var request = new RequestMessage();
+		request.setId(1);
+		request.setMethod(handler.getMethodProvider().resolveMethod(null));
+		request.setParams(3);
+		
+		// check primitive was wrapped into array
+		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"testMethod\",\"params\":[3]}", handler.serialize(request));
+	}
+	
+	@Test
+	public void testWrapPrimitiveWrapper_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(Boolean.class, Character.class);
+		
+		var request = new RequestMessage();
+		request.setId(1);
+		request.setMethod(handler.getMethodProvider().resolveMethod(null));
+		request.setParams('X');
+		
+		// check primitive was wrapped into array
+		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"testMethod\",\"params\":[\"X\"]}", handler.serialize(request));
+	}
+
+	@Test
+	public void testWrapStringWrapper_JsonRpc2_0() {
+		MessageJsonHandler handler = createSimpleRequestHandler(Boolean.class, String.class);
+		
 		var request = new RequestMessage();
 		request.setId(1);
 		request.setMethod(handler.getMethodProvider().resolveMethod(null));
@@ -798,6 +824,7 @@ public class MessageJsonHandlerTest {
 		assertEquals("{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"testMethod\",\"params\":[\"param\"]}", handler.serialize(request));
 	}
 	
+
 	@Test
 	public void testUnwrapPrimitive_JsonRpc2_0() {
 		MessageJsonHandler handler = createSimpleRequestHandler(String.class, String.class);

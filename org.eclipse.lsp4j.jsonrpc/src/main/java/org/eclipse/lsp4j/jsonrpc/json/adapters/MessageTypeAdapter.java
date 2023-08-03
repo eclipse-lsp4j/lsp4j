@@ -43,7 +43,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.Primitives;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -456,8 +455,8 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	protected void handleParameter(JsonWriter out, Object params, String method) {
 		boolean isSingleArray = (getParameterTypes(method).length == 1 && Collection.class.isInstance(params)
 				|| params.getClass().isArray());
-		boolean needsWrap = isSingleArray || params instanceof String || Primitives.isPrimitive(getClass())
-				|| Primitives.isWrapperType(params.getClass());
+		boolean needsWrap = isSingleArray || params instanceof String || isWrapperType(params.getClass())
+				|| isPrimitive(getClass());
 		if (needsWrap) {
 			gson.toJson(List.of(params), List.class, out);
 		} else {
@@ -484,4 +483,22 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		out.setSerializeNulls(previousSerializeNulls);
 	}
 	
+	/**
+	 * Returns true if this type is a primitive.
+	 */
+	private static boolean isPrimitive(Type type) {
+		return type instanceof Class<?> && ((Class<?>) type).isPrimitive();
+	}
+
+	/**
+	 * Returns {@code true} if {@code type} is one of the nine primitive-wrapper
+	 * types, such as {@link Integer}.
+	 *
+	 * @see Class#isPrimitive
+	 */
+	private static boolean isWrapperType(Type type) {
+		return type == Integer.class || type == Float.class || type == Byte.class || type == Double.class
+				|| type == Long.class || type == Character.class || type == Boolean.class || type == Short.class
+				|| type == Void.class;
+	}
 }
