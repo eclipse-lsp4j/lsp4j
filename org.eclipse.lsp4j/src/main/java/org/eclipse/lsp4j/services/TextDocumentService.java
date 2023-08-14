@@ -93,6 +93,7 @@ import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.adapters.CodeActionResponseAdapter;
 import org.eclipse.lsp4j.adapters.DocumentDiagnosticReportTypeAdapter;
 import org.eclipse.lsp4j.adapters.DocumentSymbolResponseAdapter;
+import org.eclipse.lsp4j.adapters.InlineValueResponseAdapter;
 import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.adapters.SemanticTokensFullDeltaResponseAdapter;
@@ -672,6 +673,7 @@ public interface TextDocumentService {
 	 * Since 3.17.0
 	 */
 	@JsonRequest
+	@ResponseJsonAdapter(InlineValueResponseAdapter.class)
 	default CompletableFuture<List<InlineValue>> inlineValue(InlineValueParams params) {
 		throw new UnsupportedOperationException();
 	}
