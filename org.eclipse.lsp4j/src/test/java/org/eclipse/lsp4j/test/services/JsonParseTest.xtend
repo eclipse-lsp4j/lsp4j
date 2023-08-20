@@ -49,6 +49,9 @@ import org.eclipse.lsp4j.Hover
 import org.eclipse.lsp4j.HoverCapabilities
 import org.eclipse.lsp4j.ImplementationCapabilities
 import org.eclipse.lsp4j.InitializeParams
+import org.eclipse.lsp4j.InlineValueEvaluatableExpression
+import org.eclipse.lsp4j.InlineValueText
+import org.eclipse.lsp4j.InlineValueVariableLookup
 import org.eclipse.lsp4j.Location
 import org.eclipse.lsp4j.LocationLink
 import org.eclipse.lsp4j.MarkedString
@@ -1763,6 +1766,130 @@ class JsonParseTest {
 					addProperty("foo", "bar")
 				])
 			]
+		])
+	}
+
+	@Test
+	def void testInlineValueResponse1() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_INLINE_VALUE
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"range": {
+							"start": {
+								"character": 22,
+								"line": 4
+							},
+							"end": {
+								"character": 25,
+								"line": 4
+							}
+						},
+						"text": "foo"
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either3.forFirst(
+				new InlineValueText => [
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+					text = "foo"
+				]
+			))
+		])
+	}
+
+	@Test
+	def void testInlineValueResponse2() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_INLINE_VALUE
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"range": {
+							"start": {
+								"character": 22,
+								"line": 4
+							},
+							"end": {
+								"character": 25,
+								"line": 4
+							}
+						},
+						"caseSensitiveLookup": false
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either3.forSecond(
+				new InlineValueVariableLookup => [
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+					caseSensitiveLookup = false
+				]
+			))
+		])
+	}
+
+	@Test
+	def void testInlineValueResponse3() {
+		jsonHandler.methodProvider = [ id |
+			switch id {
+				case '12': MessageMethods.DOC_INLINE_VALUE
+			}
+		]
+		'''
+			{
+				"jsonrpc": "2.0",
+				"id": "12",
+				"result": [
+					{
+						"range": {
+							"start": {
+								"character": 22,
+								"line": 4
+							},
+							"end": {
+								"character": 25,
+								"line": 4
+							}
+						}
+					}
+				]
+			}
+		'''.assertParse(new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(Either3.forThird(
+				new InlineValueEvaluatableExpression => [
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+				]
+			))
 		])
 	}
 }
