@@ -8005,7 +8005,7 @@ class WorkspaceFolder {
 
 	new(@NonNull String uri, @NonNull String name) {
 		this.uri = Preconditions.checkNotNull(uri, 'uri')
-		this.name = name
+		this.name = Preconditions.checkNotNull(name, 'name')
 	}
 }
 
