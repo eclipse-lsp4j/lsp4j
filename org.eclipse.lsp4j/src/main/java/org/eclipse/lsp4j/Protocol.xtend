@@ -7995,19 +7995,16 @@ class WorkspaceFolder {
 	@NonNull String uri
 
 	/**
-	 * The name of the workspace folder. Defaults to the uri's basename.
+	 * The name of the workspace folder. Used to refer to this
+	 * workspace folder in the user interface.
 	 */
-	String name
+	@NonNull String name
 
 	new() {
 	}
 
-	new(@NonNull String uri) {
+	new(@NonNull String uri, @NonNull String name) {
 		this.uri = Preconditions.checkNotNull(uri, 'uri')
-	}
-
-	new(@NonNull String uri, String name) {
-		this(uri)
 		this.name = name
 	}
 }
