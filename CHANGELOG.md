@@ -6,6 +6,9 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/29?closed=1>
 
 Breaking API changes:
 
+  * The name field in WorkspaceFolder is no longer optional according to the specification.
+    * See [#741](https://github.com/eclipse-lsp4j/lsp4j/issues/741) for detailed discussion.
+
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v0.21.1 (August 2023)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.21.1)
