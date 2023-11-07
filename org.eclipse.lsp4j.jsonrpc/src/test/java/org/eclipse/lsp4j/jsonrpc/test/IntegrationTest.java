@@ -11,13 +11,14 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test;
 
-import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CONTENT_LENGTH_HEADER;
-import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CRLF;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -31,7 +32,6 @@ import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
-
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
@@ -40,6 +40,9 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CONTENT_LENGTH_HEADER;
+import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CRLF;
 
 public class IntegrationTest {
 	
@@ -82,6 +85,16 @@ public class IntegrationTest {
 
 		public void setEither(Either<String, Integer> either) {
 			this.either = either;
+		}
+
+		private Path path;
+
+		public Path getPath() {
+			return path;
+		}
+
+		public void setPath(Path path) {
+			this.path = path;
 		}
 	}
 
@@ -725,6 +738,62 @@ public class IntegrationTest {
 				+    "{\"text\":\"The accessor \\u0027MyParam.getValue()\\u0027 must return a non-null value. Path: $.params.value\",\"code\":-32602}"
 				+ "]}}",
 				out.toString());
+	}
+
+	@Test
+	public void testMessageTracingWithCustomGsonAdapter() throws Exception {
+		// create client side
+		PipedInputStream in = new PipedInputStream();
+		PipedOutputStream out = new PipedOutputStream();
+		PipedInputStream in2 = new PipedInputStream();
+		PipedOutputStream out2 = new PipedOutputStream();
+
+		in.connect(out2);
+		out.connect(in2);
+
+		StringWriter clientTraceOut = new StringWriter();
+		StringWriter serverTraceOut = new StringWriter();
+
+		MyClient client = new MyClientImpl();
+		Launcher<MyServer> clientSideLauncher = new Launcher.Builder<MyServer>()
+			.setLocalService(client)
+			.setRemoteInterface(MyServer.class)
+			.setInput(in)
+			.setOutput(out)
+			.configureGson(gsonBuilder -> gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathTypeAdapter()))
+			.traceMessages(new PrintWriter(clientTraceOut))
+			.create();
+
+		// create server side
+		MyServer server = new MyServerImpl();
+		Launcher<MyClient> serverSideLauncher = new Launcher.Builder<MyClient>()
+			.setLocalService(server)
+			.setRemoteInterface(MyClient.class)
+			.setInput(in2)
+			.setOutput(out2)
+			.configureGson(gsonBuilder -> gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathTypeAdapter()))
+			.traceMessages(new PrintWriter(serverTraceOut))
+			.create();
+
+		clientSideLauncher.startListening();
+		serverSideLauncher.startListening();
+
+		var paramWithPath = new MyParam("FOO");
+		paramWithPath.setPath(Paths.get("").toAbsolutePath());
+		CompletableFuture<MyParam> fooFuture = clientSideLauncher.getRemoteProxy().askServer(paramWithPath);
+		CompletableFuture<MyParam> barFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("BAR"));
+
+		Assert.assertEquals(Paths.get("").toAbsolutePath(), fooFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).getPath());
+		Assert.assertEquals("BAR", barFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
+
+		Assert.assertTrue("Unexpected content: " + clientTraceOut, clientTraceOut.toString().contains("Sending request 'askServer - (1)'\n"
+			+ "Params: {\n"
+			+ "  \"value\": \"FOO\",\n"
+			+ "  \"path\": \""));
+		Assert.assertTrue("Unexpected content: " + serverTraceOut, serverTraceOut.toString().contains("Received request 'askServer - (1)'\n"
+			+ "Params: {\n"
+			+ "  \"value\": \"FOO\",\n"
+			+ "  \"path\": \""));
 	}
 
 	protected String getHeader(int contentLength) {

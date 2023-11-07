@@ -19,8 +19,11 @@ import org.eclipse.lsp4j.jsonrpc.messages.*;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -34,13 +37,17 @@ import static org.junit.Assert.assertEquals;
 
 public class TracingMessageConsumerTest {
 	private static final RemoteEndpoint TEST_REMOTE_ENDPOINT = new EmptyRemoteEndpoint();
+	private static final MessageJsonHandler TEST_JSON_HANDLER = new MessageJsonHandler(emptyMap(), gsonBuilder -> {
+		gsonBuilder.registerTypeHierarchyAdapter(Path.class, new PathTypeAdapter());
+	});
 	private static final StreamMessageConsumer TEST_STREAM_MESSAGE_CONSUMER =
 			new StreamMessageConsumer(
-					new ByteArrayOutputStream(), new MessageJsonHandler(emptyMap()));
+					new ByteArrayOutputStream(), TEST_JSON_HANDLER);
 	private static final Clock TEST_CLOCK_1 =
 			Clock.fixed(Instant.parse("2019-06-26T22:07:30.00Z"), ZoneId.of("America/New_York"));
 	private static final Clock TEST_CLOCK_2 =
 			Clock.fixed(Instant.parse("2019-06-26T22:07:30.10Z"), ZoneId.of("America/New_York"));
+	private static final String FILE_SEPARATOR_JSON_ESCAPED = File.separatorChar == '\\' ? "\\\\" : File.separator;
 
 	@Test
 	public void testReceivedRequest() {
@@ -125,6 +132,40 @@ public class TracingMessageConsumerTest {
 				"}\n" +
 				"\n" +
 				"\n";
+
+		assertEquals(expectedTrace, actualTrace);
+	}
+
+	@Test
+	public void testReceivedErrorResponseWithCustomDataAdapter() {
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+
+		Map<String, RequestMetadata> sentRequests = new HashMap<>();
+		sentRequests.put("1", new RequestMetadata("foo", TEST_CLOCK_1.instant()));
+
+		TracingMessageConsumer consumer =
+			new TracingMessageConsumer(
+				TEST_REMOTE_ENDPOINT, sentRequests, new HashMap<>(), printWriter, TEST_CLOCK_2, Locale.US);
+		consumer.setJsonHandler(TEST_JSON_HANDLER);
+
+		ResponseMessage message = new ResponseMessage();
+		message.setId("1");
+		message.setError(new ResponseError(-32600, "bar", Paths.get("foo/Bar.java")));
+
+		consumer.consume(message);
+
+		String actualTrace = stringWriter.toString();
+		String expectedTrace = "" +
+			"[Trace - 06:07:30 PM] Received response 'foo - (1)' in 100ms\n" +
+			"Result: null\n" +
+			"Error: {\n" +
+			"  \"code\": -32600,\n" +
+			"  \"message\": \"bar\",\n" +
+			"  \"data\": \"foo" + FILE_SEPARATOR_JSON_ESCAPED + "Bar.java\"\n" +
+			"}\n" +
+			"\n" +
+			"\n";
 
 		assertEquals(expectedTrace, actualTrace);
 	}
@@ -229,6 +270,32 @@ public class TracingMessageConsumerTest {
 				"Params: \"bar\"\n" +
 				"\n" +
 				"\n";
+
+		assertEquals(expectedTrace, actualTrace);
+	}
+
+	@Test
+	public void testSendingNotificationWithCustomAdapter() {
+		StringWriter stringWriter = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(stringWriter);
+
+		TracingMessageConsumer consumer =
+			new TracingMessageConsumer(
+				TEST_STREAM_MESSAGE_CONSUMER, emptyMap(), emptyMap(), printWriter, TEST_CLOCK_1, Locale.US);
+		consumer.setJsonHandler(TEST_JSON_HANDLER);
+
+		NotificationMessage message = new NotificationMessage();
+		message.setMethod("foo");
+		message.setParams(Paths.get("foo/Bar.java"));
+
+		consumer.consume(message);
+
+		String actualTrace = stringWriter.toString();
+		String expectedTrace = "" +
+			"[Trace - 06:07:30 PM] Sending notification 'foo'\n" +
+			"Params: \"foo" + FILE_SEPARATOR_JSON_ESCAPED + "Bar.java\"\n" +
+			"\n" +
+			"\n";
 
 		assertEquals(expectedTrace, actualTrace);
 	}

@@ -48,6 +48,9 @@ public class WebSocketLauncherBuilder<T> extends Launcher.Builder<T> {
 			throw new IllegalStateException("Remote interface must be configured.");
 		
 		MessageJsonHandler jsonHandler = createJsonHandler();
+		if (messageTracer != null) {
+			messageTracer.setJsonHandler(jsonHandler);
+		}
 		RemoteEndpoint remoteEndpoint = createRemoteEndpoint(jsonHandler);
 		addMessageHandlers(jsonHandler, remoteEndpoint);
 		T remoteProxy = createProxy(remoteEndpoint);
@@ -65,6 +68,7 @@ public class WebSocketLauncherBuilder<T> extends Launcher.Builder<T> {
 		else
 			remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
 		jsonHandler.setMethodProvider(remoteEndpoint);
+		remoteEndpoint.setJsonHandler(jsonHandler);
 		return remoteEndpoint;
 	}
 	

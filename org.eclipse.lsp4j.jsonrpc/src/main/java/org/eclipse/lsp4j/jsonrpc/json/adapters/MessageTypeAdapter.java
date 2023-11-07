@@ -379,6 +379,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			Object responseResult, ResponseError responseError) throws JsonParseException {
 		if (id != null && method != null) {
 			RequestMessage message = new RequestMessage();
+			message.setJsonHandler(handler);
 			message.setJsonrpc(jsonrpc);
 			message.setRawId(id);
 			message.setMethod(method);
@@ -386,6 +387,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			return message;
 		} else if (id != null) {
 			ResponseMessage message = new ResponseMessage();
+			message.setJsonHandler(handler);
 			message.setJsonrpc(jsonrpc);
 			message.setRawId(id);
 			if (responseError != null)
@@ -395,6 +397,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			return message;
 		} else if (method != null) {
 			NotificationMessage message = new NotificationMessage();
+			message.setJsonHandler(handler);
 			message.setJsonrpc(jsonrpc);
 			message.setMethod(method);
 			message.setParams(params);

@@ -343,6 +343,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		switch (messageType) {
 		case "request": {
 			DebugRequestMessage message = new DebugRequestMessage();
+			message.setJsonHandler(handler);
 			message.setId(seq);
 			message.setMethod(method);
 			message.setParams(params);
@@ -350,6 +351,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		}
 		case "event": {
 			DebugNotificationMessage message = new DebugNotificationMessage();
+			message.setJsonHandler(handler);
 			message.setId(seq);
 			message.setMethod(method);
 			message.setParams(body);
@@ -357,6 +359,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 		}
 		case "response": {
 			DebugResponseMessage message = new DebugResponseMessage();
+			message.setJsonHandler(handler);
 			message.setId(request_seq);
 			message.setResponseId(seq);
 			message.setMethod(method);
