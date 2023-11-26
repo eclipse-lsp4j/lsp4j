@@ -6184,7 +6184,7 @@ class SemanticTokens {
 	List<Integer> data
 
 	new() {
-		this.data = java.util.Collections.emptyList();
+		this.data = new ArrayList()
 	}
 
 	new(@NonNull List<Integer> data) {
