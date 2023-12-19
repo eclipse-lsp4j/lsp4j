@@ -8171,7 +8171,7 @@ class FileOperationPattern {
 	 * <li>`*` to match one or more characters in a path segment
 	 * <li>`?` to match on one character in a path segment
 	 * <li>`**` to match any number of path segments, including none
-	 * <li>`{}` to group sub patterns into an OR expression. (e.g. `**​/*.{ts,js}` matches all TypeScript and JavaScript files)
+	 * <li>`{}` to group sub patterns into an OR expression. (e.g. `**/*.{ts,js}` matches all TypeScript and JavaScript files)
 	 * <li>`[]` to declare a range of characters to match in a path segment (e.g., `example.[0-9]` to match on `example.0`, `example.1`, …)
 	 * <li>`[!...]` to negate a range of characters to match in a path segment (e.g., `example.[!0-9]` to match on `example.a`, `example.b`, but not `example.0`)
 	 * </ul>
