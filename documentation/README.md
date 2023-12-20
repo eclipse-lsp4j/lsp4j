@@ -33,13 +33,17 @@ if (myImpl instanceof LanguageClientAware) {
 
 Now your language server is not only able to receive messages from the other side, but can send messages back as well.
 
-The final thing you need to to do in order to start listening on the given inputstream, is this:
+The final thing you need to to do in order to start listening on the given `inputstream`, is this:
 
 ``` java
-launcher.startListening();
+Future<Void> future = launcher.startListening();
 ```
 
-This will start the listening process in a new thread.
+This will start the listening process in a new thread that reads messages from the input stream and dispatches them to the corresponding message handlers.
+
+When implementing the handlers for requests or notifications, you need to be aware that the calling thread is the thread that reads and dispatches incoming messages. Therefore, blocking it may result in reduced throughput or even a deadlock (https://github.com/eclipse-lsp4j/lsp4j/issues/775). As a general rule, message handlers should be implemented in a non-blocking, asynchronous way.
+
+To stop listening for incoming messages, call `future.cancel(true)` (https://github.com/eclipse-lsp4j/lsp4j/issues/770).
 
 # Extending the Protocol
 
