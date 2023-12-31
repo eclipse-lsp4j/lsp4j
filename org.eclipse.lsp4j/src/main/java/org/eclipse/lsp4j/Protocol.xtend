@@ -6683,7 +6683,7 @@ class DocumentSymbol {
  * Deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead if supported.
  *
  * This class is deprecated in the LSP specification. It is not annotated with Deprecated
- * annotation because the {@link org.eclipse.lsp4j.services.TextDocumentService.documentSymbol(DocumentSymbolParams)}
+ * annotation because the {@link org.eclipse.lsp4j.services.TextDocumentService#documentSymbol(DocumentSymbolParams)}
  * method requires it and causes deprecated warning in the code of all users of that API.
  */
 @JsonRpcData
