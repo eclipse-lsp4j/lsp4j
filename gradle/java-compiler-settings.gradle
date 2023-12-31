@@ -10,7 +10,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
-sourceCompatibility = '11'
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+}
 
 tasks.withType(Javadoc) {
 	options.addStringOption('Xdoclint:none', '-quiet')

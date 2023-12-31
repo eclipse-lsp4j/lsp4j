@@ -19,6 +19,6 @@ dependencies {
 	testImplementation "junit:junit:$versions.junit"
 }
 
-jar.bnd(
+jar.bundle.bnd(
 	'Import-Package': '*'
 )

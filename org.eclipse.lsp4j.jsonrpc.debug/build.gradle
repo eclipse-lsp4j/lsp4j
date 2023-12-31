@@ -19,7 +19,7 @@ dependencies {
 	testImplementation "junit:junit:$versions.junit"
 }
 
-jar.bnd(
+jar.bundle.bnd(
 	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
 )
 
