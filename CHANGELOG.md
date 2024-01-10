@@ -11,6 +11,17 @@ Breaking API changes:
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
+### [v0.21.2 (January 2024)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.21.2)
+
+This release widens the dependency range of Guava dependency and includes in the p2 site newer versions of third party dependencies.
+See [#785](https://github.com/eclipse-lsp4j/lsp4j/issues/785) for details.
+
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/33?closed=1>
+
+Breaking API changes:
+
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.21.2/japicmp-report/>
+
 ### [v0.21.1 (August 2023)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.21.1)
 
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/32?closed=1>
