@@ -24,10 +24,6 @@ dependencies {
 	testImplementation "com.tngtech.archunit:archunit:$versions.archunit"
 }
 
-jar {
-	from sourceSets.main.allJava
-}
-
 jar.bnd (
 	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
 )
