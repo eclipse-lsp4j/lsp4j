@@ -74,6 +74,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	private final MessageConsumer out;
 	private final Endpoint localEndpoint;
 	private final Function<Throwable, ResponseError> exceptionHandler;
+	private MessageJsonHandler jsonHandler;
 	
 	private final AtomicInteger nextRequestId = new AtomicInteger();
 	private final Map<String, PendingRequestInfo> sentRequestMap = new LinkedHashMap<>();
@@ -116,6 +117,14 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		this(out, localEndpoint, DEFAULT_EXCEPTION_HANDLER);
 	}
 
+	public void setJsonHandler(MessageJsonHandler jsonHandler) {
+		this.jsonHandler = jsonHandler;
+	}
+
+	public MessageJsonHandler getJsonHandler() {
+		return jsonHandler;
+	}
+
 	/**
 	 * Send a notification to the remote endpoint.
 	 */
@@ -132,6 +141,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 
 	protected NotificationMessage createNotificationMessage(String method, Object parameter) {
 		NotificationMessage notificationMessage = new NotificationMessage();
+		notificationMessage.setJsonHandler(getJsonHandler());
 		notificationMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
 		notificationMessage.setMethod(method);
 		notificationMessage.setParams(parameter);
@@ -168,6 +178,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 
 	protected RequestMessage createRequestMessage(String method, Object parameter) {
 		RequestMessage requestMessage = new RequestMessage();
+		requestMessage.setJsonHandler(getJsonHandler());
 		requestMessage.setId(String.valueOf(nextRequestId.incrementAndGet()));
 		requestMessage.setMethod(method);
 		requestMessage.setParams(parameter);
@@ -361,6 +372,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 
 	protected ResponseMessage createResponseMessage(RequestMessage requestMessage) {
 		ResponseMessage responseMessage = new ResponseMessage();
+		responseMessage.setJsonHandler(getJsonHandler());
 		responseMessage.setRawId(requestMessage.getRawId());
 		responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
 		return responseMessage;

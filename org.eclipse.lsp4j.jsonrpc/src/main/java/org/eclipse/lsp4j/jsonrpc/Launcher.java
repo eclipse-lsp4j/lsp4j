@@ -317,6 +317,9 @@ public interface Launcher<T> {
 			
 			// Create the JSON handler, remote endpoint and remote proxy
 			MessageJsonHandler jsonHandler = createJsonHandler();
+			if (messageTracer != null) {
+				messageTracer.setJsonHandler(jsonHandler);
+			}
 			RemoteEndpoint remoteEndpoint = createRemoteEndpoint(jsonHandler);
 			T remoteProxy = createProxy(remoteEndpoint);
 			
@@ -352,6 +355,7 @@ public interface Launcher<T> {
 			else
 				remoteEndpoint = new RemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
 			jsonHandler.setMethodProvider(remoteEndpoint);
+			remoteEndpoint.setJsonHandler(jsonHandler);
 			return remoteEndpoint;
 		}
 		

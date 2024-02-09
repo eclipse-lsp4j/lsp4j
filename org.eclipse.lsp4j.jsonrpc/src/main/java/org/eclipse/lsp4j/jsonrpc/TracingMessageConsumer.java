@@ -42,6 +42,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 	private final PrintWriter printWriter;
 	private final Clock clock;
 	private final DateTimeFormatter dateTimeFormatter;
+	private MessageJsonHandler jsonHandler;
 
 	/**
 	 * @param messageConsumer The {@link MessageConsumer} to wrap.
@@ -86,6 +87,10 @@ public class TracingMessageConsumer implements MessageConsumer {
 		}
 	}
 
+	public void setJsonHandler(MessageJsonHandler jsonHandler) {
+		this.jsonHandler = jsonHandler;
+	}
+
 	/**
 	 * Constructs a log string for a given {@link Message}. The type of the {@link MessageConsumer}
 	 * determines if we're sending or receiving a message. The type of the @{link Message} determines
@@ -122,7 +127,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 			RequestMetadata requestMetadata = new RequestMetadata(method, now);
 			sentRequests.put(id, requestMetadata);
 			Object params = requestMessage.getParams();
-			String paramsJson = MessageJsonHandler.toString(params);
+			String paramsJson = toString(params);
 			String format = "[Trace - %s] Sending request '%s - (%s)'\nParams: %s\n\n\n";
 			return String.format(format, date, method, id, paramsJson);
 		} else if (message instanceof ResponseMessage) {
@@ -130,13 +135,13 @@ public class TracingMessageConsumer implements MessageConsumer {
 			String id = responseMessage.getId();
 			RequestMetadata requestMetadata = receivedRequests.remove(id);
 			if (requestMetadata == null) {
-				LOG.log(WARNING, String.format("Unmatched response message: %s", message));
+				LOG.log(WARNING, String.format("Unmatched response message: %s", toString(message)));
 				return null;
 			}
 			String method = requestMetadata.method;
 			long latencyMillis = now.toEpochMilli() - requestMetadata.start.toEpochMilli();
 			Object result = responseMessage.getResult();
-			String resultJson = MessageJsonHandler.toString(result);
+			String resultJson = toString(result);
 			String format =
 					"[Trace - %s] Sending response '%s - (%s)'. Processing request took %sms\nResult: %s\n\n\n";
 			return String.format(format, date, method, id, latencyMillis, resultJson);
@@ -144,11 +149,11 @@ public class TracingMessageConsumer implements MessageConsumer {
 			NotificationMessage notificationMessage = (NotificationMessage) message;
 			String method = notificationMessage.getMethod();
 			Object params = notificationMessage.getParams();
-			String paramsJson = MessageJsonHandler.toString(params);
+			String paramsJson = toString(params);
 			String format = "[Trace - %s] Sending notification '%s'\nParams: %s\n\n\n";
 			return String.format(format, date, method, paramsJson);
 		} else {
-			LOG.log(WARNING, String.format("Unknown message type: %s", message));
+			LOG.log(WARNING, String.format("Unknown message type: %s", toString(message)));
 			return null;
 		}
 	}
@@ -161,7 +166,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 			RequestMetadata requestMetadata = new RequestMetadata(method, now);
 			receivedRequests.put(id, requestMetadata);
 			Object params = requestMessage.getParams();
-			String paramsJson = MessageJsonHandler.toString(params);
+			String paramsJson = toString(params);
 			String format = "[Trace - %s] Received request '%s - (%s)'\nParams: %s\n\n\n";
 			return String.format(format, date, method, id, paramsJson);
 		} else if (message instanceof ResponseMessage) {
@@ -169,28 +174,32 @@ public class TracingMessageConsumer implements MessageConsumer {
 			String id = responseMessage.getId();
 			RequestMetadata requestMetadata = sentRequests.remove(id);
 			if (requestMetadata == null) {
-				LOG.log(WARNING, String.format("Unmatched response message: %s", message));
+				LOG.log(WARNING, String.format("Unmatched response message: %s", toString(message)));
 				return null;
 			}
 			String method = requestMetadata.method;
 			long latencyMillis = now.toEpochMilli() - requestMetadata.start.toEpochMilli();
 			Object result = responseMessage.getResult();
-			String resultJson = MessageJsonHandler.toString(result);
+			String resultJson = toString(result);
 			Object error = responseMessage.getError();
-			String errorJson = MessageJsonHandler.toString(error);
+			String errorJson = toString(error);
 			String format = "[Trace - %s] Received response '%s - (%s)' in %sms\nResult: %s\nError: %s\n\n\n";
 			return String.format(format, date, method, id, latencyMillis, resultJson, errorJson);
 		} else if (message instanceof NotificationMessage) {
 			NotificationMessage notificationMessage = (NotificationMessage) message;
 			String method = notificationMessage.getMethod();
 			Object params = notificationMessage.getParams();
-			String paramsJson = MessageJsonHandler.toString(params);
+			String paramsJson = toString(params);
 			String format = "[Trace - %s] Received notification '%s'\nParams: %s\n\n\n";
 			return String.format(format, date, method, paramsJson);
 		} else {
-			LOG.log(WARNING, String.format("Unknown message type: %s", message));
+			LOG.log(WARNING, String.format("Unknown message type: %s", toString(message)));
 			return null;
 		}
+	}
+
+	private String toString(Object object) {
+		return jsonHandler != null ? jsonHandler.format(object) : MessageJsonHandler.toString(object);
 	}
 
 	/** Data class for holding pending request metadata. */

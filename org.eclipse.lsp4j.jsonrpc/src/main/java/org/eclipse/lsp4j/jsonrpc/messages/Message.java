@@ -11,15 +11,33 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
+import java.lang.reflect.Modifier;
+
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
+
+import com.google.gson.JsonIOException;
 
 /**
  * A general message as defined by JSON-RPC. The language server protocol always
  * uses "2.0" as the jsonrpc version.
  */
 public abstract class Message {
+
+	private transient MessageJsonHandler jsonHandler;
+
+	// Note: 'getJsonHandler' is not used as the name of the accessor method
+	// to avoid treating 'jsonHandler' as a general property of the message
+	// by reflective code such as ReflectiveMessageValidator.
+
+	public MessageJsonHandler jsonHandler() {
+		return jsonHandler;
+	}
+
+	public void setJsonHandler(MessageJsonHandler jsonHandler) {
+		this.jsonHandler = jsonHandler;
+	}
 
 	@NonNull
 	private String jsonrpc = MessageConstants.JSONRPC_VERSION;
@@ -35,7 +53,17 @@ public abstract class Message {
 	
 	@Override
 	public String toString() {
-		return MessageJsonHandler.toString(this);
+		try {
+			return jsonHandler != null ? jsonHandler.format(this) : MessageJsonHandler.toString(this);
+		} catch (JsonIOException e) {
+			return toStringFallback();
+		}
+	}
+
+	protected String toStringFallback() {
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.addAllFields(field -> !Modifier.isTransient(field.getModifiers()));
+		return builder.toString();
 	}
 
 	@Override

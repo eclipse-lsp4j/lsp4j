@@ -15,6 +15,7 @@ import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
+import com.google.gson.JsonIOException;
 import com.google.gson.annotations.JsonAdapter;
 
 public class ResponseError {
@@ -83,7 +84,17 @@ public class ResponseError {
 
 	@Override
 	public String toString() {
-		return MessageJsonHandler.toString(this);
+		try {
+			return MessageJsonHandler.toString(this);
+		} catch (JsonIOException e) {
+			return toStringFallback();
+		}
+	}
+
+	protected String toStringFallback() {
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.addAllFields();
+		return builder.toString();
 	}
 
 	@Override

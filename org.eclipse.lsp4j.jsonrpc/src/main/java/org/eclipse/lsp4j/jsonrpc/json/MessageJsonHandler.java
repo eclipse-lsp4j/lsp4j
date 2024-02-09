@@ -35,9 +35,11 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.MalformedJsonException;
 
 /**
@@ -48,7 +50,7 @@ public class MessageJsonHandler {
 	public static final JsonRpcMethod CANCEL_METHOD = JsonRpcMethod.notification("$/cancelRequest", CancelParams.class);
 
 	private final Gson gson;
-	
+
 	private final Map<String, JsonRpcMethod> supportedMethods;
 	
 	private MethodProvider methodProvider;
@@ -119,6 +121,8 @@ public class MessageJsonHandler {
 		Message message = gson.fromJson(jsonReader, Message.class);
 		
 		if (message != null) {
+			message.setJsonHandler(this);
+
 			// Check whether the input has been fully consumed
 			try {
 				if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
@@ -144,10 +148,32 @@ public class MessageJsonHandler {
 	public void serialize(Message message, Writer output) throws JsonIOException {
 		gson.toJson(message, Message.class, output);
 	}
-	
-	
+
+	/**
+	 * Perform JSON serialization of the given object using the configuration of JSON-RPC messages
+	 * enhanced with the pretty printing option.
+	 */
+	public String format(Object object) {
+		StringWriter writer = new StringWriter();
+		JsonWriter jsonWriter = null;
+		try {
+			jsonWriter = gson.newJsonWriter(writer);
+			// Equivalent to set pretty printing on the gson builder
+			jsonWriter.setIndent("  ");
+		} catch (IOException e) {
+			throw new JsonIOException(e);
+		}
+		if (object != null) {
+			gson.toJson(object, object.getClass(), jsonWriter);
+		} else {
+			gson.toJson(JsonNull.INSTANCE, jsonWriter);
+		}
+		return writer.toString();
+	}
+
+
 	private static MessageJsonHandler toStringInstance;
-	
+
 	/**
 	 * Perform JSON serialization of the given object using the default configuration of JSON-RPC messages
 	 * enhanced with the pretty printing option.
@@ -160,5 +186,5 @@ public class MessageJsonHandler {
 		}
 		return toStringInstance.gson.toJson(object);
 	}
-	
+
 }

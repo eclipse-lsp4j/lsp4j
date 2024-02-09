@@ -218,6 +218,7 @@ public final class DebugLauncher {
 			else
 				remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
 			jsonHandler.setMethodProvider(remoteEndpoint);
+			remoteEndpoint.setJsonHandler(jsonHandler);
 			return remoteEndpoint;
 		}
 		

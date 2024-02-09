@@ -11,14 +11,15 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
-import org.eclipse.lsp4j.jsonrpc.TracingMessageConsumer.RequestMetadata;
-
 import java.io.PrintWriter;
 import java.time.Clock;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import org.eclipse.lsp4j.jsonrpc.TracingMessageConsumer.RequestMetadata;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 
 /**
  * Wraps a {@link MessageConsumer} with one that logs in a way that the LSP Inspector can parse. *
@@ -28,14 +29,21 @@ public class MessageTracer implements Function<MessageConsumer, MessageConsumer>
 	private final PrintWriter printWriter;
 	private final Map<String, RequestMetadata> sentRequests = new HashMap<>();
 	private final Map<String, RequestMetadata> receivedRequests = new HashMap<>();
+	private MessageJsonHandler jsonHandler;
 
 	MessageTracer(PrintWriter printWriter) {
 		this.printWriter = Objects.requireNonNull(printWriter);
 	}
 
+	public void setJsonHandler(MessageJsonHandler jsonHandler) {
+		this.jsonHandler = jsonHandler;
+	}
+
 	@Override
 	public MessageConsumer apply(MessageConsumer messageConsumer) {
-		return new TracingMessageConsumer(
+		TracingMessageConsumer tracingMessageConsumer = new TracingMessageConsumer(
 				messageConsumer, sentRequests, receivedRequests, printWriter, Clock.systemDefaultZone());
+		tracingMessageConsumer.setJsonHandler(jsonHandler);
+		return tracingMessageConsumer;
 	}
 }

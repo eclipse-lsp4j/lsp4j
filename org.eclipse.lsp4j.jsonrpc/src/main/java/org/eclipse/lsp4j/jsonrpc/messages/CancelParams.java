@@ -14,6 +14,8 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
+import com.google.gson.JsonIOException;
+
 /**
  * To cancel a request a notification message with the following properties is sent.
  */
@@ -55,7 +57,17 @@ public class CancelParams {
 	
 	@Override
 	public String toString() {
-		return MessageJsonHandler.toString(this);
+		try {
+			return MessageJsonHandler.toString(this);
+		} catch (JsonIOException e) {
+			return toStringFallback();
+		}
+	}
+
+	protected String toStringFallback() {
+		ToStringBuilder builder = new ToStringBuilder(this);
+		builder.addAllFields();
+		return builder.toString();
 	}
 
 	@Override

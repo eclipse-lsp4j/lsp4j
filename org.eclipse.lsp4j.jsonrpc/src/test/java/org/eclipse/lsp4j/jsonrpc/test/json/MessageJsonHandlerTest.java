@@ -36,6 +36,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -153,7 +154,41 @@ public class MessageJsonHandlerTest {
 		String json = handler.serialize(message);
 		Assert.assertEquals("{\"jsonrpc\":\"2.0\",\"method\":\"foo\",\"params\":[\"a\",\"b\"]}", json);
 	}
-	
+
+	@Test
+	public void testMessageToString() {
+		NotificationMessage message = new NotificationMessage();
+		message.setMethod("foo");
+		List<Object> list = new ArrayList<>();
+		list.add("a");
+		list.add("b");
+		message.setParams(list);
+		Assert.assertEquals("{\n"
+				+ "  \"jsonrpc\": \"2.0\",\n"
+				+ "  \"method\": \"foo\",\n"
+				+ "  \"params\": [\n"
+				+ "    \"a\",\n"
+				+ "    \"b\"\n"
+				+ "  ]\n"
+				+ "}", message.toString());
+
+		MessageJsonHandler handler = new MessageJsonHandler(Collections.emptyMap()) {
+			@Override
+			public String format(Object object) {
+				throw new JsonIOException("TEST");
+			};
+		};
+		message.setJsonHandler(handler);
+		Assert.assertEquals("NotificationMessage [\n"
+				+ "  method = \"foo\"\n"
+				+ "  params = ArrayList (\n"
+				+ "    \"a\",\n"
+				+ "    \"b\"\n"
+				+ "  )\n"
+				+ "  jsonrpc = \"2.0\"\n"
+				+ "]", message.toString());
+	}
+
 	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void testEither_01() {
