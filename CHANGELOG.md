@@ -6,8 +6,8 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/29?closed=1>
 
 Breaking API changes:
 
-  * The Message class now has a new transient field, `jsonHandler` to enable the `toString` implementation to properly format messages when custom type adapters are in used.
-    * For consumers that have their own custom serializers they may need to be updated to ensure that transient fields are skipped, for example by using [`Modifier.isTransient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Modifier.html#isTransient(int))
+  * The Message class now has a new transient field, `jsonHandler`, to enable the `toString` implementation to properly format messages when custom type adapters are used.
+    * For consumers that have their own custom serializers or other reflective message processors they may need to be updated to ensure that transient fields are skipped, for example by using [`Modifier.isTransient`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Modifier.html#isTransient(int))
     * See [#768](https://github.com/eclipse-lsp4j/lsp4j/issues/768) for detailed discussion.
   * The name field in WorkspaceFolder is no longer optional according to the specification.
     * See [#741](https://github.com/eclipse-lsp4j/lsp4j/issues/741) for detailed discussion.
