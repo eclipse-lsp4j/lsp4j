@@ -15,6 +15,7 @@ import java.lang.reflect.Modifier;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageConstants;
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.util.ToStringBuilder;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
 import com.google.gson.JsonIOException;

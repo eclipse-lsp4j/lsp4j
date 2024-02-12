@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter;
+import org.eclipse.lsp4j.jsonrpc.util.ToStringBuilder;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 
 import com.google.gson.JsonIOException;
