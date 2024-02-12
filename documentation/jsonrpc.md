@@ -130,3 +130,83 @@ public interface NamingExample {
    CompletableFuture<?> yetanothername();
 }
 ```
+## LSP4J JSON-RPC generator
+
+LSP4J provides a bundle that helps generate classes that are suitable for use with LSP4J's JSON-RPC.
+These files can be written in [Eclipse xtend](https://eclipse.dev/Xtext/xtend/) and use xtend's [active annotation feature](https://eclipse.dev/Xtext/xtend/documentation/204_activeannotations.html) to provide compilation participants.
+The annotation to use is [`@JsonRpcData`](https://github.com/eclipse-lsp4j/lsp4j/blob/main/org.eclipse.lsp4j.generator/src/main/java/org/eclipse/lsp4j/generator/JsonRpcData.xtend) which adds getters, setters, equals, toString and other functionality automatically to simply defined classes.
+
+For example, in an xtend file a simple class can be defined such as:
+
+```java
+@JsonRpcData
+class HelloParam {
+   @NonNull	String helloMessage
+   int repeatCount
+}
+```
+
+which will generate a fully functional Java class with all the extra parts suitable for integrating with LSP4J and the rest of your Java application:
+
+```java
+@SuppressWarnings("all")
+public class HelloParam {
+  @NonNull
+  private String helloMessage;
+
+  private int repeatCount;
+
+  @NonNull
+  public String getHelloMessage() {
+    return this.helloMessage;
+  }
+
+  public void setHelloMessage(@NonNull final String helloMessage) {
+    this.helloMessage = Preconditions.checkNotNull(helloMessage, "helloMessage");
+  }
+
+  public int getRepeatCount() {
+    return this.repeatCount;
+  }
+
+  public void setRepeatCount(final int repeatCount) {
+    this.repeatCount = repeatCount;
+  }
+
+  @Override
+  public String toString() {
+    ToStringBuilder b = new ToStringBuilder(this);
+    b.add("helloMessage", this.helloMessage);
+    b.add("repeatCount", this.repeatCount);
+    return b.toString();
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj)
+      return true;
+    // rest of the method elided for brevity in the documentation
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((this.helloMessage== null) ? 0 : this.helloMessage.hashCode());
+    return prime * result + this.repeatCount;
+  }
+}
+```
+
+The generation may generate dependencies on some additional classes.
+Refer to the following sub-sections for details.
+
+### `ToStringBuilder` and other dependent classes
+
+When using the generator the generated code may refer to `ToStringBuilder` and other classes in the `org.eclipse.lsp4j.jsonrpc` bundle.
+Ensure that there is a runtime dependency on the `org.eclipse.lsp4j.jsonrpc` in your project.
+
+### `Preconditions` class
+
+When using LSP4J's `@NonNull` annotations a class called `Preconditions` is needed with the method `checkNotNull` in a sub-package called `util` to check null annotations at runtime.
+For an example class refer to the versions provided in LSP4J ([link](https://github.com/eclipse-lsp4j/lsp4j/blob/main/org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/util/Preconditions.java)).
