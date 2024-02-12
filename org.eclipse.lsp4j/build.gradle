@@ -13,8 +13,10 @@
 ext.title = 'LSP4J'
 description = 'Java bindings for the Language Server Protocol'
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
 
 dependencies {
 	compileOnly project(":org.eclipse.lsp4j.generator")
@@ -24,6 +26,6 @@ dependencies {
 	testImplementation "com.tngtech.archunit:archunit:$versions.archunit"
 }
 
-jar.bnd (
+jar.bundle.bnd (
 	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
 )
