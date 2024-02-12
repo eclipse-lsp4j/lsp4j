@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2019 TypeFox and others.
+ * Copyright (c) 2019, 2024 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -17,18 +17,11 @@ package org.eclipse.lsp4j.debug.util;
 public final class Preconditions {
 	
 	private Preconditions() {}
-	
-	private static boolean nullChecks = true;
-	
-	public static void enableNullChecks(boolean enable) {
-		Preconditions.nullChecks = enable;
-	}
-	
-	public static <T> T checkNotNull(T object, String propertyName) {
-		if (nullChecks && object == null) {
-			throw new IllegalArgumentException("Property must not be null: " + propertyName);
-		}
-		return object;
-	}
 
+	/**
+	 * @deprecated Use {@link org.eclipse.lsp4j.jsonrpc.util.Preconditions#enableNullChecks(boolean)} directly.
+	 */
+	public static void enableNullChecks(boolean enable) {
+		org.eclipse.lsp4j.jsonrpc.util.Preconditions.enableNullChecks(enable);
+	}
 }

@@ -172,10 +172,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 	}
 	
 	private def getPreconditionsUtil(Type type, extension TransformationContext context) {
-		if (type.qualifiedName.startsWith('org.eclipse.lsp4j.debug'))
-			newTypeReference('org.eclipse.lsp4j.debug.util.Preconditions')
-		else
-			newTypeReference('org.eclipse.lsp4j.util.Preconditions')
+		newTypeReference('org.eclipse.lsp4j.jsonrpc.util.Preconditions')
 	}
 
 }

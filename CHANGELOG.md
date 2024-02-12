@@ -12,8 +12,8 @@ Breaking API changes:
   * The name field in WorkspaceFolder is no longer optional according to the specification.
     * See [#741](https://github.com/eclipse-lsp4j/lsp4j/issues/741) for detailed discussion.
   * The LSP4J generator when applied to `@JsonRpcData` annotated classes generates a dependency on package `org.eclipse.lsp4j.jsonrpc.util` in the `org.eclipse.lsp4j.jsonrpc` bundle to provide an implementation of `ToStringBuilder`.
-    * This removes the implied requirement in LSP4J 0.21.0 that there is a class called `ToStringBuilder` in a sub-package called `util`.
-    * This also removes the duplicated class `ToStringBuilder` in packages `org.eclipse.lsp4j.debug.util` and `org.eclipse.lsp4j.util`.
+    * This removes the implied requirement in LSP4J 0.21.0 that there is a class called `ToStringBuilder` and `Preconditions` in a sub-package called `util`.
+    * This also removes the duplicated class `ToStringBuilder` and `Preconditions` in packages `org.eclipse.lsp4j.debug.util` and `org.eclipse.lsp4j.util`.
     * See [#742](https://github.com/eclipse-lsp4j/lsp4j/issues/742) for detailed discussion.
 
 Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>

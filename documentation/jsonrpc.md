@@ -201,12 +201,7 @@ public class HelloParam {
 The generation may generate dependencies on some additional classes.
 Refer to the following sub-sections for details.
 
-### `ToStringBuilder` and other dependent classes
+### `ToStringBuilder`, `Preconditions` and other dependent classes
 
-When using the generator the generated code may refer to `ToStringBuilder` and other classes in the `org.eclipse.lsp4j.jsonrpc` bundle.
+When using the generator the generated code may refer to `ToStringBuilder` and `Preconditions` and other classes in the `org.eclipse.lsp4j.jsonrpc` bundle.
 Ensure that there is a runtime dependency on the `org.eclipse.lsp4j.jsonrpc` in your project.
-
-### `Preconditions` class
-
-When using LSP4J's `@NonNull` annotations a class called `Preconditions` is needed with the method `checkNotNull` in a sub-package called `util` to check null annotations at runtime.
-For an example class refer to the versions provided in LSP4J ([link](https://github.com/eclipse-lsp4j/lsp4j/blob/main/org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/util/Preconditions.java)).
