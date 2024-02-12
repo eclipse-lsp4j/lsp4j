@@ -61,9 +61,3 @@ task clean(type: Delete) {
 	description 'Deletes the local repositories'
 	delete 'build'
 }
-
-// Generate an IDE with Xtend support
-task ide(type: GradleBuild) {
-	buildFile = 'ide/build.gradle'
-	tasks = ['ide']
-}
