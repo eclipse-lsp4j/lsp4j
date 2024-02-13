@@ -23,7 +23,9 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
  * WebSocket endpoint implementation that connects to a JSON-RPC service.
  *
  * @param <T> remote service interface type
+ * @deprecated Please migrate to org.eclipse.lsp4j.websocket.jakarta
  */
+@Deprecated(forRemoval = true)
 public abstract class WebSocketEndpoint<T> extends Endpoint {
 	
 	@Override

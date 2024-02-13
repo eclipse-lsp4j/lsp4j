@@ -11,7 +11,7 @@
  ******************************************************************************/
 
 ext.title = 'LSP4J WebSocket'
-description = 'WebSocket support for LSP4J'
+description = 'WebSocket support for LSP4J (deprecated, please migrate to org.eclipse.lsp4j.websocket.jakarta)'
 
 dependencies {
 	api project(":org.eclipse.lsp4j.jsonrpc")

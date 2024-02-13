@@ -26,7 +26,9 @@ import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
  * JSON-RPC launcher builder for use in {@link WebSocketEndpoint}.
  *
  * @param <T> remote service interface type
+ * @deprecated Please migrate to org.eclipse.lsp4j.websocket.jakarta
  */
+@Deprecated(forRemoval = true)
 public class WebSocketLauncherBuilder<T> extends Launcher.Builder<T> {
 	
 	protected Session session;

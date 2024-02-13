@@ -21,7 +21,9 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
 /**
  * WebSocket message handler that parses JSON messages and forwards them to a {@link MessageConsumer}.
+ * @deprecated Please migrate to org.eclipse.lsp4j.websocket.jakarta
  */
+@Deprecated(forRemoval = true)
 public class WebSocketMessageHandler implements MessageHandler.Whole<String> {
 	
 	private final MessageConsumer callback;
