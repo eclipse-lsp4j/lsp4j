@@ -34,8 +34,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
+import org.eclipse.lsp4j.jsonrpc.util.Preconditions
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
-import org.eclipse.lsp4j.util.Preconditions
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {

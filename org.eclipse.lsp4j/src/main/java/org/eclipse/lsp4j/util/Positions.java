@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.util;
 
 import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.jsonrpc.util.Preconditions;
 
 /**
  * Utilities for the {@link Position}.
