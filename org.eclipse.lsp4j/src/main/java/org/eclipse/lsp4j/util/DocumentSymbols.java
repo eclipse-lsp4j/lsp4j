@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Queue;
 
 import org.eclipse.lsp4j.DocumentSymbol;
+import org.eclipse.lsp4j.jsonrpc.util.Preconditions;
 
 /**
  * Utilities for {@link DocumentSymbol document symbols}.

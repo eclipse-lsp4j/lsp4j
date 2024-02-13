@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.util;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.jsonrpc.util.Preconditions;
 
 /**
  * Utility class for {@link Range}.
