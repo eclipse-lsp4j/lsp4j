@@ -4,6 +4,11 @@
 
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/29?closed=1>
 
+  * The `org.eclipse.lsp4j.websocket` bundle has been deprecated in preparation for removal in the future.
+    * Please migrate to `org.eclipse.lsp4j.websocket.jakarta`
+    * The `org.eclipse.lsp4j.websocket` bundle is no longer included in the SDK feature nor published to Eclipse SimRel
+    * See [#647](https://github.com/eclipse-lsp4j/lsp4j/issues/647) for detailed discussion.
+
 Breaking API changes:
 
   * The Message class now has a new transient field, `jsonHandler`, to enable the `toString` implementation to properly format messages when custom type adapters are used.

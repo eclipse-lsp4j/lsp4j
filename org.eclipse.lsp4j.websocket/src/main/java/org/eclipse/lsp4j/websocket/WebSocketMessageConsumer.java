@@ -27,7 +27,9 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 
 /**
  * Message consumer that sends messages via a WebSocket session.
+ * @deprecated Please migrate to org.eclipse.lsp4j.websocket.jakarta
  */
+@Deprecated(forRemoval = true)
 public class WebSocketMessageConsumer implements MessageConsumer {
 
 	private static final Logger LOG = Logger.getLogger(WebSocketMessageConsumer.class.getName());

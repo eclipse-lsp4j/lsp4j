@@ -11,6 +11,7 @@
 	<bundle id="jakarta.websocket-api.source" version="0.0.0"/>
 	<bundle id="jakarta.websocket-client-api" version="0.0.0"/>
 	<bundle id="jakarta.websocket-client-api.source" version="0.0.0"/>
+	<!-- The use of javax.websocket is deprecated for deletion. See https://github.com/eclipse-lsp4j/lsp4j/issues/647 -->
 	<bundle id="javax.websocket" version="0.0.0"/>
 	<bundle id="javax.websocket.source" version="0.0.0"/>
    <category-def name="lsp4j" label="Lsp4j"/>
