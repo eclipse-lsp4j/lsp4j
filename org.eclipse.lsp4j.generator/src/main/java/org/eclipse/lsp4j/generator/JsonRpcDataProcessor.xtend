@@ -159,10 +159,7 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			returnType = string
 			addAnnotation(newAnnotationReference(Override))
 			val accessorsUtil = new AccessorsProcessor.Util(context)
-			val fqn = impl.qualifiedName
-			val char dot = '.'
-			val pkg = fqn.substring(0, fqn.lastIndexOf(dot))
-			val toStringBuilderClassName = (pkg+".util.ToStringBuilder")
+			val toStringBuilderClassName = ("org.eclipse.lsp4j.jsonrpc.util.ToStringBuilder")
 			body = '''
 				«toStringBuilderClassName.newTypeReference()» b = new «toStringBuilderClassName.newTypeReference()»(this);
 				«FOR field : toStringFields»

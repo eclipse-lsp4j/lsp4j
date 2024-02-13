@@ -1,12 +1,12 @@
 /**
- * Copyright (c) 2014, 2018 itemis AG (http://www.itemis.eu) and others.
+ * Copyright (c) 2014, 2024 itemis AG (http://www.itemis.eu) and others.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.lsp4j.jsonrpc.messages;
+package org.eclipse.lsp4j.jsonrpc.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -25,8 +25,10 @@ import java.util.function.Predicate;
  * <p>The builder will automatically handle cycles in the object tree. It also pretty prints arrays and Iterables.</p>
  *
  * This class is not thread safe.
+ * 
+ * @implNote This class originally came from xbase.lib and has been extended for LSP4J purposes with some additional functionality.
  */
-final class ToStringBuilder {
+public final class ToStringBuilder {
 	
 	public static class ToStringContext {
 
