@@ -1,6 +1,6 @@
 ## LSP4J Change Log
 
-### v0.22.0 (TBD)
+### [v0.22.0 (February 2024)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.22.0)
 
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/29?closed=1>
 
@@ -22,7 +22,7 @@ Breaking API changes:
     * Duplicate classes `ToStringBuilder` and `Preconditions` have been removed from `org.eclipse.lsp4j.util` and `org.eclipse.lsp4j.debug.util` packages.
     * See [#742](https://github.com/eclipse-lsp4j/lsp4j/issues/742) for detailed discussion.
 
-Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.22.0/japicmp-report/>
 
 ### [v0.21.2 (January 2024)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.21.2)
 
