@@ -37,7 +37,7 @@ For the other direction, if the implementation calls request on the RemoteEndpoi
 
 The receiver of a request always needs to return a response message to conform to the JSON-RPC specification. In case the result value cannot be provided in a response because of an error, the `error` property of the `ResponseMessage` must be set to a `ResponseError` describing the failure.
 
-This can be done by returning a `CompletableFuture` completed exceptionally with a `ResponseErrorException` from the request message handler in a local endpoint. The exception carries a `ResponseError` to attach to the response. The `RemoteEndpoint` will handle the exceptionally completed future and send a response message with the attached error object.
+This can be done by throwing a `ResponseErrorException` from the request message handler in a local endpoint. The exception carries a `ResponseError` to attach to the response. The `RemoteEndpoint` will handle the exception and send a response message with the attached error object.
 
 For example:
 
@@ -45,10 +45,8 @@ For example:
    @Override
    public CompletableFuture<Object> shutdown() {
       if (!isInitialized()) {
-         CompletableFuture<Object> exceptionalResult = new CompletableFuture<>();
-         ResponseError error = new ResponseError(ResponseErrorCode.ServerNotInitialized, "Server was not initialized", null);
-         exceptionalResult.completeExceptionally(new ResponseErrorException(error));
-         return exceptionalResult;
+         ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
+         throw new ResponseErrorException(error);
       }
       return doShutdown();
    }

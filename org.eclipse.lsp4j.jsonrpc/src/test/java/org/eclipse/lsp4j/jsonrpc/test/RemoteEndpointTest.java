@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2016 TypeFox and others.
+ * Copyright (c) 2016, 2024 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -34,6 +34,7 @@ import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
+import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
@@ -215,6 +216,73 @@ public class RemoteEndpointTest {
 			String exception = (String) response.getError().getData();
 			String expected = "java.lang.RuntimeException: BAAZ\n\tat org.eclipse.lsp4j.jsonrpc.test.RemoteEndpointTest";
 			assertEquals(expected, exception.replaceAll("\\r", "").substring(0, expected.length()));
+		} finally {
+			logMessages.unregister();
+		}
+	}
+
+	@Test
+	public void testResponseErrorExceptionInEndpoint() {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			// Don't show the exception in the test execution log
+			logMessages.registerTo(RemoteEndpoint.class);
+
+			TestEndpoint endp = new TestEndpoint() {
+				@Override
+				public CompletableFuture<Object> request(String method, Object parameter) {
+					throw new ResponseErrorException(new ResponseError(ResponseErrorCode.InvalidParams, "Direct Throw", "data"));
+				}
+			};
+			TestMessageConsumer consumer = new TestMessageConsumer();
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+
+			endpoint.consume(init(new RequestMessage(), it -> {
+				it.setId("1");
+				it.setMethod("foo");
+				it.setParams("myparam");
+			}));
+
+			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
+			assertEquals("Direct Throw", response.getError().getMessage());
+			assertEquals(ResponseErrorCode.InvalidParams.getValue(), response.getError().getCode());
+			String data = (String) response.getError().getData();
+			assertEquals("data", data);
+		} finally {
+			logMessages.unregister();
+		}
+	}
+
+	@Test
+	public void testResponseErrorExceptionFromFutureInEndpoint() {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			// Don't show the exception in the test execution log
+			logMessages.registerTo(RemoteEndpoint.class);
+
+			TestEndpoint endp = new TestEndpoint() {
+				@Override
+				public CompletableFuture<Object> request(String method, Object parameter) {
+					CompletableFuture<Object> future = new CompletableFuture<>();
+					future.completeExceptionally(new ResponseErrorException(
+							new ResponseError(ResponseErrorCode.InvalidParams, "completeExceptionally", "data")));
+					return future;
+				}
+			};
+			TestMessageConsumer consumer = new TestMessageConsumer();
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp);
+
+			endpoint.consume(init(new RequestMessage(), it -> {
+				it.setId("1");
+				it.setMethod("foo");
+				it.setParams("myparam");
+			}));
+
+			ResponseMessage response = (ResponseMessage) consumer.messages.get(0);
+			assertEquals("completeExceptionally", response.getError().getMessage());
+			assertEquals(ResponseErrorCode.InvalidParams.getValue(), response.getError().getCode());
+			String data = (String) response.getError().getData();
+			assertEquals("data", data);
 		} finally {
 			logMessages.unregister();
 		}
