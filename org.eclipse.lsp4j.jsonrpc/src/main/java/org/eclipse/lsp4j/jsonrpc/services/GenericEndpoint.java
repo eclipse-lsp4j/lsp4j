@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2016 TypeFox and others.
+ * Copyright (c) 2016, 2024 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,8 +64,10 @@ public class GenericEndpoint implements Endpoint {
 					Method method = methodInfo.method;
 					Object[] arguments = this.getArguments(method, arg);
 					return (CompletableFuture<Object>) method.invoke(current, arguments);
-				} catch (InvocationTargetException | IllegalAccessException e) {
-					throw new RuntimeException(e);
+				} catch (InvocationTargetException e) {
+					throw new CompletionException(e.getCause());
+				} catch (IllegalAccessException e) {
+					throw new CompletionException(e);
 				}
 			};
 			if (methodHandlers.put(methodInfo.name, handler) != null) {

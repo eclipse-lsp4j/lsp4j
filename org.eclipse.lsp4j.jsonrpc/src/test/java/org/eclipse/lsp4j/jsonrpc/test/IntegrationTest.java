@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2016 TypeFox and others.
+ * Copyright (c) 2016, 2024 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -10,6 +10,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.test;
+
+import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CONTENT_LENGTH_HEADER;
+import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CRLF;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,15 +37,14 @@ import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
 import org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CONTENT_LENGTH_HEADER;
-import static org.eclipse.lsp4j.jsonrpc.json.MessageConstants.CRLF;
 
 public class IntegrationTest {
 	
@@ -420,8 +422,14 @@ public class IntegrationTest {
 					tries++;
 					throw new UnsupportedOperationException();
 				}
+				if (tries == 1) {
+					tries++;
+					CompletableFuture<MyParam> future = new CompletableFuture<>();
+					future.completeExceptionally(new UnsupportedOperationException());
+					return future;
+				}
 				return CompletableFutures.computeAsync(executor, cancelToken -> {
-					if (tries++ == 1)
+					if (tries++ == 2)
 						throw new UnsupportedOperationException();
 					return param;
 				});
@@ -436,6 +444,7 @@ public class IntegrationTest {
 		clientSideLauncher.startListening();
 		serverSideLauncher.startListening();
 		
+		// tries == 0
 		CompletableFuture<MyParam> errorFuture1 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
 		try {
 			System.out.println(errorFuture1.get());
@@ -443,6 +452,8 @@ public class IntegrationTest {
 		} catch (ExecutionException e) {
 			Assert.assertNotNull(((ResponseErrorException)e.getCause()).getResponseError().getMessage());
 		}
+
+		// tries == 1
 		CompletableFuture<MyParam> errorFuture2 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
 		try {
 			errorFuture2.get();
@@ -450,6 +461,99 @@ public class IntegrationTest {
 		} catch (ExecutionException e) {
 			Assert.assertNotNull(((ResponseErrorException)e.getCause()).getResponseError().getMessage());
 		}
+
+		// tries == 2
+		CompletableFuture<MyParam> errorFuture3 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		try {
+			errorFuture3.get();
+			Assert.fail();
+		} catch (ExecutionException e) {
+			Assert.assertNotNull(((ResponseErrorException)e.getCause()).getResponseError().getMessage());
+		}
+
+		// tries == 3
+		CompletableFuture<MyParam> goodFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		Assert.assertEquals("FOO", goodFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
+	}
+
+	@Test
+	public void testVersatilityResponseError() throws Exception {
+		Logger.getLogger(RemoteEndpoint.class.getName()).setLevel(Level.OFF);
+		// create client side
+		PipedInputStream in = new PipedInputStream();
+		PipedOutputStream out = new PipedOutputStream();
+		PipedInputStream in2 = new PipedInputStream();
+		PipedOutputStream out2 = new PipedOutputStream();
+
+		// See https://github.com/eclipse-lsp4j/lsp4j/issues/510 for full details.
+		// Make sure that the thread that writes to the PipedOutputStream stays alive
+		// until the read from the PipedInputStream. Using a cached thread pool
+		// does not 100% guarantee that, but increases the probability that the
+		// selected thread will exist for the lifetime of the test.
+		ExecutorService executor = Executors.newCachedThreadPool();
+
+		in.connect(out2);
+		out.connect(in2);
+
+		MyClient client = new MyClient() {
+			private int tries = 0;
+
+			@Override
+			public CompletableFuture<MyParam> askClient(MyParam param) {
+				if (tries == 0) {
+					tries++;
+					throw new ResponseErrorException(new ResponseError(ResponseErrorCode.InvalidParams, "Direct Throw", "data"));
+				}
+				if (tries == 1) {
+					tries++;
+					CompletableFuture<MyParam> future = new CompletableFuture<>();
+					future.completeExceptionally(new ResponseErrorException(new ResponseError(ResponseErrorCode.InvalidParams, "completeExceptionally", "data")));
+					return future;
+				}
+				return CompletableFutures.computeAsync(executor, cancelToken -> {
+					if (tries++ == 2)
+						throw new ResponseErrorException(new ResponseError(ResponseErrorCode.InvalidParams, "Throw in computeAsync", "data"));
+					return param;
+				});
+			}
+		};
+		Launcher<MyServer> clientSideLauncher = Launcher.createLauncher(client, MyServer.class, in, out);
+
+		// create server side
+		MyServer server = new MyServerImpl();
+		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in2, out2);
+
+		clientSideLauncher.startListening();
+		serverSideLauncher.startListening();
+
+		// tries == 0
+		CompletableFuture<MyParam> errorFuture1 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		try {
+			System.out.println(errorFuture1.get());
+			Assert.fail();
+		} catch (ExecutionException e) {
+			Assert.assertEquals("Direct Throw", ((ResponseErrorException)e.getCause()).getResponseError().getMessage());
+		}
+
+		// tries == 1
+		CompletableFuture<MyParam> errorFuture2 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		try {
+			errorFuture2.get();
+			Assert.fail();
+		} catch (ExecutionException e) {
+			Assert.assertEquals("completeExceptionally", ((ResponseErrorException)e.getCause()).getResponseError().getMessage());
+		}
+
+		// tries == 2
+		CompletableFuture<MyParam> errorFuture3 = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
+		try {
+			errorFuture3.get();
+			Assert.fail();
+		} catch (ExecutionException e) {
+			Assert.assertEquals("Throw in computeAsync", ((ResponseErrorException)e.getCause()).getResponseError().getMessage());
+		}
+
+		// tries == 3
 		CompletableFuture<MyParam> goodFuture = serverSideLauncher.getRemoteProxy().askClient(new MyParam("FOO"));
 		Assert.assertEquals("FOO", goodFuture.get(TIMEOUT, TimeUnit.MILLISECONDS).value);
 	}
