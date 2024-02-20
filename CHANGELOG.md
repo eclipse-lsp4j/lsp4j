@@ -5,6 +5,7 @@
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/34?closed=1>
 
   * The exception handling around throwing `ResponseErrorException` has been improved to ensure that it is unwrapped to the expected `ResponseError` on the receiving side.
+  In addition, `@JsonDelegate`s that throw exceptions have their checked exceptions wrapped in the more narrow `IllegalStateException` instead of a `RuntimeException`.
     * See [#802](https://github.com/eclipse-lsp4j/lsp4j/issues/802) for detailed discussion.
 
 Breaking API changes:

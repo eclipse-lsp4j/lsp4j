@@ -83,7 +83,7 @@ public class GenericEndpoint implements Endpoint {
 					LOG.fine("A delegate object is null, jsonrpc methods of '" + method + "' are ignored");
 				}
 			} catch (InvocationTargetException | IllegalAccessException e) {
-				throw new RuntimeException(e);
+				throw new IllegalStateException("An exception occurred while executing JsonDelegate method " + method, e);
 			}
 		});
 	}
