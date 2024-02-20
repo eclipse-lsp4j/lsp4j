@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2016 TypeFox and others.
+ * Copyright (c) 2016, 2024 TypeFox and others.
  * 
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -42,6 +42,26 @@ public class GenericEndpointTest {
 		}
 
 	}
+
+	public static class DelegateThrows {
+		@JsonDelegate
+		public OtherThing doDelegate() throws Exception {
+			throw new Exception("Exception in doDelegate");
+		}
+	}
+
+	public static class DuplicateNames1 {
+		@JsonNotification
+		public void duplicateName() {
+			Assert.fail("Should be unreachable");
+		}
+	}
+	public static class DuplicateNames2 {
+		@JsonNotification
+		public void duplicateName() {
+			Assert.fail("Should be unreachable");
+		}
+	}
 	
 	public static class Bar {
 		
@@ -79,7 +99,25 @@ public class GenericEndpointTest {
 
 		Assert.assertEquals(2, foo.calls);
 	}
-	
+
+	@Test
+	public void testDelegateThrows() {
+		DelegateThrows delegateThrows = new DelegateThrows();
+		try {
+			new GenericEndpoint(delegateThrows);
+			Assert.fail("Find delegate methods did not have expected exception raised when FooThrows.doDelegate was called.");
+		} catch (IllegalStateException e) {
+			Throwable t = e;
+			do {
+				if ("Exception in doDelegate".equals(t.getMessage())) {
+					// test passes
+					break;
+				}
+			} while ((t = t.getCause()) != null);
+			Assert.assertNotNull("Failed to find excepted exception in cause chain", t);
+		}
+	}
+
 	@Test
 	public void testMultiServices() {
 		Foo foo = new Foo();
@@ -91,6 +129,18 @@ public class GenericEndpointTest {
 		
 		Assert.assertEquals(2, foo.calls);
 		Assert.assertEquals(1, bar.calls);
+	}
+
+	@Test
+	public void testDuplicateNamesGeneratesError() {
+		DuplicateNames1 duplicateNames1 = new DuplicateNames1();
+		DuplicateNames2 duplicateNames2 = new DuplicateNames2();
+		try {
+			new GenericEndpoint(Arrays.asList(duplicateNames1, duplicateNames2));
+			Assert.fail("Expected exception about duplicated names not thrown");
+		} catch (IllegalStateException e) {
+			// test passes
+		}
 	}
 
 	@Test
