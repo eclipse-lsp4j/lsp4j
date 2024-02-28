@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,14 +59,20 @@ public class GenericEndpoint implements Endpoint {
 		AnnotationUtil.findRpcMethods(current.getClass(), visited, (methodInfo) -> {
 			@SuppressWarnings("unchecked")
 			Function<Object, CompletableFuture<Object>> handler = (arg) -> {
+				Method method = methodInfo.method;
+				Object[] arguments = this.getArguments(method, arg);
 				try {
-					Method method = methodInfo.method;
-					Object[] arguments = this.getArguments(method, arg);
 					return (CompletableFuture<Object>) method.invoke(current, arguments);
 				} catch (InvocationTargetException e) {
-					throw new CompletionException(e.getCause());
+					Throwable cause = e.getCause();
+					if (cause instanceof RuntimeException) {
+						throw (RuntimeException) cause;
+					} else if (cause instanceof Error) {
+						throw (Error) cause;
+					}
+					throw new IllegalStateException("An unexpected exception occurred while executing jsonrpc method " + method, cause);
 				} catch (IllegalAccessException e) {
-					throw new CompletionException(e);
+					throw new IllegalStateException("Inaccessible jsonrpc method: " + method, e);
 				}
 			};
 			if (methodHandlers.put(methodInfo.name, handler) != null) {
@@ -179,5 +184,4 @@ public class GenericEndpoint implements Endpoint {
 	protected boolean isOptionalMethod(String method) {
 		return method != null && method.startsWith("$/");
 	}
-
 }
