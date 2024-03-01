@@ -14,14 +14,14 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 public final class TupleTypeAdapters {
-	
+
 	private TupleTypeAdapters() {}
 
 	public static class TwoTypeAdapter<F extends Object, S extends Object> extends TypeAdapter<Two<F, S>> {
-		
+
 		protected final TypeAdapter<F> first;
 		protected final TypeAdapter<S> second;
-		
+
 		@SuppressWarnings("unchecked")
 		public TwoTypeAdapter(Gson gson, TypeToken<Two<F, S>> typeToken) {
 			Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Two.class);
@@ -40,7 +40,7 @@ public final class TupleTypeAdapters {
 				out.endArray();
 			}
 		}
-		
+
 		@Override
 		public Two<F, S> read(final JsonReader in) throws IOException {
 			JsonToken next = in.peek();
@@ -51,11 +51,11 @@ public final class TupleTypeAdapters {
 			in.beginArray();
 			F f = first.read(in);
 			S s = second.read(in);
-			Two<F, S> result = new Two<F, S>(f, s);
+			final var result = new Two<>(f, s);
 			in.endArray();
 			return result;
 		}
-		
+
 	}
 
 	public static class TwoTypeAdapterFactory implements TypeAdapterFactory {

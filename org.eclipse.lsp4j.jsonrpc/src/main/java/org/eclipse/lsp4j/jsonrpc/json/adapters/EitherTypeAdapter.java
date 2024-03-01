@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
@@ -51,29 +51,29 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		}
 
 	}
-	
+
 	/**
 	 * A predicate that is useful for checking alternatives in case both the left and the right type
 	 * are JSON object types.
 	 */
 	public static class PropertyChecker implements Predicate<JsonElement> {
-		
+
 		private final String propertyName;
 		private final String expectedValue;
 		private final Class<? extends JsonElement> expectedType;
-		
+
 		public PropertyChecker(String propertyName) {
 			this.propertyName = propertyName;
 			this.expectedValue = null;
 			this.expectedType = null;
 		}
-		
+
 		public PropertyChecker(String propertyName, String expectedValue) {
 			this.propertyName = propertyName;
 			this.expectedValue = expectedValue;
 			this.expectedType = null;
 		}
-		
+
 		public PropertyChecker(String propertyName, Class<? extends JsonElement> expectedType) {
 			this.propertyName = propertyName;
 			this.expectedType = expectedType;
@@ -94,21 +94,21 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			}
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * A predicate for the case that a type alternative is a list.
 	 */
 	public static class ListChecker implements Predicate<JsonElement> {
-		
+
 		private final Predicate<JsonElement> elementChecker;
 		private final boolean resultIfEmpty;
-		
+
 		public ListChecker(Predicate<JsonElement> elementChecker) {
 			this(elementChecker, false);
 		}
-		
+
 		public ListChecker(Predicate<JsonElement> elementChecker, boolean resultIfEmpty) {
 			this.elementChecker = elementChecker;
 			this.resultIfEmpty = resultIfEmpty;
@@ -129,7 +129,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			}
 			return false;
 		}
-		
+
 	}
 
 	protected final TypeToken<? extends Either<L, R>> typeToken;
@@ -141,7 +141,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 	public EitherTypeAdapter(Gson gson, TypeToken<? extends Either<L, R>> typeToken) {
 		this(gson, typeToken, null, null);
 	}
-	
+
 	public EitherTypeAdapter(Gson gson, TypeToken<? extends Either<L, R>> typeToken, Predicate<JsonElement> leftChecker, Predicate<JsonElement> rightChecker) {
 		this(gson, typeToken, leftChecker, rightChecker, null, null);
 	}
@@ -209,14 +209,14 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		}
 		throw new JsonParseException("Unexpected token " + nextToken + ": expected " + left + " | " + right + " tokens.");
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Either<L, R> createLeft(L obj) throws IOException {
 		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
 			return (Either<L, R>) Either3.forLeft3(obj);
 		return Either.forLeft(obj);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Either<L, R> createRight(R obj) throws IOException {
 		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
@@ -274,14 +274,14 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 		public T read(JsonReader in) throws IOException {
 			return this.adapter.read(in);
 		}
-		
+
 		public T read(JsonElement element) throws IOException {
 			return this.adapter.fromJsonTree(element);
 		}
 
 		@Override
 		public String toString() {
-			StringBuilder builder = new StringBuilder();
+			final var builder = new StringBuilder();
 			for (JsonToken expectedToken : expectedTokens) {
 				if (builder.length() != 0) {
 					builder.append(" | ");

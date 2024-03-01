@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
@@ -78,7 +78,7 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	 * {@code Content-Length} and {@code Content-Type} attributes according to the LSP specification.
 	 */
 	protected String getHeader(int contentLength) {
-		StringBuilder headerBuilder = new StringBuilder();
+		final var headerBuilder = new StringBuilder();
 		appendHeader(headerBuilder, CONTENT_LENGTH_HEADER, contentLength).append(CRLF);
 		if (!StandardCharsets.UTF_8.name().equals(encoding)) {
 			appendHeader(headerBuilder, CONTENT_TYPE_HEADER, JSON_MIME_TYPE);

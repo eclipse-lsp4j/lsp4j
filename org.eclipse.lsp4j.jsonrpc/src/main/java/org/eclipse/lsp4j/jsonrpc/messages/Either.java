@@ -80,7 +80,7 @@ public class Either<L, R> {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Either<?, ?>) {
-			Either<?, ?> other = (Either<?, ?>) obj;
+			final var other = (Either<?, ?>) obj;
 			return this.left == other.left && this.right == other.right
 				|| this.left != null && other.left != null && this.left.equals(other.left)
 				|| this.right != null && other.right != null && this.right.equals(other.right);
@@ -99,7 +99,7 @@ public class Either<L, R> {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("Either [").append(System.lineSeparator());
+		final var builder = new StringBuilder("Either [").append(System.lineSeparator());
 		builder.append("  left = ").append(left).append(System.lineSeparator());
 		builder.append("  right = ").append(right).append(System.lineSeparator());
 		return builder.append("]").toString();
@@ -114,7 +114,7 @@ public class Either<L, R> {
 	public static Type getLeftDisjointType(Type type) {
 		if (isEither(type)) {
 			if (type instanceof ParameterizedType) {
-				final ParameterizedType parameterizedType = (ParameterizedType) type;
+				final var parameterizedType = (ParameterizedType) type;
 				return parameterizedType.getActualTypeArguments()[0];
 			}
 			if (type instanceof Class) {
@@ -134,7 +134,7 @@ public class Either<L, R> {
 	public static Type getRightDisjointType(Type type) {
 		if (isEither(type)) {
 			if (type instanceof ParameterizedType) {
-				final ParameterizedType parameterizedType = (ParameterizedType) type;
+				final var parameterizedType = (ParameterizedType) type;
 				return parameterizedType.getActualTypeArguments()[1];
 			}
 			if (type instanceof Class) {

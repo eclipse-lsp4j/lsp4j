@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
@@ -46,7 +46,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHandler, MethodProvider {
 
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
-	
+
 	public static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = throwable -> {
 		if (throwable instanceof ResponseErrorException) {
 			return ((ResponseErrorException) throwable).getResponseError();
@@ -60,11 +60,11 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 
 	private static ResponseError fallbackResponseError(String header, Throwable throwable) {
 		LOG.log(Level.SEVERE, header + ": " + throwable.getMessage(), throwable);
-		ResponseError error = new ResponseError();
+		final var error = new ResponseError();
 		error.setMessage(header + ".");
 		error.setCode(ResponseErrorCode.InternalError);
-		ByteArrayOutputStream stackTrace = new ByteArrayOutputStream();
-		PrintWriter stackTraceWriter = new PrintWriter(stackTrace);
+		final var stackTrace = new ByteArrayOutputStream();
+		final var stackTraceWriter = new PrintWriter(stackTrace);
 		throwable.printStackTrace(stackTraceWriter);
 		stackTraceWriter.flush();
 		error.setData(stackTrace.toString());
@@ -75,11 +75,11 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	private final Endpoint localEndpoint;
 	private final Function<Throwable, ResponseError> exceptionHandler;
 	private MessageJsonHandler jsonHandler;
-	
+
 	private final AtomicInteger nextRequestId = new AtomicInteger();
 	private final Map<String, PendingRequestInfo> sentRequestMap = new LinkedHashMap<>();
 	private final Map<String, CompletableFuture<?>> receivedRequestMap = new LinkedHashMap<>();
-	
+
 	/**
 	 * Information about requests that have been sent and for which no response has been received yet.
 	 */
@@ -91,7 +91,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		RequestMessage requestMessage;
 		CompletableFuture<Object> future;
 	}
-	
+
 	/**
 	 * @param out - a consumer that transmits messages to the remote service
 	 * @param localEndpoint - the local service implementation
@@ -108,7 +108,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		this.localEndpoint = localEndpoint;
 		this.exceptionHandler = exceptionHandler;
 	}
-	
+
 	/**
 	 * @param out - a consumer that transmits messages to the remote service
 	 * @param localEndpoint - the local service implementation
@@ -140,7 +140,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	}
 
 	protected NotificationMessage createNotificationMessage(String method, Object parameter) {
-		NotificationMessage notificationMessage = new NotificationMessage();
+		final var notificationMessage = new NotificationMessage();
 		notificationMessage.setJsonHandler(getJsonHandler());
 		notificationMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
 		notificationMessage.setMethod(method);
@@ -154,7 +154,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	@Override
 	public CompletableFuture<Object> request(String method, Object parameter) {
 		final RequestMessage requestMessage = createRequestMessage(method, parameter);
-		final CompletableFuture<Object> result = new CompletableFuture<Object>() {
+		final var result = new CompletableFuture<>() {
 			@Override
 			public boolean cancel(boolean mayInterruptIfRunning) {
 				sendCancelNotification(requestMessage.getRawId());
@@ -165,7 +165,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			// Store request information so it can be handled when the response is received
 			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, result));
 		}
-		
+
 		try {
 			// Send the request to the remote service
 			out.consume(requestMessage);
@@ -177,7 +177,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	}
 
 	protected RequestMessage createRequestMessage(String method, Object parameter) {
-		RequestMessage requestMessage = new RequestMessage();
+		final var requestMessage = new RequestMessage();
 		requestMessage.setJsonHandler(getJsonHandler());
 		requestMessage.setId(String.valueOf(nextRequestId.incrementAndGet()));
 		requestMessage.setMethod(method);
@@ -194,13 +194,13 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	@Override
 	public void consume(Message message) {
 		if (message instanceof NotificationMessage) {
-			NotificationMessage notificationMessage = (NotificationMessage) message;
+			final var notificationMessage = (NotificationMessage) message;
 			handleNotification(notificationMessage);
 		} else if (message instanceof RequestMessage) {
-			RequestMessage requestMessage = (RequestMessage) message;
+			final var requestMessage = (RequestMessage) message;
 			handleRequest(requestMessage);
 		} else if (message instanceof ResponseMessage) {
-			ResponseMessage responseMessage = (ResponseMessage) message;
+			final var responseMessage = (ResponseMessage) message;
 			handleResponse(responseMessage);
 		} else {
 			LOG.log(Level.WARNING, "Unkown message type.", message);
@@ -234,12 +234,12 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			}
 		}
 	}
-	
+
 	/**
 	 * Cancellation is handled inside this class and not forwarded to the local endpoint.
-	 * 
+	 *
 	 * @return {@code true} if the given message is a cancellation notification,
-	 *         {@code false} if it can be handled by the local endpoint
+	 *			{@code false} if it can be handled by the local endpoint
 	 */
 	protected boolean handleCancellation(NotificationMessage notificationMessage) {
 		if (MessageJsonHandler.CANCEL_METHOD.getMethodName().equals(notificationMessage.getMethod())) {
@@ -264,7 +264,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		}
 		return false;
 	}
-	
+
 	protected void handleRequest(RequestMessage requestMessage) {
 		CompletableFuture<?> future;
 		try {
@@ -282,20 +282,20 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			else
 				return;
 		}
-		
+
 		final String messageId = requestMessage.getId();
 		synchronized (receivedRequestMap) {
 			receivedRequestMap.put(messageId, future);
 		}
 		future.thenAccept(result -> {
-			// Reply with the result object that was computed by the local endpoint 
+			// Reply with the result object that was computed by the local endpoint
 			out.consume(createResultResponseMessage(requestMessage, result));
 		}).exceptionally((Throwable t) -> {
 			// The local endpoint has failed computing a result - reply with an error response
 			ResponseMessage responseMessage;
 			if (isCancellation(t)) {
 				String message = "The request (id: " + messageId + ", method: '" + requestMessage.getMethod()  + "') has been cancelled";
-				ResponseError errorObject = new ResponseError(ResponseErrorCode.RequestCancelled, message, null);
+				final var errorObject = new ResponseError(ResponseErrorCode.RequestCancelled, message, null);
 				responseMessage = createErrorResponseMessage(requestMessage, errorObject);
 			} else {
 				ResponseError errorObject = exceptionHandler.apply(t);
@@ -319,27 +319,27 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		if (issues.isEmpty()) {
 			throw new IllegalArgumentException("The list of issues must not be empty.");
 		}
-		
+
 		if (message instanceof RequestMessage) {
-			RequestMessage requestMessage = (RequestMessage) message;
+			final var requestMessage = (RequestMessage) message;
 			handleRequestIssues(requestMessage, issues);
 		} else if (message instanceof ResponseMessage) {
-			ResponseMessage responseMessage = (ResponseMessage) message;
+			final var responseMessage = (ResponseMessage) message;
 			handleResponseIssues(responseMessage, issues);
 		} else {
 			logIssues(message, issues);
 		}
 	}
-	
+
 	protected void logIssues(Message message, List<MessageIssue> issues) {
 		for (MessageIssue issue : issues) {
 			String logMessage = "Issue found in " + message.getClass().getSimpleName() + ": " + issue.getText();
 			LOG.log(Level.WARNING, logMessage, issue.getCause());
 		}
 	}
-	
+
 	protected void handleRequestIssues(RequestMessage requestMessage, List<MessageIssue> issues) {
-		ResponseError errorObject = new ResponseError();
+		final var errorObject = new ResponseError();
 		if (issues.size() == 1) {
 			MessageIssue issue = issues.get(0);
 			errorObject.setMessage(issue.getText());
@@ -355,7 +355,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		}
 		out.consume(createErrorResponseMessage(requestMessage, errorObject));
 	}
-	
+
 	protected void handleResponseIssues(ResponseMessage responseMessage, List<MessageIssue> issues) {
 		PendingRequestInfo requestInfo;
 		synchronized (sentRequestMap) {
@@ -371,7 +371,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	}
 
 	protected ResponseMessage createResponseMessage(RequestMessage requestMessage) {
-		ResponseMessage responseMessage = new ResponseMessage();
+		final var responseMessage = new ResponseMessage();
 		responseMessage.setJsonHandler(getJsonHandler());
 		responseMessage.setRawId(requestMessage.getRawId());
 		responseMessage.setJsonrpc(MessageConstants.JSONRPC_VERSION);
@@ -407,5 +407,5 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		}
 		return null;
 	}
-	
+
 }

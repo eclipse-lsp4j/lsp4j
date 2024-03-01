@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug.adapters;
@@ -329,7 +329,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			if (!(rawBody instanceof JsonElement)) {
 				return rawBody;
 			}
-			JsonElement rawJsonParams = (JsonElement) rawBody;
+			final var rawJsonParams = (JsonElement) rawBody;
 			return fromJson(rawJsonParams, Object.class);
 		}
 		return rawBody;
@@ -388,7 +388,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 								Type returnType = jsonRpcMethod.getReturnType();
 								if (jsonRpcMethod.getReturnTypeAdapterFactory() != null)
 									typeAdapter = jsonRpcMethod.getReturnTypeAdapterFactory().create(gson, TypeToken.get(returnType));
-								JsonElement jsonElement = (JsonElement) body;
+								final var jsonElement = (JsonElement) body;
 								if (typeAdapter != null)
 									body = typeAdapter.fromJsonTree(jsonElement);
 								else
@@ -410,7 +410,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 	public void write(JsonWriter out, Message message) throws IOException {
 		out.beginObject();
 		if (message instanceof DebugRequestMessage) {
-			DebugRequestMessage requestMessage = (DebugRequestMessage) message;
+			final var requestMessage = (DebugRequestMessage) message;
 			out.name("type");
 			out.value("request");
 			out.name("seq");
@@ -419,11 +419,11 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 			out.value(requestMessage.getMethod());
 			Object params = requestMessage.getParams();
 			if (params != null) {
-				out.name("arguments");		
+				out.name("arguments");
 				gson.toJson(params, params.getClass(), out);
 			}
 		} else if (message instanceof DebugResponseMessage) {
-			DebugResponseMessage responseMessage = (DebugResponseMessage) message;
+			final var responseMessage = (DebugResponseMessage) message;
 			out.name("type");
 			out.value("response");
 			out.name("seq");
@@ -458,7 +458,7 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				}
 			}
 		} else if (message instanceof DebugNotificationMessage) {
-			DebugNotificationMessage notificationMessage = (DebugNotificationMessage) message;
+			final var notificationMessage = (DebugNotificationMessage) message;
 			out.name("type");
 			out.value("event");
 			out.name("seq");

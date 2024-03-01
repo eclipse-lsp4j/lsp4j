@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2017 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
@@ -38,7 +38,7 @@ import com.google.gson.stream.JsonWriter;
  * A specialized type adapter for collections that can handle single values.
  */
 public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
-	
+
 	public static class Factory implements TypeAdapterFactory {
 
 		@Override
@@ -135,7 +135,7 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 			if (element != null && elementType != element.getClass()
 					&& (elementType instanceof TypeVariable<?> || elementType instanceof Class<?>)) {
 				@SuppressWarnings("unchecked")
-				TypeAdapter<E> runtimeTypeAdapter = (TypeAdapter<E>) gson.getAdapter(TypeToken.get(element.getClass()));
+				final var runtimeTypeAdapter = (TypeAdapter<E>) gson.getAdapter(TypeToken.get(element.getClass()));
 				runtimeTypeAdapter.write(out, element);
 			} else {
 				elementTypeAdapter.write(out, element);

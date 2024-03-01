@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.validation;
@@ -43,7 +43,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 	private static final Logger LOG = Logger.getLogger(ReflectiveMessageValidator.class.getName());
 
 	private final MessageConsumer delegate;
-	
+
 	/**
 	 * When created with this constructor, the validator acts as a message sink.
 	 */
@@ -69,7 +69,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 			delegate.consume(message);
 		}
 	}
-	
+
 	/**
 	 * Check whether the given object is valid. If it is not valid, its issues are not reported.
 	 */
@@ -77,9 +77,9 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		List<MessageIssue> issues = validate(object);
 		return issues.isEmpty();
 	}
-	
+
 	protected List<MessageIssue> validate(Object object) {
-		List<MessageIssue> result = new ArrayList<>();
+		final var result = new ArrayList<MessageIssue>();
 		try {
 			validate(object, result, new LinkedList<>(), new LinkedList<>());
 		} catch (Exception e) {
@@ -89,14 +89,14 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Validate all fields of the given object.
 	 */
 	protected void validate(Object object, List<MessageIssue> issues, Deque<Object> objectStack, Deque<Object> accessorStack) throws Exception {
-		if (object == null 
-				|| object instanceof Enum<?> 
-				|| object instanceof String 
+		if (object == null
+				|| object instanceof Enum<?>
+				|| object instanceof String
 				|| object instanceof Number
 				|| object instanceof Boolean
 				|| object instanceof JsonElement
@@ -124,7 +124,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				accessorStack.pop();
 			}
 		} else if (object instanceof Either<?, ?>) {
-			Either<?, ?> either = (Either<?, ?>) object;
+			final var either = (Either<?, ?>) object;
 			if (either.isLeft()) {
 				validate(either.getLeft(), issues, objectStack, accessorStack);
 			} else if (either.isRight()) {
@@ -152,9 +152,9 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		}
 		objectStack.pop();
 	}
-	
+
 	protected String createPathString(Deque<Object> accessorStack) {
-		StringBuilder result = new StringBuilder("$");
+		final var result = new StringBuilder("$");
 		Iterator<Object> resultIter = accessorStack.descendingIterator();
 		while(resultIter.hasNext()) {
 			Object accessor = resultIter.next();
@@ -174,7 +174,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 				&& Modifier.isPublic(method.getModifiers())
 				&& !Modifier.isStatic(method.getModifiers());
 	}
-	
+
 	protected String getPropertyName(Method method) {
 		String methodName = method.getName();
 		if (methodName.startsWith("get") && methodName.length() > 3)
@@ -182,5 +182,5 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		else
 			return methodName;
 	}
-	
+
 }

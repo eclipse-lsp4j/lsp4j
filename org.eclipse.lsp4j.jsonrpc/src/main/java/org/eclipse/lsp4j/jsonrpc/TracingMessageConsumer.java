@@ -121,19 +121,19 @@ public class TracingMessageConsumer implements MessageConsumer {
 
 	private String consumeMessageSending(Message message, Instant now, String date) {
 		if (message instanceof RequestMessage) {
-			RequestMessage requestMessage = (RequestMessage) message;
+			final var requestMessage = (RequestMessage) message;
 			String id = requestMessage.getId();
 			String method = requestMessage.getMethod();
-			RequestMetadata requestMetadata = new RequestMetadata(method, now);
+			final var requestMetadata = new RequestMetadata(method, now);
 			sentRequests.put(id, requestMetadata);
 			Object params = requestMessage.getParams();
 			String paramsJson = toString(params);
 			String format = "[Trace - %s] Sending request '%s - (%s)'\nParams: %s\n\n\n";
 			return String.format(format, date, method, id, paramsJson);
 		} else if (message instanceof ResponseMessage) {
-			ResponseMessage responseMessage = (ResponseMessage) message;
+			final var responseMessage = (ResponseMessage) message;
 			String id = responseMessage.getId();
-			RequestMetadata requestMetadata = receivedRequests.remove(id);
+			final var requestMetadata = receivedRequests.remove(id);
 			if (requestMetadata == null) {
 				LOG.log(WARNING, String.format("Unmatched response message: %s", toString(message)));
 				return null;
@@ -146,7 +146,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 					"[Trace - %s] Sending response '%s - (%s)'. Processing request took %sms\nResult: %s\n\n\n";
 			return String.format(format, date, method, id, latencyMillis, resultJson);
 		} else if (message instanceof NotificationMessage) {
-			NotificationMessage notificationMessage = (NotificationMessage) message;
+			final var notificationMessage = (NotificationMessage) message;
 			String method = notificationMessage.getMethod();
 			Object params = notificationMessage.getParams();
 			String paramsJson = toString(params);
@@ -160,19 +160,19 @@ public class TracingMessageConsumer implements MessageConsumer {
 
 	private String consumeMessageReceiving(Message message, Instant now, String date) {
 		if (message instanceof RequestMessage) {
-			RequestMessage requestMessage = (RequestMessage) message;
+			final var requestMessage = (RequestMessage) message;
 			String method = requestMessage.getMethod();
 			String id = requestMessage.getId();
-			RequestMetadata requestMetadata = new RequestMetadata(method, now);
+			final var requestMetadata = new RequestMetadata(method, now);
 			receivedRequests.put(id, requestMetadata);
 			Object params = requestMessage.getParams();
 			String paramsJson = toString(params);
 			String format = "[Trace - %s] Received request '%s - (%s)'\nParams: %s\n\n\n";
 			return String.format(format, date, method, id, paramsJson);
 		} else if (message instanceof ResponseMessage) {
-			ResponseMessage responseMessage = (ResponseMessage) message;
+			final var responseMessage = (ResponseMessage) message;
 			String id = responseMessage.getId();
-			RequestMetadata requestMetadata = sentRequests.remove(id);
+			final var requestMetadata = sentRequests.remove(id);
 			if (requestMetadata == null) {
 				LOG.log(WARNING, String.format("Unmatched response message: %s", toString(message)));
 				return null;
@@ -186,7 +186,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 			String format = "[Trace - %s] Received response '%s - (%s)' in %sms\nResult: %s\nError: %s\n\n\n";
 			return String.format(format, date, method, id, latencyMillis, resultJson, errorJson);
 		} else if (message instanceof NotificationMessage) {
-			NotificationMessage notificationMessage = (NotificationMessage) message;
+			final var notificationMessage = (NotificationMessage) message;
 			String method = notificationMessage.getMethod();
 			Object params = notificationMessage.getParams();
 			String paramsJson = toString(params);
@@ -216,7 +216,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 		public boolean equals(Object o) {
 			if (this == o) return true;
 			if (o == null || getClass() != o.getClass()) return false;
-			RequestMetadata that = (RequestMetadata) o;
+			final var that = (RequestMetadata) o;
 			return Objects.equals(method, that.method) && Objects.equals(start, that.start);
 		}
 

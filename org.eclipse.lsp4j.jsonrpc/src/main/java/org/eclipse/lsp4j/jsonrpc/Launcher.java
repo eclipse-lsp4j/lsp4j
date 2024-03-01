@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
@@ -39,14 +39,14 @@ import com.google.gson.GsonBuilder;
 /**
  * This is the entry point for applications that use LSP4J. A Launcher does all the wiring that is necessary to connect
  * your endpoint via an input stream and an output stream.
- * 
+ *
  * @param <T> remote service interface type
  */
 public interface Launcher<T> {
-	
+
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
-	 * 
+	 *
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - input stream to listen for incoming messages
@@ -60,11 +60,11 @@ public interface Launcher<T> {
 				.setOutput(out)
 				.create();
 	}
-	
+
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream,
 	 * and set up message validation and tracing.
-	 * 
+	 *
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - input stream to listen for incoming messages
@@ -83,12 +83,12 @@ public interface Launcher<T> {
 				.traceMessages(trace)
 				.create();
 	}
-	
+
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
 	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
 	 * outgoing message streams so additional message handling such as validation and tracing can be included.
-	 * 
+	 *
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - input stream to listen for incoming messages
@@ -100,12 +100,12 @@ public interface Launcher<T> {
 			ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper) {
 		return createIoLauncher(localService, remoteInterface, in, out, executorService, wrapper);
 	}
-	
+
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
 	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
 	 * outgoing message streams so additional message handling such as validation and tracing can be included.
-	 * 
+	 *
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - input stream to listen for incoming messages
@@ -124,14 +124,14 @@ public interface Launcher<T> {
 				.wrapMessages(wrapper)
 				.create();
 	}
-	
+
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
 	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
 	 * outgoing message streams so additional message handling such as validation and tracing can be included.
 	 * The {@code configureGson} function can be used to register additional type adapters in the {@link GsonBuilder}
 	 * in order to support protocol classes that cannot be handled by Gson's reflective capabilities.
-	 * 
+	 *
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - input stream to listen for incoming messages
@@ -152,14 +152,14 @@ public interface Launcher<T> {
 				.configureGson(configureGson)
 				.create();
 	}
-	
+
 	/**
 	 * Create a new Launcher for a given local service object, a given remote interface and an input and output stream.
 	 * Threads are started with the given executor service. The wrapper function is applied to the incoming and
 	 * outgoing message streams so additional message handling such as validation and tracing can be included.
 	 * The {@code configureGson} function can be used to register additional type adapters in the {@link GsonBuilder}
 	 * in order to support protocol classes that cannot be handled by Gson's reflective capabilities.
-	 * 
+	 *
 	 * @param localService - the object that receives method calls from the remote service
 	 * @param remoteInterface - an interface on which RPC methods are looked up
 	 * @param in - input stream to listen for incoming messages
@@ -182,7 +182,7 @@ public interface Launcher<T> {
 				.configureGson(configureGson)
 				.create();
 	}
-	
+
 	/**
 	 * Create a new Launcher for a collection of local service objects, a collection of remote interfaces and an
 	 * input and output stream. Threads are started with the given executor service. The wrapper function is applied
@@ -190,7 +190,7 @@ public interface Launcher<T> {
 	 * can be included. The {@code configureGson} function can be used to register additional type adapters in
 	 * the {@link GsonBuilder} in order to support protocol classes that cannot be handled by Gson's reflective
 	 * capabilities.
-	 * 
+	 *
 	 * @param localServices - the objects that receive method calls from the remote services
 	 * @param remoteInterfaces - interfaces on which RPC methods are looked up
 	 * @param classLoader - a class loader that is able to resolve all given interfaces
@@ -214,17 +214,17 @@ public interface Launcher<T> {
 				.configureGson(configureGson)
 				.create();
 	}
-	
-	
+
+
 	//------------------------------ Builder Class ------------------------------//
-	
+
 	/**
 	 * The launcher builder wires up all components for JSON-RPC communication.
-	 * 
+	 *
 	 * @param <T> remote service interface type
 	 */
 	public static class Builder<T> {
-		
+
 		protected Collection<Object> localServices;
 		protected Collection<Class<? extends T>> remoteInterfaces;
 		protected InputStream input;
@@ -236,7 +236,7 @@ public interface Launcher<T> {
 		protected Consumer<GsonBuilder> configureGson;
 		protected ClassLoader classLoader;
 		protected MessageTracer messageTracer;
-		
+
 		public Builder<T> setLocalService(Object localService) {
 			this.localServices = Collections.singletonList(localService);
 			return this;
@@ -251,7 +251,7 @@ public interface Launcher<T> {
 			this.remoteInterfaces = Collections.singletonList(remoteInterface);
 			return this;
 		}
-		
+
 		public Builder<T> setRemoteInterfaces(Collection<Class<? extends T>> remoteInterfaces) {
 			this.remoteInterfaces = remoteInterfaces;
 			return this;
@@ -281,17 +281,17 @@ public interface Launcher<T> {
 			this.messageWrapper = wrapper;
 			return this;
 		}
-		
+
 		public Builder<T> setExceptionHandler(Function<Throwable, ResponseError> exceptionHandler) {
 			this.exceptionHandler = exceptionHandler;
 			return this;
 		}
-		
+
 		public Builder<T> validateMessages(boolean validate) {
 			this.validateMessages = validate;
 			return this;
 		}
-		
+
 		public Builder<T> traceMessages(PrintWriter tracer) {
 			if (tracer != null) {
 				this.messageTracer = new MessageTracer(tracer);
@@ -314,7 +314,7 @@ public interface Launcher<T> {
 				throw new IllegalStateException("Local service must be configured.");
 			if (remoteInterfaces == null)
 				throw new IllegalStateException("Remote interface must be configured.");
-			
+
 			// Create the JSON handler, remote endpoint and remote proxy
 			MessageJsonHandler jsonHandler = createJsonHandler();
 			if (messageTracer != null) {
@@ -322,15 +322,15 @@ public interface Launcher<T> {
 			}
 			RemoteEndpoint remoteEndpoint = createRemoteEndpoint(jsonHandler);
 			T remoteProxy = createProxy(remoteEndpoint);
-			
+
 			// Create the message processor
-			StreamMessageProducer reader = new StreamMessageProducer(input, jsonHandler, remoteEndpoint);
+			final var reader = new StreamMessageProducer(input, jsonHandler, remoteEndpoint);
 			MessageConsumer messageConsumer = wrapMessageConsumer(remoteEndpoint);
 			ConcurrentMessageProcessor msgProcessor = createMessageProcessor(reader, messageConsumer, remoteProxy);
 			ExecutorService execService = executorService != null ? executorService : Executors.newCachedThreadPool();
 			return createLauncher(execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
-		
+
 		/**
 		 * Create the JSON handler for messages between the local and remote services.
 		 */
@@ -341,7 +341,7 @@ public interface Launcher<T> {
 			else
 				return new MessageJsonHandler(supportedMethods);
 		}
-		
+
 		/**
 		 * Create the remote endpoint that communicates with the local services.
 		 */
@@ -358,7 +358,7 @@ public interface Launcher<T> {
 			remoteEndpoint.setJsonHandler(jsonHandler);
 			return remoteEndpoint;
 		}
-		
+
 		/**
 		 * Create the proxy for calling methods on the remote service.
 		 */
@@ -370,20 +370,20 @@ public interface Launcher<T> {
 				return (T) ServiceEndpoints.toServiceObject(remoteEndpoint, (Collection<Class<?>>) (Object) remoteInterfaces, classLoader);
 			}
 		}
-		
+
 		/**
-		 * Create the message processor that listens to the input stream. 
+		 * Create the message processor that listens to the input stream.
 		 */
-		protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
+		protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader,
 				MessageConsumer messageConsumer, T remoteProxy) {
 			return new ConcurrentMessageProcessor(reader, messageConsumer);
 		}
-		
+
 		protected Launcher<T> createLauncher(ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint,
 				ConcurrentMessageProcessor msgProcessor) {
 			return new StandardLauncher<>(execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
-		
+
 		protected MessageConsumer wrapMessageConsumer(MessageConsumer consumer) {
 			MessageConsumer result = consumer;
 			if (messageTracer != null) {
@@ -397,17 +397,17 @@ public interface Launcher<T> {
 			}
 			return result;
 		}
-		
+
 		/**
 		 * Gather all JSON-RPC methods from the local and remote services.
 		 */
 		protected Map<String, JsonRpcMethod> getSupportedMethods() {
-			Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
+			final var supportedMethods = new LinkedHashMap<String, JsonRpcMethod>();
 			// Gather the supported methods of remote interfaces
 			for (Class<?> interface_ : remoteInterfaces) {
 				supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(interface_));
 			}
-			
+
 			// Gather the supported methods of local services
 			for (Object localService : localServices) {
 				if (localService instanceof JsonRpcMethodProvider) {
@@ -417,30 +417,30 @@ public interface Launcher<T> {
 					supportedMethods.putAll(ServiceEndpoints.getSupportedMethods(localService.getClass()));
 				}
 			}
-			
+
 			return supportedMethods;
 		}
 	}
-	
-	
+
+
 	//---------------------------- Interface Methods ----------------------------//
-	
+
 	/**
 	 * Start a thread that listens to the input stream. The thread terminates when the stream is closed.
-	 * 
+	 *
 	 * @return a future that returns {@code null} when the listener thread is terminated
 	 */
 	Future<Void> startListening();
-	
+
 	/**
 	 * Returns the proxy instance that implements the remote service interfaces.
 	 */
 	T getRemoteProxy();
-	
+
 	/**
 	 * Returns the remote endpoint. Use this one to send generic {@code request} or {@code notify} methods
 	 * to the remote services.
 	 */
 	RemoteEndpoint getRemoteEndpoint();
-	
+
 }

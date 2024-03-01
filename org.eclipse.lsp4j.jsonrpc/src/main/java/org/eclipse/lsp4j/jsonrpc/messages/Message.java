@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
@@ -51,7 +51,7 @@ public abstract class Message {
 	public void setJsonrpc(@NonNull String jsonrpc) {
 		this.jsonrpc = jsonrpc;
 	}
-	
+
 	@Override
 	public String toString() {
 		try {
@@ -62,7 +62,7 @@ public abstract class Message {
 	}
 
 	protected String toStringFallback() {
-		ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		builder.addAllFields(field -> !Modifier.isTransient(field.getModifiers()));
 		return builder.toString();
 	}
@@ -75,7 +75,7 @@ public abstract class Message {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Message other = (Message) obj;
+		final var other = (Message) obj;
 		if (this.jsonrpc == null) {
 			if (other.jsonrpc != null)
 				return false;

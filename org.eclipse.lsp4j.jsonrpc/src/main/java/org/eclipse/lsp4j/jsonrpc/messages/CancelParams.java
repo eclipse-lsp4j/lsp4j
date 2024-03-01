@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
@@ -21,7 +21,7 @@ import com.google.gson.JsonIOException;
  * To cancel a request a notification message with the following properties is sent.
  */
 public class CancelParams {
-	
+
 	/**
 	 * The request id to cancel.
 	 */
@@ -38,7 +38,7 @@ public class CancelParams {
 			return id.getRight().toString();
 		return null;
 	}
-	
+
 	@NonNull
 	public Either<String, Number> getRawId() {
 		return id;
@@ -47,15 +47,15 @@ public class CancelParams {
 	public void setId(@NonNull String id) {
 		this.id = Either.forLeft(id);
 	}
-	
+
 	public void setId(@NonNull int id) {
 		this.id = Either.forRight(id);
 	}
-	
+
 	public void setRawId(@NonNull Either<String, Number> id) {
 		this.id = id;
 	}
-	
+
 	@Override
 	public String toString() {
 		try {
@@ -66,7 +66,7 @@ public class CancelParams {
 	}
 
 	protected String toStringFallback() {
-		ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		builder.addAllFields();
 		return builder.toString();
 	}
@@ -79,7 +79,7 @@ public class CancelParams {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CancelParams other = (CancelParams) obj;
+		final var other = (CancelParams) obj;
 		if (this.id == null) {
 			if (other.id != null)
 				return false;
