@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
@@ -16,16 +16,16 @@ import java.lang.reflect.Type;
 import com.google.gson.TypeAdapterFactory;
 
 /**
- * A description of a JSON-RPC method. 
+ * A description of a JSON-RPC method.
  */
 public class JsonRpcMethod {
-	
+
 	private final String methodName;
 	private final Type[] parameterTypes;
 	private final Type returnType;
 	private final TypeAdapterFactory returnTypeAdapterFactory;
 	private final boolean isNotification;
-	
+
 	private JsonRpcMethod(String methodName, Type[] parameterTypes, Type returnType, TypeAdapterFactory returnTypeAdapterFactory,
 			boolean isNotification) {
 		if (methodName == null)
@@ -40,38 +40,38 @@ public class JsonRpcMethod {
 	public String getMethodName() {
 		return methodName;
 	}
-	
+
 	public Type[] getParameterTypes() {
 		return parameterTypes;
 	}
-	
+
 	public Type getReturnType() {
 		return returnType;
 	}
-	
+
 	public TypeAdapterFactory getReturnTypeAdapterFactory() {
 		return returnTypeAdapterFactory;
 	}
-	
+
 	public boolean isNotification() {
 		return isNotification;
 	}
-	
+
 	public static JsonRpcMethod notification(String name, Type... parameterTypes) {
 		return new JsonRpcMethod(name, parameterTypes, Void.class, null, true);
 	}
-	
+
 	public static JsonRpcMethod request(String name, Type returnType, Type... parameterTypes) {
 		return new JsonRpcMethod(name, parameterTypes, returnType, null, false);
 	}
-	
+
 	public static JsonRpcMethod request(String name, Type returnType, TypeAdapterFactory returnTypeAdapterFactory, Type... parameterTypes) {
 		return new JsonRpcMethod(name, parameterTypes, returnType, returnTypeAdapterFactory, false);
 	}
-	
+
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
+		final var builder = new StringBuilder();
 		if (isNotification)
 			builder.append("JsonRpcMethod (notification) {\n");
 		else

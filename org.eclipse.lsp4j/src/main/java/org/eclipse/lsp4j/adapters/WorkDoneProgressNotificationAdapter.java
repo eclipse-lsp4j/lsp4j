@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2020 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.adapters;
@@ -59,13 +59,13 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 			in.nextNull();
 			return null;
 		}
-		
+
 		in.beginObject();
 		String kind = null, message = null, title = null;
 		Boolean cancellable = null;
 		Integer percentage = null;
 		try {
-			
+
 			while (in.hasNext()) {
 				String name = in.nextName();
 				switch (name) {
@@ -95,7 +95,7 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 			}
 			in.endObject();
 			return createNotification(kind, message, title, cancellable, percentage);
-			
+
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if (kind != null) {
 				throw new JsonParseException(exception);
@@ -112,20 +112,20 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 		}
 		switch (kind) {
 		case "begin":
-			WorkDoneProgressBegin begin = new WorkDoneProgressBegin();
+			final var begin = new WorkDoneProgressBegin();
 			begin.setMessage(message);
 			begin.setCancellable(cancellable);
 			begin.setPercentage(percentage);
 			begin.setTitle(title);
 			return begin;
 		case "report":
-			WorkDoneProgressReport report = new WorkDoneProgressReport();
+			final var report = new WorkDoneProgressReport();
 			report.setMessage(message);
 			report.setCancellable(cancellable);
 			report.setPercentage(percentage);
 			return report;
 		case "end":
-			WorkDoneProgressEnd end = new WorkDoneProgressEnd();
+			final var end = new WorkDoneProgressEnd();
 			end.setMessage(message);
 			return end;
 		default:
@@ -139,10 +139,10 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 		out.name("kind");
 		WorkDoneProgressKind kind = notification.getKind();
 		out.value(kind.toString());
-		
+
 		switch (kind) {
 		case begin:
-			WorkDoneProgressBegin begin = (WorkDoneProgressBegin) notification;
+			final var begin = (WorkDoneProgressBegin) notification;
 			out.name("title");
 			out.value(begin.getTitle());
 			out.name("cancellable");
@@ -153,7 +153,7 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 			out.value(begin.getPercentage());
 			break;
 		case report:
-			WorkDoneProgressReport report = (WorkDoneProgressReport) notification;
+			final var report = (WorkDoneProgressReport) notification;
 			out.name("cancellable");
 			out.value(report.getCancellable());
 			out.name("message");
@@ -162,7 +162,7 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 			out.value(report.getPercentage());
 			break;
 		case end:
-			WorkDoneProgressEnd end = (WorkDoneProgressEnd) notification;
+			final var end = (WorkDoneProgressEnd) notification;
 			out.name("message");
 			out.value(end.getMessage());
 			break;

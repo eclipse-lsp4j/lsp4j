@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016, 2024 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.services;
@@ -36,7 +36,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
  * {@link JsonRequest} methods of one or more given delegate objects.
  */
 public class GenericEndpoint implements Endpoint {
-	
+
 	private static final Logger LOG = Logger.getLogger(GenericEndpoint.class.getName());
 	private static final Object[] NO_ARGUMENTS = {};
 
@@ -47,7 +47,7 @@ public class GenericEndpoint implements Endpoint {
 		this.delegates = Collections.singletonList(delegate);
 		recursiveFindRpcMethods(delegate, new HashSet<>(), new HashSet<>());
 	}
-	
+
 	public GenericEndpoint(Collection<Object> delegates) {
 		this.delegates = new ArrayList<>(delegates);
 		for (Object delegate : this.delegates) {
@@ -92,7 +92,7 @@ public class GenericEndpoint implements Endpoint {
 			}
 		});
 	}
-	
+
 	protected Object[] getArguments(Method method, Object arg) {
 		int parameterCount = method.getParameterCount();
 		if (parameterCount == 0) {
@@ -102,8 +102,8 @@ public class GenericEndpoint implements Endpoint {
 			return NO_ARGUMENTS;
 		}
 		if (arg instanceof List<?>) {
-			List<?> arguments = (List<?>) arg;
-			int argumentCount = arguments.size(); 
+			final var arguments = (List<?>) arg;
+			int argumentCount = arguments.size();
 			if (argumentCount == parameterCount) {
 				return arguments.toArray();
 			}
@@ -127,9 +127,9 @@ public class GenericEndpoint implements Endpoint {
 		if (handler != null) {
 			return handler.apply(parameter);
 		}
-		
+
 		// Ask the delegate objects whether they can handle the request generically
-		List<CompletableFuture<?>> futures = new ArrayList<>(delegates.size());
+		final var futures = new ArrayList<CompletableFuture<?>>(delegates.size());
 		for (Object delegate : delegates) {
 			if (delegate instanceof Endpoint) {
 				futures.add(((Endpoint) delegate).request(method, parameter));
@@ -138,7 +138,7 @@ public class GenericEndpoint implements Endpoint {
 		if (!futures.isEmpty()) {
 			return CompletableFuture.anyOf(futures.toArray(new CompletableFuture[futures.size()]));
 		}
-		
+
 		// Create a log message about the unsupported method
 		String message = "Unsupported request method: " + method;
 		if (isOptionalMethod(method)) {
@@ -146,7 +146,7 @@ public class GenericEndpoint implements Endpoint {
 			return CompletableFuture.completedFuture(null);
 		}
 		LOG.log(Level.WARNING, message);
-		CompletableFuture<?> exceptionalResult = new CompletableFuture<Object>();
+		final var exceptionalResult = new CompletableFuture<>();
 		ResponseError error = new ResponseError(ResponseErrorCode.MethodNotFound, message, null);
 		exceptionalResult.completeExceptionally(new ResponseErrorException(error));
 		return exceptionalResult;
@@ -160,7 +160,7 @@ public class GenericEndpoint implements Endpoint {
 			handler.apply(parameter);
 			return;
 		}
-		
+
 		// Ask the delegate objects whether they can handle the notification generically
 		int notifiedDelegates = 0;
 		for (Object delegate : delegates) {
@@ -169,7 +169,7 @@ public class GenericEndpoint implements Endpoint {
 				notifiedDelegates++;
 			}
 		}
-		
+
 		if (notifiedDelegates == 0) {
 			// Create a log message about the unsupported method
 			String message = "Unsupported notification method: " + method;
@@ -180,7 +180,7 @@ public class GenericEndpoint implements Endpoint {
 			}
 		}
 	}
-	
+
 	protected boolean isOptionalMethod(String method) {
 		return method != null && method.startsWith("$/");
 	}

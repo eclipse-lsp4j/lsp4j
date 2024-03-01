@@ -25,11 +25,11 @@ import java.util.function.Predicate;
  * <p>The builder will automatically handle cycles in the object tree. It also pretty prints arrays and Iterables.</p>
  *
  * This class is not thread safe.
- * 
+ *
  * @implNote This class originally came from xbase.lib and has been extended for LSP4J purposes with some additional functionality.
  */
 public final class ToStringBuilder {
-	
+
 	public static class ToStringContext {
 
 		public final static ToStringContext INSTANCE = new ToStringContext();
@@ -49,9 +49,9 @@ public final class ToStringBuilder {
 			ToStringContext.currentlyProcessed.get().remove(obj);
 		}
 	}
-	
+
 	private static ToStringContext toStringContext = ToStringContext.INSTANCE;
-	
+
 	private final Object instance;
 
 	private final String typeName;
@@ -197,7 +197,7 @@ public final class ToStringBuilder {
 		}
 		return this;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static <T extends Throwable> void sneakyThrow(Throwable t) throws T {
 		throw (T) t;
@@ -249,7 +249,7 @@ public final class ToStringBuilder {
 			return this.toSimpleReferenceString(this.instance);
 		}
 		try {
-			final IndentationAwareStringBuilder builder = new IndentationAwareStringBuilder();
+			final var builder = new IndentationAwareStringBuilder();
 			builder.append(typeName).append(" ");
 			builder.append("[");
 			String nextSeparator = "";
@@ -345,12 +345,12 @@ public final class ToStringBuilder {
 	}
 
 	private List<Field> getAllDeclaredFields(final Class<?> clazz) {
-		final ArrayList<Field> result = new ArrayList<>();
+		final var result = new ArrayList<Field>();
 
 		for(Class<?> current = clazz; current != null; current = current.getSuperclass()) {
 			Field[] declaredFields = current.getDeclaredFields();
 			result.addAll(Arrays.asList(declaredFields));
-			
+
 		}
 		return result;
 	}
@@ -402,9 +402,9 @@ public final class ToStringBuilder {
 		public String toString() {
 			return this.builder.toString();
 		}
-		
+
 		private String repeat(String string, int count) {
-			StringBuilder result = new StringBuilder();
+			final var result = new StringBuilder();
 			for(int i=0; i < count; i++) {
 				result.append(string);
 			}

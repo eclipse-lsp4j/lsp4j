@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2017 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
@@ -31,16 +31,16 @@ import com.google.gson.reflect.TypeToken;
  * Utilities for handling types in the JSON parser / serializer.
  */
 public final class TypeUtils {
-	
+
 	private TypeUtils() {}
-	
+
 	/**
 	 * Determine the actual type arguments of the given type token with regard to the given target type.
 	 */
 	public static Type[] getElementTypes(TypeToken<?> typeToken, Class<?> targetType) {
 		return getElementTypes(typeToken.getType(), typeToken.getRawType(), targetType);
 	}
-	
+
 	private static Type[] getElementTypes(Type type, Class<?> rawType, Class<?> targetType) {
 		if (targetType.equals(rawType) && type instanceof ParameterizedType) {
 			Type mappedType;
@@ -74,16 +74,16 @@ public final class TypeUtils {
 			}
 		}
 		// No luck, return an array of Object types
-		Type[] result = new Type[targetType.getTypeParameters().length];
+		final var result = new Type[targetType.getTypeParameters().length];
 		Arrays.fill(result, Object.class);
 		return result;
 	}
-	
+
 	private static <T> Map<String, Type> createVariableMapping(Type type, Class<T> rawType) {
 		if (type instanceof ParameterizedType) {
 			TypeVariable<Class<T>>[] vars = rawType.getTypeParameters();
 			Type[] args = ((ParameterizedType) type).getActualTypeArguments();
-			Map<String, Type> newVarMapping = new HashMap<>(capacity(vars.length));
+			final var newVarMapping = new HashMap<String, Type>(capacity(vars.length));
 			for (int i = 0; i < vars.length; i++) {
 				Type actualType = Object.class;
 				if (i < args.length) {
@@ -97,14 +97,14 @@ public final class TypeUtils {
 		}
 		return Collections.emptyMap();
 	}
-	
+
 	private static int capacity(int expectedSize) {
 		if (expectedSize < 3)
 			return expectedSize + 1;
 		else
 			return expectedSize + expectedSize / 3;
 	}
-	
+
 	private static Type getMappedType(Type type, Map<String, Type> varMapping) {
 		if (type instanceof TypeVariable) {
 			String name = ((TypeVariable<?>) type).getName();
@@ -127,26 +127,26 @@ public final class TypeUtils {
 	}
 
 	private static class ParameterizedTypeImpl implements ParameterizedType {
-		
+
 		private final Type ownerType;
 		private final Type rawType;
 		private final Type[] actualTypeArguments;
-		
+
 		ParameterizedTypeImpl(ParameterizedType original, Type[] typeArguments) {
 			this(original.getOwnerType(), original.getRawType(), typeArguments);
 		}
-		
+
 		ParameterizedTypeImpl(Type ownerType, Type rawType, Type[] typeArguments) {
 			this.ownerType = ownerType;
 			this.rawType = rawType;
 			this.actualTypeArguments = typeArguments;
 		}
-		
+
 		@Override
 		public Type getOwnerType() {
 			return ownerType;
 		}
-		
+
 		@Override
 		public Type getRawType() {
 			return rawType;
@@ -156,10 +156,10 @@ public final class TypeUtils {
 		public Type[] getActualTypeArguments() {
 			return actualTypeArguments;
 		}
-		
+
 		@Override
 		public String toString() {
-			StringBuilder result = new StringBuilder();
+			final var result = new StringBuilder();
 			if (ownerType != null) {
 				result.append(toString(ownerType));
 				result.append('$');
@@ -174,16 +174,16 @@ public final class TypeUtils {
 			result.append('>');
 			return result.toString();
 		}
-		
+
 		private String toString(Type type) {
 			if (type instanceof Class<?>)
 				return ((Class<?>) type).getName();
 			else
 				return String.valueOf(type);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Return all possible types that can be expected when an element of the given type is parsed.
 	 * If the type satisfies {@link #isEither(Type)}, a list of the corresponding type arguments is returned,
@@ -191,7 +191,7 @@ public final class TypeUtils {
 	 * by this method (use {@link #getElementTypes(TypeToken, Class)} to get resolved parameters).
 	 */
 	public static Collection<Type> getExpectedTypes(Type type) {
-		Collection<Type> result = new ArrayList<>();
+		final var result = new ArrayList<Type>();
 		collectExpectedTypes(type, result);
 		return result;
 	}
@@ -225,7 +225,7 @@ public final class TypeUtils {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Test whether the given type is a two-tuple (pair).
 	 */

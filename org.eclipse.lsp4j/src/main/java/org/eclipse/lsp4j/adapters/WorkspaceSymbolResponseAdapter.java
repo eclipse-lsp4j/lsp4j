@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2022 KamasamaK and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.adapters;
@@ -33,9 +33,9 @@ public class WorkspaceSymbolResponseAdapter implements TypeAdapterFactory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-		ListChecker leftChecker = new ListChecker(new PropertyChecker("deprecated"), false);
-		ListChecker rightChecker = new ListChecker(new PropertyChecker("name"), true);
+		final var leftChecker = new ListChecker(new PropertyChecker("deprecated"), false);
+		final var rightChecker = new ListChecker(new PropertyChecker("name"), true);
 		return (TypeAdapter<T>) new EitherTypeAdapter<>(gson, EITHER_TYPE, leftChecker, rightChecker);
 	}
-	
+
 }

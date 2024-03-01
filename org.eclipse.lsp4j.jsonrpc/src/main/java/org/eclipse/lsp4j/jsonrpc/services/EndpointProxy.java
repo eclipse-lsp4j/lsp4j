@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.services;
@@ -29,7 +29,7 @@ import org.eclipse.lsp4j.jsonrpc.services.AnnotationUtil.MethodInfo;
  * containing {@link JsonNotification} and {@link JsonRequest} methods.
  */
 public class EndpointProxy implements InvocationHandler {
-	
+
 	private final Method object_equals;
 	private final Method object_hashCode;
 	private final Method object_toString;
@@ -41,7 +41,7 @@ public class EndpointProxy implements InvocationHandler {
 	public EndpointProxy(Endpoint delegate, Class<?> interface_) {
 		this(delegate, Collections.singletonList(interface_));
 	}
-	
+
 	public EndpointProxy(Endpoint delegate, Collection<Class<?>> interfaces) {
 		if (delegate == null)
 			throw new NullPointerException("delegate");
@@ -49,7 +49,7 @@ public class EndpointProxy implements InvocationHandler {
 			throw new NullPointerException("interfaces");
 		if (interfaces.isEmpty())
 			throw new IllegalArgumentException("interfaces must not be empty.");
-		
+
 		this.delegate = delegate;
 		try {
 			object_equals = Object.class.getDeclaredMethod("equals", Object.class);
@@ -68,7 +68,7 @@ public class EndpointProxy implements InvocationHandler {
 			});
 			AnnotationUtil.findDelegateSegments(interf, new HashSet<>(), method -> {
 				Object delegateProxy = ServiceEndpoints.toServiceObject(delegate, method.getReturnType());
-				DelegateInfo info = new DelegateInfo();
+				final var info = new DelegateInfo();
 				info.delegate = delegateProxy;
 				info.method = method;
 				if (delegatedSegments.put(method.getName(), info) != null) {
@@ -121,7 +121,7 @@ public class EndpointProxy implements InvocationHandler {
 		}
 		return Arrays.asList(args);
 	}
-	
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " for " + delegate.toString();

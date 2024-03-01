@@ -41,7 +41,7 @@ public class MessageTracer implements Function<MessageConsumer, MessageConsumer>
 
 	@Override
 	public MessageConsumer apply(MessageConsumer messageConsumer) {
-		TracingMessageConsumer tracingMessageConsumer = new TracingMessageConsumer(
+		final var tracingMessageConsumer = new TracingMessageConsumer(
 				messageConsumer, sentRequests, receivedRequests, printWriter, Clock.systemDefaultZone());
 		tracingMessageConsumer.setJsonHandler(jsonHandler);
 		return tracingMessageConsumer;

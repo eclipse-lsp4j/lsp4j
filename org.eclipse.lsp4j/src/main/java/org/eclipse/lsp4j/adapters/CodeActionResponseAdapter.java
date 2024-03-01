@@ -12,7 +12,6 @@
 package org.eclipse.lsp4j.adapters;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
 import org.eclipse.lsp4j.CodeAction;
 import org.eclipse.lsp4j.Command;
@@ -22,7 +21,6 @@ import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter.PropertyChecker
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
@@ -36,11 +34,10 @@ public class CodeActionResponseAdapter implements TypeAdapterFactory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-		Predicate<JsonElement> leftChecker = new PropertyChecker("command", JsonPrimitive.class);
-		Predicate<JsonElement> rightChecker = new PropertyChecker("title");
-		TypeAdapter<Either<Command, CodeAction>> elementTypeAdapter = new EitherTypeAdapter<>(gson,
-				ELEMENT_TYPE, leftChecker, rightChecker);
+		final var leftChecker = new PropertyChecker("command", JsonPrimitive.class);
+		final var rightChecker = new PropertyChecker("title");
+		final var elementTypeAdapter = new EitherTypeAdapter<>(gson, ELEMENT_TYPE, leftChecker, rightChecker);
 		return (TypeAdapter<T>) new CollectionTypeAdapter<>(gson, ELEMENT_TYPE.getType(), elementTypeAdapter, ArrayList::new);
 	}
-	
+
 }

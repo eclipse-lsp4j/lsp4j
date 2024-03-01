@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.services;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 public final class AnnotationUtil {
 	private AnnotationUtil() {}
-	
+
 	public static void findDelegateSegments(Class<?> clazz, Set<Class<?>> visited, Consumer<Method> acceptor) {
 		if (clazz == null || !visited.add(clazz))
 			return;
@@ -48,7 +48,6 @@ public final class AnnotationUtil {
 		}
 		return false;
 	}
-	
 
 	/**
 	 * Depth first search for annotated methods in hierarchy.
@@ -73,7 +72,7 @@ public final class AnnotationUtil {
 		JsonSegment jsonSegment = clazz.getAnnotation(JsonSegment.class);
 		return jsonSegment == null ? "" : jsonSegment.value() + "/";
 	}
-	
+
 	protected static MethodInfo createMethodInfo(Method method, String segment) {
 		if (!method.isSynthetic()) {
 			JsonRequest jsonRequest = method.getAnnotation(JsonRequest.class);
@@ -93,21 +92,21 @@ public final class AnnotationUtil {
 		methodInfo.isNotification = true;
 		return methodInfo;
 	}
-	
+
 	protected static MethodInfo createRequestInfo(Method method, String segment, JsonRequest jsonRequest) {
 		return createMethodInfo(method, jsonRequest.useSegment(), segment, jsonRequest.value());
 	}
-	
+
 	protected static MethodInfo createMethodInfo(Method method, boolean useSegment, String segment, String value) {
 		method.setAccessible(true);
 
-		MethodInfo methodInfo = new MethodInfo();
+		final var methodInfo = new MethodInfo();
 		methodInfo.method = method;
 		methodInfo.parameterTypes = getParameterTypes(method);
 		methodInfo.name = getMethodName(method, useSegment, segment, value);
 		return methodInfo;
 	}
-	
+
 	protected static String getMethodName(Method method, boolean useSegment, String segment, String value) {
 		String name = value != null && value.length() > 0 ? value : method.getName();
 		return useSegment ? segment + name : name;
@@ -116,7 +115,7 @@ public final class AnnotationUtil {
 	protected static Type[] getParameterTypes(Method method) {
 		return Arrays.stream(method.getParameters()).map(Parameter::getParameterizedType).toArray(Type[]::new);
 	}
-	
+
 	static class MethodInfo {
 		private static Type[] EMPTY_TYPE_ARRAY = {};
 		public String name;

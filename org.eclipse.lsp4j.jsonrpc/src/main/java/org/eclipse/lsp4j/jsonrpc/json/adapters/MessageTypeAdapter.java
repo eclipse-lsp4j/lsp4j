@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json.adapters;
@@ -54,11 +54,11 @@ import com.google.gson.stream.MalformedJsonException;
  * {@link ResponseMessage}, and {@link NotificationMessage}.
  */
 public class MessageTypeAdapter extends TypeAdapter<Message> {
-	
+
 	public static class Factory implements TypeAdapterFactory {
-		
+
 		private final MessageJsonHandler handler;
-		
+
 		public Factory(MessageJsonHandler handler) {
 			this.handler = handler;
 		}
@@ -70,14 +70,14 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				return null;
 			return (TypeAdapter<T>) new MessageTypeAdapter(handler, gson);
 		}
-		
+
 	}
-	
+
 	private static Type[] EMPTY_TYPE_ARRAY = {};
 
 	private final MessageJsonHandler handler;
 	private final Gson gson;
-	
+
 	public MessageTypeAdapter(MessageJsonHandler handler, Gson gson) {
 		this.handler = handler;
 		this.gson = gson;
@@ -89,7 +89,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			in.nextNull();
 			return null;
 		}
-		
+
 		in.beginObject();
 		String jsonrpc = null, method = null;
 		Either<String, Number> id = null;
@@ -97,7 +97,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		Object rawResult = null;
 		ResponseError responseError = null;
 		try {
-			
+
 			while (in.hasNext()) {
 				String name = in.nextName();
 				switch (name) {
@@ -134,15 +134,15 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			}
 			Object params = parseParams(rawParams, method);
 			Object result = parseResult(rawResult, id != null ? id.get().toString() : null);
-			
+
 			in.endObject();
 			return createMessage(jsonrpc, id, method, params, result, responseError);
-			
+
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if (id != null || method != null) {
 				// Create a message and bundle it to an exception with an issue that wraps the original exception
 				Message message = createMessage(jsonrpc, id, method, rawParams, rawResult, responseError);
-				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
+				final var issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
 				throw new MessageIssueException(message, issue);
 			} else {
 				throw exception;
@@ -264,7 +264,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			return fromJson(in, parameterTypes[0]);
 		}
 		if (parameterTypes.length > 1 && next == JsonToken.BEGIN_ARRAY) {
-			List<Object> parameters = new ArrayList<Object>(parameterTypes.length);
+			final var parameters = new ArrayList<>(parameterTypes.length);
 			int index = 0;
 			in.beginArray();
 			while (in.hasNext()) {
@@ -307,18 +307,18 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		if (!(params instanceof JsonElement)) {
 			return params;
 		}
-		JsonElement rawParams = (JsonElement) params;
+		final var rawParams = (JsonElement) params;
 		Type[] parameterTypes = getParameterTypes(method);
 		if (parameterTypes.length == 1) {
 			return fromJson(rawParams, parameterTypes[0]);
 		}
 		if (parameterTypes.length > 1 && rawParams instanceof JsonArray) {
 			JsonArray array = (JsonArray) rawParams;
-			List<Object> parameters = new ArrayList<Object>(Math.max(array.size(), parameterTypes.length));
+			final var parameters = new ArrayList<>(Math.max(array.size(), parameterTypes.length));
 			int index = 0;
 			Iterator<JsonElement> iterator = array.iterator();
 			while (iterator.hasNext()) {
-				Type parameterType = index < parameterTypes.length ? parameterTypes[index] : null;  
+				Type parameterType = index < parameterTypes.length ? parameterTypes[index] : null;
 				Object parameter = fromJson(iterator.next(), parameterType);
 				parameters.add(parameter);
 				index++;
@@ -343,7 +343,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		return gson.fromJson(in, type);
 	}
-	
+
 	protected Object fromJson(JsonElement element, Type type) {
 		if (isNull(element)) {
 			return null;
@@ -361,7 +361,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	protected boolean isNull(Object value) {
 		return value == null || value instanceof JsonNull;
 	}
-	
+
 	protected boolean isNullOrVoidType(Type type) {
 		return type == null || Void.class == type;
 	}
@@ -374,11 +374,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 		return EMPTY_TYPE_ARRAY;
 	}
-	
+
 	protected Message createMessage(String jsonrpc, Either<String, Number> id, String method, Object params,
 			Object responseResult, ResponseError responseError) throws JsonParseException {
 		if (id != null && method != null) {
-			RequestMessage message = new RequestMessage();
+			final var message = new RequestMessage();
 			message.setJsonHandler(handler);
 			message.setJsonrpc(jsonrpc);
 			message.setRawId(id);
@@ -386,7 +386,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			message.setParams(params);
 			return message;
 		} else if (id != null) {
-			ResponseMessage message = new ResponseMessage();
+			final var message = new ResponseMessage();
 			message.setJsonHandler(handler);
 			message.setJsonrpc(jsonrpc);
 			message.setRawId(id);
@@ -396,7 +396,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				message.setResult(responseResult);
 			return message;
 		} else if (method != null) {
-			NotificationMessage message = new NotificationMessage();
+			final var message = new NotificationMessage();
 			message.setJsonHandler(handler);
 			message.setJsonrpc(jsonrpc);
 			message.setMethod(method);
@@ -412,9 +412,9 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		out.beginObject();
 		out.name("jsonrpc");
 		out.value(message.getJsonrpc() == null ? MessageConstants.JSONRPC_VERSION : message.getJsonrpc());
-		
+
 		if (message instanceof RequestMessage) {
-			RequestMessage requestMessage = (RequestMessage) message;
+			final var requestMessage = (RequestMessage) message;
 			out.name("id");
 			writeId(out, requestMessage.getRawId());
 			out.name("method");
@@ -426,7 +426,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			else
 				handleParameter(out, params, requestMessage.getMethod());
 		} else if (message instanceof ResponseMessage) {
-			ResponseMessage responseMessage = (ResponseMessage) message;
+			final var responseMessage = (ResponseMessage) message;
 			out.name("id");
 			writeId(out, responseMessage.getRawId());
 			if (responseMessage.getError() != null) {
@@ -441,7 +441,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					gson.toJson(result, result.getClass(), out);
 			}
 		} else if (message instanceof NotificationMessage) {
-			NotificationMessage notificationMessage = (NotificationMessage) message;
+			final var notificationMessage = (NotificationMessage) message;
 			out.name("method");
 			out.value(notificationMessage.getMethod());
 			out.name("params");
@@ -451,10 +451,10 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			else
 				handleParameter(out, params, notificationMessage.getMethod());
 		}
-		
+
 		out.endObject();
 	}
-	
+
 	protected void handleParameter(JsonWriter out, Object params, String method) {
 		boolean isSingleArray = getParameterTypes(method).length == 1 && Collection.class.isInstance(params)
 				|| params.getClass().isArray();
@@ -466,7 +466,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			gson.toJson(params, params.getClass(), out);
 		}
 	}
-	
+
 	protected void writeId(JsonWriter out, Either<String, Number> id) throws IOException {
 		if (id == null)
 			writeNullValue(out);
@@ -475,7 +475,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		else if (id.isRight())
 			out.value(id.getRight());
 	}
-	
+
 	/**
 	 * Use this method to write a {@code null} value even if the JSON writer is set to not serialize {@code null}.
 	 */
@@ -485,7 +485,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		out.nullValue();
 		out.setSerializeNulls(previousSerializeNulls);
 	}
-	
+
 	/**
 	 * Returns true if this type is a primitive.
 	 */

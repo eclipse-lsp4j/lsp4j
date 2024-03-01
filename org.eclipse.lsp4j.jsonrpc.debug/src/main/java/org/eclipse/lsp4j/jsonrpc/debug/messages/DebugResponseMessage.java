@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2017 Kichwa Coders Ltd. and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug.messages;
@@ -40,7 +40,7 @@ public class DebugResponseMessage extends ResponseMessage {
 			return responseId.getRight().toString();
 		return null;
 	}
-	
+
 	@NonNull
 	public Either<String, Number> getRawResponseId() {
 		return responseId;
@@ -49,11 +49,11 @@ public class DebugResponseMessage extends ResponseMessage {
 	public void setResponseId(String id) {
 		this.responseId = Either.forLeft(id);
 	}
-	
+
 	public void setResponseId(int id) {
 		this.responseId = Either.forRight(id);
 	}
-	
+
 	public void setRawResponseId(@NonNull Either<String, Number> id) {
 		this.responseId = id;
 	}
@@ -83,7 +83,7 @@ public class DebugResponseMessage extends ResponseMessage {
 			return false;
 		if (!super.equals(obj))
 			return false;
-		DebugResponseMessage other = (DebugResponseMessage) obj;
+		final var other = (DebugResponseMessage) obj;
 		if (this.responseId == null) {
 			if (other.responseId != null)
 				return false;

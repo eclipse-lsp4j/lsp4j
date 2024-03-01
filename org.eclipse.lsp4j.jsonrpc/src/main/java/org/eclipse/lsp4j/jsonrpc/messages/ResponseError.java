@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
@@ -93,7 +93,7 @@ public class ResponseError {
 	}
 
 	protected String toStringFallback() {
-		ToStringBuilder builder = new ToStringBuilder(this);
+		final var builder = new ToStringBuilder(this);
 		builder.addAllFields();
 		return builder.toString();
 	}
@@ -106,7 +106,7 @@ public class ResponseError {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ResponseError other = (ResponseError) obj;
+		final var other = (ResponseError) obj;
 		if (other.code != this.code)
 			return false;
 		if (this.message == null) {
