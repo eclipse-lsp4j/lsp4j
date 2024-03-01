@@ -101,8 +101,8 @@ public class DebugResponseMessage extends ResponseMessage {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((this.responseId == null) ? 0 : this.responseId.hashCode());
-		result = prime * result + ((this.method == null) ? 0 : this.method.hashCode());
+		result = prime * result + (this.responseId == null ? 0 : this.responseId.hashCode());
+		result = prime * result + (this.method == null ? 0 : this.method.hashCode());
 		return result;
 	}
 

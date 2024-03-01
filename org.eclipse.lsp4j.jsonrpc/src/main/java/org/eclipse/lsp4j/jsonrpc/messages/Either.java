@@ -81,9 +81,9 @@ public class Either<L, R> {
 	public boolean equals(Object obj) {
 		if (obj instanceof Either<?, ?>) {
 			Either<?, ?> other = (Either<?, ?>) obj;
-			return (this.left == other.left && this.right == other.right)
-				|| (this.left != null && other.left != null && this.left.equals(other.left))
-				|| (this.right != null && other.right != null && this.right.equals(other.right));
+			return this.left == other.left && this.right == other.right
+				|| this.left != null && other.left != null && this.left.equals(other.left)
+				|| this.right != null && other.right != null && this.right.equals(other.right);
 		}
 		return false;
 	}
