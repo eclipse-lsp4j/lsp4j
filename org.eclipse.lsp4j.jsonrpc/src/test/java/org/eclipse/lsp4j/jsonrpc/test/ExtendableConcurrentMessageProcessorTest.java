@@ -107,7 +107,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 */
 	public static class CustomConcurrentMessageProcessor<T> extends ConcurrentMessageProcessor {
 
-		private T remoteProxy;
+		private final T remoteProxy;
 		private final MessageContextStore<T> threadMap;
 		public CustomConcurrentMessageProcessor(MessageProducer reader, MessageConsumer messageConsumer,
 				T remoteProxy, MessageContextStore<T> threadMap) {
@@ -211,7 +211,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 * A custom class for storing the context for any given message
 	 */
 	public static class MessageContextStore<T> {
-		private ThreadLocal<MessageContext<T>> messageContext = new ThreadLocal<>();
+		private final ThreadLocal<MessageContext<T>> messageContext = new ThreadLocal<>();
 
 		public void setContext(MessageContext<T> context) {
 			messageContext.set(context);

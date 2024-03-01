@@ -51,7 +51,7 @@ public final class DocumentSymbols {
 
 	protected abstract static class BreadthFirstIterator<T> implements Iterator<T> {
 
-		private Queue<T> queue;
+		private final Queue<T> queue;
 
 		protected BreadthFirstIterator(T root) {
 			Preconditions.checkNotNull(root, "root");
