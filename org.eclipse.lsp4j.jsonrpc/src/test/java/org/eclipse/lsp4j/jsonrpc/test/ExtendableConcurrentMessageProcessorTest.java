@@ -116,6 +116,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 			this.threadMap = threadMap;
 		}
 
+		@Override
 		protected void processingStarted() {
 			super.processingStarted();
 			if (threadMap != null) {
@@ -123,6 +124,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 			}
 		}
 
+		@Override
 		protected void processingEnded() {
 			super.processingEnded();
 			if (threadMap != null)

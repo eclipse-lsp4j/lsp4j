@@ -55,6 +55,7 @@ public class RemoteEndpointTest {
 		List<NotificationMessage> notifications = new ArrayList<>();
 		Map<RequestMessage, CompletableFuture<Object>> requests = new LinkedHashMap<>();
 		
+		@Override
 		public void notify(String method, Object parameter) {
 			notifications.add(init(new NotificationMessage(), it -> {
 				it.setMethod(method);

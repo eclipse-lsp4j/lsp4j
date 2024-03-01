@@ -461,6 +461,7 @@ public class DebugIntegrationTest {
 			ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			UnexpectedParamsTestServer server = new UnexpectedParamsTestServer() {
+				@Override
 				public void myNotification() {
 				}
 			};
@@ -474,16 +475,16 @@ public class DebugIntegrationTest {
 		}
 	}
 
-    protected String getHeader(int contentLength) {
-        StringBuilder headerBuilder = new StringBuilder();
-        headerBuilder.append(CONTENT_LENGTH_HEADER).append(": ").append(contentLength).append(CRLF);
-        headerBuilder.append(CRLF);
-        return headerBuilder.toString();
-    }
+	protected String getHeader(int contentLength) {
+		StringBuilder headerBuilder = new StringBuilder();
+		headerBuilder.append(CONTENT_LENGTH_HEADER).append(": ").append(contentLength).append(CRLF);
+		headerBuilder.append(CRLF);
+		return headerBuilder.toString();
+	}
 
-    /**
-     * Test a fully connected design with the {@link ReflectiveMessageValidator} enabled.
-     */
+	/**
+	 * Test a fully connected design with the {@link ReflectiveMessageValidator} enabled.
+	 */
 	@Test
 	public void testValidatedRequests() throws Exception {
 		// create client side

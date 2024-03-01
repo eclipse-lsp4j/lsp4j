@@ -30,6 +30,7 @@ public class DebugMessageJsonHandler extends MessageJsonHandler {
 		super(supportedMethods, configureGson);
 	}
 
+	@Override
 	public GsonBuilder getDefaultGsonBuilder() {
 		return super.getDefaultGsonBuilder().registerTypeAdapterFactory(new DebugMessageTypeAdapter.Factory(this))
 				.registerTypeAdapterFactory(new DebugEnumTypeAdapter.Factory());

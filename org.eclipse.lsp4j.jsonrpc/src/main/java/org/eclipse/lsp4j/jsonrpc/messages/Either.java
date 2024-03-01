@@ -97,6 +97,7 @@ public class Either<L, R> {
 		return 0;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder("Either [").append(System.lineSeparator());
 		builder.append("  left = ").append(left).append(System.lineSeparator());
