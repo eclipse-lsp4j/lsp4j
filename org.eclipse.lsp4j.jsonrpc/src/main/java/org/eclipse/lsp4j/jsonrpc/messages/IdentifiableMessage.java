@@ -74,7 +74,7 @@ public abstract class IdentifiableMessage extends Message {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + (this.id == null ? 0 : this.id.hashCode());
 		return result;
 	}
 

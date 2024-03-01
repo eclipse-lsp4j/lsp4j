@@ -127,8 +127,8 @@ public class ResponseError {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + this.code;
-		result = prime * result + ((this.message == null) ? 0 : this.message.hashCode());
-		result = prime * result + ((this.data == null) ? 0 : this.data.hashCode());
+		result = prime * result + (this.message == null ? 0 : this.message.hashCode());
+		result = prime * result + (this.data == null ? 0 : this.data.hashCode());
 		return result;
 	}
 

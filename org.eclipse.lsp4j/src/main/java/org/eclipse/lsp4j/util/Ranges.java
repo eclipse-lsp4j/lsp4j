@@ -37,8 +37,8 @@ public final class Ranges {
 	public static boolean containsPosition(Range range, Position position) {
 		Preconditions.checkNotNull(range, "range");
 		Preconditions.checkNotNull(position, "position");
-		return (range.getStart().equals(position) || Positions.isBefore(range.getStart(), position)
-				&& (range.getEnd().equals(position) || Positions.isBefore(position, range.getEnd())));
+		return range.getStart().equals(position) || Positions.isBefore(range.getStart(), position)
+				&& (range.getEnd().equals(position) || Positions.isBefore(position, range.getEnd()));
 	}
 
 	private Ranges() {

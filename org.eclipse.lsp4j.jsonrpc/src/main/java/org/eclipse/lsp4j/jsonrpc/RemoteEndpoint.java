@@ -394,7 +394,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		if (t instanceof CompletionException) {
 			return isCancellation(t.getCause());
 		}
-		return (t instanceof CancellationException);
+		return t instanceof CancellationException;
 	}
 
 	@Override

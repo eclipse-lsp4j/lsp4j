@@ -456,8 +456,8 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	}
 	
 	protected void handleParameter(JsonWriter out, Object params, String method) {
-		boolean isSingleArray = (getParameterTypes(method).length == 1 && Collection.class.isInstance(params)
-				|| params.getClass().isArray());
+		boolean isSingleArray = getParameterTypes(method).length == 1 && Collection.class.isInstance(params)
+				|| params.getClass().isArray();
 		boolean needsWrap = isSingleArray || params instanceof String || isWrapperType(params.getClass())
 				|| isPrimitive(getClass());
 		if (needsWrap) {
