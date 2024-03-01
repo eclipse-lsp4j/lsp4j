@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -62,7 +63,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		List<MessageIssue> issues = validate(message);
 		if (!issues.isEmpty()) {
 			// Sort the messages in order to get a stable order (otherwise it depends on the JVM's reflection implementation)
-			Collections.sort(issues, (issue1, issue2) -> issue1.getText().compareTo(issue2.getText()));
+			Collections.sort(issues, Comparator.comparing(MessageIssue::getText));
 			throw new MessageIssueException(message, issues);
 		} else if (delegate != null) {
 			delegate.consume(message);
