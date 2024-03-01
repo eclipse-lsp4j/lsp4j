@@ -124,7 +124,7 @@ public class EitherTest {
 	@Test
 	public void testMapEither3() {
 		Either3<String, Integer, Boolean> either3;
-		Function<String, String> mapFirst = s -> s.toUpperCase();
+		Function<String, String> mapFirst = String::toUpperCase;
 		Function<Integer, String> mapSecond = x -> x.toString();
 		Function<Boolean, String> mapThird = b -> b.toString();
 

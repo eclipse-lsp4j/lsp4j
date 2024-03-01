@@ -138,7 +138,7 @@ public class ReflectiveMessageValidatorTest {
 
 	@Test public void testSkipJsonElement() {
 		final AtomicBoolean result = new AtomicBoolean(false);
-		ReflectiveMessageValidator validator = new ReflectiveMessageValidator((message) -> {
+		ReflectiveMessageValidator validator = new ReflectiveMessageValidator(message -> {
 			result.set(true);
 		});
 		NotificationMessage message = new NotificationMessage();

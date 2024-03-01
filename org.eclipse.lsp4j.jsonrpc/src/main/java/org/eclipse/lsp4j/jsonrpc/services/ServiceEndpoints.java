@@ -87,7 +87,7 @@ public final class ServiceEndpoints {
 	 */
 	private static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type, Set<Class<?>> visitedTypes) {
 		Map<String, JsonRpcMethod> result = new LinkedHashMap<String, JsonRpcMethod>();
-		AnnotationUtil.findRpcMethods(type, visitedTypes, (methodInfo) -> {
+		AnnotationUtil.findRpcMethods(type, visitedTypes, methodInfo -> {
 			JsonRpcMethod meth;
 			if (methodInfo.isNotification) {
 				meth = JsonRpcMethod.notification(methodInfo.name, methodInfo.parameterTypes);
@@ -114,7 +114,7 @@ public final class ServiceEndpoints {
 			}
 		});
 		
-		AnnotationUtil.findDelegateSegments(type, new HashSet<>(), (method)-> {
+		AnnotationUtil.findDelegateSegments(type, new HashSet<>(), method -> {
 			Map<String, JsonRpcMethod> supportedDelegateMethods = getSupportedMethods(method.getReturnType(), visitedTypes);
 			for (JsonRpcMethod meth : supportedDelegateMethods.values()) {
 				if (result.put(meth.getMethodName(), meth) != null) {
