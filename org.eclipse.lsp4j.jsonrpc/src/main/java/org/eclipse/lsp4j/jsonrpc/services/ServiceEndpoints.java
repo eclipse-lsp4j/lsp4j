@@ -111,7 +111,7 @@ public final class ServiceEndpoints {
 			}
 			if (result.put(methodInfo.name, meth) != null) {
 				throw new IllegalStateException("Duplicate RPC method "+methodInfo.name+".");
-			};
+			}
 		});
 		
 		AnnotationUtil.findDelegateSegments(type, new HashSet<>(), (method)-> {
@@ -119,7 +119,7 @@ public final class ServiceEndpoints {
 			for (JsonRpcMethod meth : supportedDelegateMethods.values()) {
 				if (result.put(meth.getMethodName(), meth) != null) {
 					throw new IllegalStateException("Duplicate RPC method "+meth.getMethodName()+".");
-				};
+				}
 			}
 		});
 		return result;

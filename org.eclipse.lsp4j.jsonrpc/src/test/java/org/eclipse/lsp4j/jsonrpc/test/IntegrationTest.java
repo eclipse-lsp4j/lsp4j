@@ -115,7 +115,7 @@ public class IntegrationTest {
 		public CompletableFuture<MyParam> askServer(MyParam param) {
 			return CompletableFuture.completedFuture(param);
 		}
-	};
+	}
 
 	public interface MyClient {
 		@JsonRequest
@@ -127,7 +127,7 @@ public class IntegrationTest {
 		public CompletableFuture<MyParam> askClient(MyParam param) {
 			return CompletableFuture.completedFuture(param);
 		}
-	};
+	}
 
 	@Test
 	public void testBothDirectionRequests() throws Exception {
