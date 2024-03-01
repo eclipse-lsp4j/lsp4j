@@ -42,8 +42,8 @@ public class DebugLauncherTest {
 		public String message;
 	}
 
-	static interface A {
-		@JsonNotification public void say(Param p);
+	interface A {
+		@JsonNotification void say(Param p);
 	}
 
 	@Test public void testDone() throws Exception {

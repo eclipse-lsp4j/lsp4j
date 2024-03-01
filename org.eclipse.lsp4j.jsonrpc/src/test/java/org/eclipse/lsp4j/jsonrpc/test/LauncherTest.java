@@ -46,14 +46,12 @@ public class LauncherTest {
 		public String message;
 	}
 	
-	static interface A {
-		@JsonNotification
-		public void say(Param p);
+	interface A {
+		@JsonNotification void say(Param p);
 	}
 	
-	static interface B {
-		@JsonRequest
-		public CompletableFuture<String> ask(Param p);
+	interface B {
+		@JsonRequest CompletableFuture<String> ask(Param p);
 	}
 
 	@Test public void testDone() throws Exception {

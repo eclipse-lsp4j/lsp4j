@@ -110,7 +110,7 @@ public class MockConnectionTest {
 		}
 	}
 	
-	private static interface ClientInterface {
+	private interface ClientInterface {
 		
 		@JsonNotification("client/notify")
 		void notify(String arg);
@@ -127,7 +127,7 @@ public class MockConnectionTest {
 		}
 	}
 	
-	private static interface ServerInterface {
+	private interface ServerInterface {
 		
 		@JsonRequest("server/request")
 		CompletableFuture<String> request(String arg);

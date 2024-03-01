@@ -74,20 +74,17 @@ public class GenericEndpointTest {
 		
 	}
 
-	public static interface MyIf {
+	public interface MyIf {
 
-		@JsonNotification
-		public void myNotification();
+		@JsonNotification void myNotification();
 
-		@JsonDelegate
-		public OtherThing doDelegate();
+		@JsonDelegate OtherThing doDelegate();
 	}
 
 	@JsonSegment("other")
-	public static interface OtherThing {
+	public interface OtherThing {
 
-		@JsonNotification
-		public void myNotification();
+		@JsonNotification void myNotification();
 	}
 
 	@Test
