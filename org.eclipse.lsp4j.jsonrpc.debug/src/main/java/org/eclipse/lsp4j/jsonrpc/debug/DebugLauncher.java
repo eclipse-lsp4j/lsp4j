@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016-2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug;
@@ -38,7 +38,7 @@ import com.google.gson.GsonBuilder;
  * and an output stream.
  */
 public final class DebugLauncher {
-	
+
 	private DebugLauncher() {}
 
 	/**
@@ -191,22 +191,21 @@ public final class DebugLauncher {
 				.configureGson(configureGson)
 				.create();
 	}
-	
+
 	/**
 	 * Launcher builder for the debug protocol. Adapts the JSON-RPC message classes to the JSON format used
 	 * by the debug protocol.
 	 */
 	public static class Builder<T> extends Launcher.Builder<T> {
-		
+
 		@Override
 		protected MessageJsonHandler createJsonHandler() {
 			Map<String, JsonRpcMethod> supportedMethods = getSupportedMethods();
 			if (configureGson != null)
 				return new DebugMessageJsonHandler(supportedMethods, configureGson);
-			else
-				return new DebugMessageJsonHandler(supportedMethods);
+			return new DebugMessageJsonHandler(supportedMethods);
 		}
-		
+
 		@Override
 		protected RemoteEndpoint createRemoteEndpoint(MessageJsonHandler jsonHandler) {
 			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
@@ -221,6 +220,6 @@ public final class DebugLauncher {
 			remoteEndpoint.setJsonHandler(jsonHandler);
 			return remoteEndpoint;
 		}
-		
+
 	}
 }

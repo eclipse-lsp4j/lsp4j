@@ -101,8 +101,7 @@ public final class TypeUtils {
 	private static int capacity(int expectedSize) {
 		if (expectedSize < 3)
 			return expectedSize + 1;
-		else
-			return expectedSize + expectedSize / 3;
+		return expectedSize + expectedSize / 3;
 	}
 
 	private static Type getMappedType(Type type, Map<String, Type> varMapping) {
@@ -178,8 +177,7 @@ public final class TypeUtils {
 		private String toString(Type type) {
 			if (type instanceof Class<?>)
 				return ((Class<?>) type).getName();
-			else
-				return String.valueOf(type);
+			return String.valueOf(type);
 		}
 
 	}

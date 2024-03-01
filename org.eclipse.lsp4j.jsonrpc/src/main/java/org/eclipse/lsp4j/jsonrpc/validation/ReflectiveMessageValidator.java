@@ -179,8 +179,7 @@ public class ReflectiveMessageValidator implements MessageConsumer {
 		String methodName = method.getName();
 		if (methodName.startsWith("get") && methodName.length() > 3)
 			return methodName.substring(3, 4).toLowerCase() + methodName.substring(4);
-		else
-			return methodName;
+		return methodName;
 	}
 
 }

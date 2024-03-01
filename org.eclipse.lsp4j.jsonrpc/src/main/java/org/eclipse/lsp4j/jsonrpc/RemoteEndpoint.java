@@ -255,9 +255,8 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 							LOG.warning("Unmatched cancel notification for request id " + id);
 					}
 					return true;
-				} else {
-					LOG.warning("Cancellation support is disabled, since the '" + MessageJsonHandler.CANCEL_METHOD.getMethodName() + "' method has been registered explicitly.");
 				}
+				LOG.warning("Cancellation support is disabled, since the '" + MessageJsonHandler.CANCEL_METHOD.getMethodName() + "' method has been registered explicitly.");
 			} else {
 				LOG.warning("Missing 'params' attribute of cancel notification.");
 			}
@@ -279,8 +278,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			out.consume(createErrorResponseMessage(requestMessage, errorObject));
 			if (throwable instanceof Error)
 				throw (Error) throwable;
-			else
-				return;
+			return;
 		}
 
 		final String messageId = requestMessage.getId();
