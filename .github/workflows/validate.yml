@@ -1,18 +1,44 @@
-on: [ pull_request, push]
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+name: Validate
+
+on:
+  push:
+    branches-ignore:  # build all branches except:
+    - 'dependabot/**'  # prevent workflow being triggered twice (once for commit to the branch and once for opening/syncing the PR)
+    tags-ignore: # don't build tags
+    - '**'
+    paths-ignore:
+    - '**/*.md'
+    - '.editorconfig'
+    - '.git*'
+    - '.github/*.yml'
+  pull_request:
+    paths-ignore:
+    - '**/*.md'
+    - '.editorconfig'
+    - '.git*'
+    - '.github/*.yml'
+  workflow_dispatch:  # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+
     steps:
-    - uses: actions/checkout@v3
+    - name: Git Checkout
+      uses: actions/checkout@v4  # https://github.com/actions/checkout
+
     - name: Set up JDK 11 ☕
       uses: actions/setup-java@v3
       with:
         java-version: 11
         distribution: 'temurin'
+        cache: gradle
+
     - name: Build with Gradle 🏗️
       run: ./gradlew build
