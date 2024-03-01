@@ -21,23 +21,23 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 public class Either3<T1, T2, T3> extends Either<T1, Either<T2, T3>> {
 	
 	public static <T1, T2, T3> Either3<T1, T2, T3> forFirst(@NonNull T1 first) {
-		return new Either3<T1, T2, T3>(first, null);
+		return new Either3<>(first, null);
 	}
 
 	public static <T1, T2, T3> Either3<T1, T2, T3> forSecond(@NonNull T2 second) {
-		return new Either3<T1, T2, T3>(null, new Either<T2, T3>(second, null));
+		return new Either3<>(null, new Either<>(second, null));
 	}
 	
 	public static <T1, T2, T3> Either3<T1, T2, T3> forThird(@NonNull T3 third) {
-		return new Either3<T1, T2, T3>(null, new Either<T2, T3>(null, third));
+		return new Either3<>(null, new Either<>(null, third));
 	}
 	
 	public static <T1, T2, T3> Either3<T1, T2, T3> forLeft3(@NonNull T1 first) {
-		return new Either3<T1, T2, T3>(first, null);
+		return new Either3<>(first, null);
 	}
 	
 	public static <T1, T2, T3> Either3<T1, T2, T3> forRight3(@NonNull Either<T2, T3> right) {
-		return new Either3<T1, T2, T3>(null, right);
+		return new Either3<>(null, right);
 	}
 
 	protected Either3(T1 left, Either<T2, T3> right) {

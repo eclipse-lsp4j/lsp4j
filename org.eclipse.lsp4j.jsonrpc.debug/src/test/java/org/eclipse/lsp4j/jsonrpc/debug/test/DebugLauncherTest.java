@@ -89,7 +89,7 @@ public class DebugLauncherTest {
 			}
 		};
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		TypeAdapter<Param> typeAdapter = new TypeAdapter<Param>() {
+		TypeAdapter<Param> typeAdapter = new TypeAdapter<>() {
 			@Override
 			public void write(JsonWriter out, Param value) throws IOException {
 				out.beginObject();

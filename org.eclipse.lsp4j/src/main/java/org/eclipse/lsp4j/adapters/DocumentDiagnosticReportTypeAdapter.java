@@ -35,7 +35,7 @@ public class DocumentDiagnosticReportTypeAdapter implements TypeAdapterFactory {
 	public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
 		Predicate<JsonElement> leftChecker = new PropertyChecker("kind", "full");
 		Predicate<JsonElement> rightChecker = new PropertyChecker("kind", "unchanged");
-		return (TypeAdapter<T>) new EitherTypeAdapter<RelatedFullDocumentDiagnosticReport, RelatedUnchangedDocumentDiagnosticReport>(
+		return (TypeAdapter<T>) new EitherTypeAdapter<>(
 				gson, ELEMENT_TYPE, leftChecker, rightChecker) {
 
 			@Override

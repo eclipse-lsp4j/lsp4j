@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
 public class DocumentSymbolResponseAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either<SymbolInformation, DocumentSymbol>> ELEMENT_TYPE
-			= new TypeToken<Either<SymbolInformation, DocumentSymbol>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

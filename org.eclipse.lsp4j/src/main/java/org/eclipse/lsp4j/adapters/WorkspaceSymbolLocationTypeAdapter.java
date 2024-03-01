@@ -25,7 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class WorkspaceSymbolLocationTypeAdapter implements TypeAdapterFactory {
 	private static final TypeToken<Either<Location, WorkspaceSymbolLocation>> ELEMENT_TYPE
-			= new TypeToken<Either<Location, WorkspaceSymbolLocation>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

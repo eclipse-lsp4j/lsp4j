@@ -30,10 +30,10 @@ import com.google.gson.reflect.TypeToken;
 public class PrepareRenameResponseAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either3<Range, PrepareRenameResult, PrepareRenameDefaultBehavior>> ELEMENT_TYPE
-			= new TypeToken<Either3<Range, PrepareRenameResult, PrepareRenameDefaultBehavior>>() {};
+			= new TypeToken<>() {};
 
 	private static final TypeToken<Either<PrepareRenameResult, PrepareRenameDefaultBehavior>> R_ELEMENT_TYPE
-			= new TypeToken<Either<PrepareRenameResult, PrepareRenameDefaultBehavior>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

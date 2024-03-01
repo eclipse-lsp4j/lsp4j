@@ -38,7 +38,7 @@ public class WorkspaceDocumentDiagnosticReportListAdapter implements TypeAdapter
 		Predicate<JsonElement> leftChecker = new PropertyChecker("kind", "full");
 		Predicate<JsonElement> rightChecker = new PropertyChecker("kind", "unchanged");
 		EitherTypeAdapter<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport> elementTypeAdapter =
-				new EitherTypeAdapter<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport>(
+				new EitherTypeAdapter<>(
 						gson, ELEMENT_TYPE, leftChecker, rightChecker) {
 			@Override
 			protected WorkspaceDocumentDiagnosticReport createLeft(WorkspaceFullDocumentDiagnosticReport obj) throws IOException {

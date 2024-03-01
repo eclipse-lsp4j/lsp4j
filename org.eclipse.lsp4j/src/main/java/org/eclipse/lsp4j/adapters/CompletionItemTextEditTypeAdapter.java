@@ -25,7 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class CompletionItemTextEditTypeAdapter implements TypeAdapterFactory {
 	private static final TypeToken<Either<TextEdit, InsertReplaceEdit>> ELEMENT_TYPE
-			= new TypeToken<Either<TextEdit, InsertReplaceEdit>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

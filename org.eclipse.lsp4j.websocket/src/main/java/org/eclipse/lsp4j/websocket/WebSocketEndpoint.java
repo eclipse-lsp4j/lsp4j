@@ -30,7 +30,7 @@ public abstract class WebSocketEndpoint<T> extends Endpoint {
 	
 	@Override
 	public void onOpen(Session session, EndpointConfig config) {
-		WebSocketLauncherBuilder<T> builder = new WebSocketLauncherBuilder<T>();
+		WebSocketLauncherBuilder<T> builder = new WebSocketLauncherBuilder<>();
 		builder.setSession(session);
 		configure(builder);
 		Launcher<T> launcher = builder.create();

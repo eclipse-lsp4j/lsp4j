@@ -31,7 +31,7 @@ import com.google.gson.reflect.TypeToken;
 public class DocumentChangeListAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either<TextDocumentEdit, ResourceOperation>> ELEMENT_TYPE
-			= new TypeToken<Either<TextDocumentEdit, ResourceOperation>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

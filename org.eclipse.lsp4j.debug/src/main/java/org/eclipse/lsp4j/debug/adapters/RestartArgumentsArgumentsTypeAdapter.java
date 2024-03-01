@@ -27,7 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class RestartArgumentsArgumentsTypeAdapter implements TypeAdapterFactory {
 
-	private static final TypeToken<Either<LaunchRequestArguments, AttachRequestArguments>> ELEMENT_TYPE = new TypeToken<Either<LaunchRequestArguments, AttachRequestArguments>>() {
+	private static final TypeToken<Either<LaunchRequestArguments, AttachRequestArguments>> ELEMENT_TYPE = new TypeToken<>() {
 	};
 
 	@SuppressWarnings("unchecked")

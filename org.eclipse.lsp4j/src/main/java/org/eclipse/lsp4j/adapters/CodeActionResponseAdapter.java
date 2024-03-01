@@ -31,7 +31,7 @@ import com.google.gson.reflect.TypeToken;
 public class CodeActionResponseAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either<Command, CodeAction>> ELEMENT_TYPE
-			= new TypeToken<Either<Command, CodeAction>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override
