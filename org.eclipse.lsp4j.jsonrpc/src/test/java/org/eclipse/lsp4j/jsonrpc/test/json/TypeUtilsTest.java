@@ -43,7 +43,7 @@ public class TypeUtilsTest {
 		assertElementTypes(token, Collection.class, Number.class);
 	}
 	
-	private static interface MyCollection extends Collection<String> {
+	private interface MyCollection extends Collection<String> {
 	}
 	
 	@Test

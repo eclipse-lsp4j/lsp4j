@@ -13,10 +13,10 @@ package org.eclipse.lsp4j.jsonrpc.json;
 
 public interface MessageConstants {
 	
-	public static String JSONRPC_VERSION = "2.0";
-	public static String CONTENT_LENGTH_HEADER = "Content-Length";
-	public static String CONTENT_TYPE_HEADER = "Content-Type";
-	public static String JSON_MIME_TYPE = "application/json";
-	public static String CRLF = "\r\n";
+	String JSONRPC_VERSION = "2.0";
+	String CONTENT_LENGTH_HEADER = "Content-Length";
+	String CONTENT_TYPE_HEADER = "Content-Type";
+	String JSON_MIME_TYPE = "application/json";
+	String CRLF = "\r\n";
 
 }

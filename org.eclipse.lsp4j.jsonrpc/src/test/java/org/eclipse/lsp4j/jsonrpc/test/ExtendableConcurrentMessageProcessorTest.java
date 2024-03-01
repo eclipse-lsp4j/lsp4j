@@ -135,12 +135,12 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 * Server and client interfaces are below, along with any parameters required
 	 */
 
-	public static interface MyServer {
+	public interface MyServer {
 		@JsonRequest
 		CompletableFuture<MyParam> askServer(MyParam param);
 	}
 	
-	public static interface MyClient {
+	public interface MyClient {
 		@JsonRequest
 		CompletableFuture<MyParam> askClient(MyParam param);
 	}

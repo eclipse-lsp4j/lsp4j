@@ -38,39 +38,31 @@ public class EndpointsTest {
 	private static final long TIMEOUT = 2000;
 	
 	@JsonSegment("foo")
-	public static interface Foo {
-		@JsonRequest
-		public CompletableFuture<String> doStuff(String arg);
+	public interface Foo {
+		@JsonRequest CompletableFuture<String> doStuff(String arg);
 		
-		@JsonNotification
-		public void myNotification(String someArg);
+		@JsonNotification void myNotification(String someArg);
 		
-		@JsonDelegate
-		public Delegated getDelegate();
+		@JsonDelegate Delegated getDelegate();
 	}
 	
-	public static interface Delegated {
+	public interface Delegated {
 		
-		@JsonNotification("hubba")
-		public void myNotification(String someArg);
+		@JsonNotification("hubba") void myNotification(String someArg);
 	}
 	
 	@JsonSegment("bar")
-	public static interface Bar {
-		@JsonRequest
-		public CompletableFuture<String> doStuff2(String arg, Integer arg2);
+	public interface Bar {
+		@JsonRequest CompletableFuture<String> doStuff2(String arg, Integer arg2);
 		
-		@JsonNotification
-		public void myNotification2(String someArg, Integer someArg2);
+		@JsonNotification void myNotification2(String someArg, Integer someArg2);
 		
-		@JsonDelegate
-		public BarDelegated getDelegate2();
+		@JsonDelegate BarDelegated getDelegate2();
 	}
 	
-	public static interface BarDelegated {
+	public interface BarDelegated {
 		
-		@JsonNotification("hubba")
-		public void myNotification(String someArg, Integer someArg2);
+		@JsonNotification("hubba") void myNotification(String someArg, Integer someArg2);
 	}
 
 	@Test public void testProxy_01() throws Exception {
@@ -219,7 +211,7 @@ public class EndpointsTest {
 	}
 	
 	@JsonSegment("consumer")
-	public static interface StringConsumer extends Consumer<String> {
+	public interface StringConsumer extends Consumer<String> {
 		@JsonNotification
 		@Override
 		void accept(String message);

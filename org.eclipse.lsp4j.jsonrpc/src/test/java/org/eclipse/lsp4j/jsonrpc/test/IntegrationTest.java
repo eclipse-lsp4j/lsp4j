@@ -100,12 +100,12 @@ public class IntegrationTest {
 		}
 	}
 
-	public static interface MyServer {
+	public interface MyServer {
 		@JsonRequest
 		CompletableFuture<MyParam> askServer(MyParam param);
 	}
 
-	public static interface MyVoidServer {
+	public interface MyVoidServer {
 		@JsonRequest
 		CompletableFuture<Void> askServer(MyParam param);
 	}
@@ -117,7 +117,7 @@ public class IntegrationTest {
 		}
 	};
 
-	public static interface MyClient {
+	public interface MyClient {
 		@JsonRequest
 		CompletableFuture<MyParam> askClient(MyParam param);
 	}
@@ -634,7 +634,7 @@ public class IntegrationTest {
 		}
 	}
 	
-	public static interface UnexpectedParamsTestServer {
+	public interface UnexpectedParamsTestServer {
 		@JsonNotification
 		void myNotification();
 	}
