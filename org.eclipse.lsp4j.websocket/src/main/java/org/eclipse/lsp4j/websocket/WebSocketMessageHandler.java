@@ -36,6 +36,7 @@ public class WebSocketMessageHandler implements MessageHandler.Whole<String> {
 		this.issueHandler = issueHandler;
 	}
 	
+	@Override
 	public void onMessage(String content) {
 		try {
 			Message message = jsonHandler.parseMessage(content);

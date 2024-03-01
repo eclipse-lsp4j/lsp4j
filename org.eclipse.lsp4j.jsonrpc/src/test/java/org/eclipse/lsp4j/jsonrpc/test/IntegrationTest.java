@@ -657,6 +657,7 @@ public class IntegrationTest {
 			ByteArrayInputStream in = new ByteArrayInputStream(clientMessages.getBytes());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			UnexpectedParamsTestServer server = new UnexpectedParamsTestServer() {
+				@Override
 				public void myNotification() {
 				}
 			};

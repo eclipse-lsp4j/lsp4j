@@ -107,6 +107,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 		return wrapFuture(result, messageProducer);
 	}
 
+	@Override
 	public void run() {
 		processingStarted();
 		try {
