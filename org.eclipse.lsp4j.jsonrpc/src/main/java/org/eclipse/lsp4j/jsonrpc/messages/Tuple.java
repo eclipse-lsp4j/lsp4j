@@ -3,18 +3,17 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 /**
  * Representation of tuple types.
  */
-@SuppressWarnings("all")
 public interface Tuple {
 
 	static <F, S> Two<F, S> two(F first, S second) {
 		return new Two<>(first, second);
 	}
-	
+
 	/**
 	 * A two-tuple, i.e. a pair.
 	 */
 	public static class Two<F extends Object, S extends Object> implements Tuple {
-		
+
 		private final F first;
 		private final S second;
 
@@ -39,7 +38,7 @@ public interface Tuple {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Tuple.Two<?, ?> other = (Tuple.Two<?, ?>) obj;
+			final var other = (Tuple.Two<?, ?>) obj;
 			if (this.first == null) {
 				if (other.first != null)
 					return false;
@@ -63,11 +62,11 @@ public interface Tuple {
 
 		@Override
 		public String toString() {
-			StringBuilder builder = new StringBuilder("Tuples.Two [").append(System.lineSeparator());
+			final var builder = new StringBuilder("Tuples.Two [").append(System.lineSeparator());
 			builder.append("  first = ").append(first).append(System.lineSeparator());
 			builder.append("  second = ").append(second).append(System.lineSeparator());
 			return builder.append("]").toString();
 		}
 	}
-	
+
 }
