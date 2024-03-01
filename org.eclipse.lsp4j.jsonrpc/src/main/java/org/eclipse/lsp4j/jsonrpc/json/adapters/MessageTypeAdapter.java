@@ -144,9 +144,8 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 				Message message = createMessage(jsonrpc, id, method, rawParams, rawResult, responseError);
 				final var issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
 				throw new MessageIssueException(message, issue);
-			} else {
-				throw exception;
 			}
+			throw exception;
 		}
 	}
 

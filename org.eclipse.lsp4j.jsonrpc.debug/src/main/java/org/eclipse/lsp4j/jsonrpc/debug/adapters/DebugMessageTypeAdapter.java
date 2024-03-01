@@ -261,9 +261,8 @@ public class DebugMessageTypeAdapter extends MessageTypeAdapter {
 				Message resultMessage = createMessage(messageType, seq, request_seq, method, success, message, rawParams, rawBody);
 				MessageIssue issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), exception);
 				throw new MessageIssueException(resultMessage, issue);
-			} else {
-				throw exception;
 			}
+			throw exception;
 		}
 	}
 

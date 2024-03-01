@@ -52,16 +52,14 @@ public class Either3<T1, T2, T3> extends Either<T1, Either<T2, T3>> {
 		Either<T2, T3> right = getRight();
 		if (right == null)
 			return null;
-		else
-			return right.getLeft();
+		return right.getLeft();
 	}
 
 	public T3 getThird() {
 		Either<T2, T3> right = getRight();
 		if (right == null)
 			return null;
-		else
-			return right.getRight();
+		return right.getRight();
 	}
 
 	@Override

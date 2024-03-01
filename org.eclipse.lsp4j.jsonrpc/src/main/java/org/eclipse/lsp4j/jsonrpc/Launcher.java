@@ -338,8 +338,7 @@ public interface Launcher<T> {
 			Map<String, JsonRpcMethod> supportedMethods = getSupportedMethods();
 			if (configureGson != null)
 				return new MessageJsonHandler(supportedMethods, configureGson);
-			else
-				return new MessageJsonHandler(supportedMethods);
+			return new MessageJsonHandler(supportedMethods);
 		}
 
 		/**
@@ -366,9 +365,8 @@ public interface Launcher<T> {
 		protected T createProxy(RemoteEndpoint remoteEndpoint) {
 			if (localServices.size() == 1 && remoteInterfaces.size() == 1) {
 				return ServiceEndpoints.toServiceObject(remoteEndpoint, remoteInterfaces.iterator().next());
-			} else {
-				return (T) ServiceEndpoints.toServiceObject(remoteEndpoint, (Collection<Class<?>>) (Object) remoteInterfaces, classLoader);
 			}
+			return (T) ServiceEndpoints.toServiceObject(remoteEndpoint, (Collection<Class<?>>) (Object) remoteInterfaces, classLoader);
 		}
 
 		/**

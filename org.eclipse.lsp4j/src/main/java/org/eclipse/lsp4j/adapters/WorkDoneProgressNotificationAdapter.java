@@ -99,9 +99,8 @@ public class WorkDoneProgressNotificationAdapter extends TypeAdapter<WorkDonePro
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
 			if (kind != null) {
 				throw new JsonParseException(exception);
-			} else {
-				throw exception;
 			}
+			throw exception;
 		}
 	}
 
