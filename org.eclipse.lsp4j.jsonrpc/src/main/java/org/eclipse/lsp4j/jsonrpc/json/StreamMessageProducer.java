@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
@@ -14,6 +14,8 @@ package org.eclipse.lsp4j.jsonrpc.json;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,7 @@ import org.eclipse.lsp4j.jsonrpc.MessageIssueException;
 import org.eclipse.lsp4j.jsonrpc.MessageIssueHandler;
 import org.eclipse.lsp4j.jsonrpc.MessageProducer;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.util.LimitedInputStream;
 
 /**
  * A message producer that reads from an input stream and parses messages from JSON.
@@ -43,7 +46,7 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	public StreamMessageProducer(InputStream input, MessageJsonHandler jsonHandler) {
 		this(input, jsonHandler, null);
 	}
-	
+
 	public StreamMessageProducer(InputStream input, MessageJsonHandler jsonHandler, MessageIssueHandler issueHandler) {
 		this.input = input;
 		this.jsonHandler = jsonHandler;
@@ -133,7 +136,7 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 		String message = error.getMessage() != null ? error.getMessage() : "An error occurred while processing an incoming message.";
 		LOG.log(Level.SEVERE, message, error);
 	}
-	
+
 	/**
 	 * Report that the stream was closed through an exception.
 	 */
@@ -169,27 +172,15 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 
 	/**
 	 * Read the JSON content part of a message, parse it, and notify the callback.
-	 * 
+	 *
 	 * @return {@code true} if we should continue reading from the input stream, {@code false} if we should stop
 	 */
 	protected boolean handleMessage(InputStream input, Headers headers) throws IOException {
 		if (callback == null)
 			callback = message -> LOG.log(Level.INFO, "Received message: " + message);
-		
+
 		try {
-			int contentLength = headers.contentLength;
-			byte[] buffer = new byte[contentLength];
-			int bytesRead = 0;
-
-			while (bytesRead < contentLength) {
-				int readResult = input.read(buffer, bytesRead, contentLength - bytesRead);
-				if (readResult == -1)
-					return false;
-				bytesRead += readResult;
-			}
-
-			String content = new String(buffer, headers.charset);
-			try {
+			try (final Reader content = new InputStreamReader(new LimitedInputStream(input, headers.contentLength, false), headers.charset)) {
 				Message message = jsonHandler.parseMessage(content);
 				callback.consume(message);
 			} catch (MessageIssueException exception) {
