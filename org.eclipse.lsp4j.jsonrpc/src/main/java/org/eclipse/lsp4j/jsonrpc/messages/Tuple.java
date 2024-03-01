@@ -7,7 +7,7 @@ package org.eclipse.lsp4j.jsonrpc.messages;
 public interface Tuple {
 
 	static <F, S> Two<F, S> two(F first, S second) {
-		return new Two<F, S>(first, second);
+		return new Two<>(first, second);
 	}
 	
 	/**

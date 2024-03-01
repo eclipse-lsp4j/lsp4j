@@ -41,8 +41,8 @@ public class DebugEnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
 
 	}
 
-	private final Map<String, T> serializedFormToEnum = new HashMap<String, T>();
-	private final Map<T, String> enumToSerializedForm = new HashMap<T, String>();
+	private final Map<String, T> serializedFormToEnum = new HashMap<>();
+	private final Map<T, String> enumToSerializedForm = new HashMap<>();
 
 	public DebugEnumTypeAdapter(Class<T> clazz) {
 		try {

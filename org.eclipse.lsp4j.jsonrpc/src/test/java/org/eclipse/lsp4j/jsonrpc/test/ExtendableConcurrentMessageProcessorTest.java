@@ -92,11 +92,11 @@ public class ExtendableConcurrentMessageProcessorTest {
 	 * The custom builder to be used when creating a launcher
 	 */
 	static <T> Builder<T> createBuilder(MessageContextStore<T> store) {
-		return new Builder<T>() {
+		return new Builder<>() {
 			@Override
 			protected ConcurrentMessageProcessor createMessageProcessor(MessageProducer reader, 
 					MessageConsumer messageConsumer, T remoteProxy) {
-				return new CustomConcurrentMessageProcessor<T>(reader, messageConsumer, remoteProxy, store);
+				return new CustomConcurrentMessageProcessor<>(reader, messageConsumer, remoteProxy, store);
 			}
 		};
 	}
@@ -120,7 +120,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 		protected void processingStarted() {
 			super.processingStarted();
 			if (threadMap != null) {
-				threadMap.setContext(new MessageContext<T>(remoteProxy));
+				threadMap.setContext(new MessageContext<>(remoteProxy));
 			}
 		}
 

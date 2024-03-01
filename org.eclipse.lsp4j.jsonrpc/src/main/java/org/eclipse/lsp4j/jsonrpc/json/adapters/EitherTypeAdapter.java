@@ -150,8 +150,8 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			TypeAdapter<L> leftAdapter, TypeAdapter<R> rightAdapter) {
 		this.typeToken = typeToken;
 		Type[] elementTypes = TypeUtils.getElementTypes(typeToken, Either.class);
-		this.left = new EitherTypeArgument<L>(gson, elementTypes[0], leftAdapter);
-		this.right = new EitherTypeArgument<R>(gson, elementTypes[1], rightAdapter);
+		this.left = new EitherTypeArgument<>(gson, elementTypes[0], leftAdapter);
+		this.right = new EitherTypeArgument<>(gson, elementTypes[1], rightAdapter);
 		this.leftChecker = leftChecker;
 		this.rightChecker = rightChecker;
 	}

@@ -32,10 +32,10 @@ import com.google.gson.reflect.TypeToken;
 public class InlineValueResponseAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<Either3<InlineValueText, InlineValueVariableLookup, InlineValueEvaluatableExpression>> ELEMENT_TYPE
-		= new TypeToken<Either3<InlineValueText, InlineValueVariableLookup, InlineValueEvaluatableExpression>>() {};
+		= new TypeToken<>() {};
 
 	private static final TypeToken<Either<InlineValueVariableLookup, InlineValueEvaluatableExpression>> R_ELEMENT_TYPE
-		= new TypeToken<Either<InlineValueVariableLookup, InlineValueEvaluatableExpression>>() {};
+		= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -224,7 +224,7 @@ public class MessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<MyEnum, Map<String,String>>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
@@ -242,7 +242,7 @@ public class MessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<Either<MyEnum, Map<String,String>>, List<Either<MyEnum, Map<String,String>>>>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 
@@ -296,7 +296,7 @@ public class MessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<MyClass, List<? extends MyClass>>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 
@@ -325,7 +325,7 @@ public class MessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<List<MyClass>, MyClassList>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 

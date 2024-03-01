@@ -47,7 +47,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 	}
 
 	public static Future<Void> wrapFuture(Future<?> result, MessageProducer messageProducer) {
-		return new Future<Void>() {
+		return new Future<>() {
 
 			@Override
 			public Void get() throws InterruptedException, ExecutionException {

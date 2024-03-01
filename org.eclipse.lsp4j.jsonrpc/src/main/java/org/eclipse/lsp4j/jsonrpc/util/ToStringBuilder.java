@@ -34,10 +34,10 @@ public final class ToStringBuilder {
 
 		public final static ToStringContext INSTANCE = new ToStringContext();
 
-		private final static ThreadLocal<IdentityHashMap<Object, Boolean>> currentlyProcessed = new ThreadLocal<IdentityHashMap<Object, Boolean>>() {
+		private final static ThreadLocal<IdentityHashMap<Object, Boolean>> currentlyProcessed = new ThreadLocal<>() {
 			@Override
 			public IdentityHashMap<Object, Boolean> initialValue() {
-				return new IdentityHashMap<Object, Boolean>();
+				return new IdentityHashMap<>();
 			}
 		};
 
@@ -64,7 +64,7 @@ public final class ToStringBuilder {
 
 	private boolean prettyPrint = true;
 
-	private final List<Part> parts = new ArrayList<Part>();
+	private final List<Part> parts = new ArrayList<>();
 
 	/**
 	 * Creates a new ToStringBuilder for the given object. If you don't use reflection, then this instance

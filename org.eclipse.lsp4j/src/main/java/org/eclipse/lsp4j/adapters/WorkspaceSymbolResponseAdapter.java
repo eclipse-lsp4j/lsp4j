@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
 public class WorkspaceSymbolResponseAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>> EITHER_TYPE
-			= new TypeToken<Either<List<? extends SymbolInformation>, List<? extends WorkspaceSymbol>>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

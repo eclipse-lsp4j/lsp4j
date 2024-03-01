@@ -28,7 +28,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 public class SemanticTokensFullDeltaResponseAdapter implements TypeAdapterFactory {
 
     private static final TypeToken<Either<SemanticTokens, SemanticTokensDelta>> ELEMENT_TYPE
-        = new TypeToken<Either<SemanticTokens, SemanticTokensDelta>>() {};
+        = new TypeToken<>() {};
 
     @SuppressWarnings("unchecked")
     @Override

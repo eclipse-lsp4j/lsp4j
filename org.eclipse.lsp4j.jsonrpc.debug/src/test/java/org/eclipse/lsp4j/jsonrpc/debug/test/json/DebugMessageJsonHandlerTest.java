@@ -144,7 +144,7 @@ public class DebugMessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<Integer, Map<String,String>>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{"
@@ -164,7 +164,7 @@ public class DebugMessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<Either<Integer, Map<String,String>>, List<Either<Integer, Map<String,String>>>>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 
@@ -226,7 +226,7 @@ public class DebugMessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<MyClass, List<? extends MyClass>>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 
@@ -259,7 +259,7 @@ public class DebugMessageJsonHandlerTest {
 		Map<String, JsonRpcMethod> supportedMethods = new LinkedHashMap<>();
 		supportedMethods.put("foo", JsonRpcMethod.request("foo",
 				new TypeToken<Either<List<MyClass>, MyClassList>>() {}.getType(),
-				new TypeToken<Object>() {}.getType()));
+				new TypeToken<>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
 		handler.setMethodProvider(id -> "foo");
 

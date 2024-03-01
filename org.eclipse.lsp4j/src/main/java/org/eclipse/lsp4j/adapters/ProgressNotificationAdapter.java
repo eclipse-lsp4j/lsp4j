@@ -25,7 +25,7 @@ import com.google.gson.reflect.TypeToken;
 public class ProgressNotificationAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<Either<WorkDoneProgressNotification, Object>> ELEMENT_TYPE
-			= new TypeToken<Either<WorkDoneProgressNotification, Object>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

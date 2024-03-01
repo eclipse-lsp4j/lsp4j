@@ -86,7 +86,7 @@ public final class ServiceEndpoints {
 	 * Finds all Json RPC methods on a given type
 	 */
 	private static Map<String, JsonRpcMethod> getSupportedMethods(Class<?> type, Set<Class<?>> visitedTypes) {
-		Map<String, JsonRpcMethod> result = new LinkedHashMap<String, JsonRpcMethod>();
+		Map<String, JsonRpcMethod> result = new LinkedHashMap<>();
 		AnnotationUtil.findRpcMethods(type, visitedTypes, methodInfo -> {
 			JsonRpcMethod meth;
 			if (methodInfo.isNotification) {

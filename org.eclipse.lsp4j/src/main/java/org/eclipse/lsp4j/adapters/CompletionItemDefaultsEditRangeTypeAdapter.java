@@ -26,7 +26,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
 public class CompletionItemDefaultsEditRangeTypeAdapter implements TypeAdapterFactory {
-	private static final TypeToken<Either<Range, InsertReplaceRange>> ELEMENT_TYPE = new TypeToken<Either<Range, InsertReplaceRange>>() {
+	private static final TypeToken<Either<Range, InsertReplaceRange>> ELEMENT_TYPE = new TypeToken<>() {
 	};
 
 	@SuppressWarnings("unchecked")

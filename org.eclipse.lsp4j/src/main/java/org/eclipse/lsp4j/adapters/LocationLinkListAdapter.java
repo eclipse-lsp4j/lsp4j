@@ -17,7 +17,7 @@ import com.google.gson.reflect.TypeToken;
 public class LocationLinkListAdapter implements TypeAdapterFactory {
 	
 	private static final TypeToken<Either<List<? extends Location>, List<? extends LocationLink>>> EITHER_TYPE
-			= new TypeToken<Either<List<? extends Location>, List<? extends LocationLink>>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override

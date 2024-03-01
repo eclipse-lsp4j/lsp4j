@@ -203,7 +203,7 @@ public interface Launcher<T> {
 	static Launcher<Object> createIoLauncher(Collection<Object> localServices, Collection<Class<?>> remoteInterfaces, ClassLoader classLoader,
 			InputStream in, OutputStream out, ExecutorService executorService, Function<MessageConsumer, MessageConsumer> wrapper,
 			Consumer<GsonBuilder> configureGson) {
-		return new Builder<Object>()
+		return new Builder<>()
 				.setLocalServices(localServices)
 				.setRemoteInterfaces(remoteInterfaces)
 				.setClassLoader(classLoader)
@@ -381,7 +381,7 @@ public interface Launcher<T> {
 		
 		protected Launcher<T> createLauncher(ExecutorService execService, T remoteProxy, RemoteEndpoint remoteEndpoint,
 				ConcurrentMessageProcessor msgProcessor) {
-			return new StandardLauncher<T>(execService, remoteProxy, remoteEndpoint, msgProcessor);
+			return new StandardLauncher<>(execService, remoteProxy, remoteEndpoint, msgProcessor);
 		}
 		
 		protected MessageConsumer wrapMessageConsumer(MessageConsumer consumer) {
