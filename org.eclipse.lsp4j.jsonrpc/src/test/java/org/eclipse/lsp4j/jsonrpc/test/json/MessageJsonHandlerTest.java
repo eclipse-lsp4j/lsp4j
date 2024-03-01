@@ -176,7 +176,7 @@ public class MessageJsonHandlerTest {
 			@Override
 			public String format(Object object) {
 				throw new JsonIOException("TEST");
-			};
+			}
 		};
 		message.setJsonHandler(handler);
 		Assert.assertEquals("NotificationMessage [\n"

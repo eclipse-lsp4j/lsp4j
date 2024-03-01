@@ -110,7 +110,7 @@ public class MockSession implements Session {
 					((MessageHandler.Whole<String>) h).onMessage(wholeMessage);
 				else
 					((MessageHandler.Partial<String>) h).onMessage(message, true);
-			};
+			}
 		} else {
 			if (partialMessage == null) {
 				partialMessage = new StringBuilder();
@@ -118,7 +118,7 @@ public class MockSession implements Session {
 			for (MessageHandler h : connectedSession.messageHandlers) {
 				if (h instanceof MessageHandler.Partial<?>)
 					((MessageHandler.Partial<String>) h).onMessage(message, false);
-			};
+			}
 			partialMessage.append(message);
 		}
 	}

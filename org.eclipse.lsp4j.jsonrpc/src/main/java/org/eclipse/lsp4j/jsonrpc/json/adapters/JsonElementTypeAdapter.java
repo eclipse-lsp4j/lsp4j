@@ -61,7 +61,7 @@ public class JsonElementTypeAdapter extends TypeAdapter<Object> {
 		} else if (value instanceof JsonElement) {
 			adapter.write(out, (JsonElement) value);
 		} else {
-			gson.toJson(value, value.getClass(), out);;
+			gson.toJson(value, value.getClass(), out);
 		}
 	}
 

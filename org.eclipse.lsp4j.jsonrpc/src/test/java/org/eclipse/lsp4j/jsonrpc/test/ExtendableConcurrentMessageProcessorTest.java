@@ -194,7 +194,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 				TestContextWrapper.setError(false);
 			return CompletableFuture.completedFuture(param);
 		}
-	};
+	}
 
 	
 	public static class MyClientImpl implements MyClient {
@@ -202,7 +202,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 		public CompletableFuture<MyParam> askClient(MyParam param) {
 			return CompletableFuture.completedFuture(param);
 		}
-	};
+	}
 	
 	
 	/*
@@ -246,7 +246,7 @@ public class ExtendableConcurrentMessageProcessorTest {
 			public T getRemoteProxy() {
 				return this.remoteProxy;
 			}
-		};
+		}
 	}
 	
 	/*
