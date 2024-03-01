@@ -19,11 +19,11 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull;
 public class MessageIssue {
 
 	@NonNull
-	private String text;
+	private final String text;
 
-	private int code;
+	private final int code;
 	
-	private Exception cause;
+	private final Exception cause;
 	
 	public MessageIssue(@NonNull String text) {
 		this(text, 0, null);
