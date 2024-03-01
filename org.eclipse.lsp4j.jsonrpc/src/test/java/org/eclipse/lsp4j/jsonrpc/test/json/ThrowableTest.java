@@ -35,7 +35,7 @@ public class ThrowableTest {
 
 	protected void assertParse(MyObjectA expected, String string) {
 		Gson gson = createGson();
-		MyObjectA actual = (MyObjectA)gson.fromJson(string, expected.getClass());
+		MyObjectA actual = gson.fromJson(string, expected.getClass());
 		Assert.assertEquals(expected.otherProperty, actual.otherProperty);
 		assertEquals(expected.myThrowable, actual.myThrowable);
 	}
