@@ -73,7 +73,7 @@ public class DebugEnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
 			m.appendReplacement(sb, m.group().toUpperCase());
 		}
 		m.appendTail(sb);
-		return sb.toString().replaceAll("_", "");
+		return sb.toString().replace("_", "");
 	}
 
 	@Override
