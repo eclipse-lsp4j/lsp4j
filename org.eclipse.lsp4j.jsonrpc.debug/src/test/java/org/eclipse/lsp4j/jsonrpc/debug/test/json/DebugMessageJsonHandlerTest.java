@@ -59,7 +59,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<List<? extends Entry>>() {}.getType(),
 				new TypeToken<List<? extends Entry>>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
@@ -86,7 +86,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Set<Entry>>() {}.getType(),
 				new TypeToken<Set<Entry>>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
@@ -113,7 +113,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Either<String, List<Map<String,String>>>>() {}.getType(),
 				new TypeToken<Either<String, Integer>>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
@@ -146,7 +146,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Either<Integer, Map<String,String>>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"response\",\n"
@@ -166,7 +166,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Either<Either<Integer, Map<String,String>>, List<Either<Integer, Map<String,String>>>>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -228,7 +228,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Either<MyClass, List<? extends MyClass>>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -261,7 +261,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Either<List<MyClass>, MyClassList>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		Message message = handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -294,7 +294,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"request\",\n"
@@ -313,7 +313,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -331,7 +331,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -349,7 +349,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -368,7 +368,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -392,7 +392,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -412,7 +412,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -438,7 +438,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -463,7 +463,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -487,7 +487,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -507,7 +507,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -533,7 +533,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
@@ -557,7 +557,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<List<MyDebugEnum>>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		RequestMessage message = (RequestMessage) handler.parseMessage("{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"request\",\n"
@@ -643,7 +643,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Location>() {
 				}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"seq\":2",
 				"\"type\":\"request\"",
@@ -667,7 +667,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {
 				}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"seq\":2",
 				"\"type\":\"response\"",
@@ -693,7 +693,7 @@ public class DebugMessageJsonHandlerTest {
                 new TypeToken<Void>() {
                 }.getType()));
         DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-        handler.setMethodProvider((id) -> "foo");
+        handler.setMethodProvider(id -> "foo");
         String[] properties = new String[] {
                 "\"seq\":2",
                 "\"type\":\"response\"",
@@ -720,7 +720,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {
 				}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"seq\":2",
 				"\"type\":\"response\"",
@@ -748,7 +748,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Location>() {
 				}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"seq\":2",
 				"\"type\":\"event\"",
@@ -772,7 +772,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {
 				}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"seq\":2",
 				"\"type\":\"response\"",
@@ -798,7 +798,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String input = "{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"request\",\n"
@@ -827,7 +827,7 @@ public class DebugMessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String input = "{"
 				+ "\"seq\":2,\n"
 				+ "\"type\":\"request\",\n"
@@ -855,7 +855,7 @@ public class DebugMessageJsonHandlerTest {
 		}.getType(), new TypeToken<Void>() {
 		}.getType()));
 		DebugMessageJsonHandler handler = new DebugMessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		String bodyField = "";
 		if (body != null) {

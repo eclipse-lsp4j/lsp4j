@@ -60,7 +60,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<? extends Entry>>() {}.getType(),
 				new TypeToken<List<? extends Entry>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n" 
 				+ " \"result\": [\n"
@@ -85,7 +85,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Set<Entry>>() {}.getType(),
 				new TypeToken<Set<Entry>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n" 
 				+ " \"result\": [\n"
@@ -109,7 +109,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<? extends Entry>>() {}.getType(),
 				new TypeToken<List<? extends Entry>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
 				+ " \"result\": null}");
@@ -124,7 +124,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<? extends Entry>>() {}.getType(),
 				new TypeToken<List<? extends Entry>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id)->"foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
 				+ " \"result\": []}");
@@ -197,7 +197,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Either<String, List<Map<String,String>>>>() {}.getType(),
 				new TypeToken<Either<String, Integer>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
 				+ " \"result\": [\n"
@@ -226,7 +226,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Either<MyEnum, Map<String,String>>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
 				+ "\"result\": 2\n"
@@ -244,7 +244,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Either<Either<MyEnum, Map<String,String>>, List<Either<MyEnum, Map<String,String>>>>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -298,7 +298,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Either<MyClass, List<? extends MyClass>>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -327,7 +327,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Either<List<MyClass>, MyClassList>>() {}.getType(),
 				new TypeToken<Object>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 
 		Message message = handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -356,7 +356,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -373,7 +373,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -390,7 +390,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -407,7 +407,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -425,7 +425,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -448,7 +448,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -467,7 +467,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -492,7 +492,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -516,7 +516,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -539,7 +539,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<String>() {}.getType(),
 				new TypeToken<Integer>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -558,7 +558,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -583,7 +583,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<List<Integer>>() {}.getType(),
 				new TypeToken<Location>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
@@ -606,7 +606,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<List<MyEnum>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
 				+ "\"params\": [1, 2, 3],\n"
@@ -626,7 +626,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {}.getType(),
 				new TypeToken<List<MyEnum>>() {}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		RequestMessage message = (RequestMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\","
 				+ "\"id\":\"2\",\n"
 				+ "\"params\": [1, 2, null],\n"
@@ -730,7 +730,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Location>() {
 				}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"jsonrpc\":\"2.0\"",
 				"\"id\":2",
@@ -754,7 +754,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {
 				}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"jsonrpc\":\"2.0\"",
 				"\"id\":2",
@@ -778,7 +778,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Void>() {
 				}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"jsonrpc\":\"2.0\"",
 				"\"id\":2",
@@ -804,7 +804,7 @@ public class MessageJsonHandlerTest {
 				new TypeToken<Location>() {
 				}.getType()));
 		MessageJsonHandler handler = new MessageJsonHandler(supportedMethods);
-		handler.setMethodProvider((id) -> "foo");
+		handler.setMethodProvider(id -> "foo");
 		String[] properties = new String[] {
 				"\"jsonrpc\":\"2.0\"",
 				"\"method\":\"foo\"",
@@ -985,7 +985,7 @@ public class MessageJsonHandlerTest {
 	private static MessageJsonHandler createSimpleRequestHandler(Class<?> returnType, Type... paramType) {
 		JsonRpcMethod requestMethod = JsonRpcMethod.request("testMethod", returnType, paramType);
 		MessageJsonHandler handler = new MessageJsonHandler(Map.of(requestMethod.getMethodName(), requestMethod));
-		handler.setMethodProvider((id) -> requestMethod.getMethodName());
+		handler.setMethodProvider(id -> requestMethod.getMethodName());
 		return handler;
 	}
 }

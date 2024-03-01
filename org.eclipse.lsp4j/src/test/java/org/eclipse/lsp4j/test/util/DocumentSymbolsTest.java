@@ -65,7 +65,7 @@ public class DocumentSymbolsTest {
 		Iterator<DocumentSymbol> iterator = DocumentSymbols.asIterator(depth0);
 		Iterable<DocumentSymbol> iterable = () -> iterator;
 		Stream<DocumentSymbol> stream = StreamSupport.stream(iterable.spliterator(), false);
-		List<String> actual = stream.map(symbol -> symbol.getName()).collect(toList());
+		List<String> actual = stream.map(DocumentSymbol::getName).collect(toList());
 		List<String> expected = Arrays.asList("root, A1", "B1", "C1", "A11", "A12", "B11", "B12", "C11", "C12");
 
 		Assert.assertEquals(Arrays.toString(expected.toArray()), Arrays.toString(actual.toArray()));

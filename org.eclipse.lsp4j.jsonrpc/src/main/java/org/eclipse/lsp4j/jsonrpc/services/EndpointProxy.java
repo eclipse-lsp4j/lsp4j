@@ -61,12 +61,12 @@ public class EndpointProxy implements InvocationHandler {
 		methodInfos = new LinkedHashMap<>();
 		delegatedSegments = new LinkedHashMap<>();
 		for (Class<?> interf : interfaces) {
-			AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), (methodInfo) -> {
+			AnnotationUtil.findRpcMethods(interf, new HashSet<Class<?>>(), methodInfo -> {
 				if (methodInfos.put(methodInfo.method.getName(), methodInfo) != null) {
 					throw new IllegalStateException("Duplicate RPC method " + methodInfo.method);
 				}
 			});
-			AnnotationUtil.findDelegateSegments(interf, new HashSet<Class<?>>(), (method) -> {
+			AnnotationUtil.findDelegateSegments(interf, new HashSet<Class<?>>(), method -> {
 				Object delegateProxy = ServiceEndpoints.toServiceObject(delegate, method.getReturnType());
 				DelegateInfo info = new DelegateInfo();
 				info.delegate = delegateProxy;

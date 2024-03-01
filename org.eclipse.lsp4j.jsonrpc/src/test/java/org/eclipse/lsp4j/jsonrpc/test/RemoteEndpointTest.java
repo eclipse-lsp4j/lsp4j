@@ -392,7 +392,7 @@ public class RemoteEndpointTest {
 			};
 			TestMessageConsumer consumer = new TestMessageConsumer();
 			// Misbehaving exception handler that returns null
-			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, (e) -> null);
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, e -> null);
 
 			endpoint.consume(init(new RequestMessage(), it -> {
 				it.setId("1");
@@ -441,7 +441,7 @@ public class RemoteEndpointTest {
 			};
 			TestMessageConsumer2 consumer = new TestMessageConsumer2();
 			// Misbehaving exception handler that returns null
-			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, (e) -> null);
+			RemoteEndpoint endpoint = new RemoteEndpoint(consumer, endp, e -> null);
 
 			endpoint.consume(init(new RequestMessage(), it -> {
 				it.setId("1");

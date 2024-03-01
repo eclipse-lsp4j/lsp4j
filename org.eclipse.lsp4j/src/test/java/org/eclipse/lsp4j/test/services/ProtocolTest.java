@@ -39,9 +39,7 @@ public class ProtocolTest {
 		LanguageServer languageServer = wrap(LanguageServer.class, new MockLanguageServer() {
 			@Override
 			public CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
-				return CompletableFutures.computeAsync(canceler -> {
-					return new ArrayList<>();
-				});
+				return CompletableFutures.computeAsync(canceler -> new ArrayList<>());
 			}
 		});
 		
@@ -55,9 +53,7 @@ public class ProtocolTest {
 		LanguageServer languageServer = wrap(LanguageServer.class, new MockLanguageServer() {
 			@Override
 			public CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
-				return CompletableFutures.computeAsync(canceler -> {
-					return null;
-				});
+				return CompletableFutures.computeAsync(canceler -> null);
 			}
 		});
 		

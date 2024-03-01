@@ -50,7 +50,7 @@ public class NullResponseTest implements LanguageServer {
 			Map<String, JsonRpcMethod> methods = ServiceEndpoints.getSupportedMethods(LanguageServer.class);
 			MessageJsonHandler handler = new MessageJsonHandler(methods);
 			List<Message> msgs = new ArrayList<>();
-			MessageConsumer consumer = (message) -> {
+			MessageConsumer consumer = message -> {
 				msgs.add(message);
 			};
 			RemoteEndpoint re = new RemoteEndpoint(consumer, endpoint);

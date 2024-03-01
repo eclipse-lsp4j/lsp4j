@@ -47,7 +47,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 
 	private static final Logger LOG = Logger.getLogger(RemoteEndpoint.class.getName());
 	
-	public static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = (throwable) -> {
+	public static final Function<Throwable, ResponseError> DEFAULT_EXCEPTION_HANDLER = throwable -> {
 		if (throwable instanceof ResponseErrorException) {
 			return ((ResponseErrorException) throwable).getResponseError();
 		} else if ((throwable instanceof CompletionException || throwable instanceof InvocationTargetException)
@@ -287,7 +287,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		synchronized (receivedRequestMap) {
 			receivedRequestMap.put(messageId, future);
 		}
-		future.thenAccept((result) -> {
+		future.thenAccept(result -> {
 			// Reply with the result object that was computed by the local endpoint 
 			out.consume(createResultResponseMessage(requestMessage, result));
 		}).exceptionally((Throwable t) -> {
@@ -306,7 +306,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			}
 			out.consume(responseMessage);
 			return null;
-		}).thenApply((obj) -> {
+		}).thenApply(obj -> {
 			synchronized (receivedRequestMap) {
 				receivedRequestMap.remove(messageId);
 			}

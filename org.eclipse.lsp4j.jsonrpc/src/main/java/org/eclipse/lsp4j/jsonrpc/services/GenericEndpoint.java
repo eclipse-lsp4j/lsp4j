@@ -56,9 +56,9 @@ public class GenericEndpoint implements Endpoint {
 	}
 
 	protected void recursiveFindRpcMethods(Object current, Set<Class<?>> visited, Set<Class<?>> visitedForDelegate) {
-		AnnotationUtil.findRpcMethods(current.getClass(), visited, (methodInfo) -> {
+		AnnotationUtil.findRpcMethods(current.getClass(), visited, methodInfo -> {
 			@SuppressWarnings("unchecked")
-			Function<Object, CompletableFuture<Object>> handler = (arg) -> {
+			Function<Object, CompletableFuture<Object>> handler = arg -> {
 				Method method = methodInfo.method;
 				Object[] arguments = this.getArguments(method, arg);
 				try {
@@ -79,7 +79,7 @@ public class GenericEndpoint implements Endpoint {
 				throw new IllegalStateException("Multiple methods for name " + methodInfo.name);
 			}
 		});
-		AnnotationUtil.findDelegateSegments(current.getClass(), visitedForDelegate, (method) -> {
+		AnnotationUtil.findDelegateSegments(current.getClass(), visitedForDelegate, method -> {
 			try {
 				Object delegate = method.invoke(current);
 				if (delegate != null) {

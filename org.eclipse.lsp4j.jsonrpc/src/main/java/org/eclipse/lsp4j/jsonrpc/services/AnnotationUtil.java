@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.jsonrpc.services;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Set;
@@ -113,7 +114,7 @@ public final class AnnotationUtil {
 	}
 
 	protected static Type[] getParameterTypes(Method method) {
-		return Arrays.stream(method.getParameters()).map(t -> t.getParameterizedType()).toArray(Type[]::new);
+		return Arrays.stream(method.getParameters()).map(Parameter::getParameterizedType).toArray(Type[]::new);
 	}
 	
 	static class MethodInfo {

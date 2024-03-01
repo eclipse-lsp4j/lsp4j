@@ -77,13 +77,13 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 				};
 			} catch (Exception e) {
 				if (SortedSet.class.isAssignableFrom(rawType))
-					return () -> new TreeSet<E>();
+					return TreeSet::new;
 				else if (Set.class.isAssignableFrom(rawType))
-					return () -> new LinkedHashSet<E>();
+					return LinkedHashSet::new;
 				else if (Queue.class.isAssignableFrom(rawType))
-					return () -> new LinkedList<E>();
+					return LinkedList::new;
 				else
-					return () -> new ArrayList<E>();
+					return ArrayList::new;
 			}
 		}
 
