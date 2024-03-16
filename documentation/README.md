@@ -33,7 +33,7 @@ if (myImpl instanceof LanguageClientAware) {
 
 Now your language server is not only able to receive messages from the other side, but can send messages back as well.
 
-The final thing you need to to do in order to start listening on the given `inputstream`, is this:
+The final thing you need to do in order to start listening on the given `inputstream`, is this:
 
 ``` java
 Future<Void> future = launcher.startListening();
