@@ -3750,6 +3750,44 @@ class Breakpoint {
 	 * This is an optional property.
 	 */
 	Integer offset;
+	/**
+	 * A machine-readable explanation of why a breakpoint may not be verified. If
+	 * a breakpoint is verified or a specific reason is not known, the adapter
+	 * should omit this property. Possible values include:
+	 * <ul>
+	 * <li>`pending`: Indicates a breakpoint might be verified in the future, but
+	 * the adapter cannot verify it in the current state.</li>
+	 * <li>`failed`: Indicates a breakpoint was not able to be verified, and the
+	 * adapter does not believe it can be verified without intervention.</li>
+	 * </ul>
+	 * <p>
+	 * Values: 'pending', 'failed'
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Possible values include - but not limited to those defined in {@link BreakpointNotVerifiedReason}
+	 */
+	String reason;
+}
+
+/**
+ * A machine-readable explanation of why a breakpoint may not be verified. If
+ * a breakpoint is verified or a specific reason is not known, the adapter
+ * should omit this property. Possible values include:
+ * <ul>
+ * <li>`pending`: Indicates a breakpoint might be verified in the future, but
+ * the adapter cannot verify it in the current state.</li>
+ * <li>`failed`: Indicates a breakpoint was not able to be verified, and the
+ * adapter does not believe it can be verified without intervention.</li>
+ * </ul>
+ * <p>
+ * Values: 'pending', 'failed'
+ * <p>
+ * Possible values include - but not limited to those defined in {@link BreakpointNotVerifiedReason}
+ */
+interface BreakpointNotVerifiedReason {
+	public static final String PENDING = "pending";
+	public static final String FAILED = "failed";
 }
 
 /**
