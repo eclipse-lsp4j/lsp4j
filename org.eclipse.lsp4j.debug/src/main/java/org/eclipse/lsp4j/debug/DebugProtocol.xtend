@@ -3672,7 +3672,7 @@ class InstructionBreakpoint {
 	@NonNull
 	String instructionReference;
 	/**
-	 * The offset from the instruction reference.
+	 * The offset from the instruction reference in bytes.
 	 * <p>
 	 * This can be negative.
 	 * <p>
@@ -3776,6 +3776,43 @@ class Breakpoint {
 	 * This is an optional property.
 	 */
 	Integer offset;
+	/**
+	 * A machine-readable explanation of why a breakpoint may not be verified. If
+	 * a breakpoint is verified or a specific reason is not known, the adapter
+	 * should omit this property. Possible values include:
+	 * <ul>
+	 * <li>`pending`: Indicates a breakpoint might be verified in the future, but
+	 * the adapter cannot verify it in the current state.</li>
+	 * <li>`failed`: Indicates a breakpoint was not able to be verified, and the
+	 * adapter does not believe it can be verified without intervention.</li>
+	 * </ul>
+	 * <p>
+	 * Values: 'pending', 'failed'
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.64
+	 */
+	BreakpointNotVerifiedReason reason;
+}
+
+/**
+ * A machine-readable explanation of why a breakpoint may not be verified. If
+ * a breakpoint is verified or a specific reason is not known, the adapter
+ * should omit this property.
+ * <p>
+ * Since 1.64
+ */
+enum BreakpointNotVerifiedReason {
+	/**
+	 * Indicates a breakpoint might be verified in the future, but the adapter cannot verify it in the current state.
+	 */
+	PENDING,
+	/**
+	 * Indicates a breakpoint was not able to be verified,
+	 * and the adapter does not believe it can be verified without intervention.
+	 */
+	FAILED
 }
 
 /**
@@ -4278,6 +4315,34 @@ class DisassembledInstruction {
 	 * This is an optional property.
 	 */
 	Integer endColumn;
+	/**
+	 * A hint for how to present the instruction in the UI.
+	 * <p>
+	 * <p>
+	 * A value of `invalid` may be used to indicate this instruction is 'filler' and cannot be reached by the program.
+	 * For example, unreadable memory addresses may be presented is 'invalid.'
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.64
+	 */
+	DisassembledInstructionPresentationHint presentationHint;
+}
+
+/**
+ * A hint for how to present the instruction in the UI.
+ * <p>
+ * <p>
+ * A value of `invalid` may be used to indicate this instruction is 'filler' and cannot be reached by the program.
+ * For example, unreadable memory addresses may be presented is 'invalid.'
+ * <p>
+ * This is an optional property.
+ * <p>
+ * Since 1.64
+ */
+enum DisassembledInstructionPresentationHint {
+	NORMAL,
+	INVALID
 }
 
 /**
