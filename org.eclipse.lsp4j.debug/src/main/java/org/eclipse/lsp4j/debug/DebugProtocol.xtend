@@ -1292,6 +1292,15 @@ class DataBreakpointInfoArguments {
 	 * Since 1.59
 	 */
 	int frameId;
+	/**
+	 * The mode of the desired breakpoint. If defined, this must be one of the `breakpointModes`
+	 * the debug adapter advertised in its `Capabilities`.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.65
+	 */
+	String mode;
 }
 
 /**
@@ -2698,6 +2707,75 @@ class Capabilities {
 	 * Since 1.51
 	 */
 	Boolean supportsSingleThreadExecutionRequests;
+	/**
+	 * Modes of breakpoints supported by the debug adapter, such as 'hardware' or 'software'.
+	 * If present, the client may allow the user to select a mode and include it in its `setBreakpoints` request.
+	 * <p>
+	 * <p>
+	 * Clients may present the first applicable mode in this array as the 'default' mode in gestures that set breakpoints.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Possible values include - but not limited to those defined in {@link BreakpointMode}
+	 * <p>
+	 * Since 1.65
+	 */
+	BreakpointMode[] breakpointModes;
+}
+
+/**
+ * A `BreakpointMode` is provided as a option when setting breakpoints on sources or instructions.
+ * <p>
+ * Since 1.65
+ */
+class BreakpointMode {
+	/**
+	 * The internal ID of the mode. This value is passed to the `setBreakpoints` request.
+	 */
+	@NonNull
+	String mode;
+	/**
+	 * The name of the breakpoint mode. This is shown in the UI.
+	 */
+	@NonNull
+	String label;
+	/**
+	 * A help text providing additional information about the breakpoint mode.
+	 * This string is typically shown as a hover and can be translated.
+	 * <p>
+	 * This is an optional property.
+	 */
+	String description;
+	/**
+	 * Describes one or more type of breakpoint this mode applies to.
+	 */
+	@NonNull
+	String[] appliesTo;
+}
+
+/**
+ * Describes one or more type of breakpoint a `BreakpointMode` applies to.
+ * This is a non-exhaustive enumeration and may expand as future breakpoint types are added.
+ * <p>
+ * Since 1.65
+ */
+interface BreakpointModeApplicability {
+	/**
+	 * In `SourceBreakpoint`s
+	 */
+	public static final String SOURCE = "source";
+	/**
+	 * In exception breakpoints applied in the `ExceptionFilterOptions`
+	 */
+	public static final String EXCEPTION = "exception";
+	/**
+	 * In data breakpoints requested in the `DataBreakpointInfo` request
+	 */
+	public static final String DATA = "data";
+	/**
+	 * In `InstructionBreakpoint`s
+	 */
+	public static final String INSTRUCTION = "instruction";
 }
 
 /**
@@ -3583,6 +3661,15 @@ class SourceBreakpoint {
 	 * This is an optional property.
 	 */
 	String logMessage;
+	/**
+	 * The mode of this breakpoint. If defined, this must be one of the `breakpointModes`
+	 * the debug adapter advertised in its `Capabilities`.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.65
+	 */
+	String mode;
 }
 
 /**
@@ -3699,6 +3786,15 @@ class InstructionBreakpoint {
 	 * This is an optional property.
 	 */
 	String hitCondition;
+	/**
+	 * The mode of this breakpoint. If defined, this must be one of the `breakpointModes`
+	 * the debug adapter advertised in its `Capabilities`.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.65
+	 */
+	String mode;
 }
 
 /**
@@ -4147,6 +4243,16 @@ class ExceptionFilterOptions {
 	 * This is an optional property.
 	 */
 	String condition;
+
+	/**
+	 * The mode of this exception breakpoint. If defined, this must be one of the `breakpointModes`
+	 * the debug adapter advertised in its `Capabilities`.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.65
+	 */
+	String mode;
 }
 
 /**
