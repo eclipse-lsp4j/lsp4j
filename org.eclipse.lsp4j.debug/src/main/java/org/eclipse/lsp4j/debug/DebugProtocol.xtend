@@ -1238,7 +1238,10 @@ class SetExceptionBreakpointsResponse {
 class DataBreakpointInfoResponse {
 	/**
 	 * An identifier for the data on which a data breakpoint can be registered with the setDataBreakpoints request or
-	 * null if no data breakpoint is available.
+	 * null if no data breakpoint is available. If a `variablesReference` or `frameId` is passed, the `dataId`
+	 * is valid in the current suspended state, otherwise it's valid indefinitely.
+	 * See 'Lifetime of Object References' in the Overview section for details. Breakpoints set using the `dataId` in the
+	 * `setDataBreakpoints` request may outlive the lifetime of the associated `dataId`.
 	 */
 	String dataId;
 	/**
