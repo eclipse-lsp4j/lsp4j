@@ -283,9 +283,10 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * The request configures the debugger's response to thrown exceptions.
-	 * <p>
-	 * If an exception is configured to break, a 'stopped' event is fired (with
-	 * reason 'exception').
+	 * Each of the `filters`, `filterOptions`, and `exceptionOptions` in the request are independent
+	 * configurations to a debug adapter indicating a kind of exception to catch.
+	 * An exception thrown in a program should result in a `stopped` event from the debug adapter
+	 * (with reason `exception`) if any of the configured filters match.
 	 * <p>
 	 * Clients should only call this request if the corresponding capability
 	 * {@link Capabilities#getExceptionBreakpointFilters} returns one or more filters.
