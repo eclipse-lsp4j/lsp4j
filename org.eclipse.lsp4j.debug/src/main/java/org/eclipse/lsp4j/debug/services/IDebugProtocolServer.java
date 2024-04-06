@@ -98,9 +98,11 @@ public interface IDebugProtocolServer {
 	 * <ul>
 	 * <li>to indicate that it is no longer interested in the result produced by a
 	 * specific request issued earlier</li>
-	 * <li>to cancel a progress sequence. Clients should only call this request if
-	 * the corresponding capability {@link Capabilities#getSupportsCancelRequest} is true.</li>
+	 * <li>to cancel a progress sequence.</li>
 	 * </ul>
+	 * <p>
+	 * Clients should only call this request if the corresponding capability
+	 * {@link Capabilities#getSupportsCancelRequest} is true.
 	 * <p>
 	 * This request has a hint characteristic: a debug adapter can only be expected
 	 * to make a 'best effort' in honoring this request but there are no
