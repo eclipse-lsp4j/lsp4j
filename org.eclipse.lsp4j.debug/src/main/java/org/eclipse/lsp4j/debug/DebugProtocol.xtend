@@ -1045,7 +1045,7 @@ class BreakpointLocationsResponse {
 @JsonRpcData
 class BreakpointLocationsArguments {
 	/**
-	 * The source location of the breakpoints; either 'source.path' or 'source.reference' must be specified.
+	 * The source location of the breakpoints; either 'source.path' or 'source.sourceReference' must be specified.
 	 */
 	@NonNull
 	Source source;
@@ -1742,6 +1742,19 @@ class SetVariableResponse {
 	 * This is an optional property.
 	 */
 	Integer indexedVariables;
+	/**
+	 * A memory reference to a location appropriate for this result.
+	 * <p>
+	 * For pointer type eval results, this is generally a reference to the memory address contained in the pointer.
+	 * <p>
+	 * This attribute may be returned by a debug adapter if corresponding capability
+	 * {@link InitializeRequestArguments#getSupportsMemoryReferences} is true.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.63
+	 */
+	String memoryReference;
 }
 
 /**
@@ -2080,6 +2093,19 @@ class SetExpressionResponse {
 	 * This is an optional property.
 	 */
 	Integer indexedVariables;
+	/**
+	 * A memory reference to a location appropriate for this result.
+	 * <p>
+	 * For pointer type eval results, this is generally a reference to the memory address contained in the pointer.
+	 * <p>
+	 * This attribute may be returned by a debug adapter if corresponding capability
+	 * {@link InitializeRequestArguments#getSupportsMemoryReferences} is true.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.63
+	 */
+	String memoryReference;
 }
 
 /**
@@ -3292,10 +3318,13 @@ class Variable {
 	 */
 	Integer indexedVariables;
 	/**
-	 * The memory reference for the variable if the variable represents executable code, such as a function
-	 * pointer.
+	 * A memory reference associated with this variable.
 	 * <p>
-	 * This attribute is only required if the corresponding capability
+	 * For pointer type variables, this is generally a reference to the memory address contained in the pointer.
+	 * <p>
+	 * For executable data, this reference may later be used in a `disassemble` request.
+	 * <p>
+	 * This attribute may be returned by a debug adapter if corresponding capability
 	 * {@link InitializeRequestArguments#getSupportsMemoryReferences} is true.
 	 * <p>
 	 * This is an optional property.
@@ -3433,10 +3462,12 @@ interface VariablePresentationHintAttributes {
 	public static final String RAW_STRING = "rawString";
 	/**
 	 * Indicates that the object can have an Object ID created for it.
+	 * This is a vestigial attribute that is used by some clients; 'Object ID's are not specified in the protocol.
 	 */
 	public static final String HAS_OBJECT_ID = "hasObjectId";
 	/**
 	 * Indicates that the object has an Object ID associated with it.
+	 * This is a vestigial attribute that is used by some clients; 'Object ID's are not specified in the protocol.
 	 */
 	public static final String CAN_HAVE_OBJECT_ID = "canHaveObjectId";
 	/**
