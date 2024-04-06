@@ -1206,7 +1206,7 @@ class SetExceptionBreakpointsArguments {
  * 'filters' information first, followed by 'filterOptions' information.
  * <p>
  * The 'verified' property of a Breakpoint object signals whether the exception breakpoint or filter could
- * be successfully created and whether the condition or hit count expressions are valid. In case of an error
+ * be successfully created and whether the condition is valid. In case of an error
  * the 'message' property explains the problem. The 'id' property can be used to introduce a unique ID for the
  * exception breakpoint or filter so that it can be updated subsequently by sending breakpoint events.
  * <p>
@@ -1661,11 +1661,17 @@ class VariablesArguments {
 	/**
 	 * The index of the first variable to return; if omitted children start at 0.
 	 * <p>
+	 * The attribute is only honored by a debug adapter if the corresponding
+	 * capability {@link Capabilities#supportsVariablePaging} is true.
+	 * <p>
 	 * This is an optional property.
 	 */
 	Integer start;
 	/**
 	 * The number of variables to return. If count is missing or 0, all variables are returned.
+	 * <p>
+	 * The attribute is only honored by a debug adapter if the corresponding
+	 * capability {@link Capabilities#supportsVariablePaging} is true.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -2900,20 +2906,6 @@ enum ColumnDescriptorType {
 	BOOLEAN,
 	@SerializedName("unixTimestampUTC")
 	UNIX_TIMESTAMP_UTC
-}
-
-/**
- * The ModulesViewDescriptor is the container for all declarative configuration options of a module view.
- * <p>
- * For now it only specifies the columns to be shown in the modules view.
- */
-@JsonRpcData
-class ModulesViewDescriptor {
-	/**
-
-	 */
-	@NonNull
-	ColumnDescriptor[] columns;
 }
 
 /**
