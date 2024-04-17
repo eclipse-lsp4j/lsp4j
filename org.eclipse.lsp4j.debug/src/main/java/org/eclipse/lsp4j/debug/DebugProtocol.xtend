@@ -271,7 +271,7 @@ class OutputEventArguments {
 	 */
 	OutputEventArgumentsGroup group;
 	/**
-	 * If an attribute `variablesReference` exists and its value is > 0, the output
+	 * If an attribute `variablesReference` exists and its value is &gt; 0, the output
 	 * contains objects which can be retrieved by passing `variablesReference` to the
 	 * `variables` request as long as execution remains suspended. See 'Lifetime of
 	 * Object References' in the {@link DebugProtocol#Overview} section for details.
@@ -1674,7 +1674,7 @@ class VariablesArguments {
 	 * The index of the first variable to return; if omitted children start at 0.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the corresponding
-	 * capability {@link Capabilities#supportsVariablePaging} is true.
+	 * capability {@link InitializeRequestArguments#getSupportsVariablePaging} is true.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1683,7 +1683,7 @@ class VariablesArguments {
 	 * The number of variables to return. If count is missing or 0, all variables are returned.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the corresponding
-	 * capability {@link Capabilities#supportsVariablePaging} is true.
+	 * capability {@link InitializeRequestArguments#getSupportsVariablePaging} is true.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1971,7 +1971,7 @@ class EvaluateResponse {
 	 * <p>
 	 * For pointer type eval results, this is generally a reference to the memory address contained in the pointer.
 	 * <p>
-	 * This attribute should be returned by a debug adapter if corresponding capability
+	 * This attribute may be returned by a debug adapter if corresponding capability
 	 * {@link InitializeRequestArguments#getSupportsMemoryReferences} is true.
 	 * <p>
 	 * This is an optional property.
@@ -2728,6 +2728,7 @@ class Capabilities {
  * <p>
  * Since 1.65
  */
+@JsonRpcData
 class BreakpointMode {
 	/**
 	 * The internal ID of the mode. This value is passed to the `setBreakpoints` request.
@@ -2748,6 +2749,8 @@ class BreakpointMode {
 	String description;
 	/**
 	 * Describes one or more type of breakpoint this mode applies to.
+	 * <p>
+	 * Possible values include - but not limited to those defined in {@link BreakpointModeApplicability}
 	 */
 	@NonNull
 	String[] appliesTo;
