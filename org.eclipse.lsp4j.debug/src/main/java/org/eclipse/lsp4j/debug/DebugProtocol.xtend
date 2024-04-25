@@ -1291,7 +1291,7 @@ class DataBreakpointInfoArguments {
 	 * <p>
 	 * Since 1.59
 	 */
-	int frameId;
+	Integer frameId;
 	/**
 	 * The mode of the desired breakpoint. If defined, this must be one of the `breakpointModes`
 	 * the debug adapter advertised in its `Capabilities`.
