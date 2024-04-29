@@ -1289,6 +1289,8 @@ class DataBreakpointInfoArguments {
 	 * If not specified, the expression is evaluated in the global scope. When
 	 * `variablesReference` is specified, this property has no effect.
 	 * <p>
+     * This is an optional property.
+	 * <p>
 	 * Since 1.59
 	 */
 	Integer frameId;
