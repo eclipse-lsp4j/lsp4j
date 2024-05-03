@@ -1289,9 +1289,11 @@ class DataBreakpointInfoArguments {
 	 * If not specified, the expression is evaluated in the global scope. When
 	 * `variablesReference` is specified, this property has no effect.
 	 * <p>
+	 * This is an optional property.
+	 * <p>
 	 * Since 1.59
 	 */
-	int frameId;
+	Integer frameId;
 	/**
 	 * The mode of the desired breakpoint. If defined, this must be one of the `breakpointModes`
 	 * the debug adapter advertised in its `Capabilities`.
