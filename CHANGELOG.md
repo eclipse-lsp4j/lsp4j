@@ -1,6 +1,6 @@
 ## LSP4J Change Log
 
-### v0.23.0 (TBD)
+### [v0.23.0 (May 2024)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.23.0)
 
  * Implemented DAP version 1.65.0
 
@@ -14,7 +14,7 @@ Breaking API changes:
 
   * DAP version 1.61 removed unused `ModulesViewDescriptor`
 
-Nightly japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.23.0/japicmp-report/>
 
 ### [v0.22.0 (February 2024)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.22.0)
 
