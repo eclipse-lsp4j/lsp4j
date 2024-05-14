@@ -104,6 +104,11 @@ class WorkspaceEditCapabilities {
 	new() {
 	}
 
+	/**
+	 * @deprecated because when this class first existed it didn't have any other fields.
+	 * Now that this class has lots of fields, there is nothing special about this
+	 * field and therefore using the setters is the recommended use case.
+	 */
 	@Deprecated
 	new(Boolean documentChanges) {
 		this.documentChanges = documentChanges
