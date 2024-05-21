@@ -692,9 +692,9 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 214" + CRLF + CRLF
+		Assert.assertEquals("Content-Length: 294" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,\"message\":\"Message could not be parsed.\","
-				+    "\"data\":{\"message\":\"com.google.gson.stream.MalformedJsonException: Expected value at line 4 column 22 path $.params.value\"}}}"
+				+    "\"data\":{\"message\":\"com.google.gson.stream.MalformedJsonException: Expected value at line 4 column 22 path $.params.value\\nSee https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json\"}}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 				out.toString());
@@ -726,7 +726,8 @@ public class IntegrationTest {
 			Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 			serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 			
-			logMessages.await(Level.SEVERE, "com.google.gson.stream.MalformedJsonException: Expected value at line 2 column 22 path $.params.value");
+			logMessages.await(Level.SEVERE, "com.google.gson.stream.MalformedJsonException: Expected value at line 2 column 22 path $.params.value\n"
+					+ "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json");
 			Assert.assertEquals("Content-Length: 51" + CRLF + CRLF
 					+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 					out.toString());
@@ -756,9 +757,9 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 165" + CRLF + CRLF
+		Assert.assertEquals("Content-Length: 245" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,\"message\":\"Message could not be parsed.\","
-				+    "\"data\":{\"message\":\"Unterminated object at line 5 column 2 path $.params\"}}}"
+				+    "\"data\":{\"message\":\"Unterminated object at line 5 column 2 path $.params\\nSee https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json\"}}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 				out.toString());
@@ -785,9 +786,9 @@ public class IntegrationTest {
 		Launcher<MyClient> serverSideLauncher = Launcher.createLauncher(server, MyClient.class, in, out);
 		serverSideLauncher.startListening().get(TIMEOUT, TimeUnit.MILLISECONDS);
 		
-		Assert.assertEquals("Content-Length: 195" + CRLF + CRLF
+		Assert.assertEquals("Content-Length: 292" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"1\",\"error\":{\"code\":-32700,\"message\":\"Message could not be parsed.\","
-				+    "\"data\":{\"message\":\"Use JsonReader.setLenient(true) to accept malformed JSON at line 5 column 3 path $\"}}}"
+				+    "\"data\":{\"message\":\"Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 5 column 3 path $\\nSee https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json\"}}}"
 				+ "Content-Length: 51" + CRLF + CRLF
 				+ "{\"jsonrpc\":\"2.0\",\"id\":\"2\",\"result\":{\"value\":\"bar\"}}",
 				out.toString());
