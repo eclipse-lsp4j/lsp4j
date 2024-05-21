@@ -3,10 +3,10 @@
 	<feature id="org.eclipse.lsp4j.sdk" version="0.24.0.qualifier">
 		<category name="lsp4j"/>
 	</feature>
-	<bundle id="com.google.gson" version="2.10.1.qualifier"/>
-	<bundle id="com.google.gson.source" version="2.10.1.qualifier"/>
-	<bundle id="com.google.guava" version="33.0.0.qualifier"/>
-	<bundle id="com.google.guava.source" version="33.0.0.qualifier"/>
+	<bundle id="com.google.gson" version="2.11.0.qualifier"/>
+	<bundle id="com.google.gson.source" version="2.11.0.qualifier"/>
+	<bundle id="com.google.guava" version="33.2.0.qualifier"/>
+	<bundle id="com.google.guava.source" version="33.2.0.qualifier"/>
 	<bundle id="jakarta.websocket-api" version="0.0.0"/>
 	<bundle id="jakarta.websocket-api.source" version="0.0.0"/>
 	<bundle id="jakarta.websocket-client-api" version="0.0.0"/>
