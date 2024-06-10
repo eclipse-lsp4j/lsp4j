@@ -23,6 +23,7 @@ buildscript {
 	dependencies {
 		classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:6.4.0"
 		classpath "org.xtext:xtext-gradle-plugin:4.0.0"
+		classpath "org.gradlex:extra-java-module-info:1.8"
 	}
 }
 

@@ -10,6 +10,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
+
+plugins {
+    id("org.gradlex.extra-java-module-info")
+}
+
 ext.title = 'LSP4J WebSocket'
 description = 'WebSocket support for LSP4J (deprecated, please migrate to org.eclipse.lsp4j.websocket.jakarta)'
 
@@ -22,3 +27,8 @@ dependencies {
 jar.bundle.bnd(
 	'Import-Package': '*'
 )
+
+extraJavaModuleInfo {
+    automaticModule('javax.websocket:javax.websocket-api', 'javax.websocket.api')
+	automaticModule('org.hamcrest:hamcrest-core', 'hamcrest.core')
+}
