@@ -101,6 +101,13 @@ class WorkspaceEditCapabilities {
 	 */
 	WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport
 
+	/**
+	 * Whether the client supports snippets as text edits.
+	 *
+	 * Since 3.18.0
+	 */
+	 Boolean snippetEditSupport
+
 	new() {
 	}
 
@@ -7123,6 +7130,65 @@ class AnnotatedTextEdit extends TextEdit {
 }
 
 /**
+ * A string value used as a snippet is a template which allows to insert text
+ * and to control the editor cursor when insertion happens.
+ * <p>
+ * A snippet can define tab stops and placeholders with `$1`, `$2`
+ * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+ * the end of the snippet. Variables are defined with `$name` and
+ * `${name:default value}`.
+ * <p>
+ * Since 3.18.0
+ */
+@JsonRpcData
+class StringValue {
+	/**
+	 * The kind of string value.
+	 */
+	static val kind = 'snippet'
+
+	/**
+	 * The snippet string.
+	 */
+	@NonNull
+	String value
+
+	new() {
+	}
+
+	new(@NonNull String value) {
+		this.value = Preconditions.checkNotNull(value, 'value')
+	}
+}
+
+/**
+ * An interactive text edit.
+ * <p>
+ * Since 3.18.0
+ */
+@JsonRpcData
+class SnippetTextEdit extends TextEdit {
+	/**
+	 * The snippet to be inserted.
+	 */
+	@NonNull
+	StringValue snippet
+
+	/**
+	 * The actual identifier of the snippet edit.
+	 */
+	String annotationId
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull StringValue snippet) {
+		super(range, '')
+		this.snippet = Preconditions.checkNotNull(snippet, 'snippet')
+	}
+}
+
+/**
  * A special text edit to provide an insert and a replace operation.
  * <p>
  * Since 3.16.0
@@ -7201,6 +7267,9 @@ class TextDocumentEdit {
 
 	/**
 	 * The edits to be applied
+	 *
+	 * Since 3.18.0 - support for SnippetTextEdit. This is guarded by the
+	 * client capability {@link WorkspaceEditCapabilities#snippetEditSupport}
 	 */
 	@NonNull
 	List<TextEdit> edits
