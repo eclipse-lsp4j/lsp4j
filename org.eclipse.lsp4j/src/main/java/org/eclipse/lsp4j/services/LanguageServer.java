@@ -122,6 +122,9 @@ public interface LanguageServer {
 	 */
 	@JsonNotification("$/setTrace")
 	default void setTrace(SetTraceParams params) {
-		throw new UnsupportedOperationException();
+		/**
+		 * The method default behaviour was to throw UnsupportedOperationException
+		 * Keeping as empty to avoid it.
+		 */
 	}
 }
