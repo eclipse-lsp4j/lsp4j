@@ -2,6 +2,8 @@
 
 ### v1.0.0 (TBD)
 
+* Implemented [LSP proposal](https://github.com/microsoft/language-server-protocol/pull/2003) for `SymbolTag` [#856](https://github.com/eclipse-lsp4j/lsp4j/pull/856)
+
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1>
 
 * Removed `@Deprecated` annotations on members deprecated in the LSP/DAP protocol [#895](https://github.com/eclipse-lsp4j/lsp4j/issues/895)
