@@ -2,7 +2,7 @@ pipeline {
   agent {
     kubernetes {
         // See comment in release-eclipse.sh (gpg:sign-and-deploy-file)
-        inheritFrom 'centos-7'
+        inheritFrom 'ubuntu-2404'
     }
   }
   tools {
