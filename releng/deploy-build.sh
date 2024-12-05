@@ -5,6 +5,9 @@ set -e # error out on any failed commands
 set -x # echo all commands used for debugging purposes
 
 
+# This script is expected to be run with CWD of ./releng so that when maven runs below
+# with the -f flag the CWD of Maven is the same as the rest of ths script.
+
 SSHUSER="genie.lsp4j@projects-storage.eclipse.org"
 SSH="ssh ${SSHUSER}"
 SCP="scp"
@@ -21,7 +24,7 @@ if $SSH test -e ${DOWNLOAD_MOUNT}-last; then
     $SSH rm -r ${DOWNLOAD_MOUNT}-last
 fi
 $SSH mkdir -p ${DOWNLOAD_MOUNT}-new
-$SCP -rp build/p2-repository/* "${SSHUSER}:"${DOWNLOAD_MOUNT}-new
+$SCP -rp ../build/p2-repository/* "${SSHUSER}:"${DOWNLOAD_MOUNT}-new
 if $SSH test -e ${DOWNLOAD_MOUNT}; then
     $SSH mv ${DOWNLOAD_MOUNT} ${DOWNLOAD_MOUNT}-last
 fi
@@ -31,12 +34,12 @@ $SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 case $BRANCH_NAME in
     main | release_*)
         # GPG Sign and Deploy to Maven Central snapshot
-        find build/maven-repository -name '*.pom' | while read i
+        find ../build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"
             # See https://wiki.eclipse.org/Jenkins#How_can_artifacts_be_deployed_to_OSSRH_.2F_Maven_Central.3F for more info
             # on the Eclipse Foundation specific settings.
-            mvn -X \
+            mvn -X -f gpgparameters.pom \
                 org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
                 -Dfile=${base}.jar \
