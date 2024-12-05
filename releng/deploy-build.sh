@@ -34,13 +34,8 @@ case $BRANCH_NAME in
         find build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"
-            # The centos-7 agent is used because it provides gpg 2.0.x
-            # and we sign for OSSRH with gpg maven plug-in run at the command
-            # line.
-            # If a newer GPG version (> 2.1+) is used,
-            # --pinentry-mode loopback needs to be added as gpg argument in the pom.xml.
-            # If centos changes we may need to add the gpg arguments to some pom.xml
-            # somewhere
+            # See https://wiki.eclipse.org/Jenkins#How_can_artifacts_be_deployed_to_OSSRH_.2F_Maven_Central.3F for more info
+            # on the Eclipse Foundation specific settings.
             mvn -X \
                 org.apache.maven.plugins:maven-gpg-plugin:1.6:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
