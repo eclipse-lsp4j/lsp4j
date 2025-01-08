@@ -28,7 +28,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.65.0";
+	public static final String SCHEMA_VERSION = "1.69.0";
 
 	/**
 	 * Refer to the Debug Adapter Protocol's
