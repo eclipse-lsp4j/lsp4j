@@ -261,7 +261,13 @@ class OutputEventArguments {
 	String category;
 	/**
 	 * The output to report.
-	 */
+	 * <p>
+	 * ANSI escape sequences may be used to influence text color and styling if `supportsANSIStyling` is present in
+	 * both the adapter's `Capabilities` and the client's `InitializeRequestArguments`. A client may strip any
+	 * unrecognized ANSI sequences.
+	 * <p>
+	 * If the `supportsANSIStyling` capabilities are not both true, then the client should display the output literally.
+	*/
 	@NonNull
 	String output;
 	/**
@@ -915,6 +921,15 @@ class InitializeRequestArguments {
 	 * Since 1.59
 	 */
 	Boolean supportsStartDebuggingRequest;
+	/**
+	 * The client will interpret ANSI escape sequences in the display of `OutputEvent.output` and `Variable.value`
+	 * fields when `Capabilities.supportsANSIStyling` is also enabled.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.69
+	 */
+	Boolean supportsANSIStyling;
 }
 
 /**
@@ -2896,6 +2911,14 @@ class Capabilities {
 	 * Since 1.65
 	 */
 	BreakpointMode[] breakpointModes;
+	/**
+	 * The debug adapter supports ANSI escape sequences in styling of `OutputEvent.output` and `Variable.value` fields.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.69
+	 */
+	Boolean supportsANSIStyling;
 }
 
 /**
