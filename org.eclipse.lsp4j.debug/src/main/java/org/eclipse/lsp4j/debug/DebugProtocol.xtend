@@ -305,6 +305,19 @@ class OutputEventArguments {
 	 * This is an optional property.
 	 */
 	Object data;
+	/**
+	 * A reference that allows the client to request the location where the new value is declared. For example,
+	 * if the logged value is function pointer, the adapter may be able to look up the function's location. This should
+	 * be present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer locationReference;
 }
 
 /**
@@ -1790,6 +1803,19 @@ class SetVariableResponse {
 	 * Since 1.63
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the new value is declared. For example,
+	 * if the new value is function pointer, the adapter may be able to look up the function's location. This should be
+	 * present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
@@ -2003,6 +2029,19 @@ class EvaluateResponse {
 	 * This is an optional property.
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the returned value is declared. For example,
+	 * if a function pointer is returned, the adapter may be able to look up the function's location.
+	 * This should be present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
@@ -2169,6 +2208,19 @@ class SetExpressionResponse {
 	 * Since 1.63
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the new value is declared. For example,
+	 * if the new value is function pointer, the adapter may be able to look up the function's location. This should be
+	 * present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
@@ -2508,6 +2560,66 @@ class DisassembleArguments {
 	 * This is an optional property.
 	 */
 	Boolean resolveSymbols;
+}
+
+
+/**
+ * Arguments for 'locations' request.
+ * <p>
+ * Since 1.68
+ */
+@JsonRpcData
+class LocationsArguments {
+	/**
+	 * Location reference to resolve.
+	 */
+	@NonNull
+	Integer locationReference;
+}
+
+/**
+ * Response to 'locations' request.
+ * <p>
+ * Since 1.68
+ */
+@JsonRpcData
+class LocationsResponse {
+	/**
+	 * The source containing the location; either `source.path` or
+	 * `source.sourceReference` must be specified.
+	 */
+	@NonNull
+	Source source;
+	/**
+	 * The line number of the location. The client capability `linesStartAt1`
+	 * determines whether it is 0- or 1-based.
+	 */
+	@NonNull
+	Integer line;
+	/**
+	 * Position of the location within the `line`. It is measured in UTF-16 code
+	 * units and the client capability `columnsStartAt1` determines whether it
+	 * is 0- or 1-based. If no column is given, the first position in the start
+	 * line is assumed.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Integer column;
+	/**
+	 * End line of the location, present if the location refers to a range.  The
+	 * client capability `linesStartAt1` determines whether it is 0- or 1-based.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Integer endLine;
+	/**
+	 * End position of the location within `endLine`, present if the location
+	 * refers to a range. It is measured in UTF-16 code units and the client
+	 * capability `columnsStartAt1` determines whether it is 0- or 1-based.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Integer endColumn;
 }
 
 /**
@@ -3480,6 +3592,31 @@ class Variable {
 	 * This is an optional property.
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the variable is declared. This should be
+	 * present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer declarationLocationReference;
+	/**
+	 * A reference that allows the client to request the location where the variable's value is declared. For example,
+	 * if the variable contains a function pointer, the adapter may be able to look up the function's location.
+	 * This should be present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
