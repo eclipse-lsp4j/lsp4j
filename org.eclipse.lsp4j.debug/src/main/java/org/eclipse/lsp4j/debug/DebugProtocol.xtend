@@ -3352,6 +3352,12 @@ interface ScopePresentationHint {
 	 * Scope contains registers. Only a single 'registers' scope should be returned from a 'scopes' request.
 	 */
 	public static final String REGISTERS = "registers";
+	/**
+	 * Scope contains one or more return values.
+	 * <p>
+	 * Since 1.67
+	 */
+	public static final String RETURN_VALUE = "returnValue";
 }
 
 /**
