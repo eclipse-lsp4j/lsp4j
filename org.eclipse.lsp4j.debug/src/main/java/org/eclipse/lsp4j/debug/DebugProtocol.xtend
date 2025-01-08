@@ -1280,7 +1280,8 @@ class DataBreakpointInfoArguments {
 	/**
 	 * The name of the Variable's child to obtain data breakpoint information for.
 	 * <p>
-	 * If variablesReference isn't specified, this can be an expression.
+	 * If variablesReference isn't specified, this can be an expression, or an address
+	 * if `asAddress` is also true.
 	 */
 	@NonNull
 	String name;
@@ -1294,6 +1295,29 @@ class DataBreakpointInfoArguments {
 	 * Since 1.59
 	 */
 	Integer frameId;
+	/**
+	 * If specified, a debug adapter should return information for the range of memory extending `bytes` number of
+	 * bytes from the address or variable specified by `name`. Breakpoints set using the resulting data ID should
+	 * pause on data access anywhere within that range.
+	 * <p>
+	 * Clients may set this property only if the `supportsDataBreakpointBytes` capability is true.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.66
+	 */
+	Integer bytes;
+	/**
+	 * If `true`, the `name` is a memory address and the debugger should interpret it as a decimal value,
+	 * or hex value if it is prefixed with `0x`.
+	 * <p>
+	 * Clients may set this property only if the `supportsDataBreakpointBytes` capability is true.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.66
+	 */
+	Boolean asAddress;
 	/**
 	 * The mode of the desired breakpoint. If defined, this must be one of the `breakpointModes`
 	 * the debug adapter advertised in its `Capabilities`.
@@ -2709,6 +2733,15 @@ class Capabilities {
 	 * Since 1.51
 	 */
 	Boolean supportsSingleThreadExecutionRequests;
+	/**
+	 * The debug adapter supports the 'asAddress' and 'bytes' fields in the 'dataBreakpointInfo'
+	 * request.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.66
+	 */
+	Boolean supportsDataBreakpointBytes;
 	/**
 	 * Modes of breakpoints supported by the debug adapter, such as 'hardware' or 'software'.
 	 * If present, the client may allow the user to select a mode and include it in its `setBreakpoints` request.
