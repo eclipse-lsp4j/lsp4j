@@ -594,7 +594,7 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Evaluates the given expression in the context of the topmost stack frame.
+	 * Evaluates the given expression in the context of a stack frame.
 	 * <p>
 	 * The expression has access to any variables and arguments that are in scope.
 	 */
