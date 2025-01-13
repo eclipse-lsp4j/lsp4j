@@ -494,7 +494,9 @@ class ProcessEventArguments {
 	@NonNull
 	String name;
 	/**
-	 * The system process id of the debugged process. This property is missing for non-system processes.
+	 * The process ID of the debugged process, as assigned by the operating system.
+	 * This property should be omitted for logical processes that do not map to
+	 * operating system processes on the machine.
 	 * <p>
 	 * This is an optional property.
 	 */
