@@ -1782,7 +1782,10 @@ class SetVariableResponse {
 	/**
 	 * If `variablesReference` is &gt; 0, the new value is structured and its children can be retrieved by passing
 	 * `variablesReference` to the `variables` request as long as execution remains suspended.
-	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * If this property is included in the response, any `variablesReference` previously associated with
+	 * the updated variable, and those of its children, are no longer valid.
 	 * <p>
 	 * This is an optional property.
 	 */
