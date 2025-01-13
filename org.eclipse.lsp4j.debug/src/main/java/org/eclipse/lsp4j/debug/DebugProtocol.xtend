@@ -28,7 +28,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.65.0";
+	public static final String SCHEMA_VERSION = "1.69.0";
 
 	/**
 	 * Refer to the Debug Adapter Protocol's
@@ -261,7 +261,13 @@ class OutputEventArguments {
 	String category;
 	/**
 	 * The output to report.
-	 */
+	 * <p>
+	 * ANSI escape sequences may be used to influence text color and styling if `supportsANSIStyling` is present in
+	 * both the adapter's `Capabilities` and the client's `InitializeRequestArguments`. A client may strip any
+	 * unrecognized ANSI sequences.
+	 * <p>
+	 * If the `supportsANSIStyling` capabilities are not both true, then the client should display the output literally.
+	*/
 	@NonNull
 	String output;
 	/**
@@ -305,6 +311,19 @@ class OutputEventArguments {
 	 * This is an optional property.
 	 */
 	Object data;
+	/**
+	 * A reference that allows the client to request the location where the new value is declared. For example,
+	 * if the logged value is function pointer, the adapter may be able to look up the function's location. This should
+	 * be present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer locationReference;
 }
 
 /**
@@ -475,7 +494,9 @@ class ProcessEventArguments {
 	@NonNull
 	String name;
 	/**
-	 * The system process id of the debugged process. This property is missing for non-system processes.
+	 * The process ID of the debugged process, as assigned by the operating system.
+	 * This property should be omitted for logical processes that do not map to
+	 * operating system processes on the machine.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -902,6 +923,15 @@ class InitializeRequestArguments {
 	 * Since 1.59
 	 */
 	Boolean supportsStartDebuggingRequest;
+	/**
+	 * The client will interpret ANSI escape sequences in the display of `OutputEvent.output` and `Variable.value`
+	 * fields when `Capabilities.supportsANSIStyling` is also enabled.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.69
+	 */
+	Boolean supportsANSIStyling;
 }
 
 /**
@@ -1280,7 +1310,8 @@ class DataBreakpointInfoArguments {
 	/**
 	 * The name of the Variable's child to obtain data breakpoint information for.
 	 * <p>
-	 * If variablesReference isn't specified, this can be an expression.
+	 * If variablesReference isn't specified, this can be an expression, or an address
+	 * if `asAddress` is also true.
 	 */
 	@NonNull
 	String name;
@@ -1294,6 +1325,29 @@ class DataBreakpointInfoArguments {
 	 * Since 1.59
 	 */
 	Integer frameId;
+	/**
+	 * If specified, a debug adapter should return information for the range of memory extending `bytes` number of
+	 * bytes from the address or variable specified by `name`. Breakpoints set using the resulting data ID should
+	 * pause on data access anywhere within that range.
+	 * <p>
+	 * Clients may set this property only if the `supportsDataBreakpointBytes` capability is true.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.66
+	 */
+	Integer bytes;
+	/**
+	 * If `true`, the `name` is a memory address and the debugger should interpret it as a decimal value,
+	 * or hex value if it is prefixed with `0x`.
+	 * <p>
+	 * Clients may set this property only if the `supportsDataBreakpointBytes` capability is true.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.66
+	 */
+	Boolean asAddress;
 	/**
 	 * The mode of the desired breakpoint. If defined, this must be one of the `breakpointModes`
 	 * the debug adapter advertised in its `Capabilities`.
@@ -1728,7 +1782,10 @@ class SetVariableResponse {
 	/**
 	 * If `variablesReference` is &gt; 0, the new value is structured and its children can be retrieved by passing
 	 * `variablesReference` to the `variables` request as long as execution remains suspended.
-	 * See 'Lifetime of Object References' in the {@link DebugProtocol#Overview} section for details.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * If this property is included in the response, any `variablesReference` previously associated with
+	 * the updated variable, and those of its children, are no longer valid.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1766,6 +1823,19 @@ class SetVariableResponse {
 	 * Since 1.63
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the new value is declared. For example,
+	 * if the new value is function pointer, the adapter may be able to look up the function's location. This should be
+	 * present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
@@ -1979,6 +2049,19 @@ class EvaluateResponse {
 	 * This is an optional property.
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the returned value is declared. For example,
+	 * if a function pointer is returned, the adapter may be able to look up the function's location.
+	 * This should be present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
@@ -1998,6 +2081,34 @@ class EvaluateArguments {
 	 * This is an optional property.
 	 */
 	Integer frameId;
+	/**
+	 * The contextual line where the expression should be evaluated. In the 'hover' context, this should be set to the
+	 * start of the expression being hovered.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.67
+	 */
+	Integer line;
+	/**
+	 * The contextual column where the expression should be evaluated. This may be provided if `line` is also provided.
+	 * <p>
+	 * It is measured in UTF-16 code units and the client capability `columnsStartAt1` determines whether
+	 * it is 0- or 1-based.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.67
+	 */
+	Integer column;
+	/**
+	 * The contextual source in which the `line` is found. This must be provided if `line` is provided.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.67
+	 */
+	Source source;
 	/**
 	 * The context in which the evaluate request is used.
 	 * <p>
@@ -2117,6 +2228,19 @@ class SetExpressionResponse {
 	 * Since 1.63
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the new value is declared. For example,
+	 * if the new value is function pointer, the adapter may be able to look up the function's location. This should be
+	 * present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**
@@ -2458,6 +2582,66 @@ class DisassembleArguments {
 	Boolean resolveSymbols;
 }
 
+
+/**
+ * Arguments for 'locations' request.
+ * <p>
+ * Since 1.68
+ */
+@JsonRpcData
+class LocationsArguments {
+	/**
+	 * Location reference to resolve.
+	 */
+	@NonNull
+	Integer locationReference;
+}
+
+/**
+ * Response to 'locations' request.
+ * <p>
+ * Since 1.68
+ */
+@JsonRpcData
+class LocationsResponse {
+	/**
+	 * The source containing the location; either `source.path` or
+	 * `source.sourceReference` must be specified.
+	 */
+	@NonNull
+	Source source;
+	/**
+	 * The line number of the location. The client capability `linesStartAt1`
+	 * determines whether it is 0- or 1-based.
+	 */
+	@NonNull
+	Integer line;
+	/**
+	 * Position of the location within the `line`. It is measured in UTF-16 code
+	 * units and the client capability `columnsStartAt1` determines whether it
+	 * is 0- or 1-based. If no column is given, the first position in the start
+	 * line is assumed.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Integer column;
+	/**
+	 * End line of the location, present if the location refers to a range.  The
+	 * client capability `linesStartAt1` determines whether it is 0- or 1-based.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Integer endLine;
+	/**
+	 * End position of the location within `endLine`, present if the location
+	 * refers to a range. It is measured in UTF-16 code units and the client
+	 * capability `columnsStartAt1` determines whether it is 0- or 1-based.
+	 * <p>
+	 * This is an optional property.
+	 */
+	Integer endColumn;
+}
+
 /**
  * Information about the capabilities of a debug adapter.
  */
@@ -2710,6 +2894,15 @@ class Capabilities {
 	 */
 	Boolean supportsSingleThreadExecutionRequests;
 	/**
+	 * The debug adapter supports the 'asAddress' and 'bytes' fields in the 'dataBreakpointInfo'
+	 * request.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.66
+	 */
+	Boolean supportsDataBreakpointBytes;
+	/**
 	 * Modes of breakpoints supported by the debug adapter, such as 'hardware' or 'software'.
 	 * If present, the client may allow the user to select a mode and include it in its `setBreakpoints` request.
 	 * <p>
@@ -2723,6 +2916,14 @@ class Capabilities {
 	 * Since 1.65
 	 */
 	BreakpointMode[] breakpointModes;
+	/**
+	 * The debug adapter supports ANSI escape sequences in styling of `OutputEvent.output` and `Variable.value` fields.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.69
+	 */
+	Boolean supportsANSIStyling;
 }
 
 /**
@@ -3172,8 +3373,8 @@ class StackFrame {
 	 */
 	Integer endColumn;
 	/**
-	 * Indicates whether this frame can be restarted with the 'restart' request.
-	 * Clients should only use this if the debug adapter supports the 'restart' request
+	 * Indicates whether this frame can be restarted with the `restartFrame` request.
+	 * Clients should only use this if the debug adapter supports the `restart` request
 	 * and the corresponding capability {@link Capabilities#getSupportsRestartRequest}
 	 * is {@code true}. If a debug adapter has this capability, then `canRestart` defaults
 	 * to `true` if the property is absent.
@@ -3319,6 +3520,12 @@ interface ScopePresentationHint {
 	 * Scope contains registers. Only a single 'registers' scope should be returned from a 'scopes' request.
 	 */
 	public static final String REGISTERS = "registers";
+	/**
+	 * Scope contains one or more return values.
+	 * <p>
+	 * Since 1.67
+	 */
+	public static final String RETURN_VALUE = "returnValue";
 }
 
 /**
@@ -3413,6 +3620,31 @@ class Variable {
 	 * This is an optional property.
 	 */
 	String memoryReference;
+	/**
+	 * A reference that allows the client to request the location where the variable is declared. This should be
+	 * present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer declarationLocationReference;
+	/**
+	 * A reference that allows the client to request the location where the variable's value is declared. For example,
+	 * if the variable contains a function pointer, the adapter may be able to look up the function's location.
+	 * This should be present only if the adapter is likely to be able to resolve the location.
+	 * <p>
+	 * This reference shares the same lifetime as the `variablesReference`.
+	 * See 'Lifetime of Object References' in the Overview section for details.
+	 * <p>
+	 * This is an optional property.
+	 * <p>
+	 * Since 1.68
+	 */
+	Integer valueLocationReference;
 }
 
 /**

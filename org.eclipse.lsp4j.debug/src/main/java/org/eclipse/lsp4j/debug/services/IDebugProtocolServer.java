@@ -39,6 +39,8 @@ import org.eclipse.lsp4j.debug.GotoTargetsResponse;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
 import org.eclipse.lsp4j.debug.LoadedSourcesArguments;
 import org.eclipse.lsp4j.debug.LoadedSourcesResponse;
+import org.eclipse.lsp4j.debug.LocationsArguments;
+import org.eclipse.lsp4j.debug.LocationsResponse;
 import org.eclipse.lsp4j.debug.ModulesArguments;
 import org.eclipse.lsp4j.debug.ModulesResponse;
 import org.eclipse.lsp4j.debug.NextArguments;
@@ -91,7 +93,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	String SCHEMA_VERSION = "1.65.0";
+	String SCHEMA_VERSION = "1.69.0";
 
 	/**
 	 * The 'cancel' request is used by the client in two situations:
@@ -592,7 +594,7 @@ public interface IDebugProtocolServer {
 	}
 
 	/**
-	 * Evaluates the given expression in the context of the topmost stack frame.
+	 * Evaluates the given expression in the context of a stack frame.
 	 * <p>
 	 * The expression has access to any variables and arguments that are in scope.
 	 */
@@ -701,6 +703,16 @@ public interface IDebugProtocolServer {
 	 */
 	@JsonRequest
 	default CompletableFuture<DisassembleResponse> disassemble(DisassembleArguments args) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Looks up information about a location reference previously returned by the debug adapter.
+	 * <p>
+	 * Since 1.68
+	 */
+	@JsonRequest
+	default CompletableFuture<LocationsResponse> locations(LocationsArguments args) {
 		throw new UnsupportedOperationException();
 	}
 }
