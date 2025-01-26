@@ -13,14 +13,13 @@ package org.eclipse.lsp4j.adapters;
 
 import java.util.ArrayList;
 
+import org.eclipse.lsp4j.InlineValue;
 import org.eclipse.lsp4j.InlineValueEvaluatableExpression;
-import org.eclipse.lsp4j.InlineValueText;
 import org.eclipse.lsp4j.InlineValueVariableLookup;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter.PropertyChecker;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
-import org.eclipse.lsp4j.jsonrpc.messages.Either3;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -29,8 +28,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class InlineValueResponseAdapter implements TypeAdapterFactory {
 
-	private static final TypeToken<Either3<InlineValueText, InlineValueVariableLookup, InlineValueEvaluatableExpression>> ELEMENT_TYPE
-		= new TypeToken<>() {};
+	private static final TypeToken<InlineValue> ELEMENT_TYPE = new TypeToken<>() {};
 
 	private static final TypeToken<Either<InlineValueVariableLookup, InlineValueEvaluatableExpression>> R_ELEMENT_TYPE
 		= new TypeToken<>() {};
