@@ -2240,6 +2240,8 @@ class TextDocumentClientCapabilities {
 	 * Since 3.17.0
 	 */
 	DiagnosticCapabilities diagnostic
+	
+	InactiveRegionsCapabilities inactiveRegionsCapabilities
 
 	new() {
 	}
@@ -9953,6 +9955,46 @@ class InlineValueWorkspaceCapabilities {
 
 	new(Boolean refreshSupport) {
 		this.refreshSupport = refreshSupport
+	}
+}
+
+/**
+ * Capabilities specific to the `textDocument/inactiveRegionsCapabilities` notification.
+ */
+@JsonRpcData
+class InactiveRegionsCapabilities {
+
+	Boolean inactiveRegions
+
+	new() {
+	}
+
+	new(Boolean inactiveRegions) {
+		this.inactiveRegions = inactiveRegions
+	}
+}
+
+@JsonRpcData
+class InactiveRegionsParams {
+	/**
+	 * The document for which inactive regions information is reported.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * An array of ranges information items.
+	 */
+	@NonNull
+	List<Range> regions
+
+	new() {
+		this.regions = new ArrayList
+	}
+
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<Range> regions) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.regions = Preconditions.checkNotNull(regions, 'regions')
 	}
 }
 
