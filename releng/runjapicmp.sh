@@ -5,7 +5,7 @@ set -e # error out on any failed commands
 #set -x # echo all commands used for debugging purposes
 
 
-BASELINE=0.23.0
+BASELINE=0.24.0
 
 JAPICMP_VERSION=0.21.2
 WD=$(mktemp -d)
