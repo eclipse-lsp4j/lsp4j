@@ -54,12 +54,6 @@ public enum ResponseErrorCode {
 	jsonrpcReservedErrorRangeStart(-32099),
 
 	/**
-	 * @deprecated Use {@link #ServerNotInitialized}
-	 */
-	@Deprecated
-	serverNotInitialized(-32002),
-
-	/**
 	 * Error code indicating that a server received a notification or
 	 * request before the server has received the {@code initialize} request.
 	 */
