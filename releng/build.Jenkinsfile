@@ -73,7 +73,7 @@ pipeline {
             // XXX: Can release vs snapshot be detected automatically so that
             // the following line does not have to be commented/uncommented
             // on each change to/from SNAPSHOT?
-            // sh 'cd releng && ./deploy-build.sh'
+            sh 'cd releng && ./deploy-build.sh'
           }
         }
       }

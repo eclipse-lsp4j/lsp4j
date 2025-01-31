@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>org.eclipse.lsp4j</groupId>
 		<artifactId>lsp4j.releng</artifactId>
-		<version>0.24.0-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 </project>
