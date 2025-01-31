@@ -4384,34 +4384,6 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 	def void setTrimFinalNewlines(boolean trimFinalNewlines) {
 		putBoolean(TRIM_FINAL_NEWLINES, trimFinalNewlines)
 	}
-
-	/**
-	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
-	 */
-	@Deprecated
-	def Map<String, String> getProperties() {
-		val properties = new LinkedHashMap<String,String>
-		for (entry : entrySet) {
-			val value = switch it: entry.value {
-				case isFirst: getFirst
-				case isSecond: getSecond
-				case isThird: getThird
-			}
-			if (value !== null)
-				properties.put(entry.key, value.toString)
-		}
-		return properties.unmodifiableView
-	}
-
-	/**
-	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
-	 */
-	@Deprecated
-	def void setProperties(Map<String, String> properties) {
-		for (entry : properties.entrySet) {
-			putString(entry.key, entry.value)
-		}
-	}
 }
 
 /**
