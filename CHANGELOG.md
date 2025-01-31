@@ -8,7 +8,7 @@ Breaking API changes:
 
   * Removed deprecated API [#874](https://github.com/eclipse-lsp4j/lsp4j/issues/874)
     * Remove deprecated convenience constructors in protocol files [#875](https://github.com/eclipse-lsp4j/lsp4j/issues/875)
-
+    * Remove deprecated get/set properties in FormattingOptions [#880](https://github.com/eclipse-lsp4j/lsp4j/issues/880)
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v0.24.0 (Jan 2025)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.24.0)
