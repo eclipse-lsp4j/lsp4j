@@ -14,12 +14,6 @@
 			<unit id="jakarta.websocket-client-api.source" version="0.0.0"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/tools/orbit/downloads/2022-03"/>
-			<!-- The use of javax.websocket is deprecated for deletion. See https://github.com/eclipse-lsp4j/lsp4j/issues/647 -->
-			<unit id="javax.websocket" version="0.0.0"/>
-			<unit id="javax.websocket.source" version="0.0.0"/>
-		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<repository location="http://download.eclipse.org/cbi/updates/license/"/>
 			<unit id="org.eclipse.license.feature.group" version="2.0.2.v20181016-2210"/>
 		</location>

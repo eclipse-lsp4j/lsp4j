@@ -13,6 +13,7 @@ Breaking API changes:
     * Removed deprecated static methods in the Either class, instead use TypeUtils helper methods [#877](https://github.com/eclipse-lsp4j/lsp4j/issues/877)
     * Removed deprecated factories [#878](https://github.com/eclipse-lsp4j/lsp4j/issues/878)
     * Removed deprecated ResponseErrorCode.serverNotInitialized, use ResponseErrorCode.ServerNotInitialized instead [#879](https://github.com/eclipse-lsp4j/lsp4j/issues/879)
+    * Removed deprecated org.eclipse.lsp4j.websocket. Please upgrade to using Jakarta or remain with LSP4J version 0.x.x [#647](https://github.com/eclipse-lsp4j/lsp4j/issues/647)
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v0.24.0 (Jan 2025)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.24.0)
