@@ -1,6 +1,14 @@
 ## LSP4J Change Log
 
-### v0.24.0 (TBD)
+### v1.0.0 (TBD)
+
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1>
+
+Breaking API changes:
+
+japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+
+### [v0.24.0 (Jan 2025)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.24.0)
 
 * Implemented DAP version 1.69.0
 
@@ -8,7 +16,7 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/35?closed=1>
 
 Breaking API changes:
 
-japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/0.24.0/japicmp-report/>
 
 ### [v0.23.1 (May 2024)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.23.1)
 
