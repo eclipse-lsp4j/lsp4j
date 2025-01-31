@@ -103,16 +103,6 @@ class WorkspaceEditCapabilities {
 
 	new() {
 	}
-
-	/**
-	 * @deprecated because when this class first existed it didn't have any other fields.
-	 * Now that this class has lots of fields, there is nothing special about this
-	 * field and therefore using the setters is the recommended use case.
-	 */
-	@Deprecated
-	new(Boolean documentChanges) {
-		this.documentChanges = documentChanges
-	}
 }
 
 /**
@@ -4061,12 +4051,6 @@ class DocumentOnTypeFormattingParams extends TextDocumentPositionParams {
 		this.options = Preconditions.checkNotNull(options, 'options')
 		this.ch = Preconditions.checkNotNull(ch, 'ch')
 	}
-
-	@Deprecated
-	new(@NonNull Position position, @NonNull String ch) {
-		super.setPosition(position)
-		this.ch = Preconditions.checkNotNull(ch, 'ch')
-	}
 }
 
 /**
@@ -4103,11 +4087,6 @@ class DocumentRangeFormattingParams implements WorkDoneProgressParams {
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options, @NonNull Range range) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.options = Preconditions.checkNotNull(options, 'options')
-		this.range = Preconditions.checkNotNull(range, 'range')
-	}
-
-	@Deprecated
-	new(@NonNull Range range) {
 		this.range = Preconditions.checkNotNull(range, 'range')
 	}
 }
@@ -4292,15 +4271,6 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 		this.insertSpaces = insertSpaces
 	}
 
-	/**
-	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
-	 */
-	@Deprecated
-	new(int tabSize, boolean insertSpaces, Map<String, String> properties) {
-		this(tabSize, insertSpaces)
-		setProperties(properties)
-	}
-
 	def String getString(String key) {
 		get(key)?.getFirst
 	}
@@ -4404,34 +4374,6 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	def void setTrimFinalNewlines(boolean trimFinalNewlines) {
 		putBoolean(TRIM_FINAL_NEWLINES, trimFinalNewlines)
-	}
-
-	/**
-	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
-	 */
-	@Deprecated
-	def Map<String, String> getProperties() {
-		val properties = new LinkedHashMap<String,String>
-		for (entry : entrySet) {
-			val value = switch it: entry.value {
-				case isFirst: getFirst
-				case isSecond: getSecond
-				case isThird: getThird
-			}
-			if (value !== null)
-				properties.put(entry.key, value.toString)
-		}
-		return properties.unmodifiableView
-	}
-
-	/**
-	 * @deprecated See https://github.com/eclipse-lsp4j/lsp4j/issues/99
-	 */
-	@Deprecated
-	def void setProperties(Map<String, String> properties) {
-		for (entry : properties.entrySet) {
-			putString(entry.key, entry.value)
-		}
 	}
 }
 
@@ -5453,11 +5395,6 @@ class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialR
 
 	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull ReferenceContext context) {
 		super(textDocument, position)
-		this.context = Preconditions.checkNotNull(context, 'context')
-	}
-
-	@Deprecated
-	new(@NonNull ReferenceContext context) {
 		this.context = Preconditions.checkNotNull(context, 'context')
 	}
 }
@@ -6890,13 +6827,6 @@ class TextDocumentContentChangeEvent {
 		this(text)
 		this.range = range
 	}
-
-	@Deprecated
-	new(Range range, Integer rangeLength, @NonNull String text) {
-		this(text)
-		this.range = range
-		this.rangeLength = rangeLength
-	}
 }
 
 /**
@@ -7177,11 +7107,6 @@ class VersionedTextDocumentIdentifier extends TextDocumentIdentifier {
 
 	new(@NonNull String uri, Integer version) {
 		super(uri)
-		this.version = version
-	}
-
-	@Deprecated
-	new(Integer version) {
 		this.version = version
 	}
 }
