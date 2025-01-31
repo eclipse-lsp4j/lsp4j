@@ -6,6 +6,9 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1>
 
 Breaking API changes:
 
+  * Removed deprecated API [#874](https://github.com/eclipse-lsp4j/lsp4j/issues/874)
+    * Remove deprecated convenience constructors in protocol files [#875](https://github.com/eclipse-lsp4j/lsp4j/issues/875)
+
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v0.24.0 (Jan 2025)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.24.0)
