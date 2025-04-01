@@ -418,12 +418,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			writeId(out, requestMessage.getRawId());
 			out.name("method");
 			out.value(requestMessage.getMethod());
-			out.name("params");
 			Object params = requestMessage.getParams();
-			if (params == null)
-				writeNullValue(out);
-			else
+			if (params != null) {
+				out.name("params");
 				handleParameter(out, params, requestMessage.getMethod());
+			}
 		} else if (message instanceof ResponseMessage) {
 			final var responseMessage = (ResponseMessage) message;
 			out.name("id");
@@ -443,12 +442,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			final var notificationMessage = (NotificationMessage) message;
 			out.name("method");
 			out.value(notificationMessage.getMethod());
-			out.name("params");
 			Object params = notificationMessage.getParams();
-			if (params == null)
-				writeNullValue(out);
-			else
+			if (params != null) {
+				out.name("params");
 				handleParameter(out, params, notificationMessage.getMethod());
+			}
 		}
 
 		out.endObject();
