@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.lsp4j
 
+import com.google.common.annotations.Beta
 import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
 import java.util.Arrays
@@ -6062,6 +6063,14 @@ class ServerCapabilities {
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
 
 	/**
+	 * The server provides inline completions.
+	 *
+	 * @since 3.18.0
+	 */
+	@Beta
+	Either<Boolean, InlineCompletionOptions> inlineCompletionProvider;
+
+	/**
 	 * The server has support for pull model diagnostics.
 	 * <p>
 	 * Since 3.17.0
@@ -11160,4 +11169,251 @@ class NotebookDocumentIdentifier {
 	new(@NonNull String uri) {
 		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
+}
+
+/**
+ * A string value used as a snippet is a template which allows to insert text
+ * and to control the editor cursor when insertion happens.
+ *
+ * A snippet can define tab stops and placeholders with `$1`, `$2`
+ * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+ * the end of the snippet. Variables are defined with `$name` and
+ * `${name:default value}`.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class StringValue {
+  /**
+   * The kind of string value.
+   */
+  public static val kind = 'snippet'
+
+  /**
+   * The snippet string.
+   */
+  String value
+}
+
+/**
+ * Client capabilities specific to inline completions.
+ *
+ * @since 3.18.0
+ */
+@Beta
+class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities {
+  new() {
+  }
+
+  new(Boolean dynamicRegistration) {
+    super(dynamicRegistration)
+  }
+}
+
+/**
+ * Inline completion options used during static registration.
+ *
+ * @since 3.18.0
+ */
+ @Beta
+interface InlineCompletionOptions extends WorkDoneProgressOptions {
+}
+
+/**
+ * Inline completion options used during static or dynamic registration.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class InlineCompletionRegistrationOptions extends StaticRegistrationOptions implements InlineCompletionOptions {
+  Boolean done
+
+  override Boolean getWorkDoneProgress() {
+    done
+  }
+
+  override void setWorkDoneProgress(Boolean workDoneProgress) {
+    this.done = workDoneProgress
+  }
+}
+
+/**
+ * A parameter literal used in inline completion requests.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class InlineCompletionParams extends TextDocumentPositionParams implements WorkDoneProgressParams {
+  Either<String, Integer> token
+
+	/**
+	 * Additional information about the context in which inline completions
+	 * were requested.
+	 */
+	@NonNull
+	InlineCompletionContext context
+
+  private new() {
+  }
+
+  new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull InlineCompletionContext context) {
+    super(textDocument, position)
+    this.context = Preconditions.checkNotNull(context, 'context')
+  }
+
+  override Either<String, Integer> getWorkDoneToken() {
+    token
+  }
+
+  override void setWorkDoneToken(Either<String, Integer> token) {
+    this.token = token
+  }
+}
+
+/**
+ * Provides information about the context in which an inline completion was
+ * requested.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class InlineCompletionContext {
+	/**
+	 * Describes how the inline completion was triggered.
+	 */
+	@NonNull
+	InlineCompletionTriggerKind triggerKind
+
+	/**
+	 * Provides information about the currently selected item in the
+	 * autocomplete widget if it is visible.
+	 *
+	 * If set, provided inline completions must extend the text of the
+	 * selected item and use the same range, otherwise they are not shown as
+	 * preview.
+	 * As an example, if the document text is `console.` and the selected item
+	 * is `.log` replacing the `.` in the document, the inline completion must
+	 * also replace `.` and start with `.log`, for example `.log()`.
+	 *
+	 * Inline completion providers are requested again whenever the selected
+	 * item changes.
+	 */
+	SelectedCompletionInfo selectedCompletionInfo
+
+  private new() {
+  }
+
+  new(@NonNull InlineCompletionTriggerKind triggerKind) {
+    this.triggerKind = Preconditions.checkNotNull(triggerKind, 'triggerKind')
+  }
+
+  new(@NonNull InlineCompletionTriggerKind triggerKind, @NonNull SelectedCompletionInfo selectedCompletionInfo) {
+    this.triggerKind = Preconditions.checkNotNull(triggerKind, 'triggerKind')
+    this.selectedCompletionInfo = Preconditions.checkNotNull(selectedCompletionInfo, 'selectedCompletionInfo')
+  }
+}
+
+/**
+ * Describes the currently selected completion item.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class SelectedCompletionInfo {
+	/**
+	 * The range that will be replaced if this completion item is accepted.
+	 */
+	Range range
+
+	/**
+	 * The text the range will be replaced with if this completion is
+	 * accepted.
+	 */
+	String text
+
+  private new() {
+  }
+
+  new(@NonNull Range range, @NonNull String text) {
+    this.range = Preconditions.checkNotNull(range, 'range')
+    this.text = Preconditions.checkNotNull(text, 'text')
+  }
+}
+
+/**
+ * Represents a collection of {@link InlineCompletionItem inline completion
+ * items} to be presented in the editor.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class InlineCompletionList {
+	/**
+	 * The inline completion items.
+	 */
+	List<InlineCompletionItem> items
+
+  private new() {
+  }
+
+  new(@NonNull List<InlineCompletionItem> items) {
+    this.items = Preconditions.checkNotNull(items, 'items')
+  }
+}
+
+/**
+ * An inline completion item represents a text snippet that is proposed inline
+ * to complete text that is being typed.
+ *
+ * @since 3.18.0
+ */
+@Beta
+@JsonRpcData
+class InlineCompletionItem {
+	/**
+	 * The text to replace the range with. Must be set.
+	 * Is used both for the preview and the accept operation.
+	 */
+	@NonNull
+	Either<String, StringValue> insertText
+
+	/**
+	 * A text that is used to decide if this inline completion should be
+	 * shown. When `falsy`, the {@link InlineCompletionItem.insertText} is
+	 * used.
+	 *
+	 * An inline completion is shown if the text to replace is a prefix of the
+	 * filter text.
+	 */
+	@NonNull
+	String filterText
+
+	/**
+	 * The range to replace.
+	 * Must begin and end on the same line.
+	 *
+	 * Prefer replacements over insertions to provide a better experience when
+	 * the user deletes typed text.
+	 */
+	Range range
+
+	/**
+	 * An optional {@link Command} that is executed *after* inserting this
+	 * completion.
+	 */
+	Command command
+
+  private new() {
+  }
+
+  new(@NonNull Either<String, StringValue> insertText, @NonNull String filterText) {
+    this.insertText = Preconditions.checkNotNull(insertText, 'insertText')
+    this.filterText = Preconditions.checkNotNull(filterText, 'filterText')
+  }
 }

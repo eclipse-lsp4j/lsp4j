@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.services;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import com.google.common.annotations.Beta;
 
 import org.eclipse.lsp4j.CallHierarchyIncomingCall;
 import org.eclipse.lsp4j.CallHierarchyIncomingCallsParams;
@@ -57,6 +58,9 @@ import org.eclipse.lsp4j.HoverParams;
 import org.eclipse.lsp4j.ImplementationParams;
 import org.eclipse.lsp4j.InlayHint;
 import org.eclipse.lsp4j.InlayHintParams;
+import org.eclipse.lsp4j.InlineCompletionItem;
+import org.eclipse.lsp4j.InlineCompletionList;
+import org.eclipse.lsp4j.InlineCompletionParams;
 import org.eclipse.lsp4j.InlineValue;
 import org.eclipse.lsp4j.InlineValueParams;
 import org.eclipse.lsp4j.LinkedEditingRangeParams;
@@ -151,7 +155,7 @@ public interface TextDocumentService {
 	default CompletableFuture<SignatureHelp> signatureHelp(SignatureHelpParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The go to declaration request is sent from the client to the server to resolve
 	 * the declaration location of a symbol at a given text document position.
@@ -177,7 +181,7 @@ public interface TextDocumentService {
 	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> definition(DefinitionParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The goto type definition request is sent from the client to the server to resolve
 	 * the type definition location of a symbol at a given text document position.
@@ -191,7 +195,7 @@ public interface TextDocumentService {
 	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> typeDefinition(TypeDefinitionParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The goto implementation request is sent from the client to the server to resolve
 	 * the implementation location of a symbol at a given text document position.
@@ -405,7 +409,7 @@ public interface TextDocumentService {
 	 */
 	@JsonNotification
 	default void willSave(WillSaveTextDocumentParams params) {}
-	
+
 	/**
 	 * The document will save request is sent from the client to the server before the document is actually saved.
 	 * The request can return an array of TextEdits which will be applied to the text document before it is saved.
@@ -418,7 +422,7 @@ public interface TextDocumentService {
 	default CompletableFuture<List<TextEdit>> willSaveWaitUntil(WillSaveTextDocumentParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The document links request is sent from the client to the server to request the location of links in a document.
 	 * <p>
@@ -428,7 +432,7 @@ public interface TextDocumentService {
 	default CompletableFuture<List<DocumentLink>> documentLink(DocumentLinkParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The document link resolve request is sent from the client to the server to resolve the target of a given document link.
 	 */
@@ -436,7 +440,7 @@ public interface TextDocumentService {
 	default CompletableFuture<DocumentLink> documentLinkResolve(DocumentLink params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The document color request is sent from the client to the server to list all color references found in a given text
 	 * document. Along with the range, a color value in RGB is returned.
@@ -453,7 +457,7 @@ public interface TextDocumentService {
 	default CompletableFuture<List<ColorInformation>> documentColor(DocumentColorParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The color presentation request is sent from the client to the server to obtain a list of presentations for a color
 	 * value at a given location. Clients can use the result to
@@ -468,7 +472,7 @@ public interface TextDocumentService {
 	default CompletableFuture<List<ColorPresentation>> colorPresentation(ColorPresentationParams params) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The folding range request is sent from the client to the server to return all folding
 	 * ranges found in a given text document.
@@ -494,7 +498,7 @@ public interface TextDocumentService {
 
 	/**
 	 * The type hierarchy request is sent from the client to the server to return a type hierarchy for
-	 * the language element of given text document positions. Will return {@code null} if the server 
+	 * the language element of given text document positions. Will return {@code null} if the server
 	 * couldn't infer a valid type from the position. The type hierarchy requests are executed in two steps:
 	 * <p><ol>
 	 * <li>first a type hierarchy item is prepared for the given text document position.
@@ -688,6 +692,31 @@ public interface TextDocumentService {
 	@JsonRequest
 	@ResponseJsonAdapter(DocumentDiagnosticReportTypeAdapter.class)
 	default CompletableFuture<DocumentDiagnosticReport> diagnostic(DocumentDiagnosticParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The inline completion request is sent from the client to the server to compute inline completions for a given text document
+	 * either explicitly by a user gesture or implicitly when typing.
+	 * <p>
+     * Inline completion items usually complete bigger portions of text (e.g., whole methods) and in contrast to completions, items
+     * can complete code that might be syntactically or semantically incorrect.
+	 * <p>
+     * Due to this, inline completion items are usually not suited to be presented in normal code completion widgets like a list of
+     * items. One possible approach can be to present the information inline in the editor with lower contrast.
+	 * <p>
+     * When multiple inline completion items are returned, the client may decide whether the user can cycle through them or if they,
+     * along with their filterText, are merely for filtering if the user continues to type without yet accepting the inline
+     * completion item.
+	 * <p>
+     * Clients may choose to send information about the user’s current completion selection via context if completions are visible at
+     * the same time. In this case, returned inline completions should extend the text of the provided completion.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Beta
+	@JsonRequest("textDocument/inlineCompletion")
+	default CompletableFuture<Either<List<InlineCompletionItem>, InlineCompletionList>> inlineCompletion(InlineCompletionParams params) {
 		throw new UnsupportedOperationException();
 	}
 }
