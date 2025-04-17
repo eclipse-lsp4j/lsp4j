@@ -13,42 +13,40 @@ package org.eclipse.lsp4j;
 
 import com.google.common.annotations.Beta;
 
-
 /**
- * Describes how an {@link InlineCompletionItemProvider inline completion
- * provider} was triggered.
- *
+ * Describes how an {@link InlineCompletionItem} was triggered.
+ * <p>
  * @since 3.18.0
  */
 @Beta
 public enum InlineCompletionTriggerKind {
-  /**
-   * Completion was triggered explicitly by a user gesture.
-   * Return multiple completion items to enable cycling through them.
-   */
-  Invoked(1),
+	/**
+	 * Completion was triggered explicitly by a user gesture. Return multiple
+	 * completion items to enable cycling through them.
+	 */
+	Invoked(1),
 
-  /**
-   * Completion was triggered automatically while editing.
-   * It is sufficient to return a single completion item in this case.
-   */
-  Automatic(2);
+	/**
+	 * Completion was triggered automatically while editing. It is sufficient to
+	 * return a single completion item in this case.
+	 */
+	Automatic(2);
 
-  private final int value;
+	private final int value;
 
-  InlineCompletionTriggerKind(final int value) {
-    this.value = value;
-  }
+	InlineCompletionTriggerKind(final int value) {
+		this.value = value;
+	}
 
-  public int getValue() {
-    return value;
-  }
+	public int getValue() {
+		return value;
+	}
 
-  public static InlineCompletionTriggerKind forValue(final int value) {
-    InlineCompletionTriggerKind[] allValues = InlineCompletionTriggerKind.values();
-    if (value < 1 || value > allValues.length) {
-      throw new IllegalArgumentException("Illegal enum value: " + value);
-    }
-    return allValues[value - 1];
-  }
+	public static InlineCompletionTriggerKind forValue(final int value) {
+		InlineCompletionTriggerKind[] allValues = InlineCompletionTriggerKind.values();
+		if (value < 1 || value > allValues.length) {
+			throw new IllegalArgumentException("Illegal enum value: " + value);
+		}
+		return allValues[value - 1];
+	}
 }
