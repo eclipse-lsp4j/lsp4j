@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j
 
-import com.google.common.annotations.Beta
 import com.google.gson.annotations.JsonAdapter
 import java.util.ArrayList
 import java.util.Arrays
@@ -30,6 +29,7 @@ import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
+import org.eclipse.lsp4j.jsonrpc.Beta
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3

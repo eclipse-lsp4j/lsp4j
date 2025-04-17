@@ -11,7 +11,7 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import com.google.common.annotations.Beta;
+import org.eclipse.lsp4j.jsonrpc.Beta;
 
 /**
  * Describes how an {@link InlineCompletionItem} was triggered.
