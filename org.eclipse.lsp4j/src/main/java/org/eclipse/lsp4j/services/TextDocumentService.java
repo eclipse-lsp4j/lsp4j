@@ -13,7 +13,6 @@ package org.eclipse.lsp4j.services;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import com.google.common.annotations.Beta;
 
 import org.eclipse.lsp4j.CallHierarchyIncomingCall;
 import org.eclipse.lsp4j.CallHierarchyIncomingCallsParams;
@@ -101,6 +100,7 @@ import org.eclipse.lsp4j.adapters.InlineValueResponseAdapter;
 import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.adapters.SemanticTokensFullDeltaResponseAdapter;
+import org.eclipse.lsp4j.jsonrpc.Beta;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
@@ -715,6 +715,7 @@ public interface TextDocumentService {
 	 * Since 3.18.0
 	 */
 	@Beta
+	@JsonRequest
 	default CompletableFuture<Either<List<InlineCompletionItem>, InlineCompletionList>> inlineCompletion(InlineCompletionParams params) {
 		throw new UnsupportedOperationException();
 	}

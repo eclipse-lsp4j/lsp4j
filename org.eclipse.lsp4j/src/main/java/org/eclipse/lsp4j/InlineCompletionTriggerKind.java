@@ -14,7 +14,7 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.jsonrpc.Beta;
 
 /**
- * Describes how an {@link InlineCompletionItem} was triggered.
+ * Describes how an inline completion request was triggered.
  * <p>
  * @since 3.18.0
  */

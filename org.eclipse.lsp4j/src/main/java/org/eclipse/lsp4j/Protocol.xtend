@@ -3339,7 +3339,7 @@ class Diagnostic {
 	 * <p>
 	 * Since 3.15.0
 	 */
-	 List<DiagnosticTag> tags
+	List<DiagnosticTag> tags
 
 	/**
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
@@ -6076,7 +6076,7 @@ class ServerCapabilities {
 	 * @since 3.18.0
 	 */
 	@Beta
-	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider;
+	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
 	 * The server has support for pull model diagnostics.
@@ -11180,16 +11180,19 @@ class NotebookDocumentIdentifier {
 }
 
 /**
- * Describes the StringValue kind
+ * Describes kind of {@link StringValue}.
  * <p>
  * Since 3.18.0
  */
 @Beta
-final class StringKind {
+final class StringValueKind {
 	/**
-	 * Snippet text is supported as a StringValue kind.
+	 * Indicates a snippet {@link StringValue}.
 	 */
 	public static val SNIPPET = 'snippet'
+
+	private new() {
+	}
 }
 /**
  * A string value used as a snippet is a template which allows to insert text
@@ -11206,18 +11209,21 @@ final class StringKind {
 @JsonRpcData
 class StringValue {
 	/**
-	 * The type of the StringValue.
+	 * The kind of the string value.
 	 * <p>
-	 * See {@link StringKind} for allowed values.
+	 * See {@link StringValueKind} for allowed values.
 	 */
 	@NonNull
 	String kind
 
 	/**
-	 * The snippet string.
+	 * The string value.
 	 */
 	@NonNull
 	String value
+
+	new() {
+	}
 
 	new(@NonNull String kind, @NonNull String value) {
 		this.kind = Preconditions.checkNotNull(kind, 'kind')
@@ -11248,8 +11254,19 @@ class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities
  */
 @Beta
 @JsonRpcData
-class InlineCompletionRegistrationOptions extends StaticRegistrationOptions implements WorkDoneProgressOptions {
-	Boolean workDoneProgress
+class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
 }
 
 /**
