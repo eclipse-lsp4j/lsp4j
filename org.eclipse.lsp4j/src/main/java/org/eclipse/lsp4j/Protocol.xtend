@@ -11194,6 +11194,7 @@ final class StringValueKind {
 	private new() {
 	}
 }
+
 /**
  * A string value used as a snippet is a template which allows to insert text
  * and to control the editor cursor when insertion happens.
@@ -11311,14 +11312,14 @@ class InlineCompletionContext {
 	/**
 	 * Provides information about the currently selected item in the
 	 * autocomplete widget if it is visible.
-	 *
+	 *<p>
 	 * If set, provided inline completions must extend the text of the
 	 * selected item and use the same range, otherwise they are not shown as
 	 * preview.
 	 * As an example, if the document text is `console.` and the selected item
 	 * is `.log` replacing the `.` in the document, the inline completion must
 	 * also replace `.` and start with `.log`, for example `.log()`.
-	 *
+	 *<p>
 	 * Inline completion providers are requested again whenever the selected
 	 * item changes.
 	 */
