@@ -792,6 +792,36 @@ class JsonSerializeTest {
 			}
 		''')
 	}
+
+    @Test
+    def void testNoRequestParams() {
+        val message = new RequestMessage => [
+            jsonrpc = "2.0"
+            id = "12"
+            method = MessageMethods.SHUTDOWN
+        ]
+        message.assertSerialize('''
+            {
+              "jsonrpc": "2.0",
+              "id": "12",
+              "method": "shutdown"
+            }
+        ''')
+    }
+
+    @Test
+    def void testNoNotificationParams() {
+        val message = new NotificationMessage => [
+            jsonrpc = "2.0"
+            method = MessageMethods.EXIT
+        ]
+        message.assertSerialize('''
+            {
+              "jsonrpc": "2.0",
+              "method": "exit"
+            }
+        ''')
+    }
 	
 	@Test
 	def void testProgressCreate() {
