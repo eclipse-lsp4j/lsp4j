@@ -11,14 +11,14 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.jsonrpc.Beta;
+import org.eclipse.lsp4j.jsonrpc.Draft;
 
 /**
  * Describes how an inline completion request was triggered.
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 public enum InlineCompletionTriggerKind {
 	/**
 	 * Completion was triggered explicitly by a user gesture. Return multiple

@@ -29,7 +29,7 @@ import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
-import org.eclipse.lsp4j.jsonrpc.Beta
+import org.eclipse.lsp4j.jsonrpc.Draft
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
@@ -2247,7 +2247,7 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * @since 3.18.0
 	 */
-	@Beta
+	@Draft
 	InlineCompletionClientCapabilities inlineCompletion
 
 	new() {
@@ -6075,7 +6075,7 @@ class ServerCapabilities {
 	 * <p>
 	 * @since 3.18.0
 	 */
-	@Beta
+	@Draft
 	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
@@ -11184,7 +11184,7 @@ class NotebookDocumentIdentifier {
  * <p>
  * Since 3.18.0
  */
-@Beta
+@Draft
 final class StringValueKind {
 	/**
 	 * Indicates a snippet {@link StringValue}.
@@ -11206,7 +11206,7 @@ final class StringValueKind {
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class StringValue {
 	/**
@@ -11237,7 +11237,7 @@ class StringValue {
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -11253,7 +11253,7 @@ class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -11275,7 +11275,7 @@ class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrati
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	/**
@@ -11300,7 +11300,7 @@ class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressPara
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class InlineCompletionContext {
 	/**
@@ -11343,7 +11343,7 @@ class InlineCompletionContext {
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class SelectedCompletionInfo {
 	/**
@@ -11373,7 +11373,7 @@ class SelectedCompletionInfo {
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class InlineCompletionList {
 	/**
@@ -11396,7 +11396,7 @@ class InlineCompletionList {
  * <p>
  * @since 3.18.0
  */
-@Beta
+@Draft
 @JsonRpcData
 class InlineCompletionItem {
 	/**
