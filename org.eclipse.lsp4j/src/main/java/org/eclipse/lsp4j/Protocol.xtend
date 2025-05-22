@@ -29,6 +29,7 @@ import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
+import org.eclipse.lsp4j.jsonrpc.Draft
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
@@ -2241,6 +2242,14 @@ class TextDocumentClientCapabilities {
 	 */
 	DiagnosticCapabilities diagnostic
 
+	/**
+	 * Capabilities specific to the `textDocument/inlineCompletion` request.
+	 * <p>
+	 * @since 3.18.0
+	 */
+	@Draft
+	InlineCompletionClientCapabilities inlineCompletion
+
 	new() {
 	}
 }
@@ -3330,7 +3339,7 @@ class Diagnostic {
 	 * <p>
 	 * Since 3.15.0
 	 */
-	 List<DiagnosticTag> tags
+	List<DiagnosticTag> tags
 
 	/**
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
@@ -6060,6 +6069,14 @@ class ServerCapabilities {
 	 * Since 3.17.0
 	 */
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
+
+	/**
+	 * The server provides inline completions.
+	 * <p>
+	 * @since 3.18.0
+	 */
+	@Draft
+	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
 	 * The server has support for pull model diagnostics.
@@ -11159,5 +11176,265 @@ class NotebookDocumentIdentifier {
 
 	new(@NonNull String uri) {
 		this.uri = Preconditions.checkNotNull(uri, 'uri')
+	}
+}
+
+/**
+ * Describes kind of {@link StringValue}.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+final class StringValueKind {
+	/**
+	 * Indicates a snippet {@link StringValue}.
+	 */
+	public static val SNIPPET = 'snippet'
+
+	private new() {
+	}
+}
+
+/**
+ * A string value used as a snippet is a template which allows to insert text
+ * and to control the editor cursor when insertion happens.
+ * <p>
+ * A snippet can define tab stops and placeholders with `$1`, `$2`
+ * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
+ * the end of the snippet. Variables are defined with `$name` and
+ * `${name:default value}`.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class StringValue {
+	/**
+	 * The kind of the string value.
+	 * <p>
+	 * See {@link StringValueKind} for allowed values.
+	 */
+	@NonNull
+	String kind
+
+	/**
+	 * The string value.
+	 */
+	@NonNull
+	String value
+
+	new() {
+	}
+
+	new(@NonNull String kind, @NonNull String value) {
+		this.kind = Preconditions.checkNotNull(kind, 'kind')
+		this.value = Preconditions.checkNotNull(value, 'value')
+	}
+}
+
+/**
+ * Client capabilities specific to inline completions.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+}
+
+/**
+ * Inline completion options used during static or dynamic registration.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	new() {
+	}
+
+	new(String id) {
+		this.id = id
+	}
+}
+
+/**
+ * A parameter literal used in inline completion requests.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressParams {
+	/**
+	 * Additional information about the context in which inline completions
+	 * were requested.
+	 */
+	@NonNull
+	InlineCompletionContext context
+
+	new() {
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull Position position, @NonNull InlineCompletionContext context) {
+		super(textDocument, position)
+		this.context = Preconditions.checkNotNull(context, 'context')
+	}
+}
+
+/**
+ * Provides information about the context in which an inline completion was
+ * requested.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class InlineCompletionContext {
+	/**
+	 * Describes how the inline completion was triggered.
+	 */
+	@NonNull
+	InlineCompletionTriggerKind triggerKind
+
+	/**
+	 * Provides information about the currently selected item in the
+	 * autocomplete widget if it is visible.
+	 *<p>
+	 * If set, provided inline completions must extend the text of the
+	 * selected item and use the same range, otherwise they are not shown as
+	 * preview.
+	 * As an example, if the document text is `console.` and the selected item
+	 * is `.log` replacing the `.` in the document, the inline completion must
+	 * also replace `.` and start with `.log`, for example `.log()`.
+	 *<p>
+	 * Inline completion providers are requested again whenever the selected
+	 * item changes.
+	 */
+	SelectedCompletionInfo selectedCompletionInfo
+
+	new() {
+	}
+
+	new(@NonNull InlineCompletionTriggerKind triggerKind) {
+		this.triggerKind = Preconditions.checkNotNull(triggerKind, 'triggerKind')
+	}
+
+	new(@NonNull InlineCompletionTriggerKind triggerKind, SelectedCompletionInfo selectedCompletionInfo) {
+		this.triggerKind = Preconditions.checkNotNull(triggerKind, 'triggerKind')
+		this.selectedCompletionInfo = selectedCompletionInfo
+	}
+}
+
+/**
+ * Describes the currently selected completion item.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class SelectedCompletionInfo {
+	/**
+	 * The range that will be replaced if this completion item is accepted.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The text the range will be replaced with if this completion is
+	 * accepted.
+	 */
+	@NonNull
+	String text
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull String text) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.text = Preconditions.checkNotNull(text, 'text')
+	}
+}
+
+/**
+ * Represents a collection of {@link InlineCompletionItem} to be presented in the editor.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class InlineCompletionList {
+	/**
+	 * The inline completion items.
+	 */
+	@NonNull
+	List<InlineCompletionItem> items
+
+	new() {
+	}
+
+	new(@NonNull List<InlineCompletionItem> items) {
+		this.items = Preconditions.checkNotNull(items, 'items')
+	}
+}
+
+/**
+ * An inline completion item represents a text snippet that is proposed inline
+ * to complete text that is being typed.
+ * <p>
+ * @since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class InlineCompletionItem {
+	/**
+	 * The text to replace the range with. Must be set.
+	 * Is used both for the preview and the accept operation.
+	 */
+	@NonNull
+	Either<String, StringValue> insertText
+
+	/**
+	 * A text that is used to decide if this inline completion should be
+	 * shown. When `falsy`, the {@link InlineCompletionItem#insertText} is
+	 * used.
+	 * <p>
+	 * An inline completion is shown if the text to replace is a prefix of the
+	 * filter text.
+	 */
+	String filterText
+
+	/**
+	 * The range to replace.
+	 * Must begin and end on the same line.
+	 * <p>
+	 * Prefer replacements over insertions to provide a better experience when
+	 * the user deletes typed text.
+	 */
+	Range range
+
+	/**
+	 * An optional {@link Command} that is executed *after* inserting this
+	 * completion.
+	 */
+	Command command
+
+	new() {
+	}
+
+	new(@NonNull Either<String, StringValue> insertText) {
+		this.insertText = Preconditions.checkNotNull(insertText, 'insertText')
 	}
 }
