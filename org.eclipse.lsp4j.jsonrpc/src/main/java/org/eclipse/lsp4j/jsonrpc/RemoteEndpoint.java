@@ -269,6 +269,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 		try {
 			// Forward the request to the local endpoint
 			future = localEndpoint.request(requestMessage.getMethod(), requestMessage.getParams());
+			if (future == null) {
+				throw new IllegalStateException("Local endpoint returned null from its request method, whereas an instance of CompletableFuture is expected");
+			}
 		} catch (Throwable throwable) {
 			// The local endpoint has failed handling the request - reply with an error response
 			ResponseError errorObject = exceptionHandler.apply(throwable);

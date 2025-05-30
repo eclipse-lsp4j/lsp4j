@@ -464,4 +464,35 @@ public class RemoteEndpointTest {
 			logMessages.unregister();
 		}
 	}
+
+	@Test
+	public void testEndpointReturningNull() {
+		final var logMessages = new LogMessageAccumulator();
+		try {
+			// Don't show the exception in the test execution log
+			logMessages.registerTo(RemoteEndpoint.class);
+
+			final var endp = new TestEndpoint() {
+				@Override
+				public CompletableFuture<Object> request(String method, Object parameter) {
+					return null;
+				}
+			};
+			final var consumer = new TestMessageConsumer();
+			final var endpoint = new RemoteEndpoint(consumer, endp);
+
+			endpoint.consume(init(new RequestMessage(), it -> {
+				it.setId("1");
+				it.setMethod("foo");
+				it.setParams("myparam");
+			}));
+
+			assertEquals("Check some response received", 1, consumer.messages.size());
+			final var response = (ResponseMessage) consumer.messages.get(0);
+			assertNotNull("Check response has error", response.getError());
+			assertEquals(ResponseErrorCode.InternalError.getValue(), response.getError().getCode());
+		} finally {
+			logMessages.unregister();
+		}
+	}
 }
