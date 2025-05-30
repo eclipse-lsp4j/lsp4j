@@ -21,10 +21,12 @@ import java.util.concurrent.CompletableFuture;
  * Annotation to mark a request method on an interface or class.
  * <p>
  * A request method must have the return type {@link CompletableFuture} with an
- * object parameter type or Void and have zero or one argument.
+ * object parameter type or Void, and have zero or one argument.
  * <p>
- * According to jsonrpc an argument must be an 'object' (a java bean, not e,g.
+ * According to jsonrpc an argument must be an 'object' (a java bean, not e.g. a
  * String).
+ * <p>
+ * A request method is not allowed to return <code>null</code>.
  * <p>
  * The name of the jsonrpc request will be the optional segment, followed by the
  * name of the Java method that is annotated with JsonRequest. The name of the

@@ -18,8 +18,22 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface Endpoint {
 
+	/**
+	 * Accepts the given request for further processing.
+	 *
+	 * @param method a request method, may not be <code>null</code>
+	 * @param parameter a request parameter
+	 * @return an instance of CompletableFuture representing the result computed in response to the request.
+	 *  May not be <code>null</code>.
+	 */
 	CompletableFuture<?> request(String method, Object parameter);
 	
+	/**
+	 * Accepts the given notification for further processing.
+	 *
+	 * @param method a notification method, may not be <code>null</code>
+	 * @param parameter a notification parameter
+	 */
 	void notify(String method, Object parameter);
 	
 }
