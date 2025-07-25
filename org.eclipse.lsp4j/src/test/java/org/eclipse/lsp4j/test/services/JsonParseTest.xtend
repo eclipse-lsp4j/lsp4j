@@ -76,6 +76,8 @@ import org.eclipse.lsp4j.SignatureHelp
 import org.eclipse.lsp4j.SignatureHelpCapabilities
 import org.eclipse.lsp4j.SignatureInformation
 import org.eclipse.lsp4j.SignatureInformationCapabilities
+import org.eclipse.lsp4j.SnippetTextEdit
+import org.eclipse.lsp4j.StringValue
 import org.eclipse.lsp4j.SymbolInformation
 import org.eclipse.lsp4j.SymbolKind
 import org.eclipse.lsp4j.SymbolKindCapabilities
@@ -855,6 +857,22 @@ class JsonParseTest {
 										}
 									},
 									"newText": "asdfqweryxcv"
+								},
+								{
+									"range": {
+										"start": {
+											"character": 33,
+											"line": 5
+										},
+										"end": {
+											"character": 37,
+											"line": 5
+										}
+									},
+									"snippet": {
+										"kind": "snippet",
+										"value": "abra$0cadabra"
+									}
 								}
 							]
 						}
@@ -883,13 +901,23 @@ class JsonParseTest {
 					Either.forLeft(new TextDocumentEdit => [
 						textDocument = new VersionedTextDocumentIdentifier("file:/baz.txt", 17)
 						edits = newArrayList(
-							new TextEdit => [
+							Either.forLeft(new TextEdit => [
 								range = new Range => [
 									start = new Position(3, 32)
 									end = new Position(3, 35)
 								]
 								newText = "asdfqweryxcv"
-							]
+							]),
+							Either.forRight(new SnippetTextEdit => [
+								range = new Range => [
+									start = new Position(5, 33)
+									end = new Position(5, 37)
+								]
+								snippet = new StringValue => [
+									kind = "snippet"
+									value = "abra$0cadabra"
+								]
+							])
 						)
 					])
 				)

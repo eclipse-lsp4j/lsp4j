@@ -17,6 +17,8 @@ Breaking API changes:
     * Remove deprecated ResponseErrorCode.serverNotInitialized, use ResponseErrorCode.ServerNotInitialized instead [#879](https://github.com/eclipse-lsp4j/lsp4j/issues/879)
     * Remove deprecated org.eclipse.lsp4j.websocket. Please upgrade to using Jakarta or remain with LSP4J version 0.x.x [#647](https://github.com/eclipse-lsp4j/lsp4j/issues/647)
     * Remove deprecated ConcurrentMessageProcessor.startProcessing, use ConcurrentMessageProcessor.beginProcessing instead [#922](https://github.com/eclipse-lsp4j/lsp4j/issues/922)
+ * Added beta support for new features in LSP 3.18 [#893](https://github.com/eclipse-lsp4j/lsp4j/pull/893)
+    * Type of `TextDocumentEdit.edits` changed from `List<TextEdit>` to `List<Either<TextEdit, SnippetTextEdit>>`
 
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 

@@ -25,6 +25,7 @@ import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
+import org.eclipse.lsp4j.adapters.TextEditListAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
@@ -102,6 +103,14 @@ class WorkspaceEditCapabilities {
 	 * Since 3.16.0
 	 */
 	WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport
+
+	/**
+	 * Whether the client supports snippets as text edits.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean snippetEditSupport
 
 	new() {
 	}
@@ -7140,15 +7149,21 @@ class TextDocumentEdit {
 	VersionedTextDocumentIdentifier textDocument
 
 	/**
-	 * The edits to be applied
+	 * The edits to be applied.
+	 * <p>
+	 * Since 3.18 - support for {@link SnippetTextEdit}. This is guarded by the
+	 * client capability {@link WorkspaceEditCapabilities#snippetEditSupport}.
+	 * If a client does not signal this capability, servers should not send
+	 * {@link SnippetTextEdit} snippets back to the client.
 	 */
 	@NonNull
-	List<TextEdit> edits
+	@JsonAdapter(TextEditListAdapter)
+	List<Either<TextEdit, SnippetTextEdit>> edits
 
 	new() {
 	}
 
-	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextEdit> edits) {
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<Either<TextEdit, SnippetTextEdit>> edits) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.edits = Preconditions.checkNotNull(edits, 'edits')
 	}
@@ -11359,5 +11374,45 @@ class InlineCompletionItem {
 
 	new(@NonNull Either<String, StringValue> insertText) {
 		this.insertText = Preconditions.checkNotNull(insertText, 'insertText')
+	}
+}
+
+/**
+ * An interactive text edit.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class SnippetTextEdit {
+
+	/**
+	 * The range of the text document to be manipulated.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The snippet to be inserted.
+	 */
+	@NonNull
+	StringValue snippet
+
+	/**
+	 * The actual identifier of the snippet edit.
+	 */
+	String annotationId
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull StringValue snippet) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.snippet = Preconditions.checkNotNull(snippet, 'snippet')
+	}
+
+	new(@NonNull Range range, @NonNull StringValue snippet, String annotationId) {
+		this(range, snippet)
+		this.annotationId = annotationId
 	}
 }
