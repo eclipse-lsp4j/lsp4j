@@ -16,7 +16,7 @@ import org.eclipse.lsp4j.jsonrpc.Draft;
 /**
  * Describes how an inline completion request was triggered.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 public enum InlineCompletionTriggerKind {

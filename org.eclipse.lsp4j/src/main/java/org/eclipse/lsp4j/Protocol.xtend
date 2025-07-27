@@ -2234,9 +2234,9 @@ class TextDocumentClientCapabilities {
 	DiagnosticCapabilities diagnostic
 
 	/**
-	 * Capabilities specific to the `textDocument/inlineCompletion` request.
+	 * Capabilities specific to the {@code textDocument/inlineCompletion} request.
 	 * <p>
-	 * @since 3.18.0
+	 * Since 3.18.0
 	 */
 	@Draft
 	InlineCompletionClientCapabilities inlineCompletion
@@ -6009,19 +6009,19 @@ class ServerCapabilities {
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
 
 	/**
-	 * The server provides inline completions.
-	 * <p>
-	 * @since 3.18.0
-	 */
-	@Draft
-	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
-
-	/**
 	 * The server has support for pull model diagnostics.
 	 * <p>
 	 * Since 3.17.0
 	 */
 	DiagnosticRegistrationOptions diagnosticProvider
+
+	/**
+	 * The server provides inline completions.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
 	 * Experimental server capabilities.
@@ -11127,7 +11127,7 @@ final class StringValueKind {
  * the end of the snippet. Variables are defined with `$name` and
  * `${name:default value}`.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11158,7 +11158,7 @@ class StringValue {
 /**
  * Client capabilities specific to inline completions.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11174,7 +11174,7 @@ class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities
 /**
  * Inline completion options used during static or dynamic registration.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11196,7 +11196,7 @@ class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrati
 /**
  * A parameter literal used in inline completion requests.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11221,7 +11221,7 @@ class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressPara
  * Provides information about the context in which an inline completion was
  * requested.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11264,7 +11264,7 @@ class InlineCompletionContext {
 /**
  * Describes the currently selected completion item.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11294,7 +11294,7 @@ class SelectedCompletionInfo {
 /**
  * Represents a collection of {@link InlineCompletionItem} to be presented in the editor.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11317,7 +11317,7 @@ class InlineCompletionList {
  * An inline completion item represents a text snippet that is proposed inline
  * to complete text that is being typed.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
