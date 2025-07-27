@@ -672,6 +672,22 @@ class CompletionListCapabilities {
 	 */
 	List<String> itemDefaults
 
+	/**
+	 * Specifies whether the client supports {@link CompletionList#applyKind} to
+	 * indicate how supported values from {@link CompletionList#itemDefaults}
+	 * and a completion will be combined.
+	 * <p>
+	 * If a client supports {@link CompletionList#applyKind} it must support it
+	 * for all fields that it supports that are listed in {@link CompletionApplyKind}.
+	 * This means when clients add support for new/future fields in completion items
+	 * they MUST also support merge for them if those fields are defined in
+	 * {@link CompletionApplyKind}.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean applyKindSupport
+
 	new() {
 	}
 
@@ -3239,13 +3255,15 @@ class InsertReplaceRange {
 }
 
 /**
- * In many cases the items of an actual completion result share the same
+ * In many cases, the items of an actual completion result share the same
  * value for properties like {@link CompletionItem#commitCharacters} or the range of a text
  * edit. A completion list can therefore define item defaults which will
  * be used if a completion item itself doesn't specify the value.
  * <p>
  * If a completion list specifies a default value and a completion item
- * also specifies a corresponding value the one from the item is used.
+ * also specifies a corresponding value, the rules for combining these are
+ * defined by {@link CompletionList#applyKind} (if the client supports it),
+ * defaulting to {@link ApplyKind#Replace}.
  * <p>
  * Servers are only allowed to return default values if the client
  * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
@@ -3287,6 +3305,71 @@ class CompletionItemDefaults {
 }
 
 /**
+ * Specifies how fields from a completion item should be combined with those
+ * from {@link CompletionList#itemDefaults}.
+ * <p>
+ * If unspecified, all fields will be treated as {@link ApplyKind#Replace}.
+ * <p>
+ * If a field's value is {@link ApplyKind#Replace}, the value from a completion item
+ * (if provided and not {@code null}) will always be used instead of the value
+ * from {@link CompletionList#itemDefaults}.
+ * <p>
+ * If a field's value is {@link ApplyKind#Merge}, the values will be merged using
+ * the rules defined against each field in {@link CompletionApplyKind}.
+ * <p>
+ * Servers are only allowed to return {@link CompletionList#applyKind} if the client
+ * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
+ * capability.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CompletionApplyKind {
+	/**
+	 * Specifies whether {@link CompletionItem#commitCharacters commitCharacters}
+	 * on a completion will replace or be merged with those in
+	 * {@link CompletionItemDefaults#commitCharacters}.
+	 * <p>
+	 * If {@link ApplyKind#Replace}, the commit characters from the completion item
+	 * will always be used unless not provided, in which case those from
+	 * {@link CompletionItemDefaults#commitCharacters} will be used. An
+	 * empty list can be used if a completion item does not have any commit
+	 * characters and also should not use those from
+	 * {@link CompletionItemDefaults#commitCharacters}.
+	 * <p>
+	 * If {@link ApplyKind#Merge}, the commit characters for the completion will be
+	 * the union of all values in both {@link CompletionItemDefaults#commitCharacters}
+	 * and the completion's own {@link CompletionItem#commitCharacters commitCharacters}.
+	 */
+	ApplyKind commitCharacters
+
+	/**
+	 * Specifies whether the {@link CompletionItem#data data} field on a completion
+	 * will replace or be merged with data from {@link CompletionItemDefaults#data}.
+	 * <p>
+	 * If {@link ApplyKind#Replace}, the data from the completion item will be used
+	 * if provided (and not {@code null}), otherwise {@link CompletionItemDefaults#data}
+	 * will be used. An empty object can be used if a completion item does not have
+	 * any data but also should not use the value from {@link CompletionItemDefaults#data}.
+	 * <p>
+	 * If {@link ApplyKind#Merge}, a shallow merge will be performed between
+	 * {@link CompletionItemDefaults#data} and the completion's own data
+	 * using the following rules:
+	 * <ul>
+	 * <li>If a completion's {@link CompletionItem#data data} field is not provided
+	 * (or {@code null}), the entire {@link CompletionItemDefaults#data} field will be
+	 * used as-is.
+	 * <li>If a completion's {@link CompletionItem#data data} field is provided,
+	 * each field will overwrite the field of the same name in
+	 * {@link CompletionItemDefaults#data}, but no merging of nested fields
+	 * within that value will occur.
+	 * </ul>
+	 */
+	ApplyKind data
+}
+
+/**
  * Represents a collection of completion items to be presented in the editor.
  */
 @JsonRpcData
@@ -3303,13 +3386,15 @@ class CompletionList {
 	List<CompletionItem> items
 
 	/**
-	 * In many cases the items of an actual completion result share the same
+	 * In many cases, the items of an actual completion result share the same
 	 * value for properties like {@link CompletionItem#commitCharacters} or the range of a text
 	 * edit. A completion list can therefore define item defaults which will
 	 * be used if a completion item itself doesn't specify the value.
 	 * <p>
 	 * If a completion list specifies a default value and a completion item
-	 * also specifies a corresponding value the one from the item is used.
+	 * also specifies a corresponding value, the rules for combining these are
+	 * defined by {@link CompletionList#applyKind} (if the client supports it),
+	 * defaulting to {@link ApplyKind#Replace}.
 	 * <p>
 	 * Servers are only allowed to return default values if the client
 	 * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
@@ -3318,6 +3403,28 @@ class CompletionList {
 	 * Since 3.17.0
 	 */
 	CompletionItemDefaults itemDefaults
+
+	/**
+	 * Specifies how fields from a completion item should be combined with those
+	 * from {@link CompletionList#itemDefaults}.
+	 * <p>
+	 * If unspecified, all fields will be treated as {@link ApplyKind#Replace}.
+	 * <p>
+	 * If a field's value is {@link ApplyKind#Replace}, the value from a completion item
+	 * (if provided and not {@code null}) will always be used instead of the value
+	 * from {@link CompletionList#itemDefaults}.
+	 * <p>
+	 * If a field's value is {@link ApplyKind#Merge}, the values will be merged using
+	 * the rules defined against each field in {@link CompletionApplyKind}.
+	 * <p>
+	 * Servers are only allowed to return {@link CompletionList#applyKind} if the client
+	 * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
+	 * capability.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	CompletionApplyKind applyKind
 
 	new() {
 		this(new ArrayList)
