@@ -391,6 +391,14 @@ class WorkspaceClientCapabilities {
 	 */
 	DiagnosticWorkspaceCapabilities diagnostics
 
+	/**
+	 * Client workspace capabilities specific to folding ranges.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	FoldingRangeWorkspaceCapabilities foldingRange
+
 	new() {
 	}
 }
@@ -1624,6 +1632,33 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	FoldingRangeSupportCapabilities foldingRange
 
 	new() {
+	}
+}
+
+/**
+ * Client workspace capabilities specific to folding ranges.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class FoldingRangeWorkspaceCapabilities {
+	/**
+	 * Whether the client implementation supports a refresh request sent from the
+	 * server to the client.
+	 * <p>
+	 * Note that this event is global and will force the client to refresh all
+	 * folding ranges currently shown. It should be used with absolute care and is
+	 * useful for situations where a server, for example, detects a project-wide
+	 * change that requires such a calculation.
+	 */
+	Boolean refreshSupport
+
+	new() {
+	}
+
+	new(Boolean refreshSupport) {
+		this.refreshSupport = refreshSupport
 	}
 }
 
