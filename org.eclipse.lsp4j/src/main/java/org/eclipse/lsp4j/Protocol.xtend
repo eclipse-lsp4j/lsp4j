@@ -2248,7 +2248,7 @@ class TextDocumentClientCapabilities {
 	 * Since 3.18.0
 	 */
 	@Draft
-	InlineCompletionClientCapabilities inlineCompletion
+	InlineCompletionCapabilities inlineCompletion
 
 	new() {
 	}
@@ -11239,7 +11239,7 @@ class StringValue {
  */
 @Draft
 @JsonRpcData
-class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities {
+class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
 	new() {
 	}
 
