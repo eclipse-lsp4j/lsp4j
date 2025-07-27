@@ -29,6 +29,7 @@ import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkDoneProgressCreateParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
+import org.eclipse.lsp4j.jsonrpc.Draft;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
@@ -248,6 +249,22 @@ public interface LanguageClient {
 	 */
 	@JsonRequest("workspace/diagnostic/refresh")
 	default CompletableFuture<Void> refreshDiagnostics() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code workspace/foldingRange/refresh} request is sent from the server to the client.
+	 * Servers can use it to ask clients to refresh the folding ranges currently shown in editors.
+	 * As a result the client should ask the server to recompute the folding ranges for these editors.
+	 * This is useful if a server detects a configuration change which requires a re-calculation of
+	 * all folding ranges. Note that the client still has the freedom to delay the re-calculation of
+	 * the folding ranges if, for example, an editor is currently not visible.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	@JsonRequest("workspace/foldingRange/refresh")
+	default CompletableFuture<Void> refreshFoldingRanges() {
 		throw new UnsupportedOperationException();
 	}
 }
