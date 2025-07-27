@@ -5823,6 +5823,12 @@ final class SemanticTokenTypes {
 	 */
 	public static val Decorator = 'decorator'
 
+	/**
+	 * Since 3.18.0
+	 */
+	@Draft
+	public static val Label = 'label'
+
 	private new() {
 	}
 }
