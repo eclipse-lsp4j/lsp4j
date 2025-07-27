@@ -19,6 +19,7 @@ Breaking API changes:
     * Remove deprecated ConcurrentMessageProcessor.startProcessing, use ConcurrentMessageProcessor.beginProcessing instead [#922](https://github.com/eclipse-lsp4j/lsp4j/issues/922)
  * Added beta support for new features in LSP 3.18 [#893](https://github.com/eclipse-lsp4j/lsp4j/pull/893)
     * Type of `TextDocumentEdit.edits` changed from `List<TextEdit>` to `List<Either<TextEdit, SnippetTextEdit>>`
+    * Type of `Diagnostic.message` changed from `String` to `Either<String, MarkupContent>`
 
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 

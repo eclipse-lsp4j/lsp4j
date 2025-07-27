@@ -2647,7 +2647,17 @@ class CodeActionDisabled {
 @JsonRpcData
 class CodeActionContext {
 	/**
-	 * An array of diagnostics.
+	 * An array of diagnostics known on the client side overlapping the range
+	 * provided to the {@code textDocument/codeAction} request. They are provided
+	 * so that the server knows which errors are currently presented to the user
+	 * for the given range. There is no guarantee that these accurately reflect the
+	 * error state of the resource. The primary parameter to compute code actions
+	 * is the provided range.
+	 * <p>
+	 * Note that the client should check the {@link DiagnosticServerCapabilities#markupMessageSupport}
+	 * server capability before sending diagnostics with markup messages to a server.
+	 * Diagnostics with markup messages should be excluded for servers that do not
+	 * support them.
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
@@ -3330,9 +3340,14 @@ class Diagnostic {
 
 	/**
 	 * The diagnostic's message.
+	 * <p>
+	 * Since 3.18.0 - support for {@link MarkupContent}. This is guarded by the client
+	 * capability {@link DiagnosticCapabilities#markupMessageSupport}. If a client does not
+	 * signal this capability, servers should not send {@link MarkupContent} diagnostic messages
+	 * back to the client.
 	 */
 	@NonNull
-	String message
+	Either<String, MarkupContent> message
 
 	/**
 	 * Additional metadata about the diagnostic.
@@ -6033,6 +6048,14 @@ class ServerCapabilities {
 	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
+	 * Text document specific server capabilities.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	TextDocumentServerCapabilities textDocument
+
+	/**
 	 * Experimental server capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
@@ -6063,6 +6086,24 @@ class WorkspaceServerCapabilities {
 
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
+	}
+}
+
+/**
+ * Text document specific server capabilities.
+ * <p>
+ * Since 3.18.0.
+ */
+@Draft
+@JsonRpcData
+class TextDocumentServerCapabilities {
+
+	/**
+	 * Capabilities specific to the diagnostic pull model.
+	 */
+	DiagnosticServerCapabilities diagnostic
+
+	new() {
 	}
 }
 
@@ -9955,6 +9996,14 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	Boolean relatedDocumentSupport
 
+	/**
+	 * Whether the client supports {@link MarkupContent} in diagnostic messages.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean markupMessageSupport
+
 	new() {
 	}
 
@@ -9965,6 +10014,24 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	new(Boolean dynamicRegistration, Boolean relatedDocumentSupport) {
 		this(dynamicRegistration)
 		this.relatedDocumentSupport = relatedDocumentSupport
+	}
+}
+
+/**
+ * Server capabilities specific to the diagnostic pull model.
+ * <p>
+ * Since 3.18.0.
+ */
+@Draft
+@JsonRpcData
+class DiagnosticServerCapabilities {
+
+	/**
+	 * Whether the server supports {@link MarkupContent} in diagnostic messages.
+	 */
+	Boolean markupMessageSupport
+
+	new() {
 	}
 }
 
