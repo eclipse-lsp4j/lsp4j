@@ -404,6 +404,9 @@ class WorkspaceClientCapabilities {
 	}
 }
 
+/**
+ * Defines which synchronization capabilities the client supports.
+ */
 @JsonRpcData
 class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -437,6 +440,23 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 		this.willSave = willSave
 		this.willSaveWaitUntil = willSaveWaitUntil
 		this.didSave = didSave
+	}
+}
+
+/**
+ * Defines which filters the client supports.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class FiltersCapabilities {
+	/**
+	 * The client supports relative patterns in document filters.
+	 */
+	Boolean relativePatternSupport
+
+	new() {
 	}
 }
 
@@ -2073,7 +2093,18 @@ class WorkspaceEditChangeAnnotationSupportCapabilities {
  */
 @JsonRpcData
 class TextDocumentClientCapabilities {
+	/**
+	 * Defines which synchronization capabilities the client supports.
+	 */
 	SynchronizationCapabilities synchronization
+
+	/**
+	 * Defines which filters the client supports.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	FiltersCapabilities filters
 
 	/**
 	 * Capabilities specific to the {@code textDocument/completion}
@@ -7659,28 +7690,33 @@ class RegistrationParams {
 
 /**
  * A document filter denotes a document through properties like language, schema or pattern.
+ * <p>
+ * At least one of the properties {@link #language}, {@link #scheme}, or {@link #pattern} must be set.
  */
 @JsonRpcData
 class DocumentFilter {
 	/**
-	 * A language id, like `typescript`.
+	 * A language id, like {@code typescript}.
 	 */
 	String language
 
 	/**
-	 * A uri scheme, like `file` or `untitled`.
+	 * A uri scheme, like {@code file} or {@code untitled}.
 	 */
 	String scheme
 
 	/**
-	 * A glob pattern, like `*.{ts,js}`.
+	 * A glob pattern, like <code>*.{ts,js}</code>.
+	 * <p>
+	 * Since 3.18 - support for relative patterns, which depends on the
+	 * client capability {@link FiltersCapabilities#relativePatternSupport}.
 	 */
-	String pattern
+	Either<String, RelativePattern> pattern
 
 	new() {
 	}
 
-	new(String language, String scheme, String pattern) {
+	new(String language, String scheme, Either<String, RelativePattern> pattern) {
 		this.language = language
 		this.scheme = scheme
 		this.pattern = pattern
@@ -10791,7 +10827,7 @@ class NotebookDocumentFilter {
 	/**
 	 * A glob pattern.
 	 */
-	String pattern
+	Either<String, RelativePattern> pattern
 
 	new() {
 	}

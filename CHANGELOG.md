@@ -8,6 +8,8 @@ Breaking API changes:
 
  * Type of `TextDocumentEdit.edits` changed from `List<TextEdit>` to `List<Either<TextEdit, SnippetTextEdit>>`
  * Type of `Diagnostic.message` changed from `String` to `Either<String, MarkupContent>`
+ * Type of `DocumentFilter.pattern` changed from `String` to `Either<String, RelativePattern>`
+ * Type of `NotebookDocumentFilter.pattern` changed from `String` to `Either<String, RelativePattern>`
 
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
