@@ -1261,10 +1261,44 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Capabilities specific to the `textDocument/codeLens`
+ * Whether the client supports resolving additional code lens
+ * properties via a separate {@code codeLens/resolve} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CodeLensResolveSupportCapabilities {
+	/**
+	 * The properties that a client can resolve lazily.
+	 */
+	@NonNull
+	List<String> properties
+
+	new() {
+		this.properties = new ArrayList
+	}
+
+	new(@NonNull List<String> properties) {
+		this.properties = Preconditions.checkNotNull(properties, 'properties')
+	}
+}
+
+/**
+ * Capabilities specific to the {@code textDocument/codeLens}
  */
 @JsonRpcData
 class CodeLensCapabilities extends DynamicRegistrationCapabilities {
+
+	/**
+	 * Whether the client supports resolving additional code lens
+	 * properties via a separate {@code codeLens/resolve} request.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	CodeLensResolveSupportCapabilities resolveSupport
+
 	new() {
 	}
 
