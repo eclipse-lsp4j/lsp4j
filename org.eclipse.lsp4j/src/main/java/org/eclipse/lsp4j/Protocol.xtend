@@ -1223,6 +1223,30 @@ class CodeActionResolveSupportCapabilities {
 }
 
 /**
+ * Client supports the tag property on a code action. Clients
+ * supporting tags have to handle unknown tags gracefully.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CodeActionTagSupportCapabilities {
+	/**
+	* The tags supported by the client.
+	*/
+	@NonNull
+	List<CodeActionTag> valueSet
+
+	new() {
+		this.valueSet = new ArrayList
+	}
+
+	new(@NonNull List<CodeActionTag> valueSet) {
+		this.valueSet = Preconditions.checkNotNull(valueSet, 'valueSet')
+	}
+}
+
+/**
  * Capabilities specific to the `textDocument/codeAction`
  */
 @JsonRpcData
@@ -1282,6 +1306,15 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	@Draft
 	Boolean documentationSupport
+
+	/**
+	 * Client supports the tag property on a code action. Clients
+	 * supporting tags have to handle unknown tags gracefully.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	CodeActionTagSupportCapabilities tagSupport
 
 	new() {
 	}
@@ -2756,6 +2789,14 @@ class CodeAction {
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
+
+	/**
+	 * Tags for this code action.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	List<CodeActionTag> tags
 
 	new() {
 	}
