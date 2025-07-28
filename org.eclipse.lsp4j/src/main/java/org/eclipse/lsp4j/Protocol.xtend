@@ -2617,6 +2617,21 @@ final class CodeActionKind {
 	public static val RefactorInline = 'refactor.inline'
 
 	/**
+	 * Base kind for refactoring move actions: "refactor.move"
+	 * <p>
+	 * Example move actions:
+	 * <ul>
+	 * <li>Move a function to a new file
+	 * <li>Move a property between classes
+	 * <li>Move method to base class
+	 * <li>...
+	 * </ul>
+	 * Since 3.18.0
+	 */
+	@Draft
+	public static val RefactorMove = 'refactor.move'
+
+	/**
 	 * Base kind for refactoring rewrite actions: "refactor.rewrite"
 	 * <p>
 	 * Example rewrite actions:
@@ -2651,6 +2666,15 @@ final class CodeActionKind {
 	 * unsafe fixes such as generating new types or classes.
 	 */
 	public static val SourceFixAll = 'source.fixAll'
+
+	/**
+	 * Base kind for all code actions applying to the entire notebook's scope.
+	 * Code action kinds using this should always begin with "notebook."
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	public static val Notebook = 'notebook'
 
 	private new() {}
 }
