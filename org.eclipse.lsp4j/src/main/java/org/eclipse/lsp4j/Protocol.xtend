@@ -1266,6 +1266,14 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	Boolean honorsChangeAnnotations
 
+	/**
+	 * Whether the client supports documentation for a class of code actions.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean documentationSupport
+
 	new() {
 	}
 
@@ -2883,6 +2891,36 @@ class CodeLens {
 }
 
 /**
+ * Documentation for a class of code actions.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CodeActionKindDocumentation {
+	/**
+	 * The kind of the code action being documented.
+	 * <p>
+	 * If the kind is generic, such as {@link CodeActionKind#Refactor}, the
+	 * documentation will be shown whenever any refactorings are returned. If
+	 * the kind is more specific, such as {@link CodeActionKind#RefactorExtract},
+	 * the documentation will only be shown when extract refactoring code actions
+	 * are returned.
+	 */
+	@NonNull
+	String kind
+
+	/**
+	 * Command that is used to display the documentation to the user.
+	 * <p>
+	 * The title of this documentation code action is taken
+	 * from {@link Command#title}.
+	 */
+	@NonNull
+	Command command
+}
+
+/**
  * Code Action options.
  */
 @JsonRpcData
@@ -2896,6 +2934,29 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * Since 3.11.0
 	 */
 	List<String> codeActionKinds
+
+	/**
+	 * Static documentation for a class of code actions.
+	 * <p>
+	 * Documentation from the provider should be shown in the code actions
+	 * menu if either:
+	 * <ul>
+	 * <li>Code actions of {@code kind} are requested by the editor. In this case,
+	 * the editor will show the documentation that most closely matches the
+	 * requested code action kind. For example, if a provider has
+	 * documentation for both {@link CodeActionKind#Refactor} and
+	 * {@link CodeActionKind#RefactorExtract}, when the user requests
+	 * code actions for {@code RefactorExtract}, the editor will use
+	 * the documentation for {@code RefactorExtract} instead of the documentation
+	 * for {@code Refactor}.
+	 * <li>Any code actions of {@code kind} are returned by the provider.
+	 * </ul>
+	 * At most one documentation entry should be shown per provider.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	List<CodeActionKindDocumentation> documentation
 
 	/**
 	 * The server provides support to resolve additional
