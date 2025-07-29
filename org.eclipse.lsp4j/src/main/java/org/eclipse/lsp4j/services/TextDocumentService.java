@@ -47,6 +47,7 @@ import org.eclipse.lsp4j.DocumentLink;
 import org.eclipse.lsp4j.DocumentLinkParams;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
+import org.eclipse.lsp4j.DocumentRangesFormattingParams;
 import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.DocumentSymbolCapabilities;
 import org.eclipse.lsp4j.DocumentSymbolParams;
@@ -319,6 +320,20 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The document ranges formatting request is sent from the client to the
+	 * server to format multiple ranges at once in a document.
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.DocumentRangeFormattingRegistrationOptions}
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	@JsonRequest
+	default CompletableFuture<List<? extends TextEdit>> rangesFormatting(DocumentRangesFormattingParams params) {
 		throw new UnsupportedOperationException();
 	}
 
