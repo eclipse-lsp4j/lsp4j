@@ -1041,9 +1041,18 @@ class FormattingCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/rangeFormatting`
+ * and `textDocument/rangesFormatting`
  */
 @JsonRpcData
 class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * Whether the client supports formatting multiple ranges at once.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean rangesSupport
+
 	new() {
 	}
 
@@ -2277,6 +2286,7 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to the {@code textDocument/rangeFormatting}
+	 * and {@code textDocument/rangesFormatting}
 	 */
 	RangeFormattingCapabilities rangeFormatting
 
@@ -4495,10 +4505,60 @@ class DocumentRangeFormattingParams implements WorkDoneProgressParams {
 }
 
 /**
+ * The document ranges formatting request is sent from the client to the server to format
+ * multiple ranges at once in a document.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class DocumentRangesFormattingParams implements WorkDoneProgressParams {
+	/**
+	 * An optional token that a server can use to report work done progress.
+	 */
+	Either<String, Integer> workDoneToken
+
+	/**
+	 * The document to format.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The format options.
+	 */
+	@NonNull
+	FormattingOptions options
+
+	/**
+	 * The ranges to format.
+	 */
+	@NonNull
+	List<Range> ranges
+
+	new() {
+		this.ranges = new ArrayList
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options, @NonNull List<Range> ranges) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.options = Preconditions.checkNotNull(options, 'options')
+		this.ranges = Preconditions.checkNotNull(ranges, 'ranges')
+	}
+}
+
+/**
  * Document range formatting options.
  */
 @JsonRpcData
 class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
+	/**
+	 * Whether the server supports formatting multiple ranges at once.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean rangesSupport
 }
 
 /**
@@ -4506,6 +4566,13 @@ class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
  */
 @JsonRpcData
 class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * Whether the server supports formatting multiple ranges at once.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean rangesSupport
 }
 
 /**
