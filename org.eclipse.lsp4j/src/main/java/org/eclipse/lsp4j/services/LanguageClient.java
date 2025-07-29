@@ -26,6 +26,7 @@ import org.eclipse.lsp4j.RegistrationParams;
 import org.eclipse.lsp4j.ShowDocumentParams;
 import org.eclipse.lsp4j.ShowDocumentResult;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
+import org.eclipse.lsp4j.TextDocumentContentRefreshParams;
 import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkDoneProgressCreateParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
@@ -265,6 +266,18 @@ public interface LanguageClient {
 	@Draft
 	@JsonRequest("workspace/foldingRange/refresh")
 	default CompletableFuture<Void> refreshFoldingRanges() {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code workspace/textDocumentContent/refresh} request is sent from the server to the client
+	 * to refresh the content of a specific text document.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	@JsonRequest("workspace/textDocumentContent/refresh")
+	default CompletableFuture<Void> refreshTextDocumentContent(TextDocumentContentRefreshParams params) {
 		throw new UnsupportedOperationException();
 	}
 }
