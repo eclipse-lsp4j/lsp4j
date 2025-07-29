@@ -407,6 +407,14 @@ class WorkspaceClientCapabilities {
 	@Draft
 	FoldingRangeWorkspaceCapabilities foldingRange
 
+	/**
+	 * Client capabilities for a text document content provider.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	TextDocumentContentCapabilities textDocumentContent
+
 	new() {
 	}
 }
@@ -6503,6 +6511,14 @@ class WorkspaceServerCapabilities {
 	 */
 	FileOperationsServerCapabilities fileOperations
 
+	/**
+	 * Text document content provider options.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	TextDocumentContentRegistrationOptions textDocumentContent
+
 	new() {
 	}
 
@@ -11933,5 +11949,116 @@ class SnippetTextEdit {
 	new(@NonNull Range range, @NonNull StringValue snippet, String annotationId) {
 		this(range, snippet)
 		this.annotationId = annotationId
+	}
+}
+
+/**
+ * Client capabilities for a text document content provider.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+}
+
+/**
+ * Text document content provider registration options.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentRegistrationOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	@NonNull
+	List<String> schemes
+
+	new() {
+		this.schemes = new ArrayList
+	}
+
+	new(@NonNull List<String> schemes) {
+		this.schemes = Preconditions.checkNotNull(schemes, 'schemes')
+	}
+}
+
+/**
+ * Parameters for the {@code workspace/textDocumentContent} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentParams {
+	/**
+	 * The uri of the text document.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+	}
+}
+
+/**
+ * Result of the {@code workspace/textDocumentContent} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentResult {
+	/**
+	 * The text content of the text document. Please note, that the content of
+	 * any subsequent open notifications for the text document might differ
+	 * from the returned content due to whitespace and line ending
+	 * normalizations done on the client.
+	 */
+	@NonNull
+	String text
+
+	new() {
+	}
+
+	new(@NonNull String text) {
+		this.text = Preconditions.checkNotNull(text, 'text')
+	}
+}
+
+/**
+ * Parameters for the {@code workspace/textDocumentContent/refresh} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentRefreshParams {
+	/**
+	 * The uri of the text document to refresh.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 }

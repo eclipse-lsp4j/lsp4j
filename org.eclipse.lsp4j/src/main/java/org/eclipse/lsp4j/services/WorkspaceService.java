@@ -22,12 +22,15 @@ import org.eclipse.lsp4j.DidChangeWorkspaceFoldersParams;
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.RenameFilesParams;
 import org.eclipse.lsp4j.SymbolInformation;
+import org.eclipse.lsp4j.TextDocumentContentParams;
+import org.eclipse.lsp4j.TextDocumentContentResult;
 import org.eclipse.lsp4j.WorkspaceDiagnosticParams;
 import org.eclipse.lsp4j.WorkspaceDiagnosticReport;
 import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
+import org.eclipse.lsp4j.jsonrpc.Draft;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
@@ -191,6 +194,20 @@ public interface WorkspaceService {
 	 */
 	@JsonRequest
 	default CompletableFuture<WorkspaceDiagnosticReport> diagnostic(WorkspaceDiagnosticParams params) {
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * The {@code workspace/textDocumentContent} request is sent from the client to the server to dynamically fetch
+	 * the content of a text document. Clients should treat the content returned from this request as read-only.
+	 * <p>
+	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentContentRegistrationOptions}
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	@JsonRequest
+	default CompletableFuture<TextDocumentContentResult> textDocumentContent(TextDocumentContentParams params) {
 		throw new UnsupportedOperationException();
 	}
 }
