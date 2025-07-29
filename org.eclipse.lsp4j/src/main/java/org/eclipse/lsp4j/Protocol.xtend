@@ -112,6 +112,14 @@ class WorkspaceEditCapabilities {
 	@Draft
 	Boolean snippetEditSupport
 
+	/**
+	 * Whether the client supports {@link WorkspaceEditMetadata} in workspace edits.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean metadataSupport
+
 	new() {
 	}
 }
@@ -8236,6 +8244,23 @@ class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
 }
 
 /**
+ * Additional data about a workspace edit.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class WorkspaceEditMetadata {
+	/**
+	 * Signal to the editor that this edit is a refactoring.
+	 */
+	Boolean isRefactoring
+
+	new() {
+	}
+}
+
+/**
  * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
  */
 @JsonRpcData
@@ -8252,6 +8277,14 @@ class ApplyWorkspaceEditParams {
 	 * stack to undo the workspace edit.
 	 */
 	String label
+
+	/**
+	 * Additional data about the edit.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	WorkspaceEditMetadata metadata
 
 	new() {
 	}
