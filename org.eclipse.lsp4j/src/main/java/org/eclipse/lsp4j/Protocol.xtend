@@ -3128,6 +3128,14 @@ class Command {
 	String title
 
 	/**
+	 * An optional tooltip.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	String tooltip
+
+	/**
 	 * The identifier of the actual command handler.
 	 */
 	@NonNull
