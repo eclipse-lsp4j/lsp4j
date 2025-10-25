@@ -101,12 +101,14 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 							}
 							headers = new Headers();
 							debugBuilder = null;
-						} else if (headerBuilder != null) {
-							// A single newline ends a header line
-							parseHeader(headerBuilder.toString(), headers);
-							headerBuilder = null;
+						} else {
+							if (headerBuilder != null) {
+								// A single newline ends a header line
+								parseHeader(headerBuilder.toString(), headers);
+								headerBuilder = null;
+							}
+							newLine = true;
 						}
-						newLine = true;
 					} else if (c != '\r') {
 						// Add the input to the current header line
 						if (headerBuilder == null)
