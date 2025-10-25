@@ -114,7 +114,7 @@ public interface TextDocumentService {
 	 * The Completion request is sent from the client to the server to compute
 	 * completion items at a given cursor position. Completion items are
 	 * presented in the IntelliSense user interface. If computing complete
-	 * completion items is expensive servers can additional provide a handler
+	 * completion items is expensive servers can additionally provide a handler
 	 * for the resolve completion item request. This request is sent when a
 	 * completion item is selected in the user interface.
 	 * <p>
@@ -224,7 +224,7 @@ public interface TextDocumentService {
 
 	/**
 	 * The document highlight request is sent from the client to the server to
-	 * to resolve a document highlights for a given text document position.
+	 * resolve document highlights for a given text document position.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.DocumentHighlightRegistrationOptions}
 	 */
@@ -395,7 +395,7 @@ public interface TextDocumentService {
 
 	/**
 	 * The document save notification is sent from the client to the server when
-	 * the document for saved in the client.
+	 * the document is saved in the client.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentSaveRegistrationOptions}
 	 */

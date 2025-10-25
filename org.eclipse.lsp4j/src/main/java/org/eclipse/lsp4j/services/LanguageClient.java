@@ -103,7 +103,7 @@ public interface LanguageClient {
 	}
 
 	/**
-	 * The log message notification is send from the server to the client to ask
+	 * The log message notification is sent from the server to the client to ask
 	 * the client to log a particular message.
 	 */
 	@JsonNotification("window/logMessage")
