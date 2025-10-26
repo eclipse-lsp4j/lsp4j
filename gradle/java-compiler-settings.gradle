@@ -10,8 +10,32 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
+// Use central version from gradle/versions.gradle
+
+// --- Enforce Java version for running Gradle itself ---
+def currentJava = JavaVersion.current()
+def minJava = JavaVersion.VERSION_17 // xtend requires Java >= 17
+def maxJava = JavaVersion.VERSION_21 // Gradle 9.x is required for Java 25
+
+if (currentJava < minJava || currentJava > maxJava) {
+    throw new GradleException("""
+This build must be run with Java between ${minJava} and ${maxJava}.
+
+Current Java:
+  JavaVersion.current() = ${currentJava}
+  java.version          = ${System.getProperty('java.version')}
+  java.home             = ${System.getProperty('java.home')}
+
+Please switch your JAVA_HOME or use the Gradle wrapper with a compatible JDK.
+
+In addition, to run testOlderJavas tasks Java 17 and Java 11 must be discovrable.
+See https://docs.gradle.org/8.6/userguide/toolchains.html#sec:auto_detection
+""")
+}
+
 java {
-	sourceCompatibility = JavaVersion.VERSION_11
+	sourceCompatibility = JavaVersion.toVersion(versions.java)
+	targetCompatibility = JavaVersion.toVersion(versions.java)
 }
 
 tasks.withType(Javadoc) {
@@ -21,6 +45,8 @@ tasks.withType(Javadoc) {
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+	// Ensure cross-compilation targets specified Java version
+    options.release = versions.java as Integer
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -86,4 +112,60 @@ if (findProperty('ignoreTestFailures') == 'true') {
 	tasks.withType(Test) {
 		ignoreFailures = true
 	}
+}
+
+def testDir = file('src/test/java')
+def xtendTestClassPatterns = []
+
+if (testDir.exists()) {
+	testDir.eachFileRecurse { File f ->
+		if (f.name.endsWith('.xtend')) {
+			// Path relative to src/test/java, with Unix-ish separators
+			def rel = testDir.toPath().relativize(f.toPath()).toString()
+			rel = rel.replace(File.separatorChar, '/' as char)
+
+			// Replace .xtend with .class, wildcard anything before it
+			// e.g. com/foo/BarTest.xtend -> **/com/foo/BarTest.class
+			def classPattern = "**/${rel[0..-6]}class"
+			xtendTestClassPatterns << classPattern
+		}
+	}
+}
+
+tasks.register('testJava11', Test) {
+	description = 'Runs non-xtend tests on Java 11 JVM'
+	group = 'verification'
+
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	// Current version of xtend require JVM >= 17 to run, 
+	// so exclude xtend based tests
+	if (!xtendTestClassPatterns.isEmpty()) {
+		exclude xtendTestClassPatterns
+	}
+
+	javaLauncher.set(
+		javaToolchains.launcherFor {
+			languageVersion = JavaLanguageVersion.of(11)
+		}
+	)
+}
+
+tasks.register('testJava17', Test) {
+	description = 'Runs tests on Java 17 JVM'
+	group = 'verification'
+
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+
+	javaLauncher.set(
+		javaToolchains.launcherFor {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	)
+}
+
+tasks.register('testOlderJavas') {
+	dependsOn tasks.named('testJava17'), tasks.named('testJava11')
 }
