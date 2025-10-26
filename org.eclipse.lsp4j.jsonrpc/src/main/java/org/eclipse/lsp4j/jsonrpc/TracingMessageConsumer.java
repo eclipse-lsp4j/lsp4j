@@ -12,7 +12,6 @@
 package org.eclipse.lsp4j.jsonrpc;
 
 import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
-import org.eclipse.lsp4j.jsonrpc.json.StreamMessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -102,13 +101,12 @@ public class TracingMessageConsumer implements MessageConsumer {
 		final String date = dateTimeFormatter.format(now);
 		final String logString;
 
-		if (messageConsumer instanceof StreamMessageConsumer) {
-			logString = consumeMessageSending(message, now, date);
-		} else if (messageConsumer instanceof RemoteEndpoint) {
+		if (messageConsumer instanceof RemoteEndpoint) {
 			logString = consumeMessageReceiving(message, now, date);
 		} else {
-			LOG.log(WARNING, String.format("Unknown MessageConsumer type: %s", messageConsumer));
-			logString = null;
+			// Treat any non-RemoteEndpoint consumer as an outgoing transport (sending),
+			// so tracing works for WebSocket and other non-stream consumers as well.
+			logString = consumeMessageSending(message, now, date);
 		}
 
 		if (logString != null) {
