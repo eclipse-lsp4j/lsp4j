@@ -69,11 +69,19 @@ jobs:
       uses: actions/checkout@v5  # https://github.com/actions/checkout
 
 
-    - name: "Install: JDK 11 ☕"
+    - name: "Install: JDK 11 ☕ for compilation/tests"
       uses: actions/setup-java@v5  # https://github.com/actions/setup-java
       with:
         distribution: temurin
         java-version: 11
+        cache: gradle
+
+
+    - name: "Install: JDK 17 ☕ for running gradle"
+      uses: actions/setup-java@v5  # https://github.com/actions/setup-java
+      with:
+        distribution: temurin
+        java-version: 17
         cache: gradle
 
 

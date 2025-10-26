@@ -10,8 +10,14 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
+// Use central version from gradle/versions.gradle
+
 java {
-	sourceCompatibility = JavaVersion.VERSION_11
+	sourceCompatibility = JavaVersion.toVersion(versions.java)
+	// Use same Java version for compilation and task launches
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(versions.java as Integer)
+	}
 }
 
 tasks.withType(Javadoc) {
@@ -21,6 +27,15 @@ tasks.withType(Javadoc) {
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+	// Ensure cross-compilation targets specified Java version
+	options.release = versions.java as Integer
+}
+
+// Ensure tests run on the targeted JDK (not the Gradle JVM)
+tasks.withType(Test).configureEach {
+	javaLauncher = javaToolchains.launcherFor {
+		languageVersion = JavaLanguageVersion.of(versions.java as Integer)
+	}
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
