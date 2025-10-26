@@ -17,12 +17,12 @@ buildscript {
 	repositories {
 		mavenCentral()
 		maven {
-			url "https://plugins.gradle.org/m2/"
+			url = "https://plugins.gradle.org/m2/"
 		}
 	}
 	dependencies {
-		classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:6.4.0"
-		classpath "org.xtext:xtext-gradle-plugin:4.0.0"
+		classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:7.1.0" // https://github.com/bndtools/bnd/releases
+		classpath "org.xtext:xtext-gradle-plugin:4.0.0" // https://github.com/xtext/xtext-gradle-plugin/releases
 	}
 }
 
@@ -175,7 +175,7 @@ subprojects {
 }
 
 task clean(type: Delete) {
-	group 'Build'
-	description 'Deletes the local repositories'
+	group = 'Build'
+	description = 'Deletes the local repositories'
 	delete 'build'
 }

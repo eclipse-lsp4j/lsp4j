@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2016 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 apply plugin: "biz.aQute.bnd.builder"
@@ -26,27 +26,51 @@ jar.bundle.bnd (
 	"-savemanifest": "build/tmp/bnd/MANIFEST.MF",
 )
 
+// Workaround for Gradle 8 deprecation: avoid Bnd accessing Task.project at execution time
+// by supplying needed Gradle Project properties via Providers to the Bnd builder.
+// See: https://github.com/bndtools/bnd/issues/6346#issuecomment-2450176628
+tasks.named('jar') {
+	// The bnd plugin contributes a 'bundle { }' configuration on Jar tasks
+	bundle {
+		properties.put('project.group',   providers.provider { project.group?.toString() ?: '' })
+		properties.put('project.name',    providers.provider { project.name })
+		properties.put('project.version', providers.provider { project.version?.toString() ?: '' })
+		properties.put('project.path',    providers.provider { project.path })
+		properties.put('projectDir',      providers.provider { project.projectDir?.absolutePath ?: '' })
+		properties.put('rootDir',         providers.provider { project.rootDir?.absolutePath ?: '' })
+		properties.put('buildDir',        providers.provider { project.buildDir?.absolutePath ?: '' })
+	}
+}
+
 //------------------------------------------------------
 // Generate a manifest for the source bundle
 
 def sourcesManifestFile = "$buildDir/tmp/sourcesJar/MANIFEST.MF"
 
 task genSourcesManifest {
+	def projectName = project.name
+	def projectTitle = project.findProperty('title') ?: ''
+
+	// Declare inputs/outputs for config-cache friendliness
+	inputs.property('projectName', projectName)
+	inputs.property('projectTitle', projectTitle)
+	inputs.property('qualifiedVersion', qualifiedVersion)
 	outputs.file(sourcesManifestFile)
+
 	doLast {
 		def f = new File(sourcesManifestFile)
 		f.parentFile.mkdirs()
 		def writer = new PrintWriter(f)
 		writer.println("Manifest-Version: 1.0")
 		writer.println("Bundle-ManifestVersion: 2")
-		writer.println("Bundle-SymbolicName: ${project.name}.source")
+		writer.println("Bundle-SymbolicName: ${projectName}.source")
 		writer.println("Bundle-Version: ${qualifiedVersion}")
-		if (project.hasProperty('title'))
-			writer.println("Bundle-Name: ${project.title} Sources")
+		if (projectTitle)
+			writer.println("Bundle-Name: ${projectTitle} Sources")
 		else
 			writer.println("Bundle-Name: Sources")
 		writer.println("Bundle-Vendor: Eclipse LSP4J")
-		writer.println("Eclipse-SourceBundle: ${project.name};version=\"${qualifiedVersion}\"")
+		writer.println("Eclipse-SourceBundle: ${projectName};version=\"${qualifiedVersion}\"")
 		writer.close()
 	}
 }
