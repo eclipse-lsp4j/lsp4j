@@ -77,16 +77,16 @@ jobs:
         cache: gradle
 
 
-    - name: "Install: JDK 17 ☕ for running gradle"
+    - name: "Install: JDK 21 ☕ for running gradle"
       uses: actions/setup-java@v5  # https://github.com/actions/setup-java
       with:
         distribution: temurin
-        java-version: 17
+        java-version: 21
         cache: gradle
 
 
     - name: Build with Gradle 🏗️
-      run: ./gradlew build
+      run: ./gradlew build --warning-mode=all
 
 
     ##################################################
