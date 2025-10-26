@@ -1,11 +1,11 @@
-# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+# https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
 name: Validate
 
-on:
+on:  # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
   push:
     branches-ignore:  # build all branches except:
     - 'dependabot/**'  # prevent workflow being triggered twice (once for commit to the branch and once for opening/syncing the PR)
-    tags-ignore: # don't build tags
+    tags-ignore:  # don't build tags
     - '**'
     paths-ignore:
     - '**/*.md'
@@ -18,27 +18,91 @@ on:
     - '.editorconfig'
     - '.git*'
     - '.github/*.yml'
-  workflow_dispatch:  # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+  workflow_dispatch:
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch
+    inputs:
+      debug-with-ssh:
+        description: "When to open an SSH session for post-build debugging:"
+        default: never
+        type: choice
+        options: [ always, on_failure, on_failure_or_cancelled, never ]
+      debug-with-ssh-only-for-actor:
+        description: "Restrict SSH debug session access to the GitHub user who triggered the workflow"
+        default: true
+        type: boolean
+
+
+defaults:
+  run:
+    shell: bash
+
 
 jobs:
+
+  ###########################################################
   build:
-    runs-on: ${{ matrix.os }}
+  ###########################################################
 
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os:  # https://github.com/actions/runner-images#available-images
+        - ubuntu-latest
+        - macos-15-intel # Intel
+        - macos-latest # ARM
+        - windows-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
 
     steps:
-    - name: Git Checkout
-      uses: actions/checkout@v4  # https://github.com/actions/checkout
+    - name: "Show: GitHub context"
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo $GITHUB_CONTEXT
 
-    - name: Set up JDK 11 ☕
-      uses: actions/setup-java@v4
+
+    - name: "Show: environment variables"
+      run: env | sort
+
+
+    - name: Git Checkout
+      uses: actions/checkout@v5  # https://github.com/actions/checkout
+
+
+    - name: "Install: JDK 11 ☕"
+      uses: actions/setup-java@v5  # https://github.com/actions/setup-java
       with:
+        distribution: temurin
         java-version: 11
-        distribution: 'temurin'
         cache: gradle
+
 
     - name: Build with Gradle 🏗️
       run: ./gradlew build
+
+
+    ##################################################
+    # Setup SSH debug session
+    ##################################################
+    - name: "SSH session for debugging: check"
+      id: DEBUG_SSH_SESSSION_CHECK
+      if: always()
+      run: |
+        set -eu
+
+        when="${{ inputs.debug-with-ssh }}"
+
+        if [[ $when == "always" ]] || case "${{ job.status }}" in
+          success)   [[ $when == "always" ]] ;;
+          cancelled) [[ $when == "on_failure_or_cancelled" ]] ;;
+          failure)   [[ $when == "on_failure"* ]] ;;
+        esac; then
+          echo "start_ssh_session=true" | tee -a "$GITHUB_OUTPUT"
+        fi
+
+
+    - name: "SSH session for debugging: start"
+      uses: mxschmitt/action-tmate@v3  # https://github.com/mxschmitt/action-tmate
+      if: always() && steps.DEBUG_SSH_SESSSION_CHECK.outputs.start_ssh_session
+      with:
+        limit-access-to-actor: ${{ inputs.debug-with-ssh-only-for-actor }}
