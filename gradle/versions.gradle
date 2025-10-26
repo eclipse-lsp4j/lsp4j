@@ -14,6 +14,9 @@ version = '1.0.0-SNAPSHOT'
 
 ext.versions = [
 	'xtend_lib': '2.32.0',
+	// Additional JDK version configuration is in java-compiler-settings
+	'java': '11',
+
 	'guava': '[32.1.2,34)',
 	'gson': '[2.9.1,3.0)',
 

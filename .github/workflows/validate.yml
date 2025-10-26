@@ -45,13 +45,15 @@ jobs:
       uses: actions/checkout@v5  # https://github.com/actions/checkout
 
 
-    - name: "Install: JDK 11 ☕"
+    - name: "Install: JDKs for building and testing"
       uses: actions/setup-java@v5  # https://github.com/actions/setup-java
       with:
         distribution: temurin
-        java-version: 11
+        java-version: |
+          11
+          17
+          21
         cache: gradle
 
-
     - name: Build with Gradle 🏗️
-      run: ./gradlew build
+      run: ./gradlew build testOlderJavas

@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho-version>2.7.5</tycho-version>
+		<tycho-version>5.0.0</tycho-version>
 		<root-dir>${maven.multiModuleProjectDirectory}/..</root-dir>
 	</properties>
 

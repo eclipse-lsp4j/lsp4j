@@ -7,7 +7,9 @@ pipeline {
   }
   tools {
     maven 'apache-maven-latest'
-    jdk 'temurin-jdk11-latest'
+    // Default JDK picked up from here, build and test requires
+    // older JDKs too, which are discovered by gradle from ~/.m2/toolchains.xml
+    jdk 'temurin-jdk21-latest'
   }
   options {
     timestamps()
@@ -32,12 +34,13 @@ pipeline {
           sh "echo $JAVA_HOME"
           sh "java -version"
           sh "which java"
+          sh "cat ~/.m2/toolchains.xml"
           sh "./gradlew \
                 --no-daemon \
                 -PignoreTestFailures=true \
                 --refresh-dependencies \
                 --continue \
-                clean build signJar publish \
+                clean build testOlderJavas signJar publish \
                 "
         }
       }
@@ -81,8 +84,8 @@ pipeline {
   }
   post {
     always {
-      junit '**/build/test-results/test/*.xml'
-      archiveArtifacts 'build/**'
+      junit '**/build/test-results/**/*.xml'
+      archiveArtifacts 'build/**,**/build/reports/'
     }
     cleanup {
       script {
