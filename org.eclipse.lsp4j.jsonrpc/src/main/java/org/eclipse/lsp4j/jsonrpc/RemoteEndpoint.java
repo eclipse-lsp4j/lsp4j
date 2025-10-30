@@ -152,15 +152,9 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	 * Send a request to the remote endpoint.
 	 */
 	@Override
-	public CompletableFuture<Object> request(String method, Object parameter) {
+	public JsonRpcRequestFuture<Object> request(String method, Object parameter) {
 		final RequestMessage requestMessage = createRequestMessage(method, parameter);
-		final var result = new CompletableFuture<>() {
-			@Override
-			public boolean cancel(boolean mayInterruptIfRunning) {
-				sendCancelNotification(requestMessage.getRawId());
-				return super.cancel(mayInterruptIfRunning);
-			}
-		};
+		final var result = new JsonRpcRequestFuture<>(() -> sendCancelNotification(requestMessage.getRawId()));
 		synchronized(sentRequestMap) {
 			// Store request information so it can be handled when the response is received
 			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, result));

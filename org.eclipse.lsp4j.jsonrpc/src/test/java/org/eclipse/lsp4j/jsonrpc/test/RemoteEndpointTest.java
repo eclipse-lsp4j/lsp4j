@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j.jsonrpc.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +36,9 @@ import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.ResponseErrorException;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.JsonRpcRequestFuture;
+import org.eclipse.lsp4j.jsonrpc.messages.CancelParams;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.MessageIssue;
@@ -494,5 +498,49 @@ public class RemoteEndpointTest {
 		} finally {
 			logMessages.unregister();
 		}
+	}
+
+	@Test
+	public void testCancellationAfterTransformation() {
+		final var endp = new TestEndpoint();
+		final var consumer = new TestMessageConsumer();
+		final var endpoint = new RemoteEndpoint(consumer, endp);
+
+		/* 
+		 * Outbound request: should synchronously send a RequestMessage to consumer
+		 */
+		JsonRpcRequestFuture<Object> original = endpoint.request("foo", "myparam");
+		assertEquals("Request should be sent once", 1, consumer.messages.size());
+		Message sent = consumer.messages.get(0);
+		assertTrue(sent instanceof RequestMessage);
+
+		var requestId = ((RequestMessage) sent).getRawId();
+
+		/* 
+		 * Transform the future and cancel the transformed stage only (but not the original future)
+		 */
+		JsonRpcRequestFuture<Object> transformed1 = original.thenApply(x -> x);
+		boolean cancelled = transformed1.cancel(true);
+		assertTrue("Transformed future should report cancelled", cancelled);
+		// Cancelling transformed stage does NOT auto-send protocol cancel
+		assertEquals("No cancel notification sent on substage cancel(true)", 1, consumer.messages.size());
+		assertFalse("Root future should not be cancelled by substage cancel(true)", original.isCancelled());
+
+		/* 
+		 * Explicitly cancel the remote request from a transformed stage
+		 */
+		JsonRpcRequestFuture<Void> transformed2 = original.thenApply(x -> x).thenAccept(x -> {});
+		transformed2.cancelRequest(true);
+		assertEquals("Cancel notification should now be sent", 2, consumer.messages.size());
+		Message maybeCancel = consumer.messages.get(1);
+		assertTrue("Second message should be a NotificationMessage", maybeCancel instanceof NotificationMessage);
+		var cancelNotif = (NotificationMessage) maybeCancel;
+		assertEquals("Cancel method name should match",
+				MessageJsonHandler.CANCEL_METHOD.getMethodName(), cancelNotif.getMethod());
+		assertNotNull("Cancel params should carry the original request id", cancelNotif.getParams());
+		assertEquals("Cancel id should match original request id", requestId,
+				((CancelParams) cancelNotif.getParams()).getRawId());
+		assertTrue("Root future should be cancelled after substage cancelRequest(true)", original.isCancelled());
+		assertTrue("Cancelled substage should be cancelled after substage cancelRequest(true)", transformed2.isCancelled());
 	}
 }
