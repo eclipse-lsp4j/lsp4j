@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2018 Microsoft Corporation and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
@@ -46,9 +46,9 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 
 	private static class InnerResourceOperationTypeAdapter extends TypeAdapter<ResourceOperation> {
 
-		TypeAdapter<CreateFile> createFileAdapter;
-		TypeAdapter<DeleteFile> deleteFileAdapter;
-		TypeAdapter<RenameFile> renameFileAdapter;
+		final TypeAdapter<CreateFile> createFileAdapter;
+		final TypeAdapter<DeleteFile> deleteFileAdapter;
+		final TypeAdapter<RenameFile> renameFileAdapter;
 
 		InnerResourceOperationTypeAdapter(TypeAdapterFactory factory, Gson gson) {
 			createFileAdapter = gson.getDelegateAdapter(factory, TypeToken.get(CreateFile.class));
@@ -58,12 +58,14 @@ public class ResourceOperationTypeAdapter implements TypeAdapterFactory {
 
 		@Override
 		public void write(JsonWriter out, ResourceOperation value) throws IOException {
-			if (value.getClass().isAssignableFrom(CreateFile.class)) {
+			if (value instanceof CreateFile) {
 				createFileAdapter.write(out, (CreateFile) value);
-			} else if (value.getClass().isAssignableFrom(DeleteFile.class)) {
+			} else if (value instanceof DeleteFile) {
 				deleteFileAdapter.write(out, (DeleteFile) value);
-			} else if (value.getClass().isAssignableFrom(RenameFile.class)) {
+			} else if (value instanceof RenameFile) {
 				renameFileAdapter.write(out, (RenameFile) value);
+			} else {
+				throw new IllegalArgumentException("Unknown ResourceOperation subtype: " + value.getClass().getName());
 			}
 		}
 
