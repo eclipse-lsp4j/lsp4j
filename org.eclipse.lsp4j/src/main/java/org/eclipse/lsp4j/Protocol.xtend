@@ -2919,9 +2919,9 @@ class CompletionItemLabelDetails {
 
 /**
  * The Completion request is sent from the client to the server to compute completion items at a given cursor position.
- * Completion items are presented in the IntelliSense user class. If computing complete completion items is expensive
- * servers can additional provide a handler for the resolve completion item request. This request is send when a
- * completion item is selected in the user class.
+ * Completion items are presented in the IntelliSense user interface. If computing complete completion items is expensive,
+ * servers can additionally provide a handler for the resolve completion item request. This request is sent when a
+ * completion item is selected in the user interface.
  */
 @JsonRpcData
 class CompletionItem {
@@ -5194,7 +5194,7 @@ class MessageActionItem {
  * The show message notification is sent from a server to a client to ask the client to display a particular message
  * in the user class.
  * <p>
- * The log message notification is send from the server to the client to ask the client to log a particular message.
+ * The log message notification is sent from the server to the client to ask the client to log a particular message.
  */
 @JsonRpcData
 class MessageParams {
@@ -6826,7 +6826,7 @@ class WorkspaceSymbol {
 	SymbolKind kind
 
 	/**
-	 * Tags for this completion item.
+	 * Tags for this symbol.
 	 */
 	List<SymbolTag> tags
 
@@ -8424,7 +8424,7 @@ class ConfigurationParams {
 }
 
 /**
- * A ConfigurationItem consist of the configuration section to ask for and an additional scope URI.
+ * A ConfigurationItem consists of the configuration section to ask for and an additional scope URI.
  * The configuration section asked for is defined by the server and doesn’t necessarily need to
  * correspond to the configuration store used by the client. So a server might ask for a configuration
  * {@code cpp.formatterOptions} but the client stores the configuration in an XML store layout differently.
@@ -9163,7 +9163,7 @@ class DocumentHighlightRegistrationOptions extends AbstractTextDocumentRegistrat
 }
 
 /**
- * The document highlight request is sent from the client to the server to resolve a document highlights
+ * The document highlight request is sent from the client to the server to resolve document highlights
  * for a given text document position.
  */
 @JsonRpcData

@@ -1,12 +1,12 @@
 /******************************************************************************
  * Copyright (c) 2018 TypeFox and others.
- * 
+ *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0,
  * or the Eclipse Distribution License v. 1.0 which is available at
  * http://www.eclipse.org/org/documents/edl-v10.php.
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 package org.eclipse.lsp4j.util;
@@ -25,11 +25,11 @@ public final class DocumentSymbols {
 
 	/**
 	 * Returns an unmodifiable iterator over the {@link DocumentSymbol document
-	 * symbols} using the breath-first traversal. That is, all the symbols of depth
+	 * symbols} using the breadth-first traversal. That is, all the symbols of depth
 	 * 0 are returned, then depth 1, then 2, and so on.
-	 * 
+	 *
 	 * <p>
-	 * It does not guarantee a well defined behavior of the resulting iterator if
+	 * It does not guarantee a well-defined behavior of the resulting iterator if
 	 * you modify the structure while the iteration is in progress.
 	 */
 	public static Iterator<DocumentSymbol> asIterator(DocumentSymbol documentSymbol) {

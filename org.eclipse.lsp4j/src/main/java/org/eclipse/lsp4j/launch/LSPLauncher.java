@@ -53,7 +53,7 @@ public final class LSPLauncher {
 	 * @param in - input stream to listen for incoming messages
 	 * @param out - output stream to send outgoing messages
 	 * @param validate - whether messages should be validated with the {@link ReflectiveMessageValidator}
-	 * @param trace - a writer to which incoming and outgoing messages are traced, or {@code null} to disable tracing
+	 * @param trace - a writer to which incoming and outgoing messages are traced, or {@code null} to disable tracing
 	 */
 	public static Launcher<LanguageClient> createServerLauncher(LanguageServer server, InputStream in, OutputStream out,
 			boolean validate, PrintWriter trace) {
@@ -113,7 +113,7 @@ public final class LSPLauncher {
 	 * @param in - input stream to listen for incoming messages
 	 * @param out - output stream to send outgoing messages
 	 * @param validate - whether messages should be validated with the {@link ReflectiveMessageValidator}
-	 * @param trace - a writer to which incoming and outgoing messages are traced, or {@code null} to disable tracing
+	 * @param trace - a writer to which incoming and outgoing messages are traced, or {@code null} to disable tracing
 	 */
 	public static Launcher<LanguageServer> createClientLauncher(LanguageClient client, InputStream in, OutputStream out,
 			boolean validate, PrintWriter trace) {
