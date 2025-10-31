@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2025 Avaloq Group AG.
+ * Copyright (c) 2025 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,27 +14,20 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.jsonrpc.Draft;
 
 /**
- * Describes how an inline completion request was triggered.
+ * Code action tags are extra annotations that tweak the behavior of a code action.
  * <p>
  * Since 3.18.0
  */
 @Draft
-public enum InlineCompletionTriggerKind {
+public enum CodeActionTag {
 	/**
-	 * Completion was triggered explicitly by a user gesture. Return multiple
-	 * completion items to enable cycling through them.
+	 * Marks the code action as LLM-generated.
 	 */
-	Invoked(1),
-
-	/**
-	 * Completion was triggered automatically while editing. It is sufficient to
-	 * return a single completion item in this case.
-	 */
-	Automatic(2);
+	LLMGenerated(1);
 
 	private final int value;
 
-	InlineCompletionTriggerKind(final int value) {
+	CodeActionTag(int value) {
 		this.value = value;
 	}
 
@@ -42,8 +35,8 @@ public enum InlineCompletionTriggerKind {
 		return value;
 	}
 
-	public static InlineCompletionTriggerKind forValue(final int value) {
-		InlineCompletionTriggerKind[] allValues = InlineCompletionTriggerKind.values();
+	public static CodeActionTag forValue(int value) {
+		CodeActionTag[] allValues = CodeActionTag.values();
 		if (value < 1 || value > allValues.length) {
 			throw new IllegalArgumentException("Illegal enum value: " + value);
 		}

@@ -25,6 +25,7 @@ import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
+import org.eclipse.lsp4j.adapters.TextEditListAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
@@ -101,6 +102,22 @@ class WorkspaceEditCapabilities {
 	 * Since 3.16.0
 	 */
 	WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport
+
+	/**
+	 * Whether the client supports snippets as text edits.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean snippetEditSupport
+
+	/**
+	 * Whether the client supports {@link WorkspaceEditMetadata} in workspace edits.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean metadataSupport
 
 	new() {
 	}
@@ -391,10 +408,29 @@ class WorkspaceClientCapabilities {
 	 */
 	DiagnosticWorkspaceCapabilities diagnostics
 
+	/**
+	 * Client workspace capabilities specific to folding ranges.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	FoldingRangeWorkspaceCapabilities foldingRange
+
+	/**
+	 * Client capabilities for a text document content provider.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	TextDocumentContentCapabilities textDocumentContent
+
 	new() {
 	}
 }
 
+/**
+ * Defines which synchronization capabilities the client supports.
+ */
 @JsonRpcData
 class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -428,6 +464,23 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 		this.willSave = willSave
 		this.willSaveWaitUntil = willSaveWaitUntil
 		this.didSave = didSave
+	}
+}
+
+/**
+ * Defines which filters the client supports.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class FiltersCapabilities {
+	/**
+	 * The client supports relative patterns in document filters.
+	 */
+	Boolean relativePatternSupport
+
+	new() {
 	}
 }
 
@@ -643,6 +696,22 @@ class CompletionListCapabilities {
 	 * no properties are supported.
 	 */
 	List<String> itemDefaults
+
+	/**
+	 * Specifies whether the client supports {@link CompletionList#applyKind} to
+	 * indicate how supported values from {@link CompletionList#itemDefaults}
+	 * and a completion will be combined.
+	 * <p>
+	 * If a client supports {@link CompletionList#applyKind} it must support it
+	 * for all fields that it supports that are listed in {@link CompletionApplyKind}.
+	 * This means when clients add support for new/future fields in completion items
+	 * they MUST also support merge for them if those fields are defined in
+	 * {@link CompletionApplyKind}.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean applyKindSupport
 
 	new() {
 	}
@@ -980,9 +1049,18 @@ class FormattingCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/rangeFormatting`
+ * and `textDocument/rangesFormatting`
  */
 @JsonRpcData
 class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
+	/**
+	 * Whether the client supports formatting multiple ranges at once.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean rangesSupport
+
 	new() {
 	}
 
@@ -1170,6 +1248,30 @@ class CodeActionResolveSupportCapabilities {
 }
 
 /**
+ * Client supports the tag property on a code action. Clients
+ * supporting tags have to handle unknown tags gracefully.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CodeActionTagSupportCapabilities {
+	/**
+	* The tags supported by the client.
+	*/
+	@NonNull
+	List<CodeActionTag> valueSet
+
+	new() {
+		this.valueSet = new ArrayList
+	}
+
+	new(@NonNull List<CodeActionTag> valueSet) {
+		this.valueSet = Preconditions.checkNotNull(valueSet, 'valueSet')
+	}
+}
+
+/**
  * Capabilities specific to the `textDocument/codeAction`
  */
 @JsonRpcData
@@ -1222,6 +1324,23 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	Boolean honorsChangeAnnotations
 
+	/**
+	 * Whether the client supports documentation for a class of code actions.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean documentationSupport
+
+	/**
+	 * Client supports the tag property on a code action. Clients
+	 * supporting tags have to handle unknown tags gracefully.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	CodeActionTagSupportCapabilities tagSupport
+
 	new() {
 	}
 
@@ -1241,10 +1360,44 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 }
 
 /**
- * Capabilities specific to the `textDocument/codeLens`
+ * Whether the client supports resolving additional code lens
+ * properties via a separate {@code codeLens/resolve} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CodeLensResolveSupportCapabilities {
+	/**
+	 * The properties that a client can resolve lazily.
+	 */
+	@NonNull
+	List<String> properties
+
+	new() {
+		this.properties = new ArrayList
+	}
+
+	new(@NonNull List<String> properties) {
+		this.properties = Preconditions.checkNotNull(properties, 'properties')
+	}
+}
+
+/**
+ * Capabilities specific to the {@code textDocument/codeLens}
  */
 @JsonRpcData
 class CodeLensCapabilities extends DynamicRegistrationCapabilities {
+
+	/**
+	 * Whether the client supports resolving additional code lens
+	 * properties via a separate {@code codeLens/resolve} request.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	CodeLensResolveSupportCapabilities resolveSupport
+
 	new() {
 	}
 
@@ -1570,6 +1723,33 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	FoldingRangeSupportCapabilities foldingRange
 
 	new() {
+	}
+}
+
+/**
+ * Client workspace capabilities specific to folding ranges.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class FoldingRangeWorkspaceCapabilities {
+	/**
+	 * Whether the client implementation supports a refresh request sent from the
+	 * server to the client.
+	 * <p>
+	 * Note that this event is global and will force the client to refresh all
+	 * folding ranges currently shown. It should be used with absolute care and is
+	 * useful for situations where a server, for example, detects a project-wide
+	 * change that requires such a calculation.
+	 */
+	Boolean refreshSupport
+
+	new() {
+	}
+
+	new(Boolean refreshSupport) {
+		this.refreshSupport = refreshSupport
 	}
 }
 
@@ -2064,7 +2244,18 @@ class WorkspaceEditChangeAnnotationSupportCapabilities {
  */
 @JsonRpcData
 class TextDocumentClientCapabilities {
+	/**
+	 * Defines which synchronization capabilities the client supports.
+	 */
 	SynchronizationCapabilities synchronization
+
+	/**
+	 * Defines which filters the client supports.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	FiltersCapabilities filters
 
 	/**
 	 * Capabilities specific to the {@code textDocument/completion}
@@ -2103,6 +2294,7 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to the {@code textDocument/rangeFormatting}
+	 * and {@code textDocument/rangesFormatting}
 	 */
 	RangeFormattingCapabilities rangeFormatting
 
@@ -2243,12 +2435,12 @@ class TextDocumentClientCapabilities {
 	DiagnosticCapabilities diagnostic
 
 	/**
-	 * Capabilities specific to the `textDocument/inlineCompletion` request.
+	 * Capabilities specific to the {@code textDocument/inlineCompletion} request.
 	 * <p>
-	 * @since 3.18.0
+	 * Since 3.18.0
 	 */
 	@Draft
-	InlineCompletionClientCapabilities inlineCompletion
+	InlineCompletionCapabilities inlineCompletion
 
 	new() {
 	}
@@ -2484,6 +2676,21 @@ final class CodeActionKind {
 	public static val RefactorInline = 'refactor.inline'
 
 	/**
+	 * Base kind for refactoring move actions: "refactor.move"
+	 * <p>
+	 * Example move actions:
+	 * <ul>
+	 * <li>Move a function to a new file
+	 * <li>Move a property between classes
+	 * <li>Move method to base class
+	 * <li>...
+	 * </ul>
+	 * Since 3.18.0
+	 */
+	@Draft
+	public static val RefactorMove = 'refactor.move'
+
+	/**
 	 * Base kind for refactoring rewrite actions: "refactor.rewrite"
 	 * <p>
 	 * Example rewrite actions:
@@ -2518,6 +2725,15 @@ final class CodeActionKind {
 	 * unsafe fixes such as generating new types or classes.
 	 */
 	public static val SourceFixAll = 'source.fixAll'
+
+	/**
+	 * Base kind for all code actions applying to the entire notebook's scope.
+	 * Code action kinds using this should always begin with "notebook."
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	public static val Notebook = 'notebook'
 
 	private new() {}
 }
@@ -2600,6 +2816,14 @@ class CodeAction {
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 
+	/**
+	 * Tags for this code action.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	List<CodeActionTag> tags
+
 	new() {
 	}
 
@@ -2647,7 +2871,17 @@ class CodeActionDisabled {
 @JsonRpcData
 class CodeActionContext {
 	/**
-	 * An array of diagnostics.
+	 * An array of diagnostics known on the client side overlapping the range
+	 * provided to the {@code textDocument/codeAction} request. They are provided
+	 * so that the server knows which errors are currently presented to the user
+	 * for the given range. There is no guarantee that these accurately reflect the
+	 * error state of the resource. The primary parameter to compute code actions
+	 * is the provided range.
+	 * <p>
+	 * Note that the client should check the {@link DiagnosticServerCapabilities#markupMessageSupport}
+	 * server capability before sending diagnostics with markup messages to a server.
+	 * Diagnostics with markup messages should be excluded for servers that do not
+	 * support them.
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
@@ -2757,6 +2991,36 @@ class CodeLens {
 }
 
 /**
+ * Documentation for a class of code actions.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CodeActionKindDocumentation {
+	/**
+	 * The kind of the code action being documented.
+	 * <p>
+	 * If the kind is generic, such as {@link CodeActionKind#Refactor}, the
+	 * documentation will be shown whenever any refactorings are returned. If
+	 * the kind is more specific, such as {@link CodeActionKind#RefactorExtract},
+	 * the documentation will only be shown when extract refactoring code actions
+	 * are returned.
+	 */
+	@NonNull
+	String kind
+
+	/**
+	 * Command that is used to display the documentation to the user.
+	 * <p>
+	 * The title of this documentation code action is taken
+	 * from {@link Command#title}.
+	 */
+	@NonNull
+	Command command
+}
+
+/**
  * Code Action options.
  */
 @JsonRpcData
@@ -2770,6 +3034,29 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * Since 3.11.0
 	 */
 	List<String> codeActionKinds
+
+	/**
+	 * Static documentation for a class of code actions.
+	 * <p>
+	 * Documentation from the provider should be shown in the code actions
+	 * menu if either:
+	 * <ul>
+	 * <li>Code actions of {@code kind} are requested by the editor. In this case,
+	 * the editor will show the documentation that most closely matches the
+	 * requested code action kind. For example, if a provider has
+	 * documentation for both {@link CodeActionKind#Refactor} and
+	 * {@link CodeActionKind#RefactorExtract}, when the user requests
+	 * code actions for {@code RefactorExtract}, the editor will use
+	 * the documentation for {@code RefactorExtract} instead of the documentation
+	 * for {@code Refactor}.
+	 * <li>Any code actions of {@code kind} are returned by the provider.
+	 * </ul>
+	 * At most one documentation entry should be shown per provider.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	List<CodeActionKindDocumentation> documentation
 
 	/**
 	 * The server provides support to resolve additional
@@ -2866,6 +3153,14 @@ class Command {
 	 */
 	@NonNull
 	String title
+
+	/**
+	 * An optional tooltip.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	String tooltip
 
 	/**
 	 * The identifier of the actual command handler.
@@ -3129,13 +3424,15 @@ class InsertReplaceRange {
 }
 
 /**
- * In many cases the items of an actual completion result share the same
+ * In many cases, the items of an actual completion result share the same
  * value for properties like {@link CompletionItem#commitCharacters} or the range of a text
  * edit. A completion list can therefore define item defaults which will
  * be used if a completion item itself doesn't specify the value.
  * <p>
  * If a completion list specifies a default value and a completion item
- * also specifies a corresponding value the one from the item is used.
+ * also specifies a corresponding value, the rules for combining these are
+ * defined by {@link CompletionList#applyKind} (if the client supports it),
+ * defaulting to {@link ApplyKind#Replace}.
  * <p>
  * Servers are only allowed to return default values if the client
  * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
@@ -3177,6 +3474,71 @@ class CompletionItemDefaults {
 }
 
 /**
+ * Specifies how fields from a completion item should be combined with those
+ * from {@link CompletionList#itemDefaults}.
+ * <p>
+ * If unspecified, all fields will be treated as {@link ApplyKind#Replace}.
+ * <p>
+ * If a field's value is {@link ApplyKind#Replace}, the value from a completion item
+ * (if provided and not {@code null}) will always be used instead of the value
+ * from {@link CompletionList#itemDefaults}.
+ * <p>
+ * If a field's value is {@link ApplyKind#Merge}, the values will be merged using
+ * the rules defined against each field in {@link CompletionApplyKind}.
+ * <p>
+ * Servers are only allowed to return {@link CompletionList#applyKind} if the client
+ * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
+ * capability.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class CompletionApplyKind {
+	/**
+	 * Specifies whether {@link CompletionItem#commitCharacters commitCharacters}
+	 * on a completion will replace or be merged with those in
+	 * {@link CompletionItemDefaults#commitCharacters}.
+	 * <p>
+	 * If {@link ApplyKind#Replace}, the commit characters from the completion item
+	 * will always be used unless not provided, in which case those from
+	 * {@link CompletionItemDefaults#commitCharacters} will be used. An
+	 * empty list can be used if a completion item does not have any commit
+	 * characters and also should not use those from
+	 * {@link CompletionItemDefaults#commitCharacters}.
+	 * <p>
+	 * If {@link ApplyKind#Merge}, the commit characters for the completion will be
+	 * the union of all values in both {@link CompletionItemDefaults#commitCharacters}
+	 * and the completion's own {@link CompletionItem#commitCharacters commitCharacters}.
+	 */
+	ApplyKind commitCharacters
+
+	/**
+	 * Specifies whether the {@link CompletionItem#data data} field on a completion
+	 * will replace or be merged with data from {@link CompletionItemDefaults#data}.
+	 * <p>
+	 * If {@link ApplyKind#Replace}, the data from the completion item will be used
+	 * if provided (and not {@code null}), otherwise {@link CompletionItemDefaults#data}
+	 * will be used. An empty object can be used if a completion item does not have
+	 * any data but also should not use the value from {@link CompletionItemDefaults#data}.
+	 * <p>
+	 * If {@link ApplyKind#Merge}, a shallow merge will be performed between
+	 * {@link CompletionItemDefaults#data} and the completion's own data
+	 * using the following rules:
+	 * <ul>
+	 * <li>If a completion's {@link CompletionItem#data data} field is not provided
+	 * (or {@code null}), the entire {@link CompletionItemDefaults#data} field will be
+	 * used as-is.
+	 * <li>If a completion's {@link CompletionItem#data data} field is provided,
+	 * each field will overwrite the field of the same name in
+	 * {@link CompletionItemDefaults#data}, but no merging of nested fields
+	 * within that value will occur.
+	 * </ul>
+	 */
+	ApplyKind data
+}
+
+/**
  * Represents a collection of completion items to be presented in the editor.
  */
 @JsonRpcData
@@ -3193,13 +3555,15 @@ class CompletionList {
 	List<CompletionItem> items
 
 	/**
-	 * In many cases the items of an actual completion result share the same
+	 * In many cases, the items of an actual completion result share the same
 	 * value for properties like {@link CompletionItem#commitCharacters} or the range of a text
 	 * edit. A completion list can therefore define item defaults which will
 	 * be used if a completion item itself doesn't specify the value.
 	 * <p>
 	 * If a completion list specifies a default value and a completion item
-	 * also specifies a corresponding value the one from the item is used.
+	 * also specifies a corresponding value, the rules for combining these are
+	 * defined by {@link CompletionList#applyKind} (if the client supports it),
+	 * defaulting to {@link ApplyKind#Replace}.
 	 * <p>
 	 * Servers are only allowed to return default values if the client
 	 * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
@@ -3208,6 +3572,28 @@ class CompletionList {
 	 * Since 3.17.0
 	 */
 	CompletionItemDefaults itemDefaults
+
+	/**
+	 * Specifies how fields from a completion item should be combined with those
+	 * from {@link CompletionList#itemDefaults}.
+	 * <p>
+	 * If unspecified, all fields will be treated as {@link ApplyKind#Replace}.
+	 * <p>
+	 * If a field's value is {@link ApplyKind#Replace}, the value from a completion item
+	 * (if provided and not {@code null}) will always be used instead of the value
+	 * from {@link CompletionList#itemDefaults}.
+	 * <p>
+	 * If a field's value is {@link ApplyKind#Merge}, the values will be merged using
+	 * the rules defined against each field in {@link CompletionApplyKind}.
+	 * <p>
+	 * Servers are only allowed to return {@link CompletionList#applyKind} if the client
+	 * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
+	 * capability.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	CompletionApplyKind applyKind
 
 	new() {
 		this(new ArrayList)
@@ -3330,9 +3716,14 @@ class Diagnostic {
 
 	/**
 	 * The diagnostic's message.
+	 * <p>
+	 * Since 3.18.0 - support for {@link MarkupContent}. This is guarded by the client
+	 * capability {@link DiagnosticCapabilities#markupMessageSupport}. If a client does not
+	 * signal this capability, servers should not send {@link MarkupContent} diagnostic messages
+	 * back to the client.
 	 */
 	@NonNull
-	String message
+	Either<String, MarkupContent> message
 
 	/**
 	 * Additional metadata about the diagnostic.
@@ -4122,10 +4513,60 @@ class DocumentRangeFormattingParams implements WorkDoneProgressParams {
 }
 
 /**
+ * The document ranges formatting request is sent from the client to the server to format
+ * multiple ranges at once in a document.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class DocumentRangesFormattingParams implements WorkDoneProgressParams {
+	/**
+	 * An optional token that a server can use to report work done progress.
+	 */
+	Either<String, Integer> workDoneToken
+
+	/**
+	 * The document to format.
+	 */
+	@NonNull
+	TextDocumentIdentifier textDocument
+
+	/**
+	 * The format options.
+	 */
+	@NonNull
+	FormattingOptions options
+
+	/**
+	 * The ranges to format.
+	 */
+	@NonNull
+	List<Range> ranges
+
+	new() {
+		this.ranges = new ArrayList
+	}
+
+	new(@NonNull TextDocumentIdentifier textDocument, @NonNull FormattingOptions options, @NonNull List<Range> ranges) {
+		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
+		this.options = Preconditions.checkNotNull(options, 'options')
+		this.ranges = Preconditions.checkNotNull(ranges, 'ranges')
+	}
+}
+
+/**
  * Document range formatting options.
  */
 @JsonRpcData
 class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
+	/**
+	 * Whether the server supports formatting multiple ranges at once.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean rangesSupport
 }
 
 /**
@@ -4133,6 +4574,13 @@ class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
  */
 @JsonRpcData
 class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
+	/**
+	 * Whether the server supports formatting multiple ranges at once.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean rangesSupport
 }
 
 /**
@@ -5699,6 +6147,12 @@ final class SemanticTokenTypes {
 	 */
 	public static val Decorator = 'decorator'
 
+	/**
+	 * Since 3.18.0
+	 */
+	@Draft
+	public static val Label = 'label'
+
 	private new() {
 	}
 }
@@ -6071,19 +6525,27 @@ class ServerCapabilities {
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
 
 	/**
-	 * The server provides inline completions.
-	 * <p>
-	 * @since 3.18.0
-	 */
-	@Draft
-	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
-
-	/**
 	 * The server has support for pull model diagnostics.
 	 * <p>
 	 * Since 3.17.0
 	 */
 	DiagnosticRegistrationOptions diagnosticProvider
+
+	/**
+	 * The server provides inline completions.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
+
+	/**
+	 * Text document specific server capabilities.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	TextDocumentServerCapabilities textDocument
 
 	/**
 	 * Experimental server capabilities.
@@ -6111,11 +6573,37 @@ class WorkspaceServerCapabilities {
 	 */
 	FileOperationsServerCapabilities fileOperations
 
+	/**
+	 * Text document content provider options.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	TextDocumentContentRegistrationOptions textDocumentContent
+
 	new() {
 	}
 
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
+	}
+}
+
+/**
+ * Text document specific server capabilities.
+ * <p>
+ * Since 3.18.0.
+ */
+@Draft
+@JsonRpcData
+class TextDocumentServerCapabilities {
+
+	/**
+	 * Capabilities specific to the diagnostic pull model.
+	 */
+	DiagnosticServerCapabilities diagnostic
+
+	new() {
 	}
 }
 
@@ -7217,15 +7705,21 @@ class TextDocumentEdit {
 	VersionedTextDocumentIdentifier textDocument
 
 	/**
-	 * The edits to be applied
+	 * The edits to be applied.
+	 * <p>
+	 * Since 3.18 - support for {@link SnippetTextEdit}. This is guarded by the
+	 * client capability {@link WorkspaceEditCapabilities#snippetEditSupport}.
+	 * If a client does not signal this capability, servers should not send
+	 * {@link SnippetTextEdit} snippets back to the client.
 	 */
 	@NonNull
-	List<TextEdit> edits
+	@JsonAdapter(TextEditListAdapter)
+	List<Either<TextEdit, SnippetTextEdit>> edits
 
 	new() {
 	}
 
-	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<TextEdit> edits) {
+	new(@NonNull VersionedTextDocumentIdentifier textDocument, @NonNull List<Either<TextEdit, SnippetTextEdit>> edits) {
 		this.textDocument = Preconditions.checkNotNull(textDocument, 'textDocument')
 		this.edits = Preconditions.checkNotNull(edits, 'edits')
 	}
@@ -7603,28 +8097,33 @@ class RegistrationParams {
 
 /**
  * A document filter denotes a document through properties like language, schema or pattern.
+ * <p>
+ * At least one of the properties {@link #language}, {@link #scheme}, or {@link #pattern} must be set.
  */
 @JsonRpcData
 class DocumentFilter {
 	/**
-	 * A language id, like `typescript`.
+	 * A language id, like {@code typescript}.
 	 */
 	String language
 
 	/**
-	 * A uri scheme, like `file` or `untitled`.
+	 * A uri scheme, like {@code file} or {@code untitled}.
 	 */
 	String scheme
 
 	/**
-	 * A glob pattern, like `*.{ts,js}`.
+	 * A glob pattern, like <code>*.{ts,js}</code>.
+	 * <p>
+	 * Since 3.18 - support for relative patterns, which depends on the
+	 * client capability {@link FiltersCapabilities#relativePatternSupport}.
 	 */
-	String pattern
+	Either<String, RelativePattern> pattern
 
 	new() {
 	}
 
-	new(String language, String scheme, String pattern) {
+	new(String language, String scheme, Either<String, RelativePattern> pattern) {
 		this.language = language
 		this.scheme = scheme
 		this.pattern = pattern
@@ -7913,6 +8412,23 @@ class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
 }
 
 /**
+ * Additional data about a workspace edit.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class WorkspaceEditMetadata {
+	/**
+	 * Signal to the editor that this edit is a refactoring.
+	 */
+	Boolean isRefactoring
+
+	new() {
+	}
+}
+
+/**
  * The workspace/applyEdit request is sent from the server to the client to modify resource on the client side.
  */
 @JsonRpcData
@@ -7929,6 +8445,14 @@ class ApplyWorkspaceEditParams {
 	 * stack to undo the workspace edit.
 	 */
 	String label
+
+	/**
+	 * Additional data about the edit.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	WorkspaceEditMetadata metadata
 
 	new() {
 	}
@@ -10017,6 +10541,14 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	 */
 	Boolean relatedDocumentSupport
 
+	/**
+	 * Whether the client supports {@link MarkupContent} in diagnostic messages.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Boolean markupMessageSupport
+
 	new() {
 	}
 
@@ -10027,6 +10559,24 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	new(Boolean dynamicRegistration, Boolean relatedDocumentSupport) {
 		this(dynamicRegistration)
 		this.relatedDocumentSupport = relatedDocumentSupport
+	}
+}
+
+/**
+ * Server capabilities specific to the diagnostic pull model.
+ * <p>
+ * Since 3.18.0.
+ */
+@Draft
+@JsonRpcData
+class DiagnosticServerCapabilities {
+
+	/**
+	 * Whether the server supports {@link MarkupContent} in diagnostic messages.
+	 */
+	Boolean markupMessageSupport
+
+	new() {
 	}
 }
 
@@ -10709,7 +11259,7 @@ class NotebookDocumentFilter {
 	/**
 	 * A glob pattern.
 	 */
-	String pattern
+	Either<String, RelativePattern> pattern
 
 	new() {
 	}
@@ -11204,7 +11754,7 @@ final class StringValueKind {
  * the end of the snippet. Variables are defined with `$name` and
  * `${name:default value}`.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11235,11 +11785,11 @@ class StringValue {
 /**
  * Client capabilities specific to inline completions.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
-class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities {
+class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
 	new() {
 	}
 
@@ -11251,7 +11801,7 @@ class InlineCompletionClientCapabilities extends DynamicRegistrationCapabilities
 /**
  * Inline completion options used during static or dynamic registration.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11273,7 +11823,7 @@ class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrati
 /**
  * A parameter literal used in inline completion requests.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11298,7 +11848,7 @@ class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressPara
  * Provides information about the context in which an inline completion was
  * requested.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11341,7 +11891,7 @@ class InlineCompletionContext {
 /**
  * Describes the currently selected completion item.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11371,7 +11921,7 @@ class SelectedCompletionInfo {
 /**
  * Represents a collection of {@link InlineCompletionItem} to be presented in the editor.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11394,7 +11944,7 @@ class InlineCompletionList {
  * An inline completion item represents a text snippet that is proposed inline
  * to complete text that is being typed.
  * <p>
- * @since 3.18.0
+ * Since 3.18.0
  */
 @Draft
 @JsonRpcData
@@ -11436,5 +11986,156 @@ class InlineCompletionItem {
 
 	new(@NonNull Either<String, StringValue> insertText) {
 		this.insertText = Preconditions.checkNotNull(insertText, 'insertText')
+	}
+}
+
+/**
+ * An interactive text edit.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class SnippetTextEdit {
+
+	/**
+	 * The range of the text document to be manipulated.
+	 */
+	@NonNull
+	Range range
+
+	/**
+	 * The snippet to be inserted.
+	 */
+	@NonNull
+	StringValue snippet
+
+	/**
+	 * The actual identifier of the snippet edit.
+	 */
+	String annotationId
+
+	new() {
+	}
+
+	new(@NonNull Range range, @NonNull StringValue snippet) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.snippet = Preconditions.checkNotNull(snippet, 'snippet')
+	}
+
+	new(@NonNull Range range, @NonNull StringValue snippet, String annotationId) {
+		this(range, snippet)
+		this.annotationId = annotationId
+	}
+}
+
+/**
+ * Client capabilities for a text document content provider.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
+	new() {
+	}
+
+	new(Boolean dynamicRegistration) {
+		super(dynamicRegistration)
+	}
+}
+
+/**
+ * Text document content provider registration options.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentRegistrationOptions {
+	/**
+	 * The id used to register the request. The id can be used to deregister
+	 * the request again. See also {@link Registration#id}.
+	 */
+	String id
+
+	@NonNull
+	List<String> schemes
+
+	new() {
+		this.schemes = new ArrayList
+	}
+
+	new(@NonNull List<String> schemes) {
+		this.schemes = Preconditions.checkNotNull(schemes, 'schemes')
+	}
+}
+
+/**
+ * Parameters for the {@code workspace/textDocumentContent} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentParams {
+	/**
+	 * The uri of the text document.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
+	}
+}
+
+/**
+ * Result of the {@code workspace/textDocumentContent} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentResult {
+	/**
+	 * The text content of the text document. Please note, that the content of
+	 * any subsequent open notifications for the text document might differ
+	 * from the returned content due to whitespace and line ending
+	 * normalizations done on the client.
+	 */
+	@NonNull
+	String text
+
+	new() {
+	}
+
+	new(@NonNull String text) {
+		this.text = Preconditions.checkNotNull(text, 'text')
+	}
+}
+
+/**
+ * Parameters for the {@code workspace/textDocumentContent/refresh} request.
+ * <p>
+ * Since 3.18.0
+ */
+@Draft
+@JsonRpcData
+class TextDocumentContentRefreshParams {
+	/**
+	 * The uri of the text document to refresh.
+	 */
+	@NonNull
+	String uri
+
+	new() {
+	}
+
+	new(@NonNull String uri) {
+		this.uri = Preconditions.checkNotNull(uri, 'uri')
 	}
 }

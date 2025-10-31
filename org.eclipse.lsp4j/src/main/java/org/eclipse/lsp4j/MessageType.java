@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.Draft;
+
 public enum MessageType {
 	
 	/**
@@ -31,7 +33,15 @@ public enum MessageType {
 	/**
 	 * A log message.
 	 */
-	Log(4);
+	Log(4),
+	
+	/**
+	 * A debug message.
+	 * <p>
+	 * Since 3.18.0
+	 */
+	@Draft
+	Debug(5);
 	
 	private final int value;
 	
