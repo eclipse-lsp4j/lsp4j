@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static java.util.Collections.emptyMap;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TracingMessageConsumerTest {
 	private static final RemoteEndpoint TEST_REMOTE_ENDPOINT = new EmptyRemoteEndpoint();
@@ -298,6 +298,72 @@ public class TracingMessageConsumerTest {
 			"\n";
 
 		assertEquals(expectedTrace, actualTrace);
+	}
+
+	@Test
+	public void testUnmatchedResponseWhenOutgoingIsNotStreamConsumer() {
+		// Simulate an outgoing transport that is not StreamMessageConsumer (e.g., websocket)
+		var outgoingTrace = new StringWriter();
+		var outgoingPrintWriter = new PrintWriter(outgoingTrace);
+
+		var incomingTrace = new StringWriter();
+		var incomingPrintWriter = new PrintWriter(incomingTrace);
+
+		var sentRequests = new HashMap<String, RequestMetadata>();
+		var receivedRequests = new HashMap<String, RequestMetadata>();
+
+		// Wrap a non-stream consumer so TracingMessageConsumer does not treat it as "sending"
+		var outgoingTracing = new TracingMessageConsumer(new EmptyMessageConsumer(), sentRequests, receivedRequests, outgoingPrintWriter, TEST_CLOCK_1, Locale.US);
+
+		// Send a request (this will NOT populate sentRequests because consumer is not StreamMessageConsumer)
+		var req = new RequestMessage();
+		req.setId("1");
+		req.setMethod("foo");
+		outgoingTracing.consume(req);
+
+		// Prepare to capture warnings from TracingMessageConsumer
+		var logger = java.util.logging.Logger.getLogger(TracingMessageConsumer.class.getName());
+		var warnings = new java.util.ArrayList<String>();
+		var handler = new java.util.logging.Handler() {
+			@Override
+			public void publish(java.util.logging.LogRecord record) {
+				if (record.getLevel() == java.util.logging.Level.WARNING)
+					warnings.add(record.getMessage());
+			}
+
+			@Override
+			public void flush() {
+			}
+
+			@Override
+			public void close() throws SecurityException {
+			}
+		};
+		logger.addHandler(handler);
+		try {
+			// Now receive a response on the RemoteEndpoint path. Expected behavior (desired):
+			// no warnings and a proper response trace even when the outgoing transport
+			// is not a StreamMessageConsumer (e.g., websockets).
+			var incomingTracing = new TracingMessageConsumer(TEST_REMOTE_ENDPOINT, sentRequests, receivedRequests, incomingPrintWriter, TEST_CLOCK_2, Locale.US);
+
+			var resp = new ResponseMessage();
+			resp.setId("1");
+			resp.setResult("ok");
+			incomingTracing.consume(resp);
+
+			// Assert NO warning and a proper trace line for the response
+			boolean sawUnmatched = warnings.stream().anyMatch(m -> m.contains("Unmatched response message"));
+			assertFalse("Did not expect unmatched response warning", sawUnmatched);
+			String expectedTrace = "" +
+					"[Trace - 06:07:30 PM] Received response 'foo - (1)' in 100ms\n" +
+					"Result: \"ok\"\n" +
+					"Error: null\n" +
+					"\n" +
+					"\n";
+			assertEquals(expectedTrace, incomingTrace.toString());
+		} finally {
+			logger.removeHandler(handler);
+		}
 	}
 }
 
