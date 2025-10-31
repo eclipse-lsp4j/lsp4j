@@ -94,9 +94,9 @@ public final class JsonRpcRequestFuture<T> extends CompletableFuture<T> {
 	@Override
 	public boolean cancel(final boolean mayInterruptIfRunning) {
 		// Root cancel ensures cancelRequest() behavior once before local cancellation
-		if (isRoot()) {
+		if (root == this) {
 			try {
-				sendCancelOnceIfNeeded();
+				cancelRequest();
 			} catch (final RuntimeException ex) {
 				// catching potential exception to ensure local cancel still proceeds
 				LOG.log(Level.WARNING, ex.getMessage(), ex);
@@ -112,20 +112,12 @@ public final class JsonRpcRequestFuture<T> extends CompletableFuture<T> {
 		return root;
 	}
 
-	private boolean isRoot() {
-		return root == this;
-	}
-
 	/**
 	 * Sends the protocol cancel (<code>$/cancelRequest</code>) exactly once for this request chain.
 	 * Does not cancel any future locally. Returns {@code true} if the notification was sent by this call,
 	 * or {@code false} if it was already sent before or the request is already completed.
 	 */
 	public boolean cancelRequest() {
-		return getRoot().sendCancelOnceIfNeeded();
-	}
-
-	private boolean sendCancelOnceIfNeeded() {
 		final JsonRpcRequestFuture<?> root = getRoot();
 		if (root.isDone()) {
 			return false;

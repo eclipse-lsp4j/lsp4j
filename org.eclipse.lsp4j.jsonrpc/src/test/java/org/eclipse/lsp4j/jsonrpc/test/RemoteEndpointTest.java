@@ -544,11 +544,49 @@ public class RemoteEndpointTest {
 		assertFalse("Substage should NOT be cancelled by cancelRequest()", transformed2.isCancelled());
 
 		/*
+		 * Cancel the root future locally and verify that cancelRequest() has been sent exactly once
+		 */
+		transformed2.getRoot().cancel(true);
+		assertTrue("Root future should now be cancelled", root.isCancelled());
+		assertTrue("Dependent substage should complete exceptionally after root cancel", transformed2.isCompletedExceptionally());
+		assertEquals("No additional cancel notification should be sent", 2, consumer.messages.size());
+	}
+
+	@Test
+	public void testFastCancellationAfterTransformation() {
+		final var endp = new TestEndpoint();
+		final var consumer = new TestMessageConsumer();
+		final var endpoint = new RemoteEndpoint(consumer, endp);
+
+		/*
+		 * Outbound request: should synchronously send a RequestMessage to consumer
+		 */
+		JsonRpcRequestFuture<Object> root = endpoint.request("foo", "myparam");
+		assertEquals("Request should be sent once", 1, consumer.messages.size());
+		assertEquals(root, root.getRoot());
+		Message sent = consumer.messages.get(0);
+		assertTrue(sent instanceof RequestMessage);
+
+		var requestId = ((RequestMessage) sent).getRawId();
+
+		JsonRpcRequestFuture<Object> transformed1 = root.thenApply(x -> x);
+		assertEquals(root, transformed1.getRoot());
+
+		/*
 		 * Fast-cancel: cancel the root future locally, ensuring cancelRequest() has been sent exactly once
 		 */
-		root.getRoot().cancel(true);
+		transformed1.getRoot().cancel(true);
 		assertTrue("Root future should be cancelled after fast-cancel", root.isCancelled());
-		assertTrue("Dependent substage should be cancelled after root fast-cancel", transformed2.isCompletedExceptionally());
+		assertTrue("Dependent substage should be cancelled after root fast-cancel", transformed1.isCompletedExceptionally());
+		assertEquals("Cancel notification should now be sent", 2, consumer.messages.size());
+		Message maybeCancel = consumer.messages.get(1);
+		assertTrue("Second message should be a NotificationMessage", maybeCancel instanceof NotificationMessage);
+		var cancelNotif = (NotificationMessage) maybeCancel;
+		assertEquals("Cancel method name should match",
+				MessageJsonHandler.CANCEL_METHOD.getMethodName(), cancelNotif.getMethod());
+		assertNotNull("Cancel params should carry the original request id", cancelNotif.getParams());
+		assertEquals("Cancel id should match original request id", requestId,
+				((CancelParams) cancelNotif.getParams()).getRawId());
 	}
 
 	@Test
