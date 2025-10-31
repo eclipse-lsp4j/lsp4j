@@ -21,43 +21,34 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link CompletableFuture} representing an outbound JSON-RPC request.
  * <p>
- * Semantics:
+ * Design highlights:
  * <ul>
- * <li>{@link #cancelRequest(boolean)} sends the LSP <code>$/cancelRequest</code> once for the
- * entire request chain and cancels the root locally by default (fast-cancel).</li>
- * <li>Use {@link #cancelRequest(boolean, boolean)} with {@code cancelRootLocally == false} to send
- * the cancel but keep the root pending to receive the server's cancellation response.</li>
- * <li>{@link #cancel(boolean)} on the root behaves like {@code cancelRequest(true)} (sends once).</li>
+ * <li>{@link #cancelRequest()} sends the LSP <code>$/cancelRequest</code> exactly once for the
+ * entire request chain and does not cancel any future.</li>
+ * <li>{@link #getRoot()} returns the root request future; calling {@link #cancel(boolean)} on the
+ * root ensures {@link #cancelRequest()} is invoked exactly once.</li>
  * <li>{@link #cancel(boolean)} on dependent stages cancels only that stage and does not send.</li>
- * <li>Protocol cancel emission is deduplicated across the chain under concurrency.</li>
+ * <li>Protocol cancel emission is deduplicated across the chain under concurrency and skipped if the
+ * request is already completed.</li>
  * </ul>
- * <p>
- * Completion outcomes:
- * <ul>
- * <li>Fast-cancel: root completes with {@link java.util.concurrent.CancellationException}; any later
- * server response is ignored for the root.</li>
- * <li>Wait-for-remote: root remains pending and is completed by the server response, typically
- * exceptionally with {@link org.eclipse.lsp4j.jsonrpc.ResponseErrorException} using
- * {@link org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode#RequestCancelled}.</li>
- * </ul>
- * <p>
- * <b>IMPORTANT:</b> Cancelling a dependent stage via {@link #cancel(boolean)} only cancels that
- * stage locally; it does not send <code>$/cancelRequest</code> and it does not cancel the root future.
- * To cancel the remote request, call one of the {@code cancelRequest(...)} methods from any stage.
  */
 @SuppressWarnings("unchecked")
 public final class JsonRpcRequestFuture<T> extends CompletableFuture<T> {
+
+	private static final Logger LOG = Logger.getLogger(JsonRpcRequestFuture.class.getName());
 
 	private final Runnable cancelAction;
 	private final AtomicBoolean cancelSent;
 	private final JsonRpcRequestFuture<?> root;
 
 	public JsonRpcRequestFuture(final Runnable cancelAction) {
-		root = null;
+		root = this;
 		this.cancelAction = cancelAction;
 		cancelSent = new AtomicBoolean(false);
 	}
@@ -102,71 +93,48 @@ public final class JsonRpcRequestFuture<T> extends CompletableFuture<T> {
 
 	@Override
 	public boolean cancel(final boolean mayInterruptIfRunning) {
-		if (root == null && cancelSent.compareAndSet(false, true)) {
-			cancelAction.run();
+		// Root cancel ensures cancelRequest() behavior once before local cancellation
+		if (isRoot()) {
+			try {
+				sendCancelOnceIfNeeded();
+			} catch (final RuntimeException ex) {
+				// catching potential exception to ensure local cancel still proceeds
+				LOG.log(Level.WARNING, ex.getMessage(), ex);
+			}
 		}
 		return super.cancel(mayInterruptIfRunning);
 	}
 
 	/**
-	 * Send the protocol cancel (<code>$/cancelRequest</code>) for this request chain exactly once and cancel this future locally.
-	 * Also cancels the root future locally (fast-cancel) so callers waiting on it are unblocked.
-	 * Use {@link #cancelRequest(boolean, boolean)} with {@code cancelRootLocally == false} to
-	 * keep the root pending and wait for the remote cancel response instead.
-	 *
-	 * @param mayInterruptIfRunning passed through to {@link #cancel(boolean)} for this stage
-	 *
-	 * @return true if this call cancelled this future; false if already completed or cancelled
+	 * Returns the root future for this request chain. For the root, this returns {@code this}.
 	 */
-	public boolean cancelRequest(final boolean mayInterruptIfRunning) {
-		return cancelRequest(mayInterruptIfRunning, true);
+	public JsonRpcRequestFuture<?> getRoot() {
+		return root;
+	}
+
+	private boolean isRoot() {
+		return root == this;
 	}
 
 	/**
-	 * Send the protocol cancel (<code>$/cancelRequest</code>) for this request chain exactly once and cancel this future locally.
-	 * Optionally cancel the root future locally, or keep it pending to wait for the remote cancel response.
-	 *
-	 * Semantics:
-	 * <ul>
-	 * <li>When called on the root with {@code cancelRootLocally == true}, the root is cancelled locally
-	 * and the cancel notification is sent once.
-	 * <li>When called on the root with {@code cancelRootLocally == false}, only the cancel notification is sent;
-	 * the root remains pending to receive the server's cancellation response.
-	 * <li>When called on a dependent stage, the cancel notification is sent via the root. If
-	 * {@code cancelRootLocally == true}, the root is also cancelled locally; otherwise it remains pending.
-	 * </ul>
-	 *
-	 * @param mayInterruptIfRunning passed through to {@link #cancel(boolean)} for this stage
-	 * @param cancelRootLocally when true, cancel the root future locally as well; when false, do not cancel
-	 *            the root so it can wait for the remote cancellation response
-	 *
-	 * @return true if this call cancelled this future; false if already completed or cancelled
+	 * Sends the protocol cancel (<code>$/cancelRequest</code>) exactly once for this request chain.
+	 * Does not cancel any future locally. Returns {@code true} if the notification was sent by this call,
+	 * or {@code false} if it was already sent before or the request is already completed.
 	 */
-	public boolean cancelRequest(final boolean mayInterruptIfRunning, final boolean cancelRootLocally) {
-		if (root == null) {
-			// We are the root: send protocol cancel exactly once
-			if (cancelSent.compareAndSet(false, true)) {
-				cancelAction.run();
-			}
-			if (cancelRootLocally) {
-				return super.cancel(mayInterruptIfRunning);
-			}
-			// Do not cancel the root locally; only send protocol cancel
+	public boolean cancelRequest() {
+		return getRoot().sendCancelOnceIfNeeded();
+	}
+
+	private boolean sendCancelOnceIfNeeded() {
+		final JsonRpcRequestFuture<?> root = getRoot();
+		if (root.isDone()) {
 			return false;
 		}
-
-		// We are a dependent stage
-		final var cancelled = super.cancel(mayInterruptIfRunning);
-		if (cancelRootLocally) {
-			// Cancel the root, which will send protocol cancel (deduped)
-			root.cancel(mayInterruptIfRunning);
-		} else {
-			// Send protocol cancel without cancelling root locally
-			if (root.cancelSent.compareAndSet(false, true)) {
-				root.cancelAction.run();
-			}
+		if (root.cancelSent.compareAndSet(false, true)) {
+			root.cancelAction.run();
+			return true;
 		}
-		return cancelled;
+		return false;
 	}
 
 	@Override
@@ -212,7 +180,7 @@ public final class JsonRpcRequestFuture<T> extends CompletableFuture<T> {
 	@Override
 	public JsonRpcRequestFuture<T> newIncompleteFuture() {
 		// Dependent stages share the same cancel state but are not roots
-		return new JsonRpcRequestFuture<>((root == null) ? this : root);
+		return new JsonRpcRequestFuture<>(root);
 	}
 
 	@Override
