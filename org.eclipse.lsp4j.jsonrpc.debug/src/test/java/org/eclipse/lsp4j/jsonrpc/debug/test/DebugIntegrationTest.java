@@ -200,7 +200,7 @@ public class DebugIntegrationTest {
 			if (System.currentTimeMillis() - startTime > TIMEOUT)
 				Assert.fail("Timeout waiting for client to start computing.");
 		}
-		future.cancel(true);
+		boolean cancelled = future.cancel(true);
 
 		startTime = System.currentTimeMillis();
 		while (!cancellationHappened[0]) {
@@ -211,7 +211,13 @@ public class DebugIntegrationTest {
 		try {
 			future.get(TIMEOUT, TimeUnit.MILLISECONDS);
 			Assert.fail("Expected cancellation.");
-		} catch (CancellationException e) {
+		} catch (CancellationException | ExecutionException e) {
+			if (e instanceof ExecutionException) {
+				Assert.assertFalse(cancelled);
+				Assert.assertEquals("org.eclipse.lsp4j.jsonrpc.ResponseErrorException: The request (id: 1, method: 'askClient') has been cancelled", e.getMessage());
+			} else {
+				Assert.assertTrue(cancelled);
+			}
 		}
 	}
 
