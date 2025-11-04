@@ -98,7 +98,7 @@ public interface MyService {
 }
 
 Endpoint endpoint = ...
-MyService proxy = ServiceEndpoints.toProxy(endpoint, MyService.class);
+MyService proxy = ServiceEndpoints.toServiceObject(endpoint, MyService.class);
 ```
 
 Of course you can use the same interface, as is done with the [interfaces](../org.eclipse.lsp4j/src/main/java/org/eclipse/lsp4j/services/LanguageServer.java) defining the messages of the LSP.
