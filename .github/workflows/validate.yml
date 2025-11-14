@@ -11,13 +11,11 @@ on:  # https://docs.github.com/en/actions/reference/workflows-and-actions/events
     - '**/*.md'
     - '.editorconfig'
     - '.git*'
-    - '.github/*.yml'
   pull_request:
     paths-ignore:
     - '**/*.md'
     - '.editorconfig'
     - '.git*'
-    - '.github/*.yml'
 
 defaults:
   run:
