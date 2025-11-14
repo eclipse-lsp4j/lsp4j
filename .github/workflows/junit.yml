@@ -1,0 +1,11 @@
+name: Publish Unit Test Results
+
+on:
+  workflow_run:
+    workflows: ["Validate"]
+    types:
+      - completed
+
+jobs:
+    check:
+       uses: eclipse-platform/eclipse.platform.releng.aggregator/.github/workflows/publishTestResults.yml@master
