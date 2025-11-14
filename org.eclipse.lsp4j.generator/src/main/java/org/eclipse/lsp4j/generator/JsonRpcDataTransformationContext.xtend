@@ -51,7 +51,7 @@ class JsonRpcDataTransformationContext implements TransformationContext {
 	def TypeReference getRightType(TypeReference typeReference) {
 		val type = typeReference.type
 		if (type === eitherType.type) {
-			return typeReference.actualTypeArguments.last
+			return IterableExtensions.lastOrNull(typeReference.actualTypeArguments)
 		}
 		if (type instanceof InterfaceDeclaration) {
 			return type.extendedInterfaces.map[rightType].filterNull.head
