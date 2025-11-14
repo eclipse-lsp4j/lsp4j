@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,15 +42,13 @@ import org.eclipse.lsp4j.jsonrpc.services.ServiceEndpoints;
 import org.eclipse.lsp4j.launch.LSPLauncher;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageServer;
-import org.eclipse.xtext.xbase.lib.Pair;
-import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LauncherTest {
-	
+
 	private static final long TIMEOUT = 2000;
 	
 	@Test public void testNotification() throws IOException {
@@ -79,7 +78,7 @@ public class LauncherTest {
 		item.setKind(CompletionItemKind.Field);
 		result.getItems().add(item);
 		
-		server.expectedRequests.put("textDocument/completion", new Pair<>(p, result));
+		server.expectedRequests.put("textDocument/completion", List.of(p, result));
 		CompletableFuture<Either<List<CompletionItem>, CompletionList>> future = clientLauncher.getRemoteProxy().getTextDocumentService().completion(p);
 		Assert.assertEquals(Either.forRight(result).toString(), future.get(TIMEOUT, TimeUnit.MILLISECONDS).toString());
 		client.joinOnEmpty();
@@ -87,14 +86,15 @@ public class LauncherTest {
 	
 	
 	static class AssertingEndpoint implements Endpoint {
-		public Map<String, Pair<Object, Object>> expectedRequests = new LinkedHashMap<>();
+		public Map<String, List<Object>> expectedRequests = new LinkedHashMap<>();
 		
 		@Override
 		public CompletableFuture<?> request(String method, Object parameter) {
 			Assert.assertTrue(expectedRequests.containsKey(method));
-			Pair<Object, Object> result = expectedRequests.remove(method);
-			Assert.assertEquals(result.getKey().toString(), parameter.toString());
-			return CompletableFuture.completedFuture(result.getValue());
+			List<Object> result = expectedRequests.remove(method);
+			Assert.assertEquals(2, result.size());
+			Assert.assertEquals(result.get(0).toString(), parameter.toString());
+			return CompletableFuture.completedFuture(result.get(1));
 		}
 
 		public Map<String, Object> expectedNotifications = new LinkedHashMap<>();
@@ -127,7 +127,7 @@ public class LauncherTest {
 		
 		@Override
 		public String toString() {
-			return new ToStringBuilder(this).addAllFields().toString();
+			return Arrays.toString(new Object[] {expectedRequests, expectedNotifications});
 		}
 		
 	}
