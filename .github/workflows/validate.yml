@@ -57,3 +57,6 @@ jobs:
 
     - name: Build with Gradle 🏗️
       run: ./gradlew build testOlderJavas
+
+    - name: Run API Compare
+      run: ./releng/runjapicmp.sh
