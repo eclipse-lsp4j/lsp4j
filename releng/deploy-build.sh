@@ -39,15 +39,15 @@ case $BRANCH_NAME in
             base="${i%.*}"
             # See https://wiki.eclipse.org/Jenkins#How_can_artifacts_be_deployed_to_OSSRH_.2F_Maven_Central.3F for more info
             # on the Eclipse Foundation specific settings.
-            mvn -X -f gpgparameters.pom \
-                org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file \
+            mvn -f gpgparameters.pom \
+                org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
                 -DpomFile=${base}.pom \
                 -Dfile=${base}.jar \
                 -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
                 -Dclassifiers=sources,javadoc \
                 -Dtypes=jar,jar \
-                -Durl=https://oss.sonatype.org/content/repositories/snapshots/ \
-                -DrepositoryId=ossrh
+                -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
+                -DrepositoryId=central
         done
         ;;
     *)
