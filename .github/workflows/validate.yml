@@ -23,6 +23,15 @@ defaults:
 
 
 jobs:
+  event_file:
+    name: "Event File"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      with:
+        name: Event File
+        path: ${{ github.event_path }}
 
   ###########################################################
   build:
@@ -58,5 +67,26 @@ jobs:
     - name: Build with Gradle 🏗️
       run: ./gradlew build testOlderJavas
 
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      with:
+        name: Test Results ${{ matrix.os }}
+        if-no-files-found: warn
+        path: |
+          ${{ github.workspace }}/**/build/test-results/**/*.xml
+          ${{ github.workspace }}/**/build/reports/
+
+
     - name: Run API Compare
+      if: ${{ matrix.os == 'ubuntu-latest' }}
       run: ./releng/runjapicmp.sh
+
+    - name: Upload API Compare results
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      with:
+        name: API Compare results
+        if-no-files-found: warn
+        path: |
+          ${{ github.workspace }}/build/p2-repository/japicmp-report/
