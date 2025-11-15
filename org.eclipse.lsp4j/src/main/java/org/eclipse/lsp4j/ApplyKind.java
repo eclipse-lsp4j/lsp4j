@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (c) 2025 Avaloq Group AG.
+ * Copyright (c) 2025 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -14,27 +14,29 @@ package org.eclipse.lsp4j;
 import org.eclipse.lsp4j.jsonrpc.Draft;
 
 /**
- * Describes how an inline completion request was triggered.
+ * Defines how values from a set of defaults and an individual item will be merged.
  * <p>
  * Since 3.18.0
  */
 @Draft
-public enum InlineCompletionTriggerKind {
+public enum ApplyKind {
 	/**
-	 * Completion was triggered explicitly by a user gesture. Return multiple
-	 * completion items to enable cycling through them.
+	 * The value from the individual item (if provided and not {@code null}) will be
+	 * used instead of the default.
 	 */
-	Invoked(1),
+	Replace(1),
 
 	/**
-	 * Completion was triggered automatically while editing. It is sufficient to
-	 * return a single completion item in this case.
+	 * The value from the item will be merged with the default.
+	 * <p>
+	 * The specific rules for merging values are defined against each field
+	 * that supports merging.
 	 */
-	Automatic(2);
+	Merge(2);
 
 	private final int value;
 
-	InlineCompletionTriggerKind(final int value) {
+	ApplyKind(final int value) {
 		this.value = value;
 	}
 
@@ -42,8 +44,8 @@ public enum InlineCompletionTriggerKind {
 		return value;
 	}
 
-	public static InlineCompletionTriggerKind forValue(final int value) {
-		InlineCompletionTriggerKind[] allValues = InlineCompletionTriggerKind.values();
+	public static ApplyKind forValue(final int value) {
+		ApplyKind[] allValues = ApplyKind.values();
 		if (value < 1 || value > allValues.length) {
 			throw new IllegalArgumentException("Illegal enum value: " + value);
 		}

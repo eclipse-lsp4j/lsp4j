@@ -6,6 +6,11 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1>
 
 Breaking API changes:
 
+ * Type of `TextDocumentEdit.edits` changed from `List<TextEdit>` to `List<Either<TextEdit, SnippetTextEdit>>`
+ * Type of `Diagnostic.message` changed from `String` to `Either<String, MarkupContent>`
+ * Type of `DocumentFilter.pattern` changed from `String` to `Either<String, RelativePattern>`
+ * Type of `NotebookDocumentFilter.pattern` changed from `String` to `Either<String, RelativePattern>`
+
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v0.24.0 (Jan 2025)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.24.0)
