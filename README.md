@@ -96,3 +96,41 @@ LSP4J is published under two licenses:
  * [Eclipse Distribution License v. 1.0](https://www.eclipse.org/org/documents/edl-v10.php), a [BSD-3-clause license](https://opensource.org/licenses/BSD-3-Clause)
 
 SPDX-License-Identifier: `EPL-2.0 OR BSD-3-Clause`
+
+### API Policy
+
+The Eclipse LSP4J project uses Semantic Versioning to determine the version number increment the project should use, as determined by [japicmp](https://siom79.github.io/japicmp/CliTool.html).
+All bundles within LSP4J share a version number to simplify version management, both for LSP4J project as well as API consumers of LSP4J.
+Therefore the version increment for any LSP4J bundle will be the largest increment required by semantic versioning of any of the bundles.
+
+#### New versions of LSP and DAP specifications
+
+New versions of [LSP](https://microsoft.github.io/language-server-protocol/) and [DAP](https://microsoft.github.io/debug-adapter-protocol/)
+specifications may lead to breaking API changes due to mapping of TypeScript types to Java types.
+
+It is particularly difficult to maintain binary compatibility when adapting to some protocol changes that allow return values or fields to have new/additional types.
+In JSON-RPC + TypeScript, an additional type is not a breaking change, but in Java with LSP4J this is often a breaking change.
+For example, in LSP 3.18, `Diagnostic.message` has changed from `string` to `string | MarkupContent`, in Java LSP4J this is represented as a
+change from `String` to `Either<String, MarkupContent>`, which is an API breaking change, and would necessitate a major version bump for semantic versioning.
+
+#### API Policy for versions before 1.0
+
+Prior to 1.0 version of LSP4J Semantic Versioning was not used.
+
+#### Published API changes
+
+Breaking API changes are published in the [CHANGELOG](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CHANGELOG.md).
+In addition, each release and continuous build of LSP4J runs the japicmp tool, wrapped with [runjapicmp.sh](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/runjapicmp.sh).
+The generated japicmp reports for releases and current development branch are linked in the [CHANGELOG](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CHANGELOG.md).
+The GitHub actions builds save as an artifact the same report for each pull request and commit.
+
+#### Compare API of two arbitrary versions
+
+Using japicmp online you can compare API between any two versions easily, here is an example of comparing 0.21.0 to 0.24.0 for each of the LSP4J bundles:
+
+- [org.eclipse.lsp4j](https://www.japicmp.de/cmp?groupId=org.eclipse.lsp4j&artifactId=org.eclipse.lsp4j&oldVersion=0.21.0&newVersion=0.24.0)
+- [org.eclipse.lsp4j.debug](https://www.japicmp.de/cmp?groupId=org.eclipse.lsp4j&artifactId=org.eclipse.lsp4j.debug&oldVersion=0.21.0&newVersion=0.24.0)
+- [org.eclipse.lsp4j.generator](https://www.japicmp.de/cmp?groupId=org.eclipse.lsp4j&artifactId=org.eclipse.lsp4j.generator&oldVersion=0.21.0&newVersion=0.24.0)
+- [org.eclipse.lsp4j.jsonrpc](https://www.japicmp.de/cmp?groupId=org.eclipse.lsp4j&artifactId=org.eclipse.lsp4j.jsonrpc&oldVersion=0.21.0&newVersion=0.24.0)
+- [org.eclipse.lsp4j.websocket](https://www.japicmp.de/cmp?groupId=org.eclipse.lsp4j&artifactId=org.eclipse.lsp4j.websocket&oldVersion=0.21.0&newVersion=0.24.0)
+- [org.eclipse.lsp4j.websocket.jakarta](https://www.japicmp.de/cmp?groupId=org.eclipse.lsp4j&artifactId=org.eclipse.lsp4j.websocket.jakarta&oldVersion=0.21.0&newVersion=0.24.0)
