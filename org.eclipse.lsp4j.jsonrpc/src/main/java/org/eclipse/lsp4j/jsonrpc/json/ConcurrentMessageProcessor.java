@@ -29,23 +29,6 @@ import org.eclipse.lsp4j.jsonrpc.MessageProducer;
  */
 public class ConcurrentMessageProcessor implements Runnable {
 
-	/**
-	 * Start a thread that listens for messages in the message producer and forwards them to the message consumer.
-	 *
-	 * @param messageProducer - produces messages, e.g. by reading from an input channel
-	 * @param messageConsumer - processes messages and potentially forwards them to other consumers
-	 * @param executorService - the thread is started using this service
-	 * @return a future that is resolved when the started thread is terminated, e.g. by closing a stream
-	 * @deprecated Please use the non-static {@link #beginProcessing} instead.
-	 */
-	@Deprecated
-	public static Future<Void> startProcessing(MessageProducer messageProducer, MessageConsumer messageConsumer,
-			ExecutorService executorService) {
-		final var reader = new ConcurrentMessageProcessor(messageProducer, messageConsumer);
-		final Future<?> result = executorService.submit(reader);
-		return wrapFuture(result, messageProducer);
-	}
-
 	public static Future<Void> wrapFuture(Future<?> result, MessageProducer messageProducer) {
 		return new Future<>() {
 
