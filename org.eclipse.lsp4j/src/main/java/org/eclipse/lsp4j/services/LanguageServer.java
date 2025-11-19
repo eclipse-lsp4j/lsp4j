@@ -18,6 +18,7 @@ import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.InitializedParams;
 import org.eclipse.lsp4j.SetTraceParams;
 import org.eclipse.lsp4j.WorkDoneProgressCancelParams;
+import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -62,9 +63,9 @@ public interface LanguageServer {
 	}
 
 	/**
-	 * @deprecated Use {@link #initialized(InitializedParams)} instead.
+	 * Deprecated in LSP:  Use {@link #initialized(InitializedParams)} instead.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	default void initialized() {
 	}
 
