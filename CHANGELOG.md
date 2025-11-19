@@ -16,6 +16,7 @@ Breaking API changes:
     * Remove deprecated factories [#878](https://github.com/eclipse-lsp4j/lsp4j/issues/878)
     * Remove deprecated ResponseErrorCode.serverNotInitialized, use ResponseErrorCode.ServerNotInitialized instead [#879](https://github.com/eclipse-lsp4j/lsp4j/issues/879)
     * Remove deprecated org.eclipse.lsp4j.websocket. Please upgrade to using Jakarta or remain with LSP4J version 0.x.x [#647](https://github.com/eclipse-lsp4j/lsp4j/issues/647)
+    * Remove deprecated ConcurrentMessageProcessor.startProcessing, use ConcurrentMessageProcessor.beginProcessing instead [#922](https://github.com/eclipse-lsp4j/lsp4j/issues/922)
 
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
