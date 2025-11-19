@@ -37,6 +37,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.util.Preconditions
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
+import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -2956,10 +2957,10 @@ class CompletionItem {
 	 * Indicates if this item is deprecated.
 	 * <p>
 	 * Since 3.8.0
-	 *
-	 * @deprecated Use {@link #tags} instead if supported.
+	 * <p>
+	 * Deprecated in LSP: Use {@link #tags} instead if supported.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	Boolean deprecated
 
 	/**
@@ -4505,11 +4506,11 @@ class Hover {
  * </pre>
  * <p>
  * Note that markdown strings will be sanitized - that means html will be escaped.
- *
- * @deprecated Use {@link MarkupContent} instead.
+ * <p>
+ * Deprecated in LSP:  Use {@link MarkupContent} instead.
  */
 @JsonRpcData
-@Deprecated
+@ProtocolDeprecated
 class MarkedString {
 	@NonNull
 	String language
@@ -4854,11 +4855,11 @@ class InitializeError {
 interface InitializeErrorCode {
 	/**
 	 * If the protocol version provided by the client can't be handled by the server.
-	 *
-	 * @deprecated This initialize error got replaced by client capabilities.
+	 * <p>
+	 * Deprecated in LSP:  This initialize error got replaced by client capabilities.
 	 * There is no version handshake in version 3.0x
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	val unknownProtocolVersion = 1
 }
 
@@ -4880,19 +4881,19 @@ class InitializeParams implements WorkDoneProgressParams {
 
 	/**
 	 * The rootPath of the workspace. Is null if no folder is open.
-	 *
-	 * @deprecated Use {@link #workspaceFolders} instead.
+	 * <p>
+	 * Deprecated in LSP:  Use {@link #workspaceFolders} instead.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	String rootPath
 
 	/**
 	 * The rootUri of the workspace. Is null if no folder is open.
 	 * If both {@link #rootPath} and `rootUri` are set, `rootUri` wins.
-	 *
-	 * @deprecated Use {@link #workspaceFolders} instead.
+	 * <p>
+	 * Deprecated in LSP:  Use {@link #workspaceFolders} instead.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	String rootUri
 
 	/**
@@ -6601,10 +6602,10 @@ class DocumentSymbol {
 
 	/**
 	 * Indicates if this symbol is deprecated.
-	 *
-	 * @deprecated Use {@link #tags} instead if supported.
+	 * <p>
+	 * Deprecated in LSP:  Use {@link #tags} instead if supported.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	Boolean deprecated
 
 	/**
@@ -6638,28 +6639,25 @@ class DocumentSymbol {
 
 /**
  * Represents information about programming constructs like variables, classes, interfaces etc.
- *
- * Deprecated Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead if supported.
- *
- * This class is deprecated in the LSP specification. It is not annotated with Deprecated
- * annotation because the {@link org.eclipse.lsp4j.services.TextDocumentService#documentSymbol(DocumentSymbolParams)}
- * method requires it and causes deprecated warning in the code of all users of that API.
+ * <p>
+ * Deprecated in LSP: Use {@link DocumentSymbol} or {@link WorkspaceSymbol} instead if supported.
  */
 @JsonRpcData
 @JsonAdapter(SymbolInformationTypeAdapter.Factory)
+@ProtocolDeprecated
 class SymbolInformation {
 	/**
 	 * The name of this symbol.
 	 */
 	@NonNull
-	@Deprecated
+	@ProtocolDeprecated
 	String name
 
 	/**
 	 * The kind of this symbol.
 	 */
 	@NonNull
-	@Deprecated
+	@ProtocolDeprecated
 	SymbolKind kind
 
 	/**
@@ -6667,17 +6665,17 @@ class SymbolInformation {
 	 * <p>
 	 * Since 3.16.0
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	List<SymbolTag> tags
 
 	/**
 	 * Indicates if this symbol is deprecated.
 	 * <p>
 	 * Since 3.8.0
-	 *
-	 * @deprecated Use {@link #tags} instead if supported.
+	 * <p>
+	 * Deprecated in LSP:  Use {@link #tags} instead if supported.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	Boolean deprecated
 
 	/**
@@ -6692,7 +6690,7 @@ class SymbolInformation {
 	 * the symbols.
 	 */
 	@NonNull
-	@Deprecated
+	@ProtocolDeprecated
 	Location location
 
 	/**
@@ -6701,21 +6699,21 @@ class SymbolInformation {
 	 * if necessary). It can't be used to re-infer a hierarchy for the document
 	 * symbols.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	String containerName
 
-	@Deprecated
+	@ProtocolDeprecated
 	new() {
 	}
 
-	@Deprecated
+	@ProtocolDeprecated
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location) {
 		this.name = Preconditions.checkNotNull(name, 'name')
 		this.kind = Preconditions.checkNotNull(kind, 'kind')
 		this.location = Preconditions.checkNotNull(location, 'location')
 	}
 
-	@Deprecated
+	@ProtocolDeprecated
 	new(@NonNull String name, @NonNull SymbolKind kind, @NonNull Location location, String containerName) {
 		this(name, kind, location)
 		this.containerName = containerName
@@ -6821,10 +6819,10 @@ class TextDocumentContentChangeEvent {
 
 	/**
 	 * The length of the range that got replaced.
-	 *
-	 * @deprecated Use {@link #range} instead.
+	 * <p>
+	 * Deprecated in LSP:  Use {@link #range} instead.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	Integer rangeLength
 
 	/**

@@ -4,6 +4,8 @@
 
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1>
 
+* Removed `@Deprecated` annotations on members deprecated in the LSP/DAP protocol [#895](https://github.com/eclipse-lsp4j/lsp4j/issues/895)
+
 Breaking API changes:
 
   * Removed deprecated API [#874](https://github.com/eclipse-lsp4j/lsp4j/issues/874)

@@ -17,6 +17,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.Map
 import org.eclipse.lsp4j.debug.adapters.RestartArgumentsArgumentsTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
+import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
@@ -1154,10 +1155,10 @@ class SetBreakpointsArguments {
 	 * The code locations of the breakpoints.
 	 * <p>
 	 * This is an optional property.
-	 *
-	 * @deprecated Use {@link SourceBreakpoint#line} of {@link #breakpoints} instead.
+	 * <p>
+	 * Deprecated in DAP:  Use {@link SourceBreakpoint#line} of {@link #breakpoints} instead.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	int[] lines;
 	/**
 	 * A value of true indicates that the underlying source has been modified which results in new breakpoint
@@ -3746,10 +3747,10 @@ interface VariablePresentationHintKind {
 	public static final String VIRTUAL = "virtual";
 	/**
 	 * Indicates that a data breakpoint is registered for the object.
-	 *
-	 * @deprecated The {@link VariablePresentationHintAttributes#HAS_DATA_BREAKPOINT} attribute should generally be used instead.
+	 * <p>
+	 * Deprecated in DAP:  The {@link VariablePresentationHintAttributes#HAS_DATA_BREAKPOINT} attribute should generally be used instead.
 	 */
-	@Deprecated
+	@ProtocolDeprecated
 	public static final String DATA_BREAKPOINT = "dataBreakpoint";
 }
 
