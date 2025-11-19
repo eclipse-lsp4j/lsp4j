@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import org.eclipse.lsp4j.jsonrpc.Launcher;
@@ -54,18 +55,18 @@ public class MockConnectionTest {
 	@Test
 	public void testNotifications() throws Exception {
 		server.client.notify("12");
-		await(() -> client.result.length() == 2);
+		await(() -> client.result.get().length() == 2);
 		client.server.notify("foo");
-		await(() -> server.result.length() == 3);
+		await(() -> server.result.get().length() == 3);
 		server.client.notify("34");
-		await(() -> client.result.length() == 4);
+		await(() -> client.result.get().length() == 4);
 		client.server.notify("bar");
-		await(() -> server.result.length() == 6);
+		await(() -> server.result.get().length() == 6);
 		server.client.notify("56");
-		await(() -> client.result.length() == 6);
-		
-		Assert.assertEquals("foobar", server.result);
-		Assert.assertEquals("123456", client.result);
+		await(() -> client.result.get().length() == 6);
+
+		Assert.assertEquals("foobar", server.result.get());
+		Assert.assertEquals("123456", client.result.get());
 	}
 	
 	@Test
@@ -78,11 +79,11 @@ public class MockConnectionTest {
 		}
 		int expectedResultLenght = expectedResult.length();
 		try {
-			await(() -> server.result.length() == expectedResultLenght);
+			await(() -> server.result.get().length() == expectedResultLenght);
 		} catch (Error e) {
 			// discard this error so that the nice error displays in the assertEquals
 		}
-		Assert.assertEquals(expectedResult, server.result);
+		Assert.assertEquals(expectedResult, server.result.get());
 	}
 	
 	@Test
@@ -95,9 +96,9 @@ public class MockConnectionTest {
 		String message = messageBuilder.toString();
 		
 		server.client.notify(message);
-		await(() -> client.result.length() == message.length());
-		
-		Assert.assertEquals(message, client.result);
+		await(() -> client.result.get().length() == message.length());
+
+		Assert.assertEquals(message, client.result.get());
 	}
 
 	private void await(Supplier<Boolean> condition) throws InterruptedException {
@@ -119,11 +120,11 @@ public class MockConnectionTest {
 	
 	private static class Client implements ClientInterface {
 		ServerInterface server;
-		String result = "";
+		AtomicReference<String> result = new AtomicReference<>("");
 
 		@Override
 		public void notify(String arg) {
-			this.result += arg;
+			this.result.getAndUpdate(s -> s + arg);
 		}
 	}
 	
@@ -139,8 +140,8 @@ public class MockConnectionTest {
 	
 	private static class Server implements ServerInterface {
 		ClientInterface client;
-		String result = "";
-		
+		AtomicReference<String> result = new AtomicReference<>("");
+
 		@Override
 		public CompletableFuture<String> request(String arg) {
 			return CompletableFuture.supplyAsync(() -> arg + "bar");
@@ -148,7 +149,7 @@ public class MockConnectionTest {
 		
 		@Override
 		public void notify(String arg) {
-			this.result += arg;
+			this.result.getAndUpdate(s -> s + arg);
 		}
 	}
 	

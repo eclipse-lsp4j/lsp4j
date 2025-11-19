@@ -11,6 +11,7 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -28,8 +29,7 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	private final MessageJsonHandler jsonHandler;
 
 	private final Object outputLock = new Object();
-
-	private OutputStream output;
+	private BufferedOutputStream output;
 
 	public StreamMessageConsumer(MessageJsonHandler jsonHandler) {
 		this(null, StandardCharsets.UTF_8.name(), jsonHandler);
@@ -40,7 +40,7 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	}
 
 	public StreamMessageConsumer(OutputStream output, String encoding, MessageJsonHandler jsonHandler) {
-		this.output = output;
+		setOutput(output);
 		this.encoding = encoding;
 		this.jsonHandler = jsonHandler;
 	}
@@ -50,7 +50,13 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	}
 
 	public void setOutput(OutputStream output) {
-		this.output = output;
+		synchronized (outputLock) {
+			this.output = output == null //
+					? null
+					: output instanceof BufferedOutputStream //
+							? (BufferedOutputStream) output
+							: new BufferedOutputStream(output);
+		}
 	}
 
 	@Override
