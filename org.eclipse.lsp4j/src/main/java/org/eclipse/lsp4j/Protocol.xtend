@@ -30,7 +30,6 @@ import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
-import org.eclipse.lsp4j.jsonrpc.Draft
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
@@ -39,6 +38,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.util.Preconditions
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
+import org.eclipse.lsp4j.jsonrpc.ProtocolDraft
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -109,7 +109,7 @@ class WorkspaceEditCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean snippetEditSupport
 
 	/**
@@ -117,7 +117,7 @@ class WorkspaceEditCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean metadataSupport
 
 	new() {
@@ -404,7 +404,7 @@ class WorkspaceClientCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	FoldingRangeWorkspaceCapabilities foldingRange
 
 	/**
@@ -412,7 +412,7 @@ class WorkspaceClientCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	TextDocumentContentCapabilities textDocumentContent
 
 	new() {
@@ -463,7 +463,7 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class FiltersCapabilities {
 	/**
@@ -701,7 +701,7 @@ class CompletionListCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean applyKindSupport
 
 	new() {
@@ -1049,7 +1049,7 @@ class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean rangesSupport
 
 	new() {
@@ -1244,7 +1244,7 @@ class CodeActionResolveSupportCapabilities {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class CodeActionTagSupportCapabilities {
 	/**
@@ -1320,7 +1320,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean documentationSupport
 
 	/**
@@ -1329,7 +1329,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	CodeActionTagSupportCapabilities tagSupport
 
 	new() {
@@ -1356,7 +1356,7 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class CodeLensResolveSupportCapabilities {
 	/**
@@ -1386,7 +1386,7 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	CodeLensResolveSupportCapabilities resolveSupport
 
 	new() {
@@ -1722,7 +1722,7 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class FoldingRangeWorkspaceCapabilities {
 	/**
@@ -2245,7 +2245,7 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	FiltersCapabilities filters
 
 	/**
@@ -2430,7 +2430,7 @@ class TextDocumentClientCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	InlineCompletionCapabilities inlineCompletion
 
 	new() {
@@ -2678,7 +2678,7 @@ final class CodeActionKind {
 	 * </ul>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	public static val RefactorMove = 'refactor.move'
 
 	/**
@@ -2723,7 +2723,7 @@ final class CodeActionKind {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	public static val Notebook = 'notebook'
 
 	private new() {}
@@ -2812,7 +2812,7 @@ class CodeAction {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	List<CodeActionTag> tags
 
 	new() {
@@ -2986,7 +2986,7 @@ class CodeLens {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class CodeActionKindDocumentation {
 	/**
@@ -3046,7 +3046,7 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	List<CodeActionKindDocumentation> documentation
 
 	/**
@@ -3150,7 +3150,7 @@ class Command {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	String tooltip
 
 	/**
@@ -3483,7 +3483,7 @@ class CompletionItemDefaults {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class CompletionApplyKind {
 	/**
@@ -3583,7 +3583,7 @@ class CompletionList {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	CompletionApplyKind applyKind
 
 	new() {
@@ -4498,7 +4498,7 @@ class DocumentRangeFormattingParams implements WorkDoneProgressParams {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class DocumentRangesFormattingParams implements WorkDoneProgressParams {
 	/**
@@ -4545,7 +4545,7 @@ class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean rangesSupport
 }
 
@@ -4559,7 +4559,7 @@ class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentReg
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean rangesSupport
 }
 
@@ -6088,7 +6088,7 @@ final class SemanticTokenTypes {
 	/**
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	public static val Label = 'label'
 
 	private new() {
@@ -6474,7 +6474,7 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
@@ -6482,7 +6482,7 @@ class ServerCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	TextDocumentServerCapabilities textDocument
 
 	/**
@@ -6516,7 +6516,7 @@ class WorkspaceServerCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	TextDocumentContentRegistrationOptions textDocumentContent
 
 	new() {
@@ -6532,7 +6532,7 @@ class WorkspaceServerCapabilities {
  * <p>
  * Since 3.18.0.
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class TextDocumentServerCapabilities {
 
@@ -8339,7 +8339,7 @@ class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class WorkspaceEditMetadata {
 	/**
@@ -8374,7 +8374,7 @@ class ApplyWorkspaceEditParams {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	WorkspaceEditMetadata metadata
 
 	new() {
@@ -10469,7 +10469,7 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	Boolean markupMessageSupport
 
 	new() {
@@ -10490,7 +10490,7 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.18.0.
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class DiagnosticServerCapabilities {
 
@@ -11657,7 +11657,7 @@ class NotebookDocumentIdentifier {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 final class StringValueKind {
 	/**
 	 * Indicates a snippet {@link StringValue}.
@@ -11679,7 +11679,7 @@ final class StringValueKind {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class StringValue {
 	/**
@@ -11710,7 +11710,7 @@ class StringValue {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -11726,7 +11726,7 @@ class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -11748,7 +11748,7 @@ class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrati
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	/**
@@ -11773,7 +11773,7 @@ class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressPara
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class InlineCompletionContext {
 	/**
@@ -11816,7 +11816,7 @@ class InlineCompletionContext {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class SelectedCompletionInfo {
 	/**
@@ -11846,7 +11846,7 @@ class SelectedCompletionInfo {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class InlineCompletionList {
 	/**
@@ -11869,7 +11869,7 @@ class InlineCompletionList {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class InlineCompletionItem {
 	/**
@@ -11917,7 +11917,7 @@ class InlineCompletionItem {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class SnippetTextEdit {
 
@@ -11957,7 +11957,7 @@ class SnippetTextEdit {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -11973,7 +11973,7 @@ class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class TextDocumentContentRegistrationOptions {
 	/**
@@ -11999,7 +11999,7 @@ class TextDocumentContentRegistrationOptions {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class TextDocumentContentParams {
 	/**
@@ -12021,7 +12021,7 @@ class TextDocumentContentParams {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class TextDocumentContentResult {
 	/**
@@ -12046,7 +12046,7 @@ class TextDocumentContentResult {
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 @JsonRpcData
 class TextDocumentContentRefreshParams {
 	/**

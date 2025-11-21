@@ -30,7 +30,7 @@ import org.eclipse.lsp4j.TextDocumentContentRefreshParams;
 import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkDoneProgressCreateParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
-import org.eclipse.lsp4j.jsonrpc.Draft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
@@ -263,7 +263,7 @@ public interface LanguageClient {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	@JsonRequest("workspace/foldingRange/refresh")
 	default CompletableFuture<Void> refreshFoldingRanges() {
 		throw new UnsupportedOperationException();
@@ -275,7 +275,7 @@ public interface LanguageClient {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	@JsonRequest("workspace/textDocumentContent/refresh")
 	default CompletableFuture<Void> refreshTextDocumentContent(TextDocumentContentRefreshParams params) {
 		throw new UnsupportedOperationException();
