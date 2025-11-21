@@ -18,10 +18,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An API using this annotation is part of an upcomming Language Server Protocol Specification and
- * in a draft state. Therefore it is subject to incompatible changes (including even removal)
- * in a future release.
- *
+ * An API using this annotation is part of an upcoming Protocol Specification and in a draft state.
+ * Therefore it is subject to incompatible changes (including even removal) in a future release.
  */
 @Retention(RetentionPolicy.CLASS)
 @Target({
@@ -31,4 +29,4 @@ ElementType.METHOD,
 ElementType.TYPE
 })
 @Documented
-public @interface Draft {}
+public @interface ProtocolDraft {}

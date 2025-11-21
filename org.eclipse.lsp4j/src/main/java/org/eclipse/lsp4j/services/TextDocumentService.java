@@ -101,7 +101,7 @@ import org.eclipse.lsp4j.adapters.InlineValueResponseAdapter;
 import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.adapters.SemanticTokensFullDeltaResponseAdapter;
-import org.eclipse.lsp4j.jsonrpc.Draft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
@@ -331,7 +331,7 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> rangesFormatting(DocumentRangesFormattingParams params) {
 		throw new UnsupportedOperationException();
@@ -729,7 +729,7 @@ public interface TextDocumentService {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	@JsonRequest
 	default CompletableFuture<Either<List<InlineCompletionItem>, InlineCompletionList>> inlineCompletion(InlineCompletionParams params) {
 		throw new UnsupportedOperationException();

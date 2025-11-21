@@ -30,7 +30,7 @@ import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
-import org.eclipse.lsp4j.jsonrpc.Draft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
@@ -205,7 +205,7 @@ public interface WorkspaceService {
 	 * <p>
 	 * Since 3.18.0
 	 */
-	@Draft
+	@ProtocolDraft
 	@JsonRequest
 	default CompletableFuture<TextDocumentContentResult> textDocumentContent(TextDocumentContentParams params) {
 		throw new UnsupportedOperationException();

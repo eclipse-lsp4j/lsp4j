@@ -11,14 +11,14 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.jsonrpc.Draft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 
 /**
  * Defines how values from a set of defaults and an individual item will be merged.
  * <p>
  * Since 3.18.0
  */
-@Draft
+@ProtocolDraft
 public enum ApplyKind {
 	/**
 	 * The value from the individual item (if provided and not {@code null}) will be
