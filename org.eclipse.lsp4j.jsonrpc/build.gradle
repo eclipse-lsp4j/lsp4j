@@ -10,6 +10,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
+plugins {
+	id("me.champeau.jmh") version "0.7.3"
+}
+
 ext.title = 'LSP4J JSON-RPC'
 description = 'Generic JSON-RPC implementation'
 
@@ -21,3 +25,14 @@ dependencies {
 jar.bundle.bnd(
 	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
 )
+
+// Add, for example, -PjmhIncludes=StreamMessageProducerBenchmark, to command line
+// to only run that one benchmark
+def jmhIncludes = project.findProperty("jmhIncludes")
+
+jmh {
+	profilers = ['gc']
+	if (jmhIncludes != null) {
+		includes = [jmhIncludes]   // can be simple name or regex
+	}
+}

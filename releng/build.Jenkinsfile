@@ -40,7 +40,7 @@ pipeline {
                 -PignoreTestFailures=true \
                 --refresh-dependencies \
                 --continue \
-                clean build testOlderJavas signJar publish \
+                clean build jmhCompileGeneratedClasses testOlderJavas signJar publish \
                 "
         }
       }
