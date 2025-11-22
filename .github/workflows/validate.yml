@@ -51,7 +51,7 @@ jobs:
     steps:
 
     - name: Git Checkout
-      uses: actions/checkout@v5  # https://github.com/actions/checkout
+      uses: actions/checkout@v6  # https://github.com/actions/checkout
 
 
     - name: "Install: JDKs for building and testing"
