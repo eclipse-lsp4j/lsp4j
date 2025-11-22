@@ -65,7 +65,7 @@ jobs:
         cache: gradle
 
     - name: Build with Gradle 🏗️
-      run: ./gradlew build testOlderJavas
+      run: ./gradlew build testOlderJavas --warning-mode=all
 
     - name: Upload Test Results
       if: always()
