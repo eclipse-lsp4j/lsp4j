@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.debug.test;
 
-import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.concurrent.Future;
@@ -25,7 +24,7 @@ public class DSPDebugServer {
 
 	// This is a test for https://github.com/eclipse-lsp4j/lsp4j/issues/224
 	@Test
-	public void testDebugServerCanBeLaunched() throws IOException {
+	public void testDebugServerCanBeLaunched() {
 		TestDebugServer testDebugServer = new TestDebugServer();
 		Launcher<IDebugProtocolClient> launcher = DSPLauncher.createServerLauncher(testDebugServer,
 				new PipedInputStream(), new PipedOutputStream());

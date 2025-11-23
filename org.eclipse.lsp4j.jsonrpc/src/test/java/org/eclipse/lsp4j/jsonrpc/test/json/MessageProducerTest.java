@@ -67,9 +67,9 @@ public class MessageProducerTest {
 				}
 			};
 			MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
-			StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler);
-			messageProducer.listen(message -> {});
-			messageProducer.close();
+			try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
+				messageProducer.listen(message -> {});
+			}
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
@@ -83,9 +83,9 @@ public class MessageProducerTest {
 				}
 			};
 			MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
-			StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler);
-			messageProducer.listen(message -> {});
-			messageProducer.close();
+			try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
+				messageProducer.listen(message -> {});
+			}
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
@@ -99,9 +99,9 @@ public class MessageProducerTest {
 				}
 			};
 			MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
-			StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler);
-			messageProducer.listen(message -> {});
-			messageProducer.close();
+			try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
+				messageProducer.listen(message -> {});
+			}
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
@@ -116,9 +116,9 @@ public class MessageProducerTest {
 					}
 				};
 				MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
-				StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler);
-				messageProducer.listen(message -> {});
-				messageProducer.close();
+				try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
+					messageProducer.listen(message -> {});
+				}
 			}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 		} catch (ExecutionException e) {
 			throw e.getCause();
@@ -149,12 +149,11 @@ public class MessageProducerTest {
 			}
 
 			var jsonHandler = new MessageJsonHandler(Collections.emptyMap());
-			var producer = new TestProducer( new ByteArrayInputStream(inputStr.getBytes()), jsonHandler);
-			var received = new ArrayList<>();
-			producer.listen(received::add);
-			producer.close();
-
-			assertEquals("Both messages should be delivered", 2, received.size());
+			try (var producer = new TestProducer( new ByteArrayInputStream(inputStr.getBytes()), jsonHandler)) {
+				var received = new ArrayList<>();
+				producer.listen(received::add);
+				assertEquals("Both messages should be delivered", 2, received.size());
+			}
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 

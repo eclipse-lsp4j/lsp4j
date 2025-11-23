@@ -219,7 +219,6 @@ public class ExtendableConcurrentMessageProcessorTest {
 		
 		/**
 		 * Get the context for the current request
-		 * @return
 		 */
 		public MessageContext<T> getContext() {
 			return messageContext.get();

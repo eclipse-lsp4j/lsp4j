@@ -18,9 +18,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -46,7 +44,7 @@ public class DSPLauncherTest {
 	private static final long TIMEOUT = 2000;
 
 	@Test
-	public void testNotification() throws IOException {
+	public void testNotification() {
 		OutputEventArguments p = new OutputEventArguments();
 		p.setOutput("Hello World");
 
@@ -152,7 +150,7 @@ public class DSPLauncherTest {
 	}
 
 	@After
-	public void teardown() throws InterruptedException, ExecutionException {
+	public void teardown() throws InterruptedException {
 		clientListening.cancel(true);
 		serverListening.cancel(true);
 		Thread.sleep(10);

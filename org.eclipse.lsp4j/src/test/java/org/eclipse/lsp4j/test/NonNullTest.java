@@ -8,6 +8,7 @@ import org.junit.Test;
 
 public class NonNullTest {
 	
+	@SuppressWarnings("unused")
 	@Test
 	public void testCodeAction1() {
 		try {

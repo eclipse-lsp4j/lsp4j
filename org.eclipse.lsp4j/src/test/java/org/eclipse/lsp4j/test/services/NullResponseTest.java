@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
@@ -41,7 +40,7 @@ public class NullResponseTest implements LanguageServer {
 	private Object shutdownReturn;
 
 	@Test
-	public void testNullResponse() throws InterruptedException, ExecutionException {
+	public void testNullResponse() {
 		LogMessageAccumulator logMessages = new LogMessageAccumulator();
 		try {
 			logMessages.registerTo(GenericEndpoint.class);
