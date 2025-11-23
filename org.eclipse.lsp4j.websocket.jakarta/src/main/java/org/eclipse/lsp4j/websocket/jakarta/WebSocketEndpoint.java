@@ -18,6 +18,7 @@ import jakarta.websocket.EndpointConfig;
 import jakarta.websocket.Session;
 
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.jsonrpc.Launcher.Builder;
 
 /**
  * WebSocket endpoint implementation that connects to a JSON-RPC service.
@@ -37,8 +38,8 @@ public abstract class WebSocketEndpoint<T> extends Endpoint {
 
 	/**
 	 * Configure the JSON-RPC launcher. Implementations should set at least the
-	 * {@link Launcher.Builder#setLocalService(Object) local service} and the
-	 * {@link Launcher.Builder#setRemoteInterface(Class) remote interface}.
+	 * {@link Builder#setLocalService(Object) local service} and the
+	 * {@link Builder#setRemoteInterface(Class) remote interface}.
 	 */
 	protected abstract void configure(Launcher.Builder<T> builder);
 
