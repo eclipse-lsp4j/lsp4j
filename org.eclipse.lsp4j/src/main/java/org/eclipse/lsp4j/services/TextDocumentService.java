@@ -530,7 +530,8 @@ public interface TextDocumentService {
 	/**
 	 * The request is sent from the client to the server to resolve the supertypes for
 	 * a given type hierarchy item. Will return {@code null} if the server couldn't infer
-	 * a valid type from {@link TypeHierarchySupertypesParams#item}. The request doesn't define
+	 * a valid type from {@link TypeHierarchySupertypesParams#getItem()
+	 * TypeHierarchySupertypesParams.item}. The request doesn't define
 	 * its own client and server capabilities. It is only issued if a server registers for the
 	 * {@code textDocument/prepareTypeHierarchy} request.
 	 * <p>
@@ -544,7 +545,8 @@ public interface TextDocumentService {
 	/**
 	 * The request is sent from the client to the server to resolve the subtypes for
 	 * a given type hierarchy item. Will return {@code null} if the server couldn't infer
-	 * a valid type from {@link TypeHierarchySubtypesParams#item}. The request doesn't define
+	 * a valid type from {@link TypeHierarchySupertypesParams#getItem()
+	 * TypeHierarchySupertypesParams.item}. The request doesn't define
 	 * its own client and server capabilities. It is only issued if a server registers for the
 	 * {@code textDocument/prepareTypeHierarchy} request.
 	 * <p>
