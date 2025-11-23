@@ -50,28 +50,28 @@ tasks.withType(JavaCompile) {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-	group 'Build'
-	description 'Assembles a jar archive containing the sources.'
+	group = 'Build'
+	description = 'Assembles a jar archive containing the sources.'
 	archiveClassifier = 'sources'
 	from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	group 'Build'
-	description 'Assembles a jar archive containing the JavaDoc output.'
+	group = 'Build'
+	description = 'Assembles a jar archive containing the JavaDoc output.'
 	archiveClassifier = 'javadoc'
 	from javadoc.destinationDir
 }
 
-ext.signMethod = { jarfile -> 
+ext.signMethod = { jarfile ->
 	println "Signing $jarfile"
 	def SIGNING_SERVICE = 'https://cbi.eclipse.org/jarsigner/sign'
 	def STDOUT_FORMAT = '    %{size_upload} bytes uploaded, %{size_download} bytes downloaded (%{time_total} s)\\n'
 
-	ProcessBuilder curl_pb = new ProcessBuilder("curl", 
+	ProcessBuilder curl_pb = new ProcessBuilder("curl",
 		"--fail", "--silent", "--show-error", "--output",
 		"${jarfile}-signed", "--form", "file=@${jarfile}",
-		"--write-out", STDOUT_FORMAT, 
+		"--write-out", STDOUT_FORMAT,
 		SIGNING_SERVICE);
 	println String.join(" ", curl_pb.command());
 	curl_pb.directory(new File("${project.buildDir}"));
@@ -82,10 +82,10 @@ ext.signMethod = { jarfile ->
 	println curl_process.text
 
 	if (curl_process.exitValue() != 0) {
-		throw new GradleException("Failed to run curl"); 
+		throw new GradleException("Failed to run curl");
 	}
 
-	ProcessBuilder mv_pb = new ProcessBuilder("mv", 
+	ProcessBuilder mv_pb = new ProcessBuilder("mv",
 		"${jarfile}-signed", jarfile)
 	println String.join(" ", mv_pb.command());
 	mv_pb.directory(new File("${project.buildDir}"));
@@ -93,15 +93,20 @@ ext.signMethod = { jarfile ->
 	mv_process.waitFor()
 
 	if (curl_process.exitValue() != 0) {
-		throw new GradleException("Failed to run mv"); 
+		throw new GradleException("Failed to run mv");
 	}
 }
 
 task signJar(description: 'Sign JARs with Eclipse Signing Service', group: 'Build'){
-    doLast {
-		signMethod("${project.buildDir}/libs/${project.name}-${project.version}.jar")
-		signMethod("${project.buildDir}/libs/${project.name}-${project.version}-sources.jar")
-		signMethod("${project.buildDir}/libs/${project.name}-${project.version}-javadoc.jar")
+	def projectBase = "${project.buildDir}/libs/${project.name}-${project.version}"
+
+	// Declare inputs/outputs for config-cache friendliness
+	inputs.property('projectBase', projectBase)
+
+	doLast {
+		signMethod("${projectBase}.jar")
+		signMethod("${projectBase}-sources.jar")
+		signMethod("${projectBase}-javadoc.jar")
 	}
 }
 signJar.dependsOn jar, sourcesJar, javadocJar
