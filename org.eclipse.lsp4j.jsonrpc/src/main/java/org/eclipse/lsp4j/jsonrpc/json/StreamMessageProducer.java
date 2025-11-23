@@ -168,6 +168,8 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 					headers.charset = line.substring(charsetIndex + 8).trim();
 				break;
 			}
+			default:
+				// Other headers are ignored
 			}
 		}
 	}
