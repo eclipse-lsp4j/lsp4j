@@ -132,7 +132,7 @@ subprojects {
 			properties['org.eclipse.jdt.core.compiler.problem.pessimisticNullAnalysisForFreeTypeVariables']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.potentialNullReference']='warning'
-			properties['org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable']='warning'
+			properties['org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable']='ignore'
 			properties['org.eclipse.jdt.core.compiler.problem.rawTypeReference']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.redundantNullAnnotation']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.redundantNullCheck']='warning'
