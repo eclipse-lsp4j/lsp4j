@@ -57,8 +57,17 @@ subprojects {
 	}
 
 	eclipse {
+		// To re-create the properties in this list:
+		//   cat org.eclipse.lsp4j/.settings/org.eclipse.jdt.core.prefs | grep -v -E '^#' | grep -v -E 'eclipse.preferences.version' | sed "-es,^,\t\t\t\tproperties['," "-es,=,']='," "-es,$,'," > /tmp/f
+		// and place contents of /tmp/f here
 		jdt.file.withProperties { properties ->
-			properties['org.eclipse.jdt.core.compiler.release']='enabled'
+			properties['org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode']='enabled'
+			properties['org.eclipse.jdt.core.compiler.codegen.targetPlatform']='11'
+			properties['org.eclipse.jdt.core.compiler.codegen.unusedLocal']='preserve'
+			properties['org.eclipse.jdt.core.compiler.compliance']='11'
+			properties['org.eclipse.jdt.core.compiler.debug.lineNumber']='generate'
+			properties['org.eclipse.jdt.core.compiler.debug.localVariable']='generate'
+			properties['org.eclipse.jdt.core.compiler.debug.sourceFile']='generate'
 			properties['org.eclipse.jdt.core.compiler.doc.comment.support']='enabled'
 			properties['org.eclipse.jdt.core.compiler.problem.APILeak']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.annotatedTypeArgumentToUnannotated']='info'
@@ -170,6 +179,8 @@ subprojects {
 			properties['org.eclipse.jdt.core.compiler.problem.unusedTypeParameter']='ignore'
 			properties['org.eclipse.jdt.core.compiler.problem.unusedWarningToken']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast']='warning'
+			properties['org.eclipse.jdt.core.compiler.release']='enabled'
+			properties['org.eclipse.jdt.core.compiler.source']='11'
 		}
 	}
 }
