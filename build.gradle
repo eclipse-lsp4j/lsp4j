@@ -171,7 +171,7 @@ subprojects {
 			properties['org.eclipse.jdt.core.compiler.problem.unusedLabel']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.unusedLocal']='warning'
 			properties['org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation']='warning'
-			properties['org.eclipse.jdt.core.compiler.problem.unusedParameter']='warning'
+			properties['org.eclipse.jdt.core.compiler.problem.unusedParameter']='ignore'
 			properties['org.eclipse.jdt.core.compiler.problem.unusedParameterIncludeDocCommentReference']='enabled'
 			properties['org.eclipse.jdt.core.compiler.problem.unusedParameterWhenImplementingAbstract']='disabled'
 			properties['org.eclipse.jdt.core.compiler.problem.unusedParameterWhenOverridingConcrete']='disabled'
