@@ -24,7 +24,8 @@ public interface NotebookDocumentService {
 	/**
 	 * The open notification is sent from the client to the server when a notebook document
 	 * is opened. It is only sent by a client if the server requested the synchronization
-	 * mode {@code notebook} in its {@link ServerCapabilities#notebookDocumentSync} capability.
+	 * mode {@code notebook} in its {@link ServerCapabilities#getNotebookDocumentSync()
+	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
 	 * <p>
@@ -36,7 +37,8 @@ public interface NotebookDocumentService {
 	/**
 	 * The change notification is sent from the client to the server when a notebook document changes.
 	 * It is only sent by a client if the server requested the synchronization mode {@code notebook}
-	 * in its {@link ServerCapabilities#notebookDocumentSync} capability.
+	 * in its {@link ServerCapabilities#getNotebookDocumentSync()
+	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
 	 * <p>
@@ -48,7 +50,8 @@ public interface NotebookDocumentService {
 	/**
 	 * The save notification is sent from the client to the server when a notebook document is saved.
 	 * It is only sent by a client if the server requested the synchronization mode {@code notebook}
-	 * in its {@link ServerCapabilities#notebookDocumentSync} capability.
+	 * in its {@link ServerCapabilities#getNotebookDocumentSync()
+	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
 	 * <p>
@@ -60,7 +63,8 @@ public interface NotebookDocumentService {
 	/**
 	 * The close notification is sent from the client to the server when a notebook document is closed.
 	 * It is only sent by a client if the server requested the synchronization mode {@code notebook}
-	 * in its {@link ServerCapabilities#notebookDocumentSync} capability.
+	 * in its {@link ServerCapabilities#getNotebookDocumentSync()
+	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
 	 * <p>
