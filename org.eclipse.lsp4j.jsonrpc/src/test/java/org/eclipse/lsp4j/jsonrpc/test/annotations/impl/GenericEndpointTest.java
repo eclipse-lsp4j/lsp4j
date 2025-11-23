@@ -97,6 +97,7 @@ public class GenericEndpointTest {
 		Assert.assertEquals(2, foo.calls);
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testDelegateThrows() {
 		DelegateThrows delegateThrows = new DelegateThrows();
@@ -128,6 +129,7 @@ public class GenericEndpointTest {
 		Assert.assertEquals(1, bar.calls);
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testDuplicateNamesGeneratesError() {
 		DuplicateNames1 duplicateNames1 = new DuplicateNames1();
@@ -198,7 +200,7 @@ public class GenericEndpointTest {
 		
 			endpoint.notify("myNotification", params);
 
-			if (predicate != null) {
+			if (predicate != null && logMessages != null) {
 				logMessages.await(r -> Level.WARNING == r.getLevel() && predicate.test(r.getMessage()));
 			}
 		} finally {
@@ -250,7 +252,7 @@ public class GenericEndpointTest {
 
 			Assert.assertEquals(expectedString, endpoint.request("getStringValue", params).get());
 
-			if (predicate != null) {
+			if (predicate != null && logMessages != null) {
 				logMessages.await(r -> Level.WARNING == r.getLevel() && predicate.test(r.getMessage()));
 			}
 		} finally {
@@ -316,7 +318,7 @@ public class GenericEndpointTest {
 			});
 			endpoint.notify("myNotification", params);
 
-			if (predicate != null) {
+			if (predicate != null && logMessages != null) {
 				logMessages.await(r -> Level.WARNING == r.getLevel() && predicate.test(r.getMessage()));
 			}
 

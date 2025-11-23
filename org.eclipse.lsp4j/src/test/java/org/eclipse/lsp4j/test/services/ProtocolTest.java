@@ -86,8 +86,6 @@ public class ProtocolTest {
 	 * creates a proxy, delegating to a remote endpoint, forwarding to another remote endpoint, that delegates to an actual implementation.
 	 * @param intf
 	 * @param impl
-	 * @return
-	 * @throws IOException 
 	 */
 	public <T> T wrap(Class<T> intf, T impl) {
 		PipedInputStream in1 = new PipedInputStream();
