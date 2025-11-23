@@ -138,7 +138,7 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 		String message = error.getMessage() != null ? error.getMessage() : "An error occurred while processing an incoming message.";
 		LOG.log(Level.SEVERE, message, error);
 	}
-
+//fake edi
 	/**
 	 * Report that the stream was closed through an exception.
 	 */
