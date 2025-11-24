@@ -10460,9 +10460,30 @@ final class PositionEncodingKind {
 @JsonRpcData
 class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	/**
-	 * Whether the clients supports related documents for document diagnostic pulls.
+	 * Whether the client supports related documents for document diagnostic pulls.
 	 */
 	Boolean relatedDocumentSupport
+
+	/**
+	 * Whether the client accepts diagnostics with related information.
+	 */
+	Boolean relatedInformation
+
+	/**
+	 * Whether the client supports the {@link Diagnostic#tags} property.
+	 * Clients supporting tags have to handle unknown tags gracefully.
+	 */
+	DiagnosticsTagSupport tagSupport
+
+	/**
+	 * Whether the client supports the {@link Diagnostic#codeDescription} property.
+	 */
+	Boolean codeDescriptionSupport
+
+	/**
+	 * Whether the client supports the {@link Diagnostic#data} property.
+	 */
+	Boolean dataSupport
 
 	/**
 	 * Whether the client supports {@link MarkupContent} in diagnostic messages.
