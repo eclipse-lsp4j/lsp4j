@@ -42,7 +42,6 @@ public class StreamMessageConsumerBenchmark {
 	private StreamMessageConsumer consumer;
 	private RequestMessage message;
 
-	@SuppressWarnings("resource")
 	@Setup
 	public void setup() {
 		consumer = new StreamMessageConsumer(OutputStream.nullOutputStream(), new MessageJsonHandler(emptyMap()));

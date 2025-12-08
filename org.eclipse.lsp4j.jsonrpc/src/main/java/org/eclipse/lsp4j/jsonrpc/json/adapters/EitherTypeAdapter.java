@@ -211,14 +211,14 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Either<L, R> createLeft(L obj) throws IOException {
+	protected Either<L, R> createLeft(L obj) {
 		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
 			return (Either<L, R>) Either3.forLeft3(obj);
 		return Either.forLeft(obj);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Either<L, R> createRight(R obj) throws IOException {
+	protected Either<L, R> createRight(R obj) {
 		if (Either3.class.isAssignableFrom(typeToken.getRawType()))
 			return (Either<L, R>) Either3.forRight3((Either<?, ?>) obj);
 		return Either.forRight(obj);
@@ -275,7 +275,7 @@ public class EitherTypeAdapter<L, R> extends TypeAdapter<Either<L, R>> {
 			return this.adapter.read(in);
 		}
 
-		public T read(JsonElement element) throws IOException {
+		public T read(JsonElement element) {
 			return this.adapter.fromJsonTree(element);
 		}
 

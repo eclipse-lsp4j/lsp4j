@@ -11,8 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.adapters;
 
-import java.io.IOException;
-
 import org.eclipse.lsp4j.DocumentDiagnosticReport;
 import org.eclipse.lsp4j.RelatedFullDocumentDiagnosticReport;
 import org.eclipse.lsp4j.RelatedUnchangedDocumentDiagnosticReport;
@@ -37,13 +35,12 @@ public class DocumentDiagnosticReportTypeAdapter implements TypeAdapterFactory {
 				gson, ELEMENT_TYPE, leftChecker, rightChecker) {
 
 			@Override
-			protected DocumentDiagnosticReport createLeft(RelatedFullDocumentDiagnosticReport obj) throws IOException {
+			protected DocumentDiagnosticReport createLeft(RelatedFullDocumentDiagnosticReport obj) {
 				return new DocumentDiagnosticReport(obj);
 			}
 
 			@Override
-			protected DocumentDiagnosticReport createRight(RelatedUnchangedDocumentDiagnosticReport obj)
-					throws IOException {
+			protected DocumentDiagnosticReport createRight(RelatedUnchangedDocumentDiagnosticReport obj) {
 				return new DocumentDiagnosticReport(obj);
 			}
 		};
