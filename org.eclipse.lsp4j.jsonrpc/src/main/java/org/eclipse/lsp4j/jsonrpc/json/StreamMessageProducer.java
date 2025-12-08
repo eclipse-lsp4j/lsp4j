@@ -179,7 +179,7 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	 *
 	 * @return {@code true} if we should continue reading from the input stream, {@code false} if we should stop
 	 */
-	protected boolean handleMessage(InputStream input, Headers headers) throws IOException {
+	protected boolean handleMessage(InputStream input, Headers headers) {
 		if (callback == null)
 			callback = message -> LOG.log(Level.INFO, "Received message: " + message);
 

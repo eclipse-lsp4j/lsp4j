@@ -24,6 +24,11 @@ Breaking API changes:
     * Type of `Diagnostic.message` changed from `String` to `Either<String, MarkupContent>`
     * Type of `DocumentFilter.pattern` changed from `String` to `Either<String, RelativePattern>`
     * Type of `NotebookDocumentFilter.pattern` changed from `String` to `Either<String, RelativePattern>`
+ * Removed `throws IOException` from methods that do not need to throw it [#934](https://github.com/eclipse-lsp4j/lsp4j/issues/934)
+    * `EitherTypeAdapter.createLeft`
+    * `EitherTypeAdapter.createRight`
+    * `EitherTypeAdapter.EitherTypeArgument.read(JsonElement)`
+    * `StreamMessageProducer.handleMessage`
 
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 

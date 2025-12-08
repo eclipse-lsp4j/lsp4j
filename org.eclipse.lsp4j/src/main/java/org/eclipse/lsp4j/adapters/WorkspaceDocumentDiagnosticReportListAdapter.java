@@ -11,7 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.adapters;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.lsp4j.WorkspaceDocumentDiagnosticReport;
@@ -37,12 +36,12 @@ public class WorkspaceDocumentDiagnosticReportListAdapter implements TypeAdapter
 		final var rightChecker = new PropertyChecker("kind", "unchanged");
 		final var elementTypeAdapter = new EitherTypeAdapter<>(gson, ELEMENT_TYPE, leftChecker, rightChecker) {
 			@Override
-			protected WorkspaceDocumentDiagnosticReport createLeft(WorkspaceFullDocumentDiagnosticReport obj) throws IOException {
+			protected WorkspaceDocumentDiagnosticReport createLeft(WorkspaceFullDocumentDiagnosticReport obj) {
 				return new WorkspaceDocumentDiagnosticReport(obj);
 			}
 
 			@Override
-			protected WorkspaceDocumentDiagnosticReport createRight(WorkspaceUnchangedDocumentDiagnosticReport obj) throws IOException {
+			protected WorkspaceDocumentDiagnosticReport createRight(WorkspaceUnchangedDocumentDiagnosticReport obj) {
 				return new WorkspaceDocumentDiagnosticReport(obj);
 			}
 		};
