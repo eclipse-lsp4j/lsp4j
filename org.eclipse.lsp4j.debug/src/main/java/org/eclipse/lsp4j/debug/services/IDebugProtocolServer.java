@@ -82,6 +82,7 @@ import org.eclipse.lsp4j.debug.VariablesArguments;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.eclipse.lsp4j.debug.WriteMemoryArguments;
 import org.eclipse.lsp4j.debug.WriteMemoryResponse;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
 /**
@@ -687,9 +688,8 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * Clients should only call this request if the corresponding capability
 	 * {@link Capabilities#getSupportsWriteMemoryRequest} is true.
-	 * <p>
-	 * Since 1.48
 	 */
+	@ProtocolSince("1.48")
 	@JsonRequest
 	default CompletableFuture<WriteMemoryResponse> writeMemory(WriteMemoryArguments args) {
 		throw new UnsupportedOperationException();
@@ -708,9 +708,8 @@ public interface IDebugProtocolServer {
 
 	/**
 	 * Looks up information about a location reference previously returned by the debug adapter.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	@JsonRequest
 	default CompletableFuture<LocationsResponse> locations(LocationsArguments args) {
 		throw new UnsupportedOperationException();

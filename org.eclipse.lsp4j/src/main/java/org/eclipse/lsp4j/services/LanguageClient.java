@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkDoneProgressCreateParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
@@ -96,9 +97,8 @@ public interface LanguageClient {
 	/**
 	 * The show document request is sent from a server to a client to ask the
 	 * client to display a particular document in the user interface.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest("window/showDocument")
 	default CompletableFuture<ShowDocumentResult> showDocument(ShowDocumentParams params) {
 		throw new UnsupportedOperationException();
@@ -114,13 +114,12 @@ public interface LanguageClient {
 	/**
 	 * The {@code workspace/workspaceFolders} request is sent from the server to the client
 	 * to fetch the current open list of workspace folders.
-	 * <p>
-	 * Since 3.6.0
 	 * 
 	 * @return null in the response if only a single file is open in the tool,
 	 *         an empty array if a workspace is open but no folders are configured,
 	 *         the workspace folders otherwise.
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonRequest("workspace/workspaceFolders")
 	default CompletableFuture<List<WorkspaceFolder>> workspaceFolders() {
 		throw new UnsupportedOperationException();
@@ -132,9 +131,8 @@ public interface LanguageClient {
 	 * in one roundtrip. The order of the returned configuration settings correspond to the
 	 * order of the passed ConfigurationItems (e.g. the first item in the response is the
 	 * result for the first configuration item in the params).
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonRequest("workspace/configuration")
 	default CompletableFuture<List<Object>> configuration(ConfigurationParams configurationParams) {
 		throw new UnsupportedOperationException();
@@ -142,9 +140,8 @@ public interface LanguageClient {
 
 	/**
 	 * This request is sent from the server to the client to ask the client to create a work done progress.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	@JsonRequest("window/workDoneProgress/create")
 	default CompletableFuture<Void> createProgress(WorkDoneProgressCreateParams params) {
 		throw new UnsupportedOperationException();
@@ -155,9 +152,8 @@ public interface LanguageClient {
 	 * This mechanism can be used to report any kind of progress including work done progress
 	 * (usually used to report progress in the user interface using a progress bar)
 	 * and partial result progress to support streaming of results.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	@JsonNotification("$/progress")
 	default void notifyProgress(ProgressParams params) {
 		throw new UnsupportedOperationException();
@@ -171,9 +167,8 @@ public interface LanguageClient {
 	 * <p>
 	 * {@code $/logTrace} should be used for systematic trace reporting. For single debugging messages,
 	 * the server should send window/logMessage notifications.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonNotification("$/logTrace")
 	default void logTrace(LogTraceParams params) {
 		throw new UnsupportedOperationException();
@@ -187,9 +182,8 @@ public interface LanguageClient {
 	 * configuration change which requires a re-calculation of all semantic tokens.
 	 * Note that the client still has the freedom to delay the re-calculation of the semantic tokens
 	 * if for example an editor is currently not visible.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest("workspace/semanticTokens/refresh")
 	default CompletableFuture<Void> refreshSemanticTokens() {
 		throw new UnsupportedOperationException();
@@ -202,9 +196,8 @@ public interface LanguageClient {
 	 * This is useful if a server detects a configuration change which requires a re-calculation of
 	 * all code lenses. Note that the client still has the freedom to delay the re-calculation of
 	 * the code lenses if for example an editor is currently not visible.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest("workspace/codeLens/refresh")
 	default CompletableFuture<Void> refreshCodeLenses() {
 		throw new UnsupportedOperationException();
@@ -217,9 +210,8 @@ public interface LanguageClient {
 	 * This is useful if a server detects a configuration change which requires a re-calculation of
 	 * all inlay hints. Note that the client still has the freedom to delay the re-calculation of
 	 * the inlay hints if for example an editor is currently not visible.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest("workspace/inlayHint/refresh")
 	default CompletableFuture<Void> refreshInlayHints() {
 		throw new UnsupportedOperationException();
@@ -232,9 +224,8 @@ public interface LanguageClient {
 	 * This is useful if a server detects a configuration change which requires a re-calculation of
 	 * all inline values. Note that the client still has the freedom to delay the re-calculation of
 	 * the inline values if for example an editor is currently not visible.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest("workspace/inlineValue/refresh")
 	default CompletableFuture<Void> refreshInlineValues() {
 		throw new UnsupportedOperationException();
@@ -245,9 +236,8 @@ public interface LanguageClient {
 	 * Servers can use it to ask clients to refresh all needed document and workspace diagnostics.
 	 * This is useful if a server detects a project wide configuration change which requires a
 	 * re-calculation of all diagnostics.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest("workspace/diagnostic/refresh")
 	default CompletableFuture<Void> refreshDiagnostics() {
 		throw new UnsupportedOperationException();
@@ -260,10 +250,9 @@ public interface LanguageClient {
 	 * This is useful if a server detects a configuration change which requires a re-calculation of
 	 * all folding ranges. Note that the client still has the freedom to delay the re-calculation of
 	 * the folding ranges if, for example, an editor is currently not visible.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	@JsonRequest("workspace/foldingRange/refresh")
 	default CompletableFuture<Void> refreshFoldingRanges() {
 		throw new UnsupportedOperationException();
@@ -272,10 +261,9 @@ public interface LanguageClient {
 	/**
 	 * The {@code workspace/textDocumentContent/refresh} request is sent from the server to the client
 	 * to refresh the content of a specific text document.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	@JsonRequest("workspace/textDocumentContent/refresh")
 	default CompletableFuture<Void> refreshTextDocumentContent(TextDocumentContentRefreshParams params) {
 		throw new UnsupportedOperationException();

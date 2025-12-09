@@ -12,12 +12,13 @@
 
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * Completion item tags are extra annotations that tweak the rendering of a completion
  * item.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 public enum CompletionItemTag {
 
 	/**

@@ -13,17 +13,17 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 
 /**
  * Symbol tags are extra annotations that tweak the rendering of a symbol.
- * Since 3.16
  */
+@ProtocolSince("3.16.0")
 public enum SymbolTag {
 
 	/**
 	 * Render a symbol as obsolete, usually using a strike-out.
-	 * Since 3.16
 	 */
 	Deprecated(1),
 	

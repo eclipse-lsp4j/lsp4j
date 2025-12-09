@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.messages;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * A number indicating the error type that occurred.
  */
@@ -48,9 +50,8 @@ public enum ResponseErrorCode {
 	 * be defined between the start and end range. For backwards
 	 * compatibility the {@link #ServerNotInitialized} and the
 	 * {@link #UnknownErrorCode} are left in the range.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	jsonrpcReservedErrorRangeStart(-32099),
 
 	/**
@@ -64,17 +65,15 @@ public enum ResponseErrorCode {
 	/**
 	 * This is the end range of JSON RPC reserved error codes.
 	 * It doesn't denote a real error code.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	jsonrpcReservedErrorRangeEnd(-32000),
 
 	/**
 	 * This is the start range of LSP reserved error codes.
 	 * It doesn't denote a real error code.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	lspReservedErrorRangeStart(-32899),
 
 	/**
@@ -82,18 +81,16 @@ public enum ResponseErrorCode {
 	 * method name was known and the parameters were valid. The error
 	 * message should contain human readable information about why
 	 * the request failed.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	RequestFailed(-32803),
 
 	/**
 	 * The server cancelled the request. This error code should
 	 * only be used for requests that explicitly support being
 	 * server cancellable.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	ServerCancelled(-32802),
 
 	/**
@@ -117,9 +114,8 @@ public enum ResponseErrorCode {
 	/**
 	 * This is the end range of LSP reserved error codes.
 	 * It doesn't denote a real error code.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	lspReservedErrorRangeEnd(-32800);
 
 	private final int value;

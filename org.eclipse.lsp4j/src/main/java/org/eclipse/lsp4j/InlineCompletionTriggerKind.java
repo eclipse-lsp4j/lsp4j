@@ -12,13 +12,13 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 /**
  * Describes how an inline completion request was triggered.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 public enum InlineCompletionTriggerKind {
 	/**
 	 * Completion was triggered explicitly by a user gesture. Return multiple

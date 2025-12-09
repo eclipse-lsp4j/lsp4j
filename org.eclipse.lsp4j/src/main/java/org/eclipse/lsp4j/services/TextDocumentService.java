@@ -102,6 +102,7 @@ import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.adapters.SemanticTokensFullDeltaResponseAdapter;
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.messages.Either3;
@@ -162,9 +163,8 @@ public interface TextDocumentService {
 	 * the declaration location of a symbol at a given text document position.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.DeclarationRegistrationOptions}
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
 	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> declaration(DeclarationParams params) {
@@ -188,9 +188,8 @@ public interface TextDocumentService {
 	 * the type definition location of a symbol at a given text document position.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.TypeDefinitionRegistrationOptions}
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
 	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> typeDefinition(TypeDefinitionParams params) {
@@ -202,9 +201,8 @@ public interface TextDocumentService {
 	 * the implementation location of a symbol at a given text document position.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.ImplementationRegistrationOptions}
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonRequest
 	@ResponseJsonAdapter(LocationLinkListAdapter.class)
 	default CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> implementation(ImplementationParams params) {
@@ -273,9 +271,8 @@ public interface TextDocumentService {
 	/**
 	 * The request is sent from the client to the server to resolve additional information for a given code action. This is usually used to compute
 	 * the `edit` property of a code action to avoid its unnecessary computation during the `textDocument/codeAction` request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest(value="codeAction/resolve", useSegment = false)
 	default CompletableFuture<CodeAction> resolveCodeAction(CodeAction unresolved) {
 		throw new UnsupportedOperationException();
@@ -328,10 +325,9 @@ public interface TextDocumentService {
 	 * server to format multiple ranges at once in a document.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.DocumentRangeFormattingRegistrationOptions}
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> rangesFormatting(DocumentRangesFormattingParams params) {
 		throw new UnsupportedOperationException();
@@ -369,9 +365,8 @@ public interface TextDocumentService {
 	 * is used.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.LinkedEditingRangeRegistrationOptions}
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest
 	default CompletableFuture<LinkedEditingRanges> linkedEditingRange(LinkedEditingRangeParams params) {
 		throw new UnsupportedOperationException();
@@ -465,9 +460,8 @@ public interface TextDocumentService {
 	 * <li>Color boxes showing the actual color next to the reference
 	 * <li>Show a color picker when a color reference is edited
 	 * </ul>
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonRequest
 	default CompletableFuture<List<ColorInformation>> documentColor(DocumentColorParams params) {
 		throw new UnsupportedOperationException();
@@ -480,9 +474,8 @@ public interface TextDocumentService {
 	 * <li>modify a color reference.
 	 * <li>show in a color picker and let users pick one of the presentations
 	 * </ul>
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonRequest
 	default CompletableFuture<List<ColorPresentation>> colorPresentation(ColorPresentationParams params) {
 		throw new UnsupportedOperationException();
@@ -491,9 +484,8 @@ public interface TextDocumentService {
 	/**
 	 * The folding range request is sent from the client to the server to return all folding
 	 * ranges found in a given text document.
-	 * <p>
-	 * Since 3.10.0
 	 */
+	@ProtocolSince("3.10.0")
 	@JsonRequest
 	default CompletableFuture<List<FoldingRange>> foldingRange(FoldingRangeRequestParams params) {
 		throw new UnsupportedOperationException();
@@ -502,9 +494,8 @@ public interface TextDocumentService {
 	/**
 	 * The prepare rename request is sent from the client to the server to setup and test the validity of a rename
 	 * operation at a given location.
-	 * <p>
-	 * Since 3.12.0
 	 */
+	@ProtocolSince("3.12.0")
 	@JsonRequest
 	@ResponseJsonAdapter(PrepareRenameResponseAdapter.class)
 	default CompletableFuture<Either3<Range, PrepareRenameResult, PrepareRenameDefaultBehavior>> prepareRename(PrepareRenameParams params) {
@@ -519,9 +510,8 @@ public interface TextDocumentService {
 	 * <li>first a type hierarchy item is prepared for the given text document position.
 	 * <li>for a type hierarchy item the supertype or subtype type hierarchy items are resolved.
 	 * </ol>
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest
 	default CompletableFuture<List<TypeHierarchyItem>> prepareTypeHierarchy(TypeHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
@@ -534,9 +524,8 @@ public interface TextDocumentService {
 	 * TypeHierarchySupertypesParams.item}. The request doesn't define
 	 * its own client and server capabilities. It is only issued if a server registers for the
 	 * {@code textDocument/prepareTypeHierarchy} request.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest(value="typeHierarchy/supertypes", useSegment = false)
 	default CompletableFuture<List<TypeHierarchyItem>> typeHierarchySupertypes(TypeHierarchySupertypesParams params) {
 		throw new UnsupportedOperationException();
@@ -549,9 +538,8 @@ public interface TextDocumentService {
 	 * TypeHierarchySupertypesParams.item}. The request doesn't define
 	 * its own client and server capabilities. It is only issued if a server registers for the
 	 * {@code textDocument/prepareTypeHierarchy} request.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest(value="typeHierarchy/subtypes", useSegment = false)
 	default CompletableFuture<List<TypeHierarchyItem>> typeHierarchySubtypes(TypeHierarchySubtypesParams params) {
 		throw new UnsupportedOperationException();
@@ -561,9 +549,8 @@ public interface TextDocumentService {
 	 * Bootstraps call hierarchy by returning the item that is denoted by the given document
 	 * and position. This item will be used as entry into the call graph. Providers should
 	 * return null when there is no item at the given location.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest
 	default CompletableFuture<List<CallHierarchyItem>> prepareCallHierarchy(CallHierarchyPrepareParams params) {
 		throw new UnsupportedOperationException();
@@ -573,9 +560,8 @@ public interface TextDocumentService {
 	 * Provide all incoming calls for an item, e.g all callers for a method. In graph terms this describes directed
 	 * and annotated edges inside the call graph, e.g the given item is the starting node and the result is the nodes
 	 * that can be reached.
-	 * <p>
-	 * Since 3.16.0
 	*/
+	@ProtocolSince("3.16.0")
 	@JsonRequest(value="callHierarchy/incomingCalls", useSegment = false)
 	default CompletableFuture<List<CallHierarchyIncomingCall>> callHierarchyIncomingCalls(CallHierarchyIncomingCallsParams params) {
 		throw new UnsupportedOperationException();
@@ -585,9 +571,8 @@ public interface TextDocumentService {
 	* Provide all outgoing calls for an item, e.g call calls to functions, methods, or constructors from the given item. In
 	* graph terms this describes directed and annotated edges inside the call graph, e.g the given item is the starting
 	* node and the result is the nodes that can be reached.
-	* <p>
-	* Since 3.16.0
 	*/
+	@ProtocolSince("3.16.0")
 	@JsonRequest(value="callHierarchy/outgoingCalls", useSegment = false)
 	default CompletableFuture<List<CallHierarchyOutgoingCall>> callHierarchyOutgoingCalls(CallHierarchyOutgoingCallsParams params) {
 		throw new UnsupportedOperationException();
@@ -597,9 +582,8 @@ public interface TextDocumentService {
 	 * The {@code textDocument/selectionRange} request is sent from the client to the server to return
 	 * suggested selection ranges at an array of given positions. A selection range is a range around
 	 * the cursor position which the user might be interested in selecting.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	@JsonRequest
 	default CompletableFuture<List<SelectionRange>> selectionRange(SelectionRangeParams params) {
 		throw new UnsupportedOperationException();
@@ -608,9 +592,8 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/full} request is sent from the client to the server to return
 	 * the semantic tokens for a whole file.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest(value="textDocument/semanticTokens/full", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensFull(SemanticTokensParams params) {
 		throw new UnsupportedOperationException();
@@ -619,9 +602,8 @@ public interface TextDocumentService {
 	/**
 	 * The {@code textDocument/semanticTokens/full/delta} request is sent from the client to the server to return
 	 * the semantic tokens delta for a whole file.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest(value="textDocument/semanticTokens/full/delta", useSegment = false)
 	@ResponseJsonAdapter(SemanticTokensFullDeltaResponseAdapter.class)
 	default CompletableFuture<Either<SemanticTokens, SemanticTokensDelta>> semanticTokensFullDelta(SemanticTokensDeltaParams params) {
@@ -638,9 +620,8 @@ public interface TextDocumentService {
 	 * this case special. Please note that if a client also announces that it will send the
 	 * textDocument/semanticTokens/range server should implement this request as well to allow for flicker free
 	 * scrolling and semantic coloring of a minimap.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest(value="textDocument/semanticTokens/range", useSegment = false)
 	default CompletableFuture<SemanticTokens> semanticTokensRange(SemanticTokensRangeParams params) {
 		throw new UnsupportedOperationException();
@@ -656,9 +637,8 @@ public interface TextDocumentService {
 	 * The {@code textDocument/moniker} request is sent from the client to the server to get the symbol monikers for a given
 	 * text document position. An array of Moniker types is returned as response to indicate possible monikers at the given location.
 	 * If no monikers can be calculated, an empty array or null should be returned.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest
 	default CompletableFuture<List<Moniker>> moniker(MonikerParams params) {
 		throw new UnsupportedOperationException();
@@ -667,9 +647,8 @@ public interface TextDocumentService {
 	/**
 	 * The inlay hints request is sent from the client to the server to compute inlay hints for a given [text document, range]
 	 * tuple that may be rendered in the editor in place with other text.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest
 	default CompletableFuture<List<InlayHint>> inlayHint(InlayHintParams params) {
 		throw new UnsupportedOperationException();
@@ -679,9 +658,8 @@ public interface TextDocumentService {
 	 * The request is sent from the client to the server to resolve additional information for a given inlay hint.
 	 * This is usually used to compute the {@code tooltip}, {@code location} or {@code command} properties of an
 	 * inlay hint's label part to avoid its unnecessary computation during the {@code textDocument/inlayHint} request.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest(value="inlayHint/resolve", useSegment = false)
 	default CompletableFuture<InlayHint> resolveInlayHint(InlayHint unresolved) {
 		throw new UnsupportedOperationException();
@@ -690,9 +668,8 @@ public interface TextDocumentService {
 	/**
 	 * The inline value request is sent from the client to the server to compute inline values for a given text document
 	 * that may be rendered in the editor at the end of lines.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest
 	@ResponseJsonAdapter(InlineValueResponseAdapter.class)
 	default CompletableFuture<List<InlineValue>> inlineValue(InlineValueParams params) {
@@ -703,9 +680,8 @@ public interface TextDocumentService {
 	 * The text document diagnostic request is sent from the client to the server to ask the server to compute the diagnostics
 	 * for a given document. As with other pull requests the server is asked to compute the diagnostics for the currently
 	 * synced version of the document.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest
 	@ResponseJsonAdapter(DocumentDiagnosticReportTypeAdapter.class)
 	default CompletableFuture<DocumentDiagnosticReport> diagnostic(DocumentDiagnosticParams params) {
@@ -728,10 +704,9 @@ public interface TextDocumentService {
 	 * <p>
 	 * Clients may choose to send information about the user’s current completion selection via context if completions are visible at
 	 * the same time. In this case, returned inline completions should extend the text of the provided completion.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	@JsonRequest
 	default CompletableFuture<Either<List<InlineCompletionItem>, InlineCompletionList>> inlineCompletion(InlineCompletionParams params) {
 		throw new UnsupportedOperationException();

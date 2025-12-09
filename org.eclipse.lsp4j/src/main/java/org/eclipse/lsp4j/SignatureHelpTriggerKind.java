@@ -11,11 +11,12 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * How a signature help was triggered.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 public enum SignatureHelpTriggerKind {
 	
 	/**

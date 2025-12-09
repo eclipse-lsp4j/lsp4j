@@ -39,6 +39,7 @@ import org.eclipse.lsp4j.jsonrpc.util.Preconditions
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -70,9 +71,8 @@ class WorkspaceEditCapabilities {
 	 * support 'create', 'rename' and 'delete' files and folders.
 	 * <p>
 	 * See {@link ResourceOperationKind} for allowed values.
-	 * <p>
-	 * Since 3.13.0
 	 */
+	@ProtocolSince("3.13.0")
 	List<String> resourceOperations
 
 	/**
@@ -80,9 +80,8 @@ class WorkspaceEditCapabilities {
 	 * fails.
 	 * <p>
 	 * See {@link FailureHandlingKind} for allowed values.
-	 * <p>
-	 * Since 3.13.0
 	 */
+	@ProtocolSince("3.13.0")
 	String failureHandling
 
 	/**
@@ -91,33 +90,29 @@ class WorkspaceEditCapabilities {
 	 * <p>
 	 * If set to {@code true} the client will normalize line ending characters
 	 * in a workspace edit to the client specific new line character(s).
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean normalizesLineEndings
 
 	/**
 	 * Whether the client in general supports change annotations on text edits,
 	 * create file, rename file and delete file changes.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	WorkspaceEditChangeAnnotationSupportCapabilities changeAnnotationSupport
 
 	/**
 	 * Whether the client supports snippets as text edits.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean snippetEditSupport
 
 	/**
 	 * Whether the client supports {@link WorkspaceEditMetadata} in workspace edits.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean metadataSupport
 
 	new() {
@@ -126,9 +121,8 @@ class WorkspaceEditCapabilities {
 
 /**
  * The kind of resource operations supported by the client.
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 final class ResourceOperationKind {
 	/**
 	 * Supports creating new files and folders.
@@ -151,9 +145,8 @@ final class ResourceOperationKind {
 
 /**
  * The kind of failure handling supported by the client.
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 final class FailureHandlingKind {
 	/**
 	 * Applying the workspace change is simply aborted if one of the changes
@@ -206,9 +199,8 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
 	/**
 	 * Whether the client has support for relative patterns
 	 * or not.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Boolean relativePatternSupport
 
 	new() {
@@ -223,9 +215,8 @@ class DidChangeWatchedFilesCapabilities extends DynamicRegistrationCapabilities 
  * The client support partial workspace symbols. The client will send the
  * request {@code workspaceSymbol/resolve} to the server to resolve additional
  * properties.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceSymbolResolveSupportCapabilities {
 	/**
@@ -253,26 +244,23 @@ class WorkspaceSymbolResolveSupportCapabilities {
 class SymbolCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Specific capabilities for the {@link SymbolKind} in the {@code workspace/symbol} request.
-	 * <p>
-	 * Since 3.4.0
 	 */
+	@ProtocolSince("3.4.0")
 	SymbolKindCapabilities symbolKind
 
 	/**
 	 * The client supports tags on {@link SymbolInformation} and {@link WorkspaceSymbol}.
 	 * Clients supporting tags have to handle unknown tags gracefully.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	SymbolTagSupportCapabilities tagSupport
 
 	/**
 	 * The client supports partial workspace symbols. The client will send the
 	 * request {@code workspaceSymbol/resolve} to the server to resolve additional
 	 * properties.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	WorkspaceSymbolResolveSupportCapabilities resolveSupport
 
 	new() {
@@ -343,76 +331,66 @@ class WorkspaceClientCapabilities {
 
 	/**
 	 * The client has support for workspace folders.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	Boolean workspaceFolders
 
 	/**
 	 * The client supports `workspace/configuration` requests.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	Boolean configuration
 
 	/**
 	 * Capabilities specific to the semantic token requests scoped to the
 	 * workspace.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	SemanticTokensWorkspaceCapabilities semanticTokens
 
 	/**
 	 * Capabilities specific to the code lens requests scoped to the
 	 * workspace.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	CodeLensWorkspaceCapabilities codeLens
 
 	/**
 	 * The client has support for file requests/notifications.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	FileOperationsWorkspaceCapabilities fileOperations
 
 	/**
 	 * Client workspace capabilities specific to inlay hints.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	InlayHintWorkspaceCapabilities inlayHint
 
 	/**
 	 * Client workspace capabilities specific to inline values.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	InlineValueWorkspaceCapabilities inlineValue
 
 	/**
 	 * Client workspace capabilities specific to diagnostics.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	DiagnosticWorkspaceCapabilities diagnostics
 
 	/**
 	 * Client workspace capabilities specific to folding ranges.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	FoldingRangeWorkspaceCapabilities foldingRange
 
 	/**
 	 * Client capabilities for a text document content provider.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	TextDocumentContentCapabilities textDocumentContent
 
 	new() {
@@ -460,10 +438,9 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Defines which filters the client supports.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class FiltersCapabilities {
 	/**
@@ -492,9 +469,8 @@ class CompletionItemCapabilities {
 
 	/**
 	 * Client supports commit characters on a completion item.
-	 * <p>
-	 * Since 3.2.0
 	 */
+	@ProtocolSince("3.2.0")
 	Boolean commitCharactersSupport
 
 	/**
@@ -502,23 +478,20 @@ class CompletionItemCapabilities {
 	 * property. The order describes the preferred format of the client.
 	 * <p>
 	 * See {@link MarkupKind} for allowed values.
-	 * <p>
-	 * Since 3.3.0
 	 */
+	@ProtocolSince("3.3.0")
 	List<String> documentationFormat
 
 	/**
 	 * Client supports the deprecated property on a completion item.
-	 * <p>
-	 * Since 3.8.0
 	 */
+	@ProtocolSince("3.8.0")
 	Boolean deprecatedSupport
 
 	/**
 	 * Client supports the preselect property on a completion item.
-	 * <p>
-	 * Since 3.9.0
 	 */
+	@ProtocolSince("3.9.0")
 	Boolean preselectSupport
 
 	/**
@@ -526,42 +499,37 @@ class CompletionItemCapabilities {
 	 * tags have to handle unknown tags gracefully. Clients especially need to
 	 * preserve unknown tags when sending a completion item back to the server in
 	 * a resolve call.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	CompletionItemTagSupportCapabilities tagSupport
 
 	/**
 	 * Client support insert replace edit to control different behavior if a
 	 * completion item is inserted in the text or should replace text.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean insertReplaceSupport
 
 	/**
 	 * Indicates which properties a client can resolve lazily on a completion
 	 * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
 	 * and {@link CompletionItem#detail} could be resolved lazily.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	CompletionItemResolveSupportCapabilities resolveSupport
 
 	/**
 	 * The client supports the {@link CompletionItem#insertTextMode} property on
 	 * a completion item to override the whitespace handling mode
 	 * as defined by the client.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	CompletionItemInsertTextModeSupportCapabilities insertTextModeSupport
 
 	/**
 	 * The client has support for completion item label details (see also {@link CompletionItemLabelDetails}).
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Boolean labelDetailsSupport
 
 	new() {
@@ -577,9 +545,8 @@ class CompletionItemCapabilities {
  * tags have to handle unknown tags gracefully. Clients especially need to
  * preserve unknown tags when sending a completion item back to the server in
  * a resolve call.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class CompletionItemTagSupportCapabilities {
 	/**
@@ -601,9 +568,8 @@ class CompletionItemTagSupportCapabilities {
  * Indicates which properties a client can resolve lazily on a completion
  * item. Before version 3.16.0 only the predefined properties {@link CompletionItem#documentation}
  * and {@link CompletionItem#detail} could be resolved lazily.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CompletionItemResolveSupportCapabilities {
 	/**
@@ -625,9 +591,8 @@ class CompletionItemResolveSupportCapabilities {
  * The client supports the {@link CompletionItem#insertTextMode} property on
  * a completion item to override the whitespace handling mode
  * as defined by the client.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CompletionItemInsertTextModeSupportCapabilities {
 	@NonNull
@@ -645,9 +610,8 @@ class CompletionItemInsertTextModeSupportCapabilities {
 /**
  * The client supports the following {@link CompletionItemKind} specific
  * capabilities.
- * <p>
- * Since 3.4.0
  */
+@ProtocolSince("3.4.0")
 @JsonRpcData
 class CompletionItemKindCapabilities {
 	/**
@@ -673,9 +637,8 @@ class CompletionItemKindCapabilities {
 /**
  * The client supports the following {@link CompletionList} specific
  * capabilities.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class CompletionListCapabilities {
 	/**
@@ -698,10 +661,9 @@ class CompletionListCapabilities {
 	 * This means when clients add support for new/future fields in completion items
 	 * they MUST also support merge for them if those fields are defined in
 	 * {@link CompletionApplyKind}.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean applyKindSupport
 
 	new() {
@@ -726,33 +688,29 @@ class CompletionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports the following {@link CompletionItemKind} specific
 	 * capabilities.
-	 * <p>
-	 * Since 3.4.0
 	 */
+	@ProtocolSince("3.4.0")
 	CompletionItemKindCapabilities completionItemKind
 
 	/**
 	 * The client supports sending additional context information for a
 	 * `textDocument/completion` request.
-	 * <p>
-	 * Since 3.3.0
 	 */
+	@ProtocolSince("3.3.0")
 	Boolean contextSupport
 
 	/**
 	 * The client's default when the completion item doesn't provide a
 	 * {@link CompletionItem#insertTextMode} property.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	InsertTextMode insertTextMode
 
 	/**
 	 * The client supports the following {@link CompletionList} specific
 	 * capabilities.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	CompletionListCapabilities completionList
 
 	new() {
@@ -782,9 +740,8 @@ class HoverCapabilities extends DynamicRegistrationCapabilities {
 	 * The order describes the preferred format of the client.
 	 * <p>
 	 * See {@link MarkupKind} for allowed values.
-	 * <p>
-	 * Since 3.3.0
 	 */
+	@ProtocolSince("3.3.0")
 	List<String> contentFormat
 
 	new() {
@@ -810,23 +767,20 @@ class SignatureInformationCapabilities {
 	 * property. The order describes the preferred format of the client.
 	 * <p>
 	 * See {@link MarkupKind} for allowed values.
-	 * <p>
-	 * Since 3.3.0
 	 */
+	@ProtocolSince("3.3.0")
 	List<String> documentationFormat
 
 	/**
 	 * Client capabilities specific to parameter information.
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	ParameterInformationCapabilities parameterInformation
 
 	/**
 	 * The client supports the {@link SignatureInformation#activeParameter} property.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean activeParameterSupport
 
 	new() {
@@ -839,9 +793,8 @@ class SignatureInformationCapabilities {
 
 /**
  * Client capabilities specific to parameter information.
- * <p>
- * Since 3.14.0
  */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class ParameterInformationCapabilities {
 	/**
@@ -873,9 +826,8 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
 	 * The client supports to send additional context information for a
 	 * `textDocument/signatureHelp` request. A client that opts into
 	 * contextSupport will also support {@link SignatureHelpOptions#retriggerCharacters}.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Boolean contextSupport
 
 	new() {
@@ -919,9 +871,8 @@ class DocumentHighlightCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Specific capabilities for the {@link SymbolKind}.
- * <p>
- * Since 3.4.0
  */
+@ProtocolSince("3.4.0")
 @JsonRpcData
 class SymbolKindCapabilities {
 	/**
@@ -946,9 +897,8 @@ class SymbolKindCapabilities {
 
 /**
  * Specific capabilities for the {@link SymbolTag}.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SymbolTagSupportCapabilities {
 	/**
@@ -973,33 +923,29 @@ class SymbolTagSupportCapabilities {
 class DocumentSymbolCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Specific capabilities for the {@link SymbolKind}.
-	 * <p>
-	 * Since 3.4.0
 	 */
+	@ProtocolSince("3.4.0")
 	SymbolKindCapabilities symbolKind
 
 	/**
 	 * The client support hierarchical document symbols.
-	 * <p>
-	 * Since 3.10.0
 	 */
+	@ProtocolSince("3.10.0")
 	Boolean hierarchicalDocumentSymbolSupport
 
 	/**
 	 * The client supports tags on {@link SymbolInformation}. Tags are supported on
 	 * {@link DocumentSymbol} if {@link #hierarchicalDocumentSymbolSupport} is set to true.
 	 * Clients supporting tags have to handle unknown tags gracefully.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	SymbolTagSupportCapabilities tagSupport
 
 	/**
 	 * The client supports an additional label presented in the UI when
 	 * registering a document symbol provider.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean labelSupport
 
 	new() {
@@ -1046,10 +992,9 @@ class FormattingCapabilities extends DynamicRegistrationCapabilities {
 class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports formatting multiple ranges at once.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean rangesSupport
 
 	new() {
@@ -1075,9 +1020,8 @@ class OnTypeFormattingCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/definition`
- * <p>
- * Since 3.14.0
  */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class DefinitionCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -1100,9 +1044,8 @@ class DefinitionCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/declaration`
- * <p>
- * Since 3.14.0
  */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class DeclarationCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -1125,16 +1068,14 @@ class DeclarationCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/typeDefinition`
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports additional metadata in the form of definition links.
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	Boolean linkSupport
 
 	new() {
@@ -1152,16 +1093,14 @@ class TypeDefinitionCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the `textDocument/implementation`.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ImplementationCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * The client supports additional metadata in the form of definition links.
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	Boolean linkSupport
 
 	new() {
@@ -1218,9 +1157,8 @@ class CodeActionLiteralSupportCapabilities {
 /**
  * Whether the client supports resolving additional code action
  * properties via a separate `codeAction/resolve` request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CodeActionResolveSupportCapabilities {
 	/**
@@ -1241,10 +1179,9 @@ class CodeActionResolveSupportCapabilities {
 /**
  * Client supports the tag property on a code action. Clients
  * supporting tags have to handle unknown tags gracefully.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class CodeActionTagSupportCapabilities {
 	/**
@@ -1275,33 +1212,29 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * Whether code action supports the {@link CodeAction#isPreferred} property.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Boolean isPreferredSupport
 
 	/**
 	 * Whether code action supports the {@link CodeAction#disabled} property.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean disabledSupport
 
 	/**
 	 * Whether code action supports the {@link CodeAction#data} property which is
 	 * preserved between a `textDocument/codeAction` and a
 	 * `codeAction/resolve` request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean dataSupport
 
 	/**
 	 * Whether the client supports resolving additional code action
 	 * properties via a separate `codeAction/resolve` request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	CodeActionResolveSupportCapabilities resolveSupport
 
 	/**
@@ -1310,26 +1243,23 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * {@link CodeAction#edit} property by for example presenting
 	 * the workspace edit in the user interface and asking
 	 * for confirmation.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean honorsChangeAnnotations
 
 	/**
 	 * Whether the client supports documentation for a class of code actions.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean documentationSupport
 
 	/**
 	 * Client supports the tag property on a code action. Clients
 	 * supporting tags have to handle unknown tags gracefully.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	CodeActionTagSupportCapabilities tagSupport
 
 	new() {
@@ -1353,10 +1283,9 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Whether the client supports resolving additional code lens
  * properties via a separate {@code codeLens/resolve} request.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class CodeLensResolveSupportCapabilities {
 	/**
@@ -1383,10 +1312,9 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports resolving additional code lens
 	 * properties via a separate {@code codeLens/resolve} request.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	CodeLensResolveSupportCapabilities resolveSupport
 
 	new() {
@@ -1400,9 +1328,8 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the code lens requests scoped to the
  * workspace.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CodeLensWorkspaceCapabilities {
 	/**
@@ -1426,9 +1353,8 @@ class CodeLensWorkspaceCapabilities {
 
 /**
  * The client has support for file requests/notifications.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileOperationsWorkspaceCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -1472,9 +1398,8 @@ class FileOperationsWorkspaceCapabilities extends DynamicRegistrationCapabilitie
 class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports the {@link DocumentLink#tooltip} property.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Boolean tooltipSupport
 
 	new() {
@@ -1493,9 +1418,8 @@ class DocumentLinkCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the `textDocument/documentColor` and the
  * `textDocument/colorPresentation` request.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ColorProviderCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -1514,18 +1438,16 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Client supports testing for validity of rename operations
 	 * before execution.
-	 * <p>
-	 * Since 3.12.0
 	 */
+	@ProtocolSince("3.12.0")
 	Boolean prepareSupport
 
 	/**
 	 * Client supports the default behavior result ({@code &#123; defaultBehavior: boolean &#125;}).
 	 * <p>
 	 * The value indicates the default behavior used by the client.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	PrepareSupportDefaultBehavior prepareSupportDefaultBehavior
 
 	/**
@@ -1534,9 +1456,8 @@ class RenameCapabilities extends DynamicRegistrationCapabilities {
 	 * rename request's workspace edit by for example presenting
 	 * the workspace edit in the user interface and asking
 	 * for confirmation.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean honorsChangeAnnotations
 
 	new() {
@@ -1570,33 +1491,29 @@ class PublishDiagnosticsCapabilities {
 	 * added to the specification as {@link DiagnosticsTagSupport}. In order to
 	 * keep this implementation compatible with intermediate clients (including
 	 * vscode-language-client &lt; 6.0.0) we add an either type here.
-	 * <p>
-	 * Since 3.15
 	 */
+	@ProtocolSince("3.15.0")
 	Either<Boolean, DiagnosticsTagSupport> tagSupport
 
 	/**
 	 * Whether the client interprets the version property of the
 	 * `textDocument/publishDiagnostics` notification's parameter.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Boolean versionSupport
 
 	/**
 	 * Client supports a codeDescription property
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean codeDescriptionSupport
 
 	/**
 	 * Whether code action supports the {@link Diagnostic#data} property which is
 	 * preserved between a `textDocument/publishDiagnostics` and
 	 * `textDocument/codeAction` request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean dataSupport
 
 	new() {
@@ -1636,9 +1553,8 @@ class DiagnosticsTagSupport {
 
 /**
  * Specific options for the folding range kind.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class FoldingRangeKindSupportCapabilities {
 	/**
@@ -1661,9 +1577,8 @@ class FoldingRangeKindSupportCapabilities {
 
 /**
  * Specific options for the folding range.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class FoldingRangeSupportCapabilities {
 	/**
@@ -1682,9 +1597,8 @@ class FoldingRangeSupportCapabilities {
 
 /**
  * Capabilities specific to `textDocument/foldingRange` requests.
- * <p>
- * Since 3.10.0
  */
+@ProtocolSince("3.10.0")
 @JsonRpcData
 class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -1701,16 +1615,14 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * Specific options for the folding range kind.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	FoldingRangeKindSupportCapabilities foldingRangeKind
 
 	/**
 	 * Specific options for the folding range.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	FoldingRangeSupportCapabilities foldingRange
 
 	new() {
@@ -1719,10 +1631,9 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Client workspace capabilities specific to folding ranges.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class FoldingRangeWorkspaceCapabilities {
 	/**
@@ -1746,9 +1657,8 @@ class FoldingRangeWorkspaceCapabilities {
 
 /**
  * Capabilities specific to the {@code textDocument/prepareTypeHierarchy}.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -1761,9 +1671,8 @@ class TypeHierarchyCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Type hierarchy registration options.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class TypeHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -1782,9 +1691,8 @@ class TypeHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationA
 
 /**
  * Capabilities specific to the {@code textDocument/prepareCallHierarchy}.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -1795,16 +1703,12 @@ class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyOptions extends AbstractWorkDoneProgressOptions {
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -1823,9 +1727,8 @@ class CallHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationA
 
 /**
  * Capabilities specific to `textDocument/selectionRange` requests
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -1836,9 +1739,7 @@ class SelectionRangeCapabilities extends DynamicRegistrationCapabilities {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequestsFull {
 	/**
@@ -1855,9 +1756,7 @@ class SemanticTokensClientCapabilitiesRequestsFull {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensClientCapabilitiesRequests {
 	/**
@@ -1894,9 +1793,7 @@ class SemanticTokensClientCapabilitiesRequests {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -1931,15 +1828,11 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * Whether the client supports tokens that can overlap each other.
-	 * <p>
-	 * Since 3.16.0
 	 */
 	Boolean overlappingTokenSupport
 
 	/**
 	 * Whether the client supports tokens that can span multiple lines.
-	 * <p>
-	 * Since 3.16.0
 	 */
 	Boolean multilineTokenSupport
 
@@ -1948,9 +1841,8 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * semantic token request, e.g. supports returning
 	 * {@link ResponseErrorCode#ServerCancelled}.
 	 * If a server does, the client needs to retrigger the request.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Boolean serverCancelSupport
 
 	/**
@@ -1962,9 +1854,8 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 	 * <p>
 	 * If the value is omitted then the client behavior is not
 	 * specified.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Boolean augmentsSyntaxTokens
 
 	new() {
@@ -1992,9 +1883,8 @@ class SemanticTokensCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -2008,9 +1898,8 @@ class LinkedEditingRangeCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Capabilities specific to the semantic token requests scoped to the
  * workspace.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensWorkspaceCapabilities {
 	/**
@@ -2034,9 +1923,8 @@ class SemanticTokensWorkspaceCapabilities {
 
 /**
  * Capabilities specific to the {@code textDocument/moniker} request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class MonikerCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -2049,9 +1937,8 @@ class MonikerCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Show message request client capabilities
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class WindowShowMessageRequestCapabilities {
 	/**
@@ -2065,9 +1952,8 @@ class WindowShowMessageRequestCapabilities {
 
 /**
  * Client capabilities for the show document request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class ShowDocumentCapabilities {
 	/**
@@ -2086,9 +1972,8 @@ class ShowDocumentCapabilities {
 
 /**
  * Capabilities specific to the {@link MessageActionItem} type of show message request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class WindowShowMessageRequestActionItemCapabilities {
 	/**
@@ -2108,9 +1993,8 @@ class WindowShowMessageRequestActionItemCapabilities {
 
 /**
  * Client capabilities specific to regular expressions.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class RegularExpressionsCapabilities {
 	/**
@@ -2139,9 +2023,8 @@ class RegularExpressionsCapabilities {
 
 /**
  * Client capabilities specific to the used markdown parser.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class MarkdownCapabilities {
 	/**
@@ -2157,9 +2040,8 @@ class MarkdownCapabilities {
 
 	/**
 	 * A list of HTML tags that the client allows / supports in Markdown.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	List<String> allowedTags
 
 	new() {
@@ -2179,9 +2061,8 @@ class MarkdownCapabilities {
  * Client capability that signals how the client handles stale requests
  * (e.g. a request for which the client will not process the response
  * anymore since the information is outdated).
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class StaleRequestCapabilities {
 	/**
@@ -2209,9 +2090,8 @@ class StaleRequestCapabilities {
 /**
  * Whether the client in general supports change annotations on text edits,
  * create file, rename file and delete file changes.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class WorkspaceEditChangeAnnotationSupportCapabilities {
 	/**
@@ -2242,10 +2122,9 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Defines which filters the client supports.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	FiltersCapabilities filters
 
 	/**
@@ -2296,30 +2175,26 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to the {@code textDocument/declaration}
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	DeclarationCapabilities declaration
 
 	/**
 	 * Capabilities specific to the {@code textDocument/definition}
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	DefinitionCapabilities definition
 
 	/**
 	 * Capabilities specific to the {@code textDocument/typeDefinition}
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	TypeDefinitionCapabilities typeDefinition
 
 	/**
 	 * Capabilities specific to the {@code textDocument/implementation}
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	ImplementationCapabilities implementation
 
 	/**
@@ -2340,9 +2215,8 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to the {@code textDocument/documentColor} and the
 	 * {@code textDocument/colorPresentation} request.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	ColorProviderCapabilities colorProvider
 
 	/**
@@ -2357,80 +2231,69 @@ class TextDocumentClientCapabilities {
 
 	/**
 	 * Capabilities specific to {@code textDocument/foldingRange} requests.
-	 * <p>
-	 * Since 3.10.0
 	 */
+	@ProtocolSince("3.10.0")
 	FoldingRangeCapabilities foldingRange
 
 	/**
 	 * Capabilities specific to {@code textDocument/prepareTypeHierarchy}.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	TypeHierarchyCapabilities typeHierarchy
 
 	/**
 	 * Capabilities specific to {@code textDocument/prepareCallHierarchy}.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	CallHierarchyCapabilities callHierarchy
 
 	/**
 	 * Capabilities specific to `textDocument/selectionRange` requests
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	SelectionRangeCapabilities selectionRange
 
 	/**
 	 * Capabilities specific to {@code textDocument/semanticTokens}.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	SemanticTokensCapabilities semanticTokens
 
 	/**
 	 * Capabilities specific to the {@code textDocument/moniker} request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	MonikerCapabilities moniker
 
 	/**
 	 * Capabilities specific to the {@code textDocument/linkedEditingRange} request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	LinkedEditingRangeCapabilities linkedEditingRange
 
 	/**
 	 * Capabilities specific to the {@code textDocument/inlayHint} request.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	InlayHintCapabilities inlayHint
 
 	/**
 	 * Client capabilities specific to inline values.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	InlineValueCapabilities inlineValue
 
 	/**
 	 * Capabilities specific to the diagnostic pull model.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	DiagnosticCapabilities diagnostic
 
 	/**
 	 * Capabilities specific to the {@code textDocument/inlineCompletion} request.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	InlineCompletionCapabilities inlineCompletion
 
 	new() {
@@ -2439,9 +2302,8 @@ class TextDocumentClientCapabilities {
 
 /**
  * Capabilities specific to the notebook document support.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentClientCapabilities {
 	/**
@@ -2466,23 +2328,20 @@ class WindowClientCapabilities {
 	/**
 	 * Whether client supports handling progress notifications. If set servers are allowed to
 	 * report in `workDoneProgress` property in the request specific server capabilities.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Boolean workDoneProgress
 
 	/**
 	 * Capabilities specific to the showMessage request
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	WindowShowMessageRequestCapabilities showMessage
 
 	/**
 	 * Client capabilities for the show document request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	ShowDocumentCapabilities showDocument
 
 	new() {
@@ -2491,22 +2350,17 @@ class WindowClientCapabilities {
 
 /**
  * General client capabilities.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class GeneralClientCapabilities {
 	/**
 	 * Client capabilities specific to regular expressions.
-	 * <p>
-	 * Since 3.16.0
 	 */
 	RegularExpressionsCapabilities regularExpressions
 
 	/**
 	 * Client capabilities specific to the client's markdown parser.
-	 * <p>
-	 * Since 3.16.0
 	 */
 	MarkdownCapabilities markdown
 
@@ -2514,9 +2368,8 @@ class GeneralClientCapabilities {
 	 * Client capability that signals how the client handles stale requests
 	 * (e.g. a request for which the client will not process the response
 	 * anymore since the information is outdated).
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	StaleRequestCapabilities staleRequestSupport
 
 	/**
@@ -2538,9 +2391,8 @@ class GeneralClientCapabilities {
 	 * side.
 	 * <p>
 	 * See {@link PositionEncodingKind} for some predefined position encoding kinds.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	List<String> positionEncodings
 
 	new() {
@@ -2574,9 +2426,8 @@ class ClientCapabilities {
 
 	/**
 	 * Capabilities specific to the notebook document support.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	NotebookDocumentClientCapabilities notebookDocument
 
 	/**
@@ -2586,9 +2437,8 @@ class ClientCapabilities {
 
 	/**
 	 * General client capabilities.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	GeneralClientCapabilities general
 
 	/**
@@ -2676,9 +2526,9 @@ final class CodeActionKind {
 	 * <li>Move method to base class
 	 * <li>...
 	 * </ul>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	public static val RefactorMove = 'refactor.move'
 
 	/**
@@ -2720,10 +2570,9 @@ final class CodeActionKind {
 	/**
 	 * Base kind for all code actions applying to the entire notebook's scope.
 	 * Code action kinds using this should always begin with "notebook."
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	public static val Notebook = 'notebook'
 
 	private new() {}
@@ -2764,9 +2613,8 @@ class CodeAction {
 	 * <p>
 	 * A quick fix should be marked preferred if it properly addresses the underlying error.
 	 * A refactoring should be marked preferred if it is the most reasonable choice of actions to take.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Boolean isPreferred
 
 	/**
@@ -2781,9 +2629,9 @@ class CodeAction {
 	 * <li>If the user has a <a href="https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions">keybinding</a>
 	 * that auto applies a code action and only a disabled code actions are returned, the client should show the user an
 	 * error message with {@link CodeActionDisabled#reason} in the editor.
-	 * </ul><p>
-	 * Since 3.16.0
+	 * </ul>
 	 */
+	@ProtocolSince("3.16.0")
 	CodeActionDisabled disabled
 
 	/**
@@ -2801,18 +2649,16 @@ class CodeAction {
 	/**
 	 * A data entry field that is preserved on a code action between
 	 * a `textDocument/codeAction` and a `codeAction/resolve` request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 
 	/**
 	 * Tags for this code action.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	List<CodeActionTag> tags
 
 	new() {
@@ -2835,9 +2681,9 @@ class CodeAction {
  * <li>If the user has a <a href="https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions">keybinding</a>
  * that auto applies a code action and only a disabled code actions are returned, the client should show the user an
  * error message with {@link #reason} in the editor.
- * </ul><p>
- * Since 3.16.0
+ * </ul>
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CodeActionDisabled {
 	/**
@@ -2889,9 +2735,8 @@ class CodeActionContext {
 
 	/**
 	 * The reason why code actions were requested.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	CodeActionTriggerKind triggerKind
 
 	new() {
@@ -2983,10 +2828,9 @@ class CodeLens {
 
 /**
  * Documentation for a class of code actions.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class CodeActionKindDocumentation {
 	/**
@@ -3021,9 +2865,8 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * The list of kinds may be generic, such as {@link CodeActionKind#Refactor}, or the server
 	 * may list out every specific kind they provide.
-	 * <p>
-	 * Since 3.11.0
 	 */
+	@ProtocolSince("3.11.0")
 	List<String> codeActionKinds
 
 	/**
@@ -3043,18 +2886,16 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * <li>Any code actions of {@code kind} are returned by the provider.
 	 * </ul>
 	 * At most one documentation entry should be shown per provider.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	List<CodeActionKindDocumentation> documentation
 
 	/**
 	 * The server provides support to resolve additional
 	 * information for a code action.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean resolveProvider
 
 	new() {
@@ -3075,17 +2916,15 @@ class CodeActionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	 * <p>
 	 * The list of kinds may be generic, such as {@link CodeActionKind#Refactor}, or the server
 	 * may list out every specific kind they provide.
-	 * <p>
-	 * Since 3.11.0
 	 */
+	@ProtocolSince("3.11.0")
 	List<String> codeActionKinds
 
 	/**
 	 * The server provides support to resolve additional
 	 * information for a code action.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Boolean resolveProvider
 
 	new() {
@@ -3147,10 +2986,9 @@ class Command {
 
 	/**
 	 * An optional tooltip.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	String tooltip
 
 	/**
@@ -3180,9 +3018,8 @@ class Command {
 
 /**
  * Additional details for a completion item label.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class CompletionItemLabelDetails {
 	/**
@@ -3221,9 +3058,8 @@ class CompletionItem {
 
 	/**
 	 * Additional details for the label
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	CompletionItemLabelDetails labelDetails
 
 	/**
@@ -3233,9 +3069,8 @@ class CompletionItem {
 
 	/**
 	 * Tags for this completion item.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	List<CompletionItemTag> tags
 
 	/**
@@ -3251,10 +3086,9 @@ class CompletionItem {
 	/**
 	 * Indicates if this item is deprecated.
 	 * <p>
-	 * Since 3.8.0
-	 * <p>
 	 * Deprecated in LSP: Use {@link #tags} instead if supported.
 	 */
+	@ProtocolSince("3.8.0")
 	@ProtocolDeprecated
 	Boolean deprecated
 
@@ -3264,9 +3098,8 @@ class CompletionItem {
 	 * <em>Note</em> that only one completion item can be selected and that the
 	 * tool / client decides which item that is. The rule is that the <em>first</em>
 	 * item of those that match best is selected.
-	 * <p>
-	 * Since 3.9.0
 	 */
+	@ProtocolSince("3.9.0")
 	Boolean preselect
 
 	/**
@@ -3300,9 +3133,8 @@ class CompletionItem {
 	 * How whitespace and indentation is handled during completion item
 	 * insertion. If not provided, the client's default value depends on
 	 * the {@link CompletionCapabilities#insertTextMode} client capability.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	InsertTextMode insertTextMode
 
 	/**
@@ -3342,9 +3174,8 @@ class CompletionItem {
 	 * <p>
 	 * If not provided and a list's default range is provided the label
 	 * property is used as a text.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	String textEditText
 
 	/**
@@ -3362,9 +3193,8 @@ class CompletionItem {
 	 * An optional set of characters that when pressed while this completion is active will accept it first and
 	 * then type that character. <em>Note</em> that all commit characters should have {@code length=1} and that superfluous
 	 * characters will be ignored.
-	 * <p>
-	 * Since 3.2.0
 	 */
+	@ProtocolSince("3.2.0")
 	List<String> commitCharacters
 
 	/**
@@ -3388,9 +3218,7 @@ class CompletionItem {
 	}
 }
 
-/**
- * Since 3.17.0
- */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InsertReplaceRange {
 	/**
@@ -3428,9 +3256,8 @@ class InsertReplaceRange {
  * Servers are only allowed to return default values if the client
  * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
  * capability.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class CompletionItemDefaults {
 	/**
@@ -3480,10 +3307,9 @@ class CompletionItemDefaults {
  * Servers are only allowed to return {@link CompletionList#applyKind} if the client
  * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
  * capability.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class CompletionApplyKind {
 	/**
@@ -3559,9 +3385,8 @@ class CompletionList {
 	 * Servers are only allowed to return default values if the client
 	 * signals support for this via the {@link CompletionListCapabilities#itemDefaults}
 	 * capability.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	CompletionItemDefaults itemDefaults
 
 	/**
@@ -3580,10 +3405,9 @@ class CompletionList {
 	 * Servers are only allowed to return {@link CompletionList#applyKind} if the client
 	 * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
 	 * capability.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	CompletionApplyKind applyKind
 
 	new() {
@@ -3629,16 +3453,14 @@ class CompletionOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * If a server provides both {@code allCommitCharacters} and commit characters on
 	 * an individual completion item the ones on the completion item win.
-	 * <p>
-	 * Since 3.2.0
 	 */
+	@ProtocolSince("3.2.0")
 	List<String> allCommitCharacters
 
 	/**
 	 * The server supports the following {@link CompletionItem} specific capabilities.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	CompletionItemOptions completionItem
 
 	new() {
@@ -3652,9 +3474,8 @@ class CompletionOptions extends AbstractWorkDoneProgressOptions {
 
 /**
  * The server supports the following {@link CompletionItem} specific capabilities.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class CompletionItemOptions {
 	/**
@@ -3695,9 +3516,8 @@ class Diagnostic {
 
 	/**
 	 * An optional property to describe the error code.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	DiagnosticCodeDescription codeDescription
 
 	/**
@@ -3718,25 +3538,22 @@ class Diagnostic {
 
 	/**
 	 * Additional metadata about the diagnostic.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	List<DiagnosticTag> tags
 
 	/**
 	 * An array of related diagnostic information, e.g. when symbol-names within a scope collide
 	 * all definitions can be marked via this property.
-	 * <p>
-	 * Since 3.7.0
 	 */
+	@ProtocolSince("3.7.0")
 	List<DiagnosticRelatedInformation> relatedInformation
 
 	/**
 	 * A data entry field that is preserved between a `textDocument/publishDiagnostics`
 	 * notification and `textDocument/codeAction` request.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 
@@ -3764,9 +3581,8 @@ class Diagnostic {
  * Represents a related message and source code location for a diagnostic. This should be
  * used to point to code locations that cause or related to a diagnostics, e.g when duplicating
  * a symbol in a scope.
- * <p>
- * Since 3.7.0
  */
+@ProtocolSince("3.7.0")
 @JsonRpcData
 class DiagnosticRelatedInformation {
 	/**
@@ -3792,9 +3608,8 @@ class DiagnosticRelatedInformation {
 
 /**
  * Structure to capture a description for an error code.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class DiagnosticCodeDescription {
 	/**
@@ -3948,9 +3763,8 @@ final class WatchKind {
  * A relative pattern is a helper to construct glob patterns that are matched
  * relatively to a base URI. The common value for a {@link #baseUri} is a workspace
  * folder root, but it can be another absolute URI as well.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class RelativePattern {
 	/**
@@ -4168,17 +3982,15 @@ class DocumentLink {
 	 * If a tooltip is provided, is will be displayed in a string that includes instructions on how to
 	 * trigger the link, such as `{0} (ctrl + click)`. The specific instructions vary depending on OS,
 	 * user settings, and localization.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	String tooltip
 
 	/**
 	 * A data entry field that is preserved on a document link between a
 	 * DocumentLinkRequest and a DocumentLinkResolveRequest.
-	 * <p>
-	 * Since 3.8.0
 	 */
+	@ProtocolSince("3.8.0")
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
 	Object data
 
@@ -4304,9 +4116,8 @@ class RenameOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressO
  * Document color options.
  * <p>
  * Referred to as {@code DocumentColorRegistrationOptions} in the LSP spec.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ColorProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -4327,9 +4138,8 @@ class ColorProviderOptions extends AbstractTextDocumentRegistrationAndWorkDonePr
  * Folding range options.
  * <p>
  * Referred to as {@code FoldingRangeRegistrationOptions} in the LSP spec.
- * <p>
- * Since 3.10.0
  */
+@ProtocolSince("3.10.0")
 @JsonRpcData
 class FoldingRangeProviderOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -4495,10 +4305,9 @@ class DocumentRangeFormattingParams implements WorkDoneProgressParams {
 /**
  * The document ranges formatting request is sent from the client to the server to format
  * multiple ranges at once in a document.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class DocumentRangesFormattingParams implements WorkDoneProgressParams {
 	/**
@@ -4542,10 +4351,9 @@ class DocumentRangesFormattingParams implements WorkDoneProgressParams {
 class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * Whether the server supports formatting multiple ranges at once.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean rangesSupport
 }
 
@@ -4556,10 +4364,9 @@ class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
 class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
 	 * Whether the server supports formatting multiple ranges at once.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean rangesSupport
 }
 
@@ -4567,9 +4374,8 @@ class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentReg
  * The type hierarchy request is sent from the client to the server to return a type hierarchy for
  * the language element of given text document positions. Will return {@code null} if the server
  * couldn't infer a valid type from the position.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class TypeHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	new() {
@@ -4586,9 +4392,8 @@ class TypeHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgress
  * a valid type from {@link #item}. The request doesn't define
  * its own client and server capabilities. It is only issued if a server registers for the
  * {@code textDocument/prepareTypeHierarchy} request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class TypeHierarchySupertypesParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -4611,9 +4416,8 @@ class TypeHierarchySupertypesParams extends WorkDoneProgressAndPartialResultPara
  * a valid type from {@link #item}. The request doesn't define
  * its own client and server capabilities. It is only issued if a server registers for the
  * {@code textDocument/prepareTypeHierarchy} request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class TypeHierarchySubtypesParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -4635,9 +4439,8 @@ class DocumentSymbolOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * A human-readable string that is shown when multiple outlines trees
 	 * are shown for the same document.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	String label
 
 	new() {
@@ -4653,9 +4456,8 @@ class DocumentSymbolRegistrationOptions extends AbstractTextDocumentRegistration
 	/**
 	 * A human-readable string that is shown when multiple outlines trees
 	 * are shown for the same document.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	String label
 
 	new() {
@@ -4785,9 +4587,8 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	/**
 	 * Trim trailing whitespace on a line.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	def boolean isTrimTrailingWhitespace() {
 		val value = getBoolean(TRIM_TRAILING_WHITESPACE)
 		if (value !== null)
@@ -4802,9 +4603,8 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	/**
 	 * Insert a newline character at the end of the file if one does not exist.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	def boolean isInsertFinalNewline() {
 		val value = getBoolean(INSERT_FINAL_NEWLINE)
 		if (value !== null)
@@ -4819,9 +4619,8 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
 
 	/**
 	 * Trim all newlines after the final newline at the end of the file.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	def boolean isTrimFinalNewlines() {
 		val value = getBoolean(TRIM_FINAL_NEWLINES)
 		if (value !== null)
@@ -4841,9 +4640,8 @@ class FormattingOptions extends LinkedHashMap<String, Either3<String, Number, Bo
  * <p>
  * Please note that {@code MarkupKind}s must not start with a {@code $}. These kinds
  * are reserved for internal usage.
- * <p>
- * Since 3.3.0
  */
+@ProtocolSince("3.3.0")
 final class MarkupKind {
 	/**
 	 * Plain text is supported as a content format.
@@ -4869,9 +4667,8 @@ final class MarkupKind {
  * <p>
  * Please Note that clients might sanitize the return markdown. A client could decide to
  * remove HTML from the markdown to avoid script execution.
- * <p>
- * Since 3.3.0
  */
+@ProtocolSince("3.3.0")
 @JsonRpcData
 class MarkupContent {
 	/**
@@ -4977,18 +4774,16 @@ class MarkedString {
 
 /**
  * The $/progress notification payload interface.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 interface WorkDoneProgressNotification {
 	def WorkDoneProgressKind getKind()
 }
 
 /**
  * The $/progress notification payload to start progress reporting.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class WorkDoneProgressBegin implements WorkDoneProgressNotification {
 
@@ -5037,9 +4832,8 @@ class WorkDoneProgressBegin implements WorkDoneProgressNotification {
 
 /**
  * The notification payload about progress reporting.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class WorkDoneProgressReport implements WorkDoneProgressNotification {
 
@@ -5082,9 +4876,8 @@ class WorkDoneProgressReport implements WorkDoneProgressNotification {
 /**
  * The notification payload about progress reporting.
  * Signaling the end of a progress reporting is done using the following payload:
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class WorkDoneProgressEnd implements WorkDoneProgressNotification {
 
@@ -5108,9 +4901,8 @@ class WorkDoneProgressEnd implements WorkDoneProgressNotification {
  * (usually used to report progress in the user interface using a progress bar)
  * and partial result progress to support streaming of results.
  * A progress notification has the following properties:
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class ProgressParams {
 	/**
@@ -5138,9 +4930,8 @@ class ProgressParams {
 
 /**
  * A parameter literal used to pass a work done progress token.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 interface WorkDoneProgressParams {
 	/**
 	 * An optional token that a server can use to report work done progress.
@@ -5155,9 +4946,8 @@ interface WorkDoneProgressParams {
 
 /**
  * Options to signal work done progress support in server capabilities.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 interface WorkDoneProgressOptions {
 
 	def Boolean getWorkDoneProgress()
@@ -5169,9 +4959,8 @@ interface WorkDoneProgressOptions {
 /**
  * Options to signal work done progress support in server capabilities.
  * It is not present in protocol specification, so it's just "dry" class.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 abstract class AbstractWorkDoneProgressOptions implements WorkDoneProgressOptions {
 	Boolean workDoneProgress
@@ -5180,9 +4969,8 @@ abstract class AbstractWorkDoneProgressOptions implements WorkDoneProgressOption
 /**
  * Options to signal work done progress support in server capabilities and TextDocumentRegistrationOptions.
  * It is not present in protocol specification, so it's just "dry" class.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 abstract class AbstractTextDocumentRegistrationAndWorkDoneProgressOptions extends TextDocumentRegistrationOptions implements WorkDoneProgressOptions {
 	Boolean workDoneProgress
@@ -5197,9 +4985,8 @@ abstract class AbstractTextDocumentRegistrationAndWorkDoneProgressOptions extend
 
 /**
  * A parameter literal used to pass a partial result token.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 interface PartialResultParams {
 	/**
 	 * An optional token that a server can use to report partial results (e.g. streaming) to
@@ -5217,9 +5004,8 @@ interface PartialResultParams {
 /**
  * Abstract class which implements work done progress and partial result request parameter.
  * It is not present in protocol specification, so it's just "dry" class.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 abstract class WorkDoneProgressAndPartialResultParams implements WorkDoneProgressParams, PartialResultParams {
 	/**
@@ -5237,9 +5023,8 @@ abstract class WorkDoneProgressAndPartialResultParams implements WorkDoneProgres
 /**
  * Abstract class which extends TextDocumentPosition and implements work done progress request parameter.
  * It is not present in protocol specification, so it's just "dry" class.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 abstract class TextDocumentPositionAndWorkDoneProgressParams extends TextDocumentPositionParams implements WorkDoneProgressParams {
 	/**
@@ -5258,9 +5043,8 @@ abstract class TextDocumentPositionAndWorkDoneProgressParams extends TextDocumen
 /**
  * Abstract class which extends TextDocumentPosition and implements work done progress and partial result request parameter.
  * It is not present in protocol specification, so it's just "dry" class.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 abstract class TextDocumentPositionAndWorkDoneProgressAndPartialResultParams extends TextDocumentPositionAndWorkDoneProgressParams implements PartialResultParams {
 	/**
@@ -5358,9 +5142,8 @@ class InitializeParams implements WorkDoneProgressParams {
 
 	/**
 	 * Information about the client
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	ClientInfo clientInfo
 
 	/**
@@ -5370,9 +5153,8 @@ class InitializeParams implements WorkDoneProgressParams {
 	 * <p>
 	 * Uses IETF language tags as the value's syntax
 	 * (See https://en.wikipedia.org/wiki/IETF_language_tag)
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	String locale
 
 	/**
@@ -5386,9 +5168,8 @@ class InitializeParams implements WorkDoneProgressParams {
 	 * This property is only available if the client supports workspace folders.
 	 * It can be `null` if the client supports workspace folders but none are
 	 * configured.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	List<WorkspaceFolder> workspaceFolders
 
 	new() {
@@ -5405,9 +5186,8 @@ class InitializeResult {
 
 	/**
 	 * Information about the server.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	ServerInfo serverInfo
 
 	new() {
@@ -5429,9 +5209,8 @@ class InitializedParams {
 
 /**
  * Information about the client
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class ClientInfo {
 	/**
@@ -5460,9 +5239,8 @@ class ClientInfo {
 
 /**
  * Information about the server.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class ServerInfo {
 	/**
@@ -5511,9 +5289,8 @@ class Location {
 
 /**
  * Represents a link between a source and a target location.
- * <p>
- * Since 3.14.0
  */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class LocationLink {
 	/**
@@ -5614,9 +5391,8 @@ class MessageParams {
  * A notification to log the trace of the server's execution. The amount and content of these notifications
  * depends on the current trace configuration. If trace is 'off', the server should not send any logTrace
  * notification. If trace is 'message', the server should not add the 'verbose' field.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class LogTraceParams {
 	/**
@@ -5662,9 +5438,8 @@ final class TraceValue {
 
 /**
  * A notification that should be used by the client to modify the trace setting of the server.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SetTraceParams {
 	/**
@@ -5766,9 +5541,8 @@ class PublishDiagnosticsParams {
 
 	/**
 	 * Optional the version number of the document the diagnostics are published for.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Integer version
 
 	new() {
@@ -5860,9 +5634,8 @@ class ReferenceParams extends TextDocumentPositionAndWorkDoneProgressAndPartialR
 /**
  * The prepare rename request is sent from the client to the server to setup and test the validity of a
  * rename operation at a given location.
- * <p>
- * Since 3.12.0
  */
+@ProtocolSince("3.12.0")
 @JsonRpcData
 class PrepareRenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	new() {
@@ -5876,9 +5649,8 @@ class PrepareRenameParams extends TextDocumentPositionAndWorkDoneProgressParams 
 /**
  * One of the result types of the `textDocument/prepareRename` request.
  * Provides the range of the string to rename and a placeholder text of the string content to be renamed.
- * <p>
- * Since 3.12.0
  */
+@ProtocolSince("3.12.0")
 @JsonRpcData
 class PrepareRenameResult {
 	/**
@@ -5905,9 +5677,8 @@ class PrepareRenameResult {
 /**
  * One of the result types of the `textDocument/prepareRename` request.
  * Indicates that the client should use its default behavior to compute the rename range.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class PrepareRenameDefaultBehavior {
 	/**
@@ -5947,9 +5718,8 @@ class RenameParams extends TextDocumentPositionAndWorkDoneProgressParams {
 /**
  * The linked editing range request is sent from the client to the server to return for a given position
  * in a document the range of the symbol at the position and all ranges that have the same content.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	new() {
@@ -5962,18 +5732,16 @@ class LinkedEditingRangeParams extends TextDocumentPositionAndWorkDoneProgressPa
 
 /**
  * Linked editing range options.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class LinkedEditingRangeOptions extends AbstractWorkDoneProgressOptions {
 }
 
 /**
  * Linked editing range registration options.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -5995,9 +5763,8 @@ class LinkedEditingRangeRegistrationOptions extends AbstractTextDocumentRegistra
  * at the given position and all ranges that have the same content.
  * <p>
  * Optionally a word pattern can be returned to describe valid contents.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class LinkedEditingRanges {
 	/**
@@ -6028,9 +5795,7 @@ class LinkedEditingRanges {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 final class SemanticTokenTypes {
 	public static val Namespace = 'namespace'
 
@@ -6080,24 +5845,18 @@ final class SemanticTokenTypes {
 
 	public static val Operator = 'operator'
 
-	/**
-	 * Since 3.17.0
-	 */
+	@ProtocolSince("3.17.0")
 	public static val Decorator = 'decorator'
 
-	/**
-	 * Since 3.18.0
-	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	public static val Label = 'label'
 
 	private new() {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 final class SemanticTokenModifiers {
 	public static val Declaration = 'declaration'
 
@@ -6123,9 +5882,7 @@ final class SemanticTokenModifiers {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 final class TokenFormat {
 	public static val Relative = 'relative'
 
@@ -6135,9 +5892,8 @@ final class TokenFormat {
 
 /**
  * The legend used by the server
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensLegend {
 	/**
@@ -6167,9 +5923,8 @@ class SemanticTokensLegend {
 
 /**
  * Server supports providing semantic tokens for a full document.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensServerFull {
 	/**
@@ -6185,9 +5940,7 @@ class SemanticTokensServerFull {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensWithRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -6265,9 +6018,8 @@ class ServerCapabilities {
 	 * If omitted it defaults to {@link PositionEncodingKind#UTF16}.
 	 * <p>
 	 * See {@link PositionEncodingKind} for some predefined position encoding kinds.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	String positionEncoding
 
 	/**
@@ -6279,9 +6031,8 @@ class ServerCapabilities {
 
 	/**
 	 * Defines how notebook documents are synced.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	NotebookDocumentSyncRegistrationOptions notebookDocumentSync
 
 	/**
@@ -6306,16 +6057,14 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides Goto Type Definition support.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	Either<Boolean, TypeDefinitionRegistrationOptions> typeDefinitionProvider
 
 	/**
 	 * The server provides Goto Implementation support.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	Either<Boolean, ImplementationRegistrationOptions> implementationProvider
 
 	/**
@@ -6377,23 +6126,20 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides color provider support.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	Either<Boolean, ColorProviderOptions> colorProvider
 
 	/**
 	 * The server provides folding provider support.
-	 * <p>
-	 * Since 3.10.0
 	 */
+	@ProtocolSince("3.10.0")
 	Either<Boolean, FoldingRangeProviderOptions> foldingRangeProvider
 
 	/**
 	 * The server provides go to declaration support.
-	 * <p>
-	 * Since 3.14.0
 	 */
+	@ProtocolSince("3.14.0")
 	Either<Boolean, DeclarationRegistrationOptions> declarationProvider
 
 	/**
@@ -6408,81 +6154,70 @@ class ServerCapabilities {
 
 	/**
 	 * The server provides Type Hierarchy support.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Either<Boolean, TypeHierarchyRegistrationOptions> typeHierarchyProvider
 
 	/**
 	 * The server provides Call Hierarchy support.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Either<Boolean, CallHierarchyRegistrationOptions> callHierarchyProvider
 
 	/**
 	 * The server provides selection range support.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	Either<Boolean, SelectionRangeRegistrationOptions> selectionRangeProvider
 
 	/**
 	 * The server provides linked editing range support.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Either<Boolean, LinkedEditingRangeRegistrationOptions> linkedEditingRangeProvider
 
 	/**
 	 * The server provides semantic tokens support.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	SemanticTokensWithRegistrationOptions semanticTokensProvider
 
 	/**
 	 * Whether server provides moniker support.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Either<Boolean, MonikerRegistrationOptions> monikerProvider
 
 	/**
 	 * The server provides inlay hints.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Either<Boolean, InlayHintRegistrationOptions> inlayHintProvider
 
 	/**
 	 * The server provides inline values.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Either<Boolean, InlineValueRegistrationOptions> inlineValueProvider
 
 	/**
 	 * The server has support for pull model diagnostics.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	DiagnosticRegistrationOptions diagnosticProvider
 
 	/**
 	 * The server provides inline completions.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
 	 * Text document specific server capabilities.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	TextDocumentServerCapabilities textDocument
 
 	/**
@@ -6499,24 +6234,21 @@ class ServerCapabilities {
 class WorkspaceServerCapabilities {
 	/**
 	 * The server supports workspace folder.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	WorkspaceFoldersOptions workspaceFolders
 
 	/**
 	 * The server is interested in file notifications/requests.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	FileOperationsServerCapabilities fileOperations
 
 	/**
 	 * Text document content provider options.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	TextDocumentContentRegistrationOptions textDocumentContent
 
 	new() {
@@ -6529,10 +6261,9 @@ class WorkspaceServerCapabilities {
 
 /**
  * Text document specific server capabilities.
- * <p>
- * Since 3.18.0.
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentServerCapabilities {
 
@@ -6573,9 +6304,8 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
 	/**
 	 * The signature help context. This is only available if the client specifies
 	 * to send this using the client capability {@link SignatureHelpCapabilities#contextSupport} as true.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	SignatureHelpContext context
 
 	new() {
@@ -6593,9 +6323,8 @@ class SignatureHelpParams extends TextDocumentPositionAndWorkDoneProgressParams 
 
 /**
  * The request is sent from the client to the server to resolve semantic tokens for a given whole file.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -6612,9 +6341,7 @@ class SemanticTokensParams extends WorkDoneProgressAndPartialResultParams {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokens {
 	/**
@@ -6645,9 +6372,7 @@ class SemanticTokens {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensPartialResult {
 	@NonNull
@@ -6663,9 +6388,8 @@ class SemanticTokensPartialResult {
 
 /**
  * The request is sent from the client to the server to resolve semantic token deltas for a given whole file.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -6690,9 +6414,7 @@ class SemanticTokensDeltaParams extends WorkDoneProgressAndPartialResultParams {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensEdit {
 	/**
@@ -6720,9 +6442,7 @@ class SemanticTokensEdit {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensDelta {
 	String resultId
@@ -6746,9 +6466,7 @@ class SemanticTokensDelta {
 	}
 }
 
-/**
- * Since 3.16.0
- */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensDeltaPartialResult {
 	@NonNull
@@ -6764,9 +6482,8 @@ class SemanticTokensDeltaPartialResult {
 
 /**
  * The request is sent from the client to the server to resolve semantic tokens for a range in a given file.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -6792,9 +6509,8 @@ class SemanticTokensRangeParams extends WorkDoneProgressAndPartialResultParams {
 
 /**
  * Additional information about the context in which a signature help request was triggered.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class SignatureHelpContext {
 	/**
@@ -6898,9 +6614,8 @@ class SignatureHelpOptions extends AbstractWorkDoneProgressOptions {
 	 * <p>
 	 * These trigger characters are only active when signature help is already showing. All trigger characters
 	 * are also counted as re-trigger characters.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	List<String> retriggerCharacters
 
 	new() {
@@ -6942,9 +6657,8 @@ class SignatureInformation {
 	 * The index of the active parameter.
 	 * <p>
 	 * If provided, this is used in place of {@link SignatureHelp#activeParameter}.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Integer activeParameter
 
 	new() {
@@ -6969,9 +6683,8 @@ class SignatureInformation {
 
 /**
  * Representation of an item that carries type information.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class TypeHierarchyItem {
 	/**
@@ -7043,9 +6756,8 @@ class TypeHierarchyItem {
  * Represents programming constructs like variables, classes, interfaces etc. that appear in a document. Document symbols can be
  * hierarchical and they have two ranges: one that encloses its definition and one that points to its most interesting range,
  * e.g. the range of an identifier.
- * <p>
- * Since 3.10.0
  */
+@ProtocolSince("3.10.0")
 @JsonRpcData
 class DocumentSymbol {
 	/**
@@ -7083,9 +6795,8 @@ class DocumentSymbol {
 
 	/**
 	 * Tags for this document symbol.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	List<SymbolTag> tags
 
 	/**
@@ -7150,19 +6861,17 @@ class SymbolInformation {
 
 	/**
 	 * Tags for this symbol.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@ProtocolDeprecated
 	List<SymbolTag> tags
 
 	/**
 	 * Indicates if this symbol is deprecated.
 	 * <p>
-	 * Since 3.8.0
-	 * <p>
 	 * Deprecated in LSP:  Use {@link #tags} instead if supported.
 	 */
+	@ProtocolSince("3.8.0")
 	@ProtocolDeprecated
 	Boolean deprecated
 
@@ -7210,9 +6919,8 @@ class SymbolInformation {
 
 /**
  * A special workspace symbol that supports locations without a range
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceSymbolLocation {
 	/**
@@ -7231,9 +6939,8 @@ class WorkspaceSymbolLocation {
 
 /**
  * A special workspace symbol that supports locations without a range
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceSymbol {
 	/**
@@ -7425,9 +7132,8 @@ class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartial
 	/**
 	 * The completion context. This is only available if the client specifies
 	 * to send this using {@link CompletionCapabilities#contextSupport} as true.
-	 * <p>
-	 * Since 3.3.0
 	 */
+	@ProtocolSince("3.3.0")
 	CompletionContext context
 
 	new() {
@@ -7443,9 +7149,7 @@ class CompletionParams extends TextDocumentPositionAndWorkDoneProgressAndPartial
 	}
 }
 
-/**
- * Since 3.3.0
- */
+@ProtocolSince("3.3.0")
 @JsonRpcData
 class CompletionContext {
 	/**
@@ -7501,9 +7205,8 @@ class TextEdit {
 
 /**
  * Additional information that describes document changes.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class ChangeAnnotation {
 	/**
@@ -7535,9 +7238,8 @@ class ChangeAnnotation {
 
 /**
  * A special text edit with an additional change annotation.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class AnnotatedTextEdit extends TextEdit {
 	/**
@@ -7557,9 +7259,8 @@ class AnnotatedTextEdit extends TextEdit {
 
 /**
  * A special text edit to provide an insert and a replace operation.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class InsertReplaceEdit {
 	/**
@@ -7659,9 +7360,8 @@ abstract class ResourceOperation {
 
 	/**
 	 * An optional annotation identifier describing the operation.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	String annotationId
 
 	new() {
@@ -7674,9 +7374,8 @@ abstract class ResourceOperation {
 
 /**
  * Options to create a file.
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 @JsonRpcData
 class CreateFileOptions {
 	/**
@@ -7700,9 +7399,8 @@ class CreateFileOptions {
 
 /**
  * Create file operation
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 @JsonRpcData
 class CreateFile extends ResourceOperation {
 	/**
@@ -7733,9 +7431,8 @@ class CreateFile extends ResourceOperation {
 
 /**
  * Rename file options
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 @JsonRpcData
 class RenameFileOptions {
 	/**
@@ -7759,9 +7456,8 @@ class RenameFileOptions {
 
 /**
  * Rename file operation
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 @JsonRpcData
 class RenameFile extends ResourceOperation {
 	/**
@@ -7799,9 +7495,8 @@ class RenameFile extends ResourceOperation {
 
 /**
  * Delete file options
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 @JsonRpcData
 class DeleteFileOptions {
 	/**
@@ -7825,9 +7520,8 @@ class DeleteFileOptions {
 
 /**
  * Delete file operation
- * <p>
- * Since 3.13.0
  */
+@ProtocolSince("3.13.0")
 @JsonRpcData
 class DeleteFile extends ResourceOperation {
 	/**
@@ -7892,9 +7586,8 @@ class WorkspaceEdit {
 	 * {@link AnnotatedTextEdit}s or {@link ResourceOperation}s.
 	 * <p>
 	 * Client support depends on {@link WorkspaceEditCapabilities#changeAnnotationSupport}.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	Map<String, ChangeAnnotation> changeAnnotations
 
 	new() {
@@ -7918,9 +7611,8 @@ class WorkspaceSymbolOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * The server provides support to resolve additional
 	 * information for a workspace symbol.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	Boolean resolveProvider
 
 	new() {
@@ -8180,16 +7872,14 @@ class CompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 	 * <p>
 	 * If a server provides both {@code allCommitCharacters} and commit characters on
 	 * an individual completion item the ones on the completion item win.
-	 * <p>
-	 * Since 3.2.0
 	 */
+	@ProtocolSince("3.2.0")
 	List<String> allCommitCharacters
 
 	/**
 	 * The server supports the following {@link CompletionItem} specific capabilities.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	CompletionItemOptions completionItem
 
 	new() {
@@ -8213,9 +7903,8 @@ class SignatureHelpRegistrationOptions extends AbstractTextDocumentRegistrationA
 	 * <p>
 	 * These trigger characters are only active when signature help is already showing. All trigger characters
 	 * are also counted as re-trigger characters.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	List<String> retriggerCharacters
 
 	new() {
@@ -8336,10 +8025,9 @@ class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
 
 /**
  * Additional data about a workspace edit.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class WorkspaceEditMetadata {
 	/**
@@ -8371,10 +8059,9 @@ class ApplyWorkspaceEditParams {
 
 	/**
 	 * Additional data about the edit.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	WorkspaceEditMetadata metadata
 
 	new() {
@@ -8427,9 +8114,8 @@ class ApplyWorkspaceEditResponse {
 
 /**
  * The server supports workspace folder.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class WorkspaceFoldersOptions {
 	/**
@@ -8454,9 +8140,8 @@ class WorkspaceFoldersOptions {
  * the current open list of workspace folders. Returns null in the response if only a single
  * file is open in the tool. Returns an empty array if a workspace is open but no folders
  * are configured.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class WorkspaceFolder {
 	/**
@@ -8481,9 +8166,8 @@ class WorkspaceFolder {
 
 /**
  * The workspace folder change event.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class WorkspaceFoldersChangeEvent {
 	/**
@@ -8513,9 +8197,8 @@ class WorkspaceFoldersChangeEvent {
  * default if both ServerCapabilities/workspace/workspaceFolders and
  * ClientCapabilities/workspace/workspaceFolders are true; or if the server has registered to
  * receive this notification it first.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class DidChangeWorkspaceFoldersParams {
 	/**
@@ -8534,9 +8217,8 @@ class DidChangeWorkspaceFoldersParams {
 
 /**
  * The server is interested in file notifications/requests.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileOperationsServerCapabilities {
 	/**
@@ -8575,9 +8257,8 @@ class FileOperationsServerCapabilities {
 
 /**
  * The options for file operations.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileOperationOptions {
 	/**
@@ -8597,9 +8278,8 @@ class FileOperationOptions {
 /**
  * A filter to describe in which file operation requests or notifications
  * the server is interested in.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileOperationFilter {
 	/**
@@ -8629,9 +8309,8 @@ class FileOperationFilter {
 /**
  * A pattern to describe in which file operation requests or notifications
  * the server is interested in.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileOperationPattern {
 	/**
@@ -8673,9 +8352,8 @@ class FileOperationPattern {
 /**
  * A pattern kind describing if a glob pattern matches a file a folder or
  * both.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 final class FileOperationPatternKind {
 	/**
 	 * The pattern matches a file only.
@@ -8693,9 +8371,8 @@ final class FileOperationPatternKind {
 
 /**
  * Matching options for the file operation pattern.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileOperationPatternOptions {
 	/**
@@ -8714,9 +8391,8 @@ class FileOperationPatternOptions {
 /**
  * The parameters sent in notifications/requests for user-initiated creation
  * of files.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CreateFilesParams {
 	/**
@@ -8735,9 +8411,8 @@ class CreateFilesParams {
 
 /**
  * Represents information on a file/folder create.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileCreate {
 	/**
@@ -8757,9 +8432,8 @@ class FileCreate {
 /**
  * The parameters sent in notifications/requests for user-initiated renames
  * of files.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class RenameFilesParams {
 	/**
@@ -8779,9 +8453,8 @@ class RenameFilesParams {
 
 /**
  * Represents information on a file/folder rename.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileRename {
 	/**
@@ -8808,9 +8481,8 @@ class FileRename {
 /**
  * The parameters sent in notifications/requests for user-initiated deletes
  * of files.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class DeleteFilesParams {
 	/**
@@ -8829,9 +8501,8 @@ class DeleteFilesParams {
 
 /**
  * Represents information on a file/folder delete.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class FileDelete {
 	/**
@@ -8854,9 +8525,8 @@ class FileDelete {
  * The order of the returned configuration settings correspond to the order of the passed
  * {@link ConfigurationItem}s (e.g. the first item in the response is the result for the first
  * configuration item in the params).
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ConfigurationParams {
 	@NonNull
@@ -8880,9 +8550,8 @@ class ConfigurationParams {
  * EditorConfig to manage its settings the configuration should be returned for the passed resource
  * URI. If the client can't provide a configuration setting for a given scope then null needs to be
  * present in the returned array.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ConfigurationItem {
 	/**
@@ -8899,9 +8568,8 @@ class ConfigurationItem {
 /**
  * The document color request is sent from the client to the server to list all color references
  * found in a given text document. Along with the range, a color value in RGB is returned.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class DocumentColorParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -8918,9 +8586,7 @@ class DocumentColorParams extends WorkDoneProgressAndPartialResultParams {
 	}
 }
 
-/**
- * Since 3.6.0
- */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ColorInformation {
 	/**
@@ -8946,9 +8612,8 @@ class ColorInformation {
 
 /**
  * Represents a color in RGBA space.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class Color {
 	/**
@@ -8985,9 +8650,8 @@ class Color {
 /**
  * The color presentation request is sent from the client to the server to obtain a list of presentations
  * for a color value at a given location.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ColorPresentationParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -9018,9 +8682,7 @@ class ColorPresentationParams extends WorkDoneProgressAndPartialResultParams {
 	}
 }
 
-/**
- * Since 3.6.0
- */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ColorPresentation {
 	/**
@@ -9065,9 +8727,8 @@ class ColorPresentation {
 /**
  * The folding range request is sent from the client to the server to return all folding
  * ranges found in a given text document.
- * <p>
- * Since 3.10.0
  */
+@ProtocolSince("3.10.0")
 @JsonRpcData
 class FoldingRangeRequestParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -9086,9 +8747,8 @@ class FoldingRangeRequestParams extends WorkDoneProgressAndPartialResultParams {
 
 /**
  * A set of predefined range kinds.
- * <p>
- * Since 3.10.0
  */
+@ProtocolSince("3.10.0")
 final class FoldingRangeKind {
 	/**
 	 * Folding range for a comment
@@ -9110,9 +8770,8 @@ final class FoldingRangeKind {
 
 /**
  * Represents a folding range.
- * <p>
- * Since 3.10.0
  */
+@ProtocolSince("3.10.0")
 @JsonRpcData
 class FoldingRange {
 	/**
@@ -9148,9 +8807,8 @@ class FoldingRange {
 	 * The text that the client should show when the specified range is
 	 * collapsed. If not defined or not supported by the client, a default
 	 * will be chosen by the client.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	String collapsedText
 
 	new() {
@@ -9164,9 +8822,8 @@ class FoldingRange {
 
 /**
  * The parameter of a `textDocument/prepareCallHierarchy` request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	new() {
@@ -9179,9 +8836,8 @@ class CallHierarchyPrepareParams extends TextDocumentPositionAndWorkDoneProgress
 
 /**
  * The parameter of a `callHierarchy/incomingCalls` request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
@@ -9197,9 +8853,8 @@ class CallHierarchyIncomingCallsParams extends WorkDoneProgressAndPartialResultP
 
 /**
  * The parameter of a `callHierarchy/outgoingCalls` request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultParams {
 	@NonNull
@@ -9215,9 +8870,8 @@ class CallHierarchyOutgoingCallsParams extends WorkDoneProgressAndPartialResultP
 
 /**
  * Represents an incoming call, e.g. a caller of a method or constructor.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyIncomingCall {
 	/**
@@ -9244,9 +8898,8 @@ class CallHierarchyIncomingCall {
 
 /**
  * Represents an outgoing call, e.g. calling a getter from a method or a method from a constructor etc.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyOutgoingCall {
 	/**
@@ -9272,9 +8925,8 @@ class CallHierarchyOutgoingCall {
 
 /**
  * The result of a {@code textDocument/prepareCallHierarchy} request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyItem {
 	/**
@@ -9341,9 +8993,8 @@ class CallHierarchyItem {
 
 /**
  * A parameter literal used in selection range requests.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -9369,18 +9020,16 @@ class SelectionRangeParams extends WorkDoneProgressAndPartialResultParams {
 
 /**
  * Selection range options.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class SelectionRangeOptions extends AbstractWorkDoneProgressOptions {
 }
 
 /**
  * Selection range registration options.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9400,9 +9049,8 @@ class SelectionRangeRegistrationOptions extends AbstractTextDocumentRegistration
 /**
  * A selection range represents a part of a selection hierarchy. A selection range
  * may have a parent selection range that contains it.
- * <p>
- * Since 3.15.0
  */
+@ProtocolSince("3.15.0")
 @JsonRpcData
 class SelectionRange {
 	/**
@@ -9453,16 +9101,12 @@ class HoverParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	}
 }
 
-/**
- * Since 3.14.0
- */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class DeclarationOptions extends AbstractWorkDoneProgressOptions {
 }
 
-/**
- * Since 3.14.0
- */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9482,9 +9126,8 @@ class DeclarationRegistrationOptions extends AbstractTextDocumentRegistrationAnd
 /**
  * The go to declaration request is sent from the client to the server to resolve the declaration
  * location of a symbol at a given text document position.
- * <p>
- * Since 3.14.0
  */
+@ProtocolSince("3.14.0")
 @JsonRpcData
 class DeclarationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
 	new() {
@@ -9517,16 +9160,12 @@ class DefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartial
 	}
 }
 
-/**
- * Since 3.6.0
- */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class TypeDefinitionOptions extends AbstractWorkDoneProgressOptions {
 }
 
-/**
- * Since 3.6.0
- */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9546,9 +9185,8 @@ class TypeDefinitionRegistrationOptions extends AbstractTextDocumentRegistration
 /**
  * The go to type definition request is sent from the client to the server to resolve the type definition
  * location of a symbol at a given text document position.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class TypeDefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
 	new() {
@@ -9559,16 +9197,12 @@ class TypeDefinitionParams extends TextDocumentPositionAndWorkDoneProgressAndPar
 	}
 }
 
-/**
- * Since 3.6.0
- */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ImplementationOptions extends AbstractWorkDoneProgressOptions {
 }
 
-/**
- * Since 3.6.0
- */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ImplementationRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9588,9 +9222,8 @@ class ImplementationRegistrationOptions extends AbstractTextDocumentRegistration
 /**
  * The go to implementation request is sent from the client to the server to resolve the implementation
  * location of a symbol at a given text document position.
- * <p>
- * Since 3.6.0
  */
+@ProtocolSince("3.6.0")
 @JsonRpcData
 class ImplementationParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
 	new() {
@@ -9625,27 +9258,24 @@ class DocumentHighlightParams extends TextDocumentPositionAndWorkDoneProgressAnd
 
 /**
  * Moniker options.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class MonikerOptions extends AbstractWorkDoneProgressOptions {
 }
 
 /**
  * Moniker registration options.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class MonikerRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 }
 
 /**
  * The moniker request is sent from the client to the server to get the symbol monikers for a given text document position.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialResultParams {
 	new() {
@@ -9658,9 +9288,8 @@ class MonikerParams extends TextDocumentPositionAndWorkDoneProgressAndPartialRes
 
 /**
  * Moniker uniqueness level to define scope of the moniker.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 final class UniquenessLevel {
 	/**
 	 * The moniker is only unique inside a document
@@ -9693,9 +9322,8 @@ final class UniquenessLevel {
 
 /**
  * The moniker kind.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 final class MonikerKind {
 	/**
 	 * The moniker represents a symbol that is imported into a project
@@ -9719,9 +9347,8 @@ final class MonikerKind {
 
 /**
  * Moniker definition to match LSIF 0.5 moniker definition.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class Moniker {
 	/**
@@ -9804,9 +9431,8 @@ class WorkDoneProgressCancelParams {
 
 /**
  * Params to show a document.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class ShowDocumentParams {
 	/**
@@ -9849,9 +9475,8 @@ class ShowDocumentParams {
 
 /**
  * The result of an show document request.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 @JsonRpcData
 class ShowDocumentResult {
 	/**
@@ -9869,9 +9494,8 @@ class ShowDocumentResult {
 
 /**
  * Capabilities specific to the {@code textDocument/inlayHint} request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHintCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -9889,9 +9513,8 @@ class InlayHintCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Indicates which properties a client can resolve lazily on a inlay hint.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHintResolveSupportCapabilities {
 	/**
@@ -9911,9 +9534,8 @@ class InlayHintResolveSupportCapabilities {
 
 /**
  * Inlay hint options used during static or dynamic registration.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHintRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -9938,9 +9560,8 @@ class InlayHintRegistrationOptions extends AbstractTextDocumentRegistrationAndWo
 
 /**
  * A parameter literal used in inlay hint requests.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHintParams implements WorkDoneProgressParams {
 	/**
@@ -9971,9 +9592,8 @@ class InlayHintParams implements WorkDoneProgressParams {
 
 /**
  * Inlay hint information.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHint {
 	/**
@@ -10054,9 +9674,8 @@ class InlayHint {
 /**
  * An inlay hint label part allows for interactive and composite labels
  * of inlay hints.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHintLabelPart {
 	/**
@@ -10105,9 +9724,8 @@ class InlayHintLabelPart {
 
 /**
  * Client workspace capabilities specific to inlay hints.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlayHintWorkspaceCapabilities {
 	/**
@@ -10131,9 +9749,8 @@ class InlayHintWorkspaceCapabilities {
 
 /**
  * Client capabilities specific to inline values.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -10146,9 +9763,8 @@ class InlineValueCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Inline value options used during static or dynamic registration.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -10167,9 +9783,8 @@ class InlineValueRegistrationOptions extends AbstractTextDocumentRegistrationAnd
 
 /**
  * A parameter literal used in inline value requests.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueParams implements WorkDoneProgressParams {
 	/**
@@ -10209,9 +9824,8 @@ class InlineValueParams implements WorkDoneProgressParams {
 /**
  * Additional information about the context in which inline values were
  * requested.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueContext {
 	/**
@@ -10238,9 +9852,8 @@ class InlineValueContext {
 
 /**
  * Provide inline value as text.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueText {
 	/**
@@ -10271,9 +9884,8 @@ class InlineValueText {
  * the underlying document.
  * <p>
  * An optional variable name can be used to override the extracted name.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueVariableLookup {
 	/**
@@ -10315,9 +9927,8 @@ class InlineValueVariableLookup {
  * underlying document.
  * <p>
  * An optional expression can be used to override the extracted expression.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueEvaluatableExpression {
 	/**
@@ -10352,9 +9963,8 @@ class InlineValueEvaluatableExpression {
  * - as a name to use for a variable lookup ({@link InlineValueVariableLookup})
  * - as an evaluatable expression ({@link InlineValueEvaluatableExpression})
  * The InlineValue types combines all inline value types into one type.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValue extends Either3<InlineValueText, InlineValueVariableLookup, InlineValueEvaluatableExpression> {
 	new(@NonNull InlineValueText inlineValueText) {
@@ -10396,9 +10006,8 @@ class InlineValue extends Either3<InlineValueText, InlineValueVariableLookup, In
 
 /**
  * Client workspace capabilities specific to inline values.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class InlineValueWorkspaceCapabilities {
 	/**
@@ -10423,9 +10032,8 @@ class InlineValueWorkspaceCapabilities {
 /**
  * A set of predefined position encoding kinds indicating how
  * positions are encoded, specifically what column offsets mean.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 final class PositionEncodingKind {
 	/**
 	 * Character offsets count UTF-8 code units.
@@ -10454,9 +10062,8 @@ final class PositionEncodingKind {
 
 /**
  * Client capabilities specific to diagnostic pull requests.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -10487,10 +10094,9 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 
 	/**
 	 * Whether the client supports {@link MarkupContent} in diagnostic messages.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Boolean markupMessageSupport
 
 	new() {
@@ -10508,10 +10114,9 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Server capabilities specific to the diagnostic pull model.
- * <p>
- * Since 3.18.0.
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class DiagnosticServerCapabilities {
 
@@ -10526,9 +10131,8 @@ class DiagnosticServerCapabilities {
 
 /**
  * Diagnostic registration options.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DiagnosticRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -10571,9 +10175,8 @@ class DiagnosticRegistrationOptions extends AbstractTextDocumentRegistrationAndW
 
 /**
  * Parameters of the document diagnostic request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DocumentDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -10606,9 +10209,8 @@ class DocumentDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
  * requested document or a unchanged report indicating that nothing
  * has changed in terms of diagnostics in comparison to the last
  * pull request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DocumentDiagnosticReport extends Either<RelatedFullDocumentDiagnosticReport, RelatedUnchangedDocumentDiagnosticReport> {
 	new(@NonNull RelatedFullDocumentDiagnosticReport relatedFullDocumentDiagnosticReport) {
@@ -10638,9 +10240,8 @@ class DocumentDiagnosticReport extends Either<RelatedFullDocumentDiagnosticRepor
 
 /**
  * The document diagnostic report kinds.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 final class DocumentDiagnosticReportKind {
 	/**
 	 * A diagnostic report with a full
@@ -10659,9 +10260,8 @@ final class DocumentDiagnosticReportKind {
 
 /**
  * A diagnostic report with a full set of problems.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class FullDocumentDiagnosticReport {
 	/**
@@ -10696,9 +10296,8 @@ class FullDocumentDiagnosticReport {
 /**
  * A diagnostic report indicating that the last returned
  * report is still accurate.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class UnchangedDocumentDiagnosticReport {
 	/**
@@ -10727,9 +10326,8 @@ class UnchangedDocumentDiagnosticReport {
 
 /**
  * A full diagnostic report with a set of related documents.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class RelatedFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
 	/**
@@ -10751,9 +10349,8 @@ class RelatedFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
 
 /**
  * An unchanged diagnostic report with a set of related documents.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnosticReport {
 	/**
@@ -10775,9 +10372,8 @@ class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnost
 
 /**
  * A partial result for a document diagnostic report.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DocumentDiagnosticReportPartialResult {
 	@NonNull
@@ -10790,9 +10386,8 @@ class DocumentDiagnosticReportPartialResult {
 
 /**
  * Cancellation data returned from a diagnostic request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DiagnosticServerCancellationData {
 	boolean retriggerRequest
@@ -10807,9 +10402,8 @@ class DiagnosticServerCancellationData {
 
 /**
  * Parameters of the workspace diagnostic request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
 	/**
@@ -10834,9 +10428,8 @@ class WorkspaceDiagnosticParams extends WorkDoneProgressAndPartialResultParams {
 
 /**
  * A previous result id in a workspace pull request.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class PreviousResultId {
 	/**
@@ -10863,9 +10456,8 @@ class PreviousResultId {
 
 /**
  * A workspace diagnostic report.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceDiagnosticReport {
 	@NonNull
@@ -10882,9 +10474,8 @@ class WorkspaceDiagnosticReport {
 
 /**
  * A full document diagnostic report for a workspace diagnostic result.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
 	/**
@@ -10911,9 +10502,8 @@ class WorkspaceFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport
 
 /**
  * An unchanged document diagnostic report for a workspace diagnostic result.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnosticReport {
 	/**
@@ -10940,9 +10530,8 @@ class WorkspaceUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagno
 
 /**
  * A workspace diagnostic document report.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiagnosticReport, WorkspaceUnchangedDocumentDiagnosticReport> {
 	new(@NonNull WorkspaceFullDocumentDiagnosticReport workspaceFullDocumentDiagnosticReport) {
@@ -10972,9 +10561,8 @@ class WorkspaceDocumentDiagnosticReport extends Either<WorkspaceFullDocumentDiag
 
 /**
  * A partial result for a workspace diagnostic report.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class WorkspaceDiagnosticReportPartialResult {
 	@NonNull
@@ -10991,9 +10579,8 @@ class WorkspaceDiagnosticReportPartialResult {
 
 /**
  * Workspace client capabilities specific to diagnostic pull requests.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DiagnosticWorkspaceCapabilities {
 	/**
@@ -11017,9 +10604,8 @@ class DiagnosticWorkspaceCapabilities {
 
 /**
  * A notebook document.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocument {
 	/**
@@ -11071,9 +10657,8 @@ class NotebookDocument {
  * A cell's document URI must be unique across ALL notebook
  * cells and can therefore be used to uniquely identify a
  * notebook cell or the cell's text document.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookCell {
 	/**
@@ -11110,9 +10695,7 @@ class NotebookCell {
 	}
 }
 
-/**
- * Since 3.17.0
- */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class ExecutionSummary {
 	/**
@@ -11144,9 +10727,8 @@ class ExecutionSummary {
 /**
  * A notebook cell text document filter denotes a cell text
  * document by different properties.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookCellTextDocumentFilter {
 	/**
@@ -11185,9 +10767,8 @@ class NotebookCellTextDocumentFilter {
  * <p>
  * At least one of either {@link #notebookType}, {@link #scheme},
  * or {@link #pattern} is required.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentFilter {
 	/**
@@ -11211,9 +10792,8 @@ class NotebookDocumentFilter {
 
 /**
  * Notebook specific client capabilities.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentSyncClientCapabilities extends DynamicRegistrationCapabilities {
 	/**
@@ -11238,9 +10818,8 @@ class NotebookDocumentSyncClientCapabilities extends DynamicRegistrationCapabili
  * The notebooks to be synced.
  * <p>
  * At least one of either {@link #notebook} or {@link #cells} is required.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookSelector {
 	/**
@@ -11261,9 +10840,8 @@ class NotebookSelector {
 
 /**
  * The cell of the matching notebook to be synced.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookSelectorCell {
 	/**
@@ -11292,9 +10870,8 @@ class NotebookSelectorCell {
  * filter but only a cell selector all notebook
  * documents that contain at least one matching
  * cell will be synced.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentSyncOptions {
 	/**
@@ -11325,9 +10902,8 @@ class NotebookDocumentSyncOptions {
 
 /**
  * Registration options specific to a notebook.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentSyncRegistrationOptions {
 	/**
@@ -11364,9 +10940,8 @@ class NotebookDocumentSyncRegistrationOptions {
 
 /**
  * The params sent in an open notebook document notification.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DidOpenNotebookDocumentParams {
 	/**
@@ -11394,9 +10969,8 @@ class DidOpenNotebookDocumentParams {
 
 /**
  * The params sent in a change notebook document notification.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DidChangeNotebookDocumentParams {
 	/**
@@ -11435,9 +11009,8 @@ class DidChangeNotebookDocumentParams {
 
 /**
  * A versioned notebook document identifier.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class VersionedNotebookDocumentIdentifier {
 	/**
@@ -11462,9 +11035,8 @@ class VersionedNotebookDocumentIdentifier {
 
 /**
  * A change event for a notebook document.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentChangeEvent {
 	/**
@@ -11484,9 +11056,8 @@ class NotebookDocumentChangeEvent {
 
 /**
  * Changes to cells
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentChangeEventCells {
 	/**
@@ -11513,9 +11084,8 @@ class NotebookDocumentChangeEventCells {
 /**
  * Changes to the cell structure to add or
  * remove cells.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentChangeEventCellStructure {
 	/**
@@ -11544,9 +11114,8 @@ class NotebookDocumentChangeEventCellStructure {
 
 /**
  * Changes to the text content of notebook cells.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentChangeEventCellTextContent {
 	@NonNull
@@ -11568,9 +11137,8 @@ class NotebookDocumentChangeEventCellTextContent {
 /**
  * A change describing how to move a `NotebookCell`
  * array from state S to S'.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookCellArrayChange {
 	/**
@@ -11604,9 +11172,8 @@ class NotebookCellArrayChange {
 
 /**
  * The params sent in a save notebook document notification.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DidSaveNotebookDocumentParams {
 	/**
@@ -11625,9 +11192,8 @@ class DidSaveNotebookDocumentParams {
 
 /**
  * The params sent in a close notebook document notification.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class DidCloseNotebookDocumentParams {
 	/**
@@ -11654,9 +11220,8 @@ class DidCloseNotebookDocumentParams {
 
 /**
  * A literal to identify a notebook document in the client.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 @JsonRpcData
 class NotebookDocumentIdentifier {
 	/**
@@ -11675,10 +11240,9 @@ class NotebookDocumentIdentifier {
 
 /**
  * Describes kind of {@link StringValue}.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 final class StringValueKind {
 	/**
 	 * Indicates a snippet {@link StringValue}.
@@ -11697,10 +11261,9 @@ final class StringValueKind {
  * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
  * the end of the snippet. Variables are defined with `$name` and
  * `${name:default value}`.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class StringValue {
 	/**
@@ -11728,10 +11291,9 @@ class StringValue {
 
 /**
  * Client capabilities specific to inline completions.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -11744,10 +11306,9 @@ class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Inline completion options used during static or dynamic registration.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
 	/**
@@ -11766,10 +11327,9 @@ class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrati
 
 /**
  * A parameter literal used in inline completion requests.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressParams {
 	/**
@@ -11791,10 +11351,9 @@ class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressPara
 /**
  * Provides information about the context in which an inline completion was
  * requested.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionContext {
 	/**
@@ -11834,10 +11393,9 @@ class InlineCompletionContext {
 
 /**
  * Describes the currently selected completion item.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class SelectedCompletionInfo {
 	/**
@@ -11864,10 +11422,9 @@ class SelectedCompletionInfo {
 
 /**
  * Represents a collection of {@link InlineCompletionItem} to be presented in the editor.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionList {
 	/**
@@ -11887,10 +11444,9 @@ class InlineCompletionList {
 /**
  * An inline completion item represents a text snippet that is proposed inline
  * to complete text that is being typed.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionItem {
 	/**
@@ -11935,10 +11491,9 @@ class InlineCompletionItem {
 
 /**
  * An interactive text edit.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class SnippetTextEdit {
 
@@ -11975,10 +11530,9 @@ class SnippetTextEdit {
 
 /**
  * Client capabilities for a text document content provider.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
 	new() {
@@ -11991,10 +11545,9 @@ class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
 
 /**
  * Text document content provider registration options.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentRegistrationOptions {
 	/**
@@ -12017,10 +11570,9 @@ class TextDocumentContentRegistrationOptions {
 
 /**
  * Parameters for the {@code workspace/textDocumentContent} request.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentParams {
 	/**
@@ -12039,10 +11591,9 @@ class TextDocumentContentParams {
 
 /**
  * Result of the {@code workspace/textDocumentContent} request.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentResult {
 	/**
@@ -12064,10 +11615,9 @@ class TextDocumentContentResult {
 
 /**
  * Parameters for the {@code workspace/textDocumentContent/refresh} request.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentRefreshParams {
 	/**

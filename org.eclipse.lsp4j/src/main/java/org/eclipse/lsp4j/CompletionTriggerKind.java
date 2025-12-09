@@ -11,6 +11,8 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * How a completion was triggered
  */
@@ -30,9 +32,8 @@ public enum CompletionTriggerKind {
 	
 	/**
 	 * Completion was re-triggered as the current completion list is incomplete.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	TriggerForIncompleteCompletions(3);
 	
 	private final int value;

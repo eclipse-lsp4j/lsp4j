@@ -11,11 +11,12 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * A notebook cell kind.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 public enum NotebookCellKind {
 	/**
 	 * A markup-cell is formatted source that is used for display.

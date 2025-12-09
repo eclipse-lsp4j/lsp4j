@@ -12,13 +12,13 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 /**
  * Code action tags are extra annotations that tweak the behavior of a code action.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 public enum CodeActionTag {
 	/**
 	 * Marks the code action as LLM-generated.

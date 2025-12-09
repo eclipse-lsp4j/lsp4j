@@ -11,12 +11,13 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * How whitespace and indentation is handled during completion
  * item insertion.
- * <p>
- * Since 3.16.0
  */
+@ProtocolSince("3.16.0")
 public enum InsertTextMode {
 	
 	/**

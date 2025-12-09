@@ -12,13 +12,13 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 /**
  * Defines how values from a set of defaults and an individual item will be merged.
- * <p>
- * Since 3.18.0
  */
 @ProtocolDraft
+@ProtocolSince("3.18.0")
 public enum ApplyKind {
 	/**
 	 * The value from the individual item (if provided and not {@code null}) will be
