@@ -35,6 +35,7 @@ import org.eclipse.lsp4j.debug.StartDebuggingRequestArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArguments;
 import org.eclipse.lsp4j.debug.TerminatedEventArguments;
 import org.eclipse.lsp4j.debug.ThreadEventArguments;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
@@ -249,9 +250,8 @@ public interface IDebugProtocolClient {
 	 * Debug adapters are not expected to emit this event for each and every memory change of
 	 * a running program, because that information is typically not available from debuggers
 	 * and it would flood clients with too many events.
-	 * <p>
-	 * Since 1.49
 	 */
+	@ProtocolSince("1.49")
 	@JsonNotification
 	default void memory(MemoryEventArguments args) {
 	}
@@ -293,9 +293,8 @@ public interface IDebugProtocolClient {
 	 * type as the caller) in the same way that the caller's session was started. If the client
 	 * supports hierarchical debug sessions, the newly created session can be treated as a child
 	 * of the caller session.
-	 * </p>
-	 * Since 1.59
 	 */
+	@ProtocolSince("1.59")
 	@JsonRequest
 	default CompletableFuture<Void> startDebugging(StartDebuggingRequestArguments args) {
 		throw new UnsupportedOperationException();

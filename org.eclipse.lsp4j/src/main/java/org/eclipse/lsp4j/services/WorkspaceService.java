@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
@@ -68,9 +69,8 @@ public interface WorkspaceService {
 	/**
 	 * The request is sent from the client to the server to resolve additional information
 	 * for a given workspace symbol.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest(value="workspaceSymbol/resolve", useSegment=false)
 	default CompletableFuture<WorkspaceSymbol> resolveWorkspaceSymbol(WorkspaceSymbol workspaceSymbol) {
 		throw new UnsupportedOperationException();
@@ -96,9 +96,8 @@ public interface WorkspaceService {
 	 * The notification is sent by default if both ServerCapabilities/workspaceFolders
 	 * and ClientCapabilities/workspace/workspaceFolders are true; or if the server has
 	 * registered to receive this notification it first.
-	 * <p>
-	 * Since 3.6.0
 	 */
+	@ProtocolSince("3.6.0")
 	@JsonNotification
 	default void didChangeWorkspaceFolders(DidChangeWorkspaceFoldersParams params) {
 		throw new UnsupportedOperationException();
@@ -111,9 +110,8 @@ public interface WorkspaceService {
 	 * before the files are created. Please note that clients might drop results if computing
 	 * the edit took too long or if a server constantly fails on this request. This is
 	 * done to keep creates fast and reliable.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest
 	default CompletableFuture<WorkspaceEdit> willCreateFiles(CreateFilesParams params) {
 		throw new UnsupportedOperationException();
@@ -122,9 +120,8 @@ public interface WorkspaceService {
 	/**
 	 * The did create files notification is sent from the client to the server when files
 	 * were created from within the client.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonNotification
 	default void didCreateFiles(CreateFilesParams params) {
 		throw new UnsupportedOperationException();
@@ -137,9 +134,8 @@ public interface WorkspaceService {
 	 * before the files are renamed. Please note that clients might drop results if computing
 	 * the edit took too long or if a server constantly fails on this request. This is
 	 * done to keep renames fast and reliable.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest
 	default CompletableFuture<WorkspaceEdit> willRenameFiles(RenameFilesParams params) {
 		throw new UnsupportedOperationException();
@@ -148,9 +144,8 @@ public interface WorkspaceService {
 	/**
 	 * The did rename files notification is sent from the client to the server when files
 	 * were renamed from within the client.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonNotification
 	default void didRenameFiles(RenameFilesParams params) {
 		throw new UnsupportedOperationException();
@@ -163,9 +158,8 @@ public interface WorkspaceService {
 	 * before the files are deleted. Please note that clients might drop results if computing
 	 * the edit took too long or if a server constantly fails on this request. This is
 	 * done to keep deletes fast and reliable.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonRequest
 	default CompletableFuture<WorkspaceEdit> willDeleteFiles(DeleteFilesParams params) {
 		throw new UnsupportedOperationException();
@@ -174,9 +168,8 @@ public interface WorkspaceService {
 	/**
 	 * The did delete files notification is sent from the client to the server when files
 	 * were deleted from within the client.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonNotification
 	default void didDeleteFiles(DeleteFilesParams params) {
 		throw new UnsupportedOperationException();
@@ -189,9 +182,8 @@ public interface WorkspaceService {
 	 * is not bound to a specific workspace or document state. If the client supports streaming for
 	 * the workspace diagnostic pull it is legal to provide a document diagnostic report multiple times
 	 * for the same document URI. The last one reported will win over previous reports.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonRequest
 	default CompletableFuture<WorkspaceDiagnosticReport> diagnostic(WorkspaceDiagnosticParams params) {
 		throw new UnsupportedOperationException();
@@ -202,10 +194,9 @@ public interface WorkspaceService {
 	 * the content of a text document. Clients should treat the content returned from this request as read-only.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentContentRegistrationOptions}
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	@JsonRequest
 	default CompletableFuture<TextDocumentContentResult> textDocumentContent(TextDocumentContentParams params) {
 		throw new UnsupportedOperationException();

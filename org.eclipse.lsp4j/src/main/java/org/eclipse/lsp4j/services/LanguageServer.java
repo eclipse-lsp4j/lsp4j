@@ -19,6 +19,7 @@ import org.eclipse.lsp4j.InitializedParams;
 import org.eclipse.lsp4j.SetTraceParams;
 import org.eclipse.lsp4j.WorkDoneProgressCancelParams;
 import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -86,9 +87,8 @@ public interface LanguageServer {
 
 	/**
 	 * Provides access to the notebookDocument services.
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonDelegate
 	default NotebookDocumentService getNotebookDocumentService() {
 		return null;
@@ -108,9 +108,8 @@ public interface LanguageServer {
 	
 	/**
 	 * This notification is sent from the client to the server to cancel a progress initiated on the server side.
-	 * <p>
-	 * Since 3.15.0
 	 */
+	@ProtocolSince("3.15.0")
 	@JsonNotification("window/workDoneProgress/cancel")
 	default void cancelProgress(WorkDoneProgressCancelParams params) {
 		throw new UnsupportedOperationException();
@@ -118,9 +117,8 @@ public interface LanguageServer {
 
 	/**
 	 * A notification that should be used by the client to modify the trace setting of the server.
-	 * <p>
-	 * Since 3.16.0
 	 */
+	@ProtocolSince("3.16.0")
 	@JsonNotification("$/setTrace")
 	default void setTrace(SetTraceParams params) {
 		/**

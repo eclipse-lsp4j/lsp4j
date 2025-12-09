@@ -11,11 +11,12 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * Inlay hint kinds.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 public enum InlayHintKind {
 	/**
 	 * An inlay hint that for a type annotation.

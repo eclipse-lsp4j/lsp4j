@@ -11,11 +11,12 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * The reason why code actions were requested.
- * <p>
- * Since 3.17.0
  */
+@ProtocolSince("3.17.0")
 public enum CodeActionTriggerKind {
 	/**
 	 * Code actions were explicitly requested by the user or by an extension.

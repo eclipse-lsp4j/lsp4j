@@ -12,6 +12,7 @@
 package org.eclipse.lsp4j;
 
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 public enum MessageType {
 	
@@ -37,10 +38,9 @@ public enum MessageType {
 	
 	/**
 	 * A debug message.
-	 * <p>
-	 * Since 3.18.0
 	 */
 	@ProtocolDraft
+	@ProtocolSince("3.18.0")
 	Debug(5);
 	
 	private final int value;

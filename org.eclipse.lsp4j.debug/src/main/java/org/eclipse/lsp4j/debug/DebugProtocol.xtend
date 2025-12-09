@@ -18,6 +18,7 @@ import java.util.Map
 import org.eclipse.lsp4j.debug.adapters.RestartArgumentsArgumentsTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
 import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 
@@ -132,9 +133,8 @@ class StoppedEventArguments {
 	 * </ul>
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.46
 	 */
+	@ProtocolSince("1.46")
 	Integer[] hitBreakpointIds;
 }
 
@@ -321,9 +321,8 @@ class OutputEventArguments {
 	 * See 'Lifetime of Object References' in the Overview section for details.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	Integer locationReference;
 }
 
@@ -347,9 +346,8 @@ interface OutputEventArgumentsCategory {
 	 * from the debugger (as opposed to the debuggee). Since this category value
 	 * is a hint, clients might ignore the hint and assume the 'console'
 	 * category.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	public static final String IMPORTANT = "important";
 	/**
 	 * Show the output as normal program output from the debuggee.
@@ -719,9 +717,8 @@ class InvalidatedEventArguments {
  * Body for 'memory' event.
  * <p>
  * Represents the {@code body} of {@code MemoryEvent} defined in spec.
- * <p>
- * Since 1.49
  */
+@ProtocolSince("1.49")
 @JsonRpcData
 class MemoryEventArguments {
 	/**
@@ -802,9 +799,8 @@ class RunInTerminalRequestArguments {
 	 * needed and that arguments using special characters may not be portable across shells.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.57
 	 */
+	@ProtocolSince("1.57")
 	Boolean argsCanBeInterpretedByShell;
 }
 
@@ -904,34 +900,30 @@ class InitializeRequestArguments {
 	 * Client supports the memory event.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.49
 	 */
+	@ProtocolSince("1.49")
 	Boolean supportsMemoryEvent;
 	/**
 	 * Client supports the 'argsCanBeInterpretedByShell' attribute on the 'runInTerminal' request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.57
 	 */
+	@ProtocolSince("1.57")
 	Boolean supportsArgsCanBeInterpretedByShell;
 	/**
 	 * Client supports the `startDebugging` request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.59
 	 */
+	@ProtocolSince("1.59")
 	Boolean supportsStartDebuggingRequest;
 	/**
 	 * The client will interpret ANSI escape sequences in the display of `OutputEvent.output` and `Variable.value`
 	 * fields when `Capabilities.supportsANSIStyling` is also enabled.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.69
 	 */
+	@ProtocolSince("1.69")
 	Boolean supportsANSIStyling;
 }
 
@@ -1001,9 +993,8 @@ class RestartArguments {
 	 * The latest version of the 'launch' or 'attach' configuration.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.47
 	 */
+	@ProtocolSince("1.47")
 	@JsonAdapter(RestartArgumentsArgumentsTypeAdapter)
 	Either<LaunchRequestArguments, AttachRequestArguments> arguments;
 }
@@ -1037,9 +1028,8 @@ class DisconnectArguments {
 	 * The attribute is only honored by a debug adapter if the corresponding capability {@link Capabilities#getSupportSuspendDebuggee} is true.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.47
 	 */
+	@ProtocolSince("1.47")
 	Boolean suspendDebuggee;
 }
 
@@ -1213,9 +1203,8 @@ class SetExceptionBreakpointsArguments {
 	 * 'filterOptions' sets are additive.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.43
 	 */
+	@ProtocolSince("1.43")
 	ExceptionFilterOptions[] filterOptions;
 	/**
 	 * Configuration options for selected exceptions.
@@ -1256,9 +1245,8 @@ class SetExceptionBreakpointsResponse {
 	 * information.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.47
 	 */
+	@ProtocolSince("1.47")
 	Breakpoint[] breakpoints;
 }
 
@@ -1322,9 +1310,8 @@ class DataBreakpointInfoArguments {
 	 * `variablesReference` is specified, this property has no effect.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.59
 	 */
+	@ProtocolSince("1.59")
 	Integer frameId;
 	/**
 	 * If specified, a debug adapter should return information for the range of memory extending `bytes` number of
@@ -1334,9 +1321,8 @@ class DataBreakpointInfoArguments {
 	 * Clients may set this property only if the `supportsDataBreakpointBytes` capability is true.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.66
 	 */
+	@ProtocolSince("1.66")
 	Integer bytes;
 	/**
 	 * If `true`, the `name` is a memory address and the debugger should interpret it as a decimal value,
@@ -1345,18 +1331,16 @@ class DataBreakpointInfoArguments {
 	 * Clients may set this property only if the `supportsDataBreakpointBytes` capability is true.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.66
 	 */
+	@ProtocolSince("1.66")
 	Boolean asAddress;
 	/**
 	 * The mode of the desired breakpoint. If defined, this must be one of the `breakpointModes`
 	 * the debug adapter advertised in its `Capabilities`.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.65
 	 */
+	@ProtocolSince("1.65")
 	String mode;
 }
 
@@ -1442,9 +1426,8 @@ class ContinueArguments {
 	 * with given {@link #threadId}.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean singleThread;
 }
 
@@ -1461,9 +1444,8 @@ class NextArguments {
 	 * If this flag is true, all other suspended threads are not resumed.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean singleThread;
 	/**
 	 * Stepping granularity. If no granularity is specified, a granularity of 'statement' is assumed.
@@ -1487,9 +1469,8 @@ class StepInArguments {
 	 * If this flag is true, all other suspended threads are not resumed.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean singleThread;
 	/**
 	 * Id of the target to step into.
@@ -1519,9 +1500,8 @@ class StepOutArguments {
 	 * If this flag is true, all other suspended threads are not resumed.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean singleThread;
 	/**
 	 * Stepping granularity. If no granularity is specified, a granularity of 'statement' is assumed.
@@ -1545,9 +1525,8 @@ class StepBackArguments {
 	 * If this flag is true, all other suspended threads are not resumed.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean singleThread;
 	/**
 	 * Stepping granularity. If no granularity is specified, a granularity of 'statement' is assumed.
@@ -1573,9 +1552,8 @@ class ReverseContinueArguments {
 	 * thread with given 'threadId'.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean singleThread;
 }
 
@@ -1820,9 +1798,8 @@ class SetVariableResponse {
 	 * {@link InitializeRequestArguments#getSupportsMemoryReferences} is true.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.63
 	 */
+	@ProtocolSince("1.63")
 	String memoryReference;
 	/**
 	 * A reference that allows the client to request the location where the new value is declared. For example,
@@ -1833,9 +1810,8 @@ class SetVariableResponse {
 	 * See 'Lifetime of Object References' in the Overview section for details.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	Integer valueLocationReference;
 }
 
@@ -2059,9 +2035,8 @@ class EvaluateResponse {
 	 * See 'Lifetime of Object References' in the Overview section for details.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	Integer valueLocationReference;
 }
 
@@ -2087,9 +2062,8 @@ class EvaluateArguments {
 	 * start of the expression being hovered.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.67
 	 */
+	@ProtocolSince("1.67")
 	Integer line;
 	/**
 	 * The contextual column where the expression should be evaluated. This may be provided if `line` is also provided.
@@ -2098,17 +2072,15 @@ class EvaluateArguments {
 	 * it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.67
 	 */
+	@ProtocolSince("1.67")
 	Integer column;
 	/**
 	 * The contextual source in which the `line` is found. This must be provided if `line` is provided.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.67
 	 */
+	@ProtocolSince("1.67")
 	Source source;
 	/**
 	 * The context in which the evaluate request is used.
@@ -2157,9 +2129,8 @@ interface EvaluateArgumentsContext {
 	public static final String CLIPBOARD = "clipboard";
 	/**
 	 * evaluate is called from a variables view context.
-	 * <p>
-	 * Since 1.55
 	 */
+	@ProtocolSince("1.55")
 	public static final String VARIABLES = "variables";
 }
 
@@ -2225,9 +2196,8 @@ class SetExpressionResponse {
 	 * {@link InitializeRequestArguments#getSupportsMemoryReferences} is true.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.63
 	 */
+	@ProtocolSince("1.63")
 	String memoryReference;
 	/**
 	 * A reference that allows the client to request the location where the new value is declared. For example,
@@ -2238,9 +2208,8 @@ class SetExpressionResponse {
 	 * See 'Lifetime of Object References' in the Overview section for details.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	Integer valueLocationReference;
 }
 
@@ -2472,9 +2441,8 @@ class ReadMemoryArguments {
 
 /**
  * Response to 'writeMemory' request.
- * <p>
- * Since 1.48
  */
+@ProtocolSince("1.48")
 @JsonRpcData
 class WriteMemoryResponse {
 	/**
@@ -2497,9 +2465,8 @@ class WriteMemoryResponse {
 
 /**
  * Arguments for 'writeMemory' request.
- * <p>
- * Since 1.48
  */
+@ProtocolSince("1.48")
 @JsonRpcData
 class WriteMemoryArguments {
 	/**
@@ -2586,9 +2553,8 @@ class DisassembleArguments {
 
 /**
  * Arguments for 'locations' request.
- * <p>
- * Since 1.68
  */
+@ProtocolSince("1.68")
 @JsonRpcData
 class LocationsArguments {
 	/**
@@ -2600,9 +2566,8 @@ class LocationsArguments {
 
 /**
  * Response to 'locations' request.
- * <p>
- * Since 1.68
  */
+@ProtocolSince("1.68")
 @JsonRpcData
 class LocationsResponse {
 	/**
@@ -2780,9 +2745,8 @@ class Capabilities {
 	 * The debug adapter supports the 'suspendDebuggee' attribute on the 'disconnect' request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.47
 	 */
+	@ProtocolSince("1.47")
 	Boolean supportSuspendDebuggee;
 	/**
 	 * The debug adapter supports the delayed loading of parts of the stack, which requires that both the 'startFrame'
@@ -2837,9 +2801,8 @@ class Capabilities {
 	 * The debug adapter supports the 'writeMemory' request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.48
 	 */
+	@ProtocolSince("1.48")
 	Boolean supportsWriteMemoryRequest;
 	/**
 	 * The debug adapter supports the 'disassemble' request.
@@ -2881,27 +2844,24 @@ class Capabilities {
 	 * The debug adapter supports 'filterOptions' as an argument on the 'setExceptionBreakpoints' request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.43
 	 */
+	@ProtocolSince("1.43")
 	Boolean supportsExceptionFilterOptions;
 	/**
 	 * The debug adapter supports the 'singleThread' property on the execution
 	 * requests ('continue', 'next', 'stepIn', 'stepOut', 'reverseContinue', 'stepBack').
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.51
 	 */
+	@ProtocolSince("1.51")
 	Boolean supportsSingleThreadExecutionRequests;
 	/**
 	 * The debug adapter supports the 'asAddress' and 'bytes' fields in the 'dataBreakpointInfo'
 	 * request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.66
 	 */
+	@ProtocolSince("1.66")
 	Boolean supportsDataBreakpointBytes;
 	/**
 	 * Modes of breakpoints supported by the debug adapter, such as 'hardware' or 'software'.
@@ -2913,25 +2873,22 @@ class Capabilities {
 	 * This is an optional property.
 	 * <p>
 	 * Possible values include - but not limited to those defined in {@link BreakpointMode}
-	 * <p>
-	 * Since 1.65
 	 */
+	@ProtocolSince("1.65")
 	BreakpointMode[] breakpointModes;
 	/**
 	 * The debug adapter supports ANSI escape sequences in styling of `OutputEvent.output` and `Variable.value` fields.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.69
 	 */
+	@ProtocolSince("1.69")
 	Boolean supportsANSIStyling;
 }
 
 /**
  * A `BreakpointMode` is provided as a option when setting breakpoints on sources or instructions.
- * <p>
- * Since 1.65
  */
+@ProtocolSince("1.65")
 @JsonRpcData
 class BreakpointMode {
 	/**
@@ -2963,9 +2920,8 @@ class BreakpointMode {
 /**
  * Describes one or more type of breakpoint a `BreakpointMode` applies to.
  * This is a non-exhaustive enumeration and may expand as future breakpoint types are added.
- * <p>
- * Since 1.65
  */
+@ProtocolSince("1.65")
 interface BreakpointModeApplicability {
 	/**
 	 * In `SourceBreakpoint`s
@@ -3006,9 +2962,8 @@ class ExceptionBreakpointsFilter {
 	 * filter. This string is typically shown as a hover and can be translated.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.45
 	 */
+	@ProtocolSince("1.45")
 	String description;
 	/**
 	 * Initial value of the filter option. If not specified a value 'false' is assumed.
@@ -3022,9 +2977,8 @@ class ExceptionBreakpointsFilter {
 	 * be set.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.43
 	 */
+	@ProtocolSince("1.43")
 	Boolean supportsCondition;
 	/**
 	 * A help text providing information about the condition. This
@@ -3032,9 +2986,8 @@ class ExceptionBreakpointsFilter {
 	 * translated.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.45
 	 */
+	@ProtocolSince("1.45")
 	String conditionDescription;
 }
 
@@ -3381,9 +3334,8 @@ class StackFrame {
 	 * to `true` if the property is absent.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.45
 	 */
+	@ProtocolSince("1.45")
 	Boolean canRestart;
 	/**
 	 * A memory reference for the current instruction pointer in this frame.
@@ -3523,9 +3475,8 @@ interface ScopePresentationHint {
 	public static final String REGISTERS = "registers";
 	/**
 	 * Scope contains one or more return values.
-	 * <p>
-	 * Since 1.67
 	 */
+	@ProtocolSince("1.67")
 	public static final String RETURN_VALUE = "returnValue";
 }
 
@@ -3629,9 +3580,8 @@ class Variable {
 	 * See 'Lifetime of Object References' in the Overview section for details.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	Integer declarationLocationReference;
 	/**
 	 * A reference that allows the client to request the location where the variable's value is declared. For example,
@@ -3642,9 +3592,8 @@ class Variable {
 	 * See 'Lifetime of Object References' in the Overview section for details.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.68
 	 */
+	@ProtocolSince("1.68")
 	Integer valueLocationReference;
 }
 
@@ -3692,9 +3641,8 @@ class VariablePresentationHint {
 	 * the value through another 'variable' request.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.54
 	 */
+	@ProtocolSince("1.54")
 	Boolean lazy;
 }
 
@@ -3792,9 +3740,8 @@ interface VariablePresentationHintAttributes {
 	public static final String HAS_SIDE_EFFECTS = "hasSideEffects";
 	/**
 	 * Indicates that the object has its value tracked by a data breakpoint.
-	 * <p>
-	 * Since 1.44
 	 */
+	@ProtocolSince("1.44")
 	public static final String HAS_DATA_BREAKPOINT = "hasDataBreakpoint";
 }
 
@@ -3904,9 +3851,8 @@ class SourceBreakpoint {
 	 * the debug adapter advertised in its `Capabilities`.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.65
 	 */
+	@ProtocolSince("1.65")
 	String mode;
 }
 
@@ -4029,9 +3975,8 @@ class InstructionBreakpoint {
 	 * the debug adapter advertised in its `Capabilities`.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.65
 	 */
+	@ProtocolSince("1.65")
 	String mode;
 }
 
@@ -4124,9 +4069,8 @@ class Breakpoint {
 	 * Values: 'pending', 'failed'
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.64
 	 */
+	@ProtocolSince("1.64")
 	BreakpointNotVerifiedReason reason;
 }
 
@@ -4134,9 +4078,8 @@ class Breakpoint {
  * A machine-readable explanation of why a breakpoint may not be verified. If
  * a breakpoint is verified or a specific reason is not known, the adapter
  * should omit this property.
- * <p>
- * Since 1.64
  */
+@ProtocolSince("1.64")
 enum BreakpointNotVerifiedReason {
 	/**
 	 * Indicates a breakpoint might be verified in the future, but the adapter cannot verify it in the current state.
@@ -4190,9 +4133,8 @@ class StepInTarget {
 	 * The line of the step-in target.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.56
 	 */
+	@ProtocolSince("1.56")
 	Integer line;
 	/**
 	 * Start position of the range covered by the step in target. It is measured in UTF-16 code units
@@ -4200,17 +4142,15 @@ class StepInTarget {
 	 * whether it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.56
 	 */
+	@ProtocolSince("1.56")
 	Integer column;
 	/**
 	 * The end line of the range covered by the step-in target.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.56
 	 */
+	@ProtocolSince("1.56")
 	Integer endLine;
 	/**
 	 * End position of the range covered by the step in target. It is measured in UTF-16 code units
@@ -4218,9 +4158,8 @@ class StepInTarget {
 	 * whether it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.56
 	 */
+	@ProtocolSince("1.56")
 	Integer endColumn;
 }
 
@@ -4298,9 +4237,8 @@ class CompletionItem {
 	 * type or symbol information.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.53
 	 */
+	@ProtocolSince("1.53")
 	String detail;
 	/**
 	 * The item's type. Typically the client uses this information to render the item in the UI with an icon.
@@ -4463,9 +4401,8 @@ class StackFrameFormat extends ValueFormat {
 /**
  * An ExceptionFilterOptions is used to specify an exception filter together with a condition for the
  * 'setExceptionBreakpoints' request.
- * <p>
- * Since 1.43
  */
+@ProtocolSince("1.43")
 @JsonRpcData
 class ExceptionFilterOptions {
 	/**
@@ -4487,9 +4424,8 @@ class ExceptionFilterOptions {
 	 * the debug adapter advertised in its `Capabilities`.
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.65
 	 */
+	@ProtocolSince("1.65")
 	String mode;
 }
 
@@ -4667,9 +4603,8 @@ class DisassembledInstruction {
 	 * For example, unreadable memory addresses may be presented is 'invalid.'
 	 * <p>
 	 * This is an optional property.
-	 * <p>
-	 * Since 1.64
 	 */
+	@ProtocolSince("1.64")
 	DisassembledInstructionPresentationHint presentationHint;
 }
 
@@ -4681,9 +4616,8 @@ class DisassembledInstruction {
  * For example, unreadable memory addresses may be presented is 'invalid.'
  * <p>
  * This is an optional property.
- * <p>
- * Since 1.64
  */
+@ProtocolSince("1.64")
 enum DisassembledInstructionPresentationHint {
 	NORMAL,
 	INVALID

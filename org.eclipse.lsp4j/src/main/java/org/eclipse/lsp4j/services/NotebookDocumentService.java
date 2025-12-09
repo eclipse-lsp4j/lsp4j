@@ -16,6 +16,7 @@ import org.eclipse.lsp4j.DidCloseNotebookDocumentParams;
 import org.eclipse.lsp4j.DidOpenNotebookDocumentParams;
 import org.eclipse.lsp4j.DidSaveNotebookDocumentParams;
 import org.eclipse.lsp4j.ServerCapabilities;
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonSegment;
 
@@ -28,9 +29,8 @@ public interface NotebookDocumentService {
 	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonNotification
 	void didOpen(DidOpenNotebookDocumentParams params);
 
@@ -41,9 +41,8 @@ public interface NotebookDocumentService {
 	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonNotification
 	void didChange(DidChangeNotebookDocumentParams params);
 
@@ -54,9 +53,8 @@ public interface NotebookDocumentService {
 	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonNotification
 	void didSave(DidSaveNotebookDocumentParams params);
 
@@ -67,9 +65,8 @@ public interface NotebookDocumentService {
 	 * ServerCapabilities.notebookDocumentSync} capability.
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.NotebookDocumentSyncRegistrationOptions}
-	 * <p>
-	 * Since 3.17.0
 	 */
+	@ProtocolSince("3.17.0")
 	@JsonNotification
 	void didClose(DidCloseNotebookDocumentParams params);
 }

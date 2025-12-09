@@ -11,12 +11,13 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
+
 /**
  * The value indicates the default behavior used by the
  * client.
- * <p>
- * Since version 3.16.0
  */
+@ProtocolSince("3.16.0")
 public enum PrepareSupportDefaultBehavior {
 	
 	/**
