@@ -12,6 +12,9 @@
 package org.eclipse.lsp4j.generator
 
 import com.google.gson.annotations.JsonAdapter
+import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
+import org.eclipse.lsp4j.jsonrpc.ProtocolDraft
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.xtend.lib.annotations.AccessorsProcessor
 import org.eclipse.xtend.lib.annotations.EqualsHashCodeProcessor
@@ -58,17 +61,26 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 			!static
 		].forEach [ field |
 			val accessorsUtil = new AccessorsProcessor.Util(context)
-			val deprecated = field.findAnnotation(Deprecated.findTypeGlobally)
-			accessorsUtil.addGetter(field, Visibility.PUBLIC)
+			val protocolDraft = field.findAnnotation(ProtocolDraft.newTypeReference.type)
+			val protocolSince = field.findAnnotation(ProtocolSince.newTypeReference.type)
+			val protocolDeprecated = field.findAnnotation(ProtocolDeprecated.newTypeReference.type)
+			val deprecated = field.findAnnotation(Deprecated.newTypeReference.type)
 			val hasNonNull = field.findAnnotation(NonNull.newTypeReference.type) !== null
 			val hasJsonAdapter = field.findAnnotation(JsonAdapter.newTypeReference.type) !== null
+			accessorsUtil.addGetter(field, Visibility.PUBLIC)
 			impl.findDeclaredMethod(accessorsUtil.getGetterName(field)) => [
 				docComment = field.docComment
+				if (protocolDraft !== null)
+					addAnnotation(protocolDraft)
+				if (protocolSince !== null)
+					addAnnotation(protocolSince)
+				if (protocolDeprecated !== null)
+					addAnnotation(protocolDeprecated)
+				if (deprecated !== null)
+					addAnnotation(deprecated)
 				if (hasNonNull) {
 					addAnnotation(newAnnotationReference(NonNull))
 				}
-				if (deprecated !== null)
-					addAnnotation(newAnnotationReference(Deprecated))
 			]
 
 			if (!field.type.inferred) {
@@ -76,6 +88,14 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 				val setterName = accessorsUtil.getSetterName(field)
 				impl.findDeclaredMethod(setterName, field.type) => [
 					docComment = field.docComment
+					if (protocolDraft !== null)
+						addAnnotation(protocolDraft)
+					if (protocolSince !== null)
+						addAnnotation(protocolSince)
+					if (protocolDeprecated !== null)
+						addAnnotation(protocolDeprecated)
+					if (deprecated !== null)
+						addAnnotation(deprecated)
 					if (hasNonNull) {
 						val parameter = parameters.head
 						parameter.addAnnotation(newAnnotationReference(NonNull))
@@ -83,8 +103,6 @@ class JsonRpcDataProcessor extends AbstractClassProcessor {
 							this.«field.simpleName» = «getPreconditionsUtil(impl, context)».checkNotNull(«parameter.simpleName», "«field.simpleName»");
 						'''
 					}
-					if (deprecated !== null)
-						addAnnotation(newAnnotationReference(Deprecated))
 				]
 				val childTypes = field.type.childTypes
 				if (!childTypes.empty) {
