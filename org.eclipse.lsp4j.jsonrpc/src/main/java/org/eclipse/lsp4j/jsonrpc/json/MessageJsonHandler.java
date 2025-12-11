@@ -12,10 +12,13 @@
 package org.eclipse.lsp4j.jsonrpc.json;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -147,6 +150,16 @@ public class MessageJsonHandler {
 
 	public void serialize(Message message, Writer output) throws JsonIOException {
 		gson.toJson(message, Message.class, output);
+	}
+
+	public void serialize(Message message, OutputStream out, Charset charset) throws JsonIOException {
+		try {
+			final var writer = new OutputStreamWriter(out, charset);
+			serialize(message, writer);
+			writer.flush();
+		} catch (IOException e) {
+			throw new JsonIOException(e);
+		}
 	}
 
 	/**
