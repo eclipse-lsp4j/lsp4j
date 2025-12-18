@@ -1,0 +1,373 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.eclipse.lsp4j</groupId>
+  <artifactId>org.eclipse.lsp4j.parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <url>https://github.com/eclipse-lsp4j/lsp4j</url>
+
+  <licenses>
+    <license>
+      <name>Eclipse Public License, Version 2.0</name>
+      <url>http://www.eclipse.org/legal/epl-2.0</url>
+    </license>
+    <license>
+      <name>Eclipse Distribution License 1.0</name>
+      <url>https://www.eclipse.org/org/documents/edl-v10.php</url>
+    </license>
+  </licenses>
+  <organization>
+    <name>Eclipse LSP4J</name>
+    <url>https://projects.eclipse.org/projects/technology.lsp4j</url>
+  </organization>
+  <scm>
+    <connection>scm:git:git@github.com:eclipse/lsp4j.git</connection>
+    <developerConnection>scm:git:git@github.com:eclipse/lsp4j.git</developerConnection>
+    <url>git@github.com:eclipse/lsp4j.git</url>
+  </scm>
+
+  <modules>
+    <module>org.eclipse.lsp4j.generator</module>
+    <module>org.eclipse.lsp4j.jsonrpc</module>
+    <module>org.eclipse.lsp4j.jsonrpc.debug</module>
+    <module>org.eclipse.lsp4j</module>
+    <module>org.eclipse.lsp4j.debug</module>
+    <module>org.eclipse.lsp4j.websocket.jakarta</module>
+  </modules>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <archunit.version>1.4.1</archunit.version>
+    <bnd.version>7.1.0</bnd.version>
+    <gson.version>2.11.0</gson.version>
+    <gson.version.range>[2.11.0,3.0)</gson.version.range>
+    <junit4.version>4.13.2</junit4.version>
+    <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+    <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
+    <maven.javadoc.plugin.version>3.10.0</maven.javadoc.plugin.version>
+    <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+    <maven.surefire.plugin.version>3.5.2</maven.surefire.plugin.version>
+    <slf4j.version>2.0.17</slf4j.version>
+    <websocket.version>2.0.0</websocket.version>
+    <xtend.maven.plugin.version>${xtend.version}</xtend.maven.plugin.version>
+    <xtend.version>2.41.0</xtend.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Ensure all reactor modules share the same version without repeating it everywhere -->
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j.debug</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j.generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j.websocket</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.lsp4j</groupId>
+        <artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${gson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>jakarta.websocket</groupId>
+        <artifactId>jakarta.websocket-api</artifactId>
+        <version>${websocket.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit4.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.xtext</groupId>
+        <artifactId>org.eclipse.xtend.lib</artifactId>
+        <version>${xtend.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.tngtech.archunit</groupId>
+        <artifactId>archunit</artifactId>
+        <version>${archunit.version}</version>
+      </dependency>
+
+      <dependency>
+        <!--archunit uses slf4, so provide a concrete version so that logs end up in the output -->
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven.source.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven.javadoc.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <doclint>none</doclint>
+            <quiet>true</quiet>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.eclipse.xtext</groupId>
+          <artifactId>xtend-maven-plugin</artifactId>
+          <version>${xtend.maven.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>generate-xtend-sources</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${project.basedir}/src/main/xtend-gen</outputDirectory>
+              </configuration>
+            </execution>
+            <execution>
+              <id>generate-xtend-test-sources</id>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>testCompile</goal>
+              </goals>
+              <configuration>
+                <testOutputDirectory>${project.basedir}/src/test/xtend-gen</testOutputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.6.0</version>
+          <executions>
+            <execution>
+              <id>add-xtend-sources</id>
+              <phase>generate-sources</phase>
+              <goals><goal>add-source</goal></goals>
+              <configuration>
+                <sources>
+                  <source>${project.basedir}/src/main/xtend-gen</source>
+                </sources>
+              </configuration>
+            </execution>
+            <execution>
+              <id>add-xtend-test-sources</id>
+              <phase>generate-test-sources</phase>
+              <goals><goal>add-test-source</goal></goals>
+              <configuration>
+                <sources>
+                  <source>${project.basedir}/src/test/xtend-gen</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <executions>
+            <execution>
+              <id>bnd-process</id>
+              <goals>
+                <goal>bnd-process</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <bndfile>${project.basedir}/../bnd.bnd</bndfile>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.plugin.version}</version>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.xtext</groupId>
+        <artifactId>xtend-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>test-all-javas</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <executions>
+                <!-- in addition to default-test which runs on whatever JVM version maven is using, enable tests on all supported previous LTS versions -->
+                <execution>
+                  <id>test-jdk11</id>
+                  <goals>
+                    <goal>test</goal>
+                  </goals>
+                  <configuration>
+                    <jdkToolchain>
+                      <version>11</version>
+                    </jdkToolchain>
+                    <reportsDirectory>
+                      ${project.build.directory}/surefire-reports-jdk11
+                    </reportsDirectory>
+                    <excludes>
+                      <!-- default excludes of surefire-->
+                      <exclude>**/*$*</exclude>
+                      <!--
+                        exclude xtend written tests since xtend lib requires java 17
+                        this list was made with:
+
+                        find * -path '*/src/test/xtend-gen/*.java' | sed -es,.*-gen/,, -es,.java,, '-es,/,.,g' '-es,^,<exclude>,' '-es,$,</exclude>,'
+                      -->
+                      <exclude>org.eclipse.lsp4j.test.performance.PerformanceMeasurement</exclude>
+                      <exclude>org.eclipse.lsp4j.test.services.JsonSerializeTest</exclude>
+                      <exclude>org.eclipse.lsp4j.test.services.JsonParseTest</exclude>
+                      <exclude>org.eclipse.lsp4j.test.LSPEndpointTest</exclude>
+                      <exclude>org.eclipse.lsp4j.test.NoAnnotationTest</exclude>
+                    </excludes>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>test-jdk17</id>
+                  <goals>
+                    <goal>test</goal>
+                  </goals>
+                  <configuration>
+                    <jdkToolchain>
+                      <version>17</version>
+                    </jdkToolchain>
+                    <reportsDirectory>
+                      ${project.build.directory}/surefire-reports-jdk17
+                    </reportsDirectory>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>test-jdk21</id>
+                  <goals>
+                    <goal>test</goal>
+                  </goals>
+                  <configuration>
+                    <jdkToolchain>
+                      <version>21</version>
+                    </jdkToolchain>
+                    <reportsDirectory>
+                      ${project.build.directory}/surefire-reports-jdk21
+                    </reportsDirectory>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

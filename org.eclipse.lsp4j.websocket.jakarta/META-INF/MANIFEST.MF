@@ -1,21 +1,30 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1765999552104
+Automatic-Module-Name: org.eclipse.lsp4j.websocket.jakarta
+Bundle-License: "Eclipse Public License, Version 2.0";link="http://www
+ .eclipse.org/legal/epl-2.0","Eclipse Distribution License 1.0";link="
+ https://www.eclipse.org/org/documents/edl-v10.php"
 Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.lsp4j.websocket.jakarta
 Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-SCM: url="git@github.com:eclipse/lsp4j.git/org.eclipse.lsp4j.we
+ bsocket.jakarta",connection="scm:git:git@github.com:eclipse/lsp4j.git
+ /org.eclipse.lsp4j.websocket.jakarta",developer-connection="scm:git:g
+ it@github.com:eclipse/lsp4j.git/org.eclipse.lsp4j.websocket.jakarta",
+ tag=HEAD
 Bundle-SymbolicName: org.eclipse.lsp4j.websocket.jakarta
 Bundle-Vendor: Eclipse LSP4J
-Bundle-Version: 1.0.0.v20251217-1425
-Created-By: 21.0.9 (Eclipse Adoptium)
-Export-Package: org.eclipse.lsp4j.websocket.jakarta;uses:="jakarta.web
- socket,org.eclipse.lsp4j.jsonrpc,org.eclipse.lsp4j.jsonrpc.json,org.e
- clipse.lsp4j.jsonrpc.messages";version="1.0.0"
+Bundle-Version: 1.0.0.SNAPSHOT
+Eclipse-SourceReferences: scm:git:https://github.com/eclipse-lsp4j/lsp
+ 4j.git;path="org.eclipse.lsp4j.websocket.jakarta"
+Export-Package: org.eclipse.lsp4j.websocket.jakarta;version="1.0.0";us
+ es:="jakarta.websocket,org.eclipse.lsp4j.jsonrpc,org.eclipse.lsp4j.js
+ onrpc.json,org.eclipse.lsp4j.jsonrpc.messages"
 Import-Package: jakarta.websocket;version="[2.0,3)",java.io,java.lang,
  java.util,java.util.concurrent,java.util.concurrent.atomic,java.util.
- function,java.util.logging,org.eclipse.lsp4j.jsonrpc;version="[1.0,2)
- ",org.eclipse.lsp4j.jsonrpc.json;version="[1.0,2)",org.eclipse.lsp4j.
- jsonrpc.messages;version="[1.0,2)",org.eclipse.lsp4j.jsonrpc.services
- ;version="[1.0,2)"
+ function,java.util.logging,org.eclipse.lsp4j.jsonrpc,org.eclipse.lsp4
+ j.jsonrpc.json,org.eclipse.lsp4j.jsonrpc.messages,org.eclipse.lsp4j.j
+ sonrpc.services
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
-Tool: Bnd-6.4.0.202211291949
+X-Comment-LSP4J: This file is auto-generates, edit the bnd.bnd file, n
+ ot the MANIFEST.MF file, and regenerate with maven
 

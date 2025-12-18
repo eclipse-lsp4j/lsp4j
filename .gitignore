@@ -4,7 +4,6 @@ bin/
 target/
 build/
 xtend-gen/
-.gradle/
 .idea/
 *.class
 *._trace

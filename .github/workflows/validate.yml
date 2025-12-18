@@ -74,8 +74,7 @@ jobs:
         name: Test Results ${{ matrix.os }}
         if-no-files-found: warn
         path: |
-          ${{ github.workspace }}/**/build/test-results/**/*.xml
-          ${{ github.workspace }}/**/build/reports/
+          ${{ github.workspace }}/**/target/surefire-reports**
 
 
     - name: Run API Compare
