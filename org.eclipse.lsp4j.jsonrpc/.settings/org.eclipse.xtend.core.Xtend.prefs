@@ -1,0 +1,17 @@
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/jmh/java.directory=build/xtend/jmh
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/jmh/resources.directory=build/xtend/jmh
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/main/java.directory=src/main/xtend-gen
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/main/resources.directory=src/main/xtend-gen
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/test/java.directory=src/test/xtend-gen
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/test/resources.directory=src/test/xtend-gen
+BuilderConfiguration.is_project_specific=true
+ValidatorConfiguration.is_project_specific=true
+eclipse.preferences.version=1
+generateGeneratedAnnotation=false
+generateSuppressWarnings=true
+includeDateInGenerated=false
+outlet.DEFAULT_OUTPUT.hideLocalSyntheticVariables=false
+outlet.DEFAULT_OUTPUT.installDslAsPrimarySource=false
+outlet.DEFAULT_OUTPUT.userOutputPerSourceFolder=true
+targetJavaVersion=JAVA11
+useJavaCompilerCompliance=false
