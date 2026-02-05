@@ -178,7 +178,26 @@ public enum SymbolTag {
 	 * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2003">PR</a></p>
 	 */
 	@ProtocolDraft
-	ReadOnly(20);
+	ReadOnly(20),
+	
+	/**
+	 * <p>Render a symbol as "overriding", e.g. a Java method replaces the implementation from an
+	 * equally named method (with same signature) from a parent class.</p>
+	 * 
+	 * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2003">PR</a></p>
+	 */
+	@ProtocolDraft
+	Overrides(21),
+	
+	/**
+	 * <p>Render a symbol as "implementing", e.g. a Java method implements a method with same signature declared in an
+	 * interface or implements an abstract method (with same signature) from an abstract parent class.</p>
+	 * 
+	 * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2003">PR</a></p>
+	 */
+	@ProtocolDraft
+	Implements(22);
+
 
 	private final int value;
 	
