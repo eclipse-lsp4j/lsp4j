@@ -30,7 +30,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.69.0";
+	public static final String SCHEMA_VERSION = "1.70.0";
 
 	/**
 	 * Refer to the Debug Adapter Protocol's
@@ -392,6 +392,9 @@ enum OutputEventArgumentsGroup {
 
 /**
  * The event indicates that some information about a breakpoint has changed.
+ * While debug adapters may notify the clients of `changed` breakpoints using this
+ * event, clients should continue to use the breakpoint's original properties when
+ * updating a source's breakpoints in the `breakpoint` request."
  * <p>
  * Represents the {@code body} of {@code BreakpointEvent} defined in spec.
  */
@@ -1641,7 +1644,8 @@ class StackTraceArguments {
 	 */
 	Integer levels;
 	/**
-	 * Specifies details on how to format the stack frames.
+	 * Specifies details on how to format the returned `StackFrame.name`. The debug adapter may format
+	 * requested details in any way that would make sense to a developer.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the corresponding capability
 	 * {@link Capabilities#getSupportsValueFormattingOptions} is true.
@@ -2686,8 +2690,10 @@ class Capabilities {
 	 */
 	Boolean supportsCompletionsRequest;
 	/**
-	 * The set of characters that should trigger completion in a REPL. If not specified, the UI should assume the '.'
-	 * character.
+	 * he set of characters that should automatically trigger a completion request
+	 * in a REPL. If not specified, the client should assume the `.` character. The
+	 * client may trigger additional completion requests on characters such as ones
+	 * that make up common identifiers, or as otherwise requested by a user.
 	 * <p>
 	 * This is an optional property.
 	 */
