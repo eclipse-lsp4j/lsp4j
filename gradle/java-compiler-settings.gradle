@@ -50,15 +50,15 @@ tasks.withType(JavaCompile) {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-	group 'Build'
-	description 'Assembles a jar archive containing the sources.'
+	group = 'Build'
+	description = 'Assembles a jar archive containing the sources.'
 	archiveClassifier = 'sources'
 	from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	group 'Build'
-	description 'Assembles a jar archive containing the JavaDoc output.'
+	group = 'Build'
+	description = 'Assembles a jar archive containing the JavaDoc output.'
 	archiveClassifier = 'javadoc'
 	from javadoc.destinationDir
 }
