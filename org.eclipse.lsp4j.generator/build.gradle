@@ -18,6 +18,10 @@ dependencies {
 	api "org.eclipse.xtend:org.eclipse.xtend.lib:$versions.xtend_lib"
 }
 
-jar.bundle.bnd (
-	'Import-Package': "com.google.common.*;version=\"$versions.guava\",com.google.gson.*;version=\"$versions.gson\",*"
-)
+tasks.named('jar') {
+	bundle {
+		bnd(
+			'Import-Package': "com.google.common.*;version=\"$versions.guava\",com.google.gson.*;version=\"$versions.gson\",*"
+		)
+	}
+}

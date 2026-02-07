@@ -9,8 +9,6 @@
  * 
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
-apply plugin: "biz.aQute.bnd.builder"
-
 def baseVersion = project.version
 if (baseVersion.endsWith('-SNAPSHOT'))
 	baseVersion = baseVersion.substring(0, baseVersion.length() - 9)
@@ -18,35 +16,41 @@ else if (baseVersion.split('\\.').length == 4)
 	baseVersion = baseVersion.substring(0, baseVersion.lastIndexOf('.'))
 def qualifiedVersion = baseVersion + '.v' + buildTime
 
-jar.bundle.bnd (
-	'Bundle-Version': qualifiedVersion,
-	'Bundle-Vendor': 'Eclipse LSP4J',
-	'Bundle-RequiredExecutionEnvironment': "JavaSE-${versions.java}",
-	"-exportcontents": "org.eclipse.lsp4j.*",
-	"-savemanifest": "build/tmp/bnd/MANIFEST.MF",
-)
+tasks.named('jar') {
+	bundle {
+		bnd(
+			'Bundle-Version': qualifiedVersion,
+			'Bundle-Vendor': 'Eclipse LSP4J',
+			'Bundle-RequiredExecutionEnvironment': "JavaSE-${versions.java}",
+			"-exportcontents": "org.eclipse.lsp4j.*",
+			"-savemanifest": "build/tmp/bnd/MANIFEST.MF",
+		)
+	}
+}
 
 //------------------------------------------------------
 // Generate a manifest for the source bundle
 
 def sourcesManifestFile = "$buildDir/tmp/sourcesJar/MANIFEST.MF"
 
-task genSourcesManifest {
+tasks.register('genSourcesManifest') {
 	outputs.file(sourcesManifestFile)
+	def projectName = project.name
+	def projectTitle = project.hasProperty('title') ? project.title : null
 	doLast {
 		def f = new File(sourcesManifestFile)
 		f.parentFile.mkdirs()
 		def writer = new PrintWriter(f)
 		writer.println("Manifest-Version: 1.0")
 		writer.println("Bundle-ManifestVersion: 2")
-		writer.println("Bundle-SymbolicName: ${project.name}.source")
+		writer.println("Bundle-SymbolicName: ${projectName}.source")
 		writer.println("Bundle-Version: ${qualifiedVersion}")
-		if (project.hasProperty('title'))
-			writer.println("Bundle-Name: ${project.title} Sources")
+		if (projectTitle)
+			writer.println("Bundle-Name: ${projectTitle} Sources")
 		else
 			writer.println("Bundle-Name: Sources")
 		writer.println("Bundle-Vendor: Eclipse LSP4J")
-		writer.println("Eclipse-SourceBundle: ${project.name};version=\"${qualifiedVersion}\"")
+		writer.println("Eclipse-SourceBundle: ${projectName};version=\"${qualifiedVersion}\"")
 		writer.close()
 	}
 }
@@ -62,10 +66,12 @@ sourcesJar {
 //------------------------------------------------------
 // Task to copy the generated manifest into the project
 
-task eclipseManifest(type: Copy) {
+tasks.register('eclipseManifest', Copy) {
 	dependsOn(jar)
     from "$buildDir/tmp/bnd/MANIFEST.MF"
     into 'META-INF'
 }
 
-tasks['eclipse'].dependsOn(eclipseManifest)
+tasks.named('eclipse') {
+	dependsOn('eclipseManifest')
+}
