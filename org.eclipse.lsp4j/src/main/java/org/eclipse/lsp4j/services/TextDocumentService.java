@@ -73,6 +73,7 @@ import org.eclipse.lsp4j.PrepareRenameDefaultBehavior;
 import org.eclipse.lsp4j.PrepareRenameParams;
 import org.eclipse.lsp4j.PrepareRenameResult;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.Reference;
 import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.RenameParams;
 import org.eclipse.lsp4j.SelectionRange;
@@ -218,6 +219,22 @@ public interface TextDocumentService {
 	 */
 	@JsonRequest
 	default CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
+	 * <p>The references request is sent from the client to the server to resolve
+	 * project-wide references for the symbol denoted by the given text document
+	 * position.</p>
+	 * 
+	 * Registration Options: {@link org.eclipse.lsp4j.ReferenceRegistrationOptions}
+	 * 
+	 * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2226">PR</a>
+	 * This method is planned to replace {@link #references(ReferenceParams)} and could be renamed to 'references' in future.</p>
+	 */
+	// TODO introduce this new method (avoid a breaking change) or replace #references(ReferenceParams)?
+	@JsonRequest
+	default CompletableFuture<Either<List<Location>,List<Reference>>> referencesWithTags(ReferenceParams params) {
 		throw new UnsupportedOperationException();
 	}
 
