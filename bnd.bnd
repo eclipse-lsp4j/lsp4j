@@ -1,0 +1,2 @@
+-include: bnd-common.bnd
+Import-Package: com.google.gson.*;version="${gson.version.range}",*

@@ -1,0 +1,8 @@
+BuilderConfiguration.is_project_specific=true
+ValidatorConfiguration.is_project_specific=true
+eclipse.preferences.version=1
+generateGeneratedAnnotation=false
+generateSuppressWarnings=true
+includeDateInGenerated=false
+targetJavaVersion=JAVA11
+useJavaCompilerCompliance=false

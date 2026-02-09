@@ -1,0 +1,22 @@
+Eclipse-SourceReferences: \
+  scm:git:https://github.com/eclipse-lsp4j/lsp4j.git;path="${project.artifactId}"
+Bundle-SymbolicName: ${project.artifactId}
+Bundle-Name: ${project.name}
+Bundle-Version: ${project.version}
+Bundle-Vendor: Eclipse LSP4J
+Bundle-RequiredExecutionEnvironment: JavaSE-${maven.compiler.release}
+Automatic-Module-Name: ${project.artifactId}
+
+pkg.version: ${version;===;${version_cleanup;${project.version}}}
+-exportcontents: org.eclipse.lsp4j.*;version="${pkg.version}"
+
+# Use https://github.com/bndtools/bnd/blob/master/maven-plugins/bnd-maven-plugin/README.md#reproducible-builds
+# to allow saving the manifest into git too - this makes it easier
+# to verify the MANIFEST is changed as expected
+-savemanifest: ${project.basedir}/META-INF/MANIFEST.MF
+-snapshot: SNAPSHOT
+-noextraheaders: true
+-removeheaders: Bundle-DocURL
+
+# Place this warning comment in the output MANIFEST
+X-Comment-LSP4J: This file is auto-generates, edit the bnd.bnd file, not the MANIFEST.MF file, and regenerate with maven
