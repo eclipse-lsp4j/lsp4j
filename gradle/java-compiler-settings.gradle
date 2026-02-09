@@ -50,20 +50,20 @@ tasks.withType(JavaCompile) {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-	group 'Build'
-	description 'Assembles a jar archive containing the sources.'
+	group = 'Build'
+	description = 'Assembles a jar archive containing the sources.'
 	archiveClassifier = 'sources'
 	from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	group 'Build'
-	description 'Assembles a jar archive containing the JavaDoc output.'
+	group = 'Build'
+	description = 'Assembles a jar archive containing the JavaDoc output.'
 	archiveClassifier = 'javadoc'
 	from javadoc.destinationDir
 }
 
-ext.signMethod = { jarfile -> 
+ext.signMethod = { jarfile, buildDir -> 
 	println "Signing $jarfile"
 	def SIGNING_SERVICE = 'https://cbi.eclipse.org/jarsigner/sign'
 	def STDOUT_FORMAT = '    %{size_upload} bytes uploaded, %{size_download} bytes downloaded (%{time_total} s)\\n'
@@ -74,7 +74,7 @@ ext.signMethod = { jarfile ->
 		"--write-out", STDOUT_FORMAT, 
 		SIGNING_SERVICE);
 	println String.join(" ", curl_pb.command());
-	curl_pb.directory(new File("${project.buildDir}"));
+	curl_pb.directory(new File("${buildDir}"));
 	Process curl_process = curl_pb.start()
 	curl_process.waitFor()
 
@@ -88,7 +88,7 @@ ext.signMethod = { jarfile ->
 	ProcessBuilder mv_pb = new ProcessBuilder("mv", 
 		"${jarfile}-signed", jarfile)
 	println String.join(" ", mv_pb.command());
-	mv_pb.directory(new File("${project.buildDir}"));
+	mv_pb.directory(new File("${buildDir}"));
 	Process mv_process = mv_pb.start()
 	mv_process.waitFor()
 
@@ -97,16 +97,21 @@ ext.signMethod = { jarfile ->
 	}
 }
 
-task signJar(description: 'Sign JARs with Eclipse Signing Service', group: 'Build'){
-    doLast {
-		signMethod("${project.buildDir}/libs/${project.name}-${project.version}.jar")
-		signMethod("${project.buildDir}/libs/${project.name}-${project.version}-sources.jar")
-		signMethod("${project.buildDir}/libs/${project.name}-${project.version}-javadoc.jar")
+tasks.register('signJar') {
+	description = 'Sign JARs with Eclipse Signing Service'
+	group = 'Build'
+	def buildDir = project.buildDir
+	def projectName = project.name
+	def projectVersion = project.version
+	dependsOn jar, sourcesJar, javadocJar
+	doLast {
+		signMethod("${buildDir}/libs/${projectName}-${projectVersion}.jar", buildDir)
+		signMethod("${buildDir}/libs/${projectName}-${projectVersion}-sources.jar", buildDir)
+		signMethod("${buildDir}/libs/${projectName}-${projectVersion}-javadoc.jar", buildDir)
 	}
 }
-signJar.dependsOn jar, sourcesJar, javadocJar
 
-artifacts.archives sourcesJar, javadocJar
+
 
 if (findProperty('ignoreTestFailures') == 'true') {
 	tasks.withType(Test) {
