@@ -35,7 +35,8 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported LSP Versions
 
- * LSP4J 1.0.&ast; _(Next release)_ &rarr; LSP 3.18.0 (specification is not finalized yet) plus [SymbolTag proposal](https://github.com/microsoft/language-server-protocol/pull/2003)
+ * LSP4J _(Next release)_ &rarr; LSP 3.18.0 (specification is not finalized yet) plus [SymbolTag proposal](https://github.com/microsoft/language-server-protocol/pull/2003)
+ * LSP4J 1.0.&ast; &rarr; LSP 3.18.0 (specification is not finalized yet) plus [SymbolTag proposal](https://github.com/microsoft/language-server-protocol/pull/2003)
  * LSP4J 0.24.&ast; &rarr; LSP 3.17.0
  * LSP4J 0.23.&ast; &rarr; LSP 3.17.0
  * LSP4J 0.22.&ast; &rarr; LSP 3.17.0
@@ -62,7 +63,8 @@ The Maven Repositories, p2 Update Sites, and the Snapshots contain _signed jars_
 
 ### Supported DAP Versions
 
- * LSP4J 1.0.&ast; _(Next release)_ &rarr; DAP 1.70.0
+ * LSP4J _(Next release)_ &rarr; DAP 1.70.0
+ * LSP4J 1.0.&ast;  &rarr; DAP 1.70.0
  * LSP4J 0.24.&ast; &rarr; DAP 1.69.0
  * LSP4J 0.23.&ast; &rarr; DAP 1.65.0
  * LSP4J 0.22.&ast; &rarr; DAP 1.60.0

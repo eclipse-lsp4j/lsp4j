@@ -1,6 +1,14 @@
 ## LSP4J Change Log
 
-### v1.0.0 (TBD)
+### Next Version number TBD (release date TBD)
+
+Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1> (Update with corresponding milestone number)
+
+Breaking API changes:
+
+japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+
+### [v1.0.0 (Feb 2026)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v1.0.0)
 
 * Implemented LSP version 3.18.0 (specification is not finalized yet)
 * Implemented [LSP proposal](https://github.com/microsoft/language-server-protocol/pull/2003) for `SymbolTag` [#856](https://github.com/eclipse-lsp4j/lsp4j/pull/856)
@@ -31,7 +39,7 @@ Breaking API changes:
     * `EitherTypeAdapter.EitherTypeArgument.read(JsonElement)`
     * `StreamMessageProducer.handleMessage`
 
-japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
+japicmp report: <https://download.eclipse.org/lsp4j/updates/releases/1.0.0/japicmp-report/>
 
 ### [v0.24.0 (Jan 2025)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v0.24.0)
 
