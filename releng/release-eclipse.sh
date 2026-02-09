@@ -44,13 +44,13 @@ unzip -q maven-repository.zip
 find maven-repository -name '*.pom' | while read i
 do
     base="${i%.*}"
-    $ECHO mvn -f gpgparameters.pom \
+    $ECHO mvn -f releng/gpgparameters.pom \
         org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign \
         -DpomFile=${base}.pom \
         -Dfile=${base}.jar \
         -Dsources=${base}-sources.jar \
         -Djavadoc=${base}-javadoc.jar
-    $ECHO mvn -f gpgparameters.pom \
+    $ECHO mvn -f releng/gpgparameters.pom \
         deploy:deploy-file \
         -DpomFile=${base}.pom \
         -Dfile=${base}.jar \
