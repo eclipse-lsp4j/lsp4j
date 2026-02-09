@@ -37,6 +37,10 @@ $ECHO $SSH "cd $DOWNLOAD_MOUNT && \
     mv p2-repository/* .  && \
     rm -r p2-repository p2-repository.zip"
 
+# Stop here because of https://github.com/eclipse-lsp4j/lsp4j/issues/887#issuecomment-3874528594 on EF Jenkins
+# The below can be run semi-manually on dev machine to deploy what we built
+exit 0
+
 ### GPG Sign and Deploy to Maven Central
 # - this wget/unzip is not $ECHO so that the find/loop does something
 wget -q $ARTIFACTS_REPO_TARGET/maven-repository/*zip*/maven-repository.zip
@@ -46,23 +50,26 @@ do
     base="${i%.*}"
     $ECHO cp releng/gpgparameters.pom gpgparameters.pom
     $ECHO mvn -f gpgparameters.pom \
-        org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign \
+        org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
         -DpomFile=${base}.pom \
         -Dfile=${base}.jar \
-        -Dsources=${base}-sources.jar \
-        -Djavadoc=${base}-javadoc.jar
-    $ECHO mvn -f gpgparameters.pom \
-        deploy:deploy-file \
-        -DpomFile=${base}.pom \
-        -Dfile=${base}.jar \
-        -Dsources=${base}-sources.jar \
-        -Djavadoc=${base}-javadoc.jar \
-        -Dfiles=${base}.jar.asc,${base}-sources.jar.asc,${base}-javadoc.jar.asc \
-        -Dclassifiers=,sources,javadoc \
-        -Dtypes=jar,jar,jar \
+        -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
+        -Dclassifiers=sources,javadoc \
+        -Dtypes=jar,jar \
         -DrepositoryId=central \
-        -Durl=https://central.sonatype.com/repository/maven-releases
+        -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
 done
+
+# After upload, automatically deploy https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/
+# We can't get username/password on EF Jenkins here because it is maven encrypted
+CENTRAL_USER=$(echo username)
+CENTRAL_PASS=$(echo password)
+
+wget --method=POST \
+  --user="$CENTRAL_USER" \
+  --password="$CENTRAL_PASS" \
+  --header="Content-Length: 0" \
+  "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/org.eclipse.lsp4j"
 
 if [ "$DRY_RUN" == "false" ]; then
     echo Release uploaded to "https://$DOWNLOAD"
