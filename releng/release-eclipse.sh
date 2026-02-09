@@ -44,21 +44,23 @@ unzip -q maven-repository.zip
 find maven-repository -name '*.pom' | while read i
 do
     base="${i%.*}"
-    # The centos-7 agent is used because it provides gpg 2.0.x
-    # and we sign for OSSRH with gpg maven plug-in run at the command
-    # line.
-    # If a newer GPG version (> 2.1+) is used,
-    # --pinentry-mode loopback needs to be added as gpg argument in the pom.xml.
-    # If centos changes we may need to add the gpg arguments to some pom.xml
-    # somewhere
-    $ECHO mvn \
-        gpg:sign-and-deploy-file \
+    $ECHO mvn -f gpgparameters.pom \
+        org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign \
+        -DpomFile=${base}.pom \
+        -Dfile=${base}.jar \
+        -Dsources=${base}-sources.jar \
+        -Djavadoc=${base}-javadoc.jar
+    $ECHO mvn -f gpgparameters.pom \
+        deploy:deploy-file \
         -DpomFile=${base}.pom \
         -Dfile=${base}.jar \
         -Dsources=${base}-sources.jar \
         -Djavadoc=${base}-javadoc.jar \
-        -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2 \
-        -DrepositoryId=ossrh
+        -Dfiles=${base}.jar.asc,${base}-sources.jar.asc,${base}-javadoc.jar.asc \
+        -Dclassifiers=,sources,javadoc \
+        -Dtypes=jar,jar,jar \
+        -DrepositoryId=central \
+        -Durl=https://central.sonatype.com/repository/maven-releases
 done
 
 if [ "$DRY_RUN" == "false" ]; then
