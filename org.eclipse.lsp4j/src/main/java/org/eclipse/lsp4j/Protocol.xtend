@@ -40,6 +40,7 @@ import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
 import org.eclipse.lsp4j.jsonrpc.ProtocolDraft
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince
+import java.util.Collections
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -848,6 +849,17 @@ class SignatureHelpCapabilities extends DynamicRegistrationCapabilities {
  */
 @JsonRpcData
 class ReferencesCapabilities extends DynamicRegistrationCapabilities {
+    
+    /**
+     * <p>Determines whether the client supports and prefers {@link Reference} items instead
+     * of {@link Location} items. If this value is missing, the server assumes that the
+     * client accepts Location items as defined in earlier versions of the protocol.</p>
+     * 
+     * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2226">PR</a></p>
+     */
+    @ProtocolDraft
+    Boolean referenceItemsSupport;
+    
 	new() {
 	}
 
@@ -1695,6 +1707,16 @@ class TypeHierarchyRegistrationOptions extends AbstractTextDocumentRegistrationA
 @ProtocolSince("3.16.0")
 @JsonRpcData
 class CallHierarchyCapabilities extends DynamicRegistrationCapabilities {
+    
+    /**
+     * <p>Determines whether the client supports reference tags. If the value is missing,
+     * the server assumes that the client does not support reference tags.</p>
+     * 
+     * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2226">PR</a></p>
+     */
+    @ProtocolDraft
+    Boolean referenceTagsSupport;
+    
 	new() {
 	}
 
@@ -5285,6 +5307,42 @@ class Location {
 		this.uri = Preconditions.checkNotNull(uri, 'uri')
 		this.range = Preconditions.checkNotNull(range, 'range')
 	}
+}
+
+/**
+ * <p>Represents a reference to a symbol and describes the kind of reference, e.g. read or write access,
+ * in addition to its location in a resource.</p>
+ * 
+ * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2226">PR</a></p>
+ */
+@ProtocolDraft
+@JsonRpcData
+class Reference {
+    @NonNull
+    Location location
+
+    @NonNull
+    List<ReferenceTag> referenceTags
+    
+    new() {
+    }
+
+    new(@NonNull Location location) {
+        this(location, Collections.emptyList())
+    }
+    
+    new(@NonNull String uri, @NonNull Range range) {
+        this(new Location(uri, range), Collections.emptyList())
+    }
+    
+    new(@NonNull String uri, @NonNull Range range, @NonNull List<ReferenceTag> referenceTags) {
+        this(new Location(uri, range), referenceTags)
+    }
+    
+    new(@NonNull Location location, @NonNull List<ReferenceTag> referenceTags) {
+        this.location = Preconditions.checkNotNull(location, 'location')
+        this.referenceTags = Preconditions.checkNotNull(referenceTags, 'referenceTags')
+    }
 }
 
 /**
@@ -8950,6 +9008,14 @@ class CallHierarchyItem {
 	 * Tags for this item.
 	 */
 	List<SymbolTag> tags
+	
+	/**
+	 * <p>Reference tags for this item.</p>
+	 * 
+	 * <p>This is an LSP <b>proposal</b>. See <a href="https://github.com/microsoft/language-server-protocol/pull/2226">PR</a></p>
+	 */
+	@ProtocolDraft
+	List<ReferenceTag> referenceTags
 
 	/**
 	 * The resource identifier of this item.
