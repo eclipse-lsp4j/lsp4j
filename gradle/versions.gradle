@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
  ******************************************************************************/
 
-version = '1.0.0'
+version = '1.1.0-SNAPSHOT'
 
 ext.versions = [
 	// Additional JDK version configuration is in java-compiler-settings

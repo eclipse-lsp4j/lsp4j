@@ -18,11 +18,11 @@ To run a single benchmark, add `-PjmhIncludes=NameOfBenchmark` to the `./gradlew
 ## Building and running a jmh jar
 
 A typical way of using jmh is to build a self-contained jar.
-Do this by running `./gradlew jmhJar`, the resulting jar is `org.eclipse.lsp4j.jsonrpc/build/libs/org.eclipse.lsp4j.jsonrpc-1.0.0-SNAPSHOT-jmh.jar` (with `1.0.0-SNAPSHOT` replaced with current version of LSP4J).
+Do this by running `./gradlew jmhJar`, the resulting jar is `org.eclipse.lsp4j.jsonrpc/build/libs/org.eclipse.lsp4j.jsonrpc-1.1.0-SNAPSHOT-jmh.jar` (with `1.1.0-SNAPSHOT` replaced with current version of LSP4J).
 This jar can then be used with the normal command line options of jmh, run with `-h` to see what they are:
 
 ```sh
-java -jar org.eclipse.lsp4j.jsonrpc/build/libs/org.eclipse.lsp4j.jsonrpc-1.0.0-SNAPSHOT-jmh.jar -h
+java -jar org.eclipse.lsp4j.jsonrpc/build/libs/org.eclipse.lsp4j.jsonrpc-1.1.0-SNAPSHOT-jmh.jar -h
 ```
 
 ## Running jmh and gradle is doing nothing?
