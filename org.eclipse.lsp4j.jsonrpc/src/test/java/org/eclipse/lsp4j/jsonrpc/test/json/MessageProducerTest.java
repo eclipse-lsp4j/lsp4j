@@ -69,7 +69,9 @@ public class MessageProducerTest {
 			MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
 			try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
 				messageProducer.listen(message -> {});
-			}
+			}catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
@@ -85,7 +87,9 @@ public class MessageProducerTest {
 			MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
 			try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
 				messageProducer.listen(message -> {});
-			}
+			}catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
@@ -101,7 +105,9 @@ public class MessageProducerTest {
 			MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
 			try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
 				messageProducer.listen(message -> {});
-			}
+			}catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
@@ -118,7 +124,9 @@ public class MessageProducerTest {
 				MessageJsonHandler jsonHandler = new MessageJsonHandler(Collections.emptyMap());
 				try (StreamMessageProducer messageProducer = new StreamMessageProducer(input, jsonHandler)) {
 					messageProducer.listen(message -> {});
-				}
+				}catch (IOException e) {
+                    throw new IllegalStateException(e);
+                }
 			}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 		} catch (ExecutionException e) {
 			throw e.getCause();
@@ -149,11 +157,13 @@ public class MessageProducerTest {
 			}
 
 			var jsonHandler = new MessageJsonHandler(Collections.emptyMap());
-			try (var producer = new TestProducer( new ByteArrayInputStream(inputStr.getBytes()), jsonHandler)) {
-				var received = new ArrayList<>();
-				producer.listen(received::add);
-				assertEquals("Both messages should be delivered", 2, received.size());
-			}
+            try (var producer = new TestProducer(new ByteArrayInputStream(inputStr.getBytes()), jsonHandler)) {
+                var received = new ArrayList<>();
+                producer.listen(received::add);
+                assertEquals("Both messages should be delivered", 2, received.size());
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
 		}).get(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 

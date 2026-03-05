@@ -11,7 +11,9 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
-public interface MessageProducer {
+import java.io.Closeable;
+
+public interface MessageProducer extends Closeable {
 	
 	/**
 	 * Listen to a message source and forward all messages to the given consumer. Typically this method
