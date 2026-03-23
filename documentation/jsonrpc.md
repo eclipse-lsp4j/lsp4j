@@ -45,7 +45,7 @@ For example:
    @Override
    public CompletableFuture<Object> shutdown() {
       if (!isInitialized()) {
-         ResponseError error = new ResponseError(ResponseErrorCode.serverNotInitialized, "Server was not initialized", null);
+         ResponseError error = new ResponseError(ResponseErrorCode.ServerNotInitialized, "Server was not initialized", null);
          throw new ResponseErrorException(error);
       }
       return doShutdown();
