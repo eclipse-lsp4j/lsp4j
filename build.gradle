@@ -17,13 +17,16 @@ buildscript {
 	repositories {
 		mavenCentral()
 		maven {
-			url "https://plugins.gradle.org/m2/"
+			url = "https://plugins.gradle.org/m2/"
 		}
 	}
 	dependencies {
-		classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:6.4.0"
 		classpath "org.xtext:xtext-gradle-plugin:4.0.0"
 	}
+}
+
+plugins {
+	id "biz.aQute.bnd.builder" version "7.2.1" apply false
 }
 
 ext.buildTime = DateTimeFormatter.ofPattern('yyyyMMdd-HHmm').format(LocalDateTime.now())
@@ -41,6 +44,7 @@ subprojects {
 	apply plugin: 'org.xtext.xtend'
 	apply plugin: 'eclipse'
 	apply plugin: 'maven-publish'
+	apply plugin: 'biz.aQute.bnd.builder'
 
 	apply from: "${rootDir}/gradle/java-compiler-settings.gradle"
 	apply from: "${rootDir}/gradle/xtend-compiler-settings.gradle"
@@ -186,7 +190,7 @@ subprojects {
 }
 
 task clean(type: Delete) {
-	group 'Build'
-	description 'Deletes the local repositories'
+	group = 'Build'
+	description = 'Deletes the local repositories'
 	delete 'build'
 }
