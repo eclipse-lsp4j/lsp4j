@@ -43,6 +43,8 @@ This will start the listening process in a new thread that reads messages from t
 
 When implementing the handlers for requests or notifications, you need to be aware that the calling thread is the thread that reads and dispatches incoming messages. Therefore, blocking it may result in reduced throughput or even a deadlock (https://github.com/eclipse-lsp4j/lsp4j/issues/775). As a general rule, message handlers should be implemented in a non-blocking, asynchronous way.
 
+For long-running work, prefer returning a `CompletableFuture` and performing the actual computation outside of the message dispatching thread. This keeps the JSON-RPC message processor responsive while the request is being handled asynchronously.
+
 To stop listening for incoming messages, call `future.cancel(true)` (https://github.com/eclipse-lsp4j/lsp4j/issues/770).
 
 # Extending the Protocol
