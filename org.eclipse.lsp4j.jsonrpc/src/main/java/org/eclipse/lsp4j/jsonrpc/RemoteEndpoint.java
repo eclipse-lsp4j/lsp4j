@@ -197,7 +197,7 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 			final var responseMessage = (ResponseMessage) message;
 			handleResponse(responseMessage);
 		} else {
-			LOG.log(Level.WARNING, "Unkown message type.", message);
+			LOG.log(Level.WARNING, "Unknown message type.", message);
 		}
 	}
 
