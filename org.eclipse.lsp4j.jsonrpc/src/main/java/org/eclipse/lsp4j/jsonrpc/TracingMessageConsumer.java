@@ -11,12 +11,6 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc;
 
-import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
-import org.eclipse.lsp4j.jsonrpc.messages.Message;
-import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
-import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
-import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
-
 import java.io.PrintWriter;
 import java.time.Clock;
 import java.time.Instant;
@@ -24,9 +18,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import static java.util.logging.Level.WARNING;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.WARNING;
+import org.eclipse.lsp4j.jsonrpc.json.MessageJsonHandler;
+import org.eclipse.lsp4j.jsonrpc.messages.Message;
+import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
+import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 /**
  * A {@link MessageConsumer} that outputs logs in a format that can be parsed by the LSP Inspector.
@@ -65,7 +64,7 @@ public class TracingMessageConsumer implements MessageConsumer {
 	 * @param receivedRequests A map that keeps track of pending received request data.
 	 * @param printWriter Where to write the log to.
 	 * @param clock The clock that is used to calculate timestamps and durations.
-	 * @param locale THe Locale to format the timestamps and durations, or <code>null</code> to use default locale.
+	 * @param locale The Locale to format the timestamps and durations, or <code>null</code> to use default locale.
 	 */
 	public TracingMessageConsumer(
 			MessageConsumer messageConsumer,
