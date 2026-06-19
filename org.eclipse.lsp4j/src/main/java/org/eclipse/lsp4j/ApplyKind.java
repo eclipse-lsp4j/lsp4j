@@ -11,13 +11,11 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 /**
  * Defines how values from a set of defaults and an individual item will be merged.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 public enum ApplyKind {
 	/**

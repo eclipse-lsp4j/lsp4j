@@ -30,7 +30,6 @@ import org.eclipse.lsp4j.TextDocumentContentRefreshParams;
 import org.eclipse.lsp4j.UnregistrationParams;
 import org.eclipse.lsp4j.WorkDoneProgressCreateParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -251,7 +250,6 @@ public interface LanguageClient {
 	 * all folding ranges. Note that the client still has the freedom to delay the re-calculation of
 	 * the folding ranges if, for example, an editor is currently not visible.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	@JsonRequest("workspace/foldingRange/refresh")
 	default CompletableFuture<Void> refreshFoldingRanges() {
@@ -262,7 +260,6 @@ public interface LanguageClient {
 	 * The {@code workspace/textDocumentContent/refresh} request is sent from the server to the client
 	 * to refresh the content of a specific text document.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	@JsonRequest("workspace/textDocumentContent/refresh")
 	default CompletableFuture<Void> refreshTextDocumentContent(TextDocumentContentRefreshParams params) {

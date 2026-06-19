@@ -30,7 +30,6 @@ import org.eclipse.lsp4j.WorkspaceEdit;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.lsp4j.WorkspaceSymbolParams;
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolResponseAdapter;
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -195,7 +194,6 @@ public interface WorkspaceService {
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.TextDocumentContentRegistrationOptions}
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	@JsonRequest
 	default CompletableFuture<TextDocumentContentResult> textDocumentContent(TextDocumentContentParams params) {

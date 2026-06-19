@@ -38,7 +38,6 @@ import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.util.Preconditions
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
 import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince
 
 @JsonRpcData
@@ -104,14 +103,12 @@ class WorkspaceEditCapabilities {
 	/**
 	 * Whether the client supports snippets as text edits.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean snippetEditSupport
 
 	/**
 	 * Whether the client supports {@link WorkspaceEditMetadata} in workspace edits.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean metadataSupport
 
@@ -382,14 +379,12 @@ class WorkspaceClientCapabilities {
 	/**
 	 * Client workspace capabilities specific to folding ranges.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	FoldingRangeWorkspaceCapabilities foldingRange
 
 	/**
 	 * Client capabilities for a text document content provider.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	TextDocumentContentCapabilities textDocumentContent
 
@@ -439,7 +434,6 @@ class SynchronizationCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Defines which filters the client supports.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class FiltersCapabilities {
@@ -662,7 +656,6 @@ class CompletionListCapabilities {
 	 * they MUST also support merge for them if those fields are defined in
 	 * {@link CompletionApplyKind}.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean applyKindSupport
 
@@ -782,6 +775,14 @@ class SignatureInformationCapabilities {
 	 */
 	@ProtocolSince("3.16.0")
 	Boolean activeParameterSupport
+
+	/**
+	 * The client supports the {@code activeParameter} property on
+	 * {@link SignatureHelp}/{@link SignatureInformation} being set to {@code null}
+	 * to indicate that no parameter should be active.
+	 */
+	@ProtocolSince("3.18.0")
+	Boolean noActiveParameterSupport
 
 	new() {
 	}
@@ -993,7 +994,6 @@ class RangeFormattingCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports formatting multiple ranges at once.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean rangesSupport
 
@@ -1180,7 +1180,6 @@ class CodeActionResolveSupportCapabilities {
  * Client supports the tag property on a code action. Clients
  * supporting tags have to handle unknown tags gracefully.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class CodeActionTagSupportCapabilities {
@@ -1250,7 +1249,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports documentation for a class of code actions.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean documentationSupport
 
@@ -1258,7 +1256,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
 	 * Client supports the tag property on a code action. Clients
 	 * supporting tags have to handle unknown tags gracefully.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	CodeActionTagSupportCapabilities tagSupport
 
@@ -1284,7 +1281,6 @@ class CodeActionCapabilities extends DynamicRegistrationCapabilities {
  * Whether the client supports resolving additional code lens
  * properties via a separate {@code codeLens/resolve} request.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class CodeLensResolveSupportCapabilities {
@@ -1313,7 +1309,6 @@ class CodeLensCapabilities extends DynamicRegistrationCapabilities {
 	 * Whether the client supports resolving additional code lens
 	 * properties via a separate {@code codeLens/resolve} request.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	CodeLensResolveSupportCapabilities resolveSupport
 
@@ -1632,7 +1627,6 @@ class FoldingRangeCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Client workspace capabilities specific to folding ranges.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class FoldingRangeWorkspaceCapabilities {
@@ -1999,6 +1993,8 @@ class WindowShowMessageRequestActionItemCapabilities {
 class RegularExpressionsCapabilities {
 	/**
 	 * The engine's name.
+	 * <p>
+	 * See {@link RegularExpressionEngineKind} for some predefined regular expression engines.
 	 */
 	@NonNull
 	String engine
@@ -2019,6 +2015,16 @@ class RegularExpressionsCapabilities {
 		this(engine)
 		this.version = version
 	}
+}
+
+/**
+ * Regular Expression Engines.
+ */
+@ProtocolSince("3.18.0")
+final class RegularExpressionEngineKind {
+	public static val ES2020 = 'ES2020'
+
+	private new() {}
 }
 
 /**
@@ -2123,7 +2129,6 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Defines which filters the client supports.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	FiltersCapabilities filters
 
@@ -2292,7 +2297,6 @@ class TextDocumentClientCapabilities {
 	/**
 	 * Capabilities specific to the {@code textDocument/inlineCompletion} request.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	InlineCompletionCapabilities inlineCompletion
 
@@ -2527,7 +2531,6 @@ final class CodeActionKind {
 	 * <li>...
 	 * </ul>
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	public static val RefactorMove = 'refactor.move'
 
@@ -2571,7 +2574,6 @@ final class CodeActionKind {
 	 * Base kind for all code actions applying to the entire notebook's scope.
 	 * Code action kinds using this should always begin with "notebook."
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	public static val Notebook = 'notebook'
 
@@ -2657,7 +2659,6 @@ class CodeAction {
 	/**
 	 * Tags for this code action.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	List<CodeActionTag> tags
 
@@ -2829,7 +2830,6 @@ class CodeLens {
 /**
  * Documentation for a class of code actions.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class CodeActionKindDocumentation {
@@ -2887,7 +2887,6 @@ class CodeActionOptions extends AbstractWorkDoneProgressOptions {
 	 * </ul>
 	 * At most one documentation entry should be shown per provider.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	List<CodeActionKindDocumentation> documentation
 
@@ -2987,7 +2986,6 @@ class Command {
 	/**
 	 * An optional tooltip.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	String tooltip
 
@@ -3308,7 +3306,6 @@ class CompletionItemDefaults {
  * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
  * capability.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class CompletionApplyKind {
@@ -3406,7 +3403,6 @@ class CompletionList {
 	 * signals support for this via the {@link CompletionListCapabilities#applyKindSupport}
 	 * capability.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	CompletionApplyKind applyKind
 
@@ -3565,13 +3561,29 @@ class Diagnostic {
 		this.message = Preconditions.checkNotNull(message, 'message')
 	}
 
+	new(@NonNull Range range, @NonNull MarkupContent message) {
+		this.range = Preconditions.checkNotNull(range, 'range')
+		this.message = Preconditions.checkNotNull(message, 'message')
+	}
+
 	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source) {
 		this(range, message)
 		this.severity = severity
 		this.source = source
 	}
 
+	new(@NonNull Range range, @NonNull MarkupContent message, DiagnosticSeverity severity, String source) {
+		this(range, message)
+		this.severity = severity
+		this.source = source
+	}
+
 	new(@NonNull Range range, @NonNull String message, DiagnosticSeverity severity, String source, String code) {
+		this(range, message, severity, source)
+		this.code = code
+	}
+
+	new(@NonNull Range range, @NonNull MarkupContent message, DiagnosticSeverity severity, String source, String code) {
 		this(range, message, severity, source)
 		this.code = code
 	}
@@ -4306,7 +4318,6 @@ class DocumentRangeFormattingParams implements WorkDoneProgressParams {
  * The document ranges formatting request is sent from the client to the server to format
  * multiple ranges at once in a document.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class DocumentRangesFormattingParams implements WorkDoneProgressParams {
@@ -4352,7 +4363,6 @@ class DocumentRangeFormattingOptions extends AbstractWorkDoneProgressOptions {
 	/**
 	 * Whether the server supports formatting multiple ranges at once.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean rangesSupport
 }
@@ -4365,7 +4375,6 @@ class DocumentRangeFormattingRegistrationOptions extends AbstractTextDocumentReg
 	/**
 	 * Whether the server supports formatting multiple ranges at once.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean rangesSupport
 }
@@ -5848,7 +5857,6 @@ final class SemanticTokenTypes {
 	@ProtocolSince("3.17.0")
 	public static val Decorator = 'decorator'
 
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	public static val Label = 'label'
 
@@ -6209,14 +6217,12 @@ class ServerCapabilities {
 	/**
 	 * The server provides inline completions.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
 	 * Text document specific server capabilities.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	TextDocumentServerCapabilities textDocument
 
@@ -6247,7 +6253,6 @@ class WorkspaceServerCapabilities {
 	/**
 	 * Text document content provider options.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	TextDocumentContentRegistrationOptions textDocumentContent
 
@@ -6262,7 +6267,6 @@ class WorkspaceServerCapabilities {
 /**
  * Text document specific server capabilities.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentServerCapabilities {
@@ -6581,9 +6585,8 @@ class SignatureHelp {
 	 * defaults to 0 if the active signature has parameters. If
 	 * the active signature has no parameters it is ignored.
 	 * <p>
-	 * In future version of the protocol this property might become
-	 * mandatory to better express the active parameter if the
-	 * active signature does have any.
+	 * Since version 3.16.0 the {@link SignatureInformation} itself provides
+	 * {@code activeParameter} property and it should be used instead of this one.
 	 */
 	Integer activeParameter
 
@@ -7738,6 +7741,18 @@ class DocumentFilter {
 	new() {
 	}
 
+	new(String language, String scheme, String pattern) {
+		this.language = language
+		this.scheme = scheme
+		this.pattern = pattern
+	}
+
+	new(String language, String scheme, RelativePattern pattern) {
+		this.language = language
+		this.scheme = scheme
+		this.pattern = pattern
+	}
+
 	new(String language, String scheme, Either<String, RelativePattern> pattern) {
 		this.language = language
 		this.scheme = scheme
@@ -8026,7 +8041,6 @@ class ExecuteCommandRegistrationOptions extends ExecuteCommandOptions {
 /**
  * Additional data about a workspace edit.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class WorkspaceEditMetadata {
@@ -8060,7 +8074,6 @@ class ApplyWorkspaceEditParams {
 	/**
 	 * Additional data about the edit.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	WorkspaceEditMetadata metadata
 
@@ -10095,7 +10108,6 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	/**
 	 * Whether the client supports {@link MarkupContent} in diagnostic messages.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	Boolean markupMessageSupport
 
@@ -10115,7 +10127,6 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Server capabilities specific to the diagnostic pull model.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class DiagnosticServerCapabilities {
@@ -10788,6 +10799,18 @@ class NotebookDocumentFilter {
 
 	new() {
 	}
+
+	new(String notebookType, String scheme, String pattern) {
+		this.notebookType = notebookType
+		this.scheme = scheme
+		this.pattern = pattern
+	}
+
+	new(String notebookType, String scheme, RelativePattern pattern) {
+		this.notebookType = notebookType
+		this.scheme = scheme
+		this.pattern = pattern
+	}
 }
 
 /**
@@ -11241,7 +11264,6 @@ class NotebookDocumentIdentifier {
 /**
  * Describes kind of {@link StringValue}.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 final class StringValueKind {
 	/**
@@ -11262,7 +11284,6 @@ final class StringValueKind {
  * the end of the snippet. Variables are defined with `$name` and
  * `${name:default value}`.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class StringValue {
@@ -11292,7 +11313,6 @@ class StringValue {
 /**
  * Client capabilities specific to inline completions.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
@@ -11307,7 +11327,6 @@ class InlineCompletionCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Inline completion options used during static or dynamic registration.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrationAndWorkDoneProgressOptions {
@@ -11328,7 +11347,6 @@ class InlineCompletionRegistrationOptions extends AbstractTextDocumentRegistrati
 /**
  * A parameter literal used in inline completion requests.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressParams {
@@ -11352,7 +11370,6 @@ class InlineCompletionParams extends TextDocumentPositionAndWorkDoneProgressPara
  * Provides information about the context in which an inline completion was
  * requested.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionContext {
@@ -11394,7 +11411,6 @@ class InlineCompletionContext {
 /**
  * Describes the currently selected completion item.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class SelectedCompletionInfo {
@@ -11423,7 +11439,6 @@ class SelectedCompletionInfo {
 /**
  * Represents a collection of {@link InlineCompletionItem} to be presented in the editor.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionList {
@@ -11445,7 +11460,6 @@ class InlineCompletionList {
  * An inline completion item represents a text snippet that is proposed inline
  * to complete text that is being typed.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class InlineCompletionItem {
@@ -11492,7 +11506,6 @@ class InlineCompletionItem {
 /**
  * An interactive text edit.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class SnippetTextEdit {
@@ -11531,7 +11544,6 @@ class SnippetTextEdit {
 /**
  * Client capabilities for a text document content provider.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
@@ -11546,7 +11558,6 @@ class TextDocumentContentCapabilities extends DynamicRegistrationCapabilities {
 /**
  * Text document content provider registration options.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentRegistrationOptions {
@@ -11571,7 +11582,6 @@ class TextDocumentContentRegistrationOptions {
 /**
  * Parameters for the {@code workspace/textDocumentContent} request.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentParams {
@@ -11592,7 +11602,6 @@ class TextDocumentContentParams {
 /**
  * Result of the {@code workspace/textDocumentContent} request.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentResult {
@@ -11616,7 +11625,6 @@ class TextDocumentContentResult {
 /**
  * Parameters for the {@code workspace/textDocumentContent/refresh} request.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 @JsonRpcData
 class TextDocumentContentRefreshParams {

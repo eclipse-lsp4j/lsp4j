@@ -11,13 +11,11 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 /**
  * Code action tags are extra annotations that tweak the behavior of a code action.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 public enum CodeActionTag {
 	/**

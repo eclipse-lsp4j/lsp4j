@@ -101,7 +101,6 @@ import org.eclipse.lsp4j.adapters.InlineValueResponseAdapter;
 import org.eclipse.lsp4j.adapters.LocationLinkListAdapter;
 import org.eclipse.lsp4j.adapters.PrepareRenameResponseAdapter;
 import org.eclipse.lsp4j.adapters.SemanticTokensFullDeltaResponseAdapter;
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 import org.eclipse.lsp4j.jsonrpc.json.ResponseJsonAdapter;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -326,7 +325,6 @@ public interface TextDocumentService {
 	 * <p>
 	 * Registration Options: {@link org.eclipse.lsp4j.DocumentRangeFormattingRegistrationOptions}
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	@JsonRequest
 	default CompletableFuture<List<? extends TextEdit>> rangesFormatting(DocumentRangesFormattingParams params) {
@@ -705,7 +703,6 @@ public interface TextDocumentService {
 	 * Clients may choose to send information about the user’s current completion selection via context if completions are visible at
 	 * the same time. In this case, returned inline completions should extend the text of the provided completion.
 	 */
-	@ProtocolDraft
 	@ProtocolSince("3.18.0")
 	@JsonRequest
 	default CompletableFuture<Either<List<InlineCompletionItem>, InlineCompletionList>> inlineCompletion(InlineCompletionParams params) {

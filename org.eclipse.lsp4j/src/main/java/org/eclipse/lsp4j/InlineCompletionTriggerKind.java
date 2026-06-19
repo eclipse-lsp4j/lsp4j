@@ -11,13 +11,11 @@
  ******************************************************************************/
 package org.eclipse.lsp4j;
 
-import org.eclipse.lsp4j.jsonrpc.ProtocolDraft;
 import org.eclipse.lsp4j.jsonrpc.ProtocolSince;
 
 /**
  * Describes how an inline completion request was triggered.
  */
-@ProtocolDraft
 @ProtocolSince("3.18.0")
 public enum InlineCompletionTriggerKind {
 	/**

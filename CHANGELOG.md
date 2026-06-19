@@ -2,6 +2,8 @@
 
 ### Next Version number TBD (release date TBD)
 
+* Finalized support for LSP 3.18.0
+
 Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1> (Update with corresponding milestone number)
 
 Breaking API changes:
