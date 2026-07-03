@@ -14,6 +14,7 @@ package org.eclipse.lsp4j.test.services
 import com.google.gson.JsonObject
 import java.util.ArrayList
 import java.util.HashMap
+import org.eclipse.lsp4j.AnnotatedTextEdit
 import org.eclipse.lsp4j.ClientCapabilities
 import org.eclipse.lsp4j.CodeActionCapabilities
 import org.eclipse.lsp4j.CodeLens
@@ -26,7 +27,10 @@ import org.eclipse.lsp4j.CompletionItemCapabilities
 import org.eclipse.lsp4j.CompletionItemKind
 import org.eclipse.lsp4j.CompletionItemKindCapabilities
 import org.eclipse.lsp4j.CompletionList
+import org.eclipse.lsp4j.CreateFile
+import org.eclipse.lsp4j.CreateFileOptions
 import org.eclipse.lsp4j.DefinitionCapabilities
+import org.eclipse.lsp4j.DeleteFile
 import org.eclipse.lsp4j.Diagnostic
 import org.eclipse.lsp4j.DiagnosticSeverity
 import org.eclipse.lsp4j.DidChangeTextDocumentParams
@@ -51,14 +55,19 @@ import org.eclipse.lsp4j.Range
 import org.eclipse.lsp4j.RangeFormattingCapabilities
 import org.eclipse.lsp4j.ReferencesCapabilities
 import org.eclipse.lsp4j.RenameCapabilities
+import org.eclipse.lsp4j.RenameFile
+import org.eclipse.lsp4j.ResourceOperation
 import org.eclipse.lsp4j.ServerCapabilities
 import org.eclipse.lsp4j.SignatureHelpCapabilities
 import org.eclipse.lsp4j.SignatureInformationCapabilities
+import org.eclipse.lsp4j.SnippetTextEdit
+import org.eclipse.lsp4j.StringValue
 import org.eclipse.lsp4j.SymbolKind
 import org.eclipse.lsp4j.SymbolKindCapabilities
 import org.eclipse.lsp4j.SynchronizationCapabilities
 import org.eclipse.lsp4j.TextDocumentClientCapabilities
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent
+import org.eclipse.lsp4j.TextDocumentEdit
 import org.eclipse.lsp4j.TextDocumentIdentifier
 import org.eclipse.lsp4j.TextDocumentPositionParams
 import org.eclipse.lsp4j.TextEdit
@@ -531,6 +540,141 @@ class JsonSerializeTest {
 			        }
 			      ]
 			    }
+			  }
+			}
+		''')
+	}
+
+	@Test
+	def void testRenameResponse2() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = new WorkspaceEdit => [
+				documentChanges = newArrayList(
+					Either.forRight((new CreateFile => [
+						uri = "file:/foo.txt"
+						options = new CreateFileOptions => [
+							overwrite = true
+							ignoreIfExists = true
+						]
+					]) as ResourceOperation),
+					Either.forRight((new DeleteFile => [
+						uri = "file:/foo.txt"
+					]) as ResourceOperation),
+					Either.forRight((new RenameFile => [
+						oldUri = "file:/foo.txt"
+						newUri = "file:/bar.txt"
+					]) as ResourceOperation),
+					Either.forLeft(new TextDocumentEdit => [
+						textDocument = new VersionedTextDocumentIdentifier("file:/baz.txt", 17)
+						edits = newArrayList(
+							Either.forLeft(new TextEdit => [
+								range = new Range => [
+									start = new Position(3, 32)
+									end = new Position(3, 35)
+								]
+								newText = "asdfqweryxcv"
+							]),
+							Either.<TextEdit, SnippetTextEdit>forLeft(new AnnotatedTextEdit => [
+								annotationId = "123"
+								range = new Range => [
+									start = new Position(4, 22)
+									end = new Position(4, 25)
+								]
+								newText = "foobar"
+							]),
+							Either.forRight(new SnippetTextEdit => [
+								range = new Range => [
+									start = new Position(5, 33)
+									end = new Position(5, 37)
+								]
+								snippet = new StringValue => [
+									kind = "snippet"
+									value = "abra$0cadabra"
+								]
+							])
+						)
+					])
+				)
+			]
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": {
+			    "changes": {},
+			    "documentChanges": [
+			      {
+			        "uri": "file:/foo.txt",
+			        "options": {
+			          "overwrite": true,
+			          "ignoreIfExists": true
+			        },
+			        "kind": "create"
+			      },
+			      {
+			        "uri": "file:/foo.txt",
+			        "kind": "delete"
+			      },
+			      {
+			        "oldUri": "file:/foo.txt",
+			        "newUri": "file:/bar.txt",
+			        "kind": "rename"
+			      },
+			      {
+			        "textDocument": {
+			          "version": 17,
+			          "uri": "file:/baz.txt"
+			        },
+			        "edits": [
+			          {
+			            "range": {
+			              "start": {
+			                "line": 3,
+			                "character": 32
+			              },
+			              "end": {
+			                "line": 3,
+			                "character": 35
+			              }
+			            },
+			            "newText": "asdfqweryxcv"
+			          },
+			          {
+			            "annotationId": "123",
+			            "range": {
+			              "start": {
+			                "line": 4,
+			                "character": 22
+			              },
+			              "end": {
+			                "line": 4,
+			                "character": 25
+			              }
+			            },
+			            "newText": "foobar"
+			          },
+			          {
+			            "range": {
+			              "start": {
+			                "line": 5,
+			                "character": 33
+			              },
+			              "end": {
+			                "line": 5,
+			                "character": 37
+			              }
+			            },
+			            "snippet": {
+			              "kind": "snippet",
+			              "value": "abra$0cadabra"
+			            }
+			          }
+			        ]
+			      }
+			    ]
 			  }
 			}
 		''')

@@ -26,10 +26,13 @@ import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.TextEditListAdapter
+import org.eclipse.lsp4j.adapters.TextEditTypeAdapter
 import org.eclipse.lsp4j.adapters.VersionedTextDocumentIdentifierTypeAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceDocumentDiagnosticReportListAdapter
 import org.eclipse.lsp4j.adapters.WorkspaceSymbolLocationTypeAdapter
 import org.eclipse.lsp4j.generator.JsonRpcData
+import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
+import org.eclipse.lsp4j.jsonrpc.ProtocolSince
 import org.eclipse.lsp4j.jsonrpc.json.adapters.JsonElementTypeAdapter
 import org.eclipse.lsp4j.jsonrpc.messages.Either
 import org.eclipse.lsp4j.jsonrpc.messages.Either3
@@ -37,8 +40,6 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode
 import org.eclipse.lsp4j.jsonrpc.messages.Tuple
 import org.eclipse.lsp4j.jsonrpc.util.Preconditions
 import org.eclipse.lsp4j.jsonrpc.validation.NonNull
-import org.eclipse.lsp4j.jsonrpc.ProtocolDeprecated
-import org.eclipse.lsp4j.jsonrpc.ProtocolSince
 
 @JsonRpcData
 class DynamicRegistrationCapabilities {
@@ -7184,6 +7185,7 @@ class CompletionContext {
  * A textual edit applicable to a text document.
  */
 @JsonRpcData
+@JsonAdapter(TextEditTypeAdapter)
 class TextEdit {
 	/**
 	 * The range of the text document to be manipulated. To insert text into a document create a range where start === end.

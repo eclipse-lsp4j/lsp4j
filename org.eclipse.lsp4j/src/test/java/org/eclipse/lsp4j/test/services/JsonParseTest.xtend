@@ -18,6 +18,7 @@ import java.util.ArrayList
 import java.util.Collection
 import java.util.HashMap
 import java.util.List
+import org.eclipse.lsp4j.AnnotatedTextEdit
 import org.eclipse.lsp4j.ClientCapabilities
 import org.eclipse.lsp4j.CodeAction
 import org.eclipse.lsp4j.CodeActionCapabilities
@@ -810,7 +811,7 @@ class JsonParseTest {
 	}
 
 	@Test
-	def void testRenameResponse3() {
+	def void testRenameResponse2() {
 		jsonHandler.methodProvider = [ id |
 			switch id {
 				case '12': MessageMethods.DOC_RENAME
@@ -857,6 +858,20 @@ class JsonParseTest {
 										}
 									},
 									"newText": "asdfqweryxcv"
+								},
+								{
+									"annotationId": "123",
+									"range": {
+										"start": {
+											"character": 22,
+											"line": 4
+										},
+										"end": {
+											"character": 25,
+											"line": 4
+										}
+									},
+									"newText": "foobar"
 								},
 								{
 									"range": {
@@ -907,6 +922,14 @@ class JsonParseTest {
 									end = new Position(3, 35)
 								]
 								newText = "asdfqweryxcv"
+							]),
+							Either.<TextEdit, SnippetTextEdit>forLeft(new AnnotatedTextEdit => [
+								annotationId = "123"
+								range = new Range => [
+									start = new Position(4, 22)
+									end = new Position(4, 25)
+								]
+								newText = "foobar"
 							]),
 							Either.forRight(new SnippetTextEdit => [
 								range = new Range => [
