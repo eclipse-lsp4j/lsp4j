@@ -41,6 +41,10 @@ import org.eclipse.lsp4j.HoverCapabilities
 import org.eclipse.lsp4j.ImplementationCapabilities
 import org.eclipse.lsp4j.InitializeParams
 import org.eclipse.lsp4j.InitializeResult
+import org.eclipse.lsp4j.InlineValue
+import org.eclipse.lsp4j.InlineValueEvaluatableExpression
+import org.eclipse.lsp4j.InlineValueText
+import org.eclipse.lsp4j.InlineValueVariableLookup
 import org.eclipse.lsp4j.MarkupContent
 import org.eclipse.lsp4j.MarkupKind
 import org.eclipse.lsp4j.OnTypeFormattingCapabilities
@@ -959,4 +963,116 @@ class JsonSerializeTest {
 		''')
 	}
 	
+
+	@Test
+	def void testInlineValueResponse1() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(new InlineValue(
+				new InlineValueText => [
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+					text = "foo"
+				]
+			))
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": [
+			    {
+			      "range": {
+			        "start": {
+			          "line": 4,
+			          "character": 22
+			        },
+			        "end": {
+			          "line": 4,
+			          "character": 25
+			        }
+			      },
+			      "text": "foo"
+			    }
+			  ]
+			}
+		''')
+	}
+
+	@Test
+	def void testInlineValueResponse2() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(new InlineValue(
+				new InlineValueVariableLookup => [
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+					caseSensitiveLookup = false
+				]
+			))
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": [
+			    {
+			      "range": {
+			        "start": {
+			          "line": 4,
+			          "character": 22
+			        },
+			        "end": {
+			          "line": 4,
+			          "character": 25
+			        }
+			      },
+			      "caseSensitiveLookup": false
+			    }
+			  ]
+			}
+		''')
+	}
+
+	@Test
+	def void testInlineValueResponse3() {
+		val message = new ResponseMessage => [
+			jsonrpc = "2.0"
+			id = "12"
+			result = newArrayList(new InlineValue(
+				new InlineValueEvaluatableExpression => [
+					range = new Range => [
+						start = new Position(4, 22)
+						end = new Position(4, 25)
+					]
+				]
+			))
+		]
+		message.assertSerialize('''
+			{
+			  "jsonrpc": "2.0",
+			  "id": "12",
+			  "result": [
+			    {
+			      "range": {
+			        "start": {
+			          "line": 4,
+			          "character": 22
+			        },
+			        "end": {
+			          "line": 4,
+			          "character": 25
+			        }
+			      }
+			    }
+			  ]
+			}
+		''')
+	}
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import org.eclipse.lsp4j.InlineValue;
 import org.eclipse.lsp4j.InlineValueEvaluatableExpression;
+import org.eclipse.lsp4j.InlineValueText;
 import org.eclipse.lsp4j.InlineValueVariableLookup;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.CollectionTypeAdapter;
 import org.eclipse.lsp4j.jsonrpc.json.adapters.EitherTypeAdapter;
@@ -40,7 +41,21 @@ public class InlineValueResponseAdapter implements TypeAdapterFactory {
 		final var secondChecker = new PropertyChecker("caseSensitiveLookup");
 		final var thirdChecker = new PropertyChecker("range");
 		final var elementTypeAdapter = new EitherTypeAdapter<>(gson, ELEMENT_TYPE, firstChecker, secondChecker.or(thirdChecker),
-						null, new EitherTypeAdapter<>(gson, R_ELEMENT_TYPE, secondChecker, thirdChecker));
+						null, new EitherTypeAdapter<>(gson, R_ELEMENT_TYPE, secondChecker, thirdChecker)) {
+
+			@Override
+			protected InlineValue createLeft(InlineValueText obj) {
+				return new InlineValue(obj);
+			}
+
+			@Override
+			protected InlineValue createRight(Either<InlineValueVariableLookup, InlineValueEvaluatableExpression> obj) {
+				if (obj.isLeft()) {
+					return new InlineValue(obj.getLeft());
+				}
+				return new InlineValue(obj.getRight());
+			}
+		};
 		return (TypeAdapter<T>) new CollectionTypeAdapter<>(gson, ELEMENT_TYPE.getType(), elementTypeAdapter, ArrayList::new);
 	}
 }
