@@ -118,25 +118,37 @@ public class MessageJsonHandler {
 
 	public Message parseMessage(Reader input) throws JsonParseException {
 		JsonReader jsonReader = new JsonReader(input);
-		Message message = gson.fromJson(jsonReader, Message.class);
+		Message message;
+		try {
+			message = gson.fromJson(jsonReader, Message.class);
+		} catch (MessageIssueException e) {
+			if (e.getIssues().stream().anyMatch(issue -> issue.getIssueCode() == ResponseErrorCode.InvalidParams.getValue())) {
+				// The envelope was read, but typed parameter conversion failed. Invalid trailing
+				// input still takes precedence as a JSON parse error.
+				checkFullyConsumed(jsonReader, e.getRpcMessage());
+			}
+			throw e;
+		}
 
 		if (message != null) {
 			message.setJsonHandler(this);
-
-			// Check whether the input has been fully consumed
-			try {
-				if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
-					final var issue = new MessageIssue("JSON document was not fully consumed.", ResponseErrorCode.ParseError.getValue());
-					throw new MessageIssueException(message, issue);
-				}
-			} catch (MalformedJsonException e) {
-				final var issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), e);
-				throw new MessageIssueException(message, issue);
-			} catch (IOException e) {
-				throw new JsonIOException(e);
-			}
+			checkFullyConsumed(jsonReader, message);
 		}
 		return message;
+	}
+
+	private void checkFullyConsumed(JsonReader jsonReader, Message message) {
+		try {
+			if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
+				final var issue = new MessageIssue("JSON document was not fully consumed.", ResponseErrorCode.ParseError.getValue());
+				throw new MessageIssueException(message, issue);
+			}
+		} catch (MalformedJsonException e) {
+			final var issue = new MessageIssue("Message could not be parsed.", ResponseErrorCode.ParseError.getValue(), e);
+			throw new MessageIssueException(message, issue);
+		} catch (IOException e) {
+			throw new JsonIOException(e);
+		}
 	}
 
 	public String serialize(Message message) {
