@@ -55,7 +55,7 @@ jobs:
 
 
     - name: "Install: JDKs for building and testing"
-      uses: actions/setup-java@v5  # https://github.com/actions/setup-java
+      uses: actions/setup-java@v6  # https://github.com/actions/setup-java
       with:
         distribution: temurin
         java-version: |
