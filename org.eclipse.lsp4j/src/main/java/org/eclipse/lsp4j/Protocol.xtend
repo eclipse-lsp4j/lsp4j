@@ -23,6 +23,7 @@ import org.eclipse.lsp4j.adapters.DocumentChangeListAdapter
 import org.eclipse.lsp4j.adapters.HoverTypeAdapter
 import org.eclipse.lsp4j.adapters.InitializeParamsTypeAdapter
 import org.eclipse.lsp4j.adapters.ProgressNotificationAdapter
+import org.eclipse.lsp4j.adapters.RelatedDocumentsMapAdapter
 import org.eclipse.lsp4j.adapters.ResourceOperationTypeAdapter
 import org.eclipse.lsp4j.adapters.SymbolInformationTypeAdapter
 import org.eclipse.lsp4j.adapters.TextEditListAdapter
@@ -10350,6 +10351,7 @@ class RelatedFullDocumentDiagnosticReport extends FullDocumentDiagnosticReport {
 	 * such a language is C/C++ where marco definitions in a file
 	 * a.cpp and result in errors in a header file b.hpp.
 	 */
+	@JsonAdapter(RelatedDocumentsMapAdapter)
 	Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments
 
 	new() {
@@ -10373,6 +10375,7 @@ class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnost
 	 * such a language is C/C++ where marco definitions in a file
 	 * a.cpp and result in errors in a header file b.hpp.
 	 */
+	@JsonAdapter(RelatedDocumentsMapAdapter)
 	Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments
 
 	new() {
@@ -10390,6 +10393,7 @@ class RelatedUnchangedDocumentDiagnosticReport extends UnchangedDocumentDiagnost
 @JsonRpcData
 class DocumentDiagnosticReportPartialResult {
 	@NonNull
+	@JsonAdapter(RelatedDocumentsMapAdapter)
 	Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments
 
 	new(@NonNull Map<String, Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> relatedDocuments) {
