@@ -36,7 +36,7 @@ import com.google.gson.stream.JsonWriter;
 public class RelatedDocumentsMapAdapter implements TypeAdapterFactory {
 
 	private static final TypeToken<Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>> ELEMENT_TYPE
-			= new TypeToken<Either<FullDocumentDiagnosticReport, UnchangedDocumentDiagnosticReport>>() {};
+			= new TypeToken<>() {};
 
 	@SuppressWarnings("unchecked")
 	@Override
