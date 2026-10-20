@@ -22,5 +22,5 @@ ext.versions = [
 
 	'websocket_jakarta': '2.0.0',
 	'junit': '4.13.2',
-	'archunit': '1.2.1'
+	'archunit': '1.5.1'
 ]
