@@ -30,7 +30,7 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
-        name: Event File
+        name: event-file
         path: ${{ github.event_path }}
 
   ###########################################################
@@ -71,7 +71,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
-        name: Test Results ${{ matrix.os }}
+        name: test-results-${{ matrix.os }}
         if-no-files-found: warn
         path: |
           ${{ github.workspace }}/**/build/test-results/**/*.xml
