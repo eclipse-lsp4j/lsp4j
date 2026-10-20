@@ -41,6 +41,8 @@ java {
 tasks.withType(Javadoc) {
 	options.addStringOption('Xdoclint:none', '-quiet')
 	options.encoding = 'UTF-8'
+	// JDK convention tag that javadoc does not define by default
+	options.tags('implNote:a:Implementation Note:')
 }
 
 tasks.withType(JavaCompile) {
