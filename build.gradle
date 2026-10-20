@@ -17,7 +17,7 @@ buildscript {
 	repositories {
 		mavenCentral()
 		maven {
-			url "https://plugins.gradle.org/m2/"
+			url = "https://plugins.gradle.org/m2/"
 		}
 	}
 	dependencies {
@@ -35,6 +35,8 @@ subprojects {
 
 	group = 'org.eclipse.lsp4j'
 	version = rootProject.version
+	ext.versions = rootProject.versions
+	ext.buildTime = rootProject.buildTime
 
 	apply plugin: 'eclipse'
 	apply plugin: 'java-library'
@@ -186,7 +188,7 @@ subprojects {
 }
 
 task clean(type: Delete) {
-	group 'Build'
-	description 'Deletes the local repositories'
+	group = 'Build'
+	description = 'Deletes the local repositories'
 	delete 'build'
 }
