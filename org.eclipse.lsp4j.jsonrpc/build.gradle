@@ -22,9 +22,13 @@ dependencies {
 	testImplementation "junit:junit:$versions.junit"
 }
 
-jar.bundle.bnd(
-	'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
-)
+tasks.named('jar') {
+	bundle {
+		bnd(
+			'Import-Package': "com.google.gson.*;version=\"$versions.gson\",*"
+		)
+	}
+}
 
 // Add, for example, -PjmhIncludes=StreamMessageProducerBenchmark, to command line
 // to only run that one benchmark
