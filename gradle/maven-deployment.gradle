@@ -88,7 +88,7 @@ publishing {
     }
 	repositories {
 		maven {
-			url = "$rootProject.buildDir/maven-repository"
+			url = rootProject.layout.buildDirectory.dir('maven-repository')
 		}
 	}
 }
