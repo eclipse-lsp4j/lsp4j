@@ -18,13 +18,17 @@ else if (baseVersion.split('\\.').length == 4)
 	baseVersion = baseVersion.substring(0, baseVersion.lastIndexOf('.'))
 def qualifiedVersion = baseVersion + '.v' + buildTime
 
-jar.bundle.bnd (
-	'Bundle-Version': qualifiedVersion,
-	'Bundle-Vendor': 'Eclipse LSP4J',
-	'Bundle-RequiredExecutionEnvironment': "JavaSE-${versions.java}",
-	"-exportcontents": "org.eclipse.lsp4j.*",
-	"-savemanifest": "build/tmp/bnd/MANIFEST.MF",
-)
+tasks.named('jar') {
+	bundle {
+		bnd(
+			'Bundle-Version': qualifiedVersion,
+			'Bundle-Vendor': 'Eclipse LSP4J',
+			'Bundle-RequiredExecutionEnvironment': "JavaSE-${versions.java}",
+			"-exportcontents": "org.eclipse.lsp4j.*",
+			"-savemanifest": "build/tmp/bnd/MANIFEST.MF",
+		)
+	}
+}
 
 //------------------------------------------------------
 // Generate a manifest for the source bundle
