@@ -30,6 +30,9 @@ jar.bundle.bnd (
 // Generate a manifest for the source bundle
 
 def sourcesManifestFile = "$buildDir/tmp/sourcesJar/MANIFEST.MF"
+def projectName = project.name
+// Lazy, because the title is set by the project's build.gradle, which runs after this script
+def sourcesBundleName = provider { project.hasProperty('title') ? "${project.title} Sources" : 'Sources' }
 
 task genSourcesManifest {
 	outputs.file(sourcesManifestFile)
@@ -39,14 +42,11 @@ task genSourcesManifest {
 		def writer = new PrintWriter(f)
 		writer.println("Manifest-Version: 1.0")
 		writer.println("Bundle-ManifestVersion: 2")
-		writer.println("Bundle-SymbolicName: ${project.name}.source")
+		writer.println("Bundle-SymbolicName: ${projectName}.source")
 		writer.println("Bundle-Version: ${qualifiedVersion}")
-		if (project.hasProperty('title'))
-			writer.println("Bundle-Name: ${project.title} Sources")
-		else
-			writer.println("Bundle-Name: Sources")
+		writer.println("Bundle-Name: ${sourcesBundleName.get()}")
 		writer.println("Bundle-Vendor: Eclipse LSP4J")
-		writer.println("Eclipse-SourceBundle: ${project.name};version=\"${qualifiedVersion}\"")
+		writer.println("Eclipse-SourceBundle: ${projectName};version=\"${qualifiedVersion}\"")
 		writer.close()
 	}
 }
