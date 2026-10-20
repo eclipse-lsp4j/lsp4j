@@ -31,7 +31,7 @@ import org.eclipse.lsp4j.jsonrpc.util.LimitedInputStream;
 /**
  * A message producer that reads from an input stream and parses messages from JSON.
  */
-public class StreamMessageProducer implements MessageProducer, Closeable, MessageConstants {
+public class StreamMessageProducer implements MessageProducer, MessageConstants {
 
 	private static final Logger LOG = Logger.getLogger(StreamMessageProducer.class.getName());
 
@@ -204,8 +204,9 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 	}
 
 	@Override
-	public void close() {
+	public void close() throws IOException {
 		keepRunning = false;
+        input.close();
 	}
 
 }
