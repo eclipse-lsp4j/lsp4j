@@ -29,15 +29,15 @@ jar.bundle.bnd (
 //------------------------------------------------------
 // Generate a manifest for the source bundle
 
-def sourcesManifestFile = "$buildDir/tmp/sourcesJar/MANIFEST.MF"
+def sourcesManifestFile = layout.buildDirectory.file('tmp/sourcesJar/MANIFEST.MF')
 def projectName = project.name
 // Lazy, because the title is set by the project's build.gradle, which runs after this script
 def sourcesBundleName = provider { project.hasProperty('title') ? "${project.title} Sources" : 'Sources' }
 
-task genSourcesManifest {
+def genSourcesManifest = tasks.register('genSourcesManifest') {
 	outputs.file(sourcesManifestFile)
 	doLast {
-		def f = new File(sourcesManifestFile)
+		def f = sourcesManifestFile.get().asFile
 		f.parentFile.mkdirs()
 		def writer = new PrintWriter(f)
 		writer.println("Manifest-Version: 1.0")
@@ -51,7 +51,7 @@ task genSourcesManifest {
 	}
 }
 
-sourcesJar {
+tasks.named('sourcesJar') {
 	dependsOn genSourcesManifest
 	inputs.file(sourcesManifestFile)
 	manifest {
@@ -62,10 +62,12 @@ sourcesJar {
 //------------------------------------------------------
 // Task to copy the generated manifest into the project
 
-task eclipseManifest(type: Copy) {
+def eclipseManifest = tasks.register('eclipseManifest', Copy) {
 	dependsOn(jar)
-    from "$buildDir/tmp/bnd/MANIFEST.MF"
+    from layout.buildDirectory.file('tmp/bnd/MANIFEST.MF')
     into 'META-INF'
 }
 
-tasks['eclipse'].dependsOn(eclipseManifest)
+tasks.named('eclipse') {
+	dependsOn(eclipseManifest)
+}

@@ -49,14 +49,16 @@ tasks.withType(JavaCompile) {
     options.release = versions.java as Integer
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+def sourcesJar = tasks.register('sourcesJar', Jar) {
+	dependsOn classes
 	group = 'Build'
 	description = 'Assembles a jar archive containing the sources.'
 	archiveClassifier = 'sources'
 	from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+def javadocJar = tasks.register('javadocJar', Jar) {
+	dependsOn javadoc
 	group = 'Build'
 	description = 'Assembles a jar archive containing the JavaDoc output.'
 	archiveClassifier = 'javadoc'
@@ -97,7 +99,10 @@ ext.signMethod = { jarfile, workingDir ->
 	}
 }
 
-task signJar(description: 'Sign JARs with Eclipse Signing Service', group: 'Build'){
+tasks.register('signJar') {
+	description = 'Sign JARs with Eclipse Signing Service'
+	group = 'Build'
+	dependsOn jar, sourcesJar, javadocJar
 	// Resolved while configuring: task actions must not reach the project
 	def buildDir = layout.buildDirectory
 	def jarName = "${project.name}-${project.version}"
@@ -109,9 +114,10 @@ task signJar(description: 'Sign JARs with Eclipse Signing Service', group: 'Buil
 		sign("${dir}/libs/${jarName}-javadoc.jar", dir)
 	}
 }
-signJar.dependsOn jar, sourcesJar, javadocJar
 
-assemble.dependsOn sourcesJar, javadocJar
+tasks.named('assemble') {
+	dependsOn sourcesJar, javadocJar
+}
 
 if (findProperty('ignoreTestFailures') == 'true') {
 	tasks.withType(Test) {
