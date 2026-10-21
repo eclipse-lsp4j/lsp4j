@@ -276,6 +276,22 @@
 					<groupId>org.eclipse.xtext</groupId>
 					<artifactId>xtend-maven-plugin</artifactId>
 					<version>${xtend-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>xtend-compile</id>
+							<goals>
+								<goal>compile</goal>
+								<goal>xtend-install-debug-info</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>xtend-test-compile</id>
+							<goals>
+								<goal>testCompile</goal>
+								<goal>xtend-test-install-debug-info</goal>
+							</goals>
+						</execution>
+					</executions>
 					<configuration>
 						<!-- The generated Java code is written next to the sources, like in the IDE -->
 						<outputDirectory>${project.basedir}/src/main/xtend-gen</outputDirectory>
