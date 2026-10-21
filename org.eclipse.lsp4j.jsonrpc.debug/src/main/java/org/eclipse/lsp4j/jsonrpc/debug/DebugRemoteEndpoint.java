@@ -11,35 +11,60 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.debug;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
+import org.eclipse.lsp4j.jsonrpc.JsonRpcRequestFuture;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugRequestMessage;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugResponseMessage;
+import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 
+/**
+ * A {@link RemoteEndpoint} for the Debug Adapter Protocol, which requires the {@code seq} of each message
+ * that an endpoint sends to be one greater than the {@code seq} of the message it sent before.
+ * <p>
+ * A notification or a response takes its {@code seq} when it is sent, and a request takes it when it is
+ * created, since {@link RemoteEndpoint} records the request by its {@code seq} before sending it. Either
+ * way, no other message is sent in between, so messages that several threads send at once still go out
+ * in {@code seq} order.
+ */
 public class DebugRemoteEndpoint extends RemoteEndpoint {
-	private final AtomicInteger nextSeqId = new AtomicInteger();
+	private final SequencingMessageConsumer sequencer;
 
 	public DebugRemoteEndpoint(MessageConsumer out, Endpoint localEndpoint) {
-		super(out, localEndpoint);
+		this(new SequencingMessageConsumer(out), localEndpoint, DEFAULT_EXCEPTION_HANDLER);
 	}
 
 	public DebugRemoteEndpoint(MessageConsumer out, Endpoint localEndpoint,
 			Function<Throwable, ResponseError> exceptionHandler) {
-		super(out, localEndpoint, exceptionHandler);
+		this(new SequencingMessageConsumer(out), localEndpoint, exceptionHandler);
+	}
+
+	private DebugRemoteEndpoint(SequencingMessageConsumer sequencer, Endpoint localEndpoint,
+			Function<Throwable, ResponseError> exceptionHandler) {
+		super(sequencer, localEndpoint, exceptionHandler);
+		this.sequencer = sequencer;
+	}
+
+	@Override
+	public JsonRpcRequestFuture<Object> request(String method, Object parameter) {
+		// The request takes its seq when it is created, so no other message may take one until it has been sent
+		synchronized (sequencer) {
+			return super.request(method, parameter);
+		}
 	}
 
 	@Override
 	protected DebugRequestMessage createRequestMessage(String method, Object parameter) {
 		DebugRequestMessage requestMessage = new DebugRequestMessage();
 		requestMessage.setJsonHandler(getJsonHandler());
-		requestMessage.setId(nextSeqId.incrementAndGet());
+		requestMessage.setId(sequencer.nextSeq());
 		requestMessage.setMethod(method);
 		requestMessage.setParams(parameter);
 		return requestMessage;
@@ -47,9 +72,9 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 
 	@Override
 	protected DebugResponseMessage createResponseMessage(RequestMessage requestMessage) {
+		// The sequencer sets the seq of the response when it sends it
 		DebugResponseMessage responseMessage = new DebugResponseMessage();
 		responseMessage.setJsonHandler(getJsonHandler());
-		responseMessage.setResponseId(nextSeqId.incrementAndGet());
 		responseMessage.setRawId(requestMessage.getRawId());
 		responseMessage.setMethod(requestMessage.getMethod());
 		return responseMessage;
@@ -57,11 +82,40 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 
 	@Override
 	protected DebugNotificationMessage createNotificationMessage(String method, Object parameter) {
+		// The sequencer sets the seq of the notification when it sends it
 		DebugNotificationMessage notificationMessage = new DebugNotificationMessage();
 		notificationMessage.setJsonHandler(getJsonHandler());
-		notificationMessage.setId(nextSeqId.incrementAndGet());
 		notificationMessage.setMethod(method);
 		notificationMessage.setParams(parameter);
 		return notificationMessage;
+	}
+
+	/**
+	 * Sends the messages of a {@link DebugRemoteEndpoint} one at a time, and gives each notification and
+	 * response the next {@code seq} as it sends it.
+	 */
+	private static class SequencingMessageConsumer implements MessageConsumer {
+		private final MessageConsumer out;
+
+		// The seq of the last message, guarded by this
+		private int seq;
+
+		SequencingMessageConsumer(MessageConsumer out) {
+			this.out = Objects.requireNonNull(out, "out");
+		}
+
+		synchronized int nextSeq() {
+			return ++seq;
+		}
+
+		@Override
+		public synchronized void consume(Message message) {
+			if (message instanceof DebugNotificationMessage) {
+				((DebugNotificationMessage) message).setId(nextSeq());
+			} else if (message instanceof DebugResponseMessage) {
+				((DebugResponseMessage) message).setResponseId(nextSeq());
+			}
+			out.consume(message);
+		}
 	}
 }

@@ -16,16 +16,22 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.debug.DebugRemoteEndpoint;
+import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
+import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugRequestMessage;
+import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugResponseMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
@@ -68,6 +74,56 @@ public class DebugRemoteEndpointTest {
 		@Override
 		public void consume(Message message) {
 			messages.add(message);
+		}
+
+	}
+
+	/**
+	 * Answers each request at once.
+	 */
+	static class AnsweringEndpoint implements Endpoint {
+
+		@Override
+		public void notify(String method, Object parameter) {
+		}
+
+		@Override
+		public CompletableFuture<?> request(String method, Object parameter) {
+			return CompletableFuture.completedFuture("success");
+		}
+
+	}
+
+	/**
+	 * Records the seq of each message it is given. It holds the first message until it is given another one,
+	 * or for half a second, so that an endpoint that does not send its messages in seq order sends the other
+	 * one meanwhile.
+	 */
+	static class SeqRecordingConsumer implements MessageConsumer {
+
+		List<String> seqs = Collections.synchronizedList(new ArrayList<>());
+		CompletableFuture<Void> firstMessage = new CompletableFuture<>();
+		CompletableFuture<Void> secondMessage = new CompletableFuture<>();
+
+		@Override
+		public void consume(Message message) {
+			if (firstMessage.complete(null)) {
+				secondMessage.completeOnTimeout(null, 500, TimeUnit.MILLISECONDS).join();
+				seqs.add(seq(message));
+			} else {
+				seqs.add(seq(message));
+				secondMessage.complete(null);
+			}
+		}
+
+		private static String seq(Message message) {
+			if (message instanceof DebugRequestMessage) {
+				return ((DebugRequestMessage) message).getId();
+			} else if (message instanceof DebugNotificationMessage) {
+				return ((DebugNotificationMessage) message).getId();
+			} else {
+				return ((DebugResponseMessage) message).getResponseId();
+			}
 		}
 
 	}
@@ -126,6 +182,51 @@ public class DebugRemoteEndpointTest {
 		assertEquals(error.getCode(), ResponseErrorCode.RequestCancelled.getValue());
 		assertEquals(error.getMessage(), "The request (id: 1, method: 'foo') has been cancelled");
 
+	}
+
+	@Test public void testNotificationAndRequestAreSentInSeqOrder() throws Exception {
+		assertSentInSeqOrder(DebugRemoteEndpointTest::sendNotification, DebugRemoteEndpointTest::sendRequest);
+	}
+
+	@Test public void testRequestAndResponseAreSentInSeqOrder() throws Exception {
+		assertSentInSeqOrder(DebugRemoteEndpointTest::sendRequest, DebugRemoteEndpointTest::sendResponse);
+	}
+
+	@Test public void testResponseAndNotificationAreSentInSeqOrder() throws Exception {
+		assertSentInSeqOrder(DebugRemoteEndpointTest::sendResponse, DebugRemoteEndpointTest::sendNotification);
+	}
+
+	/**
+	 * Sends the second message from this thread while another thread is sending the first one, which has
+	 * taken seq 1 by then.
+	 */
+	private static void assertSentInSeqOrder(Consumer<RemoteEndpoint> first, Consumer<RemoteEndpoint> second) throws Exception {
+		final var consumer = new SeqRecordingConsumer();
+		final var endpoint = new DebugRemoteEndpoint(consumer, new AnsweringEndpoint());
+
+		final var firstSent = CompletableFuture.runAsync(() -> first.accept(endpoint));
+		consumer.firstMessage.get(5, TimeUnit.SECONDS);
+		second.accept(endpoint);
+		firstSent.get(5, TimeUnit.SECONDS);
+
+		assertEquals(List.of("1", "2"), consumer.seqs);
+	}
+
+	private static void sendRequest(RemoteEndpoint endpoint) {
+		endpoint.request("foo", "myparam");
+	}
+
+	private static void sendNotification(RemoteEndpoint endpoint) {
+		endpoint.notify("foo", "myparam");
+	}
+
+	private static void sendResponse(RemoteEndpoint endpoint) {
+		// AnsweringEndpoint answers the request at once, on this thread
+		endpoint.consume(new DebugRequestMessage() {{
+			setId(7);
+			setMethod("foo");
+			setParams("myparam");
+		}});
 	}
 
 }
