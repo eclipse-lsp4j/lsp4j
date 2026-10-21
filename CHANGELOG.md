@@ -8,6 +8,8 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1> (Up
 
 Breaking API changes:
 
+  * Removed the previously proposed (`@ProtocolDraft`) `ServerCapabilities.textDocument`, `TextDocumentServerCapabilities` and `DiagnosticServerCapabilities`, which are not part of the final LSP 3.18.0 specification
+
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
 ### [v1.0.0 (Feb 2026)](https://github.com/eclipse-lsp4j/lsp4j/releases/tag/v1.0.0)

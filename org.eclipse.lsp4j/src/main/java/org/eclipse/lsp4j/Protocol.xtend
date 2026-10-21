@@ -2717,11 +2717,6 @@ class CodeActionContext {
 	 * for the given range. There is no guarantee that these accurately reflect the
 	 * error state of the resource. The primary parameter to compute code actions
 	 * is the provided range.
-	 * <p>
-	 * Note that the client should check the {@link DiagnosticServerCapabilities#markupMessageSupport}
-	 * server capability before sending diagnostics with markup messages to a server.
-	 * Diagnostics with markup messages should be excluded for servers that do not
-	 * support them.
 	 */
 	@NonNull
 	List<Diagnostic> diagnostics
@@ -6223,12 +6218,6 @@ class ServerCapabilities {
 	Either<Boolean, InlineCompletionRegistrationOptions> inlineCompletionProvider
 
 	/**
-	 * Text document specific server capabilities.
-	 */
-	@ProtocolSince("3.18.0")
-	TextDocumentServerCapabilities textDocument
-
-	/**
 	 * Experimental server capabilities.
 	 */
 	@JsonAdapter(JsonElementTypeAdapter.Factory)
@@ -6263,22 +6252,6 @@ class WorkspaceServerCapabilities {
 
 	new(WorkspaceFoldersOptions workspaceFolders) {
 		this.workspaceFolders = workspaceFolders
-	}
-}
-
-/**
- * Text document specific server capabilities.
- */
-@ProtocolSince("3.18.0")
-@JsonRpcData
-class TextDocumentServerCapabilities {
-
-	/**
-	 * Capabilities specific to the diagnostic pull model.
-	 */
-	DiagnosticServerCapabilities diagnostic
-
-	new() {
 	}
 }
 
@@ -10124,22 +10097,6 @@ class DiagnosticCapabilities extends DynamicRegistrationCapabilities {
 	new(Boolean dynamicRegistration, Boolean relatedDocumentSupport) {
 		this(dynamicRegistration)
 		this.relatedDocumentSupport = relatedDocumentSupport
-	}
-}
-
-/**
- * Server capabilities specific to the diagnostic pull model.
- */
-@ProtocolSince("3.18.0")
-@JsonRpcData
-class DiagnosticServerCapabilities {
-
-	/**
-	 * Whether the server supports {@link MarkupContent} in diagnostic messages.
-	 */
-	Boolean markupMessageSupport
-
-	new() {
 	}
 }
 
