@@ -3,36 +3,33 @@
 The org.eclipse.lsp4j.jsonrpc project comes with some [JMH](https://github.com/openjdk/jmh) based benchmarks.
 This are useful to perform analysis when doing micro-optimization of the JSON-RPC implementation.
 
+The benchmarks are not part of the published artifacts, they are only compiled when the `jmh` profile is active.
+
 ## Running Benchmarks
 
-At the command line run `./gradlew jmh` to run the benchmarks.
-A lot of output, including results and caveats from JMH, is provided.
-Additionally, the result summaries are written to `org.eclipse.lsp4j.jsonrpc/build/results/jmh/results.txt`
+At the command line run
 
-See the [JMH Gradle Plug-in readme](https://github.com/melix/jmh-gradle-plugin?tab=readme-ov-file#readme) and the [OpenJDK JMH readme](https://github.com/openjdk/jmh) for more details on how best to use JMH.
+```sh
+./mvnw -pl org.eclipse.lsp4j.jsonrpc -Pjmh compile exec:java
+```
+
+A lot of output, including results and caveats from JMH, is provided.
+
+See the [OpenJDK JMH readme](https://github.com/openjdk/jmh) for more details on how best to use JMH.
 
 ## Running a single benchmark
 
-To run a single benchmark, add `-PjmhIncludes=NameOfBenchmark` to the `./gradlew` command line.
-
-## Building and running a jmh jar
-
-A typical way of using jmh is to build a self-contained jar.
-Do this by running `./gradlew jmhJar`, the resulting jar is `org.eclipse.lsp4j.jsonrpc/build/libs/org.eclipse.lsp4j.jsonrpc-1.1.0-SNAPSHOT-jmh.jar` (with `1.1.0-SNAPSHOT` replaced with current version of LSP4J).
-This jar can then be used with the normal command line options of jmh, run with `-h` to see what they are:
+To run a single benchmark, add the name of the benchmark to the `exec.args` property, e.g.
 
 ```sh
-java -jar org.eclipse.lsp4j.jsonrpc/build/libs/org.eclipse.lsp4j.jsonrpc-1.1.0-SNAPSHOT-jmh.jar -h
+./mvnw -pl org.eclipse.lsp4j.jsonrpc -Pjmh compile exec:java -Dexec.args="StreamMessageProducerBenchmark"
 ```
 
-## Running jmh and gradle is doing nothing?
-
-Gradle's incremental build system may prevent subsequent runs of the `jmh` task from doing anything.
-This happens because gradle does not think anything has changed, so there is nothing to do.
-Delete the results file (`org.eclipse.lsp4j.jsonrpc/build/results/jmh/results.txt`) or do a clean build (`./gradlew clean jmh`).
+All command line options of JMH can be passed that way, e.g. `-Dexec.args="-h"` shows the help.
 
 ## Running jmh within Eclipse
 
 At the time of writing there is no plug-in available for Eclipse to simplify running JMH within the IDE.
-LSP4J provides a Buildship launch configuration called `lsp4j-jmh` which can be used to run within the IDE.
-This task can be used once the project is imported in to your Eclipse workspace as explained in the [contribution guide](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CONTRIBUTING.md#eclipse).
+The benchmarks can be run from the IDE by creating a Java Application launch configuration for
+`org.openjdk.jmh.Main` with the classpath of the `org.eclipse.lsp4j.jsonrpc` project
+(the folder `target/jmh-classes` has to be added to the classpath).

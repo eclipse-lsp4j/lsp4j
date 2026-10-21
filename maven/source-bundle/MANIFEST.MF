@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: ${project.artifactId}.source
+Bundle-Version: ${bundle.baseVersion}.v${buildTime}
+Bundle-Name: ${project.name} Sources
+Bundle-Vendor: Eclipse LSP4J
+Eclipse-SourceBundle: ${project.artifactId};version="${bundle.baseVersion}.v${buildTime}"

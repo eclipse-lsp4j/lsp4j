@@ -20,7 +20,7 @@ function classpath() {
 curl -s https://repo1.maven.org/maven2/com/github/siom79/japicmp/japicmp/${JAPICMP_VERSION}/japicmp-${JAPICMP_VERSION}-jar-with-dependencies.jar > ${WD}/japicmp.jar
 
 
-newjars=($(find ${PWD}/*/build/libs -name org.eclipse.lsp4j*.jar -not -name \*sources.jar -not -name \*javadoc.jar))
+newjars=($(find ${PWD}/*/target -maxdepth 1 -name org.eclipse.lsp4j*.jar -not -name \*sources.jar -not -name \*javadoc.jar))
 names=()
 oldjars=()
 

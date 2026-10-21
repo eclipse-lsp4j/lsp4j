@@ -34,20 +34,38 @@ $SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 case $BRANCH_NAME in
     main | release_*)
         # GPG Sign and Deploy to Maven Central snapshot
-        find ../build/maven-repository -name '*.pom' | while read i
+        # The artifacts are taken from the local Maven repository that was used by the build
+        # The artifacts that are published to Maven Central: the parent pom and the
+        # LSP4J bundles. The artifacts of the p2 build are not published.
+        for artifact in lsp4j-parent org.eclipse.lsp4j org.eclipse.lsp4j.debug \
+            org.eclipse.lsp4j.generator org.eclipse.lsp4j.jsonrpc \
+            org.eclipse.lsp4j.jsonrpc.debug org.eclipse.lsp4j.websocket.jakarta; do
+        find ${MAVEN_REPO_LOCAL:-../.repository}/org/eclipse/lsp4j/${artifact} -name '*.pom' | while read i
         do
             base="${i%.*}"
             # See https://wiki.eclipse.org/Jenkins#How_can_artifacts_be_deployed_to_OSSRH_.2F_Maven_Central.3F for more info
             # on the Eclipse Foundation specific settings.
-            mvn -f gpgparameters.pom \
-                org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
-                -DpomFile=${base}.pom \
-                -Dfile=${base}.jar \
-                -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
-                -Dclassifiers=sources,javadoc \
-                -Dtypes=jar,jar \
-                -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
-                -DrepositoryId=central
+            if [ -f "${base}.jar" ]; then
+                mvn -f gpgparameters.pom \
+                    org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
+                    -DpomFile=${base}.pom \
+                    -Dfile=${base}.jar \
+                    -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
+                    -Dclassifiers=sources,javadoc \
+                    -Dtypes=jar,jar \
+                    -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
+                    -DrepositoryId=central
+            else
+                # Artifacts without a jar, e.g. the parent pom
+                mvn -f gpgparameters.pom \
+                    org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
+                    -DpomFile=${base}.pom \
+                    -Dfile=${base}.pom \
+                    -Dpackaging=pom \
+                    -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
+                    -DrepositoryId=central
+            fi
+        done
         done
         ;;
     *)

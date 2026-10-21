@@ -1,0 +1,19 @@
+# OSGi bundle manifest of the org.eclipse.lsp4j.jsonrpc module.
+#
+# The bundle version is <base version>.v<build timestamp>. Both parts are computed
+# by the build-helper-maven-plugin, see the parent pom.
+
+Bundle-SymbolicName: org.eclipse.lsp4j.jsonrpc
+Bundle-Name: org.eclipse.lsp4j.jsonrpc
+Bundle-Vendor: Eclipse LSP4J
+Bundle-Version: ${bundle.baseVersion}.v${buildTime}
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+
+# Export the contents of all org.eclipse.lsp4j packages
+-exportcontents: org.eclipse.lsp4j.*
+Import-Package: com.google.gson.*;version="${gson.version}",*
+
+# The manifest must not contain any additional headers that bnd derives from the
+# pom, so that the published bundles stay the same as before
+-removeheaders: Bundle-Description,Bundle-Developers,Bundle-DocURL,Bundle-License,Bundle-SCM
+-noextraheaders: false

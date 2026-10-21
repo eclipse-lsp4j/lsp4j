@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.eclipse.lsp4j</groupId>
+	<artifactId>lsp4j-parent</artifactId>
+	<version>1.1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>LSP4J</name>
+	<description>Java bindings for the Language Server Protocol</description>
+	<url>https://github.com/eclipse-lsp4j/lsp4j</url>
+
+	<licenses>
+		<license>
+			<name>Eclipse Public License, Version 2.0</name>
+			<url>http://www.eclipse.org/legal/epl-2.0</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:eclipse/lsp4j.git</connection>
+		<developerConnection>scm:git:git@github.com:eclipse/lsp4j.git</developerConnection>
+		<url>git@github.com:eclipse/lsp4j.git</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>sven-efftinge</id>
+			<name>Sven Efftinge</name>
+			<email>sven.efftinge@typefox.io</email>
+			<organizationUrl>https://typefox.io</organizationUrl>
+		</developer>
+		<developer>
+			<id>jonah-graham</id>
+			<name>Jonah Graham</name>
+			<email>jonah@kichwacoders.com</email>
+			<organizationUrl>https://kichwacoders.com</organizationUrl>
+		</developer>
+		<developer>
+			<id>dennis-huebner</id>
+			<name>Dennis Hübner</name>
+			<email>dennis.huebner@typefox.io</email>
+			<organizationUrl>https://typefox.io</organizationUrl>
+		</developer>
+		<developer>
+			<id>akos-kitta</id>
+			<name>Akos Kitta</name>
+			<email>kittaakos@typefox.io</email>
+			<organizationUrl>https://typefox.io</organizationUrl>
+		</developer>
+		<developer>
+			<id>anton-kosyakov</id>
+			<name>Anton Kosyakov</name>
+			<email>anton.kosyakov@typefox.io</email>
+			<organizationUrl>https://typefox.io</organizationUrl>
+		</developer>
+		<developer>
+			<id>miro-spoenemann</id>
+			<name>Miro Spönemann</name>
+			<email>miro.spoenemann@typefox.io</email>
+			<organizationUrl>https://typefox.io</organizationUrl>
+		</developer>
+		<developer>
+			<id>yaohai-zheng</id>
+			<name>Yaohai Zheng</name>
+			<email>yaozheng@microsoft.com</email>
+			<organizationUrl>https://www.microsoft.com/</organizationUrl>
+		</developer>
+		<developer>
+			<id>christian-dietrich</id>
+			<name>Christian Dietrich</name>
+			<email>christian.dietrich@itemis.de</email>
+			<organizationUrl>http://www.itemis.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<!-- Required for the eclipse-jarsigner-plugin, see the sign profile -->
+			<id>cbi</id>
+			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<modules>
+		<module>org.eclipse.lsp4j</module>
+		<module>org.eclipse.lsp4j.debug</module>
+		<module>org.eclipse.lsp4j.generator</module>
+		<module>org.eclipse.lsp4j.jsonrpc</module>
+		<module>org.eclipse.lsp4j.jsonrpc.debug</module>
+		<module>org.eclipse.lsp4j.websocket.jakarta</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Reproducible builds: all archive entries get the same timestamp -->
+		<project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
+
+		<!-- The JDK the artifacts are compiled for -->
+		<java.version>11</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+
+		<!-- Dependency versions -->
+		<xtend.version>2.40.0</xtend.version>
+		<gson.version>[2.9.1,3.0)</gson.version>
+		<guava.version>[32.1.2,34)</guava.version>
+		<websocket.version>2.0.0</websocket.version>
+		<junit.version>4.13.2</junit.version>
+		<archunit.version>1.5.1</archunit.version>
+		<jmh.version>1.37</jmh.version>
+
+		<!--
+			OSGi bundle version. Both properties are recomputed for every module by the
+			build-helper-maven-plugin (see below) and are used by bnd (bnd.bnd) as well as
+			by the manifest of the source bundles:
+			  bundle.baseVersion = 1.1.0
+			  buildTime        = 20250101-1200
+			  => Bundle-Version: 1.1.0.v20250101-1200
+		-->
+		<bundle.baseVersion>0.0.0</bundle.baseVersion>
+		<buildTime>00000000-0000</buildTime>
+
+		<!-- Plugin versions -->
+		<maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
+		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+		<maven-deploy-plugin.version>3.1.3</maven-deploy-plugin.version>
+		<maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+		<maven-install-plugin.version>3.1.3</maven-install-plugin.version>
+		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+		<maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
+		<bnd-maven-plugin.version>7.4.0</bnd-maven-plugin.version>
+		<xtend-maven-plugin.version>${xtend.version}</xtend-maven-plugin.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- LSP4J modules -->
+			<dependency>
+				<groupId>org.eclipse.lsp4j</groupId>
+				<artifactId>org.eclipse.lsp4j</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.lsp4j</groupId>
+				<artifactId>org.eclipse.lsp4j.debug</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.lsp4j</groupId>
+				<artifactId>org.eclipse.lsp4j.generator</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.lsp4j</groupId>
+				<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.lsp4j</groupId>
+				<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.lsp4j</groupId>
+				<artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- Third party -->
+			<dependency>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>org.eclipse.xtend.lib</artifactId>
+				<version>${xtend.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jakarta.websocket</groupId>
+				<artifactId>jakarta.websocket-api</artifactId>
+				<version>${websocket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.tngtech.archunit</groupId>
+				<artifactId>archunit</artifactId>
+				<version>${archunit.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>${maven-clean-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<release>${java.version}</release>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven-deploy-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>${maven-enforcer-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>${maven-install-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven-resources-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build-helper-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>biz.aQute.bnd</groupId>
+					<artifactId>bnd-maven-plugin</artifactId>
+					<version>${bnd-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.xtext</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtend-maven-plugin.version}</version>
+					<configuration>
+						<!-- The generated Java code is written next to the sources, like in the IDE -->
+						<outputDirectory>${project.basedir}/src/main/xtend-gen</outputDirectory>
+						<testOutputDirectory>${project.basedir}/src/test/xtend-gen</testOutputDirectory>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-build-environment</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>[3.9,)</version>
+									<message>Maven 3.9 or later is required.</message>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<!-- The Xtend compiler requires Java 17 or later to run -->
+									<version>[17,)</version>
+									<message>This build must be run with Java 17 or later.</message>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<!-- Build timestamp used as OSGi bundle version qualifier -->
+						<id>compute-build-time</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>timestamp-property</goal>
+						</goals>
+						<configuration>
+							<name>buildTime</name>
+							<pattern>yyyyMMdd-HHmm</pattern>
+							<locale>en_US</locale>
+						</configuration>
+					</execution>
+					<execution>
+						<!-- Base version of the OSGi bundle version (without qualifier) -->
+						<id>compute-bundle-base-version</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>regex-property</goal>
+						</goals>
+						<configuration>
+							<name>bundle.baseVersion</name>
+							<value>${project.version}</value>
+							<regex>^(\d+\.\d+\.\d+).*$</regex>
+							<replacement>$1</replacement>
+							<failIfNoMatch>true</failIfNoMatch>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<!-- Generates the OSGi manifest of the bundle -->
+				<groupId>biz.aQute.bnd</groupId>
+				<artifactId>bnd-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bnd-process</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>bnd-process</goal>
+						</goals>
+						<configuration>
+							<deleteExistingManifest>true</deleteExistingManifest>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-jar</id>
+						<configuration>
+							<archive>
+								<!-- The manifest is generated by bnd, see bnd.bnd -->
+								<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+							</archive>
+						</configuration>
+					</execution>
+					<execution>
+						<!--
+							The source bundle that is published to p2. It contains the Java and
+							Xtend sources of the module, the generated Java code is not part of it.
+						-->
+						<id>sources-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>sources</classifier>
+							<classesDirectory>${project.build.directory}/sources</classesDirectory>
+							<skipIfEmpty>true</skipIfEmpty>
+							<archive>
+								<addMavenDescriptor>false</addMavenDescriptor>
+								<manifestFile>${project.build.directory}/sources-manifest/META-INF/MANIFEST.MF</manifestFile>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>javadoc-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<source>${java.version}</source>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<doclint>none</doclint>
+							<quiet>true</quiet>
+							<tags>
+								<tag>
+									<name>implNote</name>
+									<placement>a</placement>
+									<head>Implementation Note:</head>
+								</tag>
+							</tags>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Xmx1g</argLine>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!--
+					Stages the sources of the module (Java and Xtend) that are packaged into the
+					source bundle.
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>stage-sources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/sources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/src/main/java</directory>
+									<includes>
+										<include>**/*.java</include>
+										<include>**/*.xtend</include>
+									</includes>
+									<filtering>false</filtering>
+								</resource>
+								<resource>
+									<directory>${project.basedir}/src/main/resources</directory>
+									<filtering>false</filtering>
+								</resource>
+								<resource>
+									<!-- The Java code that is generated from the Xtend sources -->
+									<directory>${project.basedir}/src/main/xtend-gen</directory>
+									<includes>
+										<include>**/*.java</include>
+									</includes>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<!--
+							The manifest of the source bundle. It contains the bundle version, which
+							is only known when the build runs, so it is generated from a template.
+						-->
+						<id>generate-source-bundle-manifest</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/sources-manifest/META-INF</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/maven/source-bundle</directory>
+									<includes>
+										<include>MANIFEST.MF</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<!--
+							Copies the generated OSGi manifest into the project directory so that the
+							bundle can be imported into an Eclipse/PDE workspace.
+						-->
+						<id>copy-eclipse-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/META-INF</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.outputDirectory}/META-INF</directory>
+									<includes>
+										<include>MANIFEST.MF</include>
+									</includes>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<!--
+				Signs the artifacts with the Eclipse signing service. The signed artifacts are
+				deployed to Maven Central, see releng/deploy-build.sh.
+			-->
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+						<artifactId>eclipse-jarsigner-plugin</artifactId>
+						<version>1.3.2</version>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<!--
+				Runs the tests a second time on Java 11. The Xtend compiler requires Java 17
+				or later, so the tests that are based on Xtend are excluded (same as in the
+				previous Gradle based build).
+			-->
+			<id>test-jdk11</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>test-jdk11</id>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<jdkToolchain>
+										<version>11</version>
+									</jdkToolchain>
+									<excludes>
+										<exclude>**/LSPEndpointTest.class</exclude>
+										<exclude>**/PerformanceMeasurement.class</exclude>
+										<exclude>**/JsonParseTest.class</exclude>
+										<exclude>**/JsonSerializeTest.class</exclude>
+										<exclude>**/NoAnnotationTest.class</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

@@ -18,40 +18,39 @@
 			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 		</pluginRepository>
 	</pluginRepositories>
-	<repositories>
-		<repository>
-			<id>local-gradle-result</id>
-			<url>file:${root-dir}/build/maven-repository</url>
-		</repository>
-	</repositories>
+
+	<!--
+		The LSP4J bundles are built by the Maven build in the root of the repository and
+		are consumed from the local Maven repository, see the root pom.xml.
+	-->
 
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.debug</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.debug</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google</groupId>
@@ -62,40 +61,40 @@
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 	</dependencies>
@@ -124,7 +123,7 @@
 						<artifact>
 							<groupId>org.eclipse.lsp4j</groupId>
 							<artifactId>lsp4j.target</artifactId>
-							<version>1.1.0-SNAPSHOT</version>
+							<version>${project.version}</version>
 						</artifact>
 					</target>
 					<environments>
