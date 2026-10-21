@@ -41,7 +41,7 @@ pipeline {
                 --fail-at-end \
                 -Dmaven.test.failure.ignore=true \
                 clean install \
-                -Ptest-jdk11 \
+                -Ptest-older-javas \
                 -Pjmh \
                 -Psign \
                 "

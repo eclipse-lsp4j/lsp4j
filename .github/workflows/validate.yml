@@ -59,8 +59,20 @@ jobs:
         distribution: temurin
         java-version: 11
 
+    - name: "Store: path of the JDK 11"
+      run: echo "JDK11_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+    - name: "Install: JDK 17 for testing"
+      uses: actions/setup-java@v6  # https://github.com/actions/setup-java
+      with:
+        distribution: temurin
+        java-version: 17
+
+    - name: "Store: path of the JDK 17"
+      run: echo "JDK17_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
     - name: "Create Maven toolchains"
-      # The tests are executed a second time on Java 11, see the test-jdk11 profile
+      # The tests are executed a second time on Java 11 and 17, see the test-older-javas profile
       run: |
         mkdir -p ~/.m2
         cat > ~/.m2/toolchains.xml <<EOF
@@ -73,7 +85,17 @@ jobs:
               <version>11</version>
             </provides>
             <configuration>
-              <jdkHome>${JAVA_HOME}</jdkHome>
+              <jdkHome>${JDK11_HOME}</jdkHome>
+            </configuration>
+          </toolchain>
+          <toolchain>
+            <type>jdk</type>
+            <provides>
+              <id>JavaSE-17</id>
+              <version>17</version>
+            </provides>
+            <configuration>
+              <jdkHome>${JDK17_HOME}</jdkHome>
             </configuration>
           </toolchain>
         </toolchains>
@@ -88,7 +110,7 @@ jobs:
         cache: maven
 
     - name: Build with Maven 🏗️
-      run: mvn --batch-mode clean install -Ptest-jdk11 -Pjmh
+      run: mvn --batch-mode clean install -Ptest-older-javas -Pjmh
 
     - name: Upload Test Results
       if: always()

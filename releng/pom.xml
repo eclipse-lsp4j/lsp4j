@@ -9,7 +9,6 @@
 
 	<properties>
 		<tycho-version>5.0.0</tycho-version>
-		<root-dir>${maven.multiModuleProjectDirectory}/..</root-dir>
 	</properties>
 
 	<pluginRepositories>

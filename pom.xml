@@ -318,9 +318,12 @@
 									<message>Maven 3.9 or later is required.</message>
 								</requireMavenVersion>
 								<requireJavaVersion>
-									<!-- The Xtend compiler requires Java 17 or later to run -->
-									<version>[17,)</version>
-									<message>This build must be run with Java 17 or later.</message>
+									<!--
+										The Xtend compiler requires Java 17 or later to run, Java 25 is
+										the newest JDK this build has been verified on.
+									-->
+									<version>[17,25]</version>
+									<message>This build must be run with Java between 17 and 25.</message>
 								</requireJavaVersion>
 							</rules>
 						</configuration>
@@ -577,17 +580,31 @@
 
 		<profile>
 			<!--
-				Runs the tests a second time on Java 11. The Xtend compiler requires Java 17
-				or later, so the tests that are based on Xtend are excluded (same as in the
-				previous Gradle based build).
+				Runs the tests on the older JDKs as well (the same as the testOlderJavas task of
+				the previous Gradle based build):
+				- Java 17: all tests
+				- Java 11: the tests that are not based on Xtend, because the Xtend compiler
+				  requires Java 17 or later to run
 			-->
-			<id>test-jdk11</id>
+			<id>test-older-javas</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<executions>
+							<execution>
+								<id>test-jdk17</id>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<jdkToolchain>
+										<version>17</version>
+									</jdkToolchain>
+								</configuration>
+							</execution>
 							<execution>
 								<id>test-jdk11</id>
 								<phase>test</phase>
