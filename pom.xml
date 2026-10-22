@@ -324,9 +324,10 @@
 								<requireJavaVersion>
 									<!--
 										The Xtend compiler requires Java 17 or later to run, Java 25 is
-										the newest JDK this build has been verified on.
+										the newest JDK this build has been verified on. The upper bound is
+										exclusive, so that all Java 25 updates (e.g. 25.0.1) are accepted.
 									-->
-									<version>[17,25]</version>
+									<version>[17,26)</version>
 									<message>This build must be run with Java between 17 and 25.</message>
 								</requireJavaVersion>
 							</rules>
