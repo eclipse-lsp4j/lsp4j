@@ -7,10 +7,31 @@
 
 	<parent>
 		<groupId>org.eclipse.lsp4j</groupId>
-		<artifactId>lsp4j.releng</artifactId>
+		<artifactId>lsp4j-parent</artifactId>
 		<version>1.1.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
+
+	<dependencies>
+		<!--
+			The feature requires org.eclipse.xtend.lib (see feature.xml), it is resolved from
+			Maven Central like for the generator bundle.
+		-->
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.lib</artifactId>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<!-- Only the bundles and the parent pom are published to Maven Central -->
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<!--
+			The root directory of the repository. It is used to copy the p2 repository, so
+			that it can be picked up by releng/deploy-build.sh.
+		-->
+		<root-dir>${project.basedir}/../..</root-dir>
+	</properties>
 
 	<build>
 		<plugins>
@@ -39,6 +60,8 @@
 						</goals>
 						<configuration>
 							<tasks>
+								<!-- The p2 repository of an earlier build must not be deployed again -->
+								<delete dir="${root-dir}/build/p2-repository" quiet="true" />
 								<copy todir="${root-dir}/build/p2-repository">
 									<fileset dir="${basedir}/target/repository/" />
 								</copy>

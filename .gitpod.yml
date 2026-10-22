@@ -1,2 +1,2 @@
 tasks:
-  - init: ./gradlew build
+  - init: ./mvnw clean install

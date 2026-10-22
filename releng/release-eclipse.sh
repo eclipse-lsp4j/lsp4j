@@ -49,15 +49,29 @@ find maven-repository -name '*.pom' | while read i
 do
     base="${i%.*}"
     $ECHO cp releng/gpgparameters.pom gpgparameters.pom
-    $ECHO mvn -f gpgparameters.pom \
-        org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
-        -DpomFile=${base}.pom \
-        -Dfile=${base}.jar \
-        -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
-        -Dclassifiers=sources,javadoc \
-        -Dtypes=jar,jar \
-        -DrepositoryId=central \
-        -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
+    # The packaging of the bundles is eclipse-plugin, which is unknown to Maven without
+    # Tycho, so the jar packaging has to be passed explicitly. The parent pom is deployed
+    # as well, the poms of the bundles refer to it.
+    if [ -f "${base}.jar" ]; then
+        $ECHO mvn -f gpgparameters.pom \
+            org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
+            -DpomFile=${base}.pom \
+            -Dfile=${base}.jar \
+            -Dpackaging=jar \
+            -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
+            -Dclassifiers=sources,javadoc \
+            -Dtypes=jar,jar \
+            -DrepositoryId=central \
+            -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
+    else
+        $ECHO mvn -f gpgparameters.pom \
+            org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
+            -DpomFile=${base}.pom \
+            -Dfile=${base}.pom \
+            -Dpackaging=pom \
+            -DrepositoryId=central \
+            -Durl=https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/
+    fi
 done
 
 # After upload, automatically deploy https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/

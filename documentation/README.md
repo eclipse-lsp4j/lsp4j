@@ -82,7 +82,7 @@ For more information about the underlying json rpc framework see [JSON RPC Docum
 
 # Implement your Debug Adapter Client
 
-Note that to implement a debug adapter client, you need to get the `org.eclipse.lsp4j.debug` jar from maven besides the `org.eclipse.lsp4j` jar (in gradle it's something as: `compile group: 'org.eclipse.lsp4j', name: 'org.eclipse.lsp4j.debug', version: '<version>'`)
+Note that to implement a debug adapter client, you need to get the `org.eclipse.lsp4j.debug` jar from maven besides the `org.eclipse.lsp4j` jar (in maven it's something as: `<dependency><groupId>org.eclipse.lsp4j</groupId><artifactId>org.eclipse.lsp4j.debug</artifactId><version>&lt;version&gt;</version></dependency>`)
 
 Now, the code actually connect to a debug adapter server should be something as:
 

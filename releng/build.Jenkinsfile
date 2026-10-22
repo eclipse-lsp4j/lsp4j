@@ -8,7 +8,7 @@ pipeline {
   tools {
     maven 'apache-maven-latest'
     // Default JDK picked up from here, build and test requires
-    // older JDKs too, which are discovered by gradle from ~/.m2/toolchains.xml
+    // older JDKs too, which are discovered from ~/.m2/toolchains.xml
     jdk 'temurin-jdk21-latest'
   }
   options {
@@ -28,31 +28,24 @@ pipeline {
         }
       }
     }
-    stage('Gradle') {
+    stage('Maven') {
       steps {
         timeout(activity: true, time: 20) {
           sh "echo $JAVA_HOME"
           sh "java -version"
           sh "which java"
           sh "cat ~/.m2/toolchains.xml"
-          sh "./gradlew \
-                --no-daemon \
-                -PignoreTestFailures=true \
-                --refresh-dependencies \
-                --continue \
-                clean build jmhCompileGeneratedClasses testOlderJavas signJar publish \
-                "
-        }
-      }
-    }
-    stage('Maven') {
-      steps {
-        timeout(activity: true, time: 20) {
-          sh "mvn \
-                -f releng/pom.xml \
+          sh "./mvnw \
                 -Dmaven.repo.local=.repository \
-                --batch-mode --update-snapshots \
-                clean install -Psign \
+                --batch-mode \
+                --fail-at-end \
+                -Dmaven.test.failure.ignore=true \
+                -DaltDeploymentRepository=local::file://\$PWD/build/maven-repository \
+                --update-snapshots \
+                clean deploy \
+                -Ptest-older-javas \
+                -Pjmh \
+                -Psign \
                 "
         }
       }
@@ -84,8 +77,8 @@ pipeline {
   }
   post {
     always {
-      junit '**/build/test-results/**/*.xml'
-      archiveArtifacts 'build/**,**/build/reports/'
+      junit '**/target/surefire-reports/**/*.xml'
+      archiveArtifacts 'build/**,**/target/**'
     }
     cleanup {
       script {

@@ -53,23 +53,64 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v7  # https://github.com/actions/checkout
 
-    - name: Validate Gradle Wrapper
-      # fails unless gradle-wrapper.jar matches the published checksum of a released Gradle version
-      uses: gradle/actions/wrapper-validation@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
-
-
-    - name: "Install: JDKs for building and testing"
+    - name: "Install: JDK 11 for testing"
       uses: actions/setup-java@v6  # https://github.com/actions/setup-java
       with:
         distribution: temurin
-        java-version: |
-          11
-          17
-          21
-        cache: gradle
+        java-version: 11
 
-    - name: Build with Gradle 🏗️
-      run: ./gradlew build jmhCompileGeneratedClasses testOlderJavas
+    - name: "Store: path of the JDK 11"
+      run: echo "JDK11_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+    - name: "Install: JDK 17 for testing"
+      uses: actions/setup-java@v6  # https://github.com/actions/setup-java
+      with:
+        distribution: temurin
+        java-version: 17
+
+    - name: "Store: path of the JDK 17"
+      run: echo "JDK17_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+    - name: "Create Maven toolchains"
+      # The tests are executed a second time on Java 11 and 17, see the test-older-javas profile
+      run: |
+        mkdir -p ~/.m2
+        cat > ~/.m2/toolchains.xml <<EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <toolchains>
+          <toolchain>
+            <type>jdk</type>
+            <provides>
+              <id>JavaSE-11</id>
+              <version>11</version>
+            </provides>
+            <configuration>
+              <jdkHome>${JDK11_HOME}</jdkHome>
+            </configuration>
+          </toolchain>
+          <toolchain>
+            <type>jdk</type>
+            <provides>
+              <id>JavaSE-17</id>
+              <version>17</version>
+            </provides>
+            <configuration>
+              <jdkHome>${JDK17_HOME}</jdkHome>
+            </configuration>
+          </toolchain>
+        </toolchains>
+        EOF
+        cat ~/.m2/toolchains.xml
+
+    - name: "Install: JDK for building"
+      uses: actions/setup-java@v6  # https://github.com/actions/setup-java
+      with:
+        distribution: temurin
+        java-version: 21
+        cache: maven
+
+    - name: Build with Maven 🏗️
+      run: ./mvnw --batch-mode clean install -Ptest-older-javas -Pjmh
 
     - name: Upload Test Results
       if: always()
@@ -78,8 +119,7 @@ jobs:
         name: test-results-${{ matrix.os }}
         if-no-files-found: warn
         path: |
-          ${{ github.workspace }}/**/build/test-results/**/*.xml
-          ${{ github.workspace }}/**/build/reports/
+          ${{ github.workspace }}/**/target/surefire-reports/**
 
 
     - name: Run API Compare

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.eclipse.lsp4j</groupId>
+		<artifactId>lsp4j-parent</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	<name>LSP4J JSON-RPC</name>
+	<description>Generic JSON-RPC implementation</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<!--
+				Compiles the JMH benchmarks in src/jmh/java. The benchmarks are not part of
+				the published artifact.
+			-->
+			<id>jmh</id>
+			<properties>
+				<!-- The command line options of JMH, e.g. the benchmarks to run -->
+				<jmh.args></jmh.args>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.openjdk.jmh</groupId>
+					<artifactId>jmh-core</artifactId>
+					<version>${jmh.version}</version>
+					<scope>provided</scope>
+					<optional>true</optional>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<executions>
+							<execution>
+								<!--
+									The benchmarks are compiled into a separate output directory, so that
+									they are neither part of the bundle nor of its OSGi manifest.
+								-->
+								<id>compile-jmh</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+								<configuration>
+									<compileSourceRoots>
+										<compileSourceRoot>${project.basedir}/src/jmh/java</compileSourceRoot>
+									</compileSourceRoots>
+									<outputDirectory>${project.build.directory}/jmh-classes</outputDirectory>
+									<generatedSourcesDirectory>${project.build.directory}/jmh-generated-sources</generatedSourcesDirectory>
+									<annotationProcessorPaths>
+										<path>
+											<groupId>org.openjdk.jmh</groupId>
+											<artifactId>jmh-generator-annprocess</artifactId>
+											<version>${jmh.version}</version>
+										</path>
+									</annotationProcessorPaths>
+								</configuration>
+							</execution>
+							<execution>
+								<!--
+									The sources that are generated for the benchmarks are not compiled
+									again, they are compiled by the compile-jmh execution.
+								-->
+								<id>default-compile</id>
+								<configuration>
+									<excludes>
+										<exclude>org/eclipse/lsp4j/jsonrpc/jmh/jmh_generated/**</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<excludePackageNames>org.eclipse.lsp4j.jsonrpc.jmh*</excludePackageNames>
+						</configuration>
+					</plugin>
+					<plugin>
+						<!--
+							Runs the benchmarks with exec:exec, see documentation/benchmarking.md. JMH has to
+							run in its own Java process, it starts the forks of the benchmarks with its own
+							classpath. The options of JMH are passed with the jmh.args property.
+						-->
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>3.5.0</version>
+						<configuration>
+							<executable>${java.home}/bin/java</executable>
+							<classpathScope>test</classpathScope>
+							<commandlineArgs>-classpath %classpath${path.separator}${project.build.directory}/jmh-classes org.openjdk.jmh.Main ${jmh.args}</commandlineArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

@@ -10,7 +10,7 @@ updates:
     prefix-development: ci
     include: scope
 
-- package-ecosystem: gradle
+- package-ecosystem: maven
   directory: /
   schedule:
     interval: daily

@@ -34,20 +34,38 @@ $SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 case $BRANCH_NAME in
     main | release_*)
         # GPG Sign and Deploy to Maven Central snapshot
+        # The artifacts are the ones the build deployed to build/maven-repository, the
+        # build directory is deleted by mvn clean, so it only contains the artifacts of this build.
+        # The poms of the bundles refer to the parent pom, so it is deployed as well.
         find ../build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"
             # See https://wiki.eclipse.org/Jenkins#How_can_artifacts_be_deployed_to_OSSRH_.2F_Maven_Central.3F for more info
             # on the Eclipse Foundation specific settings.
-            mvn -f gpgparameters.pom \
-                org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
-                -DpomFile=${base}.pom \
-                -Dfile=${base}.jar \
-                -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
-                -Dclassifiers=sources,javadoc \
-                -Dtypes=jar,jar \
-                -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
-                -DrepositoryId=central
+            # The packaging of the bundles is eclipse-plugin, which is unknown to Maven without
+            # Tycho, so the jar packaging has to be passed explicitly, otherwise the bundles
+            # are deployed with the extension .eclipse-plugin.
+            if [ -f "${base}.jar" ]; then
+                mvn -f gpgparameters.pom \
+                    org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
+                    -DpomFile=${base}.pom \
+                    -Dfile=${base}.jar \
+                    -Dpackaging=jar \
+                    -Dfiles=${base}-sources.jar,${base}-javadoc.jar \
+                    -Dclassifiers=sources,javadoc \
+                    -Dtypes=jar,jar \
+                    -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
+                    -DrepositoryId=central
+            else
+                # The parent pom
+                mvn -f gpgparameters.pom \
+                    org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file \
+                    -DpomFile=${base}.pom \
+                    -Dfile=${base}.pom \
+                    -Dpackaging=pom \
+                    -Durl=https://central.sonatype.com/repository/maven-snapshots/ \
+                    -DrepositoryId=central
+            fi
         done
         ;;
     *)
