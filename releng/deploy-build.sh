@@ -34,17 +34,11 @@ $SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 case $BRANCH_NAME in
     main | release_*)
         # GPG Sign and Deploy to Maven Central snapshot
-        # The artifacts are taken from the local Maven repository that was used by the build.
-        # Only the version that was just built is deployed, the local repository may still
-        # contain other versions from earlier builds. The poms are flattened by the build,
-        # so the parent pom does not need to be published.
-        MAVEN_REPO_LOCAL=${MAVEN_REPO_LOCAL:-../.repository}
-        VERSION=$(../mvnw -f ../pom.xml -Dmaven.repo.local=${MAVEN_REPO_LOCAL} --batch-mode --non-recursive \
-            help:evaluate -Dexpression=project.version -q -DforceStdout)
-        for artifact in org.eclipse.lsp4j org.eclipse.lsp4j.debug \
-            org.eclipse.lsp4j.generator org.eclipse.lsp4j.jsonrpc \
-            org.eclipse.lsp4j.jsonrpc.debug org.eclipse.lsp4j.websocket.jakarta; do
-            base=${MAVEN_REPO_LOCAL}/org/eclipse/lsp4j/${artifact}/${VERSION}/${artifact}-${VERSION}
+        # The artifacts are the ones the build deployed to build/maven-repository, the
+        # build directory is deleted by mvn clean, so it only contains the artifacts of this build
+        find ../build/maven-repository -name '*.pom' | while read i
+        do
+            base="${i%.*}"
             # See https://wiki.eclipse.org/Jenkins#How_can_artifacts_be_deployed_to_OSSRH_.2F_Maven_Central.3F for more info
             # on the Eclipse Foundation specific settings.
             mvn -f gpgparameters.pom \

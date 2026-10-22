@@ -40,7 +40,8 @@ pipeline {
                 --batch-mode \
                 --fail-at-end \
                 -Dmaven.test.failure.ignore=true \
-                clean install \
+                -DaltDeploymentRepository=local::file://\$PWD/build/maven-repository \
+                clean deploy \
                 -Ptest-older-javas \
                 -Pjmh \
                 -Psign \

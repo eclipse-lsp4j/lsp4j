@@ -307,6 +307,37 @@
 
 		<plugins>
 			<plugin>
+				<!--
+					Deletes the build directory in the root of the repository, it contains the
+					artifacts that the Jenkins build deploys (build/maven-repository) and the p2
+					repository (build/p2-repository).
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<inherited>false</inherited>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.basedir}/build</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!--
+					The parent pom is not deployed, the poms of the modules are flattened and do not
+					refer to it.
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<inherited>false</inherited>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<executions>
