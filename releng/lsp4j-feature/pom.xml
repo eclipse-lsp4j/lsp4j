@@ -12,6 +12,11 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
+	<properties>
+		<!-- Only the bundles and the parent pom are published to Maven Central -->
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<!--
 			The feature requires org.eclipse.xtend.lib (see feature.xml), it is resolved from
