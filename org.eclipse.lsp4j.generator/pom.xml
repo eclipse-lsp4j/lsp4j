@@ -12,6 +12,7 @@
 	</parent>
 
 	<artifactId>org.eclipse.lsp4j.generator</artifactId>
+	<packaging>eclipse-plugin</packaging>
 	<name>LSP4J Generator</name>
 	<description>Code generator for Language Server Protocol classes</description>
 

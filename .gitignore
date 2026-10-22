@@ -6,7 +6,6 @@ target/
 build/
 xtend-gen/
 .idea/
-META-INF/
 org.eclipse.buildship.core.prefs
 org.eclipse.jdt.core.prefs
 org.eclipse.xtext.java.Java.prefs
@@ -16,4 +15,3 @@ org.eclipse.xtend.core.Xtend.prefs
 *.xtendbin
 .classpath
 .project
-.flattened-pom.xml

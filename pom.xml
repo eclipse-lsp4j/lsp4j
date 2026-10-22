@@ -92,14 +92,14 @@
 		<module>org.eclipse.lsp4j.jsonrpc</module>
 		<module>org.eclipse.lsp4j.jsonrpc.debug</module>
 		<module>org.eclipse.lsp4j.websocket.jakarta</module>
+		<module>releng/releng-target</module>
+		<module>releng/lsp4j-feature</module>
+		<module>releng/p2</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-		<!-- Reproducible builds: all archive entries get the same timestamp -->
-		<project.build.outputTimestamp>2024-01-01T00:00:00Z</project.build.outputTimestamp>
 
 		<!-- The JDK the artifacts are compiled for -->
 		<java.version>11</java.version>
@@ -115,15 +115,10 @@
 		<jmh.version>1.37</jmh.version>
 
 		<!--
-			OSGi bundle version. Both properties are recomputed for every module by the
-			build-helper-maven-plugin (see below) and are used by bnd (bnd.bnd) as well as
-			by the manifest of the source bundles:
-			  bundle.baseVersion = 1.1.0
-			  buildTime        = 20250101-1200
-			  => Bundle-Version: 1.1.0.v20250101-1200
+			The bundle version qualifier, the OSGi bundle versions are <version>.v<timestamp>,
+			e.g. 1.1.0.v20250101-1200
 		-->
-		<bundle.baseVersion>0.0.0</bundle.baseVersion>
-		<buildTime>00000000-0000</buildTime>
+		<tycho.buildqualifier.format>'v'yyyyMMdd-HHmm</tycho.buildqualifier.format>
 
 		<!-- Plugin versions -->
 		<maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
@@ -135,9 +130,7 @@
 		<maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
 		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
-		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
-		<bnd-maven-plugin.version>7.4.0</bnd-maven-plugin.version>
-		<flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
+		<tycho-version>5.0.3</tycho-version>
 		<xtend-maven-plugin.version>${xtend.version}</xtend-maven-plugin.version>
 	</properties>
 
@@ -262,19 +255,46 @@
 					<version>${maven-surefire-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>${build-helper-maven-plugin.version}</version>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<!-- The Xtend sources are part of the source folders, but not of the bundles -->
+						<excludeResources>
+							<excludeResource>**/*.xtend</excludeResource>
+							<excludeResource>**/*._trace</excludeResource>
+						</excludeResources>
+					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>biz.aQute.bnd</groupId>
-					<artifactId>bnd-maven-plugin</artifactId>
-					<version>${bnd-maven-plugin.version}</version>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-plugin</artifactId>
+					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>flatten-maven-plugin</artifactId>
-					<version>${flatten-maven-plugin.version}</version>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-packaging-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<configuration>
+						<!--
+							The manifest is packaged as it is written in META-INF/MANIFEST.MF, Tycho
+							would otherwise add the Bundle-License and remove the
+							Bundle-RequiredExecutionEnvironment.
+						-->
+						<deriveHeaderFromProject>false</deriveHeaderFromProject>
+						<deriveHeaderFromSource>false</deriveHeaderFromSource>
+						<!--
+							The poms are published as they are written (like in Xtext), the pom that
+							Tycho would generate also contains the bundles of the target platform, e.g.
+							the generator as a compile dependency of org.eclipse.lsp4j.
+						-->
+						<skipPomGeneration>true</skipPomGeneration>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-p2-repository-plugin</artifactId>
+					<version>${tycho-version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.xtext</groupId>
@@ -325,15 +345,36 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+
+			<plugin>
 				<!--
-					The parent pom is not deployed, the poms of the modules are flattened and do not
-					refer to it.
+					The dependencies of the bundles are declared twice: in META-INF/MANIFEST.MF for
+					Tycho, PDE and OSGi, and in the pom.xml for the users of the Maven artifacts.
+					Tycho resolves the bundles from the target platform (releng/releng-target) and
+					from the dependencies of the poms.
 				-->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<inherited>false</inherited>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
 				<configuration>
-					<skip>true</skip>
+					<pomDependencies>consider</pomDependencies>
+					<!--
+						The bundles require Java 11, but Xtend (org.eclipse.xtext.xbase.lib), which is
+						needed to compile the generator and the Xtend sources, requires Java 17.
+					-->
+					<resolveWithExecutionEnvironmentConstraints>false</resolveWithExecutionEnvironmentConstraints>
+					<target>
+						<artifact>
+							<groupId>org.eclipse.lsp4j</groupId>
+							<artifactId>lsp4j.target</artifactId>
+							<version>${project.version}</version>
+						</artifact>
+					</target>
 				</configuration>
 			</plugin>
 
@@ -349,17 +390,17 @@
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>[3.9,)</version>
-									<message>Maven 3.9 or later is required.</message>
+									<version>[3.9.9,)</version>
+									<message>Maven 3.9.9 or later is required.</message>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<!--
-										The Xtend compiler requires Java 17 or later to run, Java 25 is
-										the newest JDK this build has been verified on. The upper bound is
-										exclusive, so that all Java 25 updates (e.g. 25.0.1) are accepted.
+										Tycho 5 requires Java 21 or later to run, Java 25 is the newest JDK
+										this build has been verified on. The upper bound is exclusive, so that
+										all Java 25 updates (e.g. 25.0.1) are accepted.
 									-->
-									<version>[17,26)</version>
-									<message>This build must be run with Java between 17 and 25.</message>
+									<version>[21,26)</version>
+									<message>This build must be run with Java between 21 and 25.</message>
 								</requireJavaVersion>
 							</rules>
 						</configuration>
@@ -368,141 +409,49 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
+				<!-- The source bundle that is published to p2 and to Maven Central -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho-version}</version>
 				<executions>
 					<execution>
-						<!-- Build timestamp used as OSGi bundle version qualifier -->
-						<id>compute-build-time</id>
-						<phase>validate</phase>
+						<id>plugin-source</id>
 						<goals>
-							<goal>timestamp-property</goal>
+							<goal>plugin-source</goal>
 						</goals>
 						<configuration>
-							<name>buildTime</name>
-							<pattern>yyyyMMdd-HHmm</pattern>
-							<locale>en_US</locale>
-						</configuration>
-					</execution>
-					<execution>
-						<!-- Base version of the OSGi bundle version (without qualifier) -->
-						<id>compute-bundle-base-version</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>regex-property</goal>
-						</goals>
-						<configuration>
-							<name>bundle.baseVersion</name>
-							<value>${project.version}</value>
-							<regex>^(\d+\.\d+\.\d+).*$</regex>
-							<replacement>$1</replacement>
-							<failIfNoMatch>true</failIfNoMatch>
+							<excludes>
+								<exclude>**/*._trace</exclude>
+							</excludes>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
 			<plugin>
+				<!-- Runs the tests of the bundles as plain JUnit tests, not as OSGi plug-in tests -->
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<!-- Generates the OSGi manifest of the bundle -->
-				<groupId>biz.aQute.bnd</groupId>
-				<artifactId>bnd-maven-plugin</artifactId>
+				<artifactId>maven-surefire-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>bnd-process</id>
-						<phase>process-classes</phase>
+						<id>execute-unit-tests</id>
 						<goals>
-							<goal>bnd-process</goal>
-						</goals>
-						<configuration>
-							<deleteExistingManifest>true</deleteExistingManifest>
-							<!--
-								The instructions that are the same for all bundles, the modules add theirs in
-								bnd.bnd. The $(...) macros are resolved by bnd and not by Maven, because the
-								bundle version is only known once the build-helper-maven-plugin has run.
-							-->
-							<bnd><![CDATA[
-Bundle-SymbolicName: $(project.artifactId)
-Bundle-Name: $(project.artifactId)
-Bundle-Vendor: Eclipse LSP4J
-Bundle-Version: $(bundle.baseVersion).v$(buildTime)
-Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
--exportcontents: org.eclipse.lsp4j.*
-# The manifest must not contain any additional headers that bnd derives from the
-# pom, so that the published bundles stay the same as before
--removeheaders: Bundle-Description,Bundle-Developers,Bundle-DocURL,Bundle-License,Bundle-SCM
-]]></bnd>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<!--
-					The published poms do not refer to the parent pom, all inherited information and
-					the managed dependency versions are written into the pom of each module.
-				-->
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>flatten-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>flatten</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>flatten</goal>
-						</goals>
-						<configuration>
-							<flattenMode>oss</flattenMode>
-						</configuration>
-					</execution>
-					<execution>
-						<id>flatten-clean</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>clean</goal>
+							<goal>test</goal>
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>default-jar</id>
-						<configuration>
-							<archive>
-								<!-- The manifest is generated by bnd, see bnd.bnd -->
-								<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-							</archive>
-						</configuration>
-					</execution>
-					<execution>
-						<!--
-							The source bundle that is published to p2. It contains the Java and
-							Xtend sources of the module, the generated Java code is not part of it.
-						-->
-						<id>sources-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>sources</classifier>
-							<classesDirectory>${project.build.directory}/sources</classesDirectory>
-							<skipIfEmpty>true</skipIfEmpty>
-							<archive>
-								<addMavenDescriptor>false</addMavenDescriptor>
-								<manifestFile>${project.build.directory}/sources-manifest/META-INF/MANIFEST.MF</manifestFile>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<argLine>-Xmx1g</argLine>
+					<includes>
+						<!-- The default patterns of Surefire -->
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+						<!-- Test classes that do not match the default patterns -->
+						<include>**/DSPDebugServer.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -531,112 +480,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<argLine>-Xmx1g</argLine>
-					<includes>
-						<!-- The default patterns of Surefire -->
-						<include>**/Test*.java</include>
-						<include>**/*Test.java</include>
-						<include>**/*Tests.java</include>
-						<include>**/*TestCase.java</include>
-						<!-- Test classes that do not match the default patterns -->
-						<include>**/DSPDebugServer.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<!--
-					Stages the sources of the module (Java and Xtend) that are packaged into the
-					source bundle.
-				-->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>stage-sources</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/sources</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.basedir}/src/main/java</directory>
-									<includes>
-										<include>**/*.java</include>
-										<include>**/*.xtend</include>
-									</includes>
-									<filtering>false</filtering>
-								</resource>
-								<resource>
-									<directory>${project.basedir}/src/main/resources</directory>
-									<filtering>false</filtering>
-								</resource>
-								<resource>
-									<!-- The Java code that is generated from the Xtend sources -->
-									<directory>${project.basedir}/src/main/xtend-gen</directory>
-									<includes>
-										<include>**/*.java</include>
-									</includes>
-									<filtering>false</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<!--
-							The manifest of the source bundle. It contains the bundle version, which
-							is only known when the build runs, so it is generated from a template.
-						-->
-						<id>generate-source-bundle-manifest</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/sources-manifest/META-INF</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.parent.basedir}/maven/source-bundle</directory>
-									<includes>
-										<include>MANIFEST.MF</include>
-									</includes>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-					<execution>
-						<!--
-							Copies the generated OSGi manifest into the project directory so that the
-							bundle can be imported into an Eclipse/PDE workspace.
-						-->
-						<id>copy-eclipse-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.basedir}/META-INF</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.outputDirectory}/META-INF</directory>
-									<includes>
-										<include>MANIFEST.MF</include>
-									</includes>
-									<filtering>false</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -644,7 +487,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
 		<profile>
 			<!--
 				Signs the artifacts with the Eclipse signing service. The signed artifacts are
-				deployed to Maven Central, see releng/deploy-build.sh.
+				deployed to Maven Central and p2, see releng/deploy-build.sh.
 			-->
 			<id>sign</id>
 			<build>
@@ -656,12 +499,29 @@ Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
 						<executions>
 							<execution>
 								<id>sign</id>
-								<phase>verify</phase>
+								<phase>package</phase>
 								<goals>
 									<goal>sign</goal>
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+					<plugin>
+						<!-- The p2 metadata (checksums) have to be computed for the signed jars -->
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-p2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>p2-metadata</id>
+								<phase>package</phase>
+								<goals>
+									<goal>p2-metadata</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<defaultP2Metadata>false</defaultP2Metadata>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

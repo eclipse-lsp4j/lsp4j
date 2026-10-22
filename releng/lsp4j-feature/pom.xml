@@ -7,8 +7,19 @@
 
 	<parent>
 		<groupId>org.eclipse.lsp4j</groupId>
-		<artifactId>lsp4j.releng</artifactId>
+		<artifactId>lsp4j-parent</artifactId>
 		<version>1.1.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
+
+	<dependencies>
+		<!--
+			The feature requires org.eclipse.xtend.lib (see feature.xml), it is resolved from
+			Maven Central like for the generator bundle.
+		-->
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.lib</artifactId>
+		</dependency>
+	</dependencies>
 </project>

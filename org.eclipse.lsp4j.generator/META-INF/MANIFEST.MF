@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.lsp4j.generator
+Bundle-SymbolicName: org.eclipse.lsp4j.generator
+Bundle-Version: 1.1.0.qualifier
+Bundle-Vendor: Eclipse LSP4J
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
+Export-Package: org.eclipse.lsp4j.generator;version="1.1.0";uses:="org.eclipse.xtend.lib.macro,org.eclipse.xtend.lib.macro.declaration,org.eclipse.xtend.lib.macro.file,org.eclipse.xtend.lib.macro.services,org.eclipse.xtext.xbase.lib"
+Import-Package: com.google.common.collect;version="[32.1.2,34)",
+ com.google.gson.annotations;version="[2.9.1,3.0)",
+ java.io,
+ java.lang,
+ java.lang.annotation,
+ java.lang.invoke,
+ java.net,
+ java.util,
+ java.util.function,
+ org.eclipse.lsp4j.jsonrpc.messages;version="[1.1,2)",
+ org.eclipse.lsp4j.jsonrpc.validation;version="[1.1,2)",
+ org.eclipse.xtend.lib.annotations;version="[2.40,3)",
+ org.eclipse.xtend.lib.macro;version="[2.40,3)",
+ org.eclipse.xtend.lib.macro.declaration;version="[2.40,3)",
+ org.eclipse.xtend.lib.macro.file;version="[2.40,3)",
+ org.eclipse.xtend.lib.macro.services;version="[2.40,3)",
+ org.eclipse.xtend2.lib;version="[2.40,3)",
+ org.eclipse.xtext.xbase.lib;version="[2.40,3)"

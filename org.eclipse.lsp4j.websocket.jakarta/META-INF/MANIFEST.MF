@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.lsp4j.websocket.jakarta
+Bundle-SymbolicName: org.eclipse.lsp4j.websocket.jakarta
+Bundle-Version: 1.1.0.qualifier
+Bundle-Vendor: Eclipse LSP4J
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=11))"
+Export-Package: org.eclipse.lsp4j.websocket.jakarta;version="1.1.0";uses:="jakarta.websocket,org.eclipse.lsp4j.jsonrpc,org.eclipse.lsp4j.jsonrpc.json,org.eclipse.lsp4j.jsonrpc.messages"
+Import-Package: jakarta.websocket;version="[2.0,3)",
+ java.io,
+ java.lang,
+ java.util,
+ java.util.concurrent,
+ java.util.concurrent.atomic,
+ java.util.function,
+ java.util.logging,
+ org.eclipse.lsp4j.jsonrpc;version="[1.1,2)",
+ org.eclipse.lsp4j.jsonrpc.json;version="[1.1,2)",
+ org.eclipse.lsp4j.jsonrpc.messages;version="[1.1,2)",
+ org.eclipse.lsp4j.jsonrpc.services;version="[1.1,2)"

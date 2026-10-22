@@ -41,22 +41,11 @@ pipeline {
                 --fail-at-end \
                 -Dmaven.test.failure.ignore=true \
                 -DaltDeploymentRepository=local::file://\$PWD/build/maven-repository \
+                --update-snapshots \
                 clean deploy \
                 -Ptest-older-javas \
                 -Pjmh \
                 -Psign \
-                "
-        }
-      }
-    }
-    stage('Maven (Tycho)') {
-      steps {
-        timeout(activity: true, time: 20) {
-          sh "./mvnw \
-                -f releng/pom.xml \
-                -Dmaven.repo.local=.repository \
-                --batch-mode --update-snapshots \
-                clean install -Psign \
                 "
         }
       }
