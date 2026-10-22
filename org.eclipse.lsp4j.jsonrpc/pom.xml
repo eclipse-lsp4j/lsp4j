@@ -34,6 +34,10 @@
 				the published artifact.
 			-->
 			<id>jmh</id>
+			<properties>
+				<!-- The command line options of JMH, e.g. the benchmarks to run -->
+				<jmh.args></jmh.args>
+			</properties>
 			<dependencies>
 				<dependency>
 					<groupId>org.openjdk.jmh</groupId>
@@ -96,16 +100,18 @@
 						</configuration>
 					</plugin>
 					<plugin>
-						<!-- Runs the benchmarks, see documentation/benchmarking.md -->
+						<!--
+							Runs the benchmarks with exec:exec, see documentation/benchmarking.md. JMH has to
+							run in its own Java process, it starts the forks of the benchmarks with its own
+							classpath. The options of JMH are passed with the jmh.args property.
+						-->
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
 						<version>3.5.0</version>
 						<configuration>
-							<mainClass>org.openjdk.jmh.Main</mainClass>
+							<executable>${java.home}/bin/java</executable>
 							<classpathScope>test</classpathScope>
-							<additionalClasspathElements>
-								<additionalClasspathElement>${project.build.directory}/jmh-classes</additionalClasspathElement>
-							</additionalClasspathElements>
+							<commandlineArgs>-classpath %classpath${path.separator}${project.build.directory}/jmh-classes org.openjdk.jmh.Main ${jmh.args}</commandlineArgs>
 						</configuration>
 					</plugin>
 				</plugins>

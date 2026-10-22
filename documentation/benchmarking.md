@@ -10,7 +10,7 @@ The benchmarks are not part of the published artifacts, they are only compiled w
 At the command line run
 
 ```sh
-./mvnw -pl org.eclipse.lsp4j.jsonrpc -Pjmh compile exec:java
+./mvnw -pl org.eclipse.lsp4j.jsonrpc -Pjmh compile exec:exec
 ```
 
 A lot of output, including results and caveats from JMH, is provided.
@@ -19,13 +19,13 @@ See the [OpenJDK JMH readme](https://github.com/openjdk/jmh) for more details on
 
 ## Running a single benchmark
 
-To run a single benchmark, add the name of the benchmark to the `exec.args` property, e.g.
+To run a single benchmark, add the name of the benchmark to the `jmh.args` property, e.g.
 
 ```sh
-./mvnw -pl org.eclipse.lsp4j.jsonrpc -Pjmh compile exec:java -Dexec.args="StreamMessageProducerBenchmark"
+./mvnw -pl org.eclipse.lsp4j.jsonrpc -Pjmh compile exec:exec -Djmh.args="StreamMessageProducerBenchmark"
 ```
 
-All command line options of JMH can be passed that way, e.g. `-Dexec.args="-h"` shows the help.
+All command line options of JMH can be passed that way, e.g. `-Djmh.args="-h"` shows the help, `-Djmh.args="-l"` lists the benchmarks.
 
 ## Running jmh within Eclipse
 
