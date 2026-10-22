@@ -16,3 +16,4 @@ org.eclipse.xtend.core.Xtend.prefs
 *.xtendbin
 .classpath
 .project
+.flattened-pom.xml

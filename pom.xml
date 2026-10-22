@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project child.project.url.inherit.append.path="false" xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -20,7 +20,7 @@
 		</license>
 	</licenses>
 
-	<scm>
+	<scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
 		<connection>scm:git:git@github.com:eclipse/lsp4j.git</connection>
 		<developerConnection>scm:git:git@github.com:eclipse/lsp4j.git</developerConnection>
 		<url>git@github.com:eclipse/lsp4j.git</url>
@@ -103,8 +103,6 @@
 
 		<!-- The JDK the artifacts are compiled for -->
 		<java.version>11</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 
 		<!-- Dependency versions -->
@@ -139,6 +137,7 @@
 		<maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
 		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
 		<bnd-maven-plugin.version>7.4.0</bnd-maven-plugin.version>
+		<flatten-maven-plugin.version>1.7.0</flatten-maven-plugin.version>
 		<xtend-maven-plugin.version>${xtend.version}</xtend-maven-plugin.version>
 	</properties>
 
@@ -273,6 +272,11 @@
 					<version>${bnd-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>flatten-maven-plugin</artifactId>
+					<version>${flatten-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.eclipse.xtext</groupId>
 					<artifactId>xtend-maven-plugin</artifactId>
 					<version>${xtend-maven-plugin.version}</version>
@@ -384,7 +388,51 @@
 						</goals>
 						<configuration>
 							<deleteExistingManifest>true</deleteExistingManifest>
+							<!--
+								The instructions that are the same for all bundles, the modules add theirs in
+								bnd.bnd. The $(...) macros are resolved by bnd and not by Maven, because the
+								bundle version is only known once the build-helper-maven-plugin has run.
+							-->
+							<bnd><![CDATA[
+Bundle-SymbolicName: $(project.artifactId)
+Bundle-Name: $(project.artifactId)
+Bundle-Vendor: Eclipse LSP4J
+Bundle-Version: $(bundle.baseVersion).v$(buildTime)
+Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
+-exportcontents: org.eclipse.lsp4j.*
+# The manifest must not contain any additional headers that bnd derives from the
+# pom, so that the published bundles stay the same as before
+-removeheaders: Bundle-Description,Bundle-Developers,Bundle-DocURL,Bundle-License,Bundle-SCM
+]]></bnd>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!--
+					The published poms do not refer to the parent pom, all inherited information and
+					the managed dependency versions are written into the pom of each module.
+				-->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>flatten-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>flatten</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>flatten</goal>
+						</goals>
+						<configuration>
+							<flattenMode>oss</flattenMode>
+						</configuration>
+					</execution>
+					<execution>
+						<id>flatten-clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -615,6 +663,7 @@
 									<jdkToolchain>
 										<version>11</version>
 									</jdkToolchain>
+									<!-- All test classes that are written in Xtend, a new Xtend test has to be added here -->
 									<excludes>
 										<exclude>**/LSPEndpointTest.class</exclude>
 										<exclude>**/PerformanceMeasurement.class</exclude>

@@ -6,6 +6,9 @@ To start working on it simply clone and run `./mvnw clean install`. See the sect
 
 The build requires Java 17 or later, the produced artifacts are compiled for Java 11.
 
+`./mvnw clean install -Ptest-older-javas` additionally runs the tests on Java 17 and Java 11, the JDKs are taken from the [Maven toolchains](https://maven.apache.org/guides/mini/guide-using-toolchains.html) (`~/.m2/toolchains.xml`).
+The Xtend compiler requires Java 17, so the tests that are written in Xtend are not run on Java 11. A new Xtend test class has to be added to the excludes of the `test-older-javas` profile in the root `pom.xml`.
+
 # ECA
 
 In order to contribute code, you need to sign an Eclipse Contributor Agreement, using the e-mail of your GitHub account.
