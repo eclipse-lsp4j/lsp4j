@@ -17,6 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -60,20 +61,40 @@ public class WebSocketMessageConsumerTest {
 		}
 	}
 
+	/**
+	 * When {@code sendText} throws, the consumer passes the exception on to the caller, and still sends the next
+	 * message.
+	 */
+	@Test
+	public void testMessageAfterFailedSendIsSent() {
+		final var session = new InlineSendSession();
+		final var consumer = new WebSocketMessageConsumer(session, new MessageJsonHandler(Collections.emptyMap()));
+		session.failNextSend.set(true);
+		Assert.assertThrows(IllegalStateException.class, () -> consumer.consume(newNotification()));
+		consumer.consume(newNotification());
+		Assert.assertEquals(1, session.sentMessages.get());
+	}
+
 	private static void sendMessages(WebSocketMessageConsumer consumer) {
 		for (int i = 0; i < MESSAGES_PER_THREAD; i++) {
-			final var message = new NotificationMessage();
-			message.setMethod("foo");
-			consumer.consume(message);
+			consumer.consume(newNotification());
 		}
+	}
+
+	private static NotificationMessage newNotification() {
+		final var message = new NotificationMessage();
+		message.setMethod("foo");
+		return message;
 	}
 
 	/**
 	 * Counts the text messages sent asynchronously, and notifies the send handler before {@code sendText} returns.
+	 * When {@code failNextSend} is set, the next {@code sendText} throws instead.
 	 */
 	private static class InlineSendSession extends MockSession {
 
 		final AtomicInteger sentMessages = new AtomicInteger();
+		final AtomicBoolean failNextSend = new AtomicBoolean();
 		private final RemoteEndpoint.Async asyncRemote = new InlineAsyncRemote();
 
 		@Override
@@ -88,6 +109,9 @@ public class WebSocketMessageConsumerTest {
 				// As RemoteEndpoint.Async specifies
 				if (text == null) {
 					throw new IllegalArgumentException("The text is null.");
+				}
+				if (failNextSend.getAndSet(false)) {
+					throw new IllegalStateException("The send failed.");
 				}
 				sentMessages.incrementAndGet();
 				handler.onResult(new SendResult());
