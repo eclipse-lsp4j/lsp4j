@@ -651,6 +651,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
 									<jdkToolchain>
 										<version>17</version>
 									</jdkToolchain>
+									<!-- The reports of the other test runs must not be overwritten -->
+									<reportNameSuffix>jdk17</reportNameSuffix>
 								</configuration>
 							</execution>
 							<execution>
@@ -663,6 +665,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
 									<jdkToolchain>
 										<version>11</version>
 									</jdkToolchain>
+									<!-- The reports of the other test runs must not be overwritten -->
+									<reportNameSuffix>jdk11</reportNameSuffix>
 									<!-- All test classes that are written in Xtend, a new Xtend test has to be added here -->
 									<excludes>
 										<exclude>**/LSPEndpointTest.class</exclude>
