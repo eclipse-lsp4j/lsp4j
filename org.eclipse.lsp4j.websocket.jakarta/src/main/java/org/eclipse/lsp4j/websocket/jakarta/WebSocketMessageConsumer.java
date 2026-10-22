@@ -86,8 +86,21 @@ public class WebSocketMessageConsumer implements MessageConsumer {
 		}
 		
 		void handleNextMessage() {
-			if (session.isOpen() && !messageQueue.isEmpty() && isSending.compareAndSet(false, true)) {
-				session.getAsyncRemote().sendText(messageQueue.poll(), this);
+			while (session.isOpen() && !messageQueue.isEmpty() && isSending.compareAndSet(false, true)) {
+				var sent = false;
+				try {
+					// null if another thread sent the message after this one saw it in the queue
+					String message = messageQueue.poll();
+					if (message != null) {
+						session.getAsyncRemote().sendText(message, this);
+						sent = true;
+					}
+				} finally {
+					if (!sent) {
+						// Release the flag, then check again for a message that could have been added while this thread held it.
+						isSending.set(false);
+					}
+				}
 			}
 		}
 	}

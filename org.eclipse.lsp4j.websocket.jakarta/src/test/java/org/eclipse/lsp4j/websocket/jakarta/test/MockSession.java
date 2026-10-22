@@ -318,7 +318,7 @@ public class MockSession implements Session {
 		
 	}
 	
-	private static abstract class AbstractRemoteEndpoint implements RemoteEndpoint {
+	static abstract class AbstractRemoteEndpoint implements RemoteEndpoint {
 
 		@Override
 		public void setBatchingAllowed(boolean allowed) throws IOException {
