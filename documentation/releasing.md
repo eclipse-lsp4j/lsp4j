@@ -11,7 +11,7 @@ Items at the beginning of development
 - [ ] Create a [New milestone](https://github.com/eclipse-lsp4j/lsp4j/milestones/new) for the release
 - [ ] Check [CHANGELOG.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/CHANGELOG.md) is up to date. The changelog should have a version entry, release date, API Breakages and other information consistent with current entries in the changelog.
 - [ ] Check [README.md](https://github.com/eclipse-lsp4j/lsp4j/blob/main/README.md) is up to date. In particular that the planned release and which versions of DAP and LSP are support is listed.
-- [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/1.0.0/1.1.0/g`, `s/0.24.0/1.0.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/pom.xml) and  [releng/pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/pom.xml)
+- [ ] Increment version of all feature.xml, pom.xml and any other place full version is used. (Easiest way is global find and replace, e.g. `s/1.0.0/1.1.0/g`, `s/0.24.0/1.0.0/g` and review changes.) Ensure that `-SNAPSHOT` is restored in the [pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/pom.xml) and in the `lsp4j.version` property of [releng/pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/pom.xml)
 - [ ] Enable `cd releng && ./deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/build.Jenkinsfile) 
 - [ ] Ensure [the CI build](https://ci.eclipse.org/lsp4j/job/lsp4j-multi-build/job/main/) is stable - it is always better to release a "Green Dot" build
 
@@ -29,7 +29,7 @@ Items on Release day:
 
 - [ ] Prepare the repo for release by:
     - [ ] removing `-SNAPSHOT` from [pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/pom.xml)
-    - [ ] removing `-SNAPSHOT` from [releng/pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/pom.xml) entries in `<dependencies>` section.
+    - [ ] removing `-SNAPSHOT` from the `lsp4j.version` property in [releng/pom.xml](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/pom.xml) (the version of the releng project itself stays `-SNAPSHOT`).
     - [ ] disabling `cd releng && ./deploy-build.sh'` in [releng/build.Jenkinsfile](https://github.com/eclipse-lsp4j/lsp4j/blob/main/releng/build.Jenkinsfile) 
     - see commit https://github.com/eclipse-lsp4j/lsp4j/commit/328ce8a4c89b0cd84fb62118f459b6cf79b09e90 for a past example
 - [ ] Push the above change

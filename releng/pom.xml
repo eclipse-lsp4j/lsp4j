@@ -9,6 +9,12 @@
 
 	<properties>
 		<tycho-version>5.0.0</tycho-version>
+		<!--
+			The version of the LSP4J bundles that are built by the Maven build in the root of the
+			repository. For a release it is the release version (e.g. 1.1.0), while this p2 build
+			stays at the -SNAPSHOT version, because the feature version is 1.1.0.qualifier.
+		-->
+		<lsp4j.version>1.1.0-SNAPSHOT</lsp4j.version>
 	</properties>
 
 	<pluginRepositories>
@@ -27,29 +33,29 @@
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.debug</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.debug</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>com.google</groupId>
@@ -60,40 +66,40 @@
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.generator</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.jsonrpc.debug</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lsp4j</groupId>
 			<artifactId>org.eclipse.lsp4j.websocket.jakarta</artifactId>
-			<version>${project.version}</version>
+			<version>${lsp4j.version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 	</dependencies>
