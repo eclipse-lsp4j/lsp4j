@@ -506,6 +506,15 @@ Bundle-RequiredExecutionEnvironment: JavaSE-$(java.version)
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<argLine>-Xmx1g</argLine>
+					<includes>
+						<!-- The default patterns of Surefire -->
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+						<!-- Test classes that do not match the default patterns -->
+						<include>**/DSPDebugServer.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 
