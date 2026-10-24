@@ -28,8 +28,8 @@ Current Java:
 
 Please switch your JAVA_HOME or use the Gradle wrapper with a compatible JDK.
 
-In addition, to run testOlderJavas tasks Java 17 and Java 11 must be discovrable.
-See https://docs.gradle.org/9.8.1/userguide/toolchains.html#sec:auto_detection
+In addition, to run testOlderJavas tasks Java 17 and Java 11 must be discovеrable.
+See https://docs.gradle.org/${gradle.gradleVersion}/userguide/toolchains.html#sec:auto_detection
 """)
 }
 
