@@ -1,10 +1,10 @@
 /.repository/
 /.m2/
+.DS_Store
 bin/
 target/
 build/
 xtend-gen/
-.gradle/
 .idea/
 META-INF/
 org.eclipse.buildship.core.prefs
@@ -16,3 +16,4 @@ org.eclipse.xtend.core.Xtend.prefs
 *.xtendbin
 .classpath
 .project
+.flattened-pom.xml

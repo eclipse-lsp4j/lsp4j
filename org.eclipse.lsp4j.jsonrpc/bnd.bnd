@@ -1,0 +1,3 @@
+# Instructions specific to the org.eclipse.lsp4j.jsonrpc bundle, the common ones are in the parent pom
+
+Import-Package: com.google.gson.*;version="${gson.version}",*

@@ -34,6 +34,8 @@ $SSH mv ${DOWNLOAD_MOUNT}-new ${DOWNLOAD_MOUNT}
 case $BRANCH_NAME in
     main | release_*)
         # GPG Sign and Deploy to Maven Central snapshot
+        # The artifacts are the ones the build deployed to build/maven-repository, the
+        # build directory is deleted by mvn clean, so it only contains the artifacts of this build
         find ../build/maven-repository -name '*.pom' | while read i
         do
             base="${i%.*}"

@@ -12,6 +12,14 @@
 		<relativePath>..</relativePath>
 	</parent>
 
+	<properties>
+		<!--
+			The root directory of the repository. It is used to copy the p2 repository, so
+			that it can be picked up by releng/deploy-build.sh.
+		-->
+		<root-dir>${project.basedir}/../..</root-dir>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -39,6 +47,8 @@
 						</goals>
 						<configuration>
 							<tasks>
+								<!-- The p2 repository of an earlier build must not be deployed again -->
+								<delete dir="${root-dir}/build/p2-repository" quiet="true" />
 								<copy todir="${root-dir}/build/p2-repository">
 									<fileset dir="${basedir}/target/repository/" />
 								</copy>
