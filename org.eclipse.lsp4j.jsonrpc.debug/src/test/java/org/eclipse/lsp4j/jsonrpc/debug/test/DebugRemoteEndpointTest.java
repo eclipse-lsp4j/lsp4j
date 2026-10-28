@@ -184,6 +184,25 @@ public class DebugRemoteEndpointTest {
 
 	}
 
+	@Test public void testResponseCompletesTheRequestWhoseSeqItAnswers() throws Exception {
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, new TestEndpoint());
+		endpoint.notify("before", null);
+
+		CompletableFuture<Object> result = endpoint.request("foo", "myparam");
+
+		// The request takes its seq as it is sent, after the notification
+		DebugRequestMessage request = (DebugRequestMessage) consumer.messages.get(1);
+		assertEquals("2", request.getId());
+		endpoint.consume(new DebugResponseMessage() {{
+			setResponseId(1);
+			setId(2);
+			setMethod("foo");
+			setResult("success");
+		}});
+		assertEquals("success", result.get(5, TimeUnit.SECONDS));
+	}
+
 	@Test public void testNotificationAndRequestAreSentInSeqOrder() throws Exception {
 		assertSentInSeqOrder(DebugRemoteEndpointTest::sendNotification, DebugRemoteEndpointTest::sendRequest);
 	}

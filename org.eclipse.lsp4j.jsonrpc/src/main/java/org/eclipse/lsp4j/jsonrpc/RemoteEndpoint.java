@@ -155,19 +155,28 @@ public class RemoteEndpoint implements Endpoint, MessageConsumer, MessageIssueHa
 	public JsonRpcRequestFuture<Object> request(String method, Object parameter) {
 		final RequestMessage requestMessage = createRequestMessage(method, parameter);
 		final var result = new JsonRpcRequestFuture<>(() -> sendCancelNotification(requestMessage.getRawId()));
-		synchronized(sentRequestMap) {
-			// Store request information so it can be handled when the response is received
-			sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, result));
-		}
-
 		try {
-			// Send the request to the remote service
-			out.consume(requestMessage);
+			sendRequest(requestMessage, () -> {
+				synchronized(sentRequestMap) {
+					// Store request information so it can be handled when the response is received
+					sentRequestMap.put(requestMessage.getId(), new PendingRequestInfo(requestMessage, result));
+				}
+			});
 		} catch (Exception exception) {
 			// The message could not be sent, e.g. because the communication channel was closed
 			result.completeExceptionally(exception);
 		}
 		return result;
+	}
+
+	/**
+	 * Sends a request to the remote service, after running {@code recordRequest}, which records the request by its id
+	 * so that its response can be handled when it is received. A subclass that gives a request its id as it sends it
+	 * runs {@code recordRequest} once the id is set.
+	 */
+	protected void sendRequest(RequestMessage requestMessage, Runnable recordRequest) {
+		recordRequest.run();
+		out.consume(requestMessage);
 	}
 
 	protected RequestMessage createRequestMessage(String method, Object parameter) {
