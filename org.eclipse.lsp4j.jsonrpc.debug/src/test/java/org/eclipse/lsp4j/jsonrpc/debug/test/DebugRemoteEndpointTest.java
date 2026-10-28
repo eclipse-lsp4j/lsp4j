@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.jsonrpc.debug.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseErrorCode;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 import org.junit.Test;
+
+import com.google.gson.JsonObject;
 
 public class DebugRemoteEndpointTest {
 
@@ -182,6 +185,49 @@ public class DebugRemoteEndpointTest {
 		assertEquals(error.getCode(), ResponseErrorCode.RequestCancelled.getValue());
 		assertEquals(error.getMessage(), "The request (id: 1, method: 'foo') has been cancelled");
 
+	}
+
+	@Test public void testCancellingARequestSendsACancelRequest() {
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, new TestEndpoint());
+
+		CompletableFuture<Object> result = endpoint.request("foo", "myparam");
+		result.cancel(true);
+
+		assertEquals(2, consumer.messages.size());
+		DebugRequestMessage request = (DebugRequestMessage) consumer.messages.get(0);
+		DebugRequestMessage cancel = (DebugRequestMessage) consumer.messages.get(1);
+		assertEquals("cancel", cancel.getMethod());
+		assertEquals(Map.of("requestId", Integer.valueOf(request.getId())), cancel.getParams());
+	}
+
+	@Test public void testCancelRequestCancelsTheRequestItNames() {
+		TestEndpoint endp = new TestEndpoint();
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, endp);
+
+		endpoint.consume(new DebugRequestMessage() {{
+			setId(1);
+			setMethod("foo");
+			setParams("myparam");
+		}});
+		JsonObject arguments = new JsonObject();
+		arguments.addProperty("requestId", 1);
+		endpoint.consume(new DebugRequestMessage() {{
+			setId(2);
+			setMethod("cancel");
+			setParams(arguments);
+		}});
+
+		CompletableFuture<Object> foo = endp.requests.values().iterator().next();
+		assertTrue(foo.isCancelled());
+		DebugResponseMessage response = (DebugResponseMessage) consumer.messages.get(0);
+		assertEquals("1", response.getId());
+		assertEquals(ResponseErrorCode.RequestCancelled.getValue(), response.getError().getCode());
+		// the cancel request still reaches the local endpoint, which answers it
+		Entry<RequestMessage, CompletableFuture<Object>> cancel = List.copyOf(endp.requests.entrySet()).get(1);
+		assertEquals("cancel", cancel.getKey().getMethod());
+		assertSame(arguments, cancel.getKey().getParams());
 	}
 
 	@Test public void testNotificationAndRequestAreSentInSeqOrder() throws Exception {
