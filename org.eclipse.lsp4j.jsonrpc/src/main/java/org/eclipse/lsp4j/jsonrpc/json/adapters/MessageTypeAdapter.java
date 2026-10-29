@@ -106,10 +106,7 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					break;
 				}
 				case "id": {
-					if (in.peek() == JsonToken.NUMBER)
-						id = Either.forRight(in.nextInt());
-					else
-						id = Either.forLeft(in.nextString());
+					id = parseId(in);
 					break;
 				}
 				case "method": {
@@ -117,7 +114,19 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					break;
 				}
 				case "params": {
-					rawParams = parseParams(in, method);
+					try {
+						rawParams = parseParams(in, method);
+					} catch (JsonParseException | IllegalStateException | NumberFormatException exception) {
+						if (exception instanceof JsonParseException) {
+							Throwable cause = exception.getCause();
+							if (cause instanceof IOException || cause instanceof Error) {
+								// The parameters are not valid JSON, or could not be read
+								throw exception;
+							}
+						}
+						// The parameters are valid JSON, but not of the method's parameter types
+						throw invalidParams(in, jsonrpc, id, method, exception);
+					}
 					break;
 				}
 				case "result": {
@@ -132,10 +141,17 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					in.skipValue();
 				}
 			}
-			Object params = parseParams(rawParams, method);
+			in.endObject();
+			Object params;
+			try {
+				params = parseParams(rawParams, method);
+			} catch (JsonParseException | IllegalStateException | NumberFormatException exception) {
+				Message message = createMessage(jsonrpc, id, method, rawParams, rawResult, responseError);
+				final var issue = new MessageIssue("Invalid method parameters.", ResponseErrorCode.InvalidParams.getValue(), exception);
+				throw new MessageIssueException(message, issue);
+			}
 			Object result = parseResult(rawResult, id != null ? id.get().toString() : null);
 
-			in.endObject();
 			return createMessage(jsonrpc, id, method, params, result, responseError);
 
 		} catch (JsonSyntaxException | MalformedJsonException | EOFException exception) {
@@ -147,6 +163,47 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 			}
 			throw exception;
 		}
+	}
+
+	protected Either<String, Number> parseId(JsonReader in) throws IOException {
+		if (in.peek() == JsonToken.NUMBER) {
+			return Either.forRight(in.nextInt());
+		}
+		return Either.forLeft(in.nextString());
+	}
+
+	/**
+	 * Creates the issue for parameters that are valid JSON, but cannot be converted to the
+	 * parameter types of the method. The reader is still inside the parameters, so this reads
+	 * the rest of the message first: its id may follow the parameters.
+	 */
+	protected MessageIssueException invalidParams(JsonReader in, String jsonrpc, Either<String, Number> id,
+			String method, RuntimeException exception) throws IOException {
+		while (!"$".equals(in.getPath())) {
+			// Gson before 2.10 does not skip the end of an array or object, so they are read here
+			switch (in.peek()) {
+			case END_OBJECT:
+				in.endObject();
+				break;
+			case END_ARRAY:
+				in.endArray();
+				break;
+			case NAME:
+				in.nextName();
+				if (id == null && "$.id".equals(in.getPath())) {
+					JsonToken next = in.peek();
+					if (next == JsonToken.NUMBER || next == JsonToken.STRING) {
+						id = parseId(in);
+					}
+				}
+				break;
+			default:
+				in.skipValue();
+			}
+		}
+		Message message = createMessage(jsonrpc, id, method, null, null, null);
+		final var issue = new MessageIssue("Invalid method parameters.", ResponseErrorCode.InvalidParams.getValue(), exception);
+		return new MessageIssueException(message, issue);
 	}
 
 	/**
