@@ -76,7 +76,8 @@ public class InvalidParamsTest {
 			"query", JsonRpcMethod.request("query", Integer.class, Position.class),
 			"changed", JsonRpcMethod.notification("changed", Position.class),
 			"list", JsonRpcMethod.request("list", Integer.class, new TypeToken<List<Integer>>() {}.getType()),
-			"pair", JsonRpcMethod.request("pair", Integer.class, Integer.class, Integer.class)));
+			"pair", JsonRpcMethod.request("pair", Integer.class, Integer.class, Integer.class),
+			"either", JsonRpcMethod.request("either", Integer.class, new TypeToken<Either<String, Integer>>() {}.getType())));
 
 	/**
 	 * Lets JSON in this test be written with single quotes instead of escaped double quotes.
@@ -137,6 +138,17 @@ public class InvalidParamsTest {
 					assertEquals(input, expectedId, message.getRawId());
 				});
 			}
+		}
+	}
+
+	@Test
+	public void aParameterTypeAdapterErrorWithoutACauseIsAnInvalidParamsError() {
+		// EitherTypeAdapter rejects a token that matches neither alternative with a JsonParseException without a cause.
+		// Parameters after the method are converted while the message is read, and parameters before it afterwards.
+		for (List<String> order : List.of(List.of("id", "method", "params"), List.of("id", "params", "method"))) {
+			String input = request("7", "either", "true", order);
+			final var message = assertRejected(input, ResponseErrorCode.InvalidParams, RequestMessage.class);
+			assertEquals(input, Either.forRight(7), message.getRawId());
 		}
 	}
 
