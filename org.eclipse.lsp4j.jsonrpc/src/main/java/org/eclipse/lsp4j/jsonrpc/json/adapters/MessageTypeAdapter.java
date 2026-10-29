@@ -117,11 +117,10 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					try {
 						rawParams = parseParams(in, method);
 					} catch (JsonParseException | IllegalStateException | NumberFormatException exception) {
-						for (Throwable cause = exception.getCause(); cause != null; cause = cause.getCause()) {
-							if (cause instanceof IOException || cause instanceof Error) {
-								// The parameters are not valid JSON, or could not be read
-								throw exception;
-							}
+						Throwable cause = exception.getCause();
+						if (cause instanceof IOException || cause instanceof Error) {
+							// The parameters are not valid JSON, or could not be read
+							throw exception;
 						}
 						// The parameters are valid JSON, but not of the method's parameter types
 						throw invalidParams(in, jsonrpc, id, method, exception);
