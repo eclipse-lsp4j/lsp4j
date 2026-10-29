@@ -210,7 +210,9 @@ public class InvalidParamsTest {
 
 		final var responses = new ArrayList<Message>();
 		handler.setMethodProvider(id -> "query");
-		new StreamMessageProducer(new ByteArrayInputStream(output.toByteArray()), handler).listen(responses::add);
+		try (var producer = new StreamMessageProducer(new ByteArrayInputStream(output.toByteArray()), handler)) {
+			producer.listen(responses::add);
+		}
 		assertEquals(2, responses.size()); // Notifications must never receive a response.
 		final var rejected = (ResponseMessage) responses.get(0);
 		assertEquals(Either.forRight(7), rejected.getRawId());

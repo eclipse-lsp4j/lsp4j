@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -118,8 +117,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 					try {
 						rawParams = parseParams(in, method);
 					} catch (JsonParseException | IllegalStateException | NumberFormatException exception) {
-						if (exception.getCause() instanceof IOException) {
-							throw exception;
+						if (exception instanceof JsonParseException) {
+							Throwable cause = exception.getCause();
+							if (cause == null || cause instanceof IOException || cause instanceof Error) {
+								throw exception;
+							}
 						}
 						// The parameters are valid JSON, but not of the method's parameter types
 						throw invalidParams(in, jsonrpc, id, method, exception);
@@ -162,12 +164,11 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 	}
 
-	private Either<String, Number> parseId(JsonReader in) throws IOException {
+	protected Either<String, Number> parseId(JsonReader in) throws IOException {
 		if (in.peek() == JsonToken.NUMBER) {
 			return Either.forRight(in.nextInt());
-		} else {
-			return Either.forLeft(in.nextString());
 		}
+		return Either.forLeft(in.nextString());
 	}
 
 	/**
@@ -175,44 +176,31 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 	 * parameter types of the method. The reader is still inside the parameters, so this reads
 	 * the rest of the message first: its id may follow the parameters.
 	 */
-	private MessageIssueException invalidParams(JsonReader in, String jsonrpc, Either<String, Number> id,
+	protected MessageIssueException invalidParams(JsonReader in, String jsonrpc, Either<String, Number> id,
 			String method, RuntimeException exception) throws IOException {
-		// Depths are relative to where the conversion stopped. The loop ends when the end of the
-		// message brings the reader back to the top level, so the message's own members are at
-		// the final depth plus one.
-		int depth = 0;
-		final var ids = new HashMap<Integer, Either<String, Number>>();
 		while (!"$".equals(in.getPath())) {
+			// Gson before 2.10 does not skip the end of an array or object, so they are read here
 			switch (in.peek()) {
-			case BEGIN_OBJECT:
-				in.beginObject();
-				depth++;
-				break;
-			case BEGIN_ARRAY:
-				in.beginArray();
-				depth++;
-				break;
 			case END_OBJECT:
 				in.endObject();
-				depth--;
 				break;
 			case END_ARRAY:
 				in.endArray();
-				depth--;
 				break;
-			case NAME: {
-				String name = in.nextName();
-				JsonToken next = in.peek();
-				if (name.equals("id") && (next == JsonToken.NUMBER || next == JsonToken.STRING)) {
-					ids.put(depth, parseId(in));
+			case NAME:
+				in.nextName();
+				if (id == null && "$.id".equals(in.getPath())) {
+					JsonToken next = in.peek();
+					if (next == JsonToken.NUMBER || next == JsonToken.STRING) {
+						id = parseId(in);
+					}
 				}
 				break;
-			}
 			default:
 				in.skipValue();
 			}
 		}
-		Message message = createMessage(jsonrpc, ids.getOrDefault(depth + 1, id), method, null, null, null);
+		Message message = createMessage(jsonrpc, id, method, null, null, null);
 		final var issue = new MessageIssue("Invalid method parameters.", ResponseErrorCode.InvalidParams.getValue(), exception);
 		return new MessageIssueException(message, issue);
 	}

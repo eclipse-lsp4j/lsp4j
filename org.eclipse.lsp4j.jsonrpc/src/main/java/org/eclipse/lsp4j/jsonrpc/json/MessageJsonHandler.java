@@ -137,7 +137,7 @@ public class MessageJsonHandler {
 		return message;
 	}
 
-	private void checkFullyConsumed(JsonReader jsonReader, Message message) {
+	protected void checkFullyConsumed(JsonReader jsonReader, Message message) {
 		try {
 			if (jsonReader.peek() != JsonToken.END_DOCUMENT) {
 				final var issue = new MessageIssue("JSON document was not fully consumed.", ResponseErrorCode.ParseError.getValue());
