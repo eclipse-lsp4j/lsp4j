@@ -14,6 +14,7 @@ package org.eclipse.lsp4j.jsonrpc.json.adapters;
 import java.io.EOFException;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -165,9 +166,26 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 	}
 
+	/**
+	 * Reads the id of a message: a string, or a number, which is an {@link Integer} if it fits
+	 * one and a {@link Long} otherwise. A number with a fraction, or outside the long range,
+	 * throws a {@link NumberFormatException}.
+	 */
 	protected Either<String, Number> parseId(JsonReader in) throws IOException {
 		if (in.peek() == JsonToken.NUMBER) {
-			return Either.forRight(in.nextInt());
+			// Not nextLong(): it reads a number such as 7.0 through a double, which changes a large
+			// id, and turns one just outside the long range into a long limit
+			String number = in.nextString();
+			long id;
+			try {
+				id = new BigDecimal(number).longValueExact();
+			} catch (ArithmeticException e) {
+				throw new NumberFormatException("Expected a long but was " + number + " at path " + in.getPath());
+			}
+			if (id == (int) id) {
+				return Either.forRight((int) id);
+			}
+			return Either.forRight(id);
 		}
 		return Either.forLeft(in.nextString());
 	}
