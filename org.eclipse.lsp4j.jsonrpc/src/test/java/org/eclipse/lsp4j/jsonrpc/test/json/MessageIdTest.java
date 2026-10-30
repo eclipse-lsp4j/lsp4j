@@ -74,6 +74,25 @@ public class MessageIdTest {
 	}
 
 	@Test
+	public void aNumericIdWithAFractionOrAnExponentIsReadExactly() {
+		// As a double, 1234567890123456789 is 1234567890123456768
+		Map<String, Number> ids = Map.of("7.0", 7, "0.7e1", 7,
+				"1234567890123456789.0", 1234567890123456789L, "1.234567890123456789e18", 1234567890123456789L);
+		ids.forEach((id, expected) -> {
+			final var message = (RequestMessage) handler.parseMessage(request(id, "5"));
+			assertEquals(id, Either.forRight(expected), message.getRawId());
+		});
+	}
+
+	@Test
+	public void aNumericIdThatIsNotALongStillFails() {
+		// The first two are the same double as a long limit, and must not become that limit
+		for (String id : List.of("9223372036854775808", "-9223372036854775809", "123456789012345678901234567890", "1e30", "7.5")) {
+			assertThrows(id, NumberFormatException.class, () -> handler.parseMessage(request(id, "5")));
+		}
+	}
+
+	@Test
 	public void aResponseKeepsALongId() {
 		handler.setMethodProvider(id -> "echo");
 		final var message = (ResponseMessage) handler.parseMessage("{\"jsonrpc\":\"2.0\",\"id\":1779401475267,\"result\":5}");
