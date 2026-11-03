@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
-import org.eclipse.lsp4j.jsonrpc.JsonRpcRequestFuture;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
@@ -29,10 +28,9 @@ import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
  * A {@link RemoteEndpoint} for the Debug Adapter Protocol, which requires the {@code seq} of each message
  * that an endpoint sends to be one greater than the {@code seq} of the message it sent before.
  * <p>
- * A notification or a response takes its {@code seq} when it is sent, and a request takes it when it is
- * created, since {@link RemoteEndpoint} records the request by its {@code seq} before sending it. Either
- * way, no other message is sent in between, so messages that several threads send at once still go out
- * in {@code seq} order.
+ * Each message takes its {@code seq} when it is sent, and no other message is sent in between, so messages
+ * that several threads send at once still go out in {@code seq} order. A request is recorded by its
+ * {@code seq} after it takes it and before it is sent, so that its response can be handled.
  */
 public class DebugRemoteEndpoint extends RemoteEndpoint {
 	private final SequencingMessageConsumer sequencer;
@@ -53,18 +51,15 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	}
 
 	@Override
-	public JsonRpcRequestFuture<Object> request(String method, Object parameter) {
-		// The request takes its seq when it is created, so no other message may take one until it has been sent
-		synchronized (sequencer) {
-			return super.request(method, parameter);
-		}
+	protected void sendRequest(RequestMessage requestMessage, Runnable recordRequest) {
+		sequencer.send(requestMessage, recordRequest);
 	}
 
 	@Override
 	protected DebugRequestMessage createRequestMessage(String method, Object parameter) {
+		// The sequencer sets the seq of the request when it sends it
 		DebugRequestMessage requestMessage = new DebugRequestMessage();
 		requestMessage.setJsonHandler(getJsonHandler());
-		requestMessage.setId(sequencer.nextSeq());
 		requestMessage.setMethod(method);
 		requestMessage.setParams(parameter);
 		return requestMessage;
@@ -91,8 +86,8 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	}
 
 	/**
-	 * Sends the messages of a {@link DebugRemoteEndpoint} one at a time, and gives each notification and
-	 * response the next {@code seq} as it sends it.
+	 * Sends the messages of a {@link DebugRemoteEndpoint} one at a time, and gives each one the next
+	 * {@code seq} as it sends it.
 	 */
 	private static class SequencingMessageConsumer implements MessageConsumer {
 		private final MessageConsumer out;
@@ -104,16 +99,21 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 			this.out = Objects.requireNonNull(out, "out");
 		}
 
-		synchronized int nextSeq() {
-			return ++seq;
+		/**
+		 * Sends a request, after running {@code recordRequest} once the request has its {@code seq}.
+		 */
+		synchronized void send(RequestMessage requestMessage, Runnable recordRequest) {
+			requestMessage.setId(++seq);
+			recordRequest.run();
+			out.consume(requestMessage);
 		}
 
 		@Override
 		public synchronized void consume(Message message) {
 			if (message instanceof DebugNotificationMessage) {
-				((DebugNotificationMessage) message).setId(nextSeq());
+				((DebugNotificationMessage) message).setId(++seq);
 			} else if (message instanceof DebugResponseMessage) {
-				((DebugResponseMessage) message).setResponseId(nextSeq());
+				((DebugResponseMessage) message).setResponseId(++seq);
 			}
 			out.consume(message);
 		}
