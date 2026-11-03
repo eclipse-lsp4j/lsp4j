@@ -165,9 +165,17 @@ public class MessageTypeAdapter extends TypeAdapter<Message> {
 		}
 	}
 
+	/**
+	 * Reads the id of a message: a string, or a number, which is an {@link Integer} if it fits
+	 * one and a {@link Long} otherwise.
+	 */
 	protected Either<String, Number> parseId(JsonReader in) throws IOException {
 		if (in.peek() == JsonToken.NUMBER) {
-			return Either.forRight(in.nextInt());
+			long id = in.nextLong();
+			if (id == (int) id) {
+				return Either.forRight((int) id);
+			}
+			return Either.forRight(id);
 		}
 		return Either.forLeft(in.nextString());
 	}
