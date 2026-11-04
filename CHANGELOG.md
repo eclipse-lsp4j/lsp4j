@@ -9,6 +9,10 @@ Fixed issues: <https://github.com/eclipse-lsp4j/lsp4j/milestone/37?closed=1> (Up
 Breaking API changes:
 
   * Removed the previously proposed (`@ProtocolDraft`) `ServerCapabilities.textDocument`, `TextDocumentServerCapabilities` and `DiagnosticServerCapabilities`, which are not part of the final LSP 3.18.0 specification
+  * Changed the DAP fields that DAP 1.71.0 sizes as `int64`, `uint64` or `uint32` from `int` to `long` and from `Integer` to `Long`, so that a message with a value outside the `int` range can be parsed [#1014](https://github.com/eclipse-lsp4j/lsp4j/issues/1014)
+    * Every `line`, `column`, `endLine` and `endColumn`, and `SetBreakpointsArguments.lines` (from `int[]` to `long[]`)
+    * The memory and disassembly offsets and counts: `offset` in `ReadMemoryArguments`, `WriteMemoryArguments`, `WriteMemoryResponse`, `MemoryEventArguments`, `DisassembleArguments`, `InstructionBreakpoint` and `Breakpoint`, `ReadMemoryArguments.count`, `MemoryEventArguments.count`, `ReadMemoryResponse.unreadableBytes`, `WriteMemoryResponse.bytesWritten`, and `DisassembleArguments.instructionOffset` and `instructionCount`
+    * The other counts and sizes: `StackTraceArguments.startFrame` and `levels`, `StackTraceResponse.totalFrames`, `VariablesArguments.start` and `count`, `ModulesArguments.moduleCount`, `ModulesResponse.totalModules`, `ProcessEventArguments.pointerSize`, `DataBreakpointInfoArguments.bytes`, `ColumnDescriptor.width`, and `CompletionItem.start`, `length`, `selectionStart` and `selectionLength`
 
 japicmp report: <https://download.eclipse.org/lsp4j/builds/main/japicmp-report/>
 
