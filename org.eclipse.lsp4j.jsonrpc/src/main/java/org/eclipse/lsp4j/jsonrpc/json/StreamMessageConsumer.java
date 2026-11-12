@@ -11,8 +11,10 @@
  ******************************************************************************/
 package org.eclipse.lsp4j.jsonrpc.json;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
@@ -24,7 +26,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
  */
 public class StreamMessageConsumer implements MessageConsumer, MessageConstants {
 
-	private final String encoding;
+	private final Charset encoding;
 	private final MessageJsonHandler jsonHandler;
 
 	private final Object outputLock = new Object();
@@ -32,14 +34,18 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	private OutputStream output;
 
 	public StreamMessageConsumer(MessageJsonHandler jsonHandler) {
-		this(null, StandardCharsets.UTF_8.name(), jsonHandler);
+		this(null, StandardCharsets.UTF_8, jsonHandler);
 	}
 
 	public StreamMessageConsumer(OutputStream output, MessageJsonHandler jsonHandler) {
-		this(output, StandardCharsets.UTF_8.name(), jsonHandler);
+		this(output, StandardCharsets.UTF_8, jsonHandler);
 	}
 
 	public StreamMessageConsumer(OutputStream output, String encoding, MessageJsonHandler jsonHandler) {
+		this(output, Charset.forName(encoding), jsonHandler);
+	}
+
+	public StreamMessageConsumer(OutputStream output, Charset encoding, MessageJsonHandler jsonHandler) {
 		this.output = output;
 		this.encoding = encoding;
 		this.jsonHandler = jsonHandler;
@@ -56,16 +62,16 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	@Override
 	public void consume(Message message) {
 		try {
-			String content = jsonHandler.serialize(message);
-			byte[] contentBytes = content.getBytes(encoding);
-			int contentLength = contentBytes.length;
+			final var content = new ByteArrayOutputStream(256);
+			jsonHandler.serialize(message, content, encoding);
+			int contentLength = content.size();
 
 			String header = getHeader(contentLength);
 			byte[] headerBytes = header.getBytes(StandardCharsets.US_ASCII);
 
 			synchronized (outputLock) {
 				output.write(headerBytes);
-				output.write(contentBytes);
+				content.writeTo(output);
 				output.flush();
 			}
 		} catch (IOException exception) {
@@ -80,9 +86,9 @@ public class StreamMessageConsumer implements MessageConsumer, MessageConstants 
 	protected String getHeader(int contentLength) {
 		final var headerBuilder = new StringBuilder();
 		appendHeader(headerBuilder, CONTENT_LENGTH_HEADER, contentLength).append(CRLF);
-		if (!StandardCharsets.UTF_8.name().equals(encoding)) {
+		if (!StandardCharsets.UTF_8.equals(encoding)) {
 			appendHeader(headerBuilder, CONTENT_TYPE_HEADER, JSON_MIME_TYPE);
-			headerBuilder.append("; charset=").append(encoding).append(CRLF);
+			headerBuilder.append("; charset=").append(encoding.name()).append(CRLF);
 		}
 		headerBuilder.append(CRLF);
 		return headerBuilder.toString();
