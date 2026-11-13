@@ -94,7 +94,7 @@ public interface IDebugProtocolServer {
 	/**
 	 * Version of Debug Protocol
 	 */
-	String SCHEMA_VERSION = "1.70.0";
+	String SCHEMA_VERSION = "1.71.0";
 
 	/**
 	 * The 'cancel' request is used by the client in two situations:
@@ -127,6 +127,10 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * A client should not assume that progress just got cancelled after sending the
 	 * 'cancel' request.
+	 * <p>
+	 * Arguments must be passed to form a valid request. Debug adapters may reject
+	 * requests that lack arguments with an error. These arguments are marked as
+	 * optional in the specification for historical reasons.
 	 */
 	@JsonRequest
 	default CompletableFuture<Void> cancel(CancelArguments args) {
@@ -247,6 +251,10 @@ public interface IDebugProtocolServer {
 	 * <p>
 	 * Clients should only call this request if the corresponding capability
 	 * {@link Capabilities#getSupportsBreakpointLocationsRequest} is true.
+	 * <p>
+	 * Arguments must be passed to form a valid request. Debug adapters may reject
+	 * requests that lack arguments with an error. These arguments are marked as
+	 * optional in the specification for historical reasons.
 	 */
 	@JsonRequest
 	default CompletableFuture<BreakpointLocationsResponse> breakpointLocations(BreakpointLocationsArguments args) {
