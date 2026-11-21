@@ -74,8 +74,8 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 		this.keepRunning = true;
 		this.callback = callback;
 		try {
-			StringBuilder headerBuilder = null;
-			StringBuilder debugBuilder = null;
+			final var headerBuilder = new StringBuilder();
+			final var debugBuilder = new StringBuilder();
 			boolean newLine = false;
 			Headers headers = new Headers();
 			while (keepRunning) {
@@ -84,8 +84,6 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 					// End of input stream has been reached
 					keepRunning = false;
 				} else {
-					if (debugBuilder == null)
-						debugBuilder = new StringBuilder();
 					debugBuilder.append((char) c);
 					if (c == '\n') {
 						if (newLine) {
@@ -100,19 +98,17 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 								newLine = false;
 							}
 							headers = new Headers();
-							debugBuilder = null;
+							resetStringBuilder(debugBuilder);
 						} else {
-							if (headerBuilder != null) {
+							if (headerBuilder.length() > 0) {
 								// A single newline ends a header line
 								parseHeader(headerBuilder.toString(), headers);
-								headerBuilder = null;
+								resetStringBuilder(headerBuilder);
 							}
 							newLine = true;
 						}
 					} else if (c != '\r') {
 						// Add the input to the current header line
-						if (headerBuilder == null)
-							headerBuilder = new StringBuilder();
 						headerBuilder.append((char) c);
 						newLine = false;
 					}
@@ -129,6 +125,17 @@ public class StreamMessageProducer implements MessageProducer, Closeable, Messag
 			this.callback = null;
 			this.keepRunning = false;
 		}
+	}
+
+	private void resetStringBuilder(final StringBuilder sb) {
+		// If the builder grew large, shrink its backing byte array to an upper bound
+		if (sb.length() > 8192) {
+			// Truncate so trimToSize() can reduce the internal capacity.
+			sb.setLength(8192);
+			sb.trimToSize();
+		}
+		// Clear content while keeping the (now trimmed) capacity for reuse.
+		sb.setLength(0);
 	}
 
 	/**
