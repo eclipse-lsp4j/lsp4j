@@ -52,7 +52,7 @@ public class ConcurrentMessageProcessor implements Runnable {
 			public boolean cancel(boolean mayInterruptIfRunning) {
 				if (mayInterruptIfRunning && messageProducer instanceof Closeable) {
 					try {
-						((Closeable) messageProducer).close();
+						messageProducer.close();
 					} catch (IOException e) {
 						throw new RuntimeException(e);
 					}
