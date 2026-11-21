@@ -25,21 +25,32 @@ public final class Ranges {
 	 * the {@code bigger} range. Otherwise, {@code false}.
 	 */
 	public static boolean containsRange(Range bigger, Range smaller) {
-		Preconditions.checkNotNull(bigger, "bigger");
-		Preconditions.checkNotNull(smaller, "smaller");
-		return containsPosition(bigger, smaller.getStart()) && containsPosition(bigger, smaller.getEnd());
-	}
+    Preconditions.checkNotNull(bigger, "bigger");
+    Preconditions.checkNotNull(smaller, "smaller");
+
+    Position smallerStart = smaller.getStart();
+    Position smallerEnd = smaller.getEnd();
+
+    return containsPosition(bigger, smallerStart) && containsPosition(bigger, smallerEnd);
+}
 
 	/**
 	 * {@code true} if the {@link Position position} is either inside or on the
 	 * border of the {@link Range range}. Otherwise, {@code false}.
 	 */
 	public static boolean containsPosition(Range range, Position position) {
-		Preconditions.checkNotNull(range, "range");
-		Preconditions.checkNotNull(position, "position");
-		return range.getStart().equals(position) || Positions.isBefore(range.getStart(), position)
-				&& (range.getEnd().equals(position) || Positions.isBefore(position, range.getEnd()));
-	}
+    Preconditions.checkNotNull(range, "range");
+    Preconditions.checkNotNull(position, "position");
+
+    Position start = range.getStart();
+    Position end = range.getEnd();
+
+    boolean startsAtPosition = start.equals(position);
+    boolean isAfterStart = Positions.isBefore(start, position);
+    boolean endsAtOrAfterPosition = end.equals(position) || Positions.isBefore(position, end);
+
+    return startsAtPosition || (isAfterStart && endsAtOrAfterPosition);
+}
 
 	private Ranges() {
 

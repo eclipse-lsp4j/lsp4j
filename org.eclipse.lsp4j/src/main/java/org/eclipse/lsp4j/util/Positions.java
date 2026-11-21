@@ -26,16 +26,18 @@ public final class Positions {
 	 * If you want to allow equality, use {@link Position#equals}.
 	 */
 	public static boolean isBefore(Position left, Position right) {
-		Preconditions.checkNotNull(left, "left");
-		Preconditions.checkNotNull(right, "right");
-		if (left.getLine() < right.getLine()) {
-			return true;
-		}
-		if (left.getLine() > right.getLine()) {
-			return false;
-		}
-		return left.getCharacter() < right.getCharacter();
-	}
+    Preconditions.checkNotNull(left, "left");
+    Preconditions.checkNotNull(right, "right");
+
+    int leftLine = left.getLine();
+    int rightLine = right.getLine();
+
+    if (leftLine != rightLine) {
+        return leftLine < rightLine;
+    }
+
+    return left.getCharacter() < right.getCharacter();
+}
 
 	private Positions() {
 
