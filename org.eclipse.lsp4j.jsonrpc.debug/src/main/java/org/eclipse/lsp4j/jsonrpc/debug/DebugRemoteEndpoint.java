@@ -14,8 +14,11 @@ package org.eclipse.lsp4j.jsonrpc.debug;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
+import org.eclipse.lsp4j.jsonrpc.JsonRpcException;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.RemoteEndpoint;
 import org.eclipse.lsp4j.jsonrpc.debug.messages.DebugNotificationMessage;
@@ -28,6 +31,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Message;
 import org.eclipse.lsp4j.jsonrpc.messages.NotificationMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.RequestMessage;
 import org.eclipse.lsp4j.jsonrpc.messages.ResponseError;
+import org.eclipse.lsp4j.jsonrpc.messages.ResponseMessage;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -45,6 +49,8 @@ import com.google.gson.JsonObject;
  * is the {@code seq} of the request to cancel.
  */
 public class DebugRemoteEndpoint extends RemoteEndpoint {
+	private static final Logger LOG = Logger.getLogger(DebugRemoteEndpoint.class.getName());
+
 	private static final String CANCEL_REQUEST = "cancel";
 	private static final String REQUEST_ID = "requestId";
 
@@ -73,10 +79,36 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	/**
 	 * Cancels a request that the remote endpoint handles, with a {@code cancel} request. The Debug Adapter
 	 * Protocol has no {@code $/cancelRequest} notification, which would go out as an event.
+	 * <p>
+	 * The {@code cancel} request is not recorded as a pending request, since nothing waits for its answer, and
+	 * some debug adapters never send one. {@link #handleResponse(ResponseMessage)} drops the answer.
 	 */
 	@Override
 	protected void sendCancelNotification(Either<String, Number> id) {
-		request(CANCEL_REQUEST, Map.of(REQUEST_ID, id.isRight() ? id.getRight() : id.getLeft()));
+		RequestMessage cancel = createRequestMessage(CANCEL_REQUEST,
+				Map.of(REQUEST_ID, id.isRight() ? id.getRight() : id.getLeft()));
+		try {
+			sendRequest(cancel, () -> {});
+		} catch (Exception exception) {
+			// As RemoteEndpoint.notify does, for instance when the connection is closed
+			Level logLevel = JsonRpcException.indicatesStreamClosed(exception) ? Level.INFO : Level.WARNING;
+			LOG.log(logLevel, "Failed to send cancel request.", exception);
+		}
+	}
+
+	/**
+	 * Drops the answer to a {@code cancel} request that {@link #sendCancelNotification(Either)} sent, which
+	 * {@link RemoteEndpoint} would log as an unmatched response. The answer to a {@code cancel} request that was
+	 * sent with {@link #request(String, Object)} still completes its future.
+	 */
+	@Override
+	protected void handleResponse(ResponseMessage responseMessage) {
+		if (responseMessage instanceof DebugResponseMessage
+				&& CANCEL_REQUEST.equals(((DebugResponseMessage) responseMessage).getMethod())
+				&& resolveMethod(responseMessage.getId()) == null) {
+			return;
+		}
+		super.handleResponse(responseMessage);
 	}
 
 	/**

@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.jsonrpc.debug.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +26,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.logging.LogRecord;
+import java.util.stream.Collectors;
 
 import org.eclipse.lsp4j.jsonrpc.Endpoint;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
@@ -247,6 +250,53 @@ public class DebugRemoteEndpointTest {
 		Entry<RequestMessage, CompletableFuture<Object>> cancel = List.copyOf(endp.requests.entrySet()).get(1);
 		assertEquals("cancel", cancel.getKey().getMethod());
 		assertSame(arguments, cancel.getKey().getParams());
+	}
+
+	@Test public void testCancelRequestIsNotPending() {
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, new TestEndpoint());
+
+		endpoint.request("foo", "myparam").cancel(true);
+
+		DebugRequestMessage cancel = (DebugRequestMessage) consumer.messages.get(1);
+		assertEquals("2", cancel.getId());
+		// nothing waits for its answer, which some debug adapters never send
+		assertNull(endpoint.resolveMethod(cancel.getId()));
+	}
+
+	@Test public void testAnswerToACancelRequestIsNotUnmatched() {
+		LogMessageAccumulator logMessages = new LogMessageAccumulator();
+		try {
+			logMessages.registerTo(RemoteEndpoint.class);
+			logMessages.registerTo(DebugRemoteEndpoint.class);
+			TestMessageConsumer consumer = new TestMessageConsumer();
+			RemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, new TestEndpoint());
+
+			endpoint.request("foo", "myparam").cancel(true);
+			endpoint.consume(new DebugResponseMessage() {{
+				setResponseId(1);
+				setId(2);
+				setMethod("cancel");
+			}});
+
+			assertEquals(List.of(), logMessages.getRecords().stream().map(LogRecord::getMessage).collect(Collectors.toList()));
+		} finally {
+			logMessages.unregister();
+		}
+	}
+
+	@Test public void testAnswerToARequestedCancelRequestCompletesIt() throws Exception {
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		RemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, new TestEndpoint());
+
+		CompletableFuture<Object> result = endpoint.request("cancel", Map.of("requestId", 7));
+		endpoint.consume(new DebugResponseMessage() {{
+			setResponseId(1);
+			setId(1);
+			setMethod("cancel");
+		}});
+
+		assertNull(result.get(5, TimeUnit.SECONDS));
 	}
 
 	@Test public void testNotificationAndRequestAreSentInSeqOrder() throws Exception {
