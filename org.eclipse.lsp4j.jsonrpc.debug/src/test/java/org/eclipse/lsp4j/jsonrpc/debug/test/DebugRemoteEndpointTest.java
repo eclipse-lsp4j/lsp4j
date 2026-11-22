@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.logging.LogRecord;
 import java.util.stream.Collectors;
@@ -297,6 +298,24 @@ public class DebugRemoteEndpointTest {
 		}});
 
 		assertNull(result.get(5, TimeUnit.SECONDS));
+	}
+
+	@Test public void testCancelRequestIsSentOnlyWhenTheRemoteEndpointSupportsIt() {
+		TestMessageConsumer consumer = new TestMessageConsumer();
+		DebugRemoteEndpoint endpoint = new DebugRemoteEndpoint(consumer, new TestEndpoint());
+		AtomicBoolean supportsCancelRequest = new AtomicBoolean();
+		endpoint.setSupportsCancelRequest(supportsCancelRequest::get);
+
+		CompletableFuture<Object> foo = endpoint.request("foo", "myparam");
+		foo.cancel(true);
+		// as when the debug adapter's capabilities arrive
+		supportsCancelRequest.set(true);
+		endpoint.request("bar", "myparam").cancel(true);
+
+		assertTrue(foo.isCancelled());
+		assertEquals(List.of("foo", "bar", "cancel"),
+				consumer.messages.stream().map(message -> ((DebugRequestMessage) message).getMethod()).collect(Collectors.toList()));
+		assertEquals(Map.of("requestId", 2), ((DebugRequestMessage) consumer.messages.get(2)).getParams());
 	}
 
 	@Test public void testNotificationAndRequestAreSentInSeqOrder() throws Exception {

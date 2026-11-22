@@ -13,6 +13,7 @@ package org.eclipse.lsp4j.jsonrpc.debug;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,8 @@ import com.google.gson.JsonObject;
  * {@code seq} after it takes it and before it is sent, so that its response can be handled.
  * <p>
  * A request is cancelled with the Debug Adapter Protocol's {@code cancel} request, whose {@code requestId}
- * is the {@code seq} of the request to cancel.
+ * is the {@code seq} of the request to cancel, if the remote endpoint supports it
+ * (see {@link #setSupportsCancelRequest(BooleanSupplier)}).
  */
 public class DebugRemoteEndpoint extends RemoteEndpoint {
 	private static final Logger LOG = Logger.getLogger(DebugRemoteEndpoint.class.getName());
@@ -55,6 +57,8 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	private static final String REQUEST_ID = "requestId";
 
 	private final SequencingMessageConsumer sequencer;
+
+	private volatile BooleanSupplier supportsCancelRequest = () -> true;
 
 	public DebugRemoteEndpoint(MessageConsumer out, Endpoint localEndpoint) {
 		this(new SequencingMessageConsumer(out), localEndpoint, DEFAULT_EXCEPTION_HANDLER);
@@ -77,14 +81,29 @@ public class DebugRemoteEndpoint extends RemoteEndpoint {
 	}
 
 	/**
-	 * Cancels a request that the remote endpoint handles, with a {@code cancel} request. The Debug Adapter
-	 * Protocol has no {@code $/cancelRequest} notification, which would go out as an event.
+	 * Sets whether the remote endpoint supports the {@code cancel} request. The Debug Adapter Protocol says that
+	 * a client sends it only if the debug adapter's capability {@code supportsCancelRequest} is true. The
+	 * supplier is asked each time a request is cancelled, so it can follow the capabilities that the debug
+	 * adapter returns from {@code initialize} or changes later. When it returns false, cancelling a request
+	 * sends nothing, and the request is only cancelled locally. By default, the {@code cancel} request is sent.
+	 */
+	public void setSupportsCancelRequest(BooleanSupplier supportsCancelRequest) {
+		this.supportsCancelRequest = Objects.requireNonNull(supportsCancelRequest, "supportsCancelRequest");
+	}
+
+	/**
+	 * Cancels a request that the remote endpoint handles, with a {@code cancel} request, if the remote endpoint
+	 * supports it, and sends nothing otherwise. The Debug Adapter Protocol has no {@code $/cancelRequest}
+	 * notification, which would go out as an event.
 	 * <p>
 	 * The {@code cancel} request is not recorded as a pending request, since nothing waits for its answer, and
 	 * some debug adapters never send one. {@link #handleResponse(ResponseMessage)} drops the answer.
 	 */
 	@Override
 	protected void sendCancelNotification(Either<String, Number> id) {
+		if (!supportsCancelRequest.getAsBoolean()) {
+			return;
+		}
 		RequestMessage cancel = createRequestMessage(CANCEL_REQUEST,
 				Map.of(REQUEST_ID, id.isRight() ? id.getRight() : id.getLeft()));
 		try {

@@ -113,4 +113,27 @@ public class DebugLauncherTest {
 				out.toString());
 	}
 
+	@Test public void testSupportsCancelRequest() throws Exception {
+		A a = new A() {
+			@Override
+			public void say(Param p) {
+			}
+		};
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Launcher<A> launcher = new DebugLauncher.Builder<A>()
+				.setSupportsCancelRequest(() -> false)
+				.setLocalService(a)
+				.setRemoteInterface(A.class)
+				.setInput(new ByteArrayInputStream("".getBytes()))
+				.setOutput(out)
+				.create();
+
+		launcher.getRemoteEndpoint().request("foo", null).cancel(true);
+
+		// no cancel request follows the request
+		Assert.assertEquals("Content-Length: 42\r\n\r\n" +
+				"{\"type\":\"request\",\"seq\":1,\"command\":\"foo\"}",
+				out.toString());
+	}
+
 }
