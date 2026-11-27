@@ -30,7 +30,7 @@ class DebugProtocol {
 	/**
 	 * Version of Debug Protocol
 	 */
-	public static final String SCHEMA_VERSION = "1.70.0";
+	public static final String SCHEMA_VERSION = "1.71.0";
 
 	/**
 	 * Refer to the Debug Adapter Protocol's
@@ -175,7 +175,8 @@ class ContinuedEventArguments {
 	 */
 	int threadId;
 	/**
-	 * If 'allThreadsContinued' is true, a debug adapter can announce that all threads have continued.
+	 * If omitted or set to {@code true}, this event signals to the client that all threads have been resumed.
+	 * The value {@code false} indicates that not all threads were resumed.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -394,7 +395,7 @@ enum OutputEventArgumentsGroup {
  * The event indicates that some information about a breakpoint has changed.
  * While debug adapters may notify the clients of `changed` breakpoints using this
  * event, clients should continue to use the breakpoint's original properties when
- * updating a source's breakpoints in the `breakpoint` request."
+ * updating a source's breakpoints in the `breakpoint` request.
  * <p>
  * Represents the {@code body} of {@code BreakpointEvent} defined in spec.
  */
@@ -777,7 +778,8 @@ class RunInTerminalRequestArguments {
 	String title;
 	/**
 	 * Working directory for the command. For non-empty, valid paths this typically results in execution of a change
-	 * directory command.
+	 * directory command. If {@code pathFormat} is set to {@code uri} in the {@link InitializeRequestArguments},
+	 * this must be a file URI.
 	 */
 	@NonNull
 	String cwd;
@@ -1404,9 +1406,8 @@ class SetInstructionBreakpointsArguments {
 @JsonRpcData
 class ContinueResponse {
 	/**
-	 * The value {@code true} (or a missing property) signals to the client that all
-	 * threads have been resumed. The value {@code false} indicates that not all
-	 * threads were resumed.
+	 * If omitted or set to {@code true}, this response signals to the client that all threads have been resumed.
+	 * The value {@code false} indicates that not all threads were resumed.
 	 * <p>
 	 * This is an optional property.
 	 */
@@ -1710,7 +1711,8 @@ class VariablesArguments {
 	 */
 	VariablesArgumentsFilter filter;
 	/**
-	 * The index of the first variable to return; if omitted children start at 0.
+	 * The index of the first variable to return; if omitted children start at 0. If the value of {@code start}
+	 * exceeds the number of available variables, the debug adapter should return an empty array.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the corresponding
 	 * capability {@link InitializeRequestArguments#getSupportsVariablePaging} is true.
@@ -1719,7 +1721,8 @@ class VariablesArguments {
 	 */
 	Integer start;
 	/**
-	 * The number of variables to return. If count is missing or 0, all variables are returned.
+	 * The number of variables to return. If count is missing or 0, all variables are returned. If fewer than
+	 * {@code count} variables are returned, the client should assume no further variables are available.
 	 * <p>
 	 * The attribute is only honored by a debug adapter if the corresponding
 	 * capability {@link InitializeRequestArguments#getSupportsVariablePaging} is true.
@@ -2690,7 +2693,7 @@ class Capabilities {
 	 */
 	Boolean supportsCompletionsRequest;
 	/**
-	 * he set of characters that should automatically trigger a completion request
+	 * The set of characters that should automatically trigger a completion request
 	 * in a REPL. If not specified, the client should assume the `.` character. The
 	 * client may trigger additional completion requests on characters such as ones
 	 * that make up common identifiers, or as otherwise requested by a user.
@@ -4475,7 +4478,7 @@ enum ExceptionBreakMode {
 }
 
 /**
- * An ExceptionPathSegment represents a segment in a path that is used to match leafs or nodes in a tree of
+ * An ExceptionPathSegment represents a segment in a path that is used to match leaves or nodes in a tree of
  * exceptions.
  * <p>
  * If a segment consists of more than one name, it matches the names provided if 'negate' is false or missing, or
@@ -4663,6 +4666,16 @@ enum StartDebuggingRequestArgumentsType {
 }
 
 /**
+ * Hints whether output of the child sessions should be presented separately or
+ * merged with that of the parent session's.
+ */
+@ProtocolSince("1.71")
+enum StartDebuggingRequestArgumentsOutputPresentation {
+	SEPARATE,
+	MERGE_WITH_PARENT
+}
+
+/**
  * Arguments for 'startDebugging' request.
  */
 @JsonRpcData
@@ -4683,4 +4696,13 @@ class StartDebuggingRequestArguments {
 	 */
 	@NonNull
 	StartDebuggingRequestArgumentsType request;
+
+	/**
+	 * Hints whether output of the child sessions should be presented separately or
+	 * merged with that of the parent session's.
+	 * <p>
+	 * This is an optional property.
+	 */
+	@ProtocolSince("1.71")
+	StartDebuggingRequestArgumentsOutputPresentation outputPresentation;
 }
