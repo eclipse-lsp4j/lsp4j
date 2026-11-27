@@ -26,7 +26,10 @@ import java.util.logging.Logger;
 
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
+import org.eclipse.lsp4j.debug.MemoryEventArguments;
 import org.eclipse.lsp4j.debug.OutputEventArguments;
+import org.eclipse.lsp4j.debug.ReadMemoryArguments;
+import org.eclipse.lsp4j.debug.ReadMemoryResponse;
 import org.eclipse.lsp4j.debug.launch.DSPLauncher;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
@@ -65,6 +68,35 @@ public class DSPLauncherTest {
 		server.expectedRequests.put("initialize", List.of(p, result));
 		CompletableFuture<Capabilities> future = clientLauncher.getRemoteProxy().initialize(p);
 		Assert.assertEquals(result.toString(), future.get(TIMEOUT, TimeUnit.MILLISECONDS).toString());
+		client.joinOnEmpty();
+	}
+
+	@Test
+	public void testRequestWithValuesOutsideTheIntRange() throws Exception {
+		ReadMemoryArguments p = new ReadMemoryArguments();
+		p.setMemoryReference("0x0");
+		p.setOffset(0x1_0000_0000L);
+		p.setCount(0x8000_0000L);
+
+		ReadMemoryResponse result = new ReadMemoryResponse();
+		result.setAddress("0x100000000");
+		result.setUnreadableBytes(0x8000_0000L);
+
+		server.expectedRequests.put("readMemory", List.of(p, result));
+		CompletableFuture<ReadMemoryResponse> future = clientLauncher.getRemoteProxy().readMemory(p);
+		Assert.assertEquals(result.toString(), future.get(TIMEOUT, TimeUnit.MILLISECONDS).toString());
+		client.joinOnEmpty();
+	}
+
+	@Test
+	public void testNotificationWithValuesOutsideTheIntRange() {
+		MemoryEventArguments p = new MemoryEventArguments();
+		p.setMemoryReference("0x0");
+		p.setOffset(0x1_0000_0000L);
+		p.setCount(0x8000_0000L);
+
+		client.expectedNotifications.put("memory", p);
+		serverLauncher.getRemoteProxy().memory(p);
 		client.joinOnEmpty();
 	}
 

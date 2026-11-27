@@ -297,14 +297,14 @@ class OutputEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * The position in `line` where the output was produced. It is measured in UTF-16 code units and the
 	 * client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines whether it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * Additional data to report. For the 'telemetry' category the data is sent to telemetry, for the other
 	 * categories the data is shown in JSON format.
@@ -521,7 +521,7 @@ class ProcessEventArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer pointerSize;
+	Long pointerSize;
 }
 
 /**
@@ -732,11 +732,11 @@ class MemoryEventArguments {
 	/**
 	 * Starting offset in bytes where memory has been updated. Can be negative.
 	 */
-	int offset;
+	long offset;
 	/**
 	 * Number of bytes updated.
 	 */
-	int count;
+	long count;
 }
 
 /**
@@ -1077,7 +1077,7 @@ class BreakpointLocationsArguments {
 	 * Start line of range to search possible breakpoint locations in. If only the line is specified, the request
 	 * returns all possible locations in that line.
 	 */
-	int line;
+	long line;
 	/**
 	 * Start position within `line` to search possible breakpoint locations in. It is measured in UTF-16
 	 * code units and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -1086,14 +1086,14 @@ class BreakpointLocationsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * End line of range to search possible breakpoint locations in. If no end line is given, then the end
 	 * line is assumed to be the start line.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * End position within `endLine` to search possible breakpoint locations in. It is measured in UTF-16
 	 * code units and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -1102,7 +1102,7 @@ class BreakpointLocationsArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -1152,7 +1152,7 @@ class SetBreakpointsArguments {
 	 * Deprecated in DAP:  Use {@link SourceBreakpoint#line} of {@link #breakpoints} instead.
 	 */
 	@ProtocolDeprecated
-	int[] lines;
+	long[] lines;
 	/**
 	 * A value of true indicates that the underlying source has been modified which results in new breakpoint
 	 * locations.
@@ -1326,7 +1326,7 @@ class DataBreakpointInfoArguments {
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.66")
-	Integer bytes;
+	Long bytes;
 	/**
 	 * If `true`, the `name` is a memory address and the debugger should interpret it as a decimal value,
 	 * or hex value if it is prefixed with `0x`.
@@ -1619,7 +1619,7 @@ class StackTraceResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer totalFrames;
+	Long totalFrames;
 }
 
 /**
@@ -1636,13 +1636,13 @@ class StackTraceArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer startFrame;
+	Long startFrame;
 	/**
 	 * The maximum number of frames to return. If levels is not specified or 0, all frames are returned.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer levels;
+	Long levels;
 	/**
 	 * Specifies details on how to format the returned `StackFrame.name`. The debug adapter may format
 	 * requested details in any way that would make sense to a developer.
@@ -1717,7 +1717,7 @@ class VariablesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer start;
+	Long start;
 	/**
 	 * The number of variables to return. If count is missing or 0, all variables are returned.
 	 * <p>
@@ -1726,7 +1726,7 @@ class VariablesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer count;
+	Long count;
 	/**
 	 * Specifies details on how to format the Variable values.
 	 * <p>
@@ -1925,7 +1925,7 @@ class ModulesResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer totalModules;
+	Long totalModules;
 }
 
 /**
@@ -1944,7 +1944,7 @@ class ModulesArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer moduleCount;
+	Long moduleCount;
 }
 
 /**
@@ -2068,7 +2068,7 @@ class EvaluateArguments {
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.67")
-	Integer line;
+	Long line;
 	/**
 	 * The contextual column where the expression should be evaluated. This may be provided if `line` is also provided.
 	 * <p>
@@ -2078,7 +2078,7 @@ class EvaluateArguments {
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.67")
-	Integer column;
+	Long column;
 	/**
 	 * The contextual source in which the `line` is found. This must be provided if `line` is provided.
 	 * <p>
@@ -2295,14 +2295,14 @@ class GotoTargetsArguments {
 	/**
 	 * The line location for which the goto targets are determined.
 	 */
-	int line;
+	long line;
 	/**
 	 * The position within `line` for which the goto targets are determined. It is measured in UTF-16 code units and
 	 * the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines whether it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 }
 
 /**
@@ -2339,14 +2339,14 @@ class CompletionsArguments {
 	 * The position within `text` for which to determine the completion proposals. It is measured in UTF-16 code units and
 	 * the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines whether it is 0- or 1-based.
 	 */
-	int column;
+	long column;
 	/**
 	 * A line for which to determine the completion proposals. If missing the first line of the text is
 	 * assumed.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 }
 
 /**
@@ -2409,7 +2409,7 @@ class ReadMemoryResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer unreadableBytes;
+	Long unreadableBytes;
 	/**
 	 * The bytes read from memory, encoded using base64. If the decoded length of
 	 * `data` is less than the requested `count` in the original `readMemory`
@@ -2436,11 +2436,11 @@ class ReadMemoryArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer offset;
+	Long offset;
 	/**
 	 * Number of bytes to read at the specified location and offset.
 	 */
-	int count;
+	long count;
 }
 
 /**
@@ -2456,7 +2456,7 @@ class WriteMemoryResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer offset;
+	Long offset;
 	/**
 	 * Property that should be returned when 'allowPartial' is true to
 	 * indicate the number of bytes starting from address that were successfully
@@ -2464,7 +2464,7 @@ class WriteMemoryResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer bytesWritten;
+	Long bytesWritten;
 }
 
 /**
@@ -2484,7 +2484,7 @@ class WriteMemoryArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer offset;
+	Long offset;
 	/**
 	 * Property to control partial writes. If true, the debug adapter
 	 * should attempt to write memory even if the entire memory region is not
@@ -2531,21 +2531,21 @@ class DisassembleArguments {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer offset;
+	Long offset;
 	/**
 	 * Offset (in instructions) to be applied after the byte offset (if any) before disassembling. Can be
 	 * negative.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer instructionOffset;
+	Long instructionOffset;
 	/**
 	 * Number of instructions to disassemble starting at the specified location and offset.
 	 * <p>
 	 * An adapter must return exactly this number of instructions - any unavailable instructions should be replaced
 	 * with an implementation-defined 'invalid instruction' value.
 	 */
-	int instructionCount;
+	long instructionCount;
 	/**
 	 * If true, the adapter should attempt to resolve memory addresses and other values to symbolic names.
 	 * <p>
@@ -2585,7 +2585,7 @@ class LocationsResponse {
 	 * determines whether it is 0- or 1-based.
 	 */
 	@NonNull
-	Integer line;
+	Long line;
 	/**
 	 * Position of the location within the `line`. It is measured in UTF-16 code
 	 * units and the client capability `columnsStartAt1` determines whether it
@@ -2594,14 +2594,14 @@ class LocationsResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * End line of the location, present if the location refers to a range.  The
 	 * client capability `linesStartAt1` determines whether it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * End position of the location within `endLine`, present if the location
 	 * refers to a range. It is measured in UTF-16 code units and the client
@@ -2609,7 +2609,7 @@ class LocationsResponse {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -3167,7 +3167,7 @@ class ColumnDescriptor {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer width;
+	Long width;
 }
 
 /**
@@ -3311,27 +3311,27 @@ class StackFrame {
 	 * The line within the source of the frame. If the source attribute is missing or doesn't exist,
 	 * line is 0 and should be ignored by the client.
 	 */
-	int line;
+	long line;
 	/**
 	 * Start position of the range covered by the stack frame. It is measured in UTF-16 code units
 	 * and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
 	 * whether it is 0- or 1-based. If attribute `source` is missing or doesn't exist, `column`
 	 * is 0 and should be ignored by the client.
 	 */
-	int column;
+	long column;
 	/**
 	 * The end line of the range covered by the stack frame.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * End position of the range covered by the stack frame. It is measured in UTF-16 code units and
 	 * the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines whether it is 0- or 1-based.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 	/**
 	 * Indicates whether this frame can be restarted with the `restartFrame` request.
 	 * Clients should only use this if the debug adapter supports the `restart` request
@@ -3435,7 +3435,7 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * Start position of the range covered by the scope. It is measured in UTF-16 code units and
 	 * the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -3443,13 +3443,13 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * The end line of the range covered by this scope.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * End position of the range covered by the scope. It is measured in UTF-16 code units and
 	 * the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -3457,7 +3457,7 @@ class Scope {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -3772,7 +3772,7 @@ class BreakpointLocation {
 	/**
 	 * Start line of breakpoint location.
 	 */
-	int line;
+	long line;
 	/**
 	 * The start position of a breakpoint location. Position is measured in UTF-16 code units and
 	 * the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -3780,13 +3780,13 @@ class BreakpointLocation {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * The end line of breakpoint location if the location covers a range.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * The end position of a breakpoint location (if the location covers a range).
 	 * Position is measured in UTF-16 code units and the client capability
@@ -3794,7 +3794,7 @@ class BreakpointLocation {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -3805,7 +3805,7 @@ class SourceBreakpoint {
 	/**
 	 * The source line of the breakpoint or logpoint.
 	 */
-	int line;
+	long line;
 	/**
 	 * Start position within source line of the breakpoint or logpoint.
 	 * It is measured in UTF-16 code units and the client capability
@@ -3813,7 +3813,7 @@ class SourceBreakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * The expression for conditional breakpoints.
 	 * <p>
@@ -3955,7 +3955,7 @@ class InstructionBreakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer offset;
+	Long offset;
 	/**
 	 * An expression for conditional breakpoints.
 	 * <p>
@@ -4022,7 +4022,7 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * Start position of the source range covered by the breakpoint. It is measured in UTF-16 code units
 	 * and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -4030,13 +4030,13 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * The end line of the actual range covered by the breakpoint.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * End position of the source range covered by the breakpoint. It is measured in UTF-16 code units
 	 * and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -4046,7 +4046,7 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 	/**
 	 * A memory reference to where the breakpoint is set.
 	 * <p>
@@ -4060,7 +4060,7 @@ class Breakpoint {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer offset;
+	Long offset;
 	/**
 	 * A machine-readable explanation of why a breakpoint may not be verified. If
 	 * a breakpoint is verified or a specific reason is not known, the adapter
@@ -4141,7 +4141,7 @@ class StepInTarget {
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.56")
-	Integer line;
+	Long line;
 	/**
 	 * Start position of the range covered by the step in target. It is measured in UTF-16 code units
 	 * and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -4150,14 +4150,14 @@ class StepInTarget {
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.56")
-	Integer column;
+	Long column;
 	/**
 	 * The end line of the range covered by the step-in target.
 	 * <p>
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.56")
-	Integer endLine;
+	Long endLine;
 	/**
 	 * End position of the range covered by the step in target. It is measured in UTF-16 code units
 	 * and the client capability {@link InitializeRequestArguments#getColumnsStartAt1} determines
@@ -4166,7 +4166,7 @@ class StepInTarget {
 	 * This is an optional property.
 	 */
 	@ProtocolSince("1.56")
-	Integer endColumn;
+	Long endColumn;
 }
 
 /**
@@ -4188,25 +4188,25 @@ class GotoTarget {
 	/**
 	 * The line of the goto target.
 	 */
-	int line;
+	long line;
 	/**
 	 * The column of the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * The end line of the range covered by the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * The end column of the range covered by the goto target.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 	/**
 	 * A memory reference for the instruction pointer value represented by this target.
 	 * <p>
@@ -4260,14 +4260,14 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer start;
+	Long start;
 	/**
 	 * Length determines how many characters are overwritten by the completion text and it is measured in UTF-16 code units.
 	 * If missing the value 0 is assumed which results in the completion text being inserted.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer length;
+	Long length;
 	/**
 	 * Determines the start of the new selection after the text has been inserted (or replaced). `selectionStart` is measured
 	 * in UTF-16 code units and must be in the range 0 and length of the completion text. If omitted the selection starts at
@@ -4275,7 +4275,7 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer selectionStart;
+	Long selectionStart;
 	/**
 	 * Determines the length of the new selection after the text has been inserted (or replaced) and it is measured in
 	 * UTF-16 code units. The selection can not extend beyond the bounds of the completion text. If omitted the length is
@@ -4283,7 +4283,7 @@ class CompletionItem {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer selectionLength;
+	Long selectionLength;
 }
 
 /**
@@ -4582,25 +4582,25 @@ class DisassembledInstruction {
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer line;
+	Long line;
 	/**
 	 * The column within the line that corresponds to this instruction, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer column;
+	Long column;
 	/**
 	 * The end line of the range that corresponds to this instruction, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endLine;
+	Long endLine;
 	/**
 	 * The end column of the range that corresponds to this instruction, if any.
 	 * <p>
 	 * This is an optional property.
 	 */
-	Integer endColumn;
+	Long endColumn;
 	/**
 	 * A hint for how to present the instruction in the UI.
 	 * <p>
