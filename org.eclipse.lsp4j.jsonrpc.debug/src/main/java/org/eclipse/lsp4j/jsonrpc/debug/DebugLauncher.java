@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -198,6 +199,19 @@ public final class DebugLauncher {
 	 */
 	public static class Builder<T> extends Launcher.Builder<T> {
 
+		protected BooleanSupplier supportsCancelRequest;
+
+		/**
+		 * Sets whether the remote endpoint supports the {@code cancel} request, as the debug adapter's
+		 * capability {@code supportsCancelRequest} says. By default, the {@code cancel} request is sent.
+		 *
+		 * @see DebugRemoteEndpoint#setSupportsCancelRequest(BooleanSupplier)
+		 */
+		public Builder<T> setSupportsCancelRequest(BooleanSupplier supportsCancelRequest) {
+			this.supportsCancelRequest = supportsCancelRequest;
+			return this;
+		}
+
 		@Override
 		protected MessageJsonHandler createJsonHandler() {
 			Map<String, JsonRpcMethod> supportedMethods = getSupportedMethods();
@@ -211,11 +225,13 @@ public final class DebugLauncher {
 			MessageConsumer outgoingMessageStream = new StreamMessageConsumer(output, jsonHandler);
 			outgoingMessageStream = wrapMessageConsumer(outgoingMessageStream);
 			Endpoint localEndpoint = ServiceEndpoints.toEndpoint(localServices);
-			RemoteEndpoint remoteEndpoint;
+			DebugRemoteEndpoint remoteEndpoint;
 			if (exceptionHandler == null)
 				remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, localEndpoint);
 			else
 				remoteEndpoint = new DebugRemoteEndpoint(outgoingMessageStream, localEndpoint, exceptionHandler);
+			if (supportsCancelRequest != null)
+				remoteEndpoint.setSupportsCancelRequest(supportsCancelRequest);
 			jsonHandler.setMethodProvider(remoteEndpoint);
 			remoteEndpoint.setJsonHandler(jsonHandler);
 			return remoteEndpoint;
